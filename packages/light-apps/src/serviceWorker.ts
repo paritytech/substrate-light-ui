@@ -131,7 +131,9 @@ function checkValidServiceWorker (swUrl: string, config?: Config) {
 
 export function unregister () {
   if ('serviceWorker' in navigator) {
+    // tslint:disable-next-line
     navigator.serviceWorker.ready.then(registration => {
+      // tslint:disable-next-line
       registration.unregister();
     });
   }
