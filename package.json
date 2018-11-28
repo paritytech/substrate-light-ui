@@ -1,26 +1,16 @@
 {
-  "version": "0.0.1",
-  "private": true,
-  "engines": {
-    "node": "^10.13.0",
-    "yarn": "^1.12.1"
-  },
-  "homepage": ".",
+  "name": "@polkadot/light-ui",
+  "repository": "https://github.com/polkadot-js/light-ui.git",
   "workspaces": [
     "packages/*"
   ],
-  "resolutions": {
-    "babel-core": "^7.0.0-bridge.0",
-    "rxjs": "^6.3.2",
-    "typescript": "^3.1.6"
-  },
-  "dependencies": {
-    "lerna": "^2.11.0"
-  },
   "scripts": {
     "check": "tslint --project . && tsc --noEmit",
     "test": "jest --coverage",
     "start": "cd packages/apps && webpack-serve --config webpack.config.js --port 3000"
+  },
+  "dependencies": {
+    "lerna": "^2.11.0"
   },
   "devDependencies": {
     "@babel/core": "^7.1.6",
