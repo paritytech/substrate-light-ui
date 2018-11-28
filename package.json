@@ -14,9 +14,8 @@
     "start": "cd packages/apps && webpack-serve --config webpack.config.js --port 3000"
   },
   "devDependencies": {
+    "@polkadot/dev": "^0.22.2",
     "enzyme": "^3.7.0",
-    "enzyme-adapter-react-16": "^1.7.0",
-    "jest": "^23.6.0",
-    "lerna": "^3.5.0"
+    "enzyme-adapter-react-16": "^1.7.0"
   }
 }
