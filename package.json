@@ -11,11 +11,12 @@
   "scripts": {
     "check": "tslint && tsc --noEmit",
     "test": "jest --coverage",
-    "start": "cd packages/apps && webpack-serve --config webpack.config.js --port 3000"
+    "start": "lerna exec --scope @polkadot/light-apps yarn start"
   },
   "devDependencies": {
     "@polkadot/dev": "^0.22.2",
     "enzyme": "^3.7.0",
-    "enzyme-adapter-react-16": "^1.7.0"
+    "enzyme-adapter-react-16": "^1.7.0",
+    "eslint": "5.6.0"
   }
 }
