@@ -9,6 +9,5 @@ install:
   - yarn install
 script:
   - yarn lint
-  - yarn run check
   - yarn build
   - yarn test

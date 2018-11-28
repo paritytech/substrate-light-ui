@@ -10,8 +10,7 @@
   ],
   "scripts": {
     "build": "lerna exec yarn build --stream",
-    "check": "tsc --noEmit",
-    "lint": "tslint --project .",
+    "lint": "tsc --noEmit && tslint --project .",
     "start": "lerna exec --scope @polkadot/light-apps yarn start",
     "test": "CI=true lerna run test --parallel"
   },
