@@ -1,6 +1,9 @@
 {
   "name": "@polkadot/light-ui",
   "repository": "https://github.com/polkadot-js/light-ui.git",
+  "description": "User interface on top of Substrate light client",
+  "license": "Apache-2.0",
+  "private": true,
   "workspaces": [
     "packages/*"
   ],

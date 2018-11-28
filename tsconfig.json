@@ -1,13 +1,8 @@
 {
   "extends": "./node_modules/@polkadot/dev/config/tsconfig",
   "compilerOptions": {
-    "baseUrl": ".",
     "paths": {
-      "@polkadot/light-apps/*": [ "packages/light-apps/src/*" ],
-    },
-    "typeRoots": [
-      "./node_modules/@polkadot/ts",
-      "./node_modules/@types"
-    ]
+      "@polkadot/light-apps/*": ["packages/light-apps/src/*"]
+    }
   }
 }
