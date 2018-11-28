@@ -13,7 +13,7 @@
     "check": "tsc --noEmit",
     "lint": "tslint --project .",
     "start": "lerna exec --scope @polkadot/light-apps yarn start",
-    "test": "jest --coverage"
+    "test": "CI=true lerna run test --parallel"
   },
   "devDependencies": {
     "@polkadot/dev": "^0.22.2",
