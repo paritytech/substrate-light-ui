@@ -1,18 +1,25 @@
 {
-  "name": "@polkadot/light-ui-apps",
+  "name": "@polkadot/light-apps",
   "version": "0.0.1",
-  "description": "A Light Client focused Apps portal into the Polkadot/Substrate network",
-  "main": "index.js",
-  "homepage": ".",
   "repository": "https://github.com/polkadot-js/light-ui.git",
-  "contributors": [],
-  "license": "Apache",
-  "dependencies": {
-    "@babel/runtime": "^7.1.5"
+  "description": "User interface optimized for the Substrate light client",
+  "license": "Apache-2.0",
+  "private": true,
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
-  "devDependencies": {
-    "copy-webpack-plugin": "^4.6.0",
-    "empty": "^0.10.1",
-    "source-map-explorer": "^1.6.0"
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "dependencies": {
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "react-scripts": "2.1.1"
   }
 }
