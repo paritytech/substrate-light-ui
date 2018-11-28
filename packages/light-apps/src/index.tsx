@@ -19,4 +19,4 @@ function App (props: Props) {
 ReactDOM.render(
   <App />,
   document.getElementById('root')
-)
+);

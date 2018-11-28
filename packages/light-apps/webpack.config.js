@@ -12,7 +12,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const packages = [
-  'apps'
+  'light-apps'
 ];
 
 const DEFAULT_THEME = process.env.TRAVIS_BRANCH === 'next'
