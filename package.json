@@ -9,9 +9,11 @@
     "packages/*"
   ],
   "scripts": {
-    "check": "tslint && tsc --noEmit",
-    "test": "jest --coverage",
-    "start": "lerna exec --scope @polkadot/light-apps yarn start"
+    "build": "lerna exec yarn build --stream",
+    "check": "tsc --noEmit",
+    "lint": "tslint --project .",
+    "start": "lerna exec --scope @polkadot/light-apps yarn start",
+    "test": "jest --coverage"
   },
   "devDependencies": {
     "@polkadot/dev": "^0.22.2",
