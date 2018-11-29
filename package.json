@@ -15,7 +15,7 @@
     "test": "CI=true lerna run test --parallel"
   },
   "devDependencies": {
-    "@polkadot/dev": "^0.22.2",
+    "@polkadot/dev": "^0.22.5",
     "eslint": "5.6.0"
   }
 }
