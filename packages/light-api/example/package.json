@@ -3,9 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@polkadot/light-api": "../../",
+    "@polkadot/rpc-provider": "^0.32.12",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
-    "react-scripts": "2.1.1"
+    "react-scripts": "2.1.1",
+    "rxjs": "^6.3.3"
   },
   "scripts": {
     "start": "react-scripts start",

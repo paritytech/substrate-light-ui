@@ -4,6 +4,7 @@
   "repository": "https://github.com/polkadot-js/light-ui.git",
   "description": "User interface optimized for the Substrate light client",
   "license": "Apache-2.0",
+  "main": "build/index.js",
   "private": true,
   "scripts": {
     "build": "tsc",
@@ -11,11 +12,13 @@
     "test": "echo skipped"
   },
   "dependencies": {
-    "@polkadot/api": "^0.32.10",
-    "@polkadot/rpc-provider": "^0.32.10",
-    "rxjs": "^6.3.3"
+    "@polkadot/api": "^0.32.10"
   },
   "devDependencies": {
-    "@polkadot/dev": "^0.22.5"
+    "@polkadot/dev": "^0.22.5",
+    "rxjs": "^6.3.3"
+  },
+  "peerDependencies": {
+    "rxjs": "^6.3.3"
   }
 }
