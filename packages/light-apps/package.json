@@ -4,7 +4,6 @@
   "repository": "https://github.com/polkadot-js/light-ui.git",
   "description": "User interface optimized for the Substrate light client",
   "license": "Apache-2.0",
-  "private": true,
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -17,9 +16,12 @@
     "not op_mini all"
   ],
   "dependencies": {
+    "@polkadot/ui-components": "0.1.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
-    "react-scripts": "2.1.1"
+    "react-i18next": "^8.3.8",
+    "react-scripts": "2.1.1",
+    "semantic-ui-react": "^0.83.0"
   },
   "devDependencies": {
     "@polkadot/dev-react": "^0.22.5"

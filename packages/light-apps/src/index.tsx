@@ -5,8 +5,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+
 import * as serviceWorker from './serviceWorker';
+import SideBar from './SideBar/index';
+
+import Test from '@polkadot/ui-components/index';
+
+type Props = {};
+
+function App (props: Props) {
+  return (
+    <div className={'apps--App'}>
+      <SideBar>
+        <Test />
+      </SideBar>
+    </div>
+  );
+}
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

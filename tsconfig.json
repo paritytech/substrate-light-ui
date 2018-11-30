@@ -9,7 +9,8 @@
     "module": "esnext",
     "noEmit": true,
     "paths": {
-      "@polkadot/light-apps/*": ["packages/light-apps/src/*"]
+      "@polkadot/light-apps/*": ["packages/light-apps/src/*"],
+      "@polkadot/ui-components/*": ["packages/ui-components/src/*"]
     },
     "resolveJsonModule": true,
     "skipLibCheck": false
