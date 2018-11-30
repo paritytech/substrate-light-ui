@@ -5,7 +5,7 @@
   "description": "User interface optimized for the Substrate light client",
   "license": "Apache-2.0",
   "scripts": {
-    "start": "react-scripts start",
+    "start": "BROWSER=none react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test"
   },

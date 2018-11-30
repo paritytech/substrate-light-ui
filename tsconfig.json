@@ -1,18 +1,3 @@
 {
-  "extends": "./node_modules/@polkadot/dev/config/tsconfig",
-  "compilerOptions": {
-    "allowJs": false,
-    "baseUrl": ".",
-    "declaration": false,
-    "forceConsistentCasingInFileNames": true,
-    "isolatedModules": true,
-    "module": "esnext",
-    "noEmit": true,
-    "paths": {
-      "@polkadot/light-apps/*": ["packages/light-apps/src/*"],
-      "@polkadot/ui-components/*": ["packages/ui-components/src/*"]
-    },
-    "resolveJsonModule": true,
-    "skipLibCheck": false
-  }
+  "extends": "./node_modules/@polkadot/dev/config/tsconfig"
 }

@@ -9,7 +9,7 @@ import './index.css';
 import * as serviceWorker from './serviceWorker';
 import SideBar from './SideBar/index';
 
-import Test from '@polkadot/ui-components/index';
+import Test from '@polkadot/ui-components';
 
 type Props = {};
 
