@@ -16,6 +16,8 @@
     "not op_mini all"
   ],
   "dependencies": {
+    "@polkadot/rpc-provider": "^0.32.19",
+    "@polkadot/rpc-rx": "^0.32.19",
     "@polkadot/ui-components": "0.1.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",

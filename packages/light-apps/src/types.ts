@@ -23,10 +23,3 @@ export type Routing = {
   default: string,
   routes: Routes
 };
-
-export type BareProps = {
-  className?: string,
-  style?: {
-    [index: string]: any
-  }
-};

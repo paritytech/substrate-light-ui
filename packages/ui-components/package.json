@@ -13,6 +13,8 @@
     "@babel/runtime": "^7.1.5",
     "@polkadot/types": "^0.31.119",
     "@types/i18next": "^11.9.3",
+    "@types/i18next-browser-languagedetector": "^2.0.1",
+    "@types/i18next-xhr-backend": "^1.4.1",
     "@types/react-dropzone": "^4.2.2",
     "@types/react-i18next": "^8.1.0",
     "@types/react-router-dom": "^4.3.0q",
@@ -23,6 +25,10 @@
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "semantic-ui-css": "^2.3.1",
-    "semantic-ui-react": "^0.83.0"
+    "semantic-ui-react": "^0.83.0",
+    "store": "^2.0.12"
+  },
+  "devDependencies": {
+    "@types/store": "^2.0.1"
   }
 }
