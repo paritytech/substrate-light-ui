@@ -3,11 +3,28 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import ApiRx from '@polkadot/api/rx';
+import WsProvider from '@polkadot/rpc-provider/ws';
 
-import { newHead } from './functions';
+import * as functions from './functions';
+
+interface LightFunctions {
+  [index: string]: any; // TODO Better types here
+}
 
 export class LightApi extends ApiRx {
-  newHead () {
-    return newHead(this);
+  public light: LightFunctions;
+
+  constructor (wsProvider?: WsProvider) {
+    super(wsProvider);
+
+    this.light = Object.keys(functions).reduce(
+      (result, key) => {
+        // @ts-ignore
+        result[key] = (...args: any[]) => functions[key](...args, this);
+
+        return result;
+      },
+      {} as LightFunctions
+    );
   }
 }
