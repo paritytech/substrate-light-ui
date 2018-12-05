@@ -15,7 +15,9 @@ type Props = {};
 function App (props: Props) {
   return (
     <div className={'apps--App'}>
-      <SideBar />
+      <SideBar>
+        Hello
+      </SideBar>
     </div>
   );
 }
@@ -24,7 +26,7 @@ const url = !settings.apiUrl
   ? undefined
   : settings.apiUrl;
 
-createApp(<App/>, { url });
+createApp(App, { url });
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

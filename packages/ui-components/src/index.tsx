@@ -35,3 +35,4 @@ export function createApp (App: React.ComponentType<BareProps>, { api, className
 }
 
 export * from './settings';
+export * from './types';

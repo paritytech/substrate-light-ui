@@ -4,13 +4,17 @@
 
 import { Routing, Routes } from '../types';
 
-import accounts from './accounts';
+import accountManagement from './accountManagement';
+import governance from './governance';
+// import transfer from './transfer';
 
-const routes: Routes = [
-  accounts
-];
+const routes: Routes = ([] as Routes).concat(
+                          accountManagement,
+                          governance
+                          // transfer
+                       );
 
 export default ({
-  default: 'accounts',
+  default: 'accountManagement',
   routes
 } as Routing);
