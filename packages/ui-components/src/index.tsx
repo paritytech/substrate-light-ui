@@ -10,8 +10,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { HashRouter } from 'react-router-dom';
 
-import '../styles';
-
 type Props = BareProps & {
   api?: RpcRxInterface,
   provider?: ProviderInterface,
@@ -38,7 +36,6 @@ export function createApp (App: React.ComponentType<BareProps>, { api, className
 
 export * from './settings';
 export * from './types';
-export * from './styles';
 
 import Icon from './Icon';
 import Menu from './Menu';

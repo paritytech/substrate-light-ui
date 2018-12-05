@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { Icon, Menu } from '@polkadot/ui-components';
-import './SideBar.css';
+import { SideBarStyles } from './SideBarStyles';
 
 import React from 'react';
 import routing from '../routing';
@@ -21,7 +21,7 @@ class SideBar extends React.Component<Props> {
     const { children } = this.props;
 
     return (
-      <div className='apps--SideBar'>
+      <SideBarStyles>
         <Menu
           secondary
           vertical
@@ -63,7 +63,7 @@ class SideBar extends React.Component<Props> {
           <Menu.Divider hidden />
           {children}
         </Menu>
-      </div>
+      </SideBarStyles>
     );
   }
 }
