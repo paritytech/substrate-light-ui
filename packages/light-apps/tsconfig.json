@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig",
   "compilerOptions": {
-    "allowJs": true,
+    "allowJs": false,
     "skipLibCheck": false,
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
@@ -9,7 +9,5 @@
     "isolatedModules": true,
     "noEmit": true
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }
