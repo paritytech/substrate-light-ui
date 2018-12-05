@@ -23,3 +23,7 @@ function createApp(App, { api, className, provider, style, url } = {}, rootId = 
 }
 exports.createApp = createApp;
 __export(require("./settings"));
+const Icon_1 = __importDefault(require("./Icon"));
+exports.Icon = Icon_1.default;
+const Menu_1 = __importDefault(require("./Menu"));
+exports.Menu = Menu_1.default;

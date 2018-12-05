@@ -36,3 +36,11 @@ export function createApp (App: React.ComponentType<BareProps>, { api, className
 
 export * from './settings';
 export * from './types';
+
+import Icon from './Icon';
+import Menu from './Menu';
+
+export {
+  Icon,
+  Menu
+};
