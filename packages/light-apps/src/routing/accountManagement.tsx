@@ -15,6 +15,6 @@ export default ([
     icon: 'users',
     isApiGated: true,
     isHidden: false,
-    name: 'accountManagement'
+    name: 'Identity'
   }
 ] as Routes);
