@@ -2,6 +2,7 @@
   "extends": "../../tsconfig",
   "compilerOptions": {
     "allowJs": false,
+<<<<<<< HEAD
     "declaration": false,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
@@ -9,6 +10,14 @@
     "noEmit": true,
     "resolveJsonModule": true,
     "skipLibCheck": false
+=======
+    "skipLibCheck": false,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true
+>>>>>>> b95b9688898bdb6e60ebed872b27b0712e8c8449
   },
   "include": ["src"]
 }
