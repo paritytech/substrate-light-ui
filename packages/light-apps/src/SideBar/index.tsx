@@ -2,22 +2,23 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Icon, I18nProps, Menu } from '@polkadot/ui-components';
+import { Icon, Menu } from '@polkadot/ui-components';
+import './SideBar.css';
 
 import React from 'react';
 import routing from '../routing';
-import translate from '../translate';
+// import translate from '../translate';
 
 import Item from './Item';
 import SUBSTRATE_LOGO from '../static/parity-substrate-white.svg';
 
-type Props = I18nProps & {
+type Props = {
   children?: React.ReactNode
 };
 
 class SideBar extends React.Component<Props> {
   render () {
-    const { children, t } = this.props;
+    const { children } = this.props;
 
     return (
       <div className='apps--SideBar'>
@@ -40,7 +41,6 @@ class SideBar extends React.Component<Props> {
                 ? (
                   <Item
                     key={route.name}
-                    t={t}
                     route={route}
                   />
                 )
@@ -69,4 +69,4 @@ class SideBar extends React.Component<Props> {
 }
 
 // @ts-ignore
-export default translate(SideBar);
+export default SideBar;
