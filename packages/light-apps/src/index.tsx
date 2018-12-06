@@ -16,7 +16,6 @@ function App (props: Props) {
   return (
     <div className={'apps--App'}>
       <SideBar>
-
       </SideBar>
     </div>
   );

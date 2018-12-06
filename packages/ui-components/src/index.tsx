@@ -10,6 +10,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { HashRouter } from 'react-router-dom';
 
+import { injectGlobal, ThemeProvider, theme } from './theme';
+
 type Props = BareProps & {
   api?: RpcRxInterface,
   provider?: ProviderInterface,
@@ -25,10 +27,12 @@ export function createApp (App: React.ComponentType<BareProps>, { api, className
 
   ReactDOM.render(
     <HashRouter>
-      <App
-        className={className}
-        style={style}
-      />
+      <ThemeProvider theme={theme}>
+        <App
+          className={className}
+          style={style}
+        />
+      </ThemeProvider>
     </HashRouter>,
     rootElement
   );
