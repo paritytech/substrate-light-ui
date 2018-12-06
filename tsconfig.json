@@ -1,7 +1,4 @@
 {
-<<<<<<< HEAD
-  "extends": "./node_modules/@polkadot/dev/config/tsconfig"
-=======
   "extends": "./node_modules/@polkadot/dev/config/tsconfig",
   "compilerOptions": {
     "baseUrl": ".",
@@ -10,5 +7,4 @@
       "@polkadot/light-apps/*": ["packages/light-apps/src/*"]
     }
   }
->>>>>>> b95b9688898bdb6e60ebed872b27b0712e8c8449
 }
