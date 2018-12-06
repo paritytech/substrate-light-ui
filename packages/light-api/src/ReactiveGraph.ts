@@ -32,7 +32,7 @@ export class ReactiveGraph extends Graph {
     // The Observable inside node w is done by merging the Observables incoming
     // into w, where each Observable is piped into the pipes inside their edge
     // with w.
-    const wObservable = merge(...edges.map(edge => this.node(edge.v).pipe(...this.edge(v, w))));
+    const wObservable = merge(...edges.map(edge => this.node(edge.v).pipe(...this.edge(edge))));
 
     this.setNode(w, wObservable);
 
