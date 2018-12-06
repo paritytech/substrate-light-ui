@@ -4,6 +4,7 @@
 
 import ApiRx from '@polkadot/api/rx';
 import WsProvider from '@polkadot/rpc-provider/ws';
+import { of } from 'rxjs';
 import { mergeAll, switchMap } from 'rxjs/operators';
 
 import { ReactiveGraph } from './ReactiveGraph';
@@ -13,6 +14,13 @@ interface LightFunctions {
   [index: string]: any; // TODO Better types here
 }
 
+// Some important nodes in the Graph
+export const NODES = {
+  EVENTS: 'query.system.events',
+  NEW_HEAD: 'rpc.chain.subscribeNewHead',
+  STARTUP: 'startup'
+};
+
 export class LightApi extends ApiRx {
   public graph: ReactiveGraph = new ReactiveGraph();
   public light: LightFunctions;
@@ -20,9 +28,10 @@ export class LightApi extends ApiRx {
   constructor (wsProvider?: WsProvider) {
     super(wsProvider);
 
-    this.graph.setNode('rpc.chain.subscribeNewHead', this.rpc.chain.subscribeNewHead());
-    this.graph.setNode('query.system.events');
-    this.graph.setReactiveEdge('rpc.chain.subscribeNewHead', 'query.system.events', [
+    this.graph.setNode(NODES.STARTUP, of(1));
+    this.graph.setNode(NODES.NEW_HEAD, this.rpc.chain.subscribeNewHead());
+    this.graph.setNode(NODES.EVENTS);
+    this.graph.setReactiveEdge(NODES.NEW_HEAD, NODES.EVENTS, [
       switchMap(() => this.query.system.events()),
       // Each "event" in `query.system.events` is actually a Vector of
       // EventRecord, we mergeAll here as to have an Observable<EventRecord>.

@@ -5,6 +5,7 @@
 import { EventRecord } from '@polkadot/types';
 import { filter, mergeAll } from 'rxjs/operators';
 
+import { NODES } from '../LightApi';
 import { ReactiveGraph } from '../ReactiveGraph';
 import { ANY_VALUE } from '../types';
 
@@ -17,9 +18,6 @@ export function filterEvent (section: string, method: string, args: any[]) {
   };
 }
 
-/**
- * FIXME will this be used?
- */
 export function addEventNode (section: string, method: string, args: any[], graph: ReactiveGraph) {
   const eventNode = `events.${section}.${method}(${args
     .map(value => (value === ANY_VALUE ? 'null' : value))
@@ -34,7 +32,7 @@ export function addEventNode (section: string, method: string, args: any[], grap
 
   // Add an edge between the `rpc.chain.subscribeNewHead` node and the new
   // event node.
-  graph.setReactiveEdge('query.system.events', eventNode, [
+  graph.setReactiveEdge(NODES.EVENTS, eventNode, [
     // Each "event" in `query.system.events` is actually a Vector of
     // EventRecord, we mergeAll here as to have an Observable<EventRecord>.
     mergeAll(),

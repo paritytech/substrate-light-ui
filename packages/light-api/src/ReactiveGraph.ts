@@ -24,7 +24,7 @@ export class ReactiveGraph extends Graph {
         `Node ${edge.v} is not an Observable, got ${JSON.stringify(this.node(edge.v))}.`
       );
       assert(
-        Array.isArray(this.edge(edge.v, edge.w)),
+        Array.isArray(this.edge(edge.v, edge.w)), // FIXME do a more precise check
         `Edge ${edge.name} is not a pipes array, got ${JSON.stringify(this.edge(edge.v, edge.w))}.`
       );
     });
