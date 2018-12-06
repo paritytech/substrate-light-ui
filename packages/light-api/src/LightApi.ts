@@ -4,7 +4,7 @@
 
 import ApiRx from '@polkadot/api/rx';
 import WsProvider from '@polkadot/rpc-provider/ws';
-import { switchMap } from 'rxjs/operators';
+import { mergeAll, switchMap } from 'rxjs/operators';
 
 import { ReactiveGraph } from './ReactiveGraph';
 import * as balances from './srml/balances';
@@ -23,7 +23,10 @@ export class LightApi extends ApiRx {
     this.graph.setNode('rpc.chain.subscribeNewHead', this.rpc.chain.subscribeNewHead());
     this.graph.setNode('query.system.events');
     this.graph.setReactiveEdge('rpc.chain.subscribeNewHead', 'query.system.events', [
-      switchMap(() => this.query.system.events())
+      switchMap(() => this.query.system.events()),
+      // Each "event" in `query.system.events` is actually a Vector of
+      // EventRecord, we mergeAll here as to have an Observable<EventRecord>.
+      mergeAll()
     ]);
 
     this.light = Object.keys(balances).reduce(
