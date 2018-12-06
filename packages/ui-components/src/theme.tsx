@@ -6,9 +6,7 @@ const {
   injectGlobal,
   keyframes,
   ThemeProvider
-} = styledComponents as styledComponents.ThemedStyledComponentsModule<
-  IThemeInterface
->;
+} = styledComponents as styledComponents.ThemedStyledComponentsModule<IThemeInterface>;
 
 export interface IThemeInterface {
   primaryColor: string;

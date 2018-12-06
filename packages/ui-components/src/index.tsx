@@ -18,6 +18,109 @@ type Props = BareProps & {
   url?: string
 };
 
+injectGlobal`
+  html {
+    height: 100%;
+  }
+
+  body {
+    height: 100%;
+    margin: 0;
+  }
+
+  #root {
+    color: #4e4e4e;
+    font-family: sans-serif;
+    height: 100%;
+  }
+
+  h1, h2, h3, h4, h5 {
+    color: rgba(0, 0, 0, .6);
+    font-weight: 100;
+  }
+
+  h1 {
+    text-transform: lowercase;
+  }
+
+  h3, h4, h5 {
+    margin-bottom: 0.25rem;
+  }
+
+  /*
+  a:hover {
+    color: #D75EA1;
+  }
+  */
+
+  main {
+    padding: 1em 2em;
+    min-height: 100vh;
+  }
+
+  main > section {
+    margin-bottom: 2em;
+  }
+
+  article {
+    background: white;
+    border: 1px solid #f2f2f2;
+    border-left-width: 0.25rem;
+    border-radius: 0.25rem;
+    /* border-top-width: 1px; */
+    margin: 0.5rem;
+    padding: 1rem 1.5rem;
+
+    &.error {
+      background: #fff6f6;
+      border-color: #e0b4b4;
+      color: #9f3a38;
+    }
+
+    &.warning {
+      background: #ffffe0;
+      border-color: #eeeeae;
+    }
+  }
+
+  header,
+  summary {
+    margin-bottom: 2em;
+    text-align: center;
+  }
+
+  /* header {
+    background: #f5f5f5;
+    margin: -1em -2em 2em;
+    padding: 1em 2em 0;
+  } */
+
+  header+header,
+  header+summary,
+  summary+header {
+    margin-top: -1em;
+  }
+
+  summary {
+    align-items: stretch;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  summary article {
+    color: rgba(0, 0, 0, 0.6);
+    flex: 0 1 auto;
+    text-align: left;
+  }
+
+  summary > section {
+    display: flex;
+    flex: 0 1 auto;
+    text-align: left;
+  }
+`;
+
 export function createApp (App: React.ComponentType<BareProps>, { api, className, provider, style, url }: Props = {}, rootId: string = 'root'): void {
   const rootElement = document.getElementById(rootId);
 
@@ -46,5 +149,6 @@ import Menu from './Menu';
 
 export {
   Icon,
-  Menu
+  Menu,
+  injectGlobal
 };
