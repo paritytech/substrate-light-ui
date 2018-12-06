@@ -4,23 +4,36 @@
 
 import ApiRx from '@polkadot/api/rx';
 import WsProvider from '@polkadot/rpc-provider/ws';
-import { DepGraph } from 'dependency-graph';
 import { switchMap } from 'rxjs/operators';
 
+import { ReactiveGraph } from './ReactiveGraph';
 import * as balances from './srml/balances';
-import { LightDepGraph } from './types';
+
+interface LightFunctions {
+  [index: string]: any; // TODO Better types here
+}
 
 export class LightApi extends ApiRx {
-  private depGraph: LightDepGraph;
-  // public light: LightFunctions;
+  public graph: ReactiveGraph = new ReactiveGraph();
+  public light: LightFunctions;
 
   constructor (wsProvider?: WsProvider) {
     super(wsProvider);
 
-    this.depGraph = new DepGraph();
+    this.graph.setNode('rpc.chain.subscribeNewHead', this.rpc.chain.subscribeNewHead());
+    this.graph.setNode('query.system.events');
+    this.graph.setReactiveEdge('rpc.chain.subscribeNewHead', 'query.system.events', [
+      switchMap(() => this.query.system.events())
+    ]);
 
-    this.depGraph.addNode('rpc.chain.subscribeNewHead', []);
-    this.depGraph.addNode('query.system.events', [switchMap(() => this.query.system.events())]);
-    this.depGraph.addDependency('rpc.chain.subscribeNewHead', 'query.system.events');
+    this.light = Object.keys(balances).reduce(
+      (result, key) => {
+        // @ts-ignore
+        result[key] = (...args: any[]) => balances[key](...args, this.graph, this);
+
+        return result;
+      },
+      {} as LightFunctions
+    );
   }
 }

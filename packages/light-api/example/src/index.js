@@ -12,12 +12,12 @@ ReactDOM.render(<App />, document.getElementById('root'));
 
 const lightApi = new LightApi(new WsProvider('ws://localhost:9944')).isReady;
 
-lightApi
-  .pipe(switchMap(api => api.light.newHead()))
-  .subscribe(header => console.log('Now at ', header.get('number').toJSON()));
+// lightApi
+//   .pipe(switchMap(api => api.light.newHead()))
+//   .subscribe(header => console.log('Now at ', header.get('number').toJSON()));
 
 lightApi
-  .pipe(switchMap(api => api.light.balanceOf('15jd4tmKwLf1mYWzmZxHeCpT38B2mx1GH6aDniXQxBjskkws')))
+  .pipe(switchMap(api => api.light.freeBalance('15jd4tmKwLf1mYWzmZxHeCpT38B2mx1GH6aDniXQxBjskkws')))
   .subscribe(b => console.log('Balance of Alice', b.toString()));
 
 // If you want your app to work offline and load faster, you can change

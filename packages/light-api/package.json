@@ -12,8 +12,8 @@
     "test": "echo skipped"
   },
   "dependencies": {
-    "@polkadot/api": "^0.32.10",
-    "dependency-graph": "^0.7.2"
+    "@dagrejs/graphlib": "^2.1.4",
+    "@polkadot/api": "^0.32.10"
   },
   "devDependencies": {
     "@polkadot/dev": "^0.22.5",
