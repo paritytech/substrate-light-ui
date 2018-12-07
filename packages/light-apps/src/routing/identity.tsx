@@ -4,13 +4,13 @@
 
 import { Routes } from '../types';
 
-import { AccountManagement } from '@polkadot/account-management';
+import { Identity } from '@polkadot/identity-app';
 
 export default ([
   {
-    Component: AccountManagement,
+    Component: Identity,
     i18n: {
-      defaultValue: 'AccountManagement'
+      defaultValue: 'Identity'
     },
     icon: 'users',
     isApiGated: true,

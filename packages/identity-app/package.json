@@ -1,5 +1,5 @@
 {
-  "name": "@polkadot/account-management",
+  "name": "@polkadot/identity-app",
   "version": "0.1.0",
   "repository": "https://github.com/polkadot-js/light-ui.git",
   "description": "Account management for Substrate client",

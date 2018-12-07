@@ -14,7 +14,7 @@ type State = {
   items: Array<string>
 };
 
-export class AccountManagement extends React.PureComponent<Props, State> {
+export class Identity extends React.PureComponent<Props, State> {
   state: State;
 
   constructor (props: Props) {
@@ -29,7 +29,7 @@ export class AccountManagement extends React.PureComponent<Props, State> {
   render () {
     return (
       <main className='accounts--App'>
-        account management
+        Identity App
       </main>
     );
   }

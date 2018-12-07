@@ -4,13 +4,13 @@
 
 import { Routing, Routes } from '../types';
 
-import accountManagement from './accountManagement';
+import identity from './identity';
 
 const routes: Routes = ([] as Routes).concat(
-                          accountManagement
+                          identity
                        );
 
 export default ({
-  default: 'accountManagement',
+  default: 'identity',
   routes
 } as Routing);
