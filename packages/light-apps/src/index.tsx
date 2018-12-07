@@ -115,6 +115,27 @@ createGlobalStyle`
     flex: 0 1 auto;
     text-align: left;
   }
+
+  .apps--App {
+    align-items: stretch;
+    box-sizing: border-box;
+    display: flex;
+    min-height: 100vh;
+
+    .apps--Content,
+    .apps--SideBar {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .apps--Content {
+      background: #fafafa;
+      flex-grow: 1;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+  }
 `;
 
 // If you want your app to work offline and load faster, you can change
