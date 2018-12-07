@@ -12,7 +12,7 @@ type Props = {
   route: Route
 };
 
-class Item extends React.PureComponent<Props> {
+export class Item extends React.PureComponent<Props> {
   render () {
     const { route: { icon, name } } = this.props;
 
@@ -29,5 +29,3 @@ class Item extends React.PureComponent<Props> {
     );
   }
 }
-
-export default Item;

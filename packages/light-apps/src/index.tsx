@@ -16,8 +16,7 @@ type Props = {};
 function App (props: Props) {
   return (
     <div className={'apps--App'}>
-      <SideBar>
-      </SideBar>
+      <SideBar />
     </div>
   );
 }

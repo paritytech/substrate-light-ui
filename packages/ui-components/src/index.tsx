@@ -43,9 +43,12 @@ export * from './types';
 
 import Icon from './Icon';
 import Menu from './Menu';
+import Sidebar from './Sidebar';
+import Segment from './Segment';
 
 export {
   Icon,
   Menu,
-  injectGlobal
+  Segment,
+  Sidebar
 };
