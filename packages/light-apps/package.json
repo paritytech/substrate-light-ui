@@ -17,6 +17,7 @@
   ],
   "dependencies": {
     "@polkadot/identity-app": "0.1.0",
+    "@polkadot/transfer-app": "0.1.0",
     "@polkadot/ui-components": "0.1.0",
     "@polkadot/rpc-provider": "^0.32.19",
     "@polkadot/rpc-rx": "^0.32.19",

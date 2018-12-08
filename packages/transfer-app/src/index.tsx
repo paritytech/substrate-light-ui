@@ -14,7 +14,7 @@ type State = {
   items: Array<string>
 };
 
-export class Identity extends React.PureComponent<Props, State> {
+export class Transfer extends React.PureComponent<Props, State> {
   state: State;
 
   constructor (props: Props) {
@@ -28,8 +28,8 @@ export class Identity extends React.PureComponent<Props, State> {
 
   render () {
     return (
-      <main className='identity--App'>
-        Identity App
+      <main className='transfer--App'>
+        Transfer App
       </main>
     );
   }

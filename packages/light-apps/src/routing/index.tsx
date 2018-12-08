@@ -5,9 +5,11 @@
 import { Routing, Routes } from '../types';
 
 import identity from './identity';
+import transfer from './transfer';
 
 const routes: Routes = ([] as Routes).concat(
-                          identity
+                          identity,
+                          transfer
                        );
 
 export default ({
