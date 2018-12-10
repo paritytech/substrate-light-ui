@@ -9,15 +9,14 @@ import './Content.css';
 
 import React from 'react';
 import { withRouter } from 'react-router';
-// import { withApi, withMulti } from '@polkadot/ui-react-rx/with/index';
-// import { ActionStatus } from '@polkadot/ui-app/Status/types';
-// import { Status } from '@polkadot/ui-app/index';
+import { BareProps } from '@polkadot/ui-components';
 
+import { withMulti } from '../utils/withMulti';
 import routing from '../routing';
 // import translate from '../translate';
 import NotFound from './NotFound';
 
-type Props = {
+type Props = BareProps & {
   location: Location
 };
 
@@ -47,4 +46,7 @@ class Content extends React.Component<Props> {
   }
 }
 
-export default withRouter(Content);
+export default withMulti(
+  Content,
+  withRouter
+);

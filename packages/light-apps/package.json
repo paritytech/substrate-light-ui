@@ -17,10 +17,10 @@
   ],
   "dependencies": {
     "@polkadot/identity-app": "0.1.0",
-    "@polkadot/transfer-app": "0.1.0",
-    "@polkadot/ui-components": "0.1.0",
     "@polkadot/rpc-provider": "^0.32.19",
     "@polkadot/rpc-rx": "^0.32.19",
+    "@polkadot/transfer-app": "0.1.0",
+    "@polkadot/ui-components": "0.1.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-i18next": "^8.3.8",

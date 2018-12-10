@@ -31,4 +31,5 @@ class Item extends React.PureComponent<Props> {
   }
 }
 
+// @ts-ignore
 export default withRouter(Item);
