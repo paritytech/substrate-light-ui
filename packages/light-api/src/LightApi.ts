@@ -28,15 +28,19 @@ export class LightApi extends ApiRx {
   constructor (wsProvider?: WsProvider) {
     super(wsProvider);
 
+    // Add basic source nodes
     this.graph.setNode(NODES.STARTUP, of(1));
     this.graph.setNode(NODES.NEW_HEAD, this.rpc.chain.subscribeNewHead());
+
+    // Add events node
     this.graph.setNode(NODES.EVENTS);
-    this.graph.setReactiveEdge(NODES.NEW_HEAD, NODES.EVENTS, [
+    this.graph.setEdge(NODES.NEW_HEAD, NODES.EVENTS, [
       switchMap(() => this.query.system.events()),
       // Each "event" in `query.system.events` is actually a Vector of
       // EventRecord, we mergeAll here as to have an Observable<EventRecord>.
       mergeAll()
     ]);
+    this.graph.calculateNode(NODES.EVENTS);
 
     this.light = Object.keys(balances).reduce(
       (result, key) => {

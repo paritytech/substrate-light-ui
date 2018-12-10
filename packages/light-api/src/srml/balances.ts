@@ -16,7 +16,8 @@ const SECTION = 'balances';
 export function transferFee (graph: ReactiveGraph, api: ApiRx) {
   const myNode = `query.${SECTION}.transferFee()`;
   graph.setNode(myNode);
-  graph.setReactiveEdge(NODES.NEW_HEAD, myNode, [switchMap(() => api.query.balances.transferFee())]);
+  graph.setEdge(NODES.NEW_HEAD, myNode, [switchMap(() => api.query.balances.transferFee())]);
+  graph.calculateNode(myNode);
   return graph.node(myNode);
 }
 
@@ -25,20 +26,24 @@ export function freeBalance (accountId: AccountId, graph: ReactiveGraph, api: Ap
   // correct account.
   const eventNode1 = addEventNode(SECTION, 'Transfer', [accountId, ANY_VALUE, ANY_VALUE, ANY_VALUE], graph);
   const eventNode2 = addEventNode(SECTION, 'Transfer', [ANY_VALUE, accountId, ANY_VALUE, ANY_VALUE], graph);
-  graph.setReactiveEdge(NODES.EVENTS, eventNode1);
-  graph.setReactiveEdge(NODES.EVENTS, eventNode2);
+  graph.setEdge(NODES.EVENTS, eventNode1);
+  graph.calculateNode(eventNode1);
+  graph.setEdge(NODES.EVENTS, eventNode2);
+  graph.calculateNode(eventNode2);
 
   // Merge the above 2 event nodes, also with the startup node.
   const mergedNode = `merge(startup,${eventNode1},${eventNode2})`;
   graph.setNode(mergedNode);
-  graph.setReactiveEdge(NODES.STARTUP, mergedNode);
-  graph.setReactiveEdge(eventNode1, mergedNode);
-  graph.setReactiveEdge(eventNode2, mergedNode);
+  graph.setEdge(NODES.STARTUP, mergedNode);
+  graph.setEdge(eventNode1, mergedNode);
+  graph.setEdge(eventNode2, mergedNode);
+  graph.calculateNode(mergedNode);
 
   // Create a freeBalanceNode from the mergedNode, with a pipe.
   const myNode = `query.${SECTION}.freeBalance(${accountId})`;
   graph.setNode(myNode);
-  graph.setReactiveEdge(NODES.EVENTS, myNode, [switchMap(() => api.query.balances.freeBalance(accountId))]);
+  graph.setEdge(NODES.EVENTS, myNode, [switchMap(() => api.query.balances.freeBalance(accountId))]);
+  graph.calculateNode(myNode);
 
   return graph.node(myNode);
 }

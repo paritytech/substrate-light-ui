@@ -7,14 +7,12 @@ import { assert } from '@polkadot/util';
 import { merge } from 'rxjs';
 
 export class ReactiveGraph extends Graph {
-  setReactiveEdge (v: string, w: string, label: any = [], name?: string): ReactiveGraph {
-    this.setEdge(v, w, label, name);
-
+  calculateNode (name: string) {
     // Get all incoming edges into w
-    const edges = this.inEdges(w);
+    const edges = this.inEdges(name);
 
     if (!edges) {
-      throw new Error(`Incoming edges into ${w} are empty.`);
+      throw new Error(`Incoming edges into ${name} are empty.`);
     }
 
     // Perform some basic checks
@@ -24,8 +22,8 @@ export class ReactiveGraph extends Graph {
         `Node ${edge.v} is not an Observable, got ${JSON.stringify(this.node(edge.v))}.`
       );
       assert(
-        Array.isArray(this.edge(edge.v, edge.w)), // FIXME do a more precise check
-        `Edge ${edge.name} is not a pipes array, got ${JSON.stringify(this.edge(edge.v, edge.w))}.`
+        Array.isArray(this.edge(edge.v, name)), // FIXME do a more precise check
+        `Edge ${edge.name} is not a pipes array, got ${JSON.stringify(this.edge(edge.v, name))}.`
       );
     });
 
@@ -34,8 +32,6 @@ export class ReactiveGraph extends Graph {
     // with w.
     const wObservable = merge(...edges.map(edge => this.node(edge.v).pipe(...this.edge(edge))));
 
-    this.setNode(w, wObservable);
-
-    return this;
+    this.setNode(name, wObservable);
   }
 }

@@ -13,6 +13,7 @@ const SECTION = 'timestamp';
 export function blockPeriod (graph: ReactiveGraph, api: ApiRx) {
   const myNode = `query.${SECTION}.blockPeriod()`;
   graph.setNode(myNode);
-  graph.setReactiveEdge(NODES.NEW_HEAD, myNode, [switchMap(() => api.query.timestamp.blockPeriod())]);
+  graph.setEdge(NODES.NEW_HEAD, myNode, [switchMap(() => api.query.timestamp.blockPeriod())]);
+  graph.calculateNode(myNode);
   return graph.node(myNode);
 }
