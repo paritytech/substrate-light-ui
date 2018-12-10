@@ -7,12 +7,13 @@ import { Route } from '../types';
 
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { withRouter } from 'react-router';
 
 type Props = {
   route: Route
 };
 
-export class Item extends React.PureComponent<Props> {
+class Item extends React.PureComponent<Props> {
   render () {
     const { route: { icon, name } } = this.props;
 
@@ -29,3 +30,5 @@ export class Item extends React.PureComponent<Props> {
     );
   }
 }
+
+export default withRouter(Item);

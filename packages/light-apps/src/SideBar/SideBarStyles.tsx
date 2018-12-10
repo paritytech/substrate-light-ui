@@ -9,6 +9,12 @@ export const SideBarStyles = styled.div`
   flex-shrink: 0;
   position: relative;
 
+  .apps--SideBar-github {
+    position: absolute;
+    bottom: 1.5em;
+    left: 1.5em;
+  }
+
   .apps--SideBar-logo {
     width: 100%;
     margin: .5rem 1.5rem 1.5rem .75rem;

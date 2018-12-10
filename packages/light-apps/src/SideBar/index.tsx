@@ -6,7 +6,7 @@ import React from 'react';
 import { Icon, Menu, Sidebar } from '@polkadot/ui-components';
 import { NavLink } from 'react-router-dom';
 
-import { Item } from './Item';
+import Item from './Item';
 import { SideBarStyles } from './SideBarStyles';
 import substrateLogo from '../static/parity-substrate.svg';
 import routing from '../routing';

@@ -6,17 +6,19 @@ import React from 'react';
 import './index.css';
 
 import { createGlobalStyle } from 'styled-components';
-import { createApp, settings } from '@polkadot/ui-components';
+import { BareProps, createApp, settings } from '@polkadot/ui-components';
 
 import * as serviceWorker from './serviceWorker';
 import SideBar from './SideBar/index';
+import Content from './Content';
 
-type Props = {};
+type Props = BareProps & {};
 
 function App (props: Props) {
   return (
     <div className={'apps--App'}>
       <SideBar />
+      <Content />
     </div>
   );
 }

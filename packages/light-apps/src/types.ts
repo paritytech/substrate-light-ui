@@ -10,7 +10,7 @@ export type RouteProps = BareProps & {
 };
 
 export type Route = {
-  Component: React.ComponentType<any>, // TODO change to RouteProps
+  Component: React.ComponentType<RouteProps>,
   i18n: any, // I18Next$Translate$Config,
   icon: SemanticICONS,
   isApiGated: boolean,
