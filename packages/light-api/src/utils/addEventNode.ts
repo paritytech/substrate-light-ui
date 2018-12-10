@@ -19,26 +19,25 @@ export function filterEvent (section: string, method: string, args: any[]) {
 }
 
 export function addEventNode (section: string, method: string, args: any[], graph: ReactiveGraph) {
-  const eventNode = `events.${section}.${method}(${args
-    .map(value => (value === ANY_VALUE ? 'null' : value))
-    .join(',')})`;
+  const myNode = `events.${section}.${method}(${args.map(value => (value === ANY_VALUE ? 'null' : value)).join(',')})`;
 
   // We don't do anything if this eventNode already exists.
-  if (graph.node(eventNode)) {
-    return eventNode;
+  if (graph.node(myNode)) {
+    return myNode;
   }
 
-  graph.setNode(eventNode);
+  graph.setNode(myNode);
 
   // Add an edge between the `rpc.chain.subscribeNewHead` node and the new
   // event node.
-  graph.setReactiveEdge(NODES.EVENTS, eventNode, [
+  graph.setEdge(NODES.EVENTS, myNode, [
     // Each "event" in `query.system.events` is actually a Vector of
     // EventRecord, we mergeAll here as to have an Observable<EventRecord>.
     mergeAll(),
     // We filter out the relevant events we're listening to.
     filter(filterEvent(section, method, args))
   ]);
+  graph.calculateNode(myNode);
 
-  return eventNode;
+  return myNode;
 }

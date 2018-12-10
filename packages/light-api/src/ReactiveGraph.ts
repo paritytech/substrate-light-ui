@@ -23,7 +23,7 @@ export class ReactiveGraph extends Graph {
       );
       assert(
         Array.isArray(this.edge(edge.v, name)), // FIXME do a more precise check
-        `Edge ${edge.name} is not a pipes array, got ${JSON.stringify(this.edge(edge.v, name))}.`
+        `Edge ${name} is not a pipes array, got ${JSON.stringify(this.edge(edge.v, name))}.`
       );
     });
 

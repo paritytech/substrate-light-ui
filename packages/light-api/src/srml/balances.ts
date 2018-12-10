@@ -34,9 +34,9 @@ export function freeBalance (accountId: AccountId, graph: ReactiveGraph, api: Ap
   // Merge the above 2 event nodes, also with the startup node.
   const mergedNode = `merge(startup,${eventNode1},${eventNode2})`;
   graph.setNode(mergedNode);
-  graph.setEdge(NODES.STARTUP, mergedNode);
-  graph.setEdge(eventNode1, mergedNode);
-  graph.setEdge(eventNode2, mergedNode);
+  graph.setEdge(NODES.STARTUP, mergedNode, []);
+  graph.setEdge(eventNode1, mergedNode, []);
+  graph.setEdge(eventNode2, mergedNode, []);
   graph.calculateNode(mergedNode);
 
   // Create a freeBalanceNode from the mergedNode, with a pipe.
