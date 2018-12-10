@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import { Icon, Menu, Sidebar } from '@polkadot/ui-components';
+import { Icon, Menu, Segment, Sidebar } from '@polkadot/ui-components';
 import { NavLink } from 'react-router-dom';
 
 import Item from './Item';
@@ -11,68 +11,96 @@ import { SideBarStyles } from './SideBarStyles';
 import substrateLogo from '../static/parity-substrate.svg';
 import routing from '../routing';
 
-type Props = {};
+type Props = {
+  children?: React.ReactNode
+};
+
+type State = {
+  visible: boolean
+};
 
 const LOGO = substrateLogo;
 
-class SideBar extends React.PureComponent<Props> {
+class SideBar extends React.Component<Props, State> {
+  state: State;
+
+  constructor (props: Props) {
+    super(props);
+
+    this.state = {
+      visible: true
+    };
+  }
+
+  handleHideClick = () => this.setState({ visible: false });
+  handleShowClick = () => this.setState({ visible: true });
+
   render () {
+    const { visible } = this.state;
     const { children } = this.props;
 
     return (
       <SideBarStyles>
-        <Sidebar
-          as={Menu}
-          icon='labeled'
-          visible
-          vertical
-          width='wide'
-        >
-          <NavLink
-            className='apps--SideBar-Item-NavLink'
-            to={'/'}
+        <Sidebar.Pushable as={Segment}>
+          <Sidebar
+            as={Menu}
+            animation='overlay'
+            icon='labeled'
+            visible={visible}
+            vertical
+            width='wide'
           >
-            <img
-              alt='substrate'
-              className='apps--SideBar-logo'
-              src={LOGO}
-            />
-          </NavLink>
+              <NavLink
+                className='apps--SideBar-Item-NavLink'
+                to={'/'}
+              >
+                <img
+                  alt='substrate'
+                  className='apps--SideBar-logo'
+                  src={LOGO}
+                />
+              </NavLink>
 
-          <Menu.Divider hidden />
+              <Menu.Divider hidden />
 
-          {
-            routing.routes
-              .filter((route) =>
-                !route || !route.isHidden
-              )
-              .map((route, index) => (
-                route
-                  ? (
-                    <Item
-                      key={route.name}
-                      route={route}
-                    />
+              {
+                routing.routes
+                  .filter((route) =>
+                    !route || !route.isHidden
                   )
-                  : (
-                    <Menu.Divider
-                      hidden
-                      key={index}
-                    />
-                  )
-              ))
-          }
-          <Menu.Divider hidden />
-          <Menu.Item className='apps--SideBar-Item'>
-            <a
-              className='apps--SideBar-Item-NavLink'
-              href='https://github.com/polkadot-js/light-ui'>
-              <Icon name='github' /> GitHub
-            </a>
-          </Menu.Item>
-          <Menu.Divider hidden />
-          {children}
-        </Sidebar>
+                  .map((route, index) => (
+                    route
+                      ? (
+                        <Item
+                          key={route.name}
+                          route={route}
+                        />
+                      )
+                      : (
+                        <Menu.Divider
+                          hidden
+                          key={index}
+                        />
+                      )
+                  ))
+              }
+              <Menu.Divider hidden />
+              <Menu.Item className='apps--SideBar-Item'>
+                <a
+                  className='apps--SideBar-Item-NavLink'
+                  href='https://github.com/polkadot-js/light-ui'>
+                  <Icon name='github' /> GitHub
+                </a>
+              </Menu.Item>
+              <Menu.Divider hidden />
+            </Sidebar>
+
+            <Sidebar.Pusher>
+              <Segment basic>
+                {children}
+              </Segment>
+            </Sidebar.Pusher>
+          </Sidebar.Pushable>
       </SideBarStyles>
     );
   }

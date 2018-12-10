@@ -10,7 +10,7 @@ import { BareProps, createApp, settings } from '@polkadot/ui-components';
 
 import * as serviceWorker from './serviceWorker';
 import SideBar from './SideBar/index';
-import Content from './Content';
+import Content from './Content/index';
 
 type Props = BareProps & {};
 
