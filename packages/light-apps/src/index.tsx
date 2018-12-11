@@ -8,7 +8,7 @@ import './index.css';
 import { BareProps, createApp, settings } from '@polkadot/ui-components';
 
 import * as serviceWorker from './serviceWorker';
-import SideBar from './SideBar/index';
+import SideBar from './Navigation/SideBar';
 import { GlobalStyle } from './globalStyle';
 
 type Props = BareProps & {};

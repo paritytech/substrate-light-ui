@@ -4,12 +4,12 @@
 
 import React from 'react';
 import { Icon, Menu, Segment, Sidebar } from '@polkadot/ui-components';
-import { NavLink } from 'react-router-dom';
 
 import Item from './Item';
-import { SideBarStyles } from './SideBarStyles';
+import { TopNav } from './TopNav';
+import { NavStyles } from './NavStyles';
 import Content from '../Content/index';
-import substrateLogo from '../static/parity-substrate.svg';
+
 import routing from '../routing';
 
 type Props = {
@@ -19,8 +19,6 @@ type Props = {
 type State = {
   visible: boolean
 };
-
-const LOGO = substrateLogo;
 
 class SideBar extends React.Component<Props, State> {
   state: State;
@@ -33,21 +31,15 @@ class SideBar extends React.Component<Props, State> {
     };
   }
 
-  handleHideClick = () => this.setState({ visible: false });
-  handleShowClick = () => this.setState({ visible: true });
+  toggleSideBar = () => this.setState({ visible: !this.state.visible });
 
   render () {
     const { visible } = this.state;
     const { children } = this.props;
 
     return (
-      <SideBarStyles>
-          <button disabled={visible} onClick={this.handleShowClick}>
-            Show sidebar
-          </button>
-          <button disabled={!visible} onClick={this.handleHideClick}>
-            Hide sidebar
-          </button>
+      <NavStyles>
+        <TopNav toggleSideBar={this.toggleSideBar} />
         <Sidebar.Pushable as={Segment} className='apps--SideBar'>
           <Sidebar
             as={Menu}
@@ -58,17 +50,6 @@ class SideBar extends React.Component<Props, State> {
             vertical
             width='wide'
           >
-              <NavLink
-                className='apps--SideBar-Item-NavLink'
-                to={'/'}
-              >
-                <img
-                  alt='substrate'
-                  className='apps--SideBar-logo'
-                  src={LOGO}
-                />
-              </NavLink>
-
               <Menu.Divider hidden />
 
               {
@@ -110,7 +91,7 @@ class SideBar extends React.Component<Props, State> {
             </Sidebar.Pusher>
           </Sidebar.Pushable>
           {children}
-      </SideBarStyles>
+      </NavStyles>
     );
   }
 }

@@ -4,11 +4,17 @@
 
 import styled from 'styled-components';
 
-export const SideBarStyles = styled.div`
+export const NavStyles = styled.div`
+  .ui.borderless.inverted.apps--TopNav.menu {
+    margin-bottom: 0;
+    min-width: 100%;
+  }
+
   .apps--SideBar {
     background: #ffffff;
     text-align: left;
     overflow: visible;
+    margin-top: 0;
   }
 
   .apps--SideBar-github {
