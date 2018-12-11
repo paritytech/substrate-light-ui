@@ -8,6 +8,7 @@ import { NavLink } from 'react-router-dom';
 
 import Item from './Item';
 import { SideBarStyles } from './SideBarStyles';
+import Content from '../Content/index';
 import substrateLogo from '../static/parity-substrate.svg';
 import routing from '../routing';
 
@@ -41,10 +42,17 @@ class SideBar extends React.Component<Props, State> {
 
     return (
       <SideBarStyles>
-        <Sidebar.Pushable as={Segment}>
+          <button disabled={visible} onClick={this.handleShowClick}>
+            Show sidebar
+          </button>
+          <button disabled={!visible} onClick={this.handleHideClick}>
+            Hide sidebar
+          </button>
+        <Sidebar.Pushable as={Segment} className='apps--SideBar'>
           <Sidebar
             as={Menu}
-            animation='overlay'
+            animation='push'
+            direction='left'
             icon='labeled'
             visible={visible}
             vertical
@@ -95,12 +103,13 @@ class SideBar extends React.Component<Props, State> {
               <Menu.Divider hidden />
             </Sidebar>
 
-            <Sidebar.Pusher>
+            <Sidebar.Pusher className='apps--SideBar-Pusher'>
               <Segment basic>
-                {children}
+                <Content />
               </Segment>
             </Sidebar.Pusher>
           </Sidebar.Pushable>
+          {children}
       </SideBarStyles>
     );
   }

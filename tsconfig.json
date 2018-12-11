@@ -4,7 +4,10 @@
     "baseUrl": ".",
     "paths": {
       "@polkadot/light-api/*": ["packages/light-api/src/*"],
-      "@polkadot/light-apps/*": ["packages/light-apps/src/*"]
+      "@polkadot/light-apps/*": ["packages/light-apps/src/*"],
+      "@polkadot/transfer-app/*": ["packages/transfer-app/src/*"],
+      "@polkadot/identity-app/*": ["packages/identity-app/src/*"],
+      "@polkadot/ui-components/*": ["packages/ui-components/src/*"]
     }
   }
 }

@@ -5,9 +5,11 @@
 import styled from 'styled-components';
 
 export const SideBarStyles = styled.div`
-  background: #ffffff;
-  flex-shrink: 0;
-  position: relative;
+  .apps--SideBar {
+    background: #ffffff;
+    text-align: left;
+    overflow: visible;
+  }
 
   .apps--SideBar-github {
     position: absolute;
