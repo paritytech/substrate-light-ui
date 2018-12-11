@@ -30,7 +30,6 @@ export function createApp (App: React.ComponentType<BareProps>, { api, className
       <ThemeProvider theme={theme}>
         <App
           className={className}
-          style={style}
         />
       </ThemeProvider>
     </HashRouter>,

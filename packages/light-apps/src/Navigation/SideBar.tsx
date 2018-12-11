@@ -3,6 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import { Icon, Menu, Segment, Sidebar } from '@polkadot/ui-components';
 
 import Item from './Item';
@@ -10,10 +11,14 @@ import Content from '../Content/index';
 
 import routing from '../routing';
 
+import substrateLogo from '../static/parity-substrate.svg';
+
 type Props = {
   children?: React.ReactNode,
   visible: boolean
 };
+
+const LOGO = substrateLogo;
 
 class SideBar extends React.Component<Props> {
   render () {
@@ -31,6 +36,12 @@ class SideBar extends React.Component<Props> {
             vertical
             width='wide'
           >
+            <NavLink to={'/'}>
+              <img
+                className='apps--SideBar-logo'
+                src={LOGO}
+                />
+            </NavLink>
               <Menu.Divider hidden />
 
               {
@@ -66,7 +77,7 @@ class SideBar extends React.Component<Props> {
             </Sidebar>
 
             <Sidebar.Pusher className='apps--SideBar-Pusher'>
-              <Segment basic>
+              <Segment basic >
                 <Content />
               </Segment>
             </Sidebar.Pusher>

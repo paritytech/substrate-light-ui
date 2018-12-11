@@ -105,6 +105,7 @@ export const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
     display: flex;
     min-height: 100vh;
+    min-width: 100vw;
 
     .apps--Content,
     .apps--SideBar {

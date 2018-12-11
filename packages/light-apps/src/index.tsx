@@ -3,20 +3,23 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-
-import { BareProps, createApp, settings } from '@polkadot/ui-components';
+import { NavLink } from 'react-router-dom';
+import { BareProps, Icon, createApp, settings } from '@polkadot/ui-components';
 
 import * as serviceWorker from './serviceWorker';
 import SideBar from './Navigation/SideBar';
-import TopNav from './Navigation/TopNav';
 
 import { NavStyles } from './Navigation/NavStyles';
 import { GlobalStyle } from './globalStyle';
+
+import substrateLogo from './static/parity-substrate.svg';
 
 type Props = BareProps & {};
 type State = {
   visible: boolean
 };
+
+const LOGO = substrateLogo;
 
 class App extends React.PureComponent<Props, State> {
   state: State;
@@ -38,7 +41,15 @@ class App extends React.PureComponent<Props, State> {
       <div className={'apps--App'}>
         <GlobalStyle />
         <NavStyles>
-          <TopNav toggleSideBar={this.toggleSideBar} />
+          <Icon name='bars' onClick={this.toggleSideBar} id='toggleSideNav' />
+          {!visible &&
+            <NavLink to={'/'}>
+              <img
+                className='apps--SideBar-logo closed'
+                src={LOGO}
+                />
+            </NavLink>
+          }
           <SideBar visible={visible}/>
         </NavStyles>
       </div>
