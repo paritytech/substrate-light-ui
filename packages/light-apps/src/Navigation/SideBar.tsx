@@ -6,40 +6,21 @@ import React from 'react';
 import { Icon, Menu, Segment, Sidebar } from '@polkadot/ui-components';
 
 import Item from './Item';
-import { TopNav } from './TopNav';
-import { NavStyles } from './NavStyles';
 import Content from '../Content/index';
 
 import routing from '../routing';
 
 type Props = {
-  children?: React.ReactNode
-};
-
-type State = {
+  children?: React.ReactNode,
   visible: boolean
 };
 
-class SideBar extends React.Component<Props, State> {
-  state: State;
-
-  constructor (props: Props) {
-    super(props);
-
-    this.state = {
-      visible: true
-    };
-  }
-
-  toggleSideBar = () => this.setState({ visible: !this.state.visible });
-
+class SideBar extends React.Component<Props> {
   render () {
-    const { visible } = this.state;
-    const { children } = this.props;
+    const { children, visible } = this.props;
 
     return (
-      <NavStyles>
-        <TopNav toggleSideBar={this.toggleSideBar} />
+      <div>
         <Sidebar.Pushable as={Segment} className='apps--SideBar'>
           <Sidebar
             as={Menu}
@@ -91,7 +72,7 @@ class SideBar extends React.Component<Props, State> {
             </Sidebar.Pusher>
           </Sidebar.Pushable>
           {children}
-      </NavStyles>
+        </div>
     );
   }
 }

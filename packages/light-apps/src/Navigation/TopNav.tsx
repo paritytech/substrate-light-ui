@@ -14,7 +14,7 @@ type Props = {
 
 const LOGO = substrateLogo;
 
-export class TopNav extends React.PureComponent<Props> {
+class TopNav extends React.PureComponent<Props> {
   render () {
     const { toggleSideBar } = this.props;
 
@@ -41,3 +41,6 @@ export class TopNav extends React.PureComponent<Props> {
     );
   }
 }
+
+// @ts-ignore
+export default TopNav;

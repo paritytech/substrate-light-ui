@@ -5,9 +5,9 @@
 import styled from 'styled-components';
 
 export const NavStyles = styled.div`
-  .ui.borderless.inverted.apps--TopNav.menu {
+  .apps--TopNav.menu {
     margin-bottom: 0;
-    min-width: 100%;
+    min-width: 100vh;
   }
 
   .apps--SideBar {
