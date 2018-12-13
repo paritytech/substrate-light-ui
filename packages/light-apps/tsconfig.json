@@ -2,12 +2,15 @@
   "extends": "../../tsconfig",
   "compilerOptions": {
     "allowJs": false,
-    "skipLibCheck": false,
+    "declaration": false,
     "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
-    "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true
+    "module": "esnext",
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": false
   },
-  "include": ["src"]
+  "include": [
+    "src"
+  ]
 }

@@ -1,0 +1,21 @@
+{
+  "name": "@polkadot/transfer-app",
+  "version": "0.1.0",
+  "repository": "https://github.com/polkadot-js/light-ui.git",
+  "description": "Basic app for transfering balances",
+  "license": "Apache-2.0",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "yarn build --watch",
+    "test": "echo skipped"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.1.5",
+    "@polkadot/ui-components": "0.1.0",
+    "react-scripts": "2.1.1"
+  },
+  "devDependencies": {
+    "@polkadot/dev-react": "^0.22.5"
+  }
+}
