@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@polkadot/light-api": "file:../../",
-    "@polkadot/rpc-provider": "^0.32.12",
+    "@polkadot/rpc-provider": "^0.33.14",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-scripts": "2.1.1",
