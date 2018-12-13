@@ -18,6 +18,7 @@ As of now, the main functions are as follows, in order of priority:
 ```
 git clone https://github.com/polkadot-js/light-ui
 cd light-ui
+nvm use stable
 yarn
 yarn start
 ```
