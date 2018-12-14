@@ -3,32 +3,22 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { BareProps, settings } from '@polkadot/ui-components';
+import { settings } from '@polkadot/ui-components';
 
 import * as serviceWorker from './serviceWorker';
 import { createApp } from './createApp';
-import { NavStyles } from './Navigation/NavStyles';
 import { GlobalStyle } from './globalStyle';
+import Content from './Content';
 
-import substrateLogo from './static/parity-substrate.svg';
+// import substrateLogo from './static/parity-substrate.svg';
 
-type Props = BareProps & {};
-
-const LOGO = substrateLogo;
+type Props = {};
 
 function App (props: Props) {
   return (
     <div className={'apps--App'}>
       <GlobalStyle />
-      <NavStyles>
-        <NavLink to={'/'}>
-          <img
-            className='apps--SideBar-logo'
-            src={LOGO}
-            />
-        </NavLink>
-      </NavStyles>
+      <Content />
     </div>
   );
 }
