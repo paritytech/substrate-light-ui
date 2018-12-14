@@ -7,15 +7,19 @@ export * from './settings';
 export * from './types';
 
 import AccountAddress from './AccountAddress';
+import Button from './Button';
 import Container from './Container';
 import IdentityCard from './IdentityCard';
 import Icon from './Icon';
 import Menu from './Menu';
+import NavButton from './NavButton';
 
 export {
   AccountAddress,
+  Button,
   Container,
   IdentityCard,
   Icon,
-  Menu
+  Menu,
+  NavButton
 };

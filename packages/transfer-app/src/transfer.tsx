@@ -3,6 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
+import { Container } from '@polkadot/ui-components';
 
 type Props = {
   basePath: string
@@ -15,7 +16,9 @@ export class Transfer extends React.PureComponent<Props, State> {
 
   render () {
     return (
-      'transfer card goes here'
+      <Container>
+        'transfer card goes here'
+      </Container>
     );
   }
 }

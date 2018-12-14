@@ -13,6 +13,6 @@ const routes: Routes = ([] as Routes).concat(
                        );
 
 export default ({
-  default: 'identity',
+  default: 'Identity',
   routes
 } as Routing);
