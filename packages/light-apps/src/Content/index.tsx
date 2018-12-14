@@ -4,7 +4,7 @@
 
 import React from 'react';
 import { withRouter } from 'react-router';
-import { Container } from '@polkadot/ui-components';
+import { Container, IdentityCard } from '@polkadot/ui-components';
 
 import { withMulti } from '../utils/withMulti';
 import routing from '../routing';
@@ -30,6 +30,7 @@ class Content extends React.Component<Props> {
 
     return (
       <Container>
+        <IdentityCard />
         <Component basePath={`/${name}`} />
       </Container>
     );

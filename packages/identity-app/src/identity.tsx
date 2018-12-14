@@ -2,8 +2,6 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { IdentityCard } from '@polkadot/ui-components/';
-
 import React from 'react';
 
 type Props = {
@@ -23,7 +21,7 @@ export class Identity extends React.PureComponent<Props, State> {
 
   render () {
     return (
-      <IdentityCard />
+      'detailed identity options goes here'
     );
   }
 }
