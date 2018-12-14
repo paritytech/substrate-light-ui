@@ -4,7 +4,6 @@
 
 import { ProviderInterface } from '@polkadot/rpc-provider/types';
 import { RpcRxInterface } from '@polkadot/rpc-rx/types';
-import { ThemeProvider, theme } from '@polkadot/ui-components';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { HashRouter } from 'react-router-dom';
@@ -24,9 +23,7 @@ export function createApp (App: React.ComponentType, { api, provider, url }: Pro
 
   ReactDOM.render(
     <HashRouter>
-      <ThemeProvider theme={theme}>
-        <App />
-      </ThemeProvider>
+      <App />
     </HashRouter>,
     rootElement
   );

@@ -10,8 +10,6 @@ import { createApp } from './createApp';
 import { GlobalStyle } from './globalStyle';
 import Content from './Content';
 
-// import substrateLogo from './static/parity-substrate.svg';
-
 type Props = {};
 
 function App (props: Props) {

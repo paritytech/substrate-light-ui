@@ -4,7 +4,6 @@
 
 import React from 'react';
 import SUISegment from 'semantic-ui-react/dist/commonjs/elements/Segment';
-import CopyButton from '@polkadot/ui-components';
 import styled from 'styled-components';
 
 type Props = {
