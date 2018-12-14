@@ -21,12 +21,10 @@
     "@polkadot/rpc-rx": "^0.32.19",
     "@polkadot/transfer-app": "0.1.0",
     "@polkadot/ui-components": "0.1.0",
-    "@types/semantic-ui": "2.2.6",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-i18next": "^8.3.8",
-    "react-scripts": "2.1.1",
-    "semantic-ui-react": "^0.83.0"
+    "react-scripts": "2.1.1"
   },
   "devDependencies": {
     "@polkadot/dev-react": "^0.22.5"

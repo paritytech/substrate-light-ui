@@ -10,7 +10,6 @@ import { BareProps } from '@polkadot/ui-components';
 
 import { withMulti } from '../utils/withMulti';
 import routing from '../routing';
-// import translate from '../translate';
 import NotFound from './NotFound';
 
 type Props = BareProps & {
@@ -23,10 +22,6 @@ const unknown = {
 };
 
 class Content extends React.Component<Props> {
-  constructor (props: Props) {
-    super(props);
-  }
-
   render () {
     const { location } = this.props;
 

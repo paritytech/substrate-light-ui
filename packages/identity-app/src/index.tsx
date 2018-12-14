@@ -17,20 +17,10 @@ type State = {
 };
 
 export class Identity extends React.PureComponent<Props, State> {
-  state: State;
-
-  constructor (props: Props) {
-    super(props);
-
-    this.state = {
-      hidden: [],
-      items: []
-    };
-  }
-
-  componentDidMount = () => {
-    console.log('identity app mounted');
-  }
+  state: State = {
+    hidden: [],
+    items: []
+  };
 
   render () {
     return (

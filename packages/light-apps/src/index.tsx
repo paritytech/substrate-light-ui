@@ -4,57 +4,33 @@
 
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { BareProps, Icon, createApp, settings } from '@polkadot/ui-components';
+import { BareProps, settings } from '@polkadot/ui-components';
 
 import * as serviceWorker from './serviceWorker';
-import SideBar from './Navigation/SideBar';
-
+import { createApp } from './createApp';
 import { NavStyles } from './Navigation/NavStyles';
 import { GlobalStyle } from './globalStyle';
 
 import substrateLogo from './static/parity-substrate.svg';
 
 type Props = BareProps & {};
-type State = {
-  visible: boolean
-};
 
 const LOGO = substrateLogo;
 
-class App extends React.PureComponent<Props, State> {
-  state: State;
-
-  constructor (props: Props) {
-    super(props);
-
-    this.state = {
-      visible: true
-    };
-  }
-
-  toggleSideBar = () => this.setState({ visible: !this.state.visible });
-
-  render () {
-    const { visible } = this.state;
-
-    return (
-      <div className={'apps--App'}>
-        <GlobalStyle />
-        <NavStyles>
-          <Icon name='bars' onClick={this.toggleSideBar} id='toggleSideNav' />
-          {!visible &&
-            <NavLink to={'/'}>
-              <img
-                className='apps--SideBar-logo closed'
-                src={LOGO}
-                />
-            </NavLink>
-          }
-          <SideBar visible={visible}/>
-        </NavStyles>
-      </div>
-    );
-  }
+function App (props: Props) {
+  return (
+    <div className={'apps--App'}>
+      <GlobalStyle />
+      <NavStyles>
+        <NavLink to={'/'}>
+          <img
+            className='apps--SideBar-logo'
+            src={LOGO}
+            />
+        </NavLink>
+      </NavStyles>
+    </div>
+  );
 }
 
 const url = !settings.apiUrl

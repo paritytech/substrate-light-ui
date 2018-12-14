@@ -11,9 +11,7 @@
     "test": "echo skipped"
   },
   "dependencies": {
-    "@babel/runtime": "^7.1.5",
-    "@polkadot/ui-components": "0.1.0",
-    "react-scripts": "2.1.1"
+    "@polkadot/ui-components": "0.1.0"
   },
   "devDependencies": {
     "@polkadot/dev-react": "^0.22.5"
