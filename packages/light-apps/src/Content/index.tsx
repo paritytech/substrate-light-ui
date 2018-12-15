@@ -4,7 +4,7 @@
 
 import React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router';
-import { Container, IdentityCard } from '@polkadot/ui-components/';
+import { Container, IdentityCard } from '@polkadot/ui-components';
 
 import routing from '../routing';
 import NotFound from './NotFound';

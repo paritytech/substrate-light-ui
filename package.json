@@ -13,6 +13,7 @@
     "build": "lerna exec yarn build --stream",
     "clean": "polkadot-dev-clean-build",
     "lint": "tsc --noEmit && tslint --project .",
+    "prestart": "yarn clean",
     "start": "lerna exec yarn start --parallel",
     "test": "CI=true lerna run test --parallel"
   },
