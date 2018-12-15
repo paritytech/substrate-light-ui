@@ -4,11 +4,10 @@
   "repository": "https://github.com/polkadot-js/light-ui.git",
   "description": "User interface optimized for the Substrate light client",
   "license": "Apache-2.0",
-  "private": true,
   "scripts": {
-    "start": "react-scripts start",
+    "start": "BROWSER=none react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test"
+    "test": "jest --coverage"
   },
   "browserslist": [
     ">0.2%",
@@ -17,6 +16,15 @@
     "not op_mini all"
   ],
   "dependencies": {
+    "@polkadot/identity-app": "0.1.0",
+    "@polkadot/rpc-provider": "^0.32.19",
+    "@polkadot/rpc-rx": "^0.32.19",
+    "@polkadot/transfer-app": "0.1.0",
+    "@polkadot/ui-assets": "^0.23.1",
+    "@polkadot/ui-components": "0.1.0",
+    "@polkadot/ui-settings": "^0.22.17",
+    "@types/react-router": "^4.4.3",
+    "@types/react-router-dom": "^4.3.1",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-scripts": "2.1.1"
