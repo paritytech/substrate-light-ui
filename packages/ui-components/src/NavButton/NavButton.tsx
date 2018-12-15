@@ -4,11 +4,11 @@
 
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Button } from '@polkadot/ui-components';
+import Button from '../Button';
 
 type Props = {
-  to?: string,
-  value?: string
+  to: string,
+  value: string
 };
 
 export class NavButton extends React.PureComponent<Props> {

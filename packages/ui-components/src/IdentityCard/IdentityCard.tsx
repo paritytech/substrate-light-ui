@@ -3,8 +3,8 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import { AccountAddress, NavButton } from '@polkadot/ui-components';
-
+import AccountAddress from '../AccountAddress';
+import NavButton from '../NavButton';
 import { StyledCard, CardHeader, CardContent } from './IdentityCard.styles';
 
 export class IdentityCard extends React.PureComponent {

@@ -3,21 +3,11 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import styled from 'styled-components';
 
-type Props = {
-  address: string
-};
-
-export class AccountSummary extends React.PureComponent<Props> {
+export class AccountSummary extends React.PureComponent {
   render () {
-    const { address } = this.props;
-
     return (
-      <React.Fragment>
-        <Identicon />
-        <Balance />
-      </React.Fragment>
+      'Account Summary'
     );
   }
 }
