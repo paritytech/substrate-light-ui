@@ -3,9 +3,8 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import { settings } from '@polkadot/ui-components';
+import settings from '@polkadot/ui-settings';
 
-import * as serviceWorker from './serviceWorker';
 import { createApp } from './createApp';
 import { GlobalStyle } from './globalStyle';
 import Content from './Content';
@@ -26,8 +25,3 @@ const url = !settings.apiUrl
   : settings.apiUrl;
 
 createApp(App, { url });
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: http://bit.ly/CRA-PWA
-serviceWorker.unregister();
