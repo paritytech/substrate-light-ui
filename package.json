@@ -9,7 +9,9 @@
   ],
   "private": true,
   "scripts": {
+    "prebuild": "yarn clean",
     "build": "lerna exec yarn build --stream",
+    "clean": "polkadot-dev-clean-build",
     "lint": "tsc --noEmit && tslint --project .",
     "start": "lerna exec yarn start --parallel",
     "test": "CI=true lerna run test --parallel"

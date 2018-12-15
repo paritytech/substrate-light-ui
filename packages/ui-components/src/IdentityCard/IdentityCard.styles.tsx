@@ -19,7 +19,12 @@ export const CardContent = styled(SUICard.Content)`
   width: 100%;
 `;
 
-export const StyledCard = styled(SUICard)`
+// FIXME don't use <any>
+// The bug is Exported variable 'StyledCard' has or is using name
+// 'CardComponent' from external module
+// "node_modules/semantic-ui-react/dist/commonjs/views/Card/Card" but cannot
+// be named.ts(4023)
+export const StyledCard = styled<any>(SUICard)`
   display: flex;
   align-items: center;
   justify-content: center;
