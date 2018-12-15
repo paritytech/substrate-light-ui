@@ -3,9 +3,8 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import { settings } from '@polkadot/ui-components';
+import { settings } from '@polkadot/ui-settings';
 
-import * as serviceWorker from './serviceWorker';
 import { createApp } from './createApp';
 import { GlobalStyle } from './globalStyle';
 import Content from './Content';

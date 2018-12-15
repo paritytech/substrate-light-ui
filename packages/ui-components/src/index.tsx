@@ -3,7 +3,6 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 import 'semantic-ui-css/semantic.min.css';
 
-export * from './settings';
 export * from './types';
 
 import AccountAddress from './AccountAddress';
