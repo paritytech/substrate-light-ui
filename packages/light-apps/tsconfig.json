@@ -3,6 +3,7 @@
   "compilerOptions": {
     "allowJs": false,
     "declaration": false,
+    "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "module": "esnext",

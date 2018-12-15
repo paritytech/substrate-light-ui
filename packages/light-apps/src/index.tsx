@@ -4,6 +4,7 @@
 
 import React from 'react';
 import settings from '@polkadot/ui-settings';
+import { RouteComponentProps } from 'react-router';
 
 import { createApp } from './createApp';
 import { GlobalStyle } from './globalStyle';
@@ -15,7 +16,7 @@ function App (props: Props) {
   return (
     <div className={'apps--App'}>
       <GlobalStyle />
-      <Content />
+      <Content { ...({} as RouteComponentProps<any>) } />
     </div>
   );
 }
