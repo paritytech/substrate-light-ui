@@ -3,22 +3,21 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import { withRouter } from 'react-router';
-import { Container, IdentityCard } from '@polkadot/ui-components';
+import { withRouter, RouteComponentProps } from 'react-router';
+import { Container, IdentityCard } from '@polkadot/ui-components/';
 
-import { withMulti } from '../utils/withMulti';
 import routing from '../routing';
 import NotFound from './NotFound';
 
-type Props = {
-  location: Location
-};
+type Props = RouteComponentProps & {};
 
 const unknown = {
   Component: NotFound,
   name: ''
 };
 
+// @ts-ignore
+@(withRouter as any)
 class Content extends React.Component<Props> {
   render () {
     const { location } = this.props;
@@ -37,7 +36,4 @@ class Content extends React.Component<Props> {
   }
 }
 
-export default withMulti(
-  Content,
-  withRouter
-);
+export default Content;
