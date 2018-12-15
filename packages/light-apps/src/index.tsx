@@ -11,8 +11,11 @@ import { RouteComponentProps } from 'react-router';
 import { createApp } from './createApp';
 import { GlobalStyle } from './globalStyle';
 import Content from './Content';
+import substrateLogo from './static/parity-substrate.svg';
 
 type Props = {};
+
+const LOGO = substrateLogo;
 
 function App (props: Props) {
   return (
@@ -21,6 +24,8 @@ function App (props: Props) {
       <NavLink to={'/'}>
         <img
           src={substrateLogo}
+          height={100}
+          width={150}
         />
       </NavLink>
       <Content { ...({} as RouteComponentProps<any>) } />

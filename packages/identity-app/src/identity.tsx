@@ -3,25 +3,22 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
+import { Container } from '@polkadot/ui-components';
 
 type Props = {
   basePath: string
 };
 
-type State = {
-  hidden: Array<string>,
-  items: Array<string>
-};
+type State = {};
 
 export class Identity extends React.PureComponent<Props, State> {
-  state: State = {
-    hidden: [],
-    items: []
-  };
+  state: State = {};
 
   render () {
     return (
-      'detailed identity options goes here'
+      <Container>
+        Full Wallet UI Goes Here
+      </Container>
     );
   }
 }

@@ -6,7 +6,7 @@ import SUIContainer from 'semantic-ui-react/dist/commonjs/elements/Container';
 import styled from 'styled-components';
 
 const Container = styled(SUIContainer)`
-  padding: 5rem;
+  padding: 2.5rem;
 `;
 
 export default Container;

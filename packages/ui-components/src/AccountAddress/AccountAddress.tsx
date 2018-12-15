@@ -13,6 +13,7 @@ type Props = {
 const Segment = styled(SUISegment)`
   height: 3rem;
   padding: 0.5rem;
+  margin-bottom: 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -25,9 +26,7 @@ export class AccountAddress extends React.PureComponent<Props> {
     const { address } = this.props;
 
     return (
-      <React.Fragment>
-        <Segment>{address}</Segment>
-      </React.Fragment>
+      <Segment>{address}</Segment>
     );
   }
 }
