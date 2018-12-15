@@ -1,14 +1,6 @@
 {
   "extends": "./node_modules/@polkadot/dev/config/tsconfig",
   "compilerOptions": {
-    "baseUrl": ".",
-    "experimentalDecorators": true,
-    "paths": {
-      "@polkadot/light-api/*": ["packages/light-api/src/*"],
-      "@polkadot/light-apps/*": ["packages/light-apps/src/*"],
-      "@polkadot/identity-app/*": ["packages/identity-app/src/*"],
-      "@polkadot/transfer-app/*": ["packages/transfer-app/src/*"],
-      "@polkadot/ui-components/*": ["packages/ui-components/src/*"]
-    }
+    "experimentalDecorators": true
   }
 }
