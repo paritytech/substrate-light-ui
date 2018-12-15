@@ -5,13 +5,12 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import settings from '@polkadot/ui-settings';
-import substrateLogo from '@polkadot/ui-assets/parity-substrate-white.svg';
+import substrateLogo from '@polkadot/ui-assets/parity-substrate.svg';
 import { RouteComponentProps } from 'react-router';
 
 import { createApp } from './createApp';
 import { GlobalStyle } from './globalStyle';
 import Content from './Content';
-import substrateLogo from './static/parity-substrate.svg';
 
 type Props = {};
 
@@ -23,7 +22,7 @@ function App (props: Props) {
       <GlobalStyle />
       <NavLink to={'/'}>
         <img
-          src={substrateLogo}
+          src={LOGO}
           height={100}
           width={150}
         />
