@@ -10,8 +10,6 @@ As of now, the main functions are as follows, in order of priority:
 
 * Transfer balance - send and receive funds in the currency of the relevant substrate chain.
 
-* Runtime module upgrade - submit a proposal to upgrade the underlying runtime (basically the state transition function) of the current chain.
-
 * Staking/Nominating/Voting democracy - stake tokens, nominate validators, and vote for proposals regarding the the current chain.
 
 ### How to run
