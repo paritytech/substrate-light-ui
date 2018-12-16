@@ -2,8 +2,9 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { ApiOptions } from '@polkadot/api/types';
+import { ProviderInterface } from '@polkadot/rpc-provider/types';
 import ApiRx from '@polkadot/api/rx';
-import WsProvider from '@polkadot/rpc-provider/ws';
 import { of } from 'rxjs';
 import { mergeAll, switchMap } from 'rxjs/operators';
 
@@ -25,8 +26,8 @@ export class LightApi extends ApiRx {
   public graph: ReactiveGraph = new ReactiveGraph();
   public light: LightFunctions;
 
-  constructor (wsProvider?: WsProvider) {
-    super(wsProvider);
+  constructor (options?: ApiOptions | ProviderInterface | undefined) {
+    super(options);
 
     // Add basic source nodes
     this.graph.setNode(NODES.STARTUP, of(1));

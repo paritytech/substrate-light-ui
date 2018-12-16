@@ -7,6 +7,7 @@ import { NavLink } from 'react-router-dom';
 import settings from '@polkadot/ui-settings';
 import substrateLogo from '@polkadot/ui-assets/parity-substrate.svg';
 import { RouteComponentProps } from 'react-router';
+import 'semantic-ui-css/semantic.min.css';
 
 import { createApp } from './createApp';
 import { GlobalStyle } from './globalStyle';
@@ -18,7 +19,7 @@ const LOGO = substrateLogo;
 
 function App (props: Props) {
   return (
-    <div className={'apps--App'}>
+    <div >
       <GlobalStyle />
       <NavLink to={'/'}>
         <img
@@ -27,7 +28,7 @@ function App (props: Props) {
           width={150}
         />
       </NavLink>
-      <Content { ...({} as RouteComponentProps<any>) } />
+      <Content {...({} as RouteComponentProps<any>)} />
     </div>
   );
 }

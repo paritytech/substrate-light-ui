@@ -12,8 +12,5 @@
   },
   "dependencies": {
     "@polkadot/ui-components": "0.1.0"
-  },
-  "devDependencies": {
-    "@polkadot/dev-react": "^0.22.5"
   }
 }

@@ -6,7 +6,7 @@ import React from 'react';
 import { Container } from '@polkadot/ui-components';
 
 type Props = {
-  basePath: string
+  basePath: string;
 };
 
 type State = {};
@@ -15,10 +15,6 @@ export class Transfer extends React.PureComponent<Props, State> {
   state: State = {};
 
   render () {
-    return (
-      <Container>
-        'transfer card goes here'
-      </Container>
-    );
+    return <Container>'transfer card goes here'</Container>;
   }
 }

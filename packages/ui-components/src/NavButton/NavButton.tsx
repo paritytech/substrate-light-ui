@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom'; // FIXME ui-components should not do routing
 import Button from '../Button';
 
 type Props = {

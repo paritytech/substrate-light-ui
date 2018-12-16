@@ -6,7 +6,7 @@ import React from 'react';
 import { Container } from '@polkadot/ui-components';
 
 type Props = {
-  basePath: string
+  basePath: string;
 };
 
 type State = {};
@@ -15,10 +15,6 @@ export class Identity extends React.PureComponent<Props, State> {
   state: State = {};
 
   render () {
-    return (
-      <Container>
-        Full Wallet UI Goes Here
-      </Container>
-    );
+    return <Container>Full Wallet UI Goes Here</Container>;
   }
 }
