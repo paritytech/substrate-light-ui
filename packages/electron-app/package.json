@@ -1,0 +1,18 @@
+{
+  "name": "@polkadot/electron-app",
+  "description": "Substrate Light UI",
+  "version": "0.1.0",
+  "private": true,
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "tsc",
+    "start": "cross-env ELECTRON_START_URL=http://localhost:3000 yarn build && electron ../dist/main.js",
+    "test": "echo Skipped."
+  },
+  "dependencies": {
+
+  },
+  "devDependencies": {
+    "cross-env": "^5.2.0"
+  }
+}
