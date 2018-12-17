@@ -1,21 +1,22 @@
 {
   "name": "@polkadot/light-ui",
   "version": "0.1.0",
-  "repository": "https://github.com/polkadot-js/light-ui.git",
+  "repository": "https://github.com/polkadot-js/light-ui",
   "description": "User interface optimized for the Substrate light client",
   "license": "Apache-2.0",
-  "private": true,
   "workspaces": [
     "packages/*"
   ],
+  "private": true,
   "scripts": {
+    "prebuild": "yarn clean",
     "build": "lerna exec yarn build --stream",
+    "clean": "polkadot-dev-clean-build",
     "lint": "tsc --noEmit && tslint --project .",
     "start": "lerna exec yarn start --parallel",
     "test": "CI=true lerna run test --parallel"
   },
   "devDependencies": {
-    "@polkadot/dev": "^0.22.5",
-    "eslint": "5.6.0"
+    "@polkadot/dev": "^0.22.12"
   }
 }

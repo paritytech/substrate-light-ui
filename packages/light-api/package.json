@@ -13,7 +13,8 @@
   },
   "dependencies": {
     "@dagrejs/graphlib": "^2.1.4",
-    "@polkadot/api": "^0.33.14"
+    "@polkadot/api": "^0.33.19",
+    "@polkadot/rpc-provider": "^0.33.19"
   },
   "devDependencies": {
     "@polkadot/dev": "^0.22.5",

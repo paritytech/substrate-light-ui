@@ -1,10 +1,6 @@
 {
   "extends": "./node_modules/@polkadot/dev/config/tsconfig",
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@polkadot/light-api/*": ["packages/light-api/src/*"],
-      "@polkadot/light-apps/*": ["packages/light-apps/src/*"]
-    }
+    "experimentalDecorators": true
   }
 }
