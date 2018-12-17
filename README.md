@@ -2,7 +2,7 @@
 Light client focused user interface for the Polkadot network. It is currently being built as an Electron app, and will be migrated to a web app once wasm compilation of the Substrate Light node is available.
 
 ### Overview
-This is the repository for Substrate light client's user interface. The light-ui is meant to be an intuitive interface for beginner users to easily be able to interact with the main components of various a Substrate chains. This UI builds upon Gavin Wood's live demo from Web 3 Summit: https://youtu.be/0IoUZdDi5Is?t=3858
+This is the repository for Substrate light client's user interface. The light-ui is meant to be an intuitive interface for beginner users to easily be able to interact with the main components of various Substrate chains. This UI builds upon Gavin Wood's live demo from the 2018 Web3 Summit: https://youtu.be/0IoUZdDi5Is?t=3858
 
 As of now, the main functions are as follows, in order of priority:
 
