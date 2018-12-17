@@ -5,18 +5,26 @@ import SUICard from 'semantic-ui-react/dist/commonjs/views/Card';
 import styled from 'styled-components';
 
 export const CardHeader = styled(SUICard.Header)`
-  text-align: center;
-  font-weight: 300;
-  font-size: 28px;
-  padding: 1.2rem 0;
+  &&& {
+    text-align: left;
+    font-weight: 300;
+    font-size: 28px;
+    margin-top: 2rem;
+  }
 `;
 
+// Margin-left added as pseudoelement is screwing with justify-content.
+// This is a known issue with flexbox with no clean solution at the moment.
+// https://stackoverflow.com/questions/40686928/pseudo-elements-breaking-justify-content-space-between-in-flexbox-layout
 export const CardContent = styled(SUICard.Content)`
-  display: flex;
-  justify-items: space-between;
-  align-items: center;
-  padding: 0 1rem;
-  width: 100%;
+&&& {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 3rem 1rem;
+    margin-left: 6rem;
+    min-width: 100%;
+    border: none;
 `;
 
 // FIXME don't use <any>
@@ -25,13 +33,15 @@ export const CardContent = styled(SUICard.Content)`
 // "node_modules/semantic-ui-react/dist/commonjs/views/Card/Card" but cannot
 // be named.ts(4023)
 export const StyledCard = styled<any>(SUICard)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  height: 15rem;
-  min-width: 100%;
-  border: 2px solid black;
-  box-shadow: 0 4px 5px 1px rgba(0, 0, 0, 0.3);
-  background-color: #ffffff;
+&&& {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 15rem;
+    min-width: 100%;
+    box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.3);
+    background-color: #ffffff;
+    border: 0.5px solid #f2f2f2;
+  }
 `;

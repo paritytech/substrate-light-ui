@@ -16,6 +16,17 @@ const unknown = {
   name: ''
 };
 
+const ID_CARD_ACTIONS: { [key: string]: { [key: string]: string } } = {
+  'Identity': {
+    'value': 'Transfer Balance',
+    'to': 'Transfer'
+  },
+  'Transfer': {
+    'value': 'Manage Accounts',
+    'to': 'Identity'
+  }
+};
+
 // @ts-ignore
 @(withRouter as any)
 class Content extends React.Component<Props> {
@@ -27,13 +38,18 @@ class Content extends React.Component<Props> {
       !!(route && app.indexOf(route.name) === 0)
     ) || unknown;
 
+    const idCardAction = ID_CARD_ACTIONS[name] || ID_CARD_ACTIONS['Identity'];
+
     return (
       <Container>
-        <IdentityCard />
+        <IdentityCard value={idCardAction['value']} to={idCardAction['to']} address={'7qroA7r5Ky9FHN5mXA2GNxZ79ieStv4WYYjYe3m3XszK9SvF'} />
         <Component basePath={`/${name}`} />
       </Container>
     );
   }
 }
+
+// FIXME:
+// address should come from Keyring
 
 export default Content;

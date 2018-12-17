@@ -10,7 +10,6 @@ export type RouteProps = {
 
 export type Route = {
   Component: React.ComponentType<RouteProps>,
-  i18n: any, // I18Next$Translate$Config,
   icon: SemanticICONS,
   isApiGated: boolean,
   isHidden: boolean,

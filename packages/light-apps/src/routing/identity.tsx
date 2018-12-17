@@ -9,9 +9,6 @@ import { Identity } from '@polkadot/identity-app';
 export default (
   {
     Component: Identity,
-    i18n: {
-      defaultValue: 'Identity'
-    },
     icon: 'users',
     isApiGated: true,
     isHidden: false,

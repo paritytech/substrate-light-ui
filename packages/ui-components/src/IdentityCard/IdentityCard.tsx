@@ -3,18 +3,29 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import AccountAddress from '../AccountAddress';
+
+import Address from '../Address';
+import AddressSummary from '../AddressSummary';
 import NavButton from '../NavButton';
 import { StyledCard, CardHeader, CardContent } from './IdentityCard.styles';
 
-export class IdentityCard extends React.PureComponent {
+type Props = {
+  value: string,
+  to: string,
+  address: string
+};
+
+export class IdentityCard extends React.PureComponent<Props> {
   render () {
+    const { address, to, value } = this.props;
+
     return (
       <StyledCard>
         <CardHeader>Current Account</CardHeader>
         <CardContent>
-          <AccountAddress address={'7qroA7r5Ky9FHN5mXA2GNxZ79ieStv4WYYjYe3m3XszK9SvF'} />
-          <NavButton to={'/Identity'} value={'Manage Accounts'} />
+          <AddressSummary address={address} />
+          <Address address={address} />
+          <NavButton to={to} value={value} />
         </CardContent>
       </StyledCard>
     );

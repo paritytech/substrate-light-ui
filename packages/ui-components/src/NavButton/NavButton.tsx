@@ -4,7 +4,7 @@
 
 import React from 'react';
 import { NavLink } from 'react-router-dom'; // FIXME ui-components should not do routing
-import Button from '../Button';
+import { StyledNavButton } from './NavButton.styles';
 
 type Props = {
   to: string,
@@ -17,9 +17,9 @@ export class NavButton extends React.PureComponent<Props> {
 
     return (
       <NavLink to={to}>
-        <Button>
+        <StyledNavButton>
           {value}
-        </Button>
+        </StyledNavButton>
       </NavLink>
     );
   }

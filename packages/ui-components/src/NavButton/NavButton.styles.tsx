@@ -4,14 +4,16 @@
 
 import styled from 'styled-components';
 
-const Button = styled.button`
-  box-shadow: 3px 6px 8px 1px rgba(0, 0, 0, 0.5);
+export const StyledNavButton = styled.button`
+  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.3);
   background-image: linear-gradient(107deg, #8479f3, #53a0fd 71%, #51a0ec);
   width: 134px;
   height: 42px;
   border-radius: 15px;
   color: white;
   border: none;
-`;
 
-export default Button;
+  :hover {
+    cursor: pointer;
+  }
+`;
