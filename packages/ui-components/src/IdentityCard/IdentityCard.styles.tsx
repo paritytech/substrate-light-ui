@@ -20,9 +20,9 @@ export const CardContent = styled(SUICard.Content)`
 &&& {
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
     padding: 3rem 1rem;
-    margin-left: 6rem;
+    margin-left: 5rem;
     min-width: 100%;
     border: none;
 `;

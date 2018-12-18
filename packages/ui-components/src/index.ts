@@ -4,6 +4,7 @@
 
 import Address from './Address';
 import AddressSummary from './AddressSummary';
+import BalanceDisplay from './Balance';
 import Container from './Container';
 import IdentityCard from './IdentityCard';
 import Icon from './Icon';
@@ -13,6 +14,7 @@ import NavButton from './NavButton';
 export {
   Address,
   AddressSummary,
+  BalanceDisplay,
   Container,
   IdentityCard,
   Icon,
