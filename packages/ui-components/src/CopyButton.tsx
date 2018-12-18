@@ -10,6 +10,10 @@ type Props = {
   value: string
 };
 
+type State = {
+  copied: boolean
+};
+
 const StyledCopyButton = styled.button`
   border: none;
   background-color: inherit;
@@ -21,14 +25,26 @@ const StyledCopyButton = styled.button`
   }
 `;
 
-export default class CopyButton extends React.PureComponent<Props> {
+export default class CopyButton extends React.PureComponent<Props, State> {
+  state: State = {
+    copied: false
+  };
+
+  handleCopied = () => {
+    this.setState({ copied: true });
+
+    setTimeout(() => this.setState({ copied: false }), 1000);
+  }
+
   render () {
+    const { copied } = this.state;
     const { value } = this.props;
 
     return (
-      <CopyToClipboard text={value}>
+      <CopyToClipboard text={value} onCopy={this.handleCopied}>
         <StyledCopyButton>
-          <Icon name='copy' />
+          <Icon name={ copied ? 'check' : 'copy' } />
+          {copied && <small> Copied! </small>}
         </StyledCopyButton>
       </CopyToClipboard>
     );
