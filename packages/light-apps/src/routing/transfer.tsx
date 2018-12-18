@@ -9,9 +9,6 @@ import { Transfer } from '@polkadot/transfer-app';
 export default ([
   {
     Component: Transfer,
-    i18n: {
-      defaultValue: 'Identity'
-    },
     icon: 'angle double right',
     isApiGated: true,
     isHidden: false,

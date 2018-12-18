@@ -10,6 +10,10 @@
     "test": "echo skipped"
   },
   "dependencies": {
+    "@polkadot/types": "^0.33.25",
+    "@polkadot/ui-identicon": "^0.23.2",
+    "@polkadot/ui-keyring": "^0.23.2",
+    "@polkadot/util": "^0.33.14",
     "@types/styled-components": "^4.1.3",
     "semantic-ui-react": "^0.83.0",
     "styled-components": "^4.1.2"

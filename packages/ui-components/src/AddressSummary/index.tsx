@@ -2,6 +2,6 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { NavButton } from './NavButton';
+import { AddressSummary } from './AddressSummary';
 
-export default NavButton;
+export default AddressSummary;
