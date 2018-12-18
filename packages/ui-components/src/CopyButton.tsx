@@ -12,6 +12,7 @@ type Props = {
 
 const StyledCopyButton = styled.button`
   border: none;
+  background-color: inherit;
   color: #53a0fd;
 
   :hover {

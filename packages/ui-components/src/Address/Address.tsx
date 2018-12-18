@@ -8,6 +8,7 @@ import CopyButton from '../CopyButton';
 import Segment from '../Segment';
 
 import { AddressContainer } from './Address.styles';
+import { NavLinkSmall } from '../Shared.styles';
 
 type Props = {
   address: string
@@ -24,9 +25,9 @@ export class Address extends React.PureComponent<Props> {
           <CopyButton value={address} />
         </Segment>
         <React.Fragment>
-          <a href='/forget'> Forget </a>
+          <NavLinkSmall to={'/forget'}> Forget </NavLinkSmall>
           or
-          <a href='/backup'> Backup </a>
+          <NavLinkSmall to={'/backup'}> Backup </NavLinkSmall>
         </React.Fragment>
       </AddressContainer>
     );

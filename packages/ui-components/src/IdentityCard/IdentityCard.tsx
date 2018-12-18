@@ -3,6 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
+import BN from 'bn.js';
 
 import Address from '../Address';
 import AddressSummary from '../AddressSummary';
@@ -15,6 +16,8 @@ type Props = {
   address: string
 };
 
+// TODO: balance and name props should come from LightAPI HOC's observables
+
 export class IdentityCard extends React.PureComponent<Props> {
   render () {
     const { address, to, value } = this.props;
@@ -23,7 +26,7 @@ export class IdentityCard extends React.PureComponent<Props> {
       <StyledCard>
         <CardHeader>Current Account</CardHeader>
         <CardContent>
-          <AddressSummary address={address} />
+          <AddressSummary address={address} balance={new BN(10000)} name={'Alice'} />
           <Address address={address} />
           <NavButton to={to} value={value} />
         </CardContent>

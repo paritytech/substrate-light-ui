@@ -4,9 +4,14 @@
 
 import styled from 'styled-components';
 
-export const AddressContainer = styled.div`
-  display: 'flex';
-  align-items: 'flex-end';
-  justify-content: 'flex-end';
-  width: 50%;
+export const Stacked = styled.div`
+  display: 'flex column';
+  align-items: 'center';
+  justify-content: 'center';
+  min-height: 100%;
+`;
+
+export const FadedText = styled.p`
+  color: #f4f4f4;
+  opacity: 0.5;
 `;

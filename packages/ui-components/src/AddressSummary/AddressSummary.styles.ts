@@ -4,9 +4,15 @@
 
 import styled from 'styled-components';
 
-export const AddressContainer = styled.div`
+export const SquareAddressSummaryBlock = styled.div`
   display: 'flex';
-  align-items: 'flex-end';
+  align-items: 'center';
   justify-content: 'flex-end';
-  width: 50%;
+  height: 100%;
+`;
+
+export const Name = styled.p`
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0 0;
 `;
