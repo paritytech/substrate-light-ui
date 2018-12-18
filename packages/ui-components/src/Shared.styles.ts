@@ -3,7 +3,6 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
 
 export const Stacked = styled.div`
   display: 'flex column';
@@ -17,11 +16,15 @@ export const FadedText = styled.p`
   opacity: 0.5;
 `;
 
-export const NavLinkSmall = styled(NavLink)`
-  &&& {
-    font-size: 15px;
-    font-weight: 300;
-    color: #51a0ec;
+export const NavLinkSmall = styled.button`
+  font-size: 15px;
+  font-weight: 300;
+  color: #51a0ec;
+  background: none;
+  border: none;
+
+  :hover {
+    cursor: pointer;
   }
 `;
 

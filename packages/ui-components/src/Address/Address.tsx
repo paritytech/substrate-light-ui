@@ -11,12 +11,13 @@ import { AddressContainer } from './Address.styles';
 import { NavLinkSmall } from '../Shared.styles';
 
 type Props = {
-  address: string
+  address: string,
+  goToRoute: (to?: string) => void
 };
 
 export class Address extends React.PureComponent<Props> {
   render () {
-    const { address } = this.props;
+    const { address, goToRoute } = this.props;
 
     return (
       <AddressContainer>
@@ -25,9 +26,9 @@ export class Address extends React.PureComponent<Props> {
           <CopyButton value={address} />
         </Segment>
         <React.Fragment>
-          <NavLinkSmall to={'/forget'}> Forget </NavLinkSmall>
+          <NavLinkSmall onClick={() => goToRoute('Forget')}> Forget </NavLinkSmall>
           or
-          <NavLinkSmall to={'/backup'}> Backup </NavLinkSmall>
+          <NavLinkSmall onClick={() => goToRoute('Backup')}> Backup </NavLinkSmall>
         </React.Fragment>
       </AddressContainer>
     );

@@ -16,20 +16,43 @@ const unknown = {
   name: ''
 };
 
-const ID_CARD_ACTIONS: { [key: string]: { [key: string]: string } } = {
-  'Identity': {
-    'value': 'Transfer Balance',
-    'to': 'Transfer'
-  },
-  'Transfer': {
-    'value': 'Manage Accounts',
-    'to': 'Identity'
+const ID_CARD_ACTIONS = (name: string) => {
+  switch (name) {
+    case 'Identity':
+      return {
+        'value': 'Transfer Balance',
+        'to': 'Transfer'
+      };
+      break;
+    case 'Transfer':
+      return {
+        'value': 'Manage Accounts',
+        'to': 'Identity'
+      };
+      break;
+    default:
+      return {
+        'value': 'Transfer Balance',
+        'to': 'Transfer'
+      };
+      break;
   }
 };
 
 // @ts-ignore
 @(withRouter as any)
 class Content extends React.Component<Props> {
+  handleRouteChange = (to?: string) => {
+    const { history, location } = this.props;
+
+    if (!to) {
+      const current = location.pathname.slice(1);
+      to = ID_CARD_ACTIONS(current)['to'];
+    }
+
+    history.push(`/${to}`);
+  }
+
   render () {
     const { location } = this.props;
 
@@ -38,11 +61,13 @@ class Content extends React.Component<Props> {
       !!(route && app.indexOf(route.name) === 0)
     ) || unknown;
 
-    const idCardAction = ID_CARD_ACTIONS[name] || ID_CARD_ACTIONS['Identity'];
-
     return (
       <Container>
-        <IdentityCard value={idCardAction['value']} to={idCardAction['to']} address={'7qroA7r5Ky9FHN5mXA2GNxZ79ieStv4WYYjYe3m3XszK9SvF'} />
+        <IdentityCard
+          address={'7qroA7r5Ky9FHN5mXA2GNxZ79ieStv4WYYjYe3m3XszK9SvF'}
+          goToRoute={this.handleRouteChange}
+          value={ID_CARD_ACTIONS(name)['value']}
+          />
         <Component basePath={`/${name}`} />
       </Container>
     );

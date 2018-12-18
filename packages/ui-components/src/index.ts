@@ -10,6 +10,7 @@ import IdentityCard from './IdentityCard';
 import Icon from './Icon';
 import Menu from './Menu';
 import NavButton from './NavButton';
+import NavLink from './NavLink';
 
 export {
   Address,
@@ -19,7 +20,8 @@ export {
   IdentityCard,
   Icon,
   Menu,
-  NavButton
+  NavButton,
+  NavLink
 };
 
 export * from './types';
