@@ -4,7 +4,7 @@
 
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { Modal } from '@polkadot/ui-components';
+import { Container, InputFile, Modal } from '@polkadot/ui-components';
 
 import { OnboardingStoreInterface } from '../stores/interfaces';
 
@@ -31,9 +31,17 @@ export class Onboarding extends React.Component<Props> {
       <Modal
         dimmer='inverted'
         open
-        size='tiny'
+        size='small'
       >
-        onboarding
+        <Container>
+          <Modal.Header> Unlock Account </Modal.Header>
+          <Modal.Content>
+            <Modal.SubHeader> Restore Account from JSON Backup File </Modal.SubHeader>
+            <InputFile />
+            <Modal.FadedText> or </Modal.FadedText>
+            <Modal.SubHeader> Import Account from Seed Phrase </Modal.SubHeader>
+          </Modal.Content>
+        </Container>
       </Modal>
     );
   }

@@ -4,16 +4,26 @@
 
 import styled from 'styled-components';
 
-export const Stacked = styled.div`
-  display: 'flex column';
-  align-items: 'center';
-  justify-content: 'center';
-  min-height: 100%;
+export const FadedText = styled.p`
+  color: grey;
+  opacity: 0.5;
+  text-align: center;
 `;
 
-export const FadedText = styled.p`
-  color: #f4f4f4;
-  opacity: 0.5;
+export const Header = styled.h2`
+  text-align: center;
+  color: grey;
+  font-weight: 300;
+  font-size: 28px;
+  padding: 0.5rem 1rem;
+  margin: 2rem 0;
+`;
+
+export const InputArea = styled.div`
+  width: 363px;
+  height: 109px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  background-color: #ffffff;
 `;
 
 export const NavLinkSmall = styled.button`
@@ -40,4 +50,19 @@ export const NavLinkBig = styled.button`
   :hover {
     cursor: pointer;
   }
+`;
+
+export const Stacked = styled.div`
+  display: 'flex column';
+  align-items: 'center';
+  justify-content: 'center';
+  min-height: 100%;
+`;
+
+export const SubHeader = styled.h3`
+  text-align: center;
+  font-weight: 600;
+  font-size: 15px;
+  color: #51a0ec;
+  margin: 0 auto;
 `;
