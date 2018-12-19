@@ -36,7 +36,6 @@ export class Onboarding extends React.Component<State, Props> {
     const {
       onboardingStore: { isFirstRun }
     } = this.injected;
-    const { value } = this.state;
 
     console.log(isFirstRun);
 
@@ -44,28 +43,52 @@ export class Onboarding extends React.Component<State, Props> {
       <Modal
         dimmer='inverted'
         open
-        size='small'
+        size='tiny'
       >
         <Container>
           <Modal.Header> Unlock Account </Modal.Header>
           <Modal.Content>
             <Stacked>
-              <Modal.SubHeader> Restore Account from JSON Backup File </Modal.SubHeader>
-              <InputFile />
+              {this.renderJSONCard()}
               <Modal.FadedText> or </Modal.FadedText>
-              <Modal.SubHeader> Import Account from Seed Phrase </Modal.SubHeader>
-              <Input onChange={this.handleInputSeedPhrase} value={value} />
-              <Modal.Actions>
-                <Stacked>
-                  <NavButton> Unlock </NavButton>
-                  <Modal.FadedText>or</Modal.FadedText>
-                  <NavLink> Create New Account </NavLink>
-                </Stacked>
-              </Modal.Actions>
+              {this.renderPhraseCard()}
+              {this.renderActions()}
             </Stacked>
           </Modal.Content>
         </Container>
       </Modal>
+    );
+  }
+
+  renderJSONCard () {
+    return (
+      <div>
+        <Modal.SubHeader> Restore Account from JSON Backup File </Modal.SubHeader>
+        <InputFile />
+      </div>
+    );
+  }
+
+  renderPhraseCard () {
+    const { value } = this.state;
+
+    return (
+      <div>
+        <Modal.SubHeader> Import Account from Seed Phrase </Modal.SubHeader>
+        <Input onChange={this.handleInputSeedPhrase} value={value} />
+      </div>
+    );
+  }
+
+  renderActions () {
+    return (
+      <Modal.Actions>
+        <Stacked>
+          <NavButton>Unlock</NavButton>
+          <Modal.FadedText>or</Modal.FadedText>
+          <NavLink> Create New Account </NavLink>
+        </Stacked>
+      </Modal.Actions>
     );
   }
 }

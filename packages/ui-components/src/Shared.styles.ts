@@ -9,6 +9,7 @@ export const FadedText = styled.p`
   color: black;
   opacity: 0.5;
   text-align: center;
+  margin: 1rem auto;
 `;
 
 export const Header = styled.h2`
@@ -34,7 +35,7 @@ export const TextInputArea = styled(SUIInput)`
     height: 109px;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
     background-color: #ffffff;
-    overflow-x: wrap;
+    overflow: wrap;
   }
 `;
 

@@ -124,7 +124,7 @@ export default class Input extends React.PureComponent<Props, State> {
           }
           {icon}
           {children}
-        </InputArea>
+        </TextInputArea>
     );
   }
 
