@@ -9,6 +9,7 @@ import Container from './Container';
 import IdentityCard from './IdentityCard';
 import Icon from './Icon';
 import Menu from './Menu';
+import Modal from './Modal';
 import NavButton from './NavButton';
 import NavLink from './NavLink';
 
@@ -20,6 +21,7 @@ export {
   IdentityCard,
   Icon,
   Menu,
+  Modal,
   NavButton,
   NavLink
 };

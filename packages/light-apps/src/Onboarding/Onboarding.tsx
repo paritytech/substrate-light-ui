@@ -4,6 +4,8 @@
 
 import React from 'react';
 import { inject, observer } from 'mobx-react';
+import { Modal } from '@polkadot/ui-components';
+
 import { OnboardingStoreInterface } from '../stores/interfaces';
 
 type Props = {};
@@ -26,7 +28,13 @@ export class Onboarding extends React.Component<Props> {
     console.log(isFirstRun);
 
     return (
-      'onboardingStore'
+      <Modal
+        dimmer='inverted'
+        open
+        size='tiny'
+      >
+        onboarding
+      </Modal>
     );
   }
 }
