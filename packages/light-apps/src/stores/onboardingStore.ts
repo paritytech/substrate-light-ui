@@ -5,13 +5,9 @@
 import { action, observable } from 'mobx';
 import store from 'store';
 
-const LS_KEY = `__substrate-light::firstRun`;
+import { OnboardingStoreInterface } from './interfaces';
 
-interface OnboardingStoreInterface {
-  isFirstRun?: boolean;
-  setIsFirstRun: (isFirstRun: boolean) => void;
-  updateLS: () => void;
-}
+const LS_KEY = `__substrate-light::firstRun`;
 
 export class OnboardingStore implements OnboardingStoreInterface {
   @observable
