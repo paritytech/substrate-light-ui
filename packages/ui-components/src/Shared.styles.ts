@@ -3,9 +3,10 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import styled from 'styled-components';
+import SUIInput from 'semantic-ui-react/dist/commonjs/elements/Input/Input';
 
 export const FadedText = styled.p`
-  color: grey;
+  color: black;
   opacity: 0.5;
   text-align: center;
 `;
@@ -24,6 +25,17 @@ export const InputArea = styled.div`
   height: 109px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   background-color: #ffffff;
+  text-align: center;
+`;
+
+export const TextInputArea = styled(SUIInput)`
+  &&& {
+    width: 363px;
+    height: 109px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    background-color: #ffffff;
+    overflow-x: wrap;
+  }
 `;
 
 export const NavLinkSmall = styled.button`
@@ -53,9 +65,9 @@ export const NavLinkBig = styled.button`
 `;
 
 export const Stacked = styled.div`
-  display: 'flex column';
-  align-items: 'center';
-  justify-content: 'center';
+  display: flex column;
+  align-items: center;
+  justify-content: center;
   min-height: 100%;
 `;
 
@@ -64,5 +76,5 @@ export const SubHeader = styled.h3`
   font-weight: 600;
   font-size: 15px;
   color: #51a0ec;
-  margin: 0 auto;
+  margin: 1rem auto;
 `;

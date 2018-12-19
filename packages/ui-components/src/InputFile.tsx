@@ -5,12 +5,18 @@ import React from 'react';
 import Dropzone from 'react-dropzone';
 
 import Container from './Container';
-import { InputArea } from './Shared.styles';
+import { FadedText, InputArea } from './Shared.styles';
 
 type State = {
   file?: {
     name: string,
     size: number
+  }
+};
+
+type LoadEvent = {
+  target: {
+    result: ArrayBuffer
   }
 };
 
@@ -34,8 +40,8 @@ class InputFile extends React.PureComponent<State> {
                  <input {...getInputProps()} />
                  {
                    !file ?
-                     <p>Drop files here...</p> :
-                     <p>{file.name}</p>
+                     <FadedText>Drop files here...</FadedText> :
+                     <FadedText>{file.name}</FadedText>
                  }
                </InputArea>
              );
@@ -58,7 +64,7 @@ class InputFile extends React.PureComponent<State> {
         // ignore
       };
 
-      // @ts-ignore ummm... events are not properly specified here?
+      // @ts-ignore
       reader.onload = ({ target: { result } }: LoadEvent) => {
         const data = new Uint8Array(result);
 

@@ -8,6 +8,7 @@ import BalanceDisplay from './Balance';
 import Container from './Container';
 import IdentityCard from './IdentityCard';
 import Icon from './Icon';
+import Input from './Input';
 import InputFile from './InputFile';
 import Menu from './Menu';
 import Modal from './Modal';
@@ -21,6 +22,7 @@ export {
   Container,
   IdentityCard,
   Icon,
+  Input,
   InputFile,
   Menu,
   Modal,
@@ -29,3 +31,4 @@ export {
 };
 
 export * from './types';
+export * from './Shared.styles';

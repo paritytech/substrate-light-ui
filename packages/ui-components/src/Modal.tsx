@@ -6,7 +6,7 @@ import React from 'react';
 import styled from 'styled-components';
 import SUIModal from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
 
-import { Header, FadedText, SubHeader } from './Shared.styles';
+import { Header, FadedText, SubHeader, Stacked } from './Shared.styles';
 
 type Props = {
   [index: string]: any
@@ -15,16 +15,20 @@ type Props = {
 // FIXME: don't use any
 const StyledContent = styled<any>(SUIModal.Content)`
   &&& {
-    display: flex column;
+    display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 75%;
+    min-width: 100%;
   }
+`;
+
+const StyledActions = styled(StyledContent)`
+  margin-top: 2rem;
 `;
 
 // FIXME: this component is reused here and in @polkadot/apps - should be moved to @polkadot/ui
 export default class Modal extends React.PureComponent<Props> {
-  static Actions = SUIModal.Actions;
+  static Actions = StyledActions;
   static Content = StyledContent;
   static Header = Header;
   static SubHeader = SubHeader;
