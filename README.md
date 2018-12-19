@@ -14,8 +14,8 @@ As of now, the main functions are as follows, in order of priority:
 
 ### How to run
 ```
-git clone https://github.com/polkadot-js/light-ui
-cd light-ui
+git clone https://github.com/paritytech/substrate-light-ui
+cd substrate-light-ui
 nvm use stable
 yarn
 yarn start
