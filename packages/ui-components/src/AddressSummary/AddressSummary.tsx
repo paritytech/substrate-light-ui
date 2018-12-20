@@ -12,10 +12,12 @@ import { Stacked } from '../Shared.styles';
 import BalanceDisplay from '../Balance';
 
 type Props = {
-  address: string | AccountId | AccountIndex | Address,
-  balance: BN,
-  name: string
+  address?: string | AccountId | AccountIndex | Address,
+  balance?: BN,
+  name?: string
 };
+
+const PLACEHOLDER_NAME = 'Account 1';
 
 export class AddressSummary extends React.PureComponent<Props> {
   render () {
@@ -26,7 +28,7 @@ export class AddressSummary extends React.PureComponent<Props> {
         <IdentityIcon value={address as string} theme={'substrate'} size={64} />
 
         <Stacked>
-          <Name> { name } </Name>
+          <Name> { name || PLACEHOLDER_NAME } </Name>
           <BalanceDisplay balance={balance} address={address} />
         </Stacked>
       </SquareAddressSummaryBlock>

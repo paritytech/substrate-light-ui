@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import styled from 'styled-components';
-import SUIInput from 'semantic-ui-react/dist/commonjs/elements/Input/Input';
+import Input from './Input';
 
 export const FadedText = styled.p`
   color: black;
@@ -21,7 +21,7 @@ export const Header = styled.h2`
   margin: 2rem 0;
 `;
 
-export const InputArea = styled.div`
+export const FileInputArea = styled.div`
   width: 363px;
   height: 109px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
@@ -29,13 +29,13 @@ export const InputArea = styled.div`
   text-align: center;
 `;
 
-export const TextInputArea = styled(SUIInput)`
+export const TextInputArea = styled(Input)`
   &&& {
     width: 363px;
     height: 109px;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
     background-color: #ffffff;
-    overflow: wrap;
+    text-align: center;
   }
 `;
 
@@ -69,6 +69,8 @@ export const Stacked = styled.div`
   display: flex column;
   align-items: center;
   justify-content: center;
+  vertical-align: midde;
+  text-align: center;
   min-height: 100%;
 `;
 

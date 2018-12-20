@@ -7,17 +7,16 @@ import store from 'store';
 
 import { OnboardingStoreInterface } from './interfaces';
 
-const LS_KEY = `__substrate-light::firstRun`;
+const LS_KEY = `__substrate-light::firstRun`; // LS as in LocalStorage
 
 export class OnboardingStore implements OnboardingStoreInterface {
   @observable
-  isFirstRun?: boolean; // If it's the 1st time the user is running the app
+  isFirstRun?: boolean;
 
   constructor () {
     const isFirstRun = store.get(LS_KEY);
 
     if (isFirstRun === undefined) {
-      // Set store property to true.
       this.setIsFirstRun(true);
     } else {
       this.setIsFirstRun(isFirstRun);

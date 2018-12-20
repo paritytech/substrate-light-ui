@@ -10,9 +10,12 @@ import { Stacked } from './Shared.styles';
 import toShortAddress from './util/toShortAddress';
 
 type Props = {
-  address: string | AccountId | AccountIndex | Address,
-  balance: BN
+  address?: string | AccountId | AccountIndex | Address,
+  balance?: BN
 };
+
+const PLACEHOLDER_BALANCE = 0;
+const PLACEHOLDER_ADDRESS = '5'.padEnd(16, 'x');
 
 export default class BalanceDisplay extends React.PureComponent<Props> {
   render () {
@@ -20,8 +23,8 @@ export default class BalanceDisplay extends React.PureComponent<Props> {
 
     return (
       <Stacked>
-        <div>{ toShortAddress(address) }</div>
-        <div> Balance: { balance.toString(10) } </div>
+        <div>{ (address && toShortAddress(address)) || PLACEHOLDER_ADDRESS }</div>
+        <div> Balance: { (balance && balance.toString(10)) || PLACEHOLDER_BALANCE } </div>
       </Stacked>
     );
   }

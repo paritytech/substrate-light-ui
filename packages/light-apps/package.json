@@ -20,7 +20,9 @@
     "@polkadot/transfer-app": "0.1.0",
     "@polkadot/ui-assets": "^0.23.1",
     "@polkadot/ui-components": "0.1.0",
+    "@polkadot/ui-keyring": "^0.24.2",
     "@polkadot/ui-settings": "^0.22.17",
+    "@polkadot/util-crypto": "^0.33.20",
     "@types/react-dom": "^16.0.11",
     "@types/react-router-dom": "^4.3.1",
     "mobx": "^5.8.0",
@@ -29,6 +31,7 @@
     "react-dom": "^16.6.3",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.1",
-    "semantic-ui-css": "^2.4.1"
+    "semantic-ui-css": "^2.4.1",
+    "worker-loader": "^2.0.0"
   }
 }

@@ -5,7 +5,7 @@
 import React from 'react';
 import Dropzone from 'react-dropzone';
 
-import { FadedText, InputArea } from './Shared.styles';
+import { FadedText, FileInputArea, Stacked } from './Shared.styles';
 
 type State = {
   file?: {
@@ -44,14 +44,14 @@ class InputFile extends React.PureComponent<Props, State> {
           onDrop={this.onDrop}>
            {({ getRootProps, getInputProps, isDragActive }) => {
              return (
-               <InputArea {...getRootProps()}>
-                 <input {...getInputProps()} />
-                 {
-                   !file ?
-                     <FadedText>Drop files here...</FadedText> :
-                     <FadedText>{file.name}</FadedText>
-                 }
-               </InputArea>
+               <FileInputArea {...getRootProps()}>
+                   <input {...getInputProps()} />
+                   {
+                     !file ?
+                       <FadedText>Drop file here...</FadedText> :
+                       <FadedText>{file.name}</FadedText>
+                   }
+               </FileInputArea>
              );
            }}
        </Dropzone>

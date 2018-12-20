@@ -3,9 +3,10 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import { TextInputArea } from './Shared.styles';
+import SUIInput from 'semantic-ui-react/dist/commonjs/elements/Input/Input';
 
 type Input$Type = 'number' | 'password' | 'text';
+import { isUndefined } from '@polkadot/util';
 
 type Props = {
   autoFocus?: boolean,
@@ -79,51 +80,50 @@ export default class Input extends React.PureComponent<Props, State> {
     const { autoFocus = false, children, defaultValue, icon, isEditable = false, isAction = false, isDisabled = false, isError = false, isHidden = false, max, maxLength, min, name, placeholder, tabIndex, type = 'text', value } = this.props;
 
     return (
-        <TextInputArea
-          action={isAction}
-          autoFocus={autoFocus}
-          className={
-            isEditable
-              ? 'edit icon'
-              : ''
+      <SUIInput
+        action={isAction}
+        autoFocus={autoFocus}
+        defaultValue={
+          isUndefined(value)
+            ? (defaultValue || '')
+            : undefined
+        }
+        disabled={isDisabled}
+        error={isError}
+        hidden={isHidden}
+        id={name}
+        iconPosition={
+          isUndefined(icon)
+            ? undefined
+            : 'left'
+        }
+        max={max}
+        maxLength={maxLength}
+        min={min}
+        name={name || this.state.name}
+        onChange={this.onChange}
+        onKeyDown={this.onKeyDown}
+        onKeyUp={this.onKeyUp}
+        placeholder={placeholder}
+        tabIndex={tabIndex}
+        type={type}
+        value={value}
+      >
+        <input
+          autoComplete={
+            type === 'password'
+              ? 'new-password'
+              : 'off'
           }
-          defaultValue={
-            defaultValue || value || ''
-          }
-          disabled={isDisabled}
-          error={isError}
-          hidden={isHidden}
-          id={name}
-          iconPosition={
-              icon || 'left'
-          }
-          max={max}
-          maxLength={maxLength}
-          min={min}
-          name={name || this.state.name}
-          onChange={this.onChange}
-          onKeyDown={this.onKeyDown}
-          onKeyUp={this.onKeyUp}
-          placeholder={placeholder}
-          tabIndex={tabIndex}
-          type={type}
-          value={value}
-        >
-          <input
-            autoComplete={
-              type === 'password'
-                ? 'new-password'
-                : 'off'
-            }
-          />
-          {
-            isEditable
-              ? <i className='edit icon' />
-              : undefined
-          }
-          {icon}
-          {children}
-        </TextInputArea>
+        />
+        {
+          isEditable
+            ? <i className='edit icon' />
+            : undefined
+        }
+        {icon}
+        {children}
+      </SUIInput>
     );
   }
 
