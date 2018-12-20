@@ -69,6 +69,7 @@ const isSelectAll = (key: string, isPreKeyDown: boolean): boolean =>
 
 let counter = 0;
 
+// FIXME: Input component should be reused from @polkadot-js/ui, once it's there
 export default class Input extends React.PureComponent<Props, State> {
   state: State = {
     name: `in_${counter++}_at_${Date.now()}`
