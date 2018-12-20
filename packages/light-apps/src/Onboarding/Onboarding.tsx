@@ -6,24 +6,19 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { OnboardingStoreInterface } from '../stores/interfaces';
 
-type Props = {};
-interface InjectedProps extends Props {
-  onboardingStore: OnboardingStoreInterface;
-}
+type Props = {
+  onboardingStore?: OnboardingStoreInterface
+};
 
 @inject('onboardingStore')
 @observer
 export class Onboarding extends React.Component<Props> {
-  get injected () {
-    return this.props as InjectedProps;
-  }
-
   render () {
     const {
-      onboardingStore: { isFirstRun }
-    } = this.injected;
+      onboardingStore
+    } = this.props;
 
-    console.log(isFirstRun);
+    console.log(onboardingStore!.isFirstRun);
 
     return (
       'onboardingStore'

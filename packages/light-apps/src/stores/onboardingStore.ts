@@ -20,7 +20,7 @@ export class OnboardingStore implements OnboardingStoreInterface {
       // Set store property to true.
       this.setIsFirstRun(true);
     } else {
-      this.setIsFirstRun(isFirstRun);
+      this.setIsFirstRun(isFirstRun as boolean);
     }
   }
 
