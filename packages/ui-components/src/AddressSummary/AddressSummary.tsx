@@ -7,8 +7,7 @@ import IdentityIcon from '@polkadot/ui-identicon';
 import { AccountId, AccountIndex, Address } from '@polkadot/types';
 import BN from 'bn.js';
 
-import { Name, SquareAddressSummaryBlock } from './AddressSummary.styles';
-import { Stacked } from '../Shared.styles';
+import { Name, Stacked } from '../Shared.styles';
 import BalanceDisplay from '../Balance';
 
 type Props = {
@@ -24,14 +23,11 @@ export class AddressSummary extends React.PureComponent<Props> {
     const { address, balance, name } = this.props;
 
     return (
-      <SquareAddressSummaryBlock>
+      <Stacked>
         <IdentityIcon value={address as string} theme={'substrate'} size={64} />
-
-        <Stacked>
-          <Name> { name || PLACEHOLDER_NAME } </Name>
-          <BalanceDisplay balance={balance} address={address} />
-        </Stacked>
-      </SquareAddressSummaryBlock>
+        <Name> { name || PLACEHOLDER_NAME } </Name>
+        <BalanceDisplay balance={balance} address={address} />
+      </Stacked>
     );
   }
 }

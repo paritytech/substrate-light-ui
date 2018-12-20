@@ -6,7 +6,7 @@ import React from 'react';
 import { AccountId, AccountIndex, Address } from '@polkadot/types';
 import BN from 'bn.js';
 
-import { Stacked } from './Shared.styles';
+import { Stacked, MarginTop } from './Shared.styles';
 import toShortAddress from './util/toShortAddress';
 
 type Props = {
@@ -23,8 +23,9 @@ export default class BalanceDisplay extends React.PureComponent<Props> {
 
     return (
       <Stacked>
+        <MarginTop />
         <div>{ (address && toShortAddress(address)) || PLACEHOLDER_ADDRESS }</div>
-        <div> Balance: { (balance && balance.toString(10)) || PLACEHOLDER_BALANCE } </div>
+        <div>Balance: { (balance && balance.toString(10)) || PLACEHOLDER_BALANCE }</div>
       </Stacked>
     );
   }

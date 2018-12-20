@@ -5,7 +5,7 @@
 import React from 'react';
 import Dropzone from 'react-dropzone';
 
-import { FadedText, FileInputArea, Stacked } from './Shared.styles';
+import { FadedText, FileInputArea } from './Shared.styles';
 
 type State = {
   file?: {

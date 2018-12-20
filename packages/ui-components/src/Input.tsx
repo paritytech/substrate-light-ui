@@ -3,8 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import SUIInput from 'semantic-ui-react/dist/commonjs/elements/Input/Input';
-
+import { TextInputArea } from './Shared.styles';
 type Input$Type = 'number' | 'password' | 'text';
 import { isUndefined } from '@polkadot/util';
 
@@ -80,7 +79,7 @@ export default class Input extends React.PureComponent<Props, State> {
     const { autoFocus = false, children, defaultValue, icon, isEditable = false, isAction = false, isDisabled = false, isError = false, isHidden = false, max, maxLength, min, name, placeholder, tabIndex, type = 'text', value } = this.props;
 
     return (
-      <SUIInput
+      <TextInputArea
         action={isAction}
         autoFocus={autoFocus}
         defaultValue={
@@ -123,7 +122,7 @@ export default class Input extends React.PureComponent<Props, State> {
         }
         {icon}
         {children}
-      </SUIInput>
+      </TextInputArea>
     );
   }
 

@@ -7,7 +7,7 @@ import { inject, observer } from 'mobx-react';
 import keyring from '@polkadot/ui-keyring';
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
 
-import { AddressSummary, Container, TextInputArea, InputFile, Modal, NavButton, NavLink, Stacked } from '@polkadot/ui-components';
+import { AddressSummary, Container, FadedText, Input, InputFile, Modal, NavButton, NavLink, Segment, Stacked } from '@polkadot/ui-components';
 
 import { OnboardingStoreInterface } from '../stores/interfaces';
 
@@ -22,6 +22,7 @@ type State = {
   address?: string,
   isBipBusy: boolean,
   name?: string,
+  password?: string,
   phrase?: string,
   file?: Uint8Array,
   screen: OnboardingScreenType,
@@ -44,7 +45,6 @@ function generateAddressFromSeed (seed: string): string {
 @inject('onboardingStore')
 @observer
 export class Onboarding extends React.Component<Props, State> {
-  bipWorker: any;
   state: State = {
     isBipBusy: true,
     screen: 'unlock'
@@ -83,6 +83,12 @@ export class Onboarding extends React.Component<Props, State> {
     });
   }
 
+  onChangePassword = (password: string) => {
+    this.setState({
+      password: password
+    });
+  }
+
   onChangeSeed = (seed: string) => {
     this.setState({
       seed: seed
@@ -118,7 +124,7 @@ export class Onboarding extends React.Component<Props, State> {
   }
 
   renderNewAccountScreen () {
-    const { address, name, seed } = this.state;
+    const { address, name, password, seed } = this.state;
 
     return (
       <React.Fragment>
@@ -127,18 +133,19 @@ export class Onboarding extends React.Component<Props, State> {
           <Stacked>
             <AddressSummary address={address} name={name} />
             <Modal.SubHeader> Name the account </Modal.SubHeader>
-            <TextInputArea
+            <Input
               autoFocus
               onChange={this.onChangeName}
               value={name}
             />
             <Modal.SubHeader> Create from the following mnemonic seed </Modal.SubHeader>
-            <TextInputArea
-              isAction
-              isDisabled={true}
-              onChange={this.onChangeSeed}
-              placeholder={'Generating Mnemeonic seed'}
-              value={seed}
+            <Segment> <FadedText> {seed} </FadedText> </Segment>
+            <Modal.SubHeader> Encrypt it with a passphrase </Modal.SubHeader>
+            <Input
+              autoFocus
+              onChange={this.onChangePassword}
+              value={password}
+              type={'password'}
             />
             <Modal.Actions>
               <Stacked>
@@ -184,7 +191,7 @@ export class Onboarding extends React.Component<Props, State> {
     return (
       <React.Fragment>
         <Modal.SubHeader> Import Account from Seed Phrase </Modal.SubHeader>
-        <TextInputArea
+        <Input
           onChange={this.handleInputSeedPhrase}
           value={phrase} />
       </React.Fragment>

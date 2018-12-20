@@ -3,13 +3,25 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import styled from 'styled-components';
-import Input from './Input';
+import SUIInput from 'semantic-ui-react/dist/commonjs/elements/Input/Input';
 
 export const FadedText = styled.p`
   color: black;
   opacity: 0.5;
   text-align: center;
   margin: 1rem auto;
+`;
+
+export const MarginTop = styled.div`
+  margin-top: 1rem;
+`;
+
+export const WithSpace = styled.div`
+  margin: 1rem auto;
+`;
+
+export const WithPadding = styled.div`
+  padding: 1rem auto;
 `;
 
 export const Header = styled.h2`
@@ -21,6 +33,12 @@ export const Header = styled.h2`
   margin: 2rem 0;
 `;
 
+export const Name = styled.p`
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0 0;
+`;
+
 export const FileInputArea = styled.div`
   width: 363px;
   height: 109px;
@@ -29,13 +47,13 @@ export const FileInputArea = styled.div`
   text-align: center;
 `;
 
-export const TextInputArea = styled(Input)`
+export const TextInputArea = styled(SUIInput)`
   &&& {
-    width: 363px;
-    height: 109px;
+    min-width: 100%;
+    height: $(props => props.height || 109px)
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
     background-color: #ffffff;
-    text-align: center;
+    color: grey;
   }
 `;
 
@@ -79,5 +97,5 @@ export const SubHeader = styled.h3`
   font-weight: 600;
   font-size: 15px;
   color: #51a0ec;
-  margin: 1rem auto;
+  margin: 1rem auto 0.3rem auto;
 `;

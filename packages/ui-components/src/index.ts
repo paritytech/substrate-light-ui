@@ -14,6 +14,7 @@ import Menu from './Menu';
 import Modal from './Modal';
 import NavButton from './NavButton';
 import NavLink from './NavLink';
+import Segment from './Segment';
 
 export {
   Address,
@@ -27,7 +28,8 @@ export {
   Menu,
   Modal,
   NavButton,
-  NavLink
+  NavLink,
+  Segment
 };
 
 export * from './types';
