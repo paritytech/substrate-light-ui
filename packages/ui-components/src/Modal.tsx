@@ -6,7 +6,7 @@ import React from 'react';
 import styled from 'styled-components';
 import SUIModal from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
 
-import { Header, FadedText, SubHeader, Stacked } from './Shared.styles';
+import { Header, FadedText, SubHeader } from './Shared.styles';
 
 type Props = {
   [index: string]: any

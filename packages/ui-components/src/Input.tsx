@@ -17,7 +17,6 @@ type Props = {
   isEditable?: boolean,
   isError?: boolean,
   isHidden?: boolean,
-  label?: React.ReactNode,
   max?: any,
   maxLength?: number,
   min?: any,
@@ -28,8 +27,7 @@ type Props = {
   placeholder?: string,
   tabIndex?: number,
   type?: Input$Type,
-  value?: any,
-  withLabel?: boolean
+  value?: any
 };
 
 type State = {
@@ -77,7 +75,7 @@ export default class Input extends React.PureComponent<Props, State> {
   };
 
   render () {
-    const { autoFocus = false, children, defaultValue, icon, isEditable = false, isAction = false, isDisabled = false, isError = false, isHidden = false, label, max, maxLength, min, name, placeholder, tabIndex, type = 'text', value, withLabel } = this.props;
+    const { autoFocus = false, children, defaultValue, icon, isEditable = false, isAction = false, isDisabled = false, isError = false, isHidden = false, max, maxLength, min, name, placeholder, tabIndex, type = 'text', value } = this.props;
 
     return (
         <TextInputArea
@@ -89,7 +87,7 @@ export default class Input extends React.PureComponent<Props, State> {
               : ''
           }
           defaultValue={
-            value || ''
+            defaultValue || value || ''
           }
           disabled={isDisabled}
           error={isError}

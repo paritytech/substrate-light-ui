@@ -14,7 +14,8 @@ interface InjectedProps extends Props {
 }
 
 type State = {
-  value?: string
+  value?: string,
+  file?: Uint8Array
 };
 
 @inject('onboardingStore')
@@ -29,6 +30,12 @@ export class Onboarding extends React.Component<State, Props> {
   handleInputSeedPhrase = (val: string) => {
     this.setState({
       value: val
+    });
+  }
+
+  handleFileUploaded = (data: Uint8Array) => {
+    this.setState({
+      file: data
     });
   }
 
@@ -64,7 +71,7 @@ export class Onboarding extends React.Component<State, Props> {
     return (
       <div>
         <Modal.SubHeader> Restore Account from JSON Backup File </Modal.SubHeader>
-        <InputFile />
+        <InputFile onChange={this.handleFileUploaded}/>
       </div>
     );
   }

@@ -4,7 +4,6 @@
 import React from 'react';
 import Dropzone from 'react-dropzone';
 
-import Container from './Container';
 import { FadedText, InputArea } from './Shared.styles';
 
 type State = {
@@ -12,6 +11,14 @@ type State = {
     name: string,
     size: number
   }
+};
+
+type Props = {
+  accept?: string,
+  isDisabled?: boolean,
+  isError?: boolean,
+  onChange?: (data: Uint8Array) => void,
+  placeholder?: string
 };
 
 type LoadEvent = {
@@ -23,7 +30,7 @@ type LoadEvent = {
 const accept = ['application/json, text/plain'].join();
 
 // FIXME: this component is reused here and in @polkadot/apps - should be moved to @polkadot/ui
-class InputFile extends React.PureComponent<State> {
+class InputFile extends React.PureComponent<Props, State> {
   state: State = {};
 
   render () {
