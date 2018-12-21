@@ -43,7 +43,6 @@ const ID_CARD_ACTIONS = (name: string) => {
   }
 };
 
-// @ts-ignore
 @(withRouter as any)
 @inject('onboardingStore')
 @observer
