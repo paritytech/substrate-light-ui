@@ -18,10 +18,8 @@ export class Onboarding extends React.Component<Props> {
       onboardingStore
     } = this.props;
 
-    console.log(onboardingStore!.isFirstRun);
-
     return (
-      'onboardingStore'
+      onboardingStore!.isFirstRun
     );
   }
 }

@@ -13,7 +13,6 @@ import 'semantic-ui-css/semantic.min.css';
 import { createApp } from './createApp';
 import { GlobalStyle } from './globalStyle';
 import Content from './Content';
-// @ts-ignore
 import rootStore from './stores';
 
 const LOGO = substrateLogo;

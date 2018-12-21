@@ -17,7 +17,6 @@ export class OnboardingStore implements OnboardingStoreInterface {
 
   constructor () {
     if (NODE_ENV === 'development') {
-      // @ts-ignore
       enableLogging();
     }
 
