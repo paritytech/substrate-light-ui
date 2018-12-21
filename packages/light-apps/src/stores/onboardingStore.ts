@@ -37,7 +37,7 @@ export class OnboardingStore implements OnboardingStoreInterface {
     this.updateLS();
   }
 
-  updateLS = () => stores.set(LS_KEY, this.isFirstRun);
+  updateLS = () => store.set(LS_KEY, this.isFirstRun);
 }
 
 export default new OnboardingStore();
