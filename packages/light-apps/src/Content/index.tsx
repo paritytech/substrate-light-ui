@@ -5,12 +5,16 @@
 import React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { Container, IdentityCard } from '@polkadot/ui-components';
+import { inject, observer } from 'mobx-react';
 
 import routing from '../routing';
 import NotFound from './NotFound';
+import Onboarding from '../Onboarding';
+import { OnboardingStoreInterface } from '../stores/interfaces';
 
-type Props = RouteComponentProps & {};
-
+type Props = RouteComponentProps & {
+  onboardingStore?: OnboardingStoreInterface
+};
 const unknown = {
   Component: NotFound,
   name: ''
@@ -39,8 +43,9 @@ const ID_CARD_ACTIONS = (name: string) => {
   }
 };
 
-// @ts-ignore
 @(withRouter as any)
+@inject('onboardingStore')
+@observer
 class Content extends React.Component<Props> {
   handleRouteChange = (to?: string) => {
     const { history, location } = this.props;
@@ -54,7 +59,7 @@ class Content extends React.Component<Props> {
   }
 
   render () {
-    const { location } = this.props;
+    const { location, onboardingStore } = this.props;
 
     const app = location.pathname.slice(1) || '';
     const { Component, name } = routing.routes.find((route) =>
@@ -63,12 +68,18 @@ class Content extends React.Component<Props> {
 
     return (
       <Container>
-        <IdentityCard
-          address={'7qroA7r5Ky9FHN5mXA2GNxZ79ieStv4WYYjYe3m3XszK9SvF'}
-          goToRoute={this.handleRouteChange}
-          value={ID_CARD_ACTIONS(name)['value']}
-          />
-        <Component basePath={`/${name}`} />
+        {
+          onboardingStore!.isFirstRun
+          ? <Onboarding />
+          : <div>
+              <IdentityCard
+                address={'7qroA7r5Ky9FHN5mXA2GNxZ79ieStv4WYYjYe3m3XszK9SvF'}
+                goToRoute={this.handleRouteChange}
+                value={ID_CARD_ACTIONS(name)['value']}
+                />
+              <Component basePath={`/${name}`} />
+            </div>
+        }
       </Container>
     );
   }
