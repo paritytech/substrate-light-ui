@@ -3,29 +3,32 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { action, observable } from 'mobx';
-import localforage from 'localforage';
+import store from 'store';
 import { enableLogging } from 'mobx-logger';
 
 import { OnboardingStoreInterface } from './interfaces';
 
 const LS_KEY = `__substrate-light::firstRun`;
+const NODE_ENV = process.env.NODE_ENV;
 
 export class OnboardingStore implements OnboardingStoreInterface {
   @observable
   isFirstRun?: boolean; // If it's the 1st time the user is running the app
 
   constructor () {
-    // @ts-ignore
-    enableLogging();
+    if (NODE_ENV === 'development') {
+      // @ts-ignore
+      enableLogging();
+    }
 
-    localforage.getItem(LS_KEY).then(isFirstRun => {
-      if (isFirstRun === undefined) {
-        // Set store property to true.
-        this.setIsFirstRun(true);
-      } else {
-        this.setIsFirstRun(isFirstRun as boolean);
-      }
-    });
+    const isFirstRun = store.get(LS_KEY);
+
+    if (isFirstRun === undefined) {
+      // Set store property to true.
+      this.setIsFirstRun(true);
+    } else {
+      this.setIsFirstRun(isFirstRun as boolean);
+    }
   }
 
   @action
@@ -34,7 +37,7 @@ export class OnboardingStore implements OnboardingStoreInterface {
     this.updateLS();
   }
 
-  updateLS = () => localforage.setItem(LS_KEY, this.isFirstRun);
+  updateLS = () => stores.set(LS_KEY, this.isFirstRun);
 }
 
 export default new OnboardingStore();

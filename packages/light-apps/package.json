@@ -5,7 +5,7 @@
   "description": "User interface optimized for the Substrate light client",
   "license": "Apache-2.0",
   "scripts": {
-    "start": "BROWSER=none react-scripts start",
+    "start": "BROWSER=none NODE_ENV=development react-scripts start",
     "build": "react-scripts build",
     "test": "jest --coverage"
   },
@@ -23,7 +23,6 @@
     "@polkadot/ui-settings": "^0.22.17",
     "@types/react-dom": "^16.0.11",
     "@types/react-router-dom": "^4.3.1",
-    "localforage": "^1.7.3",
     "mobx": "^5.8.0",
     "mobx-logger": "^0.7.1",
     "mobx-react": "^5.4.3",
