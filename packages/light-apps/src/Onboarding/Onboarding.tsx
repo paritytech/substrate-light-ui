@@ -3,15 +3,15 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
+import { withRouter, RouteComponentProps } from 'react-router';
 import { inject, observer } from 'mobx-react';
 import keyring from '@polkadot/ui-keyring';
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
-
 import { AddressSummary, Container, FadedText, Input, InputFile, Modal, NavButton, NavLink, Segment, Stacked } from '@polkadot/ui-components';
 
 import { OnboardingStoreInterface } from '../stores/interfaces';
 
-type Props = {
+type Props = RouteComponentProps & {
   onboardingStore?: OnboardingStoreInterface
 };
 
@@ -41,6 +41,7 @@ function generateAddressFromSeed (seed: string): string {
   );
 }
 
+@(withRouter as any)
 @inject('onboardingStore')
 @observer
 export class Onboarding extends React.Component<Props, State> {
@@ -97,11 +98,21 @@ export class Onboarding extends React.Component<Props, State> {
     });
   }
 
-  render () {
-    const { screen } = this.state;
+  restoreAccount = () => {
     const {
+      history,
       onboardingStore
     } = this.props;
+
+    onboardingStore!.setIsFirstRun(false);
+
+    // FIXME: restoreAccount account with light-api
+
+    history.push('/Identity');
+  }
+
+  render () {
+    const { screen } = this.state;
 
     return (
       <Modal
@@ -142,7 +153,7 @@ export class Onboarding extends React.Component<Props, State> {
             />
             <Modal.Actions>
               <Stacked>
-                <NavButton> Save </NavButton>
+                <NavButton onClick={this.restoreAccount}> Save </NavButton>
                 <Modal.FadedText>or</Modal.FadedText>
                 <NavLink onClick={this.toggleScreen}> Unlock an existing account </NavLink>
               </Stacked>
@@ -195,7 +206,7 @@ export class Onboarding extends React.Component<Props, State> {
     return (
       <Modal.Actions>
         <Stacked>
-          <NavButton>Unlock</NavButton>
+          <NavButton onClick={this.restoreAccount}>Unlock</NavButton>
           <Modal.FadedText>or</Modal.FadedText>
           <NavLink onClick={this.toggleScreen}> Create New Account </NavLink>
         </Stacked>
