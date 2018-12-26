@@ -11,8 +11,7 @@
     "test": "echo Skipped."
   },
   "dependencies": {
-    "electron-is-dev": "^1.0.1",
-    "electron-typescript-definitions": "^3.0.0"
+    "electron-is-dev": "^1.0.1"
   },
   "devDependencies": {
     "copyfiles": "^2.0.0",
