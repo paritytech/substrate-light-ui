@@ -5,7 +5,7 @@
   "description": "User interface optimized for the Substrate light client",
   "license": "Apache-2.0",
   "scripts": {
-    "start": "BROWSER=none react-scripts start",
+    "start": "BROWSER=none NODE_ENV=development react-scripts start",
     "build": "react-scripts build",
     "test": "jest --coverage"
   },
@@ -26,12 +26,13 @@
     "@types/react-dom": "^16.0.11",
     "@types/react-router-dom": "^4.3.1",
     "mobx": "^5.8.0",
+    "mobx-logger": "^0.7.1",
     "mobx-react": "^5.4.3",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.1",
     "semantic-ui-css": "^2.4.1",
-    "worker-loader": "^2.0.0"
+    "store": "^2.0.12"
   }
 }

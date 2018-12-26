@@ -4,22 +4,28 @@
 
 import { action, observable } from 'mobx';
 import store from 'store';
+import { enableLogging } from 'mobx-logger';
 
 import { OnboardingStoreInterface } from './interfaces';
 
-const LS_KEY = `__substrate-light::firstRun`; // LS as in LocalStorage
+const LS_KEY = `__substrate-light::firstRun`;
+const NODE_ENV = process.env.NODE_ENV;
 
 export class OnboardingStore implements OnboardingStoreInterface {
   @observable
   isFirstRun?: boolean;
 
   constructor () {
+    if (NODE_ENV === 'development') {
+      enableLogging();
+    }
+
     const isFirstRun = store.get(LS_KEY);
 
     if (isFirstRun === undefined) {
       this.setIsFirstRun(true);
     } else {
-      this.setIsFirstRun(isFirstRun);
+      this.setIsFirstRun(isFirstRun as boolean);
     }
   }
 

@@ -11,10 +11,9 @@ import { AddressSummary, Container, FadedText, Input, InputFile, Modal, NavButto
 
 import { OnboardingStoreInterface } from '../stores/interfaces';
 
-type Props = {};
-interface InjectedProps extends Props {
-  onboardingStore: OnboardingStoreInterface;
-}
+type Props = {
+  onboardingStore?: OnboardingStoreInterface
+};
 
 type OnboardingScreenType = 'unlock' | 'new';
 
@@ -61,10 +60,6 @@ export class Onboarding extends React.Component<Props, State> {
     });
   }
 
-  get injected () {
-    return this.props as InjectedProps;
-  }
-
   handleInputSeedPhrase = (val: string) => {
     this.setState({
       phrase: val
@@ -105,10 +100,8 @@ export class Onboarding extends React.Component<Props, State> {
   render () {
     const { screen } = this.state;
     const {
-      onboardingStore: { isFirstRun }
-    } = this.injected;
-
-    console.log(isFirstRun);
+      onboardingStore
+    } = this.props;
 
     return (
       <Modal

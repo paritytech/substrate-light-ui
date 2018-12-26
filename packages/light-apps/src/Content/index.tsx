@@ -12,12 +12,9 @@ import NotFound from './NotFound';
 import Onboarding from '../Onboarding';
 import { OnboardingStoreInterface } from '../stores/interfaces';
 
-type Props = RouteComponentProps & {};
-
-interface InjectedProps extends Props {
-  onboardingStore: OnboardingStoreInterface;
-}
-
+type Props = RouteComponentProps & {
+  onboardingStore?: OnboardingStoreInterface
+};
 const unknown = {
   Component: NotFound,
   name: ''
@@ -46,15 +43,10 @@ const ID_CARD_ACTIONS = (name: string) => {
   }
 };
 
-// @ts-ignore
 @(withRouter as any)
 @inject('onboardingStore')
 @observer
 class Content extends React.Component<Props> {
-  get injected () {
-    return this.props as InjectedProps;
-  }
-
   handleRouteChange = (to?: string) => {
     const { history, location } = this.props;
 
@@ -67,8 +59,7 @@ class Content extends React.Component<Props> {
   }
 
   render () {
-    const { location } = this.props;
-    const { onboardingStore: { isFirstRun } } = this.injected;
+    const { location, onboardingStore } = this.props;
 
     const app = location.pathname.slice(1) || '';
     const { Component, name } = routing.routes.find((route) =>
@@ -78,7 +69,7 @@ class Content extends React.Component<Props> {
     return (
       <Container>
         {
-          isFirstRun
+          onboardingStore!.isFirstRun
           ? <Onboarding />
           : <div>
               <IdentityCard
