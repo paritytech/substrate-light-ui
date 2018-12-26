@@ -3,19 +3,21 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
+import { RouteComponentProps } from 'react-router';
 import { NavLink } from 'react-router-dom';
+import { Provider } from 'mobx-react';
 import settings from '@polkadot/ui-settings';
 import substrateLogo from '@polkadot/ui-assets/parity-substrate.svg';
-import { RouteComponentProps } from 'react-router';
 import 'semantic-ui-css/semantic.min.css';
 
 import { createApp } from './createApp';
 import { GlobalStyle } from './globalStyle';
 import Content from './Content';
-
-type Props = {};
+import rootStore from './stores';
 
 const LOGO = substrateLogo;
+
+type Props = {};
 
 function App (props: Props) {
   return (
@@ -28,7 +30,9 @@ function App (props: Props) {
           width={150}
         />
       </NavLink>
-      <Content {...({} as RouteComponentProps<any>)} />
+      <Provider {...rootStore}>
+        <Content {...({} as RouteComponentProps<any>)} />
+      </Provider>
     </div>
   );
 }

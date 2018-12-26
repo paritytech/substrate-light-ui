@@ -4,7 +4,31 @@
 
 import styled from 'styled-components';
 
-export const StyledNavButton = styled.button`
+export const Stacked = styled.div`
+  display: 'flex column';
+  align-items: 'center';
+  justify-content: 'center';
+  min-height: 100%;
+`;
+
+export const FadedText = styled.p`
+  color: #f4f4f4;
+  opacity: 0.5;
+`;
+
+export const NavLinkSmall = styled.button`
+  font-size: 15px;
+  font-weight: 300;
+  color: #51a0ec;
+  background: none;
+  border: none;
+
+  :hover {
+    cursor: pointer;
+  }
+`;
+
+export const NavLinkBig = styled.button`
   box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.3);
   background-image: linear-gradient(107deg, #8479f3, #53a0fd 71%, #51a0ec);
   width: 134px;

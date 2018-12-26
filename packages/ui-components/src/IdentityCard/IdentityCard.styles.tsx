@@ -17,14 +17,15 @@ export const CardHeader = styled(SUICard.Header)`
 // This is a known issue with flexbox with no clean solution at the moment.
 // https://stackoverflow.com/questions/40686928/pseudo-elements-breaking-justify-content-space-between-in-flexbox-layout
 export const CardContent = styled(SUICard.Content)`
-&&& {
+  &&& {
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
     padding: 3rem 1rem;
-    margin-left: 6rem;
+    margin-left: 5rem;
     min-width: 100%;
     border: none;
+  }
 `;
 
 // FIXME don't use <any>
@@ -33,7 +34,7 @@ export const CardContent = styled(SUICard.Content)`
 // "node_modules/semantic-ui-react/dist/commonjs/views/Card/Card" but cannot
 // be named.ts(4023)
 export const StyledCard = styled<any>(SUICard)`
-&&& {
+  &&& {
     display: flex;
     align-items: center;
     justify-content: center;

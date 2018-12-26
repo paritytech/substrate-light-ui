@@ -2,11 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import styled from 'styled-components';
-
-export const AddressContainer = styled.div`
-  display: 'flex';
-  align-items: 'flex-end';
-  justify-content: 'flex-end';
-  width: 50%;
-`;
+export interface OnboardingStoreInterface {
+  isFirstRun?: boolean;
+  setIsFirstRun: (isFirstRun: boolean) => void;
+  updateLS: () => void;
+}

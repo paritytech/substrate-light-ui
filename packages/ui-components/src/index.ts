@@ -4,20 +4,24 @@
 
 import Address from './Address';
 import AddressSummary from './AddressSummary';
+import BalanceDisplay from './Balance';
 import Container from './Container';
 import IdentityCard from './IdentityCard';
 import Icon from './Icon';
 import Menu from './Menu';
 import NavButton from './NavButton';
+import NavLink from './NavLink';
 
 export {
   Address,
   AddressSummary,
+  BalanceDisplay,
   Container,
   IdentityCard,
   Icon,
   Menu,
-  NavButton
+  NavButton,
+  NavLink
 };
 
 export * from './types';
