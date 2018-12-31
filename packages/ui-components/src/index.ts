@@ -1,4 +1,4 @@
-// Copyright 2017-2018 @polkadot/light-apps authors & contributors
+// Copyright 2017-2018 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
@@ -14,6 +14,7 @@ import Menu from './Menu';
 import Modal from './Modal';
 import NavButton from './NavButton';
 import NavLink from './NavLink';
+import WalletCard from './WalletCard';
 import Segment from './Segment';
 
 export {
@@ -28,6 +29,8 @@ export {
   Menu,
   Modal,
   NavButton,
+  NavLink,
+  WalletCard
   NavLink,
   Segment
 };
