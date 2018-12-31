@@ -141,6 +141,7 @@ export class Onboarding extends React.Component<Props, State> {
               autoFocus
               onChange={this.onChangeName}
               value={name}
+              withLabel={false}
             />
             <Modal.SubHeader> Create from the following mnemonic seed </Modal.SubHeader>
             <Segment> <FadedText> {seed} </FadedText> </Segment>
@@ -150,6 +151,7 @@ export class Onboarding extends React.Component<Props, State> {
               onChange={this.onChangePassword}
               value={password}
               type={'password'}
+              withLabel={false}
             />
             <Modal.Actions>
               <Stacked>
@@ -197,7 +199,8 @@ export class Onboarding extends React.Component<Props, State> {
         <Modal.SubHeader> Import Account from Seed Phrase </Modal.SubHeader>
         <Input
           onChange={this.handleInputSeedPhrase}
-          value={phrase} />
+          value={phrase}
+          withLabel={false} />
       </React.Fragment>
     );
   }

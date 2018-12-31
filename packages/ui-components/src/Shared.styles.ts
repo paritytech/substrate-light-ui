@@ -4,6 +4,22 @@
 
 import styled from 'styled-components';
 import SUIInput from 'semantic-ui-react/dist/commonjs/elements/Input/Input';
+import SUIContainer from 'semantic-ui-react/dist/commonjs/elements/Container';
+import SUICard from 'semantic-ui-react/dist/commonjs/views/Card';
+
+export const Container = styled(SUIContainer)`
+  padding: 1.5rem;
+`;
+
+export const Card = styled<any>(SUICard)`
+ &&& {
+  width: 299px;
+  height: 372px;
+  border-radius: 2px;
+  box-shadow: 0 4px 5px 1px rgba(0, 0, 0, 0.3);
+  background-color: #ffffff;
+ }
+`;
 
 export const FadedText = styled.p`
   color: black;
@@ -20,17 +36,22 @@ export const WithSpace = styled.div`
   margin: 1rem auto;
 `;
 
+export const WithSpaceAround = styled.div<any>`
+  margin: ${props => props.margin || '1rem 1rem'};
+  padding: ${props => props.padding || '1rem 1rem'};
+`;
+
 export const WithPadding = styled.div`
   padding: 1rem auto;
 `;
 
-export const Header = styled.h2`
+export const Header = styled.h2<any>`
   text-align: center;
   color: grey;
   font-weight: 300;
   font-size: 28px;
   padding: 0.5rem 1rem;
-  margin: 2rem 0;
+  margin: ${props => props.margin || '2rem 0'};
 `;
 
 export const Name = styled.p`
@@ -39,7 +60,7 @@ export const Name = styled.p`
   margin: 0 0;
 `;
 
-export const FileInputArea = styled.div`
+export const FileInputArea = styled.div<any>`
   width: 363px;
   height: 109px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
@@ -83,19 +104,22 @@ export const NavLinkBig = styled.button`
   }
 `;
 
-export const Stacked = styled.div`
+// FIXME?: tslint complains without <any> since HTMLElement type doens't have props.align, etc.
+// The correct way to fix this would be to create an interfact that extends HTMLElement
+// but at the moment that's overkill
+export const Stacked = styled.div<any>`
   display: flex column;
-  align-items: center;
-  justify-content: center;
-  vertical-align: midde;
-  text-align: center;
+  align-items: ${props => props.align || 'center'};
+  justify-content: ${props => props.justify || 'center'};
+  vertical-align: middle;
+  text-align: ${props => props.textAlign || 'center'};
   min-height: 100%;
 `;
 
-export const SubHeader = styled.h3`
+export const SubHeader = styled.h3<any>`
   text-align: center;
   font-weight: 600;
   font-size: 15px;
-  color: #51a0ec;
-  margin: 1rem auto 0.3rem auto;
+  color: ${props => props.color || '#51a0ec'};
+  margin: ${props => props.margin || '1rem auto 0.3rem auto'};
 `;

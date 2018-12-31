@@ -5,13 +5,9 @@
 import React from 'react';
 import { Container } from '@polkadot/ui-components';
 
-type Props = {
-  basePath: string;
-};
-
 type State = {};
 
-export class Transfer extends React.PureComponent<Props, State> {
+export class Transfer extends React.PureComponent<State> {
   state: State = {};
 
   render () {

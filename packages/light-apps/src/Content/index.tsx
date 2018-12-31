@@ -78,7 +78,7 @@ class Content extends React.Component<Props> {
                 goToRoute={this.handleRouteChange}
                 value={ID_CARD_ACTIONS(name)['value']}
                 />
-              <Component basePath={`/${name}`} />
+              <Component basePath={`/${name}`} {...({} as RouteComponentProps<any>)} />
             </div>
         }
       </Container>

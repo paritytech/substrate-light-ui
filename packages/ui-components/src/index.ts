@@ -5,7 +5,6 @@
 import Address from './Address';
 import AddressSummary from './AddressSummary';
 import BalanceDisplay from './Balance';
-import Container from './Container';
 import IdentityCard from './IdentityCard';
 import Icon from './Icon';
 import Input from './Input';
@@ -14,14 +13,13 @@ import Menu from './Menu';
 import Modal from './Modal';
 import NavButton from './NavButton';
 import NavLink from './NavLink';
-import WalletCard from './WalletCard';
 import Segment from './Segment';
+import WalletCard from './WalletCard';
 
 export {
   Address,
   AddressSummary,
   BalanceDisplay,
-  Container,
   IdentityCard,
   Icon,
   Input,
@@ -30,9 +28,8 @@ export {
   Modal,
   NavButton,
   NavLink,
+  Segment,
   WalletCard
-  NavLink,
-  Segment
 };
 
 export * from './types';
