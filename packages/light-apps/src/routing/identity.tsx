@@ -6,12 +6,10 @@ import { Route } from '../types';
 
 import { Identity } from '@polkadot/identity-app';
 
-export default (
-  {
-    Component: Identity,
-    icon: 'users',
-    isApiGated: true,
-    isHidden: false,
-    name: 'Identity'
-  }
-) as Route;
+export const identity: Route = {
+  Component: Identity,
+  icon: 'users',
+  isApiGated: true,
+  isHidden: false,
+  name: 'Identity'
+};
