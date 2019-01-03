@@ -13,12 +13,11 @@ export type Route = {
   icon: SemanticICONS,
   isApiGated: boolean,
   isHidden: boolean,
-  name: string
+  name: string,
+  path: string
 };
 
-export type Routes = Array<Route | null>;
-
 export type Routing = {
-  default: string,
-  routes: Routes
+  default: Route,
+  routes: Route[]
 };

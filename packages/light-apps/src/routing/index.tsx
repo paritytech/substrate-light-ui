@@ -9,6 +9,6 @@ import { Routing } from '../types';
 const routes = [identity, transfer];
 
 export const routing = {
-  default: 'Identity',
+  default: identity,
   routes
 } as Routing;

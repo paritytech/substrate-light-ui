@@ -11,5 +11,6 @@ export const identity: Route = {
   icon: 'users',
   isApiGated: true,
   isHidden: false,
-  name: 'Identity'
+  name: 'Identity',
+  path: '/Identity'
 };

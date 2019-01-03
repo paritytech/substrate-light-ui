@@ -3,42 +3,31 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import { RouteComponentProps } from 'react-router';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Route } from 'react-router-dom';
 import { Provider } from 'mobx-react';
-import settings from '@polkadot/ui-settings';
 import substrateLogo from '@polkadot/ui-assets/parity-substrate.svg';
 import 'semantic-ui-css/semantic.min.css';
 
+import { Content } from './Content';
 import { createApp } from './createApp';
 import { GlobalStyle } from './globalStyle';
-import Content from './Content';
-import rootStore from './stores';
+import * as rootStore from './stores';
 
-const LOGO = substrateLogo;
-
-type Props = {};
-
-function App (props: Props) {
+function App () {
   return (
-    <div >
+    <div>
       <GlobalStyle />
-      <NavLink to={'/'}>
+      <NavLink to='/'>
         <img
-          src={LOGO}
+          src={substrateLogo}
           height={100}
           width={150}
         />
       </NavLink>
       <Provider {...rootStore}>
-        <Content {...({} as RouteComponentProps<any>)} />
+        <Route path='/' component={Content} />
       </Provider>
     </div>
   );
 }
-
-const url = !settings.apiUrl
-  ? undefined
-  : settings.apiUrl;
-
-createApp(App, { url });
+createApp(App);

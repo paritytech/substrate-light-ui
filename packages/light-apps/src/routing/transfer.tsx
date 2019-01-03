@@ -11,5 +11,6 @@ export const transfer: Route = {
   icon: 'angle double right',
   isApiGated: true,
   isHidden: false,
-  name: 'Transfer'
+  name: 'Transfer',
+  path: '/Transfer'
 };

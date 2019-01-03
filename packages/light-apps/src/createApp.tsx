@@ -14,7 +14,7 @@ type Props = {
   url?: string
 };
 
-export function createApp (App: React.ComponentType, { api, provider, url }: Props = {}, rootId: string = 'root'): void {
+export function createApp (App: React.ComponentType, props: Props = {}, rootId: string = 'root'): void {
   const rootElement = document.getElementById(rootId);
 
   if (!rootElement) {

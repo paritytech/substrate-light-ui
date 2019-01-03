@@ -3,15 +3,13 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import { Redirect } from 'react-router';
+import { Redirect } from 'react-router-dom';
 
-import routing from '../routing';
+import { routing } from '../routing';
 
-type Props = {};
+const defaultTo = routing.default.path;
 
-const defaultTo = `/${routing.default}`;
-
-export default class NotFound extends React.PureComponent<Props> {
+export class NotFound extends React.PureComponent {
   render () {
     return (
       <Redirect to={defaultTo} />
