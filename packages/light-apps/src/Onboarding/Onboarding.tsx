@@ -119,7 +119,7 @@ export class Onboarding extends React.Component<Props, State> {
       onboardingStore
     } = this.props;
 
-    onboardingStore!.setIsFirstRun(false);
+    onboardingStore.setIsFirstRun(false);
 
     // FIXME: restoreAccount account with light-api
 
