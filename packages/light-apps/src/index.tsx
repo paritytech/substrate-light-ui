@@ -5,7 +5,7 @@
 import substrateLogo from '@polkadot/ui-assets/parity-substrate.svg';
 import { Provider } from 'mobx-react';
 import React from 'react';
-import { NavLink, Route } from 'react-router-dom';
+import { HashRouter, NavLink, Route } from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css';
 
 import { Content } from './Content';
@@ -15,19 +15,21 @@ import * as rootStore from './stores';
 
 function App () {
   return (
-    <div>
-      <GlobalStyle />
-      <NavLink to='/'>
-        <img
-          src={substrateLogo}
-          height={100}
-          width={150}
-        />
-      </NavLink>
-      <Provider {...rootStore}>
-        <Route path='/' component={Content} />
-      </Provider>
-    </div>
+    <HashRouter>
+      <div>
+        <GlobalStyle />
+        <NavLink to='/'>
+          <img
+            src={substrateLogo}
+            height={100}
+            width={150}
+          />
+        </NavLink>
+        <Provider {...rootStore}>
+          <Route path='/' component={Content} />
+        </Provider>
+      </div>
+    </HashRouter>
   );
 }
 

@@ -6,7 +6,6 @@ import { ProviderInterface } from '@polkadot/rpc-provider/types';
 import { RpcRxInterface } from '@polkadot/rpc-rx/types';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { HashRouter } from 'react-router-dom';
 
 type Props = {
   api?: RpcRxInterface,
@@ -22,9 +21,7 @@ export function createApp (App: React.ComponentType, props: Props = {}, rootId: 
   }
 
   ReactDOM.render(
-    <HashRouter>
-      <App />
-    </HashRouter>,
+    <App />,
     rootElement
   );
 }
