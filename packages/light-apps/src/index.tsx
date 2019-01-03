@@ -2,10 +2,10 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import substrateLogo from '@polkadot/ui-assets/parity-substrate.svg';
+import { Provider } from 'mobx-react';
 import React from 'react';
 import { NavLink, Route } from 'react-router-dom';
-import { Provider } from 'mobx-react';
-import substrateLogo from '@polkadot/ui-assets/parity-substrate.svg';
 import 'semantic-ui-css/semantic.min.css';
 
 import { Content } from './Content';
@@ -30,4 +30,5 @@ function App () {
     </div>
   );
 }
+
 createApp(App);
