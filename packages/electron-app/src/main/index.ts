@@ -1,12 +1,11 @@
+// Copyright 2017-2018 @polkadot/light-apps authors & contributors
+// This software may be modified and distributed under the terms
+// of the Apache-2.0 license. See the LICENSE file for details.
 
 import electron from 'electron';
-import path from 'path';
-import url from 'url';
 
-import { productName } from '../../electron-builder.json';
-
-const { app, BrowserWindow, ipcMain } = electron;
-let mainWindow;
+const { app, BrowserWindow } = electron;
+let mainWindow: Electron.BrowserWindow | null;
 
 function createWindow () {
   mainWindow = new BrowserWindow({
@@ -16,12 +15,7 @@ function createWindow () {
   });
 
   mainWindow.loadURL(
-    process.env.ELECTRON_START_URL
-  );
-
-  // Listen to messages from renderer process
-  ipcMain.on('asynchronous-message', (...args) =>
-    messages(mainWindow, ...args)
+    process.env.ELECTRON_START_URL || 'http://127.0.0.1:3000'
   );
 
   mainWindow.on('closed', () => {

@@ -5,18 +5,15 @@
   "private": true,
   "license": "Apache-2.0",
   "scripts": {
-    "build": "electron-webpack",
+    "build": "tsc && electron-webpack",
     "electron": "cross-env SKIP_PREFLIGHT_CHECK=true electron dist/main/main.js",
-    "start": "cross-env ELECTRON_START_URL=http://localhost:3000 electron-webpack dev --ws-origins all",
+    "start": "yarn build && cross-env ELECTRON_START_URL=http://localhost:3000 electron-webpack dev --ws-origins all",
     "test": "echo Skipped."
-  },
-  "dependencies": {
-    "electron-is-dev": "^1.0.1"
   },
   "devDependencies": {
     "copyfiles": "^2.0.0",
     "cross-env": "^5.2.0",
-    "electron": "^2.0.2",
+    "electron": "^4.0.0",
     "electron-builder": "^20.29.0",
     "electron-webpack": "^2.1.2",
     "webpack": "^4.7.0"

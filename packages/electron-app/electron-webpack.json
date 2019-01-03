@@ -1,4 +1,7 @@
 {
+  "main": {
+    "sourceDirectory": "./build"
+  },
   "renderer": {
     "sourceDirectory": null
   }
