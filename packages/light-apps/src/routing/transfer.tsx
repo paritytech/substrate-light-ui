@@ -9,8 +9,6 @@ import { Transfer } from '@polkadot/transfer-app';
 export const transfer: Route = {
   Component: Transfer,
   icon: 'angle double right',
-  isApiGated: true,
-  isHidden: false,
   name: 'Transfer',
   path: '/Transfer'
 };

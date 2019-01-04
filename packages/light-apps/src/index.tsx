@@ -16,7 +16,7 @@ import * as rootStore from './stores';
 function App () {
   return (
     <HashRouter>
-      <div>
+      <React.Fragment>
         <GlobalStyle />
         <NavLink to='/'>
           <img
@@ -28,7 +28,7 @@ function App () {
         <Provider {...rootStore}>
           <Route path='/' component={Content} />
         </Provider>
-      </div>
+      </React.Fragment>
     </HashRouter>
   );
 }

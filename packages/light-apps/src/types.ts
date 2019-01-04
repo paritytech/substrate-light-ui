@@ -11,8 +11,6 @@ export type RouteProps = {
 export type Route = {
   Component: React.ComponentType<RouteProps>,
   icon: SemanticICONS,
-  isApiGated: boolean,
-  isHidden: boolean,
   name: string,
   path: string
 };

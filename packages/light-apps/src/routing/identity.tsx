@@ -9,8 +9,6 @@ import { Identity } from '@polkadot/identity-app';
 export const identity: Route = {
   Component: Identity,
   icon: 'users',
-  isApiGated: true,
-  isHidden: false,
   name: 'Identity',
   path: '/Identity'
 };
