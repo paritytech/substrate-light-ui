@@ -11,14 +11,11 @@ export type RouteProps = {
 export type Route = {
   Component: React.ComponentType<RouteProps>,
   icon: SemanticICONS,
-  isApiGated: boolean,
-  isHidden: boolean,
-  name: string
+  name: string,
+  path: string
 };
 
-export type Routes = Array<Route | null>;
-
 export type Routing = {
-  default: string,
-  routes: Routes
+  default: Route,
+  routes: Route[]
 };
