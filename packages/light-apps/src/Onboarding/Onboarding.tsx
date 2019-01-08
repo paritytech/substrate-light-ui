@@ -6,6 +6,7 @@ import React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { inject, observer } from 'mobx-react';
 import keyring from '@polkadot/ui-keyring';
+import { u8aToString } from '@polkadot/util';
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
 import { AddressSummary, Container, FadedText, Input, InputFile, Modal, NavButton, NavLink, Segment, Stacked } from '@polkadot/ui-components';
 
@@ -15,7 +16,7 @@ type Props = RouteComponentProps & {
   onboardingStore?: OnboardingStoreInterface
 };
 
-type OnboardingScreenType = 'unlock' | 'new';
+type OnboardingScreenType = 'importOptions' | 'save' | 'new' ;
 
 type State = {
   address?: string,
@@ -23,7 +24,6 @@ type State = {
   name?: string,
   password?: string,
   phrase?: string,
-  file?: Uint8Array,
   screen: OnboardingScreenType,
   seed?: string
 };
@@ -47,7 +47,7 @@ function generateAddressFromSeed (seed: string): string {
 export class Onboarding extends React.Component<Props, State> {
   state: State = {
     isBipBusy: true,
-    screen: 'unlock'
+    screen: 'importOptions'
   };
 
   componentDidMount () {
@@ -67,9 +67,14 @@ export class Onboarding extends React.Component<Props, State> {
     });
   }
 
-  handleFileUploaded = (data: Uint8Array) => {
+  handleFileUploaded = (file: Uint8Array) => {
+    const json = JSON.parse(u8aToString(file));
+    // FIXME: try catch unlock with json in store
+
     this.setState({
-      file: data
+      name: json.name,
+      address: json.address,
+      screen: 'save'
     });
   }
 
@@ -94,11 +99,22 @@ export class Onboarding extends React.Component<Props, State> {
   toggleScreen = () => {
     const { screen } = this.state;
     this.setState({
-      screen: screen === 'new' ? 'unlock' : 'new'
+      screen: screen === 'new' || screen === 'save'
+                ? 'importOptions'
+                : 'new',
+      password: ''
     });
   }
 
-  restoreAccount = () => {
+  unlockWithPhrase = () => {
+    // const { phrase } = this.state;
+    // FIXME: try catch unlock with phrase in store
+    this.setState({
+      screen: 'save'
+    });
+  }
+
+  addAccountToWallet = (file?: Uint8Array) => {
     const {
       history,
       onboardingStore
@@ -121,52 +137,18 @@ export class Onboarding extends React.Component<Props, State> {
         size='tiny'
       >
         <Container>
-          { screen === 'new' ? this.renderNewAccountScreen() : this.renderUnlockScreen() }
+          { screen === 'new'
+              ? this.renderNewAccountScreen()
+              : screen === 'importOptions'
+                ? this.renderImportOptionsScreen()
+                : this.renderSaveScreen()
+          }
         </Container>
       </Modal>
     );
   }
 
-  renderNewAccountScreen () {
-    const { address, name, password, seed } = this.state;
-
-    return (
-      <React.Fragment>
-        <Modal.Header> Create New Account </Modal.Header>
-        <Modal.Content>
-          <Stacked>
-            <AddressSummary address={address} name={name} />
-            <Modal.SubHeader> Name the account </Modal.SubHeader>
-            <Input
-              autoFocus
-              onChange={this.onChangeName}
-              value={name}
-              withLabel={false}
-            />
-            <Modal.SubHeader> Create from the following mnemonic seed </Modal.SubHeader>
-            <Segment> <FadedText> {seed} </FadedText> </Segment>
-            <Modal.SubHeader> Encrypt it with a passphrase </Modal.SubHeader>
-            <Input
-              autoFocus
-              onChange={this.onChangePassword}
-              value={password}
-              type={'password'}
-              withLabel={false}
-            />
-            <Modal.Actions>
-              <Stacked>
-                <NavButton onClick={this.restoreAccount}> Save </NavButton>
-                <Modal.FadedText>or</Modal.FadedText>
-                <NavLink onClick={this.toggleScreen}> Unlock an existing account </NavLink>
-              </Stacked>
-            </Modal.Actions>
-          </Stacked>
-        </Modal.Content>
-      </React.Fragment>
-    );
-  }
-
-  renderUnlockScreen () {
+  renderImportOptionsScreen () {
     return (
       <React.Fragment>
         <Modal.Header> Unlock Account </Modal.Header>
@@ -175,9 +157,59 @@ export class Onboarding extends React.Component<Props, State> {
             {this.renderJSONCard()}
             <Modal.FadedText> or </Modal.FadedText>
             {this.renderPhraseCard()}
-            {this.renderActions()}
+            {this.renderImportActions()}
           </Stacked>
         </Modal.Content>
+      </React.Fragment>
+    );
+  }
+
+  renderNewAccountScreen () {
+    const { address, name, seed } = this.state;
+
+    return (
+      <React.Fragment>
+        <Modal.Header> Create New Account </Modal.Header>
+        <Modal.Content>
+          <Stacked>
+            <AddressSummary address={address} name={name} />
+            {this.renderSetName()}
+            <Modal.SubHeader> Create from the following mnemonic seed </Modal.SubHeader>
+            <Segment> <FadedText> {seed} </FadedText> </Segment>
+            {this.renderSetPassword()}
+            {this.renderNewAccountActions()}
+          </Stacked>
+        </Modal.Content>
+      </React.Fragment>
+    );
+  }
+
+  renderSetName () {
+    const { name } = this.state;
+
+    return (
+      <React.Fragment>
+        <Modal.SubHeader> Give it a name </Modal.SubHeader>
+        <Input
+          autoFocus
+          onChange={this.onChangeName}
+          value={name}
+        />
+      </React.Fragment>
+    );
+  }
+
+  renderSetPassword () {
+    const { password, screen } = this.state;
+
+    return (
+      <React.Fragment>
+        <Modal.SubHeader> { screen === 'save' ? 'Decrypt your account with your passphrase' : 'Encrypt it with a passphrase' } </Modal.SubHeader>
+        <Input
+          onChange={this.onChangePassword}
+          value={password}
+          type={'password'}
+        />
       </React.Fragment>
     );
   }
@@ -205,15 +237,46 @@ export class Onboarding extends React.Component<Props, State> {
     );
   }
 
-  renderActions () {
+  renderImportActions () {
     return (
       <Modal.Actions>
         <Stacked>
-          <NavButton onClick={this.restoreAccount}>Unlock</NavButton>
+          <NavButton onClick={this.unlockWithPhrase}>Unlock</NavButton>
           <Modal.FadedText>or</Modal.FadedText>
           <NavLink onClick={this.toggleScreen}> Create New Account </NavLink>
         </Stacked>
       </Modal.Actions>
+    );
+  }
+
+  renderNewAccountActions () {
+    return (
+      <React.Fragment>
+        <Modal.Actions>
+          <Stacked>
+            <NavButton onClick={this.addAccountToWallet}> Save </NavButton>
+            <Modal.FadedText>or</Modal.FadedText>
+            <NavLink onClick={this.toggleScreen}> Import an existing account </NavLink>
+          </Stacked>
+        </Modal.Actions>
+      </React.Fragment>
+    );
+  }
+
+  renderSaveScreen () {
+    const { address, name } = this.state;
+    return (
+      <React.Fragment>
+        <Modal.Header> Unlock Account </Modal.Header>
+        <Modal.Content>
+          <Stacked>
+            <AddressSummary address={address} name={name} />
+            {this.renderSetName()}
+            {this.renderSetPassword()}
+          </Stacked>
+        </Modal.Content>
+        {this.renderNewAccountActions()}
+      </React.Fragment>
     );
   }
 }
