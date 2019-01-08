@@ -6,12 +6,10 @@ import { action, observable } from 'mobx';
 import store from 'store';
 import { enableLogging } from 'mobx-logger';
 
-import { OnboardingStoreInterface } from './interfaces';
-
 const LS_KEY = `__substrate-light::firstRun`;
 const NODE_ENV = process.env.NODE_ENV;
 
-export class OnboardingStore implements OnboardingStoreInterface {
+export class OnboardingStore {
   @observable
   isFirstRun?: boolean;
 
@@ -38,4 +36,4 @@ export class OnboardingStore implements OnboardingStoreInterface {
   updateLS = () => store.set(LS_KEY, this.isFirstRun);
 }
 
-export default new OnboardingStore();
+export const onboardingStore = new OnboardingStore();

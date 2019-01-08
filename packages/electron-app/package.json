@@ -1,0 +1,43 @@
+{
+  "name": "@polkadot/electron-app",
+  "description": "Substrate Light UI",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paritytech/substrate-light-ui.git"
+  },
+  "version": "0.1.0",
+  "private": true,
+  "license": "Apache-2.0",
+  "build": {
+    "appId": "io.parity.substratelightui",
+    "linux": {
+      "category": "Utility",
+      "target": ["AppImage", "snap", "deb", "tar.xz"]
+    },
+    "mac": {
+      "category": "public.app-category.productivity"
+    },
+    "productName": "Parity Substrate Light UI",
+    "publish": "github",
+    "win": {
+      "publisherName": "Parity Technologies (UK) Ltd.",
+      "target": "nsis"
+    }
+  },
+  "scripts": {
+    "build": "tsc && electron-webpack",
+    "electron": "cross-env SKIP_PREFLIGHT_CHECK=true electron dist/main/main.js",
+    "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
+    "dist": "yarn build && electron-builder",
+    "start": "yarn build && cross-env ELECTRON_START_URL=http://localhost:3000 electron-webpack dev --ws-origins all",
+    "test": "echo Skipped."
+  },
+  "devDependencies": {
+    "copyfiles": "^2.0.0",
+    "cross-env": "^5.2.0",
+    "electron": "^4.0.0",
+    "electron-builder": "^20.38.4",
+    "electron-webpack": "^2.6.1",
+    "webpack": "^4.28.3"
+  }
+}

@@ -3,23 +3,18 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router';
+import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { Container, IdentityCard } from '@polkadot/ui-components';
 import { inject, observer } from 'mobx-react';
 
-import routing from '../routing';
-import NotFound from './NotFound';
-import Onboarding from '../Onboarding';
-import { OnboardingStoreInterface } from '../stores/interfaces';
+import { NotFound } from './NotFound';
+import { Onboarding } from '../Onboarding';
+import { routing } from '../routing';
+import { OnboardingStore } from '../stores/onboardingStore';
 
-type Props = RouteComponentProps & {
-  onboardingStore?: OnboardingStoreInterface
-};
-
-const unknown = {
-  Component: NotFound,
-  name: ''
-};
+interface Props extends RouteComponentProps {
+  onboardingStore: OnboardingStore;
+}
 
 const ID_CARD_ACTIONS = (name: string) => {
   switch (name) {
@@ -28,26 +23,22 @@ const ID_CARD_ACTIONS = (name: string) => {
         'value': 'Transfer Balance',
         'to': 'Transfer'
       };
-      break;
     case 'Transfer':
       return {
         'value': 'Manage Accounts',
         'to': 'Identity'
       };
-      break;
     default:
       return {
         'value': 'Transfer Balance',
         'to': 'Transfer'
       };
-      break;
   }
 };
 
-@(withRouter as any)
 @inject('onboardingStore')
 @observer
-class Content extends React.Component<Props> {
+export class Content extends React.Component<Props> {
   handleRouteChange = (to?: string) => {
     const { history, location } = this.props;
 
@@ -60,26 +51,24 @@ class Content extends React.Component<Props> {
   }
 
   render () {
-    const { location, onboardingStore } = this.props;
-
-    const app = location.pathname.slice(1) || '';
-    const { Component, name } = routing.routes.find((route) =>
-      !!(route && app.indexOf(route.name) === 0)
-    ) || unknown;
+    const { onboardingStore } = this.props;
 
     return (
       <Container>
         {
-          onboardingStore!.isFirstRun
-          ? <Onboarding {...({} as RouteComponentProps<any>)} />
-          : <div>
+          onboardingStore.isFirstRun
+            ? <Route component={Onboarding} />
+            : <React.Fragment>
               <IdentityCard
                 address={'7qroA7r5Ky9FHN5mXA2GNxZ79ieStv4WYYjYe3m3XszK9SvF'}
                 goToRoute={this.handleRouteChange}
                 value={ID_CARD_ACTIONS(name)['value']}
-                />
-              <Component basePath={`/${name}`} {...({} as RouteComponentProps<any>)} />
-            </div>
+              />
+              <Switch>
+                {routing.routes.map(route => <Route key={route.name} path={route.path} component={route.Component} />)}
+                <Route component={NotFound} />
+              </Switch>
+            </React.Fragment>
         }
       </Container>
     );
@@ -88,5 +77,3 @@ class Content extends React.Component<Props> {
 
 // FIXME:
 // address should come from Keyring
-
-export default Content;

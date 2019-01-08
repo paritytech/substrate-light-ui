@@ -2,21 +2,21 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router';
 import { inject, observer } from 'mobx-react';
+import React from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 import keyring from '@polkadot/ui-keyring';
 import { u8aToString } from '@polkadot/util';
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
 import { AddressSummary, Container, FadedText, Input, InputFile, Modal, NavButton, NavLink, Segment, Stacked } from '@polkadot/ui-components';
 
-import { OnboardingStoreInterface } from '../stores/interfaces';
+import { OnboardingStore } from '../stores/onboardingStore';
 
-type Props = RouteComponentProps & {
-  onboardingStore?: OnboardingStoreInterface
-};
+interface Props extends RouteComponentProps {
+  onboardingStore: OnboardingStore;
+}
 
-type OnboardingScreenType = 'importOptions' | 'save' | 'new' ;
+type OnboardingScreenType = 'importOptions' | 'save' | 'new';
 
 type State = {
   address?: string,
@@ -41,7 +41,6 @@ function generateAddressFromSeed (seed: string): string {
   );
 }
 
-@(withRouter as any)
 @inject('onboardingStore')
 @observer
 export class Onboarding extends React.Component<Props, State> {
@@ -100,8 +99,8 @@ export class Onboarding extends React.Component<Props, State> {
     const { screen } = this.state;
     this.setState({
       screen: screen === 'new' || screen === 'save'
-                ? 'importOptions'
-                : 'new',
+        ? 'importOptions'
+        : 'new',
       password: ''
     });
   }
@@ -120,7 +119,7 @@ export class Onboarding extends React.Component<Props, State> {
       onboardingStore
     } = this.props;
 
-    onboardingStore!.setIsFirstRun(false);
+    onboardingStore.setIsFirstRun(false);
 
     // FIXME: restoreAccount account with light-api
 
@@ -137,11 +136,11 @@ export class Onboarding extends React.Component<Props, State> {
         size='tiny'
       >
         <Container>
-          { screen === 'new'
-              ? this.renderNewAccountScreen()
-              : screen === 'importOptions'
-                ? this.renderImportOptionsScreen()
-                : this.renderSaveScreen()
+          {screen === 'new'
+            ? this.renderNewAccountScreen()
+            : screen === 'importOptions'
+              ? this.renderImportOptionsScreen()
+              : this.renderSaveScreen()
           }
         </Container>
       </Modal>
@@ -205,7 +204,7 @@ export class Onboarding extends React.Component<Props, State> {
 
     return (
       <React.Fragment>
-        <Modal.SubHeader> { screen === 'save' ? 'Decrypt your account with your passphrase' : 'Encrypt it with a passphrase' } </Modal.SubHeader>
+        <Modal.SubHeader> {screen === 'save' ? 'Decrypt your account with your passphrase' : 'Encrypt it with a passphrase'} </Modal.SubHeader>
         <Input
           onChange={this.onChangePassword}
           type={'password'}
@@ -220,7 +219,7 @@ export class Onboarding extends React.Component<Props, State> {
     return (
       <React.Fragment>
         <Modal.SubHeader> Restore Account from JSON Backup File </Modal.SubHeader>
-        <InputFile onChange={this.handleFileUploaded}/>
+        <InputFile onChange={this.handleFileUploaded} />
       </React.Fragment>
     );
   }
