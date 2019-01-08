@@ -3,6 +3,7 @@
     "jsx": "react",
     "outDir": "./build"
   },
+  "rootDirs": ["src", "stories"],
   "extends": "../../tsconfig",
   "include": ["./src"],
   "types": ["node", "jest"]
