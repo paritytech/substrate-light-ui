@@ -1,15 +1,29 @@
 {
   "name": "@polkadot/light-ui",
-  "version": "0.1.0",
-  "repository": "https://github.com/polkadot-js/light-ui",
   "description": "User interface optimized for the Substrate light client",
-  "license": "Apache-2.0",
-  "workspaces": [
-    "packages/*"
-  ],
+  "version": "0.1.0",
   "private": true,
+  "license": "Apache-2.0",
+  "author": "Parity Team <admin@parity.io>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paritytech/substrate-light-ui.git"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+      "nohoist": [
+      "**/electron-builder",
+      "**/electron-builder/**",
+      "**/electron-webpack",
+      "**/electron-webpack/**"
+    ]
+  },
   "scripts": {
     "prebuild": "yarn clean",
+    "prepackage": "yarn build",
+    "package": "cd packages/electron-app && yarn dist",
     "build": "lerna exec yarn build --stream",
     "clean": "polkadot-dev-clean-build",
     "lint": "tsc --noEmit && tslint --project .",
