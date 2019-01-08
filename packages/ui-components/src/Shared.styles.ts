@@ -105,7 +105,7 @@ export const NavLinkBig = styled.button`
 `;
 
 // FIXME?: tslint complains without <any> since HTMLElement type doens't have props.align, etc.
-// The correct way to fix this would be to create an interfact that extends HTMLElement
+// The correct way to fix this would be to create an interface that extends HTMLElement
 // but at the moment that's overkill
 export const Stacked = styled.div<any>`
   display: flex column;

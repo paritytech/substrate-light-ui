@@ -194,6 +194,7 @@ export class Onboarding extends React.Component<Props, State> {
           autoFocus
           onChange={this.onChangeName}
           value={name}
+          withLabel={false}
         />
       </React.Fragment>
     );
@@ -207,8 +208,9 @@ export class Onboarding extends React.Component<Props, State> {
         <Modal.SubHeader> { screen === 'save' ? 'Decrypt your account with your passphrase' : 'Encrypt it with a passphrase' } </Modal.SubHeader>
         <Input
           onChange={this.onChangePassword}
-          value={password}
           type={'password'}
+          value={password}
+          withLabel={false}
         />
       </React.Fragment>
     );
