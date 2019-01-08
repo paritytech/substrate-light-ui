@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 import { Container, WalletCard } from '@polkadot/ui-components';
 import Grid from 'semantic-ui-react/dist/commonjs/collections/Grid';
 
@@ -17,7 +17,6 @@ type State = {
   lookupAddress?: string
 };
 
-@(withRouter as any)
 export class Identity extends React.PureComponent<Props, State> {
   state: State = {};
 

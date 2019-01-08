@@ -3,11 +3,15 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
+import { RouteComponentProps } from 'react-router';
 import { Container } from '@polkadot/ui-components';
 
+type Props = RouteComponentProps & {
+  basePath: string
+};
 type State = {};
 
-export class Transfer extends React.PureComponent<State> {
+export class Transfer extends React.PureComponent<Props, State> {
   state: State = {};
 
   render () {
