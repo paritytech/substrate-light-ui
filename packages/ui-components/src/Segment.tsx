@@ -11,7 +11,7 @@ const Segment = styled<any>(SUISegment)`
     justify-content: space-around;
     align-items: center;
     height: 3rem;
-    margin-bottom: 0.3rem;
+    margin: 0.3rem auto;
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.3);
     background-color: #fdfefe;
   }

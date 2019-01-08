@@ -15,6 +15,7 @@ import { OnboardingStoreInterface } from '../stores/interfaces';
 type Props = RouteComponentProps & {
   onboardingStore?: OnboardingStoreInterface
 };
+
 const unknown = {
   Component: NotFound,
   name: ''
@@ -70,7 +71,7 @@ class Content extends React.Component<Props> {
       <Container>
         {
           onboardingStore!.isFirstRun
-          ? <Onboarding />
+          ? <Onboarding {...({} as RouteComponentProps<any>)} />
           : <div>
               <IdentityCard
                 address={'7qroA7r5Ky9FHN5mXA2GNxZ79ieStv4WYYjYe3m3XszK9SvF'}

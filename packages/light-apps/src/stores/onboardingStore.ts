@@ -13,7 +13,7 @@ const NODE_ENV = process.env.NODE_ENV;
 
 export class OnboardingStore implements OnboardingStoreInterface {
   @observable
-  isFirstRun?: boolean; // If it's the 1st time the user is running the app
+  isFirstRun?: boolean;
 
   constructor () {
     if (NODE_ENV === 'development') {
@@ -23,7 +23,6 @@ export class OnboardingStore implements OnboardingStoreInterface {
     const isFirstRun = store.get(LS_KEY);
 
     if (isFirstRun === undefined) {
-      // Set store property to true.
       this.setIsFirstRun(true);
     } else {
       this.setIsFirstRun(isFirstRun as boolean);

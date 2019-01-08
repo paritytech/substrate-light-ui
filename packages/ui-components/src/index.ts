@@ -8,9 +8,13 @@ import BalanceDisplay from './Balance';
 import Container from './Container';
 import IdentityCard from './IdentityCard';
 import Icon from './Icon';
+import Input from './Input';
+import InputFile from './InputFile';
 import Menu from './Menu';
+import Modal from './Modal';
 import NavButton from './NavButton';
 import NavLink from './NavLink';
+import Segment from './Segment';
 
 export {
   Address,
@@ -19,9 +23,14 @@ export {
   Container,
   IdentityCard,
   Icon,
+  Input,
+  InputFile,
   Menu,
+  Modal,
   NavButton,
-  NavLink
+  NavLink,
+  Segment
 };
 
 export * from './types';
+export * from './Shared.styles';
