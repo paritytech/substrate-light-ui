@@ -21,13 +21,14 @@
     ]
   },
   "scripts": {
-    "prebuild": "yarn clean",
-    "prepackage": "yarn build",
-    "package": "cd packages/electron-app && yarn dist",
     "build": "lerna exec yarn build --stream",
     "clean": "polkadot-dev-clean-build",
     "lint": "tsc --noEmit && tslint --project .",
+    "prebuild": "yarn clean",
+    "prepackage": "yarn build",
+    "package": "cd packages/electron-app && yarn dist",
     "start": "lerna exec yarn start --parallel",
+    "storybook": "cd packages/ui-components && yarn storybook",
     "test": "CI=true lerna run test --parallel"
   },
   "devDependencies": {
