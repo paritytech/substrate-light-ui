@@ -6,6 +6,7 @@ import React from 'react';
 import { TextInputArea } from './Shared.styles';
 type Input$Type = 'number' | 'password' | 'text';
 import { isUndefined } from '@polkadot/util';
+import Labelled from './Labelled';
 
 type Props = {
   autoFocus?: boolean,
@@ -17,6 +18,7 @@ type Props = {
   isEditable?: boolean,
   isError?: boolean,
   isHidden?: boolean,
+  label?: React.ReactNode,
   max?: any,
   maxLength?: number,
   min?: any,
@@ -27,7 +29,8 @@ type Props = {
   placeholder?: string,
   tabIndex?: number,
   type?: Input$Type,
-  value?: any
+  value?: any,
+  withLabel?: boolean
 };
 
 type State = {
@@ -76,53 +79,59 @@ export default class Input extends React.PureComponent<Props, State> {
   };
 
   render () {
-    const { autoFocus = false, children, defaultValue, icon, isEditable = false, isAction = false, isDisabled = false, isError = false, isHidden = false, max, maxLength, min, name, placeholder, tabIndex, type = 'text', value } = this.props;
+    const { autoFocus = false, children, defaultValue, icon, isEditable = false, isAction = false, isDisabled = false, isError = false, isHidden = false, label, max, maxLength, min, name, placeholder, tabIndex, type = 'text', value, withLabel } = this.props;
 
     return (
-      <TextInputArea
-        action={isAction}
-        autoFocus={autoFocus}
-        defaultValue={
-          isUndefined(value)
-            ? (defaultValue || '')
-            : undefined
-        }
-        disabled={isDisabled}
-        error={isError}
-        hidden={isHidden}
-        id={name}
-        iconPosition={
-          isUndefined(icon)
-            ? undefined
-            : 'left'
-        }
-        max={max}
-        maxLength={maxLength}
-        min={min}
-        name={name || this.state.name}
-        onChange={this.onChange}
-        onKeyDown={this.onKeyDown}
-        onKeyUp={this.onKeyUp}
-        placeholder={placeholder}
-        tabIndex={tabIndex}
-        type={type}
-        value={value}
-      >
-        <input
-          autoComplete={
-            type === 'password'
-              ? 'new-password'
-              : 'off'
+      <Labelled
+        label={label}
+        withLabel={withLabel}
+        floating
+        >
+        <TextInputArea
+          action={isAction}
+          autoFocus={autoFocus}
+          defaultValue={
+            isUndefined(value)
+              ? (defaultValue || '')
+              : undefined
           }
-        />
-        {
-          isEditable
-            ? <i className='edit icon' />
-            : undefined
-        }
-        {icon}
-        {children}
-      </TextInputArea>
+          disabled={isDisabled}
+          error={isError}
+          hidden={isHidden}
+          id={name}
+          iconPosition={
+            isUndefined(icon)
+              ? undefined
+              : 'left'
+          }
+          max={max}
+          maxLength={maxLength}
+          min={min}
+          name={name || this.state.name}
+          onChange={this.onChange}
+          onKeyDown={this.onKeyDown}
+          onKeyUp={this.onKeyUp}
+          placeholder={placeholder}
+          tabIndex={tabIndex}
+          type={type}
+          value={value}
+        >
+          <input
+            autoComplete={
+              type === 'password'
+                ? 'new-password'
+                : 'off'
+            }
+          />
+          {
+            isEditable
+              ? <i className='edit icon' />
+              : undefined
+          }
+          {icon}
+          {children}
+        </TextInputArea>
+      </Labelled>
     );
   }
 
