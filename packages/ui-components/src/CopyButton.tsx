@@ -17,11 +17,11 @@ type State = {
 const StyledCopyButton = styled.button`
   border: none;
   background-color: inherit;
-  color: #53a0fd;
+  color: ${props => props.theme.lightBlue1};
 
   :hover {
     cursor: pointer;
-    color: #51a0ec;
+    color: ${props => props.theme.darkBlue};
   }
 `;
 
