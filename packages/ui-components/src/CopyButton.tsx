@@ -21,7 +21,7 @@ const StyledCopyButton = styled.button`
 
   :hover {
     cursor: pointer;
-    color: ${props => props.theme.lightBlue2};
+    color: ${props => props.theme.darkBlue};
   }
 `;
 
