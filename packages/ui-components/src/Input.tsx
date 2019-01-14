@@ -1,9 +1,7 @@
-// Copyright 2017-2018 @polkadot/light-apps authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import { TextInputArea } from './Shared.styles';
+import styled from 'styled-components';
+import SUIInput from 'semantic-ui-react/dist/commonjs/elements/Input/Input';
 type Input$Type = 'number' | 'password' | 'text';
 import { isUndefined } from '@polkadot/util';
 import Labelled from './Labelled';
@@ -36,6 +34,16 @@ type Props = {
 type State = {
   name: string;
 };
+
+const TextInputArea = styled(SUIInput)`
+  &&& {
+    min-width: 100%;
+    height: $(props => props.height || 109px)
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    background-color: #ffffff;
+    color: grey;
+  }
+`;
 
 // note: KeyboardEvent.keyCode and KeyboardEvent.which are deprecated
 const KEYS = {
@@ -85,7 +93,6 @@ export default class Input extends React.PureComponent<Props, State> {
       <Labelled
         label={label}
         withLabel={withLabel}
-        floating
         >
         <TextInputArea
           action={isAction}

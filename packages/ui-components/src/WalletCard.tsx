@@ -2,22 +2,17 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 import React from 'react';
-import { Card, Stacked, Input, NavButton, SubHeader, Header, MarginTop, WithSpace, WithSpaceAround } from './index';
+import { Card, Header, SubHeader, Stacked, WithSpaceAround } from './index';
 
 type Props = {
-  handleFirstInput: (value: string) => void,
-  handleSecondInput: (value: string) => void,
-  handleSubmit: () => void,
   header: string,
   subheader: string,
-  actionButtonValue: string,
-  firstInputLabel: string,
-  secondInputLabel: string
+  children: React.ReactNode
 };
 
 class WalletCard extends React.Component<Props> {
   render () {
-    const { actionButtonValue, header, subheader, firstInputLabel, secondInputLabel, handleFirstInput, handleSecondInput, handleSubmit } = this.props;
+    const { children, header, subheader } = this.props;
 
     return (
       <Card raised>
@@ -25,22 +20,7 @@ class WalletCard extends React.Component<Props> {
           <Header margin={'0.2rem 0'}> {header} </Header>
           <SubHeader margin={'0rem auto'}> {subheader} </SubHeader>
           <Stacked>
-            <Stacked justify={'flex-start'} textAlign={'left'}>
-              <WithSpace>
-                <Input
-                  label={firstInputLabel}
-                  type='text'
-                  onChange={handleFirstInput}
-                  withLabel />
-                <MarginTop />
-                <Input
-                  label={secondInputLabel}
-                  type='text'
-                  onChange={handleSecondInput}
-                  withLabel />
-              </WithSpace>
-            </Stacked>
-            <NavButton onClick={handleSubmit} value={actionButtonValue} />
+            {children}
           </Stacked>
         </WithSpaceAround>
       </Card>

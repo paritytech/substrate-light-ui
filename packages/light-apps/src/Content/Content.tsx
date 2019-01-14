@@ -51,7 +51,7 @@ export class Content extends React.Component<Props> {
   }
 
   render () {
-    const { onboardingStore } = this.props;
+    const { location, onboardingStore } = this.props;
 
     return (
       <Container>
@@ -62,7 +62,7 @@ export class Content extends React.Component<Props> {
               <IdentityCard
                 address={'7qroA7r5Ky9FHN5mXA2GNxZ79ieStv4WYYjYe3m3XszK9SvF'}
                 goToRoute={this.handleRouteChange}
-                value={ID_CARD_ACTIONS(name)['value']}
+                value={ID_CARD_ACTIONS(location.pathname.slice(1))['value']}
               />
               <Switch>
                 {routing.routes.map(route => <Route key={route.name} path={route.path} component={route.Component} />)}

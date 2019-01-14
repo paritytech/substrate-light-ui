@@ -2,8 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { inject, observer } from 'mobx-react';
 import React from 'react';
+import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router-dom';
 import keyring from '@polkadot/ui-keyring';
 import { u8aToString } from '@polkadot/util';
@@ -109,7 +109,8 @@ export class Onboarding extends React.Component<Props, State> {
     // const { phrase } = this.state;
     // FIXME: try catch unlock with phrase in store
     this.setState({
-      screen: 'save'
+      screen: 'save',
+      password: ''
     });
   }
 
@@ -193,7 +194,6 @@ export class Onboarding extends React.Component<Props, State> {
           autoFocus
           onChange={this.onChangeName}
           value={name}
-          withLabel={false}
         />
       </React.Fragment>
     );
@@ -207,9 +207,8 @@ export class Onboarding extends React.Component<Props, State> {
         <Modal.SubHeader> {screen === 'save' ? 'Decrypt your account with your passphrase' : 'Encrypt it with a passphrase'} </Modal.SubHeader>
         <Input
           onChange={this.onChangePassword}
-          type={'password'}
+          type='password'
           value={password}
-          withLabel={false}
         />
       </React.Fragment>
     );
@@ -232,8 +231,7 @@ export class Onboarding extends React.Component<Props, State> {
         <Modal.SubHeader> Import Account from Seed Phrase </Modal.SubHeader>
         <Input
           onChange={this.handleInputSeedPhrase}
-          value={phrase}
-          withLabel={false} />
+          value={phrase} />
       </React.Fragment>
     );
   }
