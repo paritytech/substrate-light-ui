@@ -41,8 +41,8 @@ export const StyledCard = styled<any>(SUICard)`
     text-align: center;
     height: 15rem;
     min-width: 100%;
-    box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.3);
-    background-color: #ffffff;
-    border: 0.5px solid #f2f2f2;
+    box-shadow: 0 4px 5px 0 rgba(${props => props.theme.black}, 0.3);
+    background-color: ${props => props.theme.white};
+    border: 0.5px solid ${props => props.theme.cardBorder};
   }
 `;
