@@ -4,7 +4,7 @@
 
 import { createGlobalStyle } from 'styled-components';
 
-export const GlobalStyle = createGlobalStyle`
+const GlobalStyle = createGlobalStyle`
   html {
     height: 100%;
   }
@@ -22,3 +22,17 @@ export const GlobalStyle = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
   }
 `;
+
+const substrateLightTheme = {
+  black: '#222',
+  cardBorder: '#f2f2f2',
+  darkBlue: '#5c53fc',
+  grey: '#888',
+  lightBlue1: '#53a0fd',
+  lightBlue2: '#51a0ec',
+  purple: '#8479f3',
+  segment: '#fdfefe',
+  white: '#ffffff'
+};
+
+export { substrateLightTheme, GlobalStyle };

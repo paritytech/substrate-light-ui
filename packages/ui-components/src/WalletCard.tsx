@@ -17,10 +17,12 @@ class WalletCard extends React.Component<Props> {
     return (
       <Card raised>
         <WithSpaceAround>
-          <Header margin={'0.2rem 0'}> {header} </Header>
-          <SubHeader margin={'0rem auto'}> {subheader} </SubHeader>
           <Stacked>
-            {children}
+            <Header margin={'0.2rem 0'}> {header} </Header>
+            <SubHeader margin={'0rem auto'}> {subheader} </SubHeader>
+            <Stacked justify={'flex-start'} textAlign={'left'}>
+              {children}
+            </Stacked>
           </Stacked>
         </WithSpaceAround>
       </Card>

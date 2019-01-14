@@ -4,7 +4,7 @@
 
 import React from 'react';
 import { RouteComponentProps } from 'react-router';
-import { Container, Input, MarginTop, NavButton, WalletCard, WithSpace } from '@polkadot/ui-components';
+import { Container, Input, MarginTop, NavButton, Stacked, WalletCard, WithSpace } from '@polkadot/ui-components';
 import Grid from 'semantic-ui-react/dist/commonjs/collections/Grid';
 
 type Props = RouteComponentProps & {
@@ -53,21 +53,22 @@ export class Identity extends React.PureComponent<Props, State> {
               <WalletCard
                 header='Wallet'
                 subheader='Manage your secret keys' >
-                <WithSpace>
-                  <Input
-                    label='Seed'
-                    onChange={this.handleInputSeed}
-                    type='text'
-                    withLabel />
-                  <MarginTop />
-                  <Input
-                    label='Name'
-                    onChange={this.handleInputName}
-                    type='text'
-                    withLabel />
-                  <MarginTop />
+                <Stacked>
+                  <WithSpace>
+                    <Input
+                      label='Seed'
+                      onChange={this.handleInputSeed}
+                      type='text'
+                      withLabel />
+                    <MarginTop />
+                    <Input
+                      label='Name'
+                      onChange={this.handleInputName}
+                      type='text'
+                      withLabel />
+                  </WithSpace>
                   <NavButton onClick={this.handleAddAccount} value='Create Account' />
-                </WithSpace>
+                </Stacked>
               </WalletCard>
             </Grid.Column>
 
@@ -75,23 +76,24 @@ export class Identity extends React.PureComponent<Props, State> {
               <WalletCard
                 header='Address Book'
                 subheader='Inspect the status of any account and name it for later use' >
-                <WithSpace>
-                  <Input
-                    label='Lookup Account By Address'
-                    onChange={this.handleInputAddressLookup}
-                    type='text'
-                    withLabel
-                  />
-                  <MarginTop />
-                  <Input
-                    label='Name'
-                    onChange={this.handleInputName}
-                    type='text'
-                    withLabel
-                  />
-                  <MarginTop />
-                  <NavButton onClick={this.handleSaveAccount} value='Unlock Account' />
-                </WithSpace>
+                <Stacked>
+                  <WithSpace>
+                    <Input
+                      label='Lookup Account By Address'
+                      onChange={this.handleInputAddressLookup}
+                      type='text'
+                      withLabel
+                    />
+                    <MarginTop />
+                    <Input
+                      label='Name'
+                      onChange={this.handleInputName}
+                      type='text'
+                      withLabel
+                    />
+                  </WithSpace>
+                <NavButton onClick={this.handleSaveAccount} value='Unlock Account' />
+                </Stacked>
               </WalletCard>
             </Grid.Column>
           </Grid.Row>

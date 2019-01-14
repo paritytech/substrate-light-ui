@@ -37,11 +37,11 @@ type State = {
 
 const TextInputArea = styled(SUIInput)`
   &&& {
-    min-width: 100%;
+    box-shadow: 0 2px 4px 0 rgba(${props => props.theme.black}, 0.5);
+    background-color: ${props => props.theme.white};
+    color: ${props => props.theme.grey};
     height: $(props => props.height || 109px)
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-    background-color: #ffffff;
-    color: grey;
+    min-width: 100%;
   }
 `;
 

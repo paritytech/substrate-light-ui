@@ -23,8 +23,7 @@ export const Card = styled<any>(SUICard)`
 `;
 
 export const FadedText = styled.p`
-  color: black;
-  margin: 1rem auto;
+  color: ${props => props.theme.black};
   opacity: 0.5;
   text-align: center;
 `;
@@ -47,7 +46,7 @@ export const WithPadding = styled.div`
 `;
 
 export const Header = styled.h2<HeaderProps>`
-  color: grey;
+  color: ${props => props.theme.grey};
   font-weight: 300;
   font-size: 28px;
   margin: ${props => props.margin || '2rem 0'};
@@ -62,8 +61,8 @@ export const Name = styled.p`
 `;
 
 export const FileInputArea = styled.div`
-  background-color: #ffffff;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  background-color: ${props => props.theme.white};
+  box-shadow: 0 2px 4px 0 ${props => props.theme.black}, 0.5);
   height: 109px;
   text-align: center;
   width: 363px;
@@ -72,7 +71,7 @@ export const FileInputArea = styled.div`
 export const NavLinkSmall = styled.button`
   background: none;
   border: none;
-  color: #51a0ec;
+  color: ${props => props.theme.lightBlue2};
   font-size: 15px;
   font-weight: 300;
 
@@ -82,11 +81,16 @@ export const NavLinkSmall = styled.button`
 `;
 
 export const NavLinkBig = styled.button`
-  background-image: linear-gradient(107deg, #8479f3, #53a0fd 71%, #51a0ec);
+  background-image: linear-gradient(
+    107deg,
+    ${props => props.theme.purple},
+    ${props => props.theme.lightBlue1} 71%,
+    ${props => props.theme.lightBlue2}
+  );
   border: none;
   border-radius: 15px;
-  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.3);
-  color: white;
+  box-shadow: 0 4px 6px 0 rgba(${props => props.theme.black}, 0.3);
+  color: ${props => props.theme.white};
   height: 42px;
   width: 134px;
 
@@ -105,9 +109,8 @@ export const Stacked = styled.div<StackProps>`
 `;
 
 export const SubHeader = styled.h3<SubHeaderProps>`
-  color: ${props => props.color || '#51a0ec'};
+  color: ${props => props.theme.lightBlue2};
   font-weight: 600;
   font-size: 15px;
-  margin: ${props => props.margin || '1rem auto 0.3rem auto'};
-  text-align: center;
+  margin: 1rem auto 0.3rem auto;
 `;
