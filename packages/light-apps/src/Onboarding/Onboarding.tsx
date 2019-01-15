@@ -192,7 +192,7 @@ export class Onboarding extends React.Component<Props, State> {
         <Modal.SubHeader> Give it a name </Modal.SubHeader>
         <Input
           autoFocus
-          onChange={this.onChangeName}
+          onChange={(e) => this.onChangeName}
           value={name}
         />
       </React.Fragment>
@@ -206,7 +206,7 @@ export class Onboarding extends React.Component<Props, State> {
       <React.Fragment>
         <Modal.SubHeader> {screen === 'save' ? 'Decrypt your account with your passphrase' : 'Encrypt it with a passphrase'} </Modal.SubHeader>
         <Input
-          onChange={this.onChangePassword}
+          onChange={(e) => this.onChangePassword}
           type='password'
           value={password}
         />
@@ -218,7 +218,7 @@ export class Onboarding extends React.Component<Props, State> {
     return (
       <React.Fragment>
         <Modal.SubHeader> Restore Account from JSON Backup File </Modal.SubHeader>
-        <InputFile onChange={this.handleFileUploaded} />
+        <InputFile onChange={(e) => this.handleFileUploaded} />
       </React.Fragment>
     );
   }
@@ -230,7 +230,7 @@ export class Onboarding extends React.Component<Props, State> {
       <React.Fragment>
         <Modal.SubHeader> Import Account from Seed Phrase </Modal.SubHeader>
         <Input
-          onChange={this.handleInputSeedPhrase}
+          onChange={(e) => this.handleInputSeedPhrase}
           value={phrase} />
       </React.Fragment>
     );

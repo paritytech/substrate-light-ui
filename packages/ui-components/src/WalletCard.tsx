@@ -5,9 +5,9 @@ import React from 'react';
 import { Card, Header, SubHeader, Stacked, WithSpaceAround } from './index';
 
 type Props = {
+  children: React.ReactNode,
   header: string,
-  subheader: string,
-  children: React.ReactNode
+  subheader: string
 };
 
 class WalletCard extends React.Component<Props> {
@@ -18,9 +18,9 @@ class WalletCard extends React.Component<Props> {
       <Card raised>
         <WithSpaceAround>
           <Stacked>
-            <Header margin={'0.2rem 0'}> {header} </Header>
-            <SubHeader margin={'0rem auto'}> {subheader} </SubHeader>
-            <Stacked justify={'flex-start'} textAlign={'left'}>
+            <Header margin='0.2rem 0'> {header} </Header>
+            <SubHeader margin='0rem auto'> {subheader} </SubHeader>
+            <Stacked justify='flex-start' textAlign='left'>
               {children}
             </Stacked>
           </Stacked>

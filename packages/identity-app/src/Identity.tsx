@@ -57,13 +57,13 @@ export class Identity extends React.PureComponent<Props, State> {
                   <WithSpace>
                     <Input
                       label='Seed'
-                      onChange={this.handleInputSeed}
+                      onChange={(e) => this.handleInputSeed}
                       type='text'
                       withLabel />
                     <MarginTop />
                     <Input
                       label='Name'
-                      onChange={this.handleInputName}
+                      onChange={(e) => this.handleInputName}
                       type='text'
                       withLabel />
                   </WithSpace>
@@ -80,14 +80,14 @@ export class Identity extends React.PureComponent<Props, State> {
                   <WithSpace>
                     <Input
                       label='Lookup Account By Address'
-                      onChange={this.handleInputAddressLookup}
+                      onChange={(e) => this.handleInputAddressLookup}
                       type='text'
                       withLabel
                     />
                     <MarginTop />
                     <Input
                       label='Name'
-                      onChange={this.handleInputName}
+                      onChange={(e) => this.handleInputName}
                       type='text'
                       withLabel
                     />

@@ -2,40 +2,33 @@
 import React from 'react';
 import styled from 'styled-components';
 import SUIInput from 'semantic-ui-react/dist/commonjs/elements/Input/Input';
+import { InputProps } from 'semantic-ui-react/dist/commonjs/elements/Input';
 type Input$Type = 'number' | 'password' | 'text';
 import { isUndefined } from '@polkadot/util';
 import Labelled from './Labelled';
 
-type Props = {
-  autoFocus?: boolean,
-  children?: React.ReactNode,
-  defaultValue?: any,
-  icon?: React.ReactNode,
-  isAction?: boolean,
-  isDisabled?: boolean,
-  isEditable?: boolean,
-  isError?: boolean,
-  isHidden?: boolean,
-  label?: React.ReactNode,
-  max?: any,
-  maxLength?: number,
-  min?: any,
-  name?: string,
-  onChange: (value: string) => void,
-  onKeyDown?: (event: React.KeyboardEvent<Element>) => void,
-  onKeyUp?: (event: React.KeyboardEvent<Element>) => void,
-  placeholder?: string,
-  tabIndex?: number,
-  type?: Input$Type,
-  value?: any,
-  withLabel?: boolean
-};
+interface Props extends InputProps {
+  autoFocus?: boolean;
+  defaultValue?: any;
+  isEditable?: boolean;
+  isHidden?: boolean;
+  max?: any;
+  maxLength?: number;
+  min?: any;
+  name?: string;
+  onKeyDown?: (event: React.KeyboardEvent<Element>) => void;
+  onKeyUp?: (event: React.KeyboardEvent<Element>) => void;
+  placeholder?: string;
+  type?: Input$Type;
+  value?: any;
+  withLabel?: boolean;
+}
 
 type State = {
   name: string;
 };
 
-const TextInputArea = styled(SUIInput)`
+export const TextInputArea = styled(SUIInput)`
   &&& {
     box-shadow: 0 2px 4px 0 rgba(${props => props.theme.black}, 0.5);
     background-color: ${props => props.theme.white};
@@ -87,7 +80,7 @@ export default class Input extends React.PureComponent<Props, State> {
   };
 
   render () {
-    const { autoFocus = false, children, defaultValue, icon, isEditable = false, isAction = false, isDisabled = false, isError = false, isHidden = false, label, max, maxLength, min, name, placeholder, tabIndex, type = 'text', value, withLabel } = this.props;
+    const { autoFocus = false, children, defaultValue, isEditable = false, action = false, disabled = false, error = false, isHidden = false, label, max, maxLength, min, name, placeholder, type = 'text', value, withLabel, ...otherProps } = this.props;
 
     return (
       <Labelled
@@ -95,33 +88,27 @@ export default class Input extends React.PureComponent<Props, State> {
         withLabel={withLabel}
         >
         <TextInputArea
-          action={isAction}
+          action={action}
           autoFocus={autoFocus}
           defaultValue={
             isUndefined(value)
               ? (defaultValue || '')
               : undefined
           }
-          disabled={isDisabled}
-          error={isError}
+          disabled={disabled}
+          error={error}
           hidden={isHidden}
           id={name}
-          iconPosition={
-            isUndefined(icon)
-              ? undefined
-              : 'left'
-          }
           max={max}
           maxLength={maxLength}
           min={min}
           name={name || this.state.name}
-          onChange={this.onChange}
           onKeyDown={this.onKeyDown}
           onKeyUp={this.onKeyUp}
           placeholder={placeholder}
-          tabIndex={tabIndex}
           type={type}
           value={value}
+          {...otherProps}
         >
           <input
             autoComplete={
@@ -135,18 +122,10 @@ export default class Input extends React.PureComponent<Props, State> {
               ? <i className='edit icon' />
               : undefined
           }
-          {icon}
           {children}
         </TextInputArea>
       </Labelled>
     );
-  }
-
-  private onChange = (event: React.SyntheticEvent<Element>): void => {
-    const { onChange } = this.props;
-    const { value } = event.target as HTMLInputElement;
-
-    onChange(value);
   }
 
   private onKeyDown = (event: React.KeyboardEvent<Element>): void => {
