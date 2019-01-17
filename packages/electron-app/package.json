@@ -12,7 +12,12 @@
     "appId": "io.parity.substratelightui",
     "linux": {
       "category": "Utility",
-      "target": ["AppImage", "snap", "deb", "tar.xz"]
+      "target": [
+        "AppImage",
+        "snap",
+        "deb",
+        "tar.xz"
+      ]
     },
     "mac": {
       "category": "public.app-category.productivity"
@@ -37,7 +42,11 @@
     "cross-env": "^5.2.0",
     "electron": "^4.0.0",
     "electron-builder": "^20.38.4",
+    "electron-devtools-installer": "^2.2.4",
     "electron-webpack": "^2.6.1",
     "webpack": "^4.28.3"
+  },
+  "dependencies": {
+    "@types/electron-devtools-installer": "^2.2.0"
   }
 }
