@@ -26,6 +26,7 @@ type State = {
   name?: string,
   password?: string,
   recoveryPhrase?: string,
+  mnemonic?: string,
   screen: OnboardingScreenType
 };
 
@@ -51,13 +52,10 @@ export class Onboarding extends React.Component<Props, State> {
   };
 
   componentDidMount () {
-    const phrase = generatePhrase();
-    const address = generateAddressFromPhrase(phrase);
+    const mnemonic = generatePhrase();
+    const address = generateAddressFromPhrase(mnemonic);
 
-    this.setState({
-      address: address,
-      recoveryPhrase: phrase
-    });
+    this.setState({ address, mnemonic });
   }
 
   handleInputRecoveryPhrase = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
@@ -195,7 +193,7 @@ export class Onboarding extends React.Component<Props, State> {
   }
 
   renderNewAccountScreen () {
-    const { address, name, recoveryPhrase } = this.state;
+    const { address, name, mnemonic } = this.state;
 
     return (
       <React.Fragment>
@@ -205,7 +203,7 @@ export class Onboarding extends React.Component<Props, State> {
             <AddressSummary address={address} name={name} />
             {this.renderSetName()}
             <Modal.SubHeader> Create from the following mnemonic phrase </Modal.SubHeader>
-            <Segment> <FadedText> {recoveryPhrase} </FadedText> </Segment>
+            <Segment> <FadedText> {mnemonic} </FadedText> </Segment>
             {this.renderSetPassword()}
             {this.renderNewAccountActions()}
           </Stacked>
