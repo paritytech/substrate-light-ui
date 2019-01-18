@@ -22,10 +22,10 @@ type OnboardingScreenType = 'importOptions' | 'save' | 'new';
 
 type State = {
   address?: string,
-  isBipBusy: boolean,
+  jsonString?: string,
   name?: string,
   password?: string,
-  phrase?: string,
+  recoveryPhrase?: string,
   screen: OnboardingScreenType,
   seed?: string
 };
@@ -48,7 +48,6 @@ function generateAddressFromSeed (seed: string): string {
 @observer
 export class Onboarding extends React.Component<Props, State> {
   state: State = {
-    isBipBusy: true,
     screen: 'importOptions'
   };
 
@@ -58,26 +57,35 @@ export class Onboarding extends React.Component<Props, State> {
 
     this.setState({
       address: address,
-      isBipBusy: false,
       seed: seed
     });
   }
 
   handleInputSeedPhrase = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
-      phrase: value
+      recoveryPhrase: value
     });
   }
 
-  handleFileUploaded = (file: Uint8Array) => {
-    const json = JSON.parse(u8aToString(file));
-    // FIXME: try catch unlock with json in store
+  handleFileUploaded = async (file: Uint8Array) => {
+    const { accountStore } = this.props;
 
-    this.setState({
-      name: json.name,
-      address: json.address,
-      screen: 'save'
-    });
+    const jsonString = u8aToString(file);
+
+    try {
+      await accountStore.setIsImport(true);
+      await accountStore.setJsonString(jsonString);
+
+      this.setState({
+        address: accountStore.address,
+        jsonString: jsonString,
+        name: accountStore.name,
+        screen: 'save'
+      });
+
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   onChangeName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
@@ -117,24 +125,32 @@ export class Onboarding extends React.Component<Props, State> {
     });
   }
 
-  addAccountToWallet = (file?: Uint8Array) => {
+  addAccountToWallet = async (file?: Uint8Array) => {
     const {
       history,
-      onboardingStore,
-      accountStore
+      onboardingStore: { setIsFirstRun },
+      accountStore: { isImport, setAddress, setRecoveryPhrase }
     } = this.props;
-    const { address, name, password, seed } = this.state;
+    const { jsonString, name, password, recoveryPhrase, seed } = this.state;
 
-    onboardingStore.setIsFirstRun(false);
+    if (!password) {
+      throw new Error('Password field cannot be empty');
+    }
+
+    if (!isImport) {
+      seed && keyring.createAccountMnemonic(seed, password, { name });
+    }
 
     try {
-      seed && keyring.createAccountMnemonic(seed, password, { name });
+      if (recoveryPhrase) {
+        await setRecoveryPhrase(recoveryPhrase);
+      } else if (jsonString) {
+        const pair = keyring.restoreAccount(JSON.parse(jsonString), password);
 
-      name && accountStore.setName(name);
-      address && accountStore.setAddress(address);
+        await setAddress(pair.address());
+      }
 
-      debugger;
-
+      setIsFirstRun(false);
       history.push('/Identity');
     } catch (e) {
       // FIXME: bubble up a useful error message
@@ -239,14 +255,14 @@ export class Onboarding extends React.Component<Props, State> {
   }
 
   renderPhraseCard () {
-    const { phrase } = this.state;
+    const { recoveryPhrase } = this.state;
 
     return (
       <React.Fragment>
         <Modal.SubHeader> Import Account from Seed Phrase </Modal.SubHeader>
         <Input
           onChange={this.handleInputSeedPhrase}
-          value={phrase} />
+          value={recoveryPhrase} />
       </React.Fragment>
     );
   }

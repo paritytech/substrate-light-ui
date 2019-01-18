@@ -6,10 +6,19 @@ import { action, observable } from 'mobx';
 
 export class AccountStore {
   @observable
-  address: string | null = null;
+  address: string = '';
 
   @observable
   name: string = ''; // Account name
+
+  @observable
+  jsonString: string = '';
+
+  @observable
+  recoveryPhrase: string = '';
+
+  @observable
+  isImport: boolean = false;
 
   @action
   setAddress = async (address: string) => {
@@ -21,12 +30,37 @@ export class AccountStore {
     this.name = name;
   }
 
+  @action
+  setIsImport = async (isImport: boolean) => {
+    this.isImport = isImport;
+  }
+
+  @action
+  setRecoveryPhrase = async (phrase: string) => {
+    this.recoveryPhrase = phrase;
+  }
+
+  @action
+  setJsonString = async (jsonString: string) => {
+    let json = JSON.parse(jsonString);
+
+    if (!json || json.address.length !== 48) {
+      throw new Error('File is not valid json');
+    }
+
+    this.jsonString = jsonString;
+    this.address = json.address;
+    if (json.meta && json.meta.name) {
+      this.name = json.meta.name;
+    }
+  }
+
   /**
    * Reinitialize everything
    */
   @action
   clear = async () => {
-    this.address = null;
+    this.address = '';
     this.name = '';
   }
 

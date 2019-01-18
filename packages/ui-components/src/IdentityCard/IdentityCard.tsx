@@ -11,9 +11,9 @@ import NavButton from '../NavButton';
 import { StyledCard, CardHeader, CardContent } from './IdentityCard.styles';
 
 type Props = {
-  address: string | null
+  address: string,
   goToRoute: (to?: string) => void,
-  name: string | null,
+  name?: string,
   value: string
 };
 
