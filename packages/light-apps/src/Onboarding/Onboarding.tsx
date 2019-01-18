@@ -9,6 +9,7 @@ import keyring from '@polkadot/ui-keyring';
 import { u8aToString } from '@polkadot/util';
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
 import { AddressSummary, Container, FadedText, Input, InputFile, Modal, NavButton, NavLink, Segment, Stacked } from '@polkadot/ui-components';
+import FileSaver from 'file-saver';
 
 import { OnboardingStore } from '../stores/onboardingStore';
 import { AccountStore } from '../stores/accountStore';
@@ -26,7 +27,7 @@ type State = {
   name?: string,
   password?: string,
   recoveryPhrase?: string,
-  mnemonic?: string,
+  mnemonic: string,
   screen: OnboardingScreenType
 };
 
@@ -48,7 +49,8 @@ function generateAddressFromPhrase (phrase: string): string {
 @observer
 export class Onboarding extends React.Component<Props, State> {
   state: State = {
-    screen: 'importOptions'
+    screen: 'importOptions',
+    mnemonic: ''
   };
 
   componentDidMount () {
@@ -122,20 +124,26 @@ export class Onboarding extends React.Component<Props, State> {
     });
   }
 
+  // FIXME: split this up into smaller functions
   addAccountToWallet = async (file?: Uint8Array) => {
     const {
       history,
       onboardingStore: { setIsFirstRun },
       accountStore: { isImport, setAddress, setRecoveryPhrase }
     } = this.props;
-    const { jsonString, name, password, recoveryPhrase } = this.state;
+    const { jsonString, mnemonic, name, password, recoveryPhrase } = this.state;
 
     if (!password) {
       throw new Error('Password field cannot be empty');
     }
 
     if (!isImport) {
-      recoveryPhrase && keyring.createAccountMnemonic(recoveryPhrase, password, { name });
+      const pair = keyring.createAccountMnemonic(mnemonic, password, { name });
+
+      const json = pair.toJson(password);
+      const blob = new Blob([JSON.stringify(json)], { type: 'application/json; charset=utf-8' });
+
+      FileSaver.saveAs(blob, `${pair.address()}.json`);
     }
 
     try {
