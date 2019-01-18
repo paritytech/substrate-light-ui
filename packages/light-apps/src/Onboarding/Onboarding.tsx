@@ -1,9 +1,9 @@
-// Copyright 2017-2018 @polkadot/light-apps authors & contributors
+// Copyright 2017-2018 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { inject, observer } from 'mobx-react';
 import React from 'react';
+import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router-dom';
 import keyring from '@polkadot/ui-keyring';
 import { u8aToString } from '@polkadot/util';
@@ -60,9 +60,9 @@ export class Onboarding extends React.Component<Props, State> {
     });
   }
 
-  handleInputSeedPhrase = (val: string) => {
+  handleInputSeedPhrase = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
-      phrase: val
+      phrase: value
     });
   }
 
@@ -77,21 +77,21 @@ export class Onboarding extends React.Component<Props, State> {
     });
   }
 
-  onChangeName = (name: string) => {
+  onChangeName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
-      name: name
+      name: value
     });
   }
 
-  onChangePassword = (password: string) => {
+  onChangePassword = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
-      password: password
+      password: value
     });
   }
 
-  onChangeSeed = (seed: string) => {
+  onChangeSeed = ({ target: { value } }: any) => {
     this.setState({
-      seed: seed
+      seed: value
     });
   }
 
@@ -109,7 +109,8 @@ export class Onboarding extends React.Component<Props, State> {
     // const { phrase } = this.state;
     // FIXME: try catch unlock with phrase in store
     this.setState({
-      screen: 'save'
+      screen: 'save',
+      password: ''
     });
   }
 
@@ -206,8 +207,8 @@ export class Onboarding extends React.Component<Props, State> {
         <Modal.SubHeader> {screen === 'save' ? 'Decrypt your account with your passphrase' : 'Encrypt it with a passphrase'} </Modal.SubHeader>
         <Input
           onChange={this.onChangePassword}
+          type='password'
           value={password}
-          type={'password'}
         />
       </React.Fragment>
     );
