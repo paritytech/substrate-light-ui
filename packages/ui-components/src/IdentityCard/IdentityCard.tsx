@@ -11,8 +11,9 @@ import NavButton from '../NavButton';
 import { StyledCard, CardHeader, CardContent } from './IdentityCard.styles';
 
 type Props = {
-  address: string
+  address: string | null
   goToRoute: (to?: string) => void,
+  name: string | null,
   value: string
 };
 
@@ -20,13 +21,13 @@ type Props = {
 
 export class IdentityCard extends React.PureComponent<Props> {
   render () {
-    const { address, goToRoute, value } = this.props;
+    const { address, goToRoute, name, value } = this.props;
 
     return (
       <StyledCard>
         <CardHeader>Current Account</CardHeader>
         <CardContent>
-          <AddressSummary address={address} balance={new BN(10000)} name={'Alice'} />
+          <AddressSummary address={address} balance={new BN(10000)} name={name} />
           <Address address={address} goToRoute={goToRoute} />
           <NavButton value={value} onClick={() => goToRoute()} />
         </CardContent>

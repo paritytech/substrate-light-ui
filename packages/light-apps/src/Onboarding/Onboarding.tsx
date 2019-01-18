@@ -11,9 +11,11 @@ import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot
 import { AddressSummary, Container, FadedText, Input, InputFile, Modal, NavButton, NavLink, Segment, Stacked } from '@polkadot/ui-components';
 
 import { OnboardingStore } from '../stores/onboardingStore';
+import { AccountStore } from '../stores/accountStore';
 
 interface Props extends RouteComponentProps {
   onboardingStore: OnboardingStore;
+  accountStore: AccountStore;
 }
 
 type OnboardingScreenType = 'importOptions' | 'save' | 'new';
@@ -42,6 +44,7 @@ function generateAddressFromSeed (seed: string): string {
 }
 
 @inject('onboardingStore')
+@inject('accountStore')
 @observer
 export class Onboarding extends React.Component<Props, State> {
   state: State = {
@@ -117,14 +120,20 @@ export class Onboarding extends React.Component<Props, State> {
   addAccountToWallet = (file?: Uint8Array) => {
     const {
       history,
-      onboardingStore
+      onboardingStore,
+      accountStore
     } = this.props;
-    const { name, password, seed } = this.state;
+    const { address, name, password, seed } = this.state;
 
     onboardingStore.setIsFirstRun(false);
 
     try {
       seed && keyring.createAccountMnemonic(seed, password, { name });
+
+      name && accountStore.setName(name);
+      address && accountStore.setAddress(address);
+
+      debugger;
 
       history.push('/Identity');
     } catch (e) {

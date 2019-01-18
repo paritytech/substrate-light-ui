@@ -4,16 +4,18 @@
 
 import React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
-import { Container, IdentityCard } from '@polkadot/ui-components';
 import { inject, observer } from 'mobx-react';
+import { Container, IdentityCard } from '@polkadot/ui-components';
 
 import { NotFound } from './NotFound';
 import { Onboarding } from '../Onboarding';
 import { routing } from '../routing';
 import { OnboardingStore } from '../stores/onboardingStore';
+import { AccountStore } from '../stores/accountStore';
 
 interface Props extends RouteComponentProps {
   onboardingStore: OnboardingStore;
+  accountStore: AccountStore;
 }
 
 const ID_CARD_ACTIONS = (name: string) => {
@@ -37,6 +39,7 @@ const ID_CARD_ACTIONS = (name: string) => {
 };
 
 @inject('onboardingStore')
+@inject('accountStore')
 @observer
 export class Content extends React.Component<Props> {
   handleRouteChange = (to?: string) => {
@@ -51,7 +54,7 @@ export class Content extends React.Component<Props> {
   }
 
   render () {
-    const { location, onboardingStore } = this.props;
+    const { location, onboardingStore, accountStore } = this.props;
 
     return (
       <Container>
@@ -60,7 +63,8 @@ export class Content extends React.Component<Props> {
             ? <Route component={Onboarding} />
             : <React.Fragment>
               <IdentityCard
-                address={'7qroA7r5Ky9FHN5mXA2GNxZ79ieStv4WYYjYe3m3XszK9SvF'}
+                address={accountStore.address}
+                name={accountStore.name}
                 goToRoute={this.handleRouteChange}
                 value={ID_CARD_ACTIONS(location.pathname.slice(1))['value']}
               />
