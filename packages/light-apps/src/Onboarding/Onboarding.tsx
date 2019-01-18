@@ -26,17 +26,16 @@ type State = {
   name?: string,
   password?: string,
   recoveryPhrase?: string,
-  screen: OnboardingScreenType,
-  seed?: string
+  screen: OnboardingScreenType
 };
 
-function generateSeed (): string {
-  const seed = mnemonicGenerate();
-  return seed;
+function generatePhrase (): string {
+  const phrase = mnemonicGenerate();
+  return phrase;
 }
 
-function generateAddressFromSeed (seed: string): string {
-  const keypair = naclKeypairFromSeed(mnemonicToSeed(seed));
+function generateAddressFromPhrase (phrase: string): string {
+  const keypair = naclKeypairFromSeed(mnemonicToSeed(phrase));
   keyring.loadAll();
   return keyring.encodeAddress(
     keypair.publicKey
@@ -52,16 +51,16 @@ export class Onboarding extends React.Component<Props, State> {
   };
 
   componentDidMount () {
-    const seed = generateSeed();
-    const address = generateAddressFromSeed(seed);
+    const phrase = generatePhrase();
+    const address = generateAddressFromPhrase(phrase);
 
     this.setState({
       address: address,
-      seed: seed
+      recoveryPhrase: phrase
     });
   }
 
-  handleInputSeedPhrase = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+  handleInputRecoveryPhrase = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
       recoveryPhrase: value
     });
@@ -100,9 +99,9 @@ export class Onboarding extends React.Component<Props, State> {
     });
   }
 
-  onChangeSeed = ({ target: { value } }: any) => {
+  onChangePhrase = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
-      seed: value
+      recoveryPhrase: value
     });
   }
 
@@ -131,14 +130,14 @@ export class Onboarding extends React.Component<Props, State> {
       onboardingStore: { setIsFirstRun },
       accountStore: { isImport, setAddress, setRecoveryPhrase }
     } = this.props;
-    const { jsonString, name, password, recoveryPhrase, seed } = this.state;
+    const { jsonString, name, password, recoveryPhrase } = this.state;
 
     if (!password) {
       throw new Error('Password field cannot be empty');
     }
 
     if (!isImport) {
-      seed && keyring.createAccountMnemonic(seed, password, { name });
+      recoveryPhrase && keyring.createAccountMnemonic(recoveryPhrase, password, { name });
     }
 
     try {
@@ -196,7 +195,7 @@ export class Onboarding extends React.Component<Props, State> {
   }
 
   renderNewAccountScreen () {
-    const { address, name, seed } = this.state;
+    const { address, name, recoveryPhrase } = this.state;
 
     return (
       <React.Fragment>
@@ -205,8 +204,8 @@ export class Onboarding extends React.Component<Props, State> {
           <Stacked>
             <AddressSummary address={address} name={name} />
             {this.renderSetName()}
-            <Modal.SubHeader> Create from the following mnemonic seed </Modal.SubHeader>
-            <Segment> <FadedText> {seed} </FadedText> </Segment>
+            <Modal.SubHeader> Create from the following mnemonic phrase </Modal.SubHeader>
+            <Segment> <FadedText> {recoveryPhrase} </FadedText> </Segment>
             {this.renderSetPassword()}
             {this.renderNewAccountActions()}
           </Stacked>
@@ -259,9 +258,9 @@ export class Onboarding extends React.Component<Props, State> {
 
     return (
       <React.Fragment>
-        <Modal.SubHeader> Import Account from Seed Phrase </Modal.SubHeader>
+        <Modal.SubHeader> Import Account from Mnemonic Recovery Phrase </Modal.SubHeader>
         <Input
-          onChange={this.handleInputSeedPhrase}
+          onChange={this.handleInputRecoveryPhrase}
           value={recoveryPhrase} />
       </React.Fragment>
     );

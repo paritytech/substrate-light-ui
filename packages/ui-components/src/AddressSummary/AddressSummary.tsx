@@ -11,7 +11,7 @@ import { Name, Stacked } from '../Shared.styles';
 import BalanceDisplay from '../Balance';
 
 type Props = {
-  address: string | AccountId | AccountIndex | Address,
+  address?: string | AccountId | AccountIndex | Address,
   balance?: BN,
   name?: string
 };

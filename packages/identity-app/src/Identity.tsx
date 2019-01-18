@@ -12,7 +12,7 @@ type Props = RouteComponentProps & {
 };
 
 type State = {
-  seed?: string,
+  recoveryPhrase?: string,
   name?: string,
   lookupAddress?: string
 };
@@ -20,8 +20,8 @@ type State = {
 export class Identity extends React.PureComponent<Props, State> {
   state: State = {};
 
-  private handleInputSeed = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ seed: value });
+  private handleInputRecoveryPhrase = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ recoveryPhrase: value });
   }
 
   private handleInputName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,9 +29,9 @@ export class Identity extends React.PureComponent<Props, State> {
   }
 
   private handleAddAccount = () => {
-    const { name, seed } = this.state;
+    const { name, recoveryPhrase } = this.state;
 
-    console.log(name, seed);
+    console.log(name, recoveryPhrase);
   }
 
   private handleInputAddressLookup = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,8 +56,8 @@ export class Identity extends React.PureComponent<Props, State> {
                 <Stacked>
                   <WithSpace>
                     <Input
-                      label='Seed'
-                      onChange={this.handleInputSeed}
+                      label='Recovery Phrase'
+                      onChange={this.handleInputRecoveryPhrase}
                       type='text'
                       withLabel />
                     <MarginTop />
