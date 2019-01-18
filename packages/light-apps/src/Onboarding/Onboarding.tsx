@@ -119,12 +119,18 @@ export class Onboarding extends React.Component<Props, State> {
       history,
       onboardingStore
     } = this.props;
+    const { name, password, seed } = this.state;
 
     onboardingStore.setIsFirstRun(false);
 
-    // FIXME: restoreAccount account with light-api
+    try {
+      seed && keyring.createAccountMnemonic(seed, password, { name });
 
-    history.push('/Identity');
+      history.push('/Identity');
+    } catch (e) {
+      // FIXME: bubble up a useful error message
+      console.log(e);
+    }
   }
 
   render () {
