@@ -20,12 +20,12 @@ type State = {
 export class Identity extends React.PureComponent<Props, State> {
   state: State = {};
 
-  private handleInputSeed = (seed: string) => {
-    this.setState({ seed });
+  private handleInputSeed = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ seed: value });
   }
 
-  private handleInputName = (name: string) => {
-    this.setState({ name });
+  private handleInputName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ name: value });
   }
 
   private handleAddAccount = () => {
@@ -34,8 +34,8 @@ export class Identity extends React.PureComponent<Props, State> {
     console.log(name, seed);
   }
 
-  private handleInputAddressLookup = (lookupAddress: string) => {
-    this.setState({ lookupAddress });
+  private handleInputAddressLookup = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ lookupAddress: value });
   }
 
   private handleSaveAccount = () => {
@@ -57,13 +57,13 @@ export class Identity extends React.PureComponent<Props, State> {
                   <WithSpace>
                     <Input
                       label='Seed'
-                      onChange={(e) => this.handleInputSeed}
+                      onChange={this.handleInputSeed}
                       type='text'
                       withLabel />
                     <MarginTop />
                     <Input
                       label='Name'
-                      onChange={(e) => this.handleInputName}
+                      onChange={this.handleInputName}
                       type='text'
                       withLabel />
                   </WithSpace>
@@ -80,14 +80,14 @@ export class Identity extends React.PureComponent<Props, State> {
                   <WithSpace>
                     <Input
                       label='Lookup Account By Address'
-                      onChange={(e) => this.handleInputAddressLookup}
+                      onChange={this.handleInputAddressLookup}
                       type='text'
                       withLabel
                     />
                     <MarginTop />
                     <Input
                       label='Name'
-                      onChange={(e) => this.handleInputName}
+                      onChange={this.handleInputName}
                       type='text'
                       withLabel
                     />

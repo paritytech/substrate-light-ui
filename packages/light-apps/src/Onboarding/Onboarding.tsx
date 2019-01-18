@@ -60,9 +60,9 @@ export class Onboarding extends React.Component<Props, State> {
     });
   }
 
-  handleInputSeedPhrase = (val: string) => {
+  handleInputSeedPhrase = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
-      phrase: val
+      phrase: value
     });
   }
 
@@ -77,21 +77,21 @@ export class Onboarding extends React.Component<Props, State> {
     });
   }
 
-  onChangeName = (name: string) => {
+  onChangeName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
-      name: name
+      name: value
     });
   }
 
-  onChangePassword = (password: string) => {
+  onChangePassword = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
-      password: password
+      password: value
     });
   }
 
-  onChangeSeed = (seed: string) => {
+  onChangeSeed = ({ target: { value } }: any) => {
     this.setState({
-      seed: seed
+      seed: value
     });
   }
 
@@ -192,7 +192,7 @@ export class Onboarding extends React.Component<Props, State> {
         <Modal.SubHeader> Give it a name </Modal.SubHeader>
         <Input
           autoFocus
-          onChange={(e) => this.onChangeName}
+          onChange={this.onChangeName}
           value={name}
         />
       </React.Fragment>
@@ -206,7 +206,7 @@ export class Onboarding extends React.Component<Props, State> {
       <React.Fragment>
         <Modal.SubHeader> {screen === 'save' ? 'Decrypt your account with your passphrase' : 'Encrypt it with a passphrase'} </Modal.SubHeader>
         <Input
-          onChange={(e) => this.onChangePassword}
+          onChange={this.onChangePassword}
           type='password'
           value={password}
         />
@@ -218,7 +218,7 @@ export class Onboarding extends React.Component<Props, State> {
     return (
       <React.Fragment>
         <Modal.SubHeader> Restore Account from JSON Backup File </Modal.SubHeader>
-        <InputFile onChange={(e) => this.handleFileUploaded} />
+        <InputFile onChange={this.handleFileUploaded} />
       </React.Fragment>
     );
   }
@@ -230,7 +230,7 @@ export class Onboarding extends React.Component<Props, State> {
       <React.Fragment>
         <Modal.SubHeader> Import Account from Seed Phrase </Modal.SubHeader>
         <Input
-          onChange={(e) => this.handleInputSeedPhrase}
+          onChange={this.handleInputSeedPhrase}
           value={phrase} />
       </React.Fragment>
     );
