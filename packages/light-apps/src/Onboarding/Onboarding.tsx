@@ -87,7 +87,7 @@ export class Onboarding extends React.Component<Props, State> {
     } catch (e) {
       console.error(e);
       this.setState({ error: e.message });
-      alert('You need to resolve this issue first: ' + e.message);
+      alert('Please resolve this before you continue: ' + e.message);
     }
   }
 
@@ -122,7 +122,7 @@ export class Onboarding extends React.Component<Props, State> {
   unlockWithPhrase = () => {
     const { error } = this.state;
     if (error) {
-      alert('You need to resolve this issue before continuing: ' + error);
+      alert('Please resolve this issue before continuing: ' + error);
     } else {
       this.setState({
         screen: 'save',
