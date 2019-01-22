@@ -12,10 +12,10 @@ export class AccountStore {
   name: string = ''; // Account name
 
   @observable
-  jsonString: string = '';
+  jsonString: string | null = null;
 
   @observable
-  recoveryPhrase: string = '';
+  recoveryPhrase: string | null = null;
 
   @observable
   isImport: boolean = false;
@@ -63,12 +63,5 @@ export class AccountStore {
     this.address = '';
     this.name = '';
   }
-
-  /**
-   * Generate a seed phrase and add to keyring
-   */
-  // generateNewAccount = async () => {
-  //
-  // };
 }
 export const accountStore = new AccountStore();

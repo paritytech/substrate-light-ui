@@ -6,29 +6,30 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router-dom';
 import keyring from '@polkadot/ui-keyring';
-import { u8aToString } from '@polkadot/util';
+
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
-import { AddressSummary, Container, ErrorText, FadedText, Input, InputFile, Modal, NavButton, NavLink, Segment, Stacked } from '@polkadot/ui-components';
+import { AddressSummary, Container, ErrorText, FadedText, Input, Modal, NavButton, NavLink, Segment, Stacked } from '@polkadot/ui-components';
 import FileSaver from 'file-saver';
 
 import { OnboardingStore } from '../stores/onboardingStore';
 import { AccountStore } from '../stores/accountStore';
+import { ImportOptionsScreen } from './ImportOptionsScreen';
 
 interface Props extends RouteComponentProps {
   onboardingStore: OnboardingStore;
   accountStore: AccountStore;
 }
 
-type OnboardingScreenType = 'importOptions' | 'save' | 'new';
+export type OnboardingScreenType = 'importOptions' | 'save' | 'new';
 
 type State = {
   address?: string,
   error: string | null,
-  jsonString?: string,
+  jsonString: string | null,
   mnemonic: string,
   name?: string,
+  recoveryPhrase: string | null,
   password?: string,
-  recoveryPhrase?: string,
   screen: OnboardingScreenType
 };
 
@@ -51,8 +52,10 @@ function generateAddressFromPhrase (phrase: string): string {
 export class Onboarding extends React.Component<Props, State> {
   state: State = {
     error: null,
-    screen: 'importOptions',
-    mnemonic: ''
+    jsonString: null,
+    mnemonic: '',
+    recoveryPhrase: null,
+    screen: 'importOptions'
   };
 
   componentDidMount () {
@@ -60,35 +63,6 @@ export class Onboarding extends React.Component<Props, State> {
     const address = generateAddressFromPhrase(mnemonic);
 
     this.setState({ address, mnemonic });
-  }
-
-  handleInputRecoveryPhrase = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      recoveryPhrase: value
-    });
-  }
-
-  handleFileUploaded = async (file: Uint8Array) => {
-    const { accountStore } = this.props;
-
-    const jsonString = u8aToString(file);
-
-    try {
-      await accountStore.setIsImport(true);
-      await accountStore.setJsonString(jsonString);
-
-      this.setState({
-        address: accountStore.address,
-        error: null,
-        jsonString: jsonString,
-        name: accountStore.name,
-        screen: 'save'
-      });
-    } catch (e) {
-      console.error(e);
-      this.setState({ error: e.message });
-      alert('Please resolve this before you continue: ' + e.message);
-    }
   }
 
   onChangeName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
@@ -109,29 +83,13 @@ export class Onboarding extends React.Component<Props, State> {
     });
   }
 
-  toggleScreen = () => {
-    const { screen } = this.state;
+  toggleScreen = (to: OnboardingScreenType) => {
     this.setState({
-      screen: screen === 'new' || screen === 'save'
-        ? 'importOptions'
-        : 'new',
+      screen: to,
       password: ''
     });
   }
 
-  unlockWithPhrase = () => {
-    const { error } = this.state;
-    if (error) {
-      alert('Please resolve this issue before continuing: ' + error);
-    } else {
-      this.setState({
-        screen: 'save',
-        password: ''
-      });
-    }
-  }
-
-  // FIXME: split this up into smaller functions
   addAccountToWallet = async (file?: Uint8Array) => {
     const {
       history,
@@ -182,14 +140,15 @@ export class Onboarding extends React.Component<Props, State> {
         size='tiny'
       >
         <Container>
-          {
-            this.renderError()
-          }
           {screen === 'new'
             ? this.renderNewAccountScreen()
             : screen === 'importOptions'
-              ? this.renderImportOptionsScreen()
+              ? <ImportOptionsScreen toggleScreen={this.toggleScreen}
+              {...this.props}/>
               : this.renderSaveScreen()
+          }
+          {
+            this.renderError()
           }
         </Container>
       </Modal>
@@ -204,22 +163,6 @@ export class Onboarding extends React.Component<Props, State> {
         <ErrorText>
           {error || null}
         </ErrorText>
-      </React.Fragment>
-    );
-  }
-
-  renderImportOptionsScreen () {
-    return (
-      <React.Fragment>
-        <Modal.Header> Unlock Account </Modal.Header>
-        <Modal.Content>
-          <Stacked>
-            {this.renderJSONCard()}
-            <Modal.FadedText> or </Modal.FadedText>
-            {this.renderPhraseCard()}
-            {this.renderImportActions()}
-          </Stacked>
-        </Modal.Content>
       </React.Fragment>
     );
   }
@@ -253,6 +196,7 @@ export class Onboarding extends React.Component<Props, State> {
         <Input
           autoFocus
           onChange={this.onChangeName}
+          type='text'
           value={name}
         />
       </React.Fragment>
@@ -274,40 +218,6 @@ export class Onboarding extends React.Component<Props, State> {
     );
   }
 
-  renderJSONCard () {
-    return (
-      <React.Fragment>
-        <Modal.SubHeader> Restore Account from JSON Backup File </Modal.SubHeader>
-        <InputFile onChange={this.handleFileUploaded} />
-      </React.Fragment>
-    );
-  }
-
-  renderPhraseCard () {
-    const { recoveryPhrase } = this.state;
-
-    return (
-      <React.Fragment>
-        <Modal.SubHeader> Import Account from Mnemonic Recovery Phrase </Modal.SubHeader>
-        <Input
-          onChange={this.handleInputRecoveryPhrase}
-          value={recoveryPhrase} />
-      </React.Fragment>
-    );
-  }
-
-  renderImportActions () {
-    return (
-      <Modal.Actions>
-        <Stacked>
-          <NavButton onClick={this.unlockWithPhrase}>Unlock</NavButton>
-          <Modal.FadedText>or</Modal.FadedText>
-          <NavLink onClick={this.toggleScreen}> Create New Account </NavLink>
-        </Stacked>
-      </Modal.Actions>
-    );
-  }
-
   renderNewAccountActions () {
     return (
       <React.Fragment>
@@ -315,7 +225,7 @@ export class Onboarding extends React.Component<Props, State> {
           <Stacked>
             <NavButton onClick={this.addAccountToWallet}> Save </NavButton>
             <Modal.FadedText>or</Modal.FadedText>
-            <NavLink onClick={this.toggleScreen}> Import an existing account </NavLink>
+            <NavLink onClick={() => this.toggleScreen('importOptions')}> Import an existing account </NavLink>
           </Stacked>
         </Modal.Actions>
       </React.Fragment>
