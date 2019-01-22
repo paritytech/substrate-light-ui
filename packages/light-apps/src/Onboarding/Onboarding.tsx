@@ -8,7 +8,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import keyring from '@polkadot/ui-keyring';
 import { u8aToString } from '@polkadot/util';
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
-import { AddressSummary, Container, FadedText, Input, InputFile, Modal, NavButton, NavLink, Segment, Stacked } from '@polkadot/ui-components';
+import { AddressSummary, Container, ErrorText, FadedText, Input, InputFile, Modal, NavButton, NavLink, Segment, Stacked } from '@polkadot/ui-components';
 import FileSaver from 'file-saver';
 
 import { OnboardingStore } from '../stores/onboardingStore';
@@ -23,11 +23,12 @@ type OnboardingScreenType = 'importOptions' | 'save' | 'new';
 
 type State = {
   address?: string,
+  error: string | null,
   jsonString?: string,
+  mnemonic: string,
   name?: string,
   password?: string,
   recoveryPhrase?: string,
-  mnemonic: string,
   screen: OnboardingScreenType
 };
 
@@ -49,6 +50,7 @@ function generateAddressFromPhrase (phrase: string): string {
 @observer
 export class Onboarding extends React.Component<Props, State> {
   state: State = {
+    error: null,
     screen: 'importOptions',
     mnemonic: ''
   };
@@ -77,13 +79,15 @@ export class Onboarding extends React.Component<Props, State> {
 
       this.setState({
         address: accountStore.address,
+        error: null,
         jsonString: jsonString,
         name: accountStore.name,
         screen: 'save'
       });
-
     } catch (e) {
-      console.log(e);
+      console.error(e);
+      this.setState({ error: e.message });
+      alert('You need to resolve this issue first: ' + e.message);
     }
   }
 
@@ -116,12 +120,15 @@ export class Onboarding extends React.Component<Props, State> {
   }
 
   unlockWithPhrase = () => {
-    // const { phrase } = this.state;
-    // FIXME: try catch unlock with phrase in store
-    this.setState({
-      screen: 'save',
-      password: ''
-    });
+    const { error } = this.state;
+    if (error) {
+      alert('You need to resolve this issue before continuing: ' + error);
+    } else {
+      this.setState({
+        screen: 'save',
+        password: ''
+      });
+    }
   }
 
   // FIXME: split this up into smaller functions
@@ -134,7 +141,8 @@ export class Onboarding extends React.Component<Props, State> {
     const { jsonString, mnemonic, name, password, recoveryPhrase } = this.state;
 
     if (!password) {
-      throw new Error('Password field cannot be empty');
+      this.setState({ error: 'Password field cannot be empty' });
+      return;
     }
 
     if (!isImport) {
@@ -156,10 +164,11 @@ export class Onboarding extends React.Component<Props, State> {
       }
 
       setIsFirstRun(false);
+
       history.push('/Identity');
     } catch (e) {
-      // FIXME: bubble up a useful error message
-      console.log(e);
+      console.error(e);
+      this.setState({ error: e.message });
     }
   }
 
@@ -173,6 +182,9 @@ export class Onboarding extends React.Component<Props, State> {
         size='tiny'
       >
         <Container>
+          {
+            this.renderError()
+          }
           {screen === 'new'
             ? this.renderNewAccountScreen()
             : screen === 'importOptions'
@@ -181,6 +193,18 @@ export class Onboarding extends React.Component<Props, State> {
           }
         </Container>
       </Modal>
+    );
+  }
+
+  renderError () {
+    const { error } = this.state;
+
+    return (
+      <React.Fragment>
+        <ErrorText>
+          {error || null}
+        </ErrorText>
+      </React.Fragment>
     );
   }
 

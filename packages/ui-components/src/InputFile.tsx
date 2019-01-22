@@ -72,7 +72,6 @@ class InputFile extends React.PureComponent<Props, State> {
         // ignore
       };
 
-      // @ts-ignore
       reader.onload = ({ target: { result } }: LoadEvent) => {
         const data = new Uint8Array(result);
 

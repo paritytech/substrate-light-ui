@@ -28,6 +28,12 @@ export const FadedText = styled.p`
   text-align: center;
 `;
 
+export const ErrorText = styled.p`
+  color: red;
+  text-align: center;
+  font-weight: 500;
+`;
+
 export const MarginTop = styled.div`
   margin-top: 1rem;
 `;
