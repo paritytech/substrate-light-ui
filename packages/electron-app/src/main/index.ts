@@ -19,9 +19,11 @@ function createWindow () {
     process.env.ELECTRON_START_URL || 'http://127.0.0.1:3000'
   );
 
-  installExtension(REACT_DEVELOPER_TOOLS)
-    .then((name: string) => console.log(`Added Extension:  ${name}`))
-    .catch((err: string) => console.log('An error occurred: ', err));
+  if (process.env.NODE_ENV !== 'production') {
+    installExtension(REACT_DEVELOPER_TOOLS)
+      .then((name: string) => console.log(`Added Extension:  ${name}`))
+      .catch((err: string) => console.log('An error occurred: ', err));
+  }
 
   mainWindow.on('closed', () => {
     mainWindow = null;
