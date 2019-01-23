@@ -1,4 +1,4 @@
-// Copyright 2017-2018 @paritytech/substrate-light-ui authors & contributors
+// Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
@@ -8,12 +8,13 @@ import { RouteComponentProps } from 'react-router-dom';
 import keyring from '@polkadot/ui-keyring';
 
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
-import { AddressSummary, Container, ErrorText, FadedText, Input, Modal, NavButton, NavLink, Segment, Stacked } from '@polkadot/ui-components';
+import { AddressSummary, Container, ErrorText, Input, Modal, NavButton, NavLink, Stacked } from '@polkadot/ui-components';
 import FileSaver from 'file-saver';
 
 import { OnboardingStore } from '../stores/onboardingStore';
 import { AccountStore } from '../stores/accountStore';
 import { ImportOptionsScreen } from './ImportOptionsScreen';
+import { CreateNewAccountScreen } from './CreateNewAccountScreen';
 
 interface Props extends RouteComponentProps {
   onboardingStore: OnboardingStore;
@@ -25,10 +26,10 @@ export type OnboardingScreenType = 'importOptions' | 'save' | 'new';
 type State = {
   address?: string,
   error: string | null,
-  jsonString: string | null,
+  jsonString?: string,
   mnemonic: string,
   name?: string,
-  recoveryPhrase: string | null,
+  recoveryPhrase?: string,
   password?: string,
   screen: OnboardingScreenType
 };
@@ -52,9 +53,7 @@ function generateAddressFromPhrase (phrase: string): string {
 export class Onboarding extends React.Component<Props, State> {
   state: State = {
     error: null,
-    jsonString: null,
     mnemonic: '',
-    recoveryPhrase: null,
     screen: 'importOptions'
   };
 
@@ -90,13 +89,37 @@ export class Onboarding extends React.Component<Props, State> {
     });
   }
 
-  addAccountToWallet = async (file?: Uint8Array) => {
+  addAccountFromJson = async (file?: Uint8Array) => {
     const {
       history,
       onboardingStore: { setIsFirstRun },
-      accountStore: { isImport, setAddress, setRecoveryPhrase }
+      accountStore: { setAddress }
     } = this.props;
-    const { jsonString, mnemonic, name, password, recoveryPhrase } = this.state;
+
+    const { jsonString, password } = this.state;
+
+    if (!password) {
+      this.setState({ error: 'Password field cannot be empty' });
+      return;
+    } else if (jsonString) {
+      const pair = keyring.restoreAccount(JSON.parse(jsonString), password);
+      await setAddress(pair.address());
+
+      setIsFirstRun(false);
+
+      history.push('/Identity');
+    } else {
+      this.setState({ error: 'Make sure your JSON file is valid' });
+    }
+  }
+
+  addAccountToWallet = () => {
+    const {
+      history,
+      onboardingStore: { setIsFirstRun },
+      accountStore: { isImport }
+    } = this.props;
+    const { mnemonic, name, password } = this.state;
 
     if (!password) {
       this.setState({ error: 'Password field cannot be empty' });
@@ -113,14 +136,6 @@ export class Onboarding extends React.Component<Props, State> {
     }
 
     try {
-      if (recoveryPhrase) {
-        await setRecoveryPhrase(recoveryPhrase);
-      } else if (jsonString) {
-        const pair = keyring.restoreAccount(JSON.parse(jsonString), password);
-
-        await setAddress(pair.address());
-      }
-
       setIsFirstRun(false);
 
       history.push('/Identity');
@@ -141,10 +156,14 @@ export class Onboarding extends React.Component<Props, State> {
       >
         <Container>
           {screen === 'new'
-            ? this.renderNewAccountScreen()
+            ? <CreateNewAccountScreen
+                addAccountToWallet={this.addAccountToWallet}
+                toggleScreen={this.toggleScreen}
+                {...this.props} />
             : screen === 'importOptions'
-              ? <ImportOptionsScreen toggleScreen={this.toggleScreen}
-              {...this.props}/>
+              ? <ImportOptionsScreen
+                  toggleScreen={this.toggleScreen}
+                  {...this.props} />
               : this.renderSaveScreen()
           }
           {
@@ -167,26 +186,6 @@ export class Onboarding extends React.Component<Props, State> {
     );
   }
 
-  renderNewAccountScreen () {
-    const { address, name, mnemonic } = this.state;
-
-    return (
-      <React.Fragment>
-        <Modal.Header> Create New Account </Modal.Header>
-        <Modal.Content>
-          <Stacked>
-            <AddressSummary address={address} name={name} />
-            {this.renderSetName()}
-            <Modal.SubHeader> Create from the following mnemonic phrase </Modal.SubHeader>
-            <Segment> <FadedText> {mnemonic} </FadedText> </Segment>
-            {this.renderSetPassword()}
-            {this.renderNewAccountActions()}
-          </Stacked>
-        </Modal.Content>
-      </React.Fragment>
-    );
-  }
-
   renderSetName () {
     const { name } = this.state;
 
@@ -204,11 +203,11 @@ export class Onboarding extends React.Component<Props, State> {
   }
 
   renderSetPassword () {
-    const { password, screen } = this.state;
+    const { password } = this.state;
 
     return (
       <React.Fragment>
-        <Modal.SubHeader> {screen === 'save' ? 'Decrypt your account with your passphrase' : 'Encrypt it with a passphrase'} </Modal.SubHeader>
+        <Modal.SubHeader> Encrypt it with a passphrase </Modal.SubHeader>
         <Input
           onChange={this.onChangePassword}
           type='password'

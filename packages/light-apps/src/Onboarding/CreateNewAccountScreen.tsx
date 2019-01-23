@@ -1,0 +1,110 @@
+// Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
+// This software may be modified and distributed under the terms
+// of the Apache-2.0 license. See the LICENSE file for details.
+
+import React from 'react';
+import { inject, observer } from 'mobx-react';
+import { RouteComponentProps } from 'react-router-dom';
+import { AddressSummary, FadedText, Input, Modal, NavButton, NavLink, Segment, Stacked } from '@polkadot/ui-components';
+
+import { OnboardingScreenType } from './Onboarding';
+import { AccountStore } from '../stores/accountStore';
+
+interface Props extends RouteComponentProps {
+  accountStore: AccountStore;
+  toggleScreen: (to: OnboardingScreenType) => void;
+  addAccountToWallet: () => void;
+}
+
+type State = {
+  address?: string,
+  error: string | null,
+  jsonString: string | null,
+  mnemonic: string,
+  name?: string,
+  password?: string,
+  recoveryPhrase: string | null
+};
+
+@inject('accountStore')
+@observer
+export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
+
+  onChangeName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      name: value
+    });
+  }
+
+  onChangePassword = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      password: value
+    });
+  }
+
+  render () {
+    const { address, name, mnemonic } = this.state;
+
+    return (
+      <React.Fragment>
+        <Modal.Header> Create New Account </Modal.Header>
+        <Modal.Content>
+          <Stacked>
+            <AddressSummary address={address} name={name} />
+            {this.renderSetName()}
+            <Modal.SubHeader> Create from the following mnemonic phrase </Modal.SubHeader>
+            <Segment> <FadedText> {mnemonic} </FadedText> </Segment>
+            {this.renderSetPassword()}
+            {this.renderNewAccountActions()}
+          </Stacked>
+        </Modal.Content>
+      </React.Fragment>
+    );
+  }
+
+  renderSetName () {
+    const { name } = this.state;
+
+    return (
+      <React.Fragment>
+        <Modal.SubHeader> Give it a name </Modal.SubHeader>
+        <Input
+          autoFocus
+          onChange={this.onChangeName}
+          type='text'
+          value={name}
+        />
+      </React.Fragment>
+    );
+  }
+
+  renderSetPassword () {
+    const { password } = this.state;
+
+    return (
+      <React.Fragment>
+        <Modal.SubHeader> Encrypt it with a passphrase </Modal.SubHeader>
+        <Input
+          onChange={this.onChangePassword}
+          type='password'
+          value={password}
+        />
+      </React.Fragment>
+    );
+  }
+
+  renderNewAccountActions () {
+    const { addAccountToWallet, toggleScreen } = this.props;
+    return (
+      <React.Fragment>
+        <Modal.Actions>
+          <Stacked>
+            <NavButton onClick={addAccountToWallet}> Save </NavButton>
+            <Modal.FadedText>or</Modal.FadedText>
+            <NavLink onClick={() => toggleScreen('importOptions')}> Import an existing account </NavLink>
+          </Stacked>
+        </Modal.Actions>
+      </React.Fragment>
+    );
+  }
+}

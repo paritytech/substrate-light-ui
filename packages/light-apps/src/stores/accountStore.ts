@@ -1,4 +1,4 @@
-// Copyright 2017-2018 @paritytech/substrate-light-ui authors & contributors
+// Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
@@ -6,16 +6,16 @@ import { action, observable } from 'mobx';
 
 export class AccountStore {
   @observable
-  address: string = '';
+  address?: string;
 
   @observable
-  name: string = ''; // Account name
+  name?: string; // Account name
 
   @observable
-  jsonString: string | null = null;
+  jsonString?: string;
 
   @observable
-  recoveryPhrase: string | null = null;
+  recoveryPhrase?: string;
 
   @observable
   isImport: boolean = false;
@@ -60,8 +60,11 @@ export class AccountStore {
    */
   @action
   clear = async () => {
-    this.address = '';
-    this.name = '';
+    this.address = undefined;
+    this.name = undefined;
+    this.jsonString = undefined;
+    this.recoveryPhrase = undefined;
   }
 }
+
 export const accountStore = new AccountStore();

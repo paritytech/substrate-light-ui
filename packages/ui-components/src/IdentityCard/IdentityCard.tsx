@@ -1,4 +1,4 @@
-// Copyright 2017-2018 @paritytech/substrate-light-ui authors & contributors
+// Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
@@ -11,7 +11,7 @@ import NavButton from '../NavButton';
 import { StyledCard, CardHeader, CardContent } from './IdentityCard.styles';
 
 type Props = {
-  address: string,
+  address?: string,
   goToRoute: (to?: string) => void,
   name?: string,
   value: string
