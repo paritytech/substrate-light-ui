@@ -54,17 +54,26 @@ export class Content extends React.Component<Props> {
   }
 
   render () {
-    const { location, onboardingStore, accountStore } = this.props;
+    const {
+      location,
+      onboardingStore: {
+        isFirstRun
+      },
+      accountStore: {
+        address,
+        name
+      }
+    } = this.props;
 
     return (
       <Container>
         {
-          onboardingStore.isFirstRun
+          isFirstRun
             ? <Route component={Onboarding} />
             : <React.Fragment>
               <IdentityCard
-                address={accountStore.address}
-                name={accountStore.name}
+                address={address}
+                name={name}
                 goToRoute={this.handleRouteChange}
                 value={ID_CARD_ACTIONS(location.pathname.slice(1))['value']}
               />

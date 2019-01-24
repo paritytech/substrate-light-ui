@@ -11,7 +11,7 @@ import { AddressContainer } from './Address.styles';
 import { NavLinkSmall } from '../Shared.styles';
 
 type Props = {
-  address: string,
+  address?: string,
   goToRoute: (to?: string) => void
 };
 

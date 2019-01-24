@@ -7,7 +7,7 @@ import Icon from './Icon';
 import styled from 'styled-components';
 
 type Props = {
-  value: string
+  value?: string
 };
 
 type State = {
@@ -41,7 +41,7 @@ export default class CopyButton extends React.PureComponent<Props, State> {
     const { value } = this.props;
 
     return (
-      <CopyToClipboard text={value} onCopy={this.handleCopied}>
+      <CopyToClipboard text={value || ''} onCopy={this.handleCopied}>
         <StyledCopyButton>
           <Icon name={ copied ? 'check' : 'copy' } />
           {copied && <small> Copied! </small>}

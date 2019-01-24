@@ -11,6 +11,7 @@ import { AccountStore } from '../stores/accountStore';
 
 interface Props extends RouteComponentProps {
   accountStore: AccountStore;
+  addAccountToWallet: () => void;
   address?: string;
   name?: string;
   onChangePhrase: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -23,19 +24,6 @@ interface Props extends RouteComponentProps {
 @inject('accountStore')
 @observer
 export class ImportOptionsScreen extends React.PureComponent<Props> {
-
-  unlockWithPhrase = () => {
-    const { onError, recoveryPhrase, toggleScreen } = this.props;
-
-    if (recoveryPhrase && recoveryPhrase.split(' ').length === 12) {
-      onError(null);
-
-      toggleScreen('save');
-    } else {
-      onError('The entered Recovery Phrase is not valid.');
-    }
-  }
-
   render () {
     return (
       <React.Fragment>
@@ -78,12 +66,12 @@ export class ImportOptionsScreen extends React.PureComponent<Props> {
   }
 
   renderImportActions () {
-    const { toggleScreen } = this.props;
+    const { addAccountToWallet, toggleScreen } = this.props;
 
     return (
       <Modal.Actions>
         <Stacked>
-          <NavButton onClick={this.unlockWithPhrase}>Unlock</NavButton>
+          <NavButton onClick={addAccountToWallet}>Unlock</NavButton>
           <Modal.FadedText>or</Modal.FadedText>
           <NavLink onClick={() => toggleScreen('new')}> Create New Account </NavLink>
         </Stacked>

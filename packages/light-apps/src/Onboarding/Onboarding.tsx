@@ -60,6 +60,12 @@ export class Onboarding extends React.Component<Props, State> {
     const mnemonic = generatePhrase();
     const address = generateAddressFromPhrase(mnemonic);
 
+    // For Debugging Purposes only
+    if (process.env.NODE_ENV !== 'production') {
+      // @ts-ignore
+      window.keyring = keyring;
+    }
+
     this.setState({ address, mnemonic });
   }
 
@@ -95,19 +101,21 @@ export class Onboarding extends React.Component<Props, State> {
   }
 
   handleFileUploaded = async (file: Uint8Array) => {
-    const { accountStore } = this.props;
+    const {
+      accountStore: { address, name, setIsImport, setJsonString }
+    } = this.props;
 
     const jsonString = u8aToString(file);
 
     try {
-      await accountStore.setIsImport(true);
-      await accountStore.setJsonString(jsonString);
+      await setIsImport(true);
+      await setJsonString(jsonString);
 
       this.setState({
-        address: accountStore.address,
+        address,
         error: null,
-        jsonString: jsonString,
-        name: accountStore.name
+        jsonString,
+        name
       });
 
       this.toggleScreen('save');
@@ -118,60 +126,62 @@ export class Onboarding extends React.Component<Props, State> {
     }
   }
 
-  addAccountFromJson = async (file?: Uint8Array) => {
+  addAccountToWallet = async () => {
     const {
       history,
       onboardingStore: { setIsFirstRun },
-      accountStore: { setAddress }
-    } = this.props;
-
-    const { jsonString, password } = this.state;
-
-    if (!password) {
-      this.setState({ error: 'Password field cannot be empty' });
-      return;
-    } else if (jsonString) {
-      const pair = keyring.restoreAccount(JSON.parse(jsonString), password);
-      await setAddress(pair.address());
-
-      setIsFirstRun(false);
-
-      history.push('/Identity');
-    } else {
-      this.setState({ error: 'Make sure your JSON file is valid' });
-    }
-  }
-
-  addAccountToWallet = () => {
-    const {
-      history,
-      onboardingStore: { setIsFirstRun },
-      accountStore: { isImport }
+      accountStore: { isImport, jsonString, recoveryPhrase, setAddress, setName }
     } = this.props;
     const { mnemonic, name, password } = this.state;
-    debugger;
+
     if (!password) {
-      this.setState({ error: 'Password field cannot be empty' });
+      this.onError('Password field cannot be empty');
       return;
     }
 
-    if (!isImport) {
-      const pair = keyring.createAccountMnemonic(mnemonic, password, { name });
-
-      const json = pair.toJson(password);
-      const blob = new Blob([JSON.stringify(json)], { type: 'application/json; charset=utf-8' });
-
-      FileSaver.saveAs(blob, `${pair.address()}.json`);
-    }
+    let pair;
 
     try {
-      setIsFirstRun(false);
+      if (!isImport) {
+        pair = keyring.createAccountMnemonic(mnemonic, password, { name });
 
-      history.push('/Identity');
+        const newAddress = pair.address();
+
+        await setAddress(newAddress);
+        await setName(name);
+
+        const json = pair.toJson(password);
+        const blob = new Blob([JSON.stringify(json)], { type: 'application/json; charset=utf-8' });
+
+        FileSaver.saveAs(blob, `${newAddress}.json`);
+
+        console.log('new pair generated from mnemonic -> ', pair);
+      } else if (jsonString) {
+        pair = keyring.restoreAccount(JSON.parse(jsonString), password);
+
+        console.log('new pair generated from json -> ', pair);
+      } else if (recoveryPhrase) {
+        // FIXME: actually check it's a valid phrase
+        if (recoveryPhrase.split(' ').length === 12) {
+          this.onError(null);
+
+          // FIXME: actually restore from the phrase
+
+          console.log('new pair generated from phrase -> ', pair);
+
+          this.toggleScreen('save');
+        } else {
+          this.onError('The entered Recovery Phrase is not valid.');
+        }
+      }
     } catch (e) {
-      console.error(e);
-      this.setState({ error: e.message });
+      this.onError(e.message);
+      return;
     }
+
+    setIsFirstRun(false);
+
+    history.push('/Identity');
   }
 
   render () {
@@ -198,6 +208,7 @@ export class Onboarding extends React.Component<Props, State> {
                 {...this.props} />
             : screen === 'importOptions'
               ? <ImportOptionsScreen
+                  addAccountToWallet={this.addAccountToWallet}
                   address={address}
                   onChangePhrase={this.onChangePhrase}
                   onChangeFile={this.handleFileUploaded}
@@ -230,11 +241,9 @@ export class Onboarding extends React.Component<Props, State> {
     const { error } = this.state;
 
     return (
-      <React.Fragment>
-        <ErrorText>
-          {error || null}
-        </ErrorText>
-      </React.Fragment>
+      <ErrorText>
+        {error || null}
+      </ErrorText>
     );
   }
 }

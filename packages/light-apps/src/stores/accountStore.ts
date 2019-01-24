@@ -21,12 +21,12 @@ export class AccountStore {
   isImport: boolean = false;
 
   @action
-  setAddress = async (address: string) => {
+  setAddress = async (address?: string) => {
     this.address = address;
   }
 
   @action
-  setName = async (name: string) => {
+  setName = async (name?: string) => {
     this.name = name;
   }
 
@@ -36,7 +36,7 @@ export class AccountStore {
   }
 
   @action
-  setRecoveryPhrase = async (phrase: string) => {
+  setRecoveryPhrase = async (phrase?: string) => {
     this.recoveryPhrase = phrase;
   }
 
