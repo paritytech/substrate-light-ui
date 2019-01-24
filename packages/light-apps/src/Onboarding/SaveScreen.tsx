@@ -25,7 +25,7 @@ interface Props extends RouteComponentProps {
 
 @inject('accountStore')
 @observer
-export class SaveScreen extends React.PureComponent<Props> {
+export class SaveScreen extends React.Component<Props> {
   render () {
     const { address, name } = this.props;
 

@@ -23,7 +23,7 @@ interface Props extends RouteComponentProps {
 
 @inject('accountStore')
 @observer
-export class ImportOptionsScreen extends React.PureComponent<Props> {
+export class ImportOptionsScreen extends React.Component<Props> {
   render () {
     return (
       <React.Fragment>

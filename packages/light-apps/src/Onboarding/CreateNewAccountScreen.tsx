@@ -25,7 +25,7 @@ interface Props extends RouteComponentProps {
 
 @inject('accountStore')
 @observer
-export class CreateNewAccountScreen extends React.PureComponent<Props> {
+export class CreateNewAccountScreen extends React.Component<Props> {
   async componentDidMount () {
     const {
       accountStore: { setIsImport }

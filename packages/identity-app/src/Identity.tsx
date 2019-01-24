@@ -4,6 +4,7 @@
 
 import React from 'react';
 import { RouteComponentProps } from 'react-router';
+import keyring from '@polkadot/ui-keyring';
 import { Container, Input, MarginTop, NavButton, Stacked, WalletCard, WithSpace } from '@polkadot/ui-components';
 import Grid from 'semantic-ui-react/dist/commonjs/collections/Grid';
 
@@ -96,9 +97,40 @@ export class Identity extends React.PureComponent<Props, State> {
                 </Stacked>
               </WalletCard>
             </Grid.Column>
+
+            <Grid.Column>
+              <WalletCard
+                header='Saved Accounts'
+                subheader='To quickly move between accounts, select from the list of unlocked accounts below.' >
+                <Stacked>
+                  <WithSpace>
+                    <React.Fragment>
+                      {
+                        this.renderAllAccountsFromKeyring()
+                      }
+                    </React.Fragment>
+                  </WithSpace>
+                </Stacked>
+              </WalletCard>
+            </Grid.Column>
           </Grid.Row>
         </Grid>
       </Container>
+    );
+  }
+
+  // FIXME: make this more interesting with address, name, balances, txn count.
+  renderAllAccountsFromKeyring () {
+    keyring.loadAll();
+
+    return (
+      <React.Fragment>
+        {
+          keyring.getAccounts().map(account => {
+            return account.address();
+          })
+        }
+      </React.Fragment>
     );
   }
 }

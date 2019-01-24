@@ -69,38 +69,38 @@ export class Onboarding extends React.Component<Props, State> {
     this.setState({ address, mnemonic });
   }
 
-  onChangeName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+  private onChangeName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
       name: value
     });
   }
 
-  onChangePassword = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+  private onChangePassword = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
       password: value
     });
   }
 
-  onChangePhrase = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+  private onChangePhrase = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
       recoveryPhrase: value
     });
   }
 
-  onError = (value: string | null) => {
+  private onError = (value: string | null) => {
     this.setState({
       error: value
     });
   }
 
-  toggleScreen = (to: OnboardingScreenType) => {
+  private toggleScreen = (to: OnboardingScreenType) => {
     this.setState({
       screen: to,
       password: ''
     });
   }
 
-  handleFileUploaded = async (file: Uint8Array) => {
+  private handleFileUploaded = async (file: Uint8Array) => {
     const {
       accountStore: { address, name, setIsImport, setJsonString }
     } = this.props;
@@ -126,7 +126,7 @@ export class Onboarding extends React.Component<Props, State> {
     }
   }
 
-  addAccountToWallet = async () => {
+  private addAccountToWallet = async () => {
     const {
       history,
       onboardingStore: { setIsFirstRun },
