@@ -78,6 +78,3 @@ export class Content extends React.Component<Props> {
     );
   }
 }
-
-// FIXME:
-// address should come from Keyring

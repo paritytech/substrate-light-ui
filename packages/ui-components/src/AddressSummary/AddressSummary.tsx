@@ -24,7 +24,9 @@ export class AddressSummary extends React.PureComponent<Props> {
 
     return (
       <Stacked>
-        <IdentityIcon value={address as string} theme={'substrate'} size={64} />
+        {
+          address && <IdentityIcon value={address as string} theme={'substrate'} size={64} />
+        }
         <Name> { name || PLACEHOLDER_NAME } </Name>
         <BalanceDisplay balance={balance} address={address} />
       </Stacked>

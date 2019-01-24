@@ -6,9 +6,9 @@ import React from 'react';
 import { NavLinkSmall } from './Shared.styles';
 
 type Props = {
-  children?: any,
+  children?: React.ReactNode,
   value?: string,
-  onClick?: () => void
+  onClick?: (params: any) => void
 };
 
 export default class NavLink extends React.PureComponent<Props> {

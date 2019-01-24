@@ -8,13 +8,13 @@ import { RouteComponentProps } from 'react-router-dom';
 import keyring from '@polkadot/ui-keyring';
 
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
-import { AddressSummary, Container, ErrorText, Input, Modal, NavButton, NavLink, Stacked } from '@polkadot/ui-components';
+import { Container, ErrorText, Modal } from '@polkadot/ui-components';
+
 import FileSaver from 'file-saver';
 
 import { OnboardingStore } from '../stores/onboardingStore';
 import { AccountStore } from '../stores/accountStore';
-import { ImportOptionsScreen } from './ImportOptionsScreen';
-import { CreateNewAccountScreen } from './CreateNewAccountScreen';
+import { CreateNewAccountScreen, ImportOptionsScreen, SaveScreen } from './index';
 
 interface Props extends RouteComponentProps {
   onboardingStore: OnboardingStore;
@@ -113,14 +113,14 @@ export class Onboarding extends React.Component<Props, State> {
     }
   }
 
-  addAccountToWallet = () => {
+  addNewAccountToWallet = () => {
     const {
       history,
       onboardingStore: { setIsFirstRun },
       accountStore: { isImport }
     } = this.props;
     const { mnemonic, name, password } = this.state;
-
+    debugger;
     if (!password) {
       this.setState({ error: 'Password field cannot be empty' });
       return;
@@ -146,7 +146,7 @@ export class Onboarding extends React.Component<Props, State> {
   }
 
   render () {
-    const { screen } = this.state;
+    const { address, mnemonic, name, password, recoveryPhrase, screen } = this.state;
 
     return (
       <Modal
@@ -158,13 +158,30 @@ export class Onboarding extends React.Component<Props, State> {
           {screen === 'new'
             ? <CreateNewAccountScreen
                 addAccountToWallet={this.addAccountToWallet}
+                address={address}
+                mnemonic={mnemonic}
+                name={name}
+                onChangeName={this.onChangeName}
+                onChangePassword={this.onChangePassword}
+                password={password}
                 toggleScreen={this.toggleScreen}
                 {...this.props} />
             : screen === 'importOptions'
               ? <ImportOptionsScreen
+                  onChangePhrase={this.onChangePhrase}
+                  recoveryPhrase={recoveryPhrase}
                   toggleScreen={this.toggleScreen}
                   {...this.props} />
-              : this.renderSaveScreen()
+              : <SaveScreen
+                  addAccountToWallet={this.addAccountToWallet}
+                  address={address}
+                  mnemonic={mnemonic}
+                  name={name}
+                  onChangeName={this.onChangeName}
+                  onChangePassword={this.onChangePassword}
+                  password={password}
+                  toggleScreen={this.toggleScreen}
+                  {...this.props}/>
           }
           {
             this.renderError()
@@ -182,68 +199,6 @@ export class Onboarding extends React.Component<Props, State> {
         <ErrorText>
           {error || null}
         </ErrorText>
-      </React.Fragment>
-    );
-  }
-
-  renderSetName () {
-    const { name } = this.state;
-
-    return (
-      <React.Fragment>
-        <Modal.SubHeader> Give it a name </Modal.SubHeader>
-        <Input
-          autoFocus
-          onChange={this.onChangeName}
-          type='text'
-          value={name}
-        />
-      </React.Fragment>
-    );
-  }
-
-  renderSetPassword () {
-    const { password } = this.state;
-
-    return (
-      <React.Fragment>
-        <Modal.SubHeader> Encrypt it with a passphrase </Modal.SubHeader>
-        <Input
-          onChange={this.onChangePassword}
-          type='password'
-          value={password}
-        />
-      </React.Fragment>
-    );
-  }
-
-  renderNewAccountActions () {
-    return (
-      <React.Fragment>
-        <Modal.Actions>
-          <Stacked>
-            <NavButton onClick={this.addAccountToWallet}> Save </NavButton>
-            <Modal.FadedText>or</Modal.FadedText>
-            <NavLink onClick={() => this.toggleScreen('importOptions')}> Import an existing account </NavLink>
-          </Stacked>
-        </Modal.Actions>
-      </React.Fragment>
-    );
-  }
-
-  renderSaveScreen () {
-    const { address, name } = this.state;
-    return (
-      <React.Fragment>
-        <Modal.Header> Unlock Account </Modal.Header>
-        <Modal.Content>
-          <Stacked>
-            <AddressSummary address={address} name={name} />
-            {this.renderSetName()}
-            {this.renderSetPassword()}
-          </Stacked>
-        </Modal.Content>
-        {this.renderNewAccountActions()}
       </React.Fragment>
     );
   }

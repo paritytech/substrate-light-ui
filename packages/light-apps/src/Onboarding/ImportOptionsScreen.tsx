@@ -13,6 +13,7 @@ import { AccountStore } from '../stores/accountStore';
 interface Props extends RouteComponentProps {
   accountStore: AccountStore;
   toggleScreen: (to: OnboardingScreenType) => void;
+  onChangePhrase: () => void;
 }
 
 type State = {
@@ -54,12 +55,6 @@ export class ImportOptionsScreen extends React.PureComponent<Props, State> {
       this.setState({ error: e.message });
       alert('Please resolve this before you continue: ' + e.message);
     }
-  }
-
-  handleInputRecoveryPhrase = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      recoveryPhrase: value
-    });
   }
 
   unlockWithPhrase = () => {
@@ -105,13 +100,13 @@ export class ImportOptionsScreen extends React.PureComponent<Props, State> {
   }
 
   renderPhraseCard () {
-    const { recoveryPhrase } = this.state;
+    const { onChangePhrase, recoveryPhrase } = this.props;
 
     return (
       <React.Fragment>
         <Modal.SubHeader> Import Account from Mnemonic Recovery Phrase </Modal.SubHeader>
         <Input
-        onChange={this.handleInputRecoveryPhrase}
+        onChange={onChangePhrase}
         type='text'
         value={recoveryPhrase} />
       </React.Fragment>

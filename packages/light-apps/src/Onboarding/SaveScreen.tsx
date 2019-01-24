@@ -5,50 +5,44 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router-dom';
-import { AddressSummary, FadedText, Input, Modal, NavButton, NavLink, Segment, Stacked } from '@polkadot/ui-components';
+import { AddressSummary, Input, Modal, NavButton, NavLink, Stacked } from '@polkadot/ui-components';
 
 import { OnboardingScreenType } from './Onboarding';
 import { AccountStore } from '../stores/accountStore';
 
 interface Props extends RouteComponentProps {
   accountStore: AccountStore;
-  toggleScreen: (to: OnboardingScreenType) => void;
+  address?: string;
   addAccountToWallet: () => void;
   mnemonic: string;
+  name?: string;
   onChangeName: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  address?: string;
-  name?: string;
   password?: string;
+  toggleScreen: (to: OnboardingScreenType) => void;
 }
 
 type State = {
-  error: string | null;
+  error: string | null
 };
 
 @inject('accountStore')
 @observer
-export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
-  state: State = {
-    error: null
-  };
-
+export class SaveScreen extends React.PureComponent<Props, State> {
   render () {
-    const { address, name, mnemonic } = this.props;
+    const { address, name } = this.props;
 
     return (
       <React.Fragment>
-        <Modal.Header> Create New Account </Modal.Header>
+        <Modal.Header> Unlock and Save </Modal.Header>
         <Modal.Content>
           <Stacked>
             <AddressSummary address={address} name={name} />
             {this.renderSetName()}
-            <Modal.SubHeader> Create from the following mnemonic phrase </Modal.SubHeader>
-            <Segment> <FadedText> {mnemonic} </FadedText> </Segment>
             {this.renderSetPassword()}
-            {this.renderNewAccountActions()}
           </Stacked>
         </Modal.Content>
+        {this.renderNewAccountActions()}
       </React.Fragment>
     );
   }
