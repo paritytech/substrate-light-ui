@@ -7,29 +7,44 @@ import IdentityIcon from '@polkadot/ui-identicon';
 import { AccountId, AccountIndex, Address } from '@polkadot/types';
 import BN from 'bn.js';
 
-import { Name, Stacked } from '../Shared.styles';
+import { Name, Stacked, StackedHorizontal } from '../Shared.styles';
 import BalanceDisplay from '../Balance';
+
+type OrientationType = 'horizontal' | 'vertical';
 
 type Props = {
   address?: string | AccountId | AccountIndex | Address,
   balance?: BN,
-  name?: string
+  name?: string,
+  orientation?: OrientationType
 };
 
 const PLACEHOLDER_NAME = 'Account 1';
 
 export class AddressSummary extends React.PureComponent<Props> {
   render () {
-    const { address, balance, name } = this.props;
+    const { address, balance, name, orientation = 'vertical' } = this.props;
 
-    return (
-      <Stacked>
-        {
-          address && <IdentityIcon value={address as string} theme={'substrate'} size={64} />
-        }
-        <Name> { name || PLACEHOLDER_NAME } </Name>
-        <BalanceDisplay balance={balance} address={address} />
-      </Stacked>
-    );
+    if (orientation === 'vertical') {
+      return (
+          <Stacked>
+            {
+                address && <IdentityIcon value={address as string} theme={'substrate'} size={64} />
+            }
+                <Name> { name || PLACEHOLDER_NAME } </Name>
+                <BalanceDisplay balance={balance} address={address} />
+          </Stacked>
+      );
+    } else {
+      return (
+          <StackedHorizontal>
+            {
+              address && <IdentityIcon value={address as string} theme={'substrate'} size={32} />
+            }
+            <Name> { name || PLACEHOLDER_NAME } </Name>
+            <BalanceDisplay balance={balance} address={address} />
+          </StackedHorizontal>
+      );
+    }
   }
 }

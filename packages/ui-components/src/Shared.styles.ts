@@ -28,6 +28,7 @@ export const FadedText = styled.p`
   text-align: center;
 `;
 
+
 export const ErrorText = styled.p`
   color: red;
   text-align: center;
@@ -110,6 +111,15 @@ export const Stacked = styled.div<StackProps>`
   display: flex column;
   justify-content: ${props => props.justify || 'center'};
   min-height: 100%;
+  text-align: ${props => props.textAlign || 'center'};
+  vertical-align: middle;
+`;
+
+export const StackedHorizontal = styled.div<StackProps>`
+  align-items: ${props => props.align || 'center'};
+  display: flex;
+  justify-content: ${props => props.justify || 'center'};
+  min-width: 100%;
   text-align: ${props => props.textAlign || 'center'};
   vertical-align: middle;
 `;

@@ -5,7 +5,7 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router';
 import keyring from '@polkadot/ui-keyring';
-import { Container, Input, MarginTop, NavButton, Stacked, WalletCard, WithSpace } from '@polkadot/ui-components';
+import { AddressSummary, Container, Input, MarginTop, NavButton, Stacked, WalletCard, WithSpace } from '@polkadot/ui-components';
 import Grid from 'semantic-ui-react/dist/commonjs/collections/Grid';
 
 type Props = RouteComponentProps & {
@@ -101,7 +101,8 @@ export class Identity extends React.PureComponent<Props, State> {
             <Grid.Column>
               <WalletCard
                 header='Saved Accounts'
-                subheader='To quickly move between accounts, select from the list of unlocked accounts below.' >
+                subheader='To quickly move between accounts, select from the list of unlocked accounts below.'
+                style={{ overflow: 'scroll' }}>
                 <Stacked>
                   <WithSpace>
                     <React.Fragment>
@@ -127,7 +128,13 @@ export class Identity extends React.PureComponent<Props, State> {
       <React.Fragment>
         {
           keyring.getAccounts().map(account => {
-            return account.address();
+            return (
+              <Grid.Row>
+                <AddressSummary
+                  address={account.address()}
+                  orientation='horizontal' />
+              </Grid.Row>
+            );
           })
         }
       </React.Fragment>
