@@ -17,22 +17,15 @@ interface Props extends RouteComponentProps {
   mnemonic: string;
   onChangeName: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onError: (value: string | null) => void;
   address?: string;
   name?: string;
   password?: string;
 }
 
-type State = {
-  error: string | null;
-};
-
 @inject('accountStore')
 @observer
-export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
-  state: State = {
-    error: null
-  };
-
+export class CreateNewAccountScreen extends React.PureComponent<Props> {
   render () {
     const { address, name, mnemonic } = this.props;
 

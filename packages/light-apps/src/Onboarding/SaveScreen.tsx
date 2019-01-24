@@ -18,17 +18,14 @@ interface Props extends RouteComponentProps {
   name?: string;
   onChangeName: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onError: (value: string | null) => void;
   password?: string;
   toggleScreen: (to: OnboardingScreenType) => void;
 }
 
-type State = {
-  error: string | null
-};
-
 @inject('accountStore')
 @observer
-export class SaveScreen extends React.PureComponent<Props, State> {
+export class SaveScreen extends React.PureComponent<Props> {
   render () {
     const { address, name } = this.props;
 

@@ -6,10 +6,9 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router-dom';
 import keyring from '@polkadot/ui-keyring';
-
+import { u8aToString } from '@polkadot/util';
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
 import { Container, ErrorText, Modal } from '@polkadot/ui-components';
-
 import FileSaver from 'file-saver';
 
 import { OnboardingStore } from '../stores/onboardingStore';
@@ -82,11 +81,41 @@ export class Onboarding extends React.Component<Props, State> {
     });
   }
 
+  onError = (value: string | null) => {
+    this.setState({
+      error: value
+    });
+  }
+
   toggleScreen = (to: OnboardingScreenType) => {
     this.setState({
       screen: to,
       password: ''
     });
+  }
+
+  handleFileUploaded = async (file: Uint8Array) => {
+    const { accountStore } = this.props;
+
+    const jsonString = u8aToString(file);
+
+    try {
+      await accountStore.setIsImport(true);
+      await accountStore.setJsonString(jsonString);
+
+      this.setState({
+        address: accountStore.address,
+        error: null,
+        jsonString: jsonString,
+        name: accountStore.name
+      });
+
+      this.toggleScreen('save');
+    } catch (e) {
+      console.error(e);
+      this.onError(e.message);
+      alert('Please resolve this before you continue: ' + e.message);
+    }
   }
 
   addAccountFromJson = async (file?: Uint8Array) => {
@@ -113,7 +142,7 @@ export class Onboarding extends React.Component<Props, State> {
     }
   }
 
-  addNewAccountToWallet = () => {
+  addAccountToWallet = () => {
     const {
       history,
       onboardingStore: { setIsFirstRun },
@@ -163,12 +192,17 @@ export class Onboarding extends React.Component<Props, State> {
                 name={name}
                 onChangeName={this.onChangeName}
                 onChangePassword={this.onChangePassword}
+                onError={this.onError}
                 password={password}
                 toggleScreen={this.toggleScreen}
                 {...this.props} />
             : screen === 'importOptions'
               ? <ImportOptionsScreen
+                  address={address}
                   onChangePhrase={this.onChangePhrase}
+                  onChangeFile={this.handleFileUploaded}
+                  onError={this.onError}
+                  name={name}
                   recoveryPhrase={recoveryPhrase}
                   toggleScreen={this.toggleScreen}
                   {...this.props} />
@@ -179,6 +213,7 @@ export class Onboarding extends React.Component<Props, State> {
                   name={name}
                   onChangeName={this.onChangeName}
                   onChangePassword={this.onChangePassword}
+                  onError={this.onError}
                   password={password}
                   toggleScreen={this.toggleScreen}
                   {...this.props}/>

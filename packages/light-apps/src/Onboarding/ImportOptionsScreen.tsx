@@ -4,7 +4,6 @@
 
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { u8aToString } from '@polkadot/util';
 import { RouteComponentProps } from 'react-router-dom';
 import { Input, InputFile, Modal, NavButton, NavLink, Stacked } from '@polkadot/ui-components';
 import { OnboardingScreenType } from './Onboarding';
@@ -12,65 +11,28 @@ import { AccountStore } from '../stores/accountStore';
 
 interface Props extends RouteComponentProps {
   accountStore: AccountStore;
+  address?: string;
+  name?: string;
+  onChangePhrase: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onError: (value: string | null) => void;
+  onChangeFile: (file: Uint8Array) => void;
+  recoveryPhrase?: string;
   toggleScreen: (to: OnboardingScreenType) => void;
-  onChangePhrase: () => void;
 }
-
-type State = {
-  address?: string,
-  error: string | null,
-  jsonString: string | null,
-  name?: string,
-  recoveryPhrase: string | null
-};
 
 @inject('accountStore')
 @observer
-export class ImportOptionsScreen extends React.PureComponent<Props, State> {
-  state: State = {
-    error: null,
-    jsonString: null,
-    recoveryPhrase: null
-  };
-
-  handleFileUploaded = async (file: Uint8Array) => {
-    const { accountStore, toggleScreen } = this.props;
-
-    const jsonString = u8aToString(file);
-
-    try {
-      await accountStore.setIsImport(true);
-      await accountStore.setJsonString(jsonString);
-
-      this.setState({
-        address: accountStore.address,
-        error: null,
-        jsonString: jsonString,
-        name: accountStore.name
-      });
-
-      toggleScreen('save');
-    } catch (e) {
-      console.error(e);
-      this.setState({ error: e.message });
-      alert('Please resolve this before you continue: ' + e.message);
-    }
-  }
+export class ImportOptionsScreen extends React.PureComponent<Props> {
 
   unlockWithPhrase = () => {
-    const { toggleScreen } = this.props;
-    const { recoveryPhrase } = this.state;
+    const { onError, recoveryPhrase, toggleScreen } = this.props;
 
     if (recoveryPhrase && recoveryPhrase.split(' ').length === 12) {
-      this.setState({
-        error: null
-      });
+      onError(null);
 
       toggleScreen('save');
     } else {
-      this.setState({
-        error: 'The entered Recovery Phrase is not valid.'
-      });
+      onError('The entered Recovery Phrase is not valid.');
     }
   }
 
@@ -91,10 +53,12 @@ export class ImportOptionsScreen extends React.PureComponent<Props, State> {
   }
 
   renderJSONCard () {
+    const { onChangeFile } = this.props;
+
     return (
       <React.Fragment>
         <Modal.SubHeader> Restore Account from JSON Backup File </Modal.SubHeader>
-        <InputFile onChange={this.handleFileUploaded} />
+        <InputFile onChange={onChangeFile} />
       </React.Fragment>
     );
   }
