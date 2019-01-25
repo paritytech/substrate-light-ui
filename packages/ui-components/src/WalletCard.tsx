@@ -7,15 +7,16 @@ import { Card, Header, SubHeader, Stacked, WithSpaceAround } from './index';
 type Props = {
   children: React.ReactNode,
   header: string,
-  subheader: string
+  subheader: string,
+  overflow?: string
 };
 
 class WalletCard extends React.Component<Props> {
   render () {
-    const { children, header, subheader } = this.props;
+    const { children, header, overflow = 'none', subheader } = this.props;
 
     return (
-      <Card raised style={{ overflow: 'scroll' }}>
+      <Card raised overflow={overflow}>
         <WithSpaceAround>
           <Stacked>
             <Header margin='0.2rem 0'> {header} </Header>

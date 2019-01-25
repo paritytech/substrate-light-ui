@@ -8,11 +8,9 @@ import { inject, observer } from 'mobx-react';
 import keyring from '@polkadot/ui-keyring';
 import { AddressSummary, Container, Input, MarginTop, NavButton, Stacked, WalletCard, WithSpace } from '@polkadot/ui-components';
 import Grid from 'semantic-ui-react/dist/commonjs/collections/Grid';
-import { AccountStore } from '@polkadot/light-apps/stores/accountStore';
 
 interface Props extends RouteComponentProps {
   basePath: string;
-  accountStore?: AccountStore;
 }
 
 type State = {
@@ -23,7 +21,7 @@ type State = {
 
 @inject('accountStore')
 @observer
-export class Identity extends React.PureComponent<Props, State> {
+export class Identity extends React.Component<Props, State> {
   state: State = {};
 
   private handleInputRecoveryPhrase = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
@@ -106,7 +104,8 @@ export class Identity extends React.PureComponent<Props, State> {
             <Grid.Column>
               <WalletCard
                 header='Saved Accounts'
-                subheader='To quickly move between accounts, select from the list of unlocked accounts below.'>
+                subheader='To quickly move between accounts, select from the list of unlocked accounts below.'
+                overflow='scroll'>
                 <Stacked>
                   <WithSpace>
                     <React.Fragment>
@@ -125,11 +124,11 @@ export class Identity extends React.PureComponent<Props, State> {
   }
 
   renderAllAccountsFromKeyring () {
-    const { accountStore: { keyringLoaded, setKeyringLoaded } } = this.props;
-
-    if (!keyringLoaded) {
+    // shouldn't load keyring more than once per session
+    try {
       keyring.loadAll();
-      setKeyringLoaded(true);
+    } catch (e) {
+      console.log(e);
     }
 
     return (

@@ -3,12 +3,10 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { SemanticICONS } from 'semantic-ui-react/dist/commonjs';
-import { RouteComponentProps } from 'react-router';
-import { AccountStore } from './stores/accountStore';
+import { RouteComponentProps } from 'react-router-dom';
 
 export type RouteProps = RouteComponentProps & {
-  basePath: string,
-  accountStore?: AccountStore
+  basePath: string
 };
 
 export type Route = {

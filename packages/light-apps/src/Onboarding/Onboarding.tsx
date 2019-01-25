@@ -111,18 +111,41 @@ export class Onboarding extends React.Component<Props, State> {
       await setIsImport(true);
       await setJsonString(jsonString);
 
+      this.onError(null);
+
       this.setState({
         address,
-        error: null,
         jsonString,
         name
       });
 
       this.toggleScreen('save');
     } catch (e) {
-      console.error(e);
       this.onError(e.message);
       alert('Please resolve this before you continue: ' + e.message);
+    }
+  }
+
+  handleUnlockWithPhrase = async () => {
+    const {
+      accountStore: { setIsImport, setRecoveryPhrase }
+    } = this.props;
+    const { recoveryPhrase } = this.state;
+
+    if (recoveryPhrase && recoveryPhrase.split(' ').length === 12) {
+      try {
+        await setIsImport(true);
+        await setRecoveryPhrase(recoveryPhrase);
+
+        this.onError(null);
+
+        this.toggleScreen('save');
+      } catch (e) {
+        this.onError(e.message);
+        alert('Please resolve this before you continue: ' + e.message);
+      }
+    } else {
+      this.onError('The entered Recovery Phrase is not valid.');
     }
   }
 
@@ -142,6 +165,7 @@ export class Onboarding extends React.Component<Props, State> {
     let pair;
 
     try {
+      // Create New
       if (!isImport) {
         pair = keyring.createAccountMnemonic(mnemonic, password, { name });
 
@@ -154,25 +178,17 @@ export class Onboarding extends React.Component<Props, State> {
         const blob = new Blob([JSON.stringify(json)], { type: 'application/json; charset=utf-8' });
 
         FileSaver.saveAs(blob, `${newAddress}.json`);
-
-        console.log('new pair generated from mnemonic -> ', pair);
-      } else if (jsonString) {
+      } else if (jsonString) { // Import from JSON
         pair = keyring.restoreAccount(JSON.parse(jsonString), password);
 
-        console.log('new pair generated from json -> ', pair);
-      } else if (recoveryPhrase) {
-        // FIXME: actually check it's a valid phrase
-        if (recoveryPhrase.split(' ').length === 12) {
-          this.onError(null);
+      } else if (recoveryPhrase) { // Import from Recovery Phrase
+        pair = keyring.createAccountMnemonic(recoveryPhrase, password, { name });
 
-          // FIXME: actually restore from the phrase
+        const newAddress = pair.address();
 
-          console.log('new pair generated from phrase -> ', pair);
+        await setAddress(newAddress);
+        await setName(name);
 
-          this.toggleScreen('save');
-        } else {
-          this.onError('The entered Recovery Phrase is not valid.');
-        }
       }
     } catch (e) {
       this.onError(e.message);
@@ -208,7 +224,7 @@ export class Onboarding extends React.Component<Props, State> {
                 {...this.props} />
             : screen === 'importOptions'
               ? <ImportOptionsScreen
-                  addAccountToWallet={this.addAccountToWallet}
+                  unlock={this.handleUnlockWithPhrase}
                   address={address}
                   onChangePhrase={this.onChangePhrase}
                   onChangeFile={this.handleFileUploaded}

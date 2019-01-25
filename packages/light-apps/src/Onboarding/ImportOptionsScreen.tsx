@@ -11,7 +11,7 @@ import { AccountStore } from '../stores/accountStore';
 
 interface Props extends RouteComponentProps {
   accountStore: AccountStore;
-  addAccountToWallet: () => void;
+  unlock: () => void;
   address?: string;
   name?: string;
   onChangePhrase: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -66,12 +66,12 @@ export class ImportOptionsScreen extends React.Component<Props> {
   }
 
   renderImportActions () {
-    const { addAccountToWallet, toggleScreen } = this.props;
+    const { toggleScreen, unlock } = this.props;
 
     return (
       <Modal.Actions>
         <Stacked>
-          <NavButton onClick={addAccountToWallet}>Unlock</NavButton>
+          <NavButton onClick={unlock}>Unlock</NavButton>
           <Modal.FadedText>or</Modal.FadedText>
           <NavLink onClick={() => toggleScreen('new')}> Create New Account </NavLink>
         </Stacked>

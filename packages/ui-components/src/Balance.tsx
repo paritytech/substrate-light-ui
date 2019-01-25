@@ -10,7 +10,6 @@ type Props = {
 };
 
 const PLACEHOLDER_BALANCE = 0;
-const PLACEHOLDER_ADDRESS = '5'.padEnd(16, 'x');
 
 export default class BalanceDisplay extends React.PureComponent<Props> {
   render () {

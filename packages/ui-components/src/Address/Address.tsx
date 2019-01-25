@@ -15,6 +15,8 @@ type Props = {
   goToRoute: (to?: string) => void
 };
 
+const PLACEHOLDER_ADDRESS = '5'.padEnd(16, 'x');
+
 export class Address extends React.PureComponent<Props> {
   render () {
     const { address, goToRoute } = this.props;
@@ -22,7 +24,7 @@ export class Address extends React.PureComponent<Props> {
     return (
       <AddressContainer>
         <Segment>
-          {address}
+          {address || PLACEHOLDER_ADDRESS}
           <CopyButton value={address} />
         </Segment>
         <React.Fragment>

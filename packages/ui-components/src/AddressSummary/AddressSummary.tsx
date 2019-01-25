@@ -14,7 +14,7 @@ type OrientationTypes = 'horizontal' | 'vertical';
 type SizeTypes = 'tiny' | 'small' | 'medium' | 'large';
 type SummaryStyles = {
   identiconSize: number,
-  nameSize: number
+  nameSize: string
 };
 
 type Props = {
@@ -25,25 +25,25 @@ type Props = {
   size?: SizeTypes
 };
 
-const PLACEHOLDER_NAME = 'Account 1';
+const PLACEHOLDER_NAME = 'No Name';
 
 export class AddressSummary extends React.PureComponent<Props> {
   render () {
     const { address, balance, name, orientation = 'vertical', size = 'medium' } = this.props;
-    let styles: SummaryStyles;
+    let styles: SummaryStyles = { identiconSize: 16, nameSize: '14px' };
 
     switch (size) {
       case 'tiny':
-        styles = { identiconSize: 16, nameSize: 14 };
+        styles = { identiconSize: 16, nameSize: '14px' };
         break;
       case 'small':
-        styles = { identiconSize: 32, nameSize: 18 };
+        styles = { identiconSize: 32, nameSize: '18px' };
         break;
       case 'medium':
-        styles = { identiconSize: 64, nameSize: 22 };
+        styles = { identiconSize: 64, nameSize: '22px' };
         break;
       case 'large':
-        styles = { identiconSize: 128, nameSize: 26 };
+        styles = { identiconSize: 128, nameSize: '26px' };
         break;
       default:
         break;
@@ -56,7 +56,7 @@ export class AddressSummary extends React.PureComponent<Props> {
                 address && <IdentityIcon value={address as string} theme={'substrate'} size={styles.identiconSize} />
             }
                 <Name fontSize={styles.nameSize}> { name || PLACEHOLDER_NAME } </Name>
-                <BalanceDisplay balance={balance} address={address} />
+                <BalanceDisplay balance={balance} />
           </Stacked>
       );
     } else {
@@ -66,7 +66,7 @@ export class AddressSummary extends React.PureComponent<Props> {
               address && <IdentityIcon value={address as string} theme={'substrate'} size={styles.identiconSize} />
             }
             <Name fontSize={styles.nameSize}> { name || PLACEHOLDER_NAME } </Name>
-            <BalanceDisplay balance={balance} address={address} />
+            <BalanceDisplay balance={balance} />
           </StackedHorizontal>
       );
     }

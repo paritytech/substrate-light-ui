@@ -20,14 +20,6 @@ export class AccountStore {
   @observable
   isImport: boolean = false;
 
-  @observable
-  keyringLoaded: boolean = false;
-
-  @action
-  setKeyringLoaded = () => {
-    this.keyringLoaded = true;
-  }
-
   @action
   setAddress = async (address?: string) => {
     this.address = address;

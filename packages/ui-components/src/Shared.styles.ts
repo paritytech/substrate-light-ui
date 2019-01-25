@@ -19,6 +19,7 @@ export const Card = styled<any>(SUICard)`
   box-shadow: 0 4px 5px 1px rgba(0, 0, 0, 0.3);
   height: 372px;
   width: 299px;
+  overflow: ${props => props.overflow || 'none'};
  }
 `;
 

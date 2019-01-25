@@ -8,9 +8,9 @@ export interface NameProps {
 }
 
 export interface StackProps {
-  textAlign?: string;
   align?: string;
   justify?: string;
+  textAlign?: string;
 }
 
 export interface SubHeaderProps {

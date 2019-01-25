@@ -6,4 +6,3 @@ export * from './Onboarding';
 export * from './CreateNewAccountScreen';
 export * from './ImportOptionsScreen';
 export * from './SaveScreen';
-// export * from './SharedOnboardingComponents';
