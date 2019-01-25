@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import SUIContainer from 'semantic-ui-react/dist/commonjs/elements/Container';
 import SUICard from 'semantic-ui-react/dist/commonjs/views/Card';
 
-import { WithSpaceAroundProps, SubHeaderProps, StackProps, HeaderProps } from './StyleProps';
+import { HeaderProps, NameProps, StackProps, SubHeaderProps, WithSpaceAroundProps } from './StyleProps';
 
 export const Container = styled(SUIContainer)`
   padding: 1.5rem;
@@ -28,7 +28,6 @@ export const FadedText = styled.p`
   text-align: center;
 `;
 
-
 export const ErrorText = styled.p`
   color: red;
   text-align: center;
@@ -48,6 +47,11 @@ export const WithSpaceAround = styled.div<WithSpaceAroundProps>`
   padding: ${props => props.padding || '1rem 1rem'};
 `;
 
+export const WithSpaceBetween = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 export const WithPadding = styled.div`
   padding: 1rem auto;
 `;
@@ -61,9 +65,9 @@ export const Header = styled.h2<HeaderProps>`
   text-align: center;
 `;
 
-export const Name = styled.p`
-  font-size: 20px;
-  font-weight: 500;
+export const Name = styled.p<NameProps>`
+  font-size: ${props => props.fontSize || '20px'};
+  font-weight: ${props => props.fontWeight || '500'};
   margin: 0 0;
 `;
 

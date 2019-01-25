@@ -15,7 +15,7 @@ class WalletCard extends React.Component<Props> {
     const { children, header, subheader } = this.props;
 
     return (
-      <Card raised style={{ overflow: 'hidden' }}>
+      <Card raised style={{ overflow: 'scroll' }}>
         <WithSpaceAround>
           <Stacked>
             <Header margin='0.2rem 0'> {header} </Header>

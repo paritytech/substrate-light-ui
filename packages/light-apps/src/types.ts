@@ -4,9 +4,11 @@
 
 import { SemanticICONS } from 'semantic-ui-react/dist/commonjs';
 import { RouteComponentProps } from 'react-router';
+import { AccountStore } from './stores/accountStore';
 
 export type RouteProps = RouteComponentProps & {
-  basePath: string
+  basePath: string,
+  accountStore?: AccountStore
 };
 
 export type Route = {

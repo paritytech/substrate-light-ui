@@ -3,14 +3,17 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps } from 'react-router-dom';
+import { inject, observer } from 'mobx-react';
 import keyring from '@polkadot/ui-keyring';
 import { AddressSummary, Container, Input, MarginTop, NavButton, Stacked, WalletCard, WithSpace } from '@polkadot/ui-components';
 import Grid from 'semantic-ui-react/dist/commonjs/collections/Grid';
+import { AccountStore } from '@polkadot/light-apps/stores/accountStore';
 
-type Props = RouteComponentProps & {
-  basePath: string
-};
+interface Props extends RouteComponentProps {
+  basePath: string;
+  accountStore?: AccountStore;
+}
 
 type State = {
   recoveryPhrase?: string,
@@ -18,6 +21,8 @@ type State = {
   lookupAddress?: string
 };
 
+@inject('accountStore')
+@observer
 export class Identity extends React.PureComponent<Props, State> {
   state: State = {};
 
@@ -101,8 +106,7 @@ export class Identity extends React.PureComponent<Props, State> {
             <Grid.Column>
               <WalletCard
                 header='Saved Accounts'
-                subheader='To quickly move between accounts, select from the list of unlocked accounts below.'
-                style={{ overflow: 'scroll' }}>
+                subheader='To quickly move between accounts, select from the list of unlocked accounts below.'>
                 <Stacked>
                   <WithSpace>
                     <React.Fragment>
@@ -120,19 +124,25 @@ export class Identity extends React.PureComponent<Props, State> {
     );
   }
 
-  // FIXME: make this more interesting with address, name, balances, txn count.
   renderAllAccountsFromKeyring () {
-    keyring.loadAll();
+    const { accountStore: { keyringLoaded, setKeyringLoaded } } = this.props;
+
+    if (!keyringLoaded) {
+      keyring.loadAll();
+      setKeyringLoaded(true);
+    }
 
     return (
       <React.Fragment>
         {
           keyring.getAccounts().map(account => {
             return (
-              <Grid.Row>
-                <AddressSummary
-                  address={account.address()}
-                  orientation='horizontal' />
+              <Grid.Row key={account.address()}>
+                <MarginTop />
+                  <AddressSummary
+                    address={account.address()}
+                    orientation='horizontal'
+                    size='small' />
               </Grid.Row>
             );
           })

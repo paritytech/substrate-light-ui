@@ -1,11 +1,10 @@
-
-export interface WithSpaceAroundProps {
-  margin?: string;
-  padding?: string;
-}
-
 export interface HeaderProps {
   margin?: string;
+}
+
+export interface NameProps {
+  fontWeight?: string;
+  fontSize?: string;
 }
 
 export interface StackProps {
@@ -17,4 +16,9 @@ export interface StackProps {
 export interface SubHeaderProps {
   color?: string;
   margin?: string;
+}
+
+export interface WithSpaceAroundProps {
+  margin?: string;
+  padding?: string;
 }
