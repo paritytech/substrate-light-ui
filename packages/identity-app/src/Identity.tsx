@@ -138,7 +138,7 @@ export class Identity extends React.Component<Props, State> {
                 <MarginTop />
                   <AddressSummary
                     address={pair.address()}
-                    name={pair.getMeta()}
+                    name={pair.getMeta().name}
                     orientation='horizontal'
                     size='small' />
               </Grid.Row>

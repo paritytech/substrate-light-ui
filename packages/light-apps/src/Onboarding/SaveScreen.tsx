@@ -8,8 +8,7 @@ import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
 interface Props extends RouteComponentProps {
-  jsonString?: string;
-  phrase?: string;
+  name?: string;
 }
 
 type State = {
@@ -29,7 +28,10 @@ export class SaveScreen extends React.Component<Props> {
   };
 
   private saveToWallet = () => {
+    const { match } = this.props;
     const { name, recoveryPhrase, password } = this.state;
+
+    console.log('match ->', match);
 
     const pair = keyring.createAccountMnemonic(recoveryPhrase, password, { name });
 

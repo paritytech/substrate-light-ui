@@ -5,9 +5,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 
-import { routing } from '../routing';
-
-const defaultTo = routing.default.path;
+const defaultTo = 'Identity';
 
 export class NotFound extends React.PureComponent {
   render () {

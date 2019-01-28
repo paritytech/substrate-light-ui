@@ -89,9 +89,9 @@ export class ImportOptionsScreen extends React.Component<Props, State> {
       <React.Fragment>
         <Modal.SubHeader> Import Account from Mnemonic Recovery Phrase </Modal.SubHeader>
         <Input
-        onChange={this.onChangePhrase}
-        type='text'
-        value={recoveryPhrase} />
+          onChange={this.onChangePhrase}
+          type='text'
+          value={recoveryPhrase} />
       </React.Fragment>
     );
   }
