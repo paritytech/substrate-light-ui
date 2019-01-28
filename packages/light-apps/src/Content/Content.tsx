@@ -62,15 +62,14 @@ export class Content extends React.Component<Props> {
     } = this.props;
 
     const address = location.pathname.split('/')[2];
-
+    let name;
     // FIXME: Only load keyring once in light-apps after light-api is set
     try {
       keyring.loadAll();
+      name = keyring.getAccount(address).getMeta().name;
     } catch (e) {
       console.log(e);
     }
-
-    const name = keyring.getAccount(address).getMeta().name;
 
     return (
       <Container>

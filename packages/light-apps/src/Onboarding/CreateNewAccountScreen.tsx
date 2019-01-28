@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AddressSummary, ErrorText, FadedText, Input, Modal, NavButton, Segment, Stacked } from '@polkadot/ui-components';
+import { AddressSummary, ErrorText, FadedText, Input, Modal, NavButton, NavLink, Segment, Stacked } from '@polkadot/ui-components';
 import keyring from '@polkadot/ui-keyring';
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
 import FileSaver from 'file-saver';
@@ -31,7 +31,6 @@ function generateMnemonic (): string {
 
 function generateAddressFromMnemonic (mnemonic: string): string {
   const keypair = naclKeypairFromSeed(mnemonicToSeed(mnemonic));
-  keyring.loadAll();
   return keyring.encodeAddress(
     keypair.publicKey
   );
@@ -171,10 +170,10 @@ export class CreateNewAccountScreen extends React.Component<Props, State> {
           <Stacked>
             <NavButton onClick={this.createNewAccount}> Save </NavButton>
             <Modal.FadedText>or</Modal.FadedText>
+            <NavLink> Import an existing account </NavLink>
           </Stacked>
         </Modal.Actions>
       </React.Fragment>
     );
   }
 }
-// <NavLink onClick={() => toggleScreen('importOptions')}> Import an existing account </NavLink>

@@ -132,12 +132,13 @@ export class Identity extends React.Component<Props, State> {
     return (
       <React.Fragment>
         {
-          keyring.getAccounts().map(account => {
+          keyring.getPairs().map(pair => {
             return (
-              <Grid.Row key={account.address()}>
+              <Grid.Row key={pair.address()}>
                 <MarginTop />
                   <AddressSummary
-                    address={account.address()}
+                    address={pair.address()}
+                    name={pair.getMeta()}
                     orientation='horizontal'
                     size='small' />
               </Grid.Row>

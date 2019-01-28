@@ -2,30 +2,61 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Input, InputFile, Modal, NavButton, NavLink, Stacked } from '@polkadot/ui-components';
+import { Input, InputFile, Modal, NavButton, Stacked } from '@polkadot/ui-components';
+import { u8aToString } from '@polkadot/util';
 
-import { inject, observer } from 'mobx-react';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { OnboardingScreenType } from './Onboarding';
-import { AccountStore } from '../stores/accountStore';
+interface Props extends RouteComponentProps {}
 
-interface Props extends RouteComponentProps {
-  accountStore: AccountStore;
-  unlock: () => void;
-  address?: string;
-  name?: string;
-  onChangePhrase: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onError: (value: string | null) => void;
-  onChangeFile: (file: Uint8Array) => void;
-  recoveryPhrase?: string;
-  toggleScreen: (to: OnboardingScreenType) => void;
-}
+type State = {
+  error: string | null;
+  jsonString?: string;
+  recoveryPhrase: string;
+};
 
-@inject('accountStore')
-@observer
-export class ImportOptionsScreen extends React.Component<Props> {
+export class ImportOptionsScreen extends React.Component<Props, State> {
+  state: State = {
+    error: null,
+    recoveryPhrase: ''
+  };
+
+  private handleFileUploaded = async (file: Uint8Array) => {
+    const { history } = this.props;
+
+    const jsonString = u8aToString(file);
+
+    try {
+      this.onError(null);
+
+      this.setState({ jsonString });
+
+      history.push('/save/withJson');
+    } catch (e) {
+      this.onError(e.message);
+      alert('Please resolve this before you continue: ' + e.message);
+    }
+  }
+
+  private handleUnlockWithPhrase = () => {
+    const { recoveryPhrase } = this.state;
+
+    console.log(recoveryPhrase);
+  }
+
+  private onChangePhrase = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      recoveryPhrase: value
+    });
+  }
+
+  private onError = (value: string | null) => {
+    this.setState({
+      error: value
+    });
+  }
+
   render () {
     return (
       <React.Fragment>
@@ -43,24 +74,22 @@ export class ImportOptionsScreen extends React.Component<Props> {
   }
 
   renderJSONCard () {
-    const { onChangeFile } = this.props;
-
     return (
       <React.Fragment>
         <Modal.SubHeader> Restore Account from JSON Backup File </Modal.SubHeader>
-        <InputFile onChange={onChangeFile} />
+        <InputFile onChange={this.handleFileUploaded} />
       </React.Fragment>
     );
   }
 
   renderPhraseCard () {
-    const { onChangePhrase, recoveryPhrase } = this.props;
+    const { recoveryPhrase } = this.state;
 
     return (
       <React.Fragment>
         <Modal.SubHeader> Import Account from Mnemonic Recovery Phrase </Modal.SubHeader>
         <Input
-        onChange={onChangePhrase}
+        onChange={this.onChangePhrase}
         type='text'
         value={recoveryPhrase} />
       </React.Fragment>
@@ -68,16 +97,15 @@ export class ImportOptionsScreen extends React.Component<Props> {
   }
 
   renderImportActions () {
-    const { toggleScreen, unlock } = this.props;
-
     return (
       <Modal.Actions>
         <Stacked>
-          <NavButton onClick={unlock}>Unlock</NavButton>
+          <NavButton onClick={this.handleUnlockWithPhrase}>Unlock</NavButton>
           <Modal.FadedText>or</Modal.FadedText>
-          <NavLink onClick={() => toggleScreen('new')}> Create New Account </NavLink>
         </Stacked>
       </Modal.Actions>
     );
   }
 }
+
+// <NavLink onClick={() => toggleScreen('new')}> Create New Account </NavLink>

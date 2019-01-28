@@ -2,33 +2,62 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AddressSummary, Input, Modal, NavButton, NavLink, Stacked } from '@polkadot/ui-components';
-
-import { inject, observer } from 'mobx-react';
+import { AddressSummary, Input, Modal, NavButton, Stacked } from '@polkadot/ui-components';
+import keyring from '@polkadot/ui-keyring';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { OnboardingScreenType } from './Onboarding';
-import { AccountStore } from '../stores/accountStore';
-
 interface Props extends RouteComponentProps {
-  accountStore: AccountStore;
-  address?: string;
-  addAccountToWallet: () => void;
-  mnemonic: string;
-  name?: string;
-  onChangeName: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onChangePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onError: (value: string | null) => void;
-  password?: string;
-  toggleScreen: (to: OnboardingScreenType) => void;
+  jsonString?: string;
+  phrase?: string;
 }
 
-@inject('accountStore')
-@observer
+type State = {
+  address?: string;
+  error: string | null;
+  name?: string;
+  password: string;
+  recoveryPhrase: string;
+};
+
 export class SaveScreen extends React.Component<Props> {
+  state: State = {
+    error: null,
+    name: '',
+    password: '',
+    recoveryPhrase: ''
+  };
+
+  private saveToWallet = () => {
+    const { name, recoveryPhrase, password } = this.state;
+
+    const pair = keyring.createAccountMnemonic(recoveryPhrase, password, { name });
+
+    console.log(pair);
+
+    this.onError(null);
+  }
+
+  private onChangeName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      name: value
+    });
+  }
+
+  private onChangePassword = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      password: value
+    });
+  }
+
+  private onError = (value: string | null) => {
+    this.setState({
+      error: value
+    });
+  }
+
   render () {
-    const { address, name } = this.props;
+    const { address, name } = this.state;
 
     return (
       <React.Fragment>
@@ -46,14 +75,14 @@ export class SaveScreen extends React.Component<Props> {
   }
 
   renderSetName () {
-    const { onChangeName, name } = this.props;
+    const { name } = this.state;
 
     return (
       <React.Fragment>
         <Modal.SubHeader> Give it a name </Modal.SubHeader>
         <Input
           autoFocus
-          onChange={onChangeName}
+          onChange={this.onChangeName}
           type='text'
           value={name}
         />
@@ -62,13 +91,13 @@ export class SaveScreen extends React.Component<Props> {
   }
 
   renderSetPassword () {
-    const { onChangePassword, password } = this.props;
+    const { password } = this.state;
 
     return (
       <React.Fragment>
         <Modal.SubHeader> Encrypt it with a passphrase </Modal.SubHeader>
         <Input
-          onChange={onChangePassword}
+          onChange={this.onChangePassword}
           type='password'
           value={password}
         />
@@ -77,17 +106,17 @@ export class SaveScreen extends React.Component<Props> {
   }
 
   renderNewAccountActions () {
-    const { addAccountToWallet, toggleScreen } = this.props;
     return (
       <React.Fragment>
         <Modal.Actions>
           <Stacked>
-            <NavButton onClick={addAccountToWallet}> Save </NavButton>
+            <NavButton onClick={this.saveToWallet}> Save </NavButton>
             <Modal.FadedText>or</Modal.FadedText>
-            <NavLink onClick={() => toggleScreen('importOptions')}> Import an existing account </NavLink>
           </Stacked>
         </Modal.Actions>
       </React.Fragment>
     );
   }
 }
+
+// <NavLink onClick={() => toggleScreen('importOptions')}> Import an existing account </NavLink>
