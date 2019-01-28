@@ -2,10 +2,11 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { Container, IdentityCard } from '@polkadot/ui-components';
+
+import { inject, observer } from 'mobx-react';
 import React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
-import { inject, observer } from 'mobx-react';
-import { Container, IdentityCard } from '@polkadot/ui-components';
 
 import { NotFound } from './NotFound';
 import { Onboarding } from '../Onboarding';

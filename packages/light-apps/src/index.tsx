@@ -3,6 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import substrateLogo from '@polkadot/ui-assets/parity-substrate.svg';
+
 import { Provider } from 'mobx-react';
 import React from 'react';
 import { HashRouter, NavLink, Route } from 'react-router-dom';

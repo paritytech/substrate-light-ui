@@ -2,11 +2,12 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { AddressSummary, Container, Input, MarginTop, NavButton, Stacked, WalletCard, WithSpace } from '@polkadot/ui-components';
+import keyring from '@polkadot/ui-keyring';
+
+import { inject, observer } from 'mobx-react';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { inject, observer } from 'mobx-react';
-import keyring from '@polkadot/ui-keyring';
-import { AddressSummary, Container, Input, MarginTop, NavButton, Stacked, WalletCard, WithSpace } from '@polkadot/ui-components';
 import Grid from 'semantic-ui-react/dist/commonjs/collections/Grid';
 
 interface Props extends RouteComponentProps {

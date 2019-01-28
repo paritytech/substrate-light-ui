@@ -2,14 +2,15 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import React from 'react';
-import { inject, observer } from 'mobx-react';
-import { RouteComponentProps } from 'react-router-dom';
 import keyring from '@polkadot/ui-keyring';
 import { u8aToString } from '@polkadot/util';
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
 import { Container, ErrorText, Modal } from '@polkadot/ui-components';
+
 import FileSaver from 'file-saver';
+import { inject, observer } from 'mobx-react';
+import React from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 
 import { OnboardingStore } from '../stores/onboardingStore';
 import { AccountStore } from '../stores/accountStore';

@@ -3,8 +3,8 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { action, observable } from 'mobx';
-import store from 'store';
 import { enableLogging } from 'mobx-logger';
+import store from 'store';
 
 const LS_KEY = `__substrate-light::firstRun`;
 const NODE_ENV = process.env.NODE_ENV;

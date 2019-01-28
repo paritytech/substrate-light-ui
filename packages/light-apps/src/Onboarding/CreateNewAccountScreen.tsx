@@ -2,10 +2,11 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import React from 'react';
-import { inject, observer } from 'mobx-react';
-import { RouteComponentProps } from 'react-router-dom';
 import { AddressSummary, FadedText, Input, Modal, NavButton, NavLink, Segment, Stacked } from '@polkadot/ui-components';
+
+import { inject, observer } from 'mobx-react';
+import React from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 
 import { OnboardingScreenType } from './Onboarding';
 import { AccountStore } from '../stores/accountStore';

@@ -3,8 +3,9 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 import React from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
-import Icon from './Icon';
 import styled from 'styled-components';
+
+import Icon from './Icon';
 
 type Props = {
   value?: string

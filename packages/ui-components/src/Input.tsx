@@ -1,11 +1,17 @@
+// Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
+// This software may be modified and distributed under the terms
+// of the Apache-2.0 license. See the LICENSE file for details.
+
+import { isUndefined } from '@polkadot/util';
 
 import React from 'react';
 import styled from 'styled-components';
 import SUIInput from 'semantic-ui-react/dist/commonjs/elements/Input/Input';
 import { InputProps } from 'semantic-ui-react/dist/commonjs/elements/Input';
-type Input$Type = 'number' | 'password' | 'text';
-import { isUndefined } from '@polkadot/util';
+
 import Labelled from './Labelled';
+
+type Input$Type = 'number' | 'password' | 'text';
 
 interface Props extends InputProps {
   autoFocus?: boolean;

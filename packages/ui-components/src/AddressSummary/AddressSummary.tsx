@@ -2,9 +2,10 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import React from 'react';
 import IdentityIcon from '@polkadot/ui-identicon';
 import { AccountId, AccountIndex, Address } from '@polkadot/types';
+
+import React from 'react';
 import BN from 'bn.js';
 
 import { Name, Stacked, StackedHorizontal } from '../Shared.styles';
