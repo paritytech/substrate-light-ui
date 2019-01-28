@@ -4,23 +4,23 @@
 
 import React from 'react';
 
-import { NavLinkSmall } from './Shared.styles';
+import { StyledNavLink } from './Shared.styles';
 
 type Props = {
   children?: React.ReactNode,
   value?: string,
-  onClick?: (params: any) => void
+  to: string
 };
 
 export default class NavLink extends React.PureComponent<Props> {
   render () {
-    const { children, onClick, value } = this.props;
+    const { children, to, value } = this.props;
 
     return (
-      <NavLinkSmall onClick={onClick}>
+      <StyledNavLink to={to}>
         {value}
         {children}
-      </NavLinkSmall>
+      </StyledNavLink>
     );
   }
 }

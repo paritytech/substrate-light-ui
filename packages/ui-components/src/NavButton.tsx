@@ -4,7 +4,7 @@
 
 import React from 'react';
 
-import { NavLinkBig } from './Shared.styles';
+import { StyledNavButton } from './Shared.styles';
 
 type Props = {
   children?: any,
@@ -17,10 +17,10 @@ export default class NavButton extends React.PureComponent<Props> {
     const { children, onClick, value } = this.props;
 
     return (
-      <NavLinkBig onClick={onClick}>
+      <StyledNavButton onClick={onClick}>
         {value}
         {children}
-      </NavLinkBig>
+      </StyledNavButton>
     );
   }
 }

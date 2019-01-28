@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AddressSummary, Input, Modal, NavButton, Stacked } from '@polkadot/ui-components';
+import { AddressSummary, Input, Modal, NavButton, NavLink, Stacked } from '@polkadot/ui-components';
 import keyring from '@polkadot/ui-keyring';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -112,11 +112,10 @@ export class SaveScreen extends React.Component<Props> {
           <Stacked>
             <NavButton onClick={this.saveToWallet}> Save </NavButton>
             <Modal.FadedText>or</Modal.FadedText>
+            <NavLink to='/import'> Import an existing account </NavLink>
           </Stacked>
         </Modal.Actions>
       </React.Fragment>
     );
   }
 }
-
-// <NavLink onClick={() => toggleScreen('importOptions')}> Import an existing account </NavLink>

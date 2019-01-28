@@ -170,7 +170,7 @@ export class CreateNewAccountScreen extends React.Component<Props, State> {
           <Stacked>
             <NavButton onClick={this.createNewAccount}> Save </NavButton>
             <Modal.FadedText>or</Modal.FadedText>
-            <NavLink> Import an existing account </NavLink>
+            <NavLink to='/import'> Import an existing account </NavLink>
           </Stacked>
         </Modal.Actions>
       </React.Fragment>

@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Input, InputFile, Modal, NavButton, Stacked } from '@polkadot/ui-components';
+import { Input, InputFile, Modal, NavButton, NavLink, Stacked } from '@polkadot/ui-components';
 import { u8aToString } from '@polkadot/util';
 
 import React from 'react';
@@ -102,10 +102,9 @@ export class ImportOptionsScreen extends React.Component<Props, State> {
         <Stacked>
           <NavButton onClick={this.handleUnlockWithPhrase}>Unlock</NavButton>
           <Modal.FadedText>or</Modal.FadedText>
+          <NavLink to='/create'> Create New Account </NavLink>
         </Stacked>
       </Modal.Actions>
     );
   }
 }
-
-// <NavLink onClick={() => toggleScreen('new')}> Create New Account </NavLink>

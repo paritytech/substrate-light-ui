@@ -2,6 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import SUIContainer from 'semantic-ui-react/dist/commonjs/elements/Container';
 import SUICard from 'semantic-ui-react/dist/commonjs/views/Card';
@@ -80,7 +81,7 @@ export const FileInputArea = styled.div`
   width: 363px;
 `;
 
-export const NavLinkSmall = styled.button`
+export const StyledNavLink = styled<any>(Link)`
   background: none;
   border: none;
   color: ${props => props.theme.lightBlue2};
@@ -92,7 +93,7 @@ export const NavLinkSmall = styled.button`
   }
 `;
 
-export const NavLinkBig = styled.button`
+export const StyledNavButton = styled.button`
   background-image: linear-gradient(
     107deg,
     ${props => props.theme.purple},
