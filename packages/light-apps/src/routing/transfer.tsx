@@ -10,5 +10,5 @@ export const transfer: Route = {
   Component: Transfer,
   icon: 'angle double right',
   name: 'Transfer',
-  path: '/Transfer'
+  path: '/Transfer/:currentAddress'
 };

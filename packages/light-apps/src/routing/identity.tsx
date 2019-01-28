@@ -10,5 +10,5 @@ export const identity: Route = {
   Component: Identity,
   icon: 'users',
   name: 'Identity',
-  path: '/Identity'
+  path: '/Identity/:currentAddress'
 };

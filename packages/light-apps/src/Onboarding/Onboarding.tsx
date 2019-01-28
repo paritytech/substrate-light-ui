@@ -2,10 +2,9 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { Container, ErrorText, Modal } from '@polkadot/ui-components';
 import keyring from '@polkadot/ui-keyring';
 import { u8aToString } from '@polkadot/util';
-import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
-import { Container, ErrorText, Modal } from '@polkadot/ui-components';
 
 import FileSaver from 'file-saver';
 import { inject, observer } from 'mobx-react';
@@ -34,21 +33,7 @@ type State = {
   screen: OnboardingScreenType
 };
 
-function generatePhrase (): string {
-  const phrase = mnemonicGenerate();
-  return phrase;
-}
-
-function generateAddressFromPhrase (phrase: string): string {
-  const keypair = naclKeypairFromSeed(mnemonicToSeed(phrase));
-  keyring.loadAll();
-  return keyring.encodeAddress(
-    keypair.publicKey
-  );
-}
-
-@inject('onboardingStore')
-@inject('accountStore')
+@inject('accountStore', 'onboardingStore')
 @observer
 export class Onboarding extends React.Component<Props, State> {
   state: State = {
@@ -58,16 +43,11 @@ export class Onboarding extends React.Component<Props, State> {
   };
 
   componentDidMount () {
-    const mnemonic = generatePhrase();
-    const address = generateAddressFromPhrase(mnemonic);
-
     // For Debugging Purposes only
     if (process.env.NODE_ENV !== 'production') {
       // @ts-ignore
       window.keyring = keyring;
     }
-
-    this.setState({ address, mnemonic });
   }
 
   private onChangeName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
@@ -143,7 +123,6 @@ export class Onboarding extends React.Component<Props, State> {
         this.toggleScreen('save');
       } catch (e) {
         this.onError(e.message);
-        alert('Please resolve this before you continue: ' + e.message);
       }
     } else {
       this.onError('The entered Recovery Phrase is not valid.');
@@ -212,17 +191,7 @@ export class Onboarding extends React.Component<Props, State> {
       >
         <Container>
           {screen === 'new'
-            ? <CreateNewAccountScreen
-                addAccountToWallet={this.addAccountToWallet}
-                address={address}
-                mnemonic={mnemonic}
-                name={name}
-                onChangeName={this.onChangeName}
-                onChangePassword={this.onChangePassword}
-                onError={this.onError}
-                password={password}
-                toggleScreen={this.toggleScreen}
-                {...this.props} />
+            ? <CreateNewAccountScreen {...this.props} />
             : screen === 'importOptions'
               ? <ImportOptionsScreen
                   unlock={this.handleUnlockWithPhrase}

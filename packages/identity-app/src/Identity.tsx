@@ -5,7 +5,6 @@
 import { AddressSummary, Container, Input, MarginTop, NavButton, Stacked, WalletCard, WithSpace } from '@polkadot/ui-components';
 import keyring from '@polkadot/ui-keyring';
 
-import { inject, observer } from 'mobx-react';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import Grid from 'semantic-ui-react/dist/commonjs/collections/Grid';
@@ -20,18 +19,8 @@ type State = {
   lookupAddress?: string
 };
 
-@inject('accountStore')
-@observer
 export class Identity extends React.Component<Props, State> {
   state: State = {};
-
-  private handleInputRecoveryPhrase = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ recoveryPhrase: value });
-  }
-
-  private handleInputName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ name: value });
-  }
 
   private handleAddAccount = () => {
     const { name, recoveryPhrase } = this.state;
@@ -41,6 +30,14 @@ export class Identity extends React.Component<Props, State> {
 
   private handleInputAddressLookup = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ lookupAddress: value });
+  }
+
+  private handleInputName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ name: value });
+  }
+
+  private handleInputRecoveryPhrase = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ recoveryPhrase: value });
   }
 
   private handleSaveAccount = () => {
@@ -125,7 +122,7 @@ export class Identity extends React.Component<Props, State> {
   }
 
   renderAllAccountsFromKeyring () {
-    // shouldn't load keyring more than once per session
+    // FIXME: Only load keyring once in light-apps after light-api is set
     try {
       keyring.loadAll();
     } catch (e) {

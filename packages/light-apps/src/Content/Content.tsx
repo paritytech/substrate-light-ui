@@ -3,6 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { Container, IdentityCard } from '@polkadot/ui-components';
+import keyring from '@polkadot/ui-keyring';
 
 import { inject, observer } from 'mobx-react';
 import React from 'react';
@@ -12,11 +13,9 @@ import { NotFound } from './NotFound';
 import { Onboarding } from '../Onboarding';
 import { routing } from '../routing';
 import { OnboardingStore } from '../stores/onboardingStore';
-import { AccountStore } from '../stores/accountStore';
 
 interface Props extends RouteComponentProps {
   onboardingStore: OnboardingStore;
-  accountStore: AccountStore;
 }
 
 const ID_CARD_ACTIONS = (name: string) => {
@@ -40,15 +39,15 @@ const ID_CARD_ACTIONS = (name: string) => {
 };
 
 @inject('onboardingStore')
-@inject('accountStore')
 @observer
 export class Content extends React.Component<Props> {
   handleRouteChange = (to?: string) => {
     const { history, location } = this.props;
 
     if (!to) {
-      const current = location.pathname.slice(1);
-      to = ID_CARD_ACTIONS(current)['to'];
+      const current = location.pathname.split('/')[1];
+      const address = location.pathname.split('/')[2];
+      to = `${ID_CARD_ACTIONS(current)['to']}/${address}`;
     }
 
     history.push(`/${to}`);
@@ -59,12 +58,19 @@ export class Content extends React.Component<Props> {
       location,
       onboardingStore: {
         isFirstRun
-      },
-      accountStore: {
-        address,
-        name
       }
     } = this.props;
+
+    const address = location.pathname.split('/')[2];
+
+    // FIXME: Only load keyring once in light-apps after light-api is set
+    try {
+      keyring.loadAll();
+    } catch (e) {
+      console.log(e);
+    }
+
+    const name = keyring.getAccount(address).getMeta().name;
 
     return (
       <Container>
@@ -72,16 +78,16 @@ export class Content extends React.Component<Props> {
           isFirstRun
             ? <Route component={Onboarding} />
             : <React.Fragment>
-              <IdentityCard
-                address={address}
-                name={name}
-                goToRoute={this.handleRouteChange}
-                value={ID_CARD_ACTIONS(location.pathname.slice(1))['value']}
-              />
-              <Switch>
-                {routing.routes.map(route => <Route key={route.name} path={route.path} component={route.Component} />)}
-                <Route component={NotFound} />
-              </Switch>
+                <IdentityCard
+                  address={address}
+                  name={name}
+                  goToRoute={this.handleRouteChange}
+                  value={ID_CARD_ACTIONS(location.pathname.split('/')[1])['value']}
+                />
+                <Switch>
+                  {routing.routes.map(route => <Route key={route.name} path={route.path} component={route.Component} />)}
+                  <Route component={NotFound} />
+                </Switch>
             </React.Fragment>
         }
       </Container>
