@@ -2,13 +2,22 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AddressSummary, Input, Modal, NavButton, NavLink, Stacked } from '@polkadot/ui-components';
+import { AddressSummary, ErrorText, Input, Modal, NavButton, NavLink, Stacked } from '@polkadot/ui-components';
 import keyring from '@polkadot/ui-keyring';
+
+import { inject, observer } from 'mobx-react';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-interface Props extends RouteComponentProps {
-  name?: string;
+import { OnboardingStore } from '../stores/onboardingStore';
+
+interface MatchParams {
+  importMethod: string;
+  importParam: string;
+}
+
+interface Props extends RouteComponentProps<MatchParams> {
+  onboardingStore: OnboardingStore;
 }
 
 type State = {
@@ -19,7 +28,9 @@ type State = {
   recoveryPhrase: string;
 };
 
-export class SaveScreen extends React.Component<Props> {
+@inject('onboardingStore')
+@observer
+export class SaveScreen extends React.Component<Props, State> {
   state: State = {
     error: null,
     name: '',
@@ -27,17 +38,50 @@ export class SaveScreen extends React.Component<Props> {
     recoveryPhrase: ''
   };
 
-  private saveToWallet = () => {
+  componentDidMount () {
     const { match } = this.props;
+
+    const importMethod = match.params.importMethod;
+    const importParam = match.params.importParam;
+
+    if (importMethod === 'withJson') {
+      const json = JSON.parse(importParam);
+
+      const address = json.address;
+      const name = json.meta.name;
+
+      this.setState({
+        address,
+        name
+      });
+    } else if (importMethod === 'withPhrase') {
+      this.setState({
+        recoveryPhrase: importParam
+      });
+    }
+  }
+
+  private saveToWallet = () => {
     const { name, recoveryPhrase, password } = this.state;
+    const { history, match, onboardingStore: { setIsFirstRun } } = this.props;
 
-    console.log('match ->', match);
+    let pair;
 
-    const pair = keyring.createAccountMnemonic(recoveryPhrase, password, { name });
+    try {
+      if (match.params.importMethod === 'withJson') {
+        const json = JSON.parse(match.params.importParam);
 
-    console.log(pair);
+        pair = keyring.restoreAccount(json, password);
+      } else {
+        pair = keyring.createAccountMnemonic(recoveryPhrase, password, { name });
+      }
 
-    this.onError(null);
+      setIsFirstRun(false);
+
+      history.push(`/identity/${pair.address()}`);
+    } catch (e) {
+      this.onError(e.message);
+    }
   }
 
   private onChangeName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,7 +116,18 @@ export class SaveScreen extends React.Component<Props> {
           </Stacked>
         </Modal.Content>
         {this.renderNewAccountActions()}
+        {this.renderError()}
       </React.Fragment>
+    );
+  }
+
+  renderError () {
+    const { error } = this.state;
+
+    return (
+      <ErrorText>
+        {error || null}
+      </ErrorText>
     );
   }
 
@@ -114,7 +169,7 @@ export class SaveScreen extends React.Component<Props> {
           <Stacked>
             <NavButton onClick={this.saveToWallet}> Save </NavButton>
             <Modal.FadedText>or</Modal.FadedText>
-            <NavLink to='/import'> Import an existing account </NavLink>
+            <NavLink to='/import/withJson'> Import an existing account </NavLink>
           </Stacked>
         </Modal.Actions>
       </React.Fragment>

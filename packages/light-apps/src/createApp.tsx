@@ -2,6 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import keyring from '@polkadot/ui-keyring';
 import { ProviderInterface } from '@polkadot/rpc-provider/types';
 import { RpcRxInterface } from '@polkadot/rpc-rx/types';
 import React from 'react';
@@ -19,6 +20,7 @@ export function createApp (App: React.ComponentType, props: Props = {}, rootId: 
   if (!rootElement) {
     throw new Error(`Unable to find element with id '${rootId}'`);
   }
+  keyring.loadAll();
 
   ReactDOM.render(
     <App />,

@@ -5,6 +5,7 @@
 import { AddressSummary, ErrorText, FadedText, Input, Modal, NavButton, NavLink, Segment, Stacked } from '@polkadot/ui-components';
 import keyring from '@polkadot/ui-keyring';
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
+
 import FileSaver from 'file-saver';
 import { inject, observer } from 'mobx-react';
 import React from 'react';
@@ -71,11 +72,9 @@ export class CreateNewAccountScreen extends React.Component<Props, State> {
 
       FileSaver.saveAs(blob, `${address}.json`);
 
-      console.log(`Creating new account => /Identity/${address}`);
-
       setIsFirstRun(false);
 
-      history.push(`/Identity/${address}`);
+      history.push(`/identity/${address}`);
     } else {
       this.onError('Please make sure all the fields are set');
     }
@@ -170,7 +169,7 @@ export class CreateNewAccountScreen extends React.Component<Props, State> {
           <Stacked>
             <NavButton onClick={this.createNewAccount}> Save </NavButton>
             <Modal.FadedText>or</Modal.FadedText>
-            <NavLink to='/import'> Import an existing account </NavLink>
+            <NavLink to='/import/withJson'> Import an existing account </NavLink>
           </Stacked>
         </Modal.Actions>
       </React.Fragment>

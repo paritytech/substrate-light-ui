@@ -18,7 +18,7 @@ const PLACEHOLDER_ADDRESS = '5'.padEnd(16, 'x');
 
 export class Address extends React.PureComponent<Props> {
   render () {
-    const { address, goToRoute } = this.props;
+    const { address } = this.props;
 
     return (
       <AddressContainer>

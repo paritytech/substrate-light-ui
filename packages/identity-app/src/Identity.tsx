@@ -122,7 +122,7 @@ export class Identity extends React.Component<Props, State> {
   }
 
   renderAllAccountsFromKeyring () {
-    // FIXME: Only load keyring once in light-apps after light-api is set
+    // FIXME: Only load keyring once after light-api is set
     try {
       keyring.loadAll();
     } catch (e) {

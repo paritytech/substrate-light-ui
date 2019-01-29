@@ -27,6 +27,7 @@ type Props = {
 };
 
 const PLACEHOLDER_NAME = 'No Name';
+const PLACEHOLDER_ADDRESS = '5'.padEnd(16, 'x');
 
 export class AddressSummary extends React.PureComponent<Props> {
   render () {
@@ -54,7 +55,7 @@ export class AddressSummary extends React.PureComponent<Props> {
       return (
           <Stacked>
             {
-                address && <IdentityIcon value={address as string} theme={'substrate'} size={styles.identiconSize} />
+              <IdentityIcon value={address as string || PLACEHOLDER_ADDRESS} theme={'substrate'} size={styles.identiconSize} />
             }
                 <Name fontSize={styles.nameSize}> { name || PLACEHOLDER_NAME } </Name>
                 <BalanceDisplay balance={balance} />
@@ -64,7 +65,7 @@ export class AddressSummary extends React.PureComponent<Props> {
       return (
           <StackedHorizontal justify='space-around'>
             {
-              address && <IdentityIcon value={address as string} theme={'substrate'} size={styles.identiconSize} />
+              <IdentityIcon value={address as string || PLACEHOLDER_ADDRESS} theme={'substrate'} size={styles.identiconSize} />
             }
             <Name fontSize={styles.nameSize}> { name || PLACEHOLDER_NAME } </Name>
             <BalanceDisplay balance={balance} />
