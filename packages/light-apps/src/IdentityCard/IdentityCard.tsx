@@ -11,7 +11,7 @@ import { Address, AddressSummary, NavButton } from '@polkadot/ui-components';
 import { RouteComponentProps } from 'react-router-dom';
 
 import { StyledCard, CardHeader, CardContent } from './IdentityCard.styles';
-import { camlizeInclusiveFirst } from '../utils/camelize';
+import { camelizeInclusiveFirst } from '../utils/camelize';
 
 interface Props extends RouteComponentProps {}
 
@@ -23,7 +23,7 @@ type State = {
 
 const PLACEHOLDER_ADDRESS = '5'.padEnd(16, 'x');
 // FIXME: balance should come from LightAPI HOC's observables
-export class IdentityCard extends React.PureComponent<Props, State> {
+export class IdentityCard extends React.Component<Props, State> {
   state: State = {
     address: PLACEHOLDER_ADDRESS,
     buttonText: 'Transfer'
@@ -50,10 +50,11 @@ export class IdentityCard extends React.PureComponent<Props, State> {
     const { location, history } = this.props;
 
     const to = location.pathname.split('/')[1].toLowerCase() === 'identity' ? 'transfer' : 'identity';
-
-    this.setState({ buttonText: camlizeInclusiveFirst(to) });
+    const buttonText = camelizeInclusiveFirst(to);
 
     history.push(`/${to}/${address}`);
+
+    this.setState({ buttonText });
   }
 
   render () {

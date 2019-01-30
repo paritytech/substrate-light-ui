@@ -6,7 +6,7 @@ import { AddressSummary, Container, Input, MarginTop, NavButton, Stacked, Wallet
 import keyring from '@polkadot/ui-keyring';
 
 import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 import Grid from 'semantic-ui-react/dist/commonjs/collections/Grid';
 
 interface Props extends RouteComponentProps {
@@ -14,18 +14,33 @@ interface Props extends RouteComponentProps {
 }
 
 type State = {
-  recoveryPhrase?: string,
+  error: string | null,
+  lookupAddress?: string,
   name?: string,
-  lookupAddress?: string
+  recoveryPhrase?: string
 };
 
-export class Identity extends React.PureComponent<Props, State> {
+export class Identity extends React.Component<Props, State> {
   state: State = {};
+
+  componentWillMount () {
+    // FIXME: Only load keyring once after light-api is set
+    try {
+      keyring.loadAll();
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   private handleAddAccount = () => {
     const { name, recoveryPhrase } = this.state;
-
-    console.log(name, recoveryPhrase);
+    // FIXME: after saving, also display its status in a modal with options to do a balance transfer to it (need to unlock first)
+    try {
+      const pair = keyring.createAccountMnemonic(recoveryPhrase, { name, isExternal: true });
+      console.log(pair);
+    } catch (e) {
+      this.onError(e.message);
+    }
   }
 
   private handleInputAddressLookup = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,10 +55,20 @@ export class Identity extends React.PureComponent<Props, State> {
     this.setState({ recoveryPhrase: value });
   }
 
-  private handleSaveAccount = () => {
+  private handleSaveAccountExternal = () => {
     const { name, lookupAddress } = this.state;
+    // FIXME: after saving, also display its status in a modal with options to do a balance transfer to it:
+    try {
+      keyring.saveAddress(lookupAddress, { name, isExternal: true });
+    } catch (e) {
+      this.onError(e.message);
+    }
+  }
 
-    console.log(name, lookupAddress);
+  private onError = (value: string | null) => {
+    this.setState({
+      error: value
+    });
   }
 
   render () {
@@ -94,7 +119,7 @@ export class Identity extends React.PureComponent<Props, State> {
                       withLabel
                     />
                   </WithSpace>
-                <NavButton onClick={this.handleSaveAccount} value='Unlock Account' />
+                <NavButton onClick={this.handleSaveAccountExternal} value='Save External Account' />
                 </Stacked>
               </WalletCard>
             </Grid.Column>
@@ -106,11 +131,7 @@ export class Identity extends React.PureComponent<Props, State> {
                 overflow='scroll'>
                 <Stacked>
                   <WithSpace>
-                    <React.Fragment>
-                      {
-                        this.renderAllAccountsFromKeyring()
-                      }
-                    </React.Fragment>
+                      { this.renderAllAccountsFromKeyring() }
                   </WithSpace>
                 </Stacked>
               </WalletCard>
@@ -122,30 +143,37 @@ export class Identity extends React.PureComponent<Props, State> {
   }
 
   renderAllAccountsFromKeyring () {
-    // FIXME: Only load keyring once after light-api is set
-    try {
-      keyring.loadAll();
-    } catch (e) {
-      console.log(e);
-    }
-
     return (
       <React.Fragment>
         {
           keyring.getPairs().map(pair => {
             return (
-              <Grid.Row key={pair.address()}>
+              <React.Fragment key={pair.address()}>
                 <MarginTop />
-                  <AddressSummary
-                    address={pair.address()}
-                    name={pair.getMeta().name}
-                    orientation='horizontal'
-                    size='small' />
-              </Grid.Row>
+                <Link to={`/identity/${pair.address()}`}>
+                  <Grid.Row>
+                    <AddressSummary
+                      address={pair.address()}
+                      name={pair.getMeta().name}
+                      orientation='horizontal'
+                      size='small' />
+                  </Grid.Row>
+                </Link>
+              </React.Fragment>
             );
           })
         }
       </React.Fragment>
+    );
+  }
+
+  renderError () {
+    const { error } = this.state;
+
+    return (
+      <ErrorText>
+        {error || null}
+      </ErrorText>
     );
   }
 }

@@ -13,7 +13,6 @@ import { OnboardingStore } from '../stores/onboardingStore';
 
 interface MatchParams {
   importMethod: string;
-  importParam: string;
 }
 
 interface Props extends RouteComponentProps<MatchParams> {
@@ -23,52 +22,58 @@ interface Props extends RouteComponentProps<MatchParams> {
 type State = {
   address?: string;
   error: string | null;
+  jsonString: string;
   name?: string;
   password: string;
   recoveryPhrase: string;
 };
 
 @inject('onboardingStore')
-export class SaveScreen extends React.PureComponent<Props, State> {
+export class SaveScreen extends React.Component<Props, State> {
   state: State = {
     error: null,
+    jsonString: '',
     name: '',
     password: '',
     recoveryPhrase: ''
   };
 
   componentDidMount () {
-    const { match } = this.props;
+    const { location, match } = this.props;
 
     const importMethod = match.params.importMethod;
-    const importParam = match.params.importParam;
 
-    if (importMethod === 'withJson') {
-      const json = JSON.parse(importParam);
+    try {
+      if (importMethod === 'withJson') {
+        const json = JSON.parse(location.state.jsonString);
 
-      const address = json.address;
-      const name = json.meta.name;
+        const address = json.address;
+        const name = json.meta.name;
 
-      this.setState({
-        address,
-        name
-      });
-    } else if (importMethod === 'withPhrase') {
-      this.setState({
-        recoveryPhrase: importParam
-      });
+        this.setState({
+          address,
+          jsonString: location.state.jsonString,
+          name
+        });
+      } else if (importMethod === 'withPhrase') {
+        this.setState({
+          recoveryPhrase: location.state.recoveryPhrase
+        });
+      }
+    } catch (e) {
+      this.onError(e.message);
     }
   }
 
   private saveToWallet = () => {
-    const { name, recoveryPhrase, password } = this.state;
+    const { jsonString, name, recoveryPhrase, password } = this.state;
     const { history, match, onboardingStore: { setIsFirstRun } } = this.props;
 
     let pair;
 
     try {
       if (match.params.importMethod === 'withJson') {
-        const json = JSON.parse(match.params.importParam);
+        const json = JSON.parse(jsonString);
 
         pair = keyring.restoreAccount(json, password);
       } else {

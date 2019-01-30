@@ -21,7 +21,7 @@
     "@polkadot/transfer-app": "0.1.0",
     "@polkadot/ui-assets": "^0.23.1",
     "@polkadot/ui-components": "0.1.0",
-    "@polkadot/ui-keyring": "^0.25.7",
+    "@polkadot/ui-keyring": "^0.25.8",
     "@polkadot/util": "^0.33.35",
     "@polkadot/util-crypto": "^0.33.35",
     "@types/file-saver": "^2.0.0",

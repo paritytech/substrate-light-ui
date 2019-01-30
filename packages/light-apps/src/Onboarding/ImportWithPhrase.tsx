@@ -23,10 +23,19 @@ export class ImportWithPhrase extends React.PureComponent<Props> {
     const { recoveryPhrase } = this.state;
     const { history } = this.props;
 
-    if (recoveryPhrase && recoveryPhrase.split(' ').length === 12) {
-      history.push(`/save/withPhrase/${recoveryPhrase}`);
-    } else {
-      this.onError('The phrase you entered is not valid. Please check it and try again.');
+    try {
+      if (recoveryPhrase && recoveryPhrase.split(' ').length === 12) {
+        const nextLocation = {
+          pathname: '/save/withPhrase',
+          state: { recoveryPhrase }
+        };
+
+        history.push(nextLocation);
+      } else {
+        this.onError('The phrase you entered is not valid. Please check it and try again.');
+      }
+    } catch (e) {
+      this.onError(e.message);
     }
   }
 

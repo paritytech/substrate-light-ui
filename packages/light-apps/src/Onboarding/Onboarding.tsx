@@ -23,7 +23,7 @@ export class Onboarding extends React.PureComponent<Props> {
             <Redirect exact path='/' to='/create' />
             <Route path='/create' component={CreateNewAccountScreen} />
             <Route path='/import' component={ImportOptionsScreen} />
-            <Route path='/save/:importMethod/:importParam' component={SaveScreen} />
+            <Route path='/save/:importMethod' component={SaveScreen} />
           </Switch>
         </Container>
       </Modal>

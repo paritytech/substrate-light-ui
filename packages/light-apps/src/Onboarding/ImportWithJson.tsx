@@ -15,7 +15,7 @@ export class ImportWithJson extends React.PureComponent<Props> {
 
     const jsonString = u8aToString(file);
 
-    history.push(`/save/withJson/${jsonString}`);
+    history.push('/save/withJson/', { jsonString });
   }
 
   render () {
