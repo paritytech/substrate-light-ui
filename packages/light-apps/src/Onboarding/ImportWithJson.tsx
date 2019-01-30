@@ -9,7 +9,7 @@ import { RouteComponentProps } from 'react-router-dom';
 
 interface Props extends RouteComponentProps {}
 
-export class ImportWithJson extends React.Component<Props> {
+export class ImportWithJson extends React.PureComponent<Props> {
   private handleFileUploaded = async (file: Uint8Array) => {
     const { history } = this.props;
 

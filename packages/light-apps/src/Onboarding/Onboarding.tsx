@@ -10,7 +10,7 @@ import { CreateNewAccountScreen, ImportOptionsScreen, SaveScreen } from './index
 
 interface Props extends RouteComponentProps {}
 
-export class Onboarding extends React.Component<Props> {
+export class Onboarding extends React.PureComponent<Props> {
   render () {
     return (
       <Modal

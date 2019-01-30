@@ -23,24 +23,14 @@ type State = {
 
 const PLACEHOLDER_ADDRESS = '5'.padEnd(16, 'x');
 // FIXME: balance should come from LightAPI HOC's observables
-export class IdentityCard extends React.Component<Props, State> {
+export class IdentityCard extends React.PureComponent<Props, State> {
   state: State = {
     address: PLACEHOLDER_ADDRESS,
     buttonText: 'Transfer'
   };
 
   componentDidMount () {
-    const { history, match, location } = this.props;
-
-    // For Debugging purposes only
-    if (process.env.NODE_ENV !== 'production') {
-      // @ts-ignore
-      window.h = history;
-      // @ts-ignore
-      window.m = match;
-      // @ts-ignore
-      window.l = location;
-    }
+    const { location } = this.props;
 
     const pairs = keyring.getPairs();
     const defaultAccount = pairs[0];

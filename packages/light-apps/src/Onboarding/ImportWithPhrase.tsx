@@ -13,7 +13,7 @@ type State = {
   recoveryPhrase: string;
 };
 
-export class ImportWithPhrase extends React.Component<Props> {
+export class ImportWithPhrase extends React.PureComponent<Props> {
   state: State = {
     error: null,
     recoveryPhrase: ''

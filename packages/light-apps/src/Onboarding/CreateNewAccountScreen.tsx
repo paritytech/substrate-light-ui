@@ -7,7 +7,7 @@ import keyring from '@polkadot/ui-keyring';
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
 
 import FileSaver from 'file-saver';
-import { inject, observer } from 'mobx-react';
+import { inject } from 'mobx-react';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
@@ -25,11 +25,6 @@ type State = {
   password: string;
 };
 
-function generateMnemonic (): string {
-  const mnemonic = mnemonicGenerate();
-  return mnemonic;
-}
-
 function generateAddressFromMnemonic (mnemonic: string): string {
   const keypair = naclKeypairFromSeed(mnemonicToSeed(mnemonic));
   return keyring.encodeAddress(
@@ -38,8 +33,7 @@ function generateAddressFromMnemonic (mnemonic: string): string {
 }
 
 @inject('onboardingStore')
-@observer
-export class CreateNewAccountScreen extends React.Component<Props, State> {
+export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
   state: State = {
     error: null,
     mnemonic: '',
@@ -48,7 +42,7 @@ export class CreateNewAccountScreen extends React.Component<Props, State> {
   };
 
   componentDidMount () {
-    const mnemonic = generateMnemonic();
+    const mnemonic = mnemonicGenerate();
     const address = generateAddressFromMnemonic(mnemonic);
 
     this.setState({ address, mnemonic });

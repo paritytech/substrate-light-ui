@@ -12,7 +12,7 @@ import { ImportWithPhrase } from './ImportWithPhrase';
 
 interface Props extends RouteComponentProps {}
 
-export class ImportOptionsScreen extends React.Component<Props> {
+export class ImportOptionsScreen extends React.PureComponent<Props> {
   render () {
     return (
       <React.Fragment>

@@ -5,7 +5,7 @@
 import { AddressSummary, ErrorText, Input, Modal, NavButton, NavLink, Stacked } from '@polkadot/ui-components';
 import keyring from '@polkadot/ui-keyring';
 
-import { inject, observer } from 'mobx-react';
+import { inject } from 'mobx-react';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
@@ -29,8 +29,7 @@ type State = {
 };
 
 @inject('onboardingStore')
-@observer
-export class SaveScreen extends React.Component<Props, State> {
+export class SaveScreen extends React.PureComponent<Props, State> {
   state: State = {
     error: null,
     name: '',

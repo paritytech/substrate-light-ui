@@ -6,7 +6,7 @@ import { Identity } from '@polkadot/identity-app';
 import { Transfer } from '@polkadot/transfer-app';
 import { Container } from '@polkadot/ui-components';
 
-import { inject, observer } from 'mobx-react';
+import { inject } from 'mobx-react';
 import React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 
@@ -20,8 +20,7 @@ interface Props extends RouteComponentProps {
 }
 
 @inject('onboardingStore')
-@observer
-export class Content extends React.Component<Props> {
+export class Content extends React.PureComponent<Props> {
   render () {
     const {
       onboardingStore: {
@@ -35,7 +34,7 @@ export class Content extends React.Component<Props> {
           isFirstRun
             ? <Route component={Onboarding} />
             : <React.Fragment>
-                <IdentityCard {...this.props} />
+                <Route component={IdentityCard} />
                 <Switch>
                   <Route path='/identity/:currentAddress' component={Identity} />
                   <Route path='/transfer/:currentAddress' component={Transfer} />

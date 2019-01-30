@@ -19,7 +19,7 @@ type State = {
   lookupAddress?: string
 };
 
-export class Identity extends React.Component<Props, State> {
+export class Identity extends React.PureComponent<Props, State> {
   state: State = {};
 
   private handleAddAccount = () => {
