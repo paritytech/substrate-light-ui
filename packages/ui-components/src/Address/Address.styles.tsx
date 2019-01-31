@@ -8,5 +8,5 @@ export const AddressContainer = styled.div`
   display: 'flex';
   align-items: 'flex-end';
   justify-content: 'flex-end';
-  width: 50%;
+  width: 100%;
 `;

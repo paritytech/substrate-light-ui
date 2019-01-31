@@ -93,6 +93,18 @@ export const StyledNavLink = styled<any>(Link)`
   }
 `;
 
+export const StyledLinkButton = styled.button`
+  background: none;
+  border: none;
+  color: ${props => props.theme.lightBlue2};
+  font-size: 15px;
+  font-weight: 300;
+
+  :hover {
+    cursor: pointer;
+  }
+`;
+
 export const StyledNavButton = styled.button`
   background-image: linear-gradient(
     107deg,
