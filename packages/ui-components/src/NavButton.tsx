@@ -1,9 +1,10 @@
-// Copyright 2017-2018 @paritytech/substrate-light-ui authors & contributors
+// Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import { NavLinkBig } from './Shared.styles';
+
+import { StyledNavButton } from './Shared.styles';
 
 type Props = {
   children?: any,
@@ -16,10 +17,10 @@ export default class NavButton extends React.PureComponent<Props> {
     const { children, onClick, value } = this.props;
 
     return (
-      <NavLinkBig onClick={onClick}>
+      <StyledNavButton onClick={onClick}>
         {value}
         {children}
-      </NavLinkBig>
+      </StyledNavButton>
     );
   }
 }

@@ -1,4 +1,4 @@
-// Copyright 2017-2018 @paritytech/substrate-light-ui authors & contributors
+// Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 import SUICard from 'semantic-ui-react/dist/commonjs/views/Card';
@@ -13,7 +13,7 @@ export const CardHeader = styled(SUICard.Header)`
   }
 `;
 
-// Margin-left added as pseudoelement is screwing with justify-content.
+// FIXME: Margin-left added as pseudoelement is screwing with justify-content.
 // This is a known issue with flexbox with no clean solution at the moment.
 // https://stackoverflow.com/questions/40686928/pseudo-elements-breaking-justify-content-space-between-in-flexbox-layout
 export const CardContent = styled(SUICard.Content)`
@@ -28,7 +28,7 @@ export const CardContent = styled(SUICard.Content)`
   }
 `;
 
-// FIXME don't use <any>
+// FIXME: don't use <any>
 // The bug is Exported variable 'StyledCard' has or is using name
 // 'CardComponent' from external module
 // "node_modules/semantic-ui-react/dist/commonjs/views/Card/Card" but cannot

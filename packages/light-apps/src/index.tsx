@@ -1,11 +1,12 @@
-// Copyright 2017-2018 @paritytech/substrate-light-ui authors & contributors
+// Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import substrateLogo from '@polkadot/ui-assets/parity-substrate.svg';
+
 import { Provider } from 'mobx-react';
 import React from 'react';
-import { HashRouter, NavLink, Route } from 'react-router-dom';
+import { BrowserRouter, NavLink, Route } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import 'semantic-ui-css/semantic.min.css';
 
@@ -16,7 +17,7 @@ import * as rootStore from './stores';
 
 function App () {
   return (
-    <HashRouter>
+    <BrowserRouter>
       <React.Fragment>
         <ThemeProvider theme={substrateLightTheme}>
           <div>
@@ -34,7 +35,7 @@ function App () {
           </div>
         </ThemeProvider>
       </React.Fragment>
-    </HashRouter>
+    </BrowserRouter>
   );
 }
 

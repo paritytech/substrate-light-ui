@@ -3,14 +3,19 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import SUIGrid from 'semantic-ui-react/dist/commonjs/collections/Grid';
 
-const defaultTo = 'Identity';
+type Props = {
+  [index: string]: any
+};
 
-export class NotFound extends React.PureComponent {
+export default class Grid extends React.PureComponent<Props> {
+  static Column = SUIGrid.Column;
+  static Row = SUIGrid.Row;
+
   render () {
     return (
-      <Redirect to={defaultTo} />
+      <SUIGrid {...this.props} />
     );
   }
 }

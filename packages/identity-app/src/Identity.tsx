@@ -1,100 +1,36 @@
-// Copyright 2017-2018 @paritytech/substrate-light-ui authors & contributors
+// Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import React from 'react';
-import { RouteComponentProps } from 'react-router';
-import { Container, Input, MarginTop, NavButton, Stacked, WalletCard, WithSpace } from '@polkadot/ui-components';
-import Grid from 'semantic-ui-react/dist/commonjs/collections/Grid';
+import { Container, Grid } from '@polkadot/ui-components';
 
-type Props = RouteComponentProps & {
+import React from 'react';
+import Tab from 'semantic-ui-react/dist/commonjs/modules/Tab';
+
+import { AddressBook } from './AddressBook';
+import { SavedAccounts } from './SavedAccounts';
+import { Wallet } from './Wallet';
+
+type Props = {
   basePath: string
 };
 
-type State = {
-  seed?: string,
-  name?: string,
-  lookupAddress?: string
-};
-
-export class Identity extends React.PureComponent<Props, State> {
-  state: State = {};
-
-  private handleInputSeed = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ seed: value });
-  }
-
-  private handleInputName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ name: value });
-  }
-
-  private handleAddAccount = () => {
-    const { name, seed } = this.state;
-
-    console.log(name, seed);
-  }
-
-  private handleInputAddressLookup = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ lookupAddress: value });
-  }
-
-  private handleSaveAccount = () => {
-    const { name, lookupAddress } = this.state;
-
-    console.log(name, lookupAddress);
-  }
-
+export class Identity extends React.PureComponent<Props> {
   render () {
+    const panes = [
+      { menuItem: 'Address Book', render: () => <AddressBook {...this.props} /> },
+      { menuItem: 'Wallet', render: () => <Wallet {...this.props} /> }
+    ];
+
     return (
       <Container>
-        <Grid columns={3}>
-          <Grid.Row>
-            <Grid.Column>
-              <WalletCard
-                header='Wallet'
-                subheader='Manage your secret keys' >
-                <Stacked>
-                  <WithSpace>
-                    <Input
-                      label='Seed'
-                      onChange={this.handleInputSeed}
-                      type='text'
-                      withLabel />
-                    <MarginTop />
-                    <Input
-                      label='Name'
-                      onChange={this.handleInputName}
-                      type='text'
-                      withLabel />
-                  </WithSpace>
-                  <NavButton onClick={this.handleAddAccount} value='Create Account' />
-                </Stacked>
-              </WalletCard>
+        <Grid>
+          <Grid.Row stretched>
+            <Grid.Column width={10}>
+              <Tab panes={panes} menu={{ borderless: true }} />
             </Grid.Column>
-
-            <Grid.Column>
-              <WalletCard
-                header='Address Book'
-                subheader='Inspect the status of any account and name it for later use' >
-                <Stacked>
-                  <WithSpace>
-                    <Input
-                      label='Lookup Account By Address'
-                      onChange={this.handleInputAddressLookup}
-                      type='text'
-                      withLabel
-                    />
-                    <MarginTop />
-                    <Input
-                      label='Name'
-                      onChange={this.handleInputName}
-                      type='text'
-                      withLabel
-                    />
-                  </WithSpace>
-                <NavButton onClick={this.handleSaveAccount} value='Unlock Account' />
-                </Stacked>
-              </WalletCard>
+            <Grid.Column width={6}>
+              <SavedAccounts {...this.props} />
             </Grid.Column>
           </Grid.Row>
         </Grid>

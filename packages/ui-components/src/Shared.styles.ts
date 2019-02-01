@@ -1,12 +1,13 @@
-// Copyright 2017-2018 @paritytech/substrate-light-ui authors & contributors
+// Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import SUIContainer from 'semantic-ui-react/dist/commonjs/elements/Container';
 import SUICard from 'semantic-ui-react/dist/commonjs/views/Card';
 
-import { WithSpaceAroundProps, SubHeaderProps, StackProps, HeaderProps } from './StyleProps';
+import { HeaderProps, MarginTopProps, NameProps, StackProps, SubHeaderProps, WithSpaceAroundProps } from './StyleProps';
 
 export const Container = styled(SUIContainer)`
   padding: 1.5rem;
@@ -17,8 +18,9 @@ export const Card = styled<any>(SUICard)`
   background-color: #ffffff;
   border-radius: 2px;
   box-shadow: 0 4px 5px 1px rgba(0, 0, 0, 0.3);
-  height: 372px;
-  width: 299px;
+  height: 357px;
+  width: 100%;
+  overflow: ${props => props.overflow || 'none'};
  }
 `;
 
@@ -28,8 +30,20 @@ export const FadedText = styled.p`
   text-align: center;
 `;
 
-export const MarginTop = styled.div`
-  margin-top: 1rem;
+export const ErrorText = styled.p`
+  color: red;
+  text-align: center;
+  font-weight: 500;
+`;
+
+export const SuccessText = styled.p`
+  color: green;
+  text-align: center;
+  font-weight: 500;
+`;
+
+export const MarginTop = styled.div<MarginTopProps>`
+  margin-top: ${props => props.marginTop || '1rem'};
 `;
 
 export const WithSpace = styled.div`
@@ -39,6 +53,11 @@ export const WithSpace = styled.div`
 export const WithSpaceAround = styled.div<WithSpaceAroundProps>`
   margin: ${props => props.margin || '1rem 1rem'};
   padding: ${props => props.padding || '1rem 1rem'};
+`;
+
+export const WithSpaceBetween = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
 
 export const WithPadding = styled.div`
@@ -54,9 +73,9 @@ export const Header = styled.h2<HeaderProps>`
   text-align: center;
 `;
 
-export const Name = styled.p`
-  font-size: 20px;
-  font-weight: 500;
+export const Name = styled.p<NameProps>`
+  font-size: ${props => props.fontSize || '20px'};
+  font-weight: ${props => props.fontWeight || '500'};
   margin: 0 0;
 `;
 
@@ -68,7 +87,7 @@ export const FileInputArea = styled.div`
   width: 363px;
 `;
 
-export const NavLinkSmall = styled.button`
+export const StyledNavLink = styled<any>(Link)`
   background: none;
   border: none;
   color: ${props => props.theme.lightBlue2};
@@ -80,7 +99,19 @@ export const NavLinkSmall = styled.button`
   }
 `;
 
-export const NavLinkBig = styled.button`
+export const StyledLinkButton = styled.button`
+  background: none;
+  border: none;
+  color: ${props => props.color || props.theme.lightBlue2};
+  font-size: 15px;
+  font-weight: 300;
+
+  :hover {
+    cursor: pointer;
+  }
+`;
+
+export const StyledNavButton = styled.button`
   background-image: linear-gradient(
     107deg,
     ${props => props.theme.purple},
@@ -104,6 +135,15 @@ export const Stacked = styled.div<StackProps>`
   display: flex column;
   justify-content: ${props => props.justify || 'center'};
   min-height: 100%;
+  text-align: ${props => props.textAlign || 'center'};
+  vertical-align: middle;
+`;
+
+export const StackedHorizontal = styled.div<StackProps>`
+  align-items: ${props => props.align || 'center'};
+  display: flex;
+  justify-content: ${props => props.justify || 'center'};
+  min-width: 100%;
   text-align: ${props => props.textAlign || 'center'};
   vertical-align: middle;
 `;

@@ -1,10 +1,10 @@
-// Copyright 2017-2018 @paritytech/substrate-light-ui authors & contributors
+// Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { action, observable } from 'mobx';
-import store from 'store';
 import { enableLogging } from 'mobx-logger';
+import store from 'store';
 
 const LS_KEY = `__substrate-light::firstRun`;
 const NODE_ENV = process.env.NODE_ENV;
@@ -14,7 +14,7 @@ export class OnboardingStore {
   isFirstRun?: boolean;
 
   constructor () {
-    if (NODE_ENV === 'development') {
+    if (NODE_ENV !== 'production') {
       enableLogging();
     }
 

@@ -1,11 +1,11 @@
-// Copyright 2017-2018 @paritytech/substrate-light-ui authors & contributors
+// Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import Address from './Address';
 import AddressSummary from './AddressSummary';
 import BalanceDisplay from './Balance';
-import IdentityCard from './IdentityCard';
+import Grid from './Grid';
 import Icon from './Icon';
 import Input from './Input';
 import InputFile from './InputFile';
@@ -20,7 +20,7 @@ export {
   Address,
   AddressSummary,
   BalanceDisplay,
-  IdentityCard,
+  Grid,
   Icon,
   Input,
   InputFile,
