@@ -2,27 +2,17 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AddressSummary, Container, ErrorText, Input, MarginTop, NavButton, Stacked, WalletCard, WithSpace } from '@polkadot/ui-components';
+import { AddressSummary, MarginTop, Stacked, WalletCard, WithSpace } from '@polkadot/ui-components';
 import keyring from '@polkadot/ui-keyring';
 
 import React from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-interface Props extends RouteComponentProps {
-  basePath: string;
-}
-
-type State = {
-  error: string | null,
-  success: string | null
+type Props = {
+  basePath: string
 };
 
-export class SavedAccounts extends React.PureComponent<Props, State> {
-  state: State = {
-    error: null,
-    success: null
-  };
-
+export class SavedAccounts extends React.PureComponent<Props> {
   componentWillMount () {
     // FIXME: Only load keyring once after light-api is set
     try {
@@ -30,16 +20,6 @@ export class SavedAccounts extends React.PureComponent<Props, State> {
     } catch (e) {
       console.log(e);
     }
-  }
-
-  private onError = (value: string | null) => {
-    this.setState({
-      error: value
-    });
-  }
-
-  private onSuccess = (value: string | null) => {
-    this.setState({ error: null, success: value });
   }
 
   render () {
@@ -53,7 +33,6 @@ export class SavedAccounts extends React.PureComponent<Props, State> {
               { this.renderAllAccountsFromKeyring() }
           </WithSpace>
         </Stacked>
-        { this.renderError() }
       </WalletCard>
     );
   }
@@ -78,26 +57,6 @@ export class SavedAccounts extends React.PureComponent<Props, State> {
           })
         }
       </React.Fragment>
-    );
-  }
-
-  renderError () {
-    const { error } = this.state;
-
-    return (
-      <ErrorText>
-        {error || null}
-      </ErrorText>
-    );
-  }
-
-  renderSuccess () {
-    const { success } = this.state;
-
-    return (
-      <SuccessText>
-        {success || null}
-      </SuccessText>
     );
   }
 }

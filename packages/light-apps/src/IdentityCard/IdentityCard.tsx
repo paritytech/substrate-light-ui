@@ -211,16 +211,6 @@ export class IdentityCard extends React.Component<Props, State> {
     );
   }
 
-  renderSuccess () {
-    const { success } = this.state;
-
-    return (
-      <SuccessText>
-        {success || null}
-      </SuccessText>
-    );
-  }
-
   renderForgetConfirmationModal () {
     const { forgetModalOpen } = this.state;
 
@@ -233,6 +223,16 @@ export class IdentityCard extends React.Component<Props, State> {
             <Icon name='checkmark' color='green' /> <StyledLinkButton color='white' onClick={this.forgetCurrentAccount}>Confirm Forget</StyledLinkButton>
         </Modal.Actions>
       </Modal>
+    );
+  }
+
+  renderSuccess () {
+    const { success } = this.state;
+
+    return (
+      <SuccessText>
+        {success || null}
+      </SuccessText>
     );
   }
 }

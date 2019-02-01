@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import SUIContainer from 'semantic-ui-react/dist/commonjs/elements/Container';
 import SUICard from 'semantic-ui-react/dist/commonjs/views/Card';
 
-import { HeaderProps, NameProps, StackProps, SubHeaderProps, WithSpaceAroundProps } from './StyleProps';
+import { HeaderProps, MarginTopProps, NameProps, StackProps, SubHeaderProps, WithSpaceAroundProps } from './StyleProps';
 
 export const Container = styled(SUIContainer)`
   padding: 1.5rem;

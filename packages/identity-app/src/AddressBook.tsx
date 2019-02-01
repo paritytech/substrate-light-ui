@@ -2,15 +2,14 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AddressSummary, Container, ErrorText, Input, MarginTop, NavButton, Stacked, SubHeader, SuccessText, WalletCard, WithSpace } from '@polkadot/ui-components';
+import { ErrorText, Input, MarginTop, NavButton, Stacked, SubHeader, SuccessText, WalletCard, WithSpace } from '@polkadot/ui-components';
 import keyring from '@polkadot/ui-keyring';
 
 import React from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
 
-interface Props extends RouteComponentProps {
-  basePath: string;
-}
+type Props = {
+  basePath: string
+};
 
 type State = {
   error: string | null,

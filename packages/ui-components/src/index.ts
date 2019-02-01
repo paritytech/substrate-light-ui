@@ -5,7 +5,6 @@
 import Address from './Address';
 import AddressSummary from './AddressSummary';
 import BalanceDisplay from './Balance';
-import Button from './Button';
 import Grid from './Grid';
 import Icon from './Icon';
 import Input from './Input';
@@ -21,7 +20,6 @@ export {
   Address,
   AddressSummary,
   BalanceDisplay,
-  Button,
   Grid,
   Icon,
   Input,
