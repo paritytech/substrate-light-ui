@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AddressSummary, Container, ErrorText, Input, MarginTop, NavButton, Stacked, WalletCard, WithSpace } from '@polkadot/ui-components';
+import { AddressSummary, Container, ErrorText, Input, MarginTop, NavButton, Stacked, SubHeader, SuccessText, WalletCard, WithSpace } from '@polkadot/ui-components';
 import keyring from '@polkadot/ui-keyring';
 
 import React from 'react';
@@ -15,14 +15,16 @@ interface Props extends RouteComponentProps {
 type State = {
   error: string | null,
   lookupAddress: string,
-  name: string
+  name: string,
+  success: string | null
 };
 
 export class AddressBook extends React.PureComponent<Props, State> {
   state: State = {
     error: null,
     lookupAddress: '',
-    name: ''
+    name: '',
+    success: null
   };
 
   private handleInputAddressLookup = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,15 +44,19 @@ export class AddressBook extends React.PureComponent<Props, State> {
       }
 
       keyring.saveAddress(lookupAddress, { name, isExternal: true });
+
+      this.onSuccess('Successfully saved address');
     } catch (e) {
       this.onError(e.message);
     }
   }
 
   private onError = (value: string | null) => {
-    this.setState({
-      error: value
-    });
+    this.setState({ error: value, success: null });
+  }
+
+  private onSuccess = (value: string | null) => {
+    this.setState({ error: null, success: value });
   }
 
   render () {
@@ -58,24 +64,24 @@ export class AddressBook extends React.PureComponent<Props, State> {
       <WalletCard
         header='Address Book'
         subheader='Inspect the status of any account and name it for later use' >
+        <MarginTop />
         <Stacked>
           <WithSpace>
+            <SubHeader> Lookup Account By Address </SubHeader>
             <Input
-              label='Lookup Account By Address'
               onChange={this.handleInputAddressLookup}
               type='text'
-              withLabel
             />
             <MarginTop />
+            <SubHeader> Name </SubHeader>
             <Input
-              label='Name'
               onChange={this.handleInputName}
               type='text'
-              withLabel
             />
           </WithSpace>
           <NavButton onClick={this.handleSaveAccountExternal} value='Save External Account' />
-          {this.renderError()}
+          { this.renderError() }
+          { this.renderSuccess() }
         </Stacked>
       </WalletCard>
     );
@@ -88,6 +94,16 @@ export class AddressBook extends React.PureComponent<Props, State> {
       <ErrorText>
         {error || null}
       </ErrorText>
+    );
+  }
+
+  renderSuccess () {
+    const { success } = this.state;
+
+    return (
+      <SuccessText>
+        {success || null}
+      </SuccessText>
     );
   }
 }

@@ -30,7 +30,7 @@ const StyledActions = styled(StyledContent)`
 export default class Modal extends React.PureComponent<Props> {
   static Actions = StyledActions;
   static Content = StyledContent;
-  static Header = SUIModal.Header;
+  static Header = Header;
   static SubHeader = SubHeader;
   static FadedText = FadedText;
   static Description = SUIModal.Description;

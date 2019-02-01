@@ -13,12 +13,14 @@ interface Props extends RouteComponentProps {
 }
 
 type State = {
-  error: string | null
+  error: string | null,
+  success: string | null
 };
 
 export class SavedAccounts extends React.PureComponent<Props, State> {
   state: State = {
-    error: null
+    error: null,
+    success: null
   };
 
   componentWillMount () {
@@ -34,6 +36,10 @@ export class SavedAccounts extends React.PureComponent<Props, State> {
     this.setState({
       error: value
     });
+  }
+
+  private onSuccess = (value: string | null) => {
+    this.setState({ error: null, success: value });
   }
 
   render () {
@@ -82,6 +88,16 @@ export class SavedAccounts extends React.PureComponent<Props, State> {
       <ErrorText>
         {error || null}
       </ErrorText>
+    );
+  }
+
+  renderSuccess () {
+    const { success } = this.state;
+
+    return (
+      <SuccessText>
+        {success || null}
+      </SuccessText>
     );
   }
 }

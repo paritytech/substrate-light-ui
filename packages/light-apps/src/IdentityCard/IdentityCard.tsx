@@ -1,13 +1,12 @@
 // Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
-
-import React from 'react';
-import BN from 'bn.js';
-
+import { Address, AddressSummary, ErrorText, Icon, Input, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SuccessText, WithSpaceBetween } from '@polkadot/ui-components';
 import keyring from '@polkadot/ui-keyring';
-import { Address, AddressSummary, ErrorText, Icon, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton } from '@polkadot/ui-components';
 
+import BN from 'bn.js';
+import FileSaver from 'file-saver';
+import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
 import { StyledCard, CardHeader, CardContent } from './IdentityCard.styles';
@@ -17,11 +16,13 @@ interface Props extends RouteComponentProps {}
 
 type State = {
   address: string,
+  backupModalOpen: boolean,
   buttonText: string
   error: string | null,
+  forgetModalOpen: boolean,
   name?: string,
-  backupModalOpen: boolean,
-  forgetModalOpen: boolean
+  password: string,
+  success: string | null
 };
 
 const PLACEHOLDER_ADDRESS = '5'.padEnd(16, 'x');
@@ -29,10 +30,12 @@ const PLACEHOLDER_ADDRESS = '5'.padEnd(16, 'x');
 export class IdentityCard extends React.Component<Props, State> {
   state: State = {
     address: PLACEHOLDER_ADDRESS,
+    backupModalOpen: false,
     buttonText: 'Transfer',
     error: null,
-    backupModalOpen: false,
-    forgetModalOpen: false
+    forgetModalOpen: false,
+    password: '',
+    success: null
   };
 
   componentDidMount () {
@@ -51,13 +54,44 @@ export class IdentityCard extends React.Component<Props, State> {
     });
   }
 
+  closeBackupModal = () => {
+    this.setState({
+      backupModalOpen: false,
+      password: ''
+    });
+  }
+
+  closeForgetModal = () => {
+    this.setState({ forgetModalOpen: false });
+  }
+
+  openBackupModal = () => {
+    this.setState({ backupModalOpen: true });
+  }
+
+  openForgetModal = () => {
+    this.setState({ forgetModalOpen: true });
+  }
+
+  // Note: this violates the "order functions alphabetically" rule of thumb, but makes it more readable
+  // to have it all in the same place.
+  backupTrigger = <StyledLinkButton onClick={this.openBackupModal}>Backup</StyledLinkButton>;
+  forgetTrigger = <StyledLinkButton onClick={this.openForgetModal}>Forget</StyledLinkButton>;
+
   private backupCurrentAccount = () => {
-    const { address } = this.state;
+    const { address, password } = this.state;
 
     try {
       const pair = keyring.getPair(address);
-      keyring.backupAccount(pair, 'password');
+      const json = keyring.backupAccount(pair, password);
+      const blob = new Blob([JSON.stringify(json)], { type: 'application/json; charset=utf-8' });
+
+      FileSaver.saveAs(blob, `${address}.json`);
+
+      this.closeBackupModal();
+      this.onSuccess('Successfully backed up account to json keyfile!');
     } catch (e) {
+      this.closeBackupModal();
       this.onError(e.message);
     }
   }
@@ -68,27 +102,29 @@ export class IdentityCard extends React.Component<Props, State> {
 
     try {
       // forget it from keyring
-      keyring.forgetAddress(address);
-
-      // close the modal
-      this.setState({
-        forgetModalOpen: false
-      });
+      keyring.forgetAccount(address);
 
       // redirect to the next keyring pair
-      const pairs = keyring.getPairs();
+      const nextPair = keyring.getPairs()[0];
+      const nextAddress = nextPair.address();
+      const nextName = nextPair.getMeta().name;
 
-      console.log(pairs);
+      const nextState = {
+        address: nextAddress,
+        forgetModalOpen: false,
+        name: nextName
+      };
 
-      const nextAddress = pairs[0].address();
+      const nextLocation = {
+        pathname: `/identity/${nextAddress}`,
+        state: nextState
+      };
 
-      console.log(nextAddress);
+      this.setState(nextState);
 
-      debugger;
+      this.onSuccess('Successfully forgot account from keyring');
 
-      history.push(`/identity/${nextAddress}`);
-
-      this.forceUpdate();
+      history.push(nextLocation);
     } catch (e) {
       this.onError(e.message);
     }
@@ -106,10 +142,16 @@ export class IdentityCard extends React.Component<Props, State> {
     this.setState({ buttonText });
   }
 
+  private onChangePassword = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ password: value });
+  }
+
   private onError = (value: string | null) => {
-    this.setState({
-      error: value
-    });
+    this.setState({ error: value, success: null });
+  }
+
+  private onSuccess = (value: string | null) => {
+    this.setState({ error: null, success: value });
   }
 
   render () {
@@ -131,54 +173,29 @@ export class IdentityCard extends React.Component<Props, State> {
           <NavButton value={buttonText} onClick={this.handleToggleApp} />
         </CardContent>
         {this.renderError()}
+        {this.renderSuccess()}
       </StyledCard>
     );
   }
 
-  closeBackupModal = () => {
-    this.setState({ backupModalOpen: false });
-  }
-
-  closeForgetModal = () => {
-    this.setState({ forgetModalOpen: false });
-  }
-
-  openBackupModal = () => {
-    this.setState({ backupModalOpen: true });
-  }
-
-  openForgetModal = () => {
-    this.setState({ forgetModalOpen: true });
-  }
-
-  backupTrigger = <StyledLinkButton onClick={this.openBackupModal}>Backup</StyledLinkButton>;
-  forgetTrigger = <StyledLinkButton onClick={this.openForgetModal}>Forget</StyledLinkButton>;
-
   renderBackupConfirmationModal () {
-    const { backupModalOpen } = this.state;
+    const { backupModalOpen, password } = this.state;
 
     return (
       <Modal trigger={this.backupTrigger} open={backupModalOpen} basic>
         <Modal.Header> Please Confirm You Want to Backup this Account </Modal.Header>
-        <Modal.Content>By pressing confirm you will be downloading a JSON keyfile that can later be used to unlock your account. </Modal.Content>
+        <h2>By pressing confirm you will be downloading a JSON keyfile that can later be used to unlock your account. </h2>
         <Modal.Actions>
-            <Icon name='remove' /> <StyledLinkButton onClick={this.closeBackupModal}>No</StyledLinkButton>
-            <Icon name='checkmark' /> <StyledLinkButton onClick={this.backupCurrentAccount}>Confirm Backup</StyledLinkButton>
-        </Modal.Actions>
-      </Modal>
-    );
-  }
-
-  renderForgetConfirmationModal () {
-    const { forgetModalOpen } = this.state;
-
-    return (
-      <Modal trigger={this.forgetTrigger} open={forgetModalOpen} basic>
-        <Modal.Header> Please Confirm You Want to Forget this Account </Modal.Header>
-        <Modal.Content>By pressing confirm you want to remove this account from your keyring. </Modal.Content>
-        <Modal.Actions>
-            <Icon name='remove' /> <StyledLinkButton onClick={this.closeForgetModal}>No</StyledLinkButton>
-            <Icon name='checkmark' /> <StyledLinkButton onClick={this.forgetCurrentAccount}>Confirm Forget</StyledLinkButton>
+            <Stacked>
+              <Modal.SubHeader> Please encrypt your account first with the account's password. </Modal.SubHeader>
+              <Input min={8} onChange={this.onChangePassword} type='password' value={password} />
+              <StackedHorizontal>
+                <WithSpaceBetween>
+                  <Icon name='remove' color='red' /> <StyledLinkButton color='white' onClick={this.closeBackupModal}>No</StyledLinkButton>
+                  <Icon name='checkmark' color='green' /> <StyledLinkButton color='white' onClick={this.backupCurrentAccount}>Confirm Backup</StyledLinkButton>
+                </WithSpaceBetween>
+              </StackedHorizontal>
+            </Stacked>
         </Modal.Actions>
       </Modal>
     );
@@ -191,6 +208,31 @@ export class IdentityCard extends React.Component<Props, State> {
       <ErrorText>
         {error || null}
       </ErrorText>
+    );
+  }
+
+  renderSuccess () {
+    const { success } = this.state;
+
+    return (
+      <SuccessText>
+        {success || null}
+      </SuccessText>
+    );
+  }
+
+  renderForgetConfirmationModal () {
+    const { forgetModalOpen } = this.state;
+
+    return (
+      <Modal trigger={this.forgetTrigger} open={forgetModalOpen} basic>
+        <Modal.Header> Please Confirm You Want to Forget this Account </Modal.Header>
+        <h2>Please confirm that you want to remove this account from your keyring. </h2>
+        <Modal.Actions>
+            <Icon name='remove' color='red' /> <StyledLinkButton color='white' onClick={this.closeForgetModal}>No</StyledLinkButton>
+            <Icon name='checkmark' color='green' /> <StyledLinkButton color='white' onClick={this.forgetCurrentAccount}>Confirm Forget</StyledLinkButton>
+        </Modal.Actions>
+      </Modal>
     );
   }
 }

@@ -14,7 +14,7 @@ export class OnboardingStore {
   isFirstRun?: boolean;
 
   constructor () {
-    if (NODE_ENV === 'development') {
+    if (NODE_ENV !== 'production') {
       enableLogging();
     }
 

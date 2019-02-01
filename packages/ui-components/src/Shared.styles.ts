@@ -18,8 +18,8 @@ export const Card = styled<any>(SUICard)`
   background-color: #ffffff;
   border-radius: 2px;
   box-shadow: 0 4px 5px 1px rgba(0, 0, 0, 0.3);
-  height: 372px;
-  width: 299px;
+  height: 357px;
+  width: 100%;
   overflow: ${props => props.overflow || 'none'};
  }
 `;
@@ -36,8 +36,14 @@ export const ErrorText = styled.p`
   font-weight: 500;
 `;
 
-export const MarginTop = styled.div`
-  margin-top: 1rem;
+export const SuccessText = styled.p`
+  color: green;
+  text-align: center;
+  font-weight: 500;
+`;
+
+export const MarginTop = styled.div<MarginTopProps>`
+  margin-top: ${props => props.marginTop || '1rem'};
 `;
 
 export const WithSpace = styled.div`
@@ -96,7 +102,7 @@ export const StyledNavLink = styled<any>(Link)`
 export const StyledLinkButton = styled.button`
   background: none;
   border: none;
-  color: ${props => props.theme.lightBlue2};
+  color: ${props => props.color || props.theme.lightBlue2};
   font-size: 15px;
   font-weight: 300;
 

@@ -2,6 +2,10 @@ export interface HeaderProps {
   margin?: string;
 }
 
+export interface MarginTopProps {
+  marginTop?: string;
+}
+
 export interface NameProps {
   fontWeight?: string;
   fontSize?: string;
