@@ -3,6 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 import { Address, AddressSummary, ErrorText, Icon, Input, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SuccessText, WithSpaceBetween } from '@polkadot/ui-components';
 import keyring from '@polkadot/ui-keyring';
+import { stringUpperFirst } from '@polkadot/util';
 
 import BN from 'bn.js';
 import FileSaver from 'file-saver';
@@ -10,7 +11,6 @@ import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
 import { StyledCard, CardHeader, CardContent } from './IdentityCard.styles';
-import { camelizeInclusiveFirst } from '../utils/camelize';
 
 interface Props extends RouteComponentProps {}
 
@@ -42,11 +42,20 @@ export class IdentityCard extends React.Component<Props, State> {
     const { location } = this.props;
 
     const pairs = keyring.getPairs();
-    const defaultAccount = pairs[0];
-    const defaultAddress = defaultAccount.address();
 
-    const address = location.pathname.split('/')[2] || defaultAddress;
-    const name = keyring.getPair(address).getMeta().name || defaultAccount.getMeta().name;
+    let address = '';
+    let name = '';
+
+    try {
+      address = location.pathname.split('/')[2];
+      name = keyring.getPair(address).getMeta().name;
+    } catch (e) {
+      console.warn(e);
+      const defaultAccount = pairs[0];
+      const defaultAddress = defaultAccount.address();
+      address = defaultAddress;
+      name = defaultAccount.getMeta().name;
+    }
 
     this.setState({
       address,
@@ -135,7 +144,7 @@ export class IdentityCard extends React.Component<Props, State> {
     const { location, history } = this.props;
 
     const to = location.pathname.split('/')[1].toLowerCase() === 'identity' ? 'transfer' : 'identity';
-    const buttonText = camelizeInclusiveFirst(to);
+    const buttonText = stringUpperFirst(to);
 
     history.push(`/${to}/${address}`);
 
