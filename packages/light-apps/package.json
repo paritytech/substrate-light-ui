@@ -16,6 +16,7 @@
     "not op_mini all"
   ],
   "dependencies": {
+    "@polkadot/api": "^0.42.2",
     "@polkadot/identity-app": "0.1.0",
     "@polkadot/keyring": "^0.33.36",
     "@polkadot/transfer-app": "0.1.0",
