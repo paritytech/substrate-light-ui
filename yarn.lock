@@ -1777,10 +1777,10 @@
     "@polkadot/util" "^0.33.36"
     core-js "^2.6.2"
 
-"@polkadot/ui-assets@^0.23.1":
-  version "0.23.4"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-assets/-/ui-assets-0.23.4.tgz#ce369c0fcd0ecb85d235a6ab11d3b2ea25ad50fb"
-  integrity sha512-j9T83+E0LzOWKprJITZCWPf2VPIbp+AcnNtx6TTLPLE2lAH9Ixptw6Z5GFtTpkFRHrezXPY+lezgbqzQQYgruw==
+"@polkadot/ui-assets@^0.25.8":
+  version "0.25.8"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-assets/-/ui-assets-0.25.8.tgz#2e982411b07b9d7daeb96fcdcd33bf2bd472375f"
+  integrity sha512-ztw00jvtxgr9K+acz0mal10r1WBd406ctVqj9cLFxyscJqIv4Lxgr3VC9Sp3Rnp2QfBUmQA3q/sCHF4vrqKaXQ==
   dependencies:
     "@babel/runtime" "^7.2.0"
 
@@ -1828,7 +1828,7 @@
     "@types/store" "^2.0.1"
     store "^2.0.12"
 
-"@polkadot/util-crypto@^0.33.19", "@polkadot/util-crypto@^0.33.35", "@polkadot/util-crypto@^0.33.36":
+"@polkadot/util-crypto@^0.33.19", "@polkadot/util-crypto@^0.33.36":
   version "0.33.36"
   resolved "https://registry.yarnpkg.com/@polkadot/util-crypto/-/util-crypto-0.33.36.tgz#3b1fc84be7126fd92ee4de960baafb901e50b1a4"
   integrity sha512-kjzdOrBL8NKfZZdWIhQFim3yDWo6sHjWOuxJQt8k22pHa/ATF8zVZ6Xqi4r+wsfBa9S+G6AE5yyVOirVPQYeCQ==
@@ -4904,6 +4904,11 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     ripemd160 "^2.0.0"
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
+
+create-subscription@^16.7.0:
+  version "16.7.0"
+  resolved "https://registry.yarnpkg.com/create-subscription/-/create-subscription-16.7.0.tgz#4e728ba09dd6459a7f0f9140987e05719f00d15b"
+  integrity sha512-VdHVur/h0e3cwSm0JAVWWKOqEn5Z0YiKKwf3W+KawcTLsi4+GjeTq9zv+uNO3e4xMqA3nuKqsbmQAvC9Yq90uw==
 
 crocket@^0.9.11:
   version "0.9.11"
@@ -13405,6 +13410,11 @@ react-test-renderer@^16.0.0-0:
     react-is "^16.7.0"
     scheduler "^0.12.0"
 
+react-with-observable@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/react-with-observable/-/react-with-observable-2.0.1.tgz#c44991832029821b826801733d3ecf44b4e0d039"
+  integrity sha512-XXYYiCYhWO2TENON0/EYdSXOJegSuUjywKOvTwsdYMZjamRY0vuycVldVepsl8knJ+C0Siih6ZmLCspgAIHezw==
+
 react@^16.6.3, react@^16.7.0:
   version "16.7.0"
   resolved "https://registry.yarnpkg.com/react/-/react-16.7.0.tgz#b674ec396b0a5715873b350446f7ea0802ab6381"
@@ -14124,7 +14134,7 @@ run-queue@^1.0.0, run-queue@^1.0.3:
   dependencies:
     aproba "^1.1.1"
 
-rxjs@^6.1.0, rxjs@^6.3.3:
+rxjs@^6.1.0, rxjs@^6.3.3, rxjs@^6.4.0:
   version "6.4.0"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.4.0.tgz#f3bb0fe7bda7fb69deac0c16f17b50b0b8790504"
   integrity sha512-Z9Yfa11F6B9Sg/BK9MnqnQ+aQYicPLtilXBp2yUtDt2JRCE0h26d33EnfO3ZxoNxG0T92OUucP3Ct7cpfkdFfw==

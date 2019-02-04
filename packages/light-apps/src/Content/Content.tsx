@@ -5,9 +5,10 @@
 import { Identity } from '@polkadot/identity-app';
 import { Transfer } from '@polkadot/transfer-app';
 import { Container } from '@polkadot/ui-components';
+import keyring from '@polkadot/ui-keyring';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 
 import { IdentityCard } from '../IdentityCard';
 import { NotFound } from './NotFound';
@@ -22,6 +23,8 @@ interface Props {
 @observer
 export class Content extends React.Component<Props> {
   render () {
+    const [defaultAccount] = keyring.getPairs();
+
     const {
       isFirstRun
     } = this.props.onboardingStore!;
@@ -34,6 +37,8 @@ export class Content extends React.Component<Props> {
             : <React.Fragment>
               <Route component={IdentityCard} />
               <Switch>
+                <Redirect exact from='/identity' to={`/identity/${defaultAccount.address()}`} />
+                <Redirect exact from='/transfer' to={`/transfer/${defaultAccount.address()}`} />
                 <Route path='/identity/:currentAddress' component={Identity} />
                 <Route path='/transfer/:currentAddress' component={Transfer} />
                 <Route component={NotFound} />

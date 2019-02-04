@@ -5,4 +5,8 @@
 import ApiRx from '@polkadot/api/rx';
 import * as React from 'react';
 
-export const ApiContext: React.Context<ApiRx> = React.createContext({} as ApiRx);
+export interface ApiContextType {
+  api: ApiRx;
+}
+
+export const ApiContext: React.Context<ApiContextType> = React.createContext({} as ApiContextType);

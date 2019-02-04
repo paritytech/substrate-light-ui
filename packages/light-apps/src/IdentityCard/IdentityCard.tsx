@@ -4,34 +4,32 @@
 
 import { Address, AddressSummary, ErrorText, Icon, Input, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SuccessText, WithSpaceBetween } from '@polkadot/ui-components';
 import keyring from '@polkadot/ui-keyring';
+import { Balance } from '@polkadot/types';
 import { stringUpperFirst } from '@polkadot/util';
-
-import BN from 'bn.js';
 import FileSaver from 'file-saver';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
+import { Subscribe } from 'react-with-observable';
+import { map } from 'rxjs/operators';
 
+import { ApiContext } from '../Api/ApiContext';
 import { StyledCard, CardHeader, CardContent } from './IdentityCard.styles';
 
 interface Props extends RouteComponentProps { }
 
 type State = {
-  address: string,
   backupModalOpen: boolean,
   buttonText: string
   error?: string,
   forgetModalOpen: boolean,
-  name?: string,
   password: string,
   success?: string
 };
 
-const PLACEHOLDER_ADDRESS = '5'.padEnd(16, 'x');
-
-// FIXME: balance should come from LightAPI HOC's observables
 export class IdentityCard extends React.PureComponent<Props, State> {
+  static contextType = ApiContext;
+
   state: State = {
-    address: PLACEHOLDER_ADDRESS,
     backupModalOpen: false,
     buttonText: 'Transfer',
     forgetModalOpen: false,
@@ -39,28 +37,7 @@ export class IdentityCard extends React.PureComponent<Props, State> {
   };
 
   componentDidMount () {
-    const { location } = this.props;
-
-    const pairs = keyring.getPairs();
-
-    let address = '';
-    let name = '';
-
-    try {
-      address = location.pathname.split('/')[2];
-      name = keyring.getPair(address).getMeta().name;
-    } catch (e) {
-      console.warn(e);
-      const defaultAccount = pairs[0];
-      const defaultAddress = defaultAccount.address();
-      address = defaultAddress;
-      name = defaultAccount.getMeta().name;
-    }
-
-    this.setState({
-      address,
-      name
-    });
+    console.log(this.props);
   }
 
   closeBackupModal = () => {
@@ -72,6 +49,10 @@ export class IdentityCard extends React.PureComponent<Props, State> {
 
   closeForgetModal = () => {
     this.setState({ forgetModalOpen: false });
+  }
+
+  getAddress = () => {
+    return this.props.location.pathname.split('/')[2];
   }
 
   openBackupModal = () => {
@@ -88,7 +69,8 @@ export class IdentityCard extends React.PureComponent<Props, State> {
   forgetTrigger = <StyledLinkButton onClick={this.openForgetModal}>Forget</StyledLinkButton>;
 
   private backupCurrentAccount = () => {
-    const { address, password } = this.state;
+    const { password } = this.state;
+    const address = this.getAddress();
 
     try {
       const pair = keyring.getPair(address);
@@ -106,42 +88,22 @@ export class IdentityCard extends React.PureComponent<Props, State> {
   }
 
   private forgetCurrentAccount = () => {
-    const { address } = this.state;
     const { history } = this.props;
+    const address = this.getAddress();
 
     try {
       // forget it from keyring
       keyring.forgetAccount(address);
 
-      // redirect to the next keyring pair
-      const nextPair = keyring.getPairs()[0];
-      const nextAddress = nextPair.address();
-      const nextName = nextPair.getMeta().name;
-
-      const nextState = {
-        address: nextAddress,
-        forgetModalOpen: false,
-        name: nextName
-      };
-
-      const nextLocation = {
-        pathname: `/identity/${nextAddress}`,
-        state: nextState
-      };
-
-      this.setState(nextState);
-
-      this.onSuccess('Successfully forgot account from keyring');
-
-      history.push(nextLocation);
+      history.push('/identity');
     } catch (e) {
       this.onError(e.message);
     }
   }
 
   private handleToggleApp = () => {
-    const { address } = this.state;
     const { location, history } = this.props;
+    const address = this.getAddress();
 
     const to = location.pathname.split('/')[1].toLowerCase() === 'identity' ? 'transfer' : 'identity';
     const buttonText = stringUpperFirst(to);
@@ -164,13 +126,18 @@ export class IdentityCard extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { address, buttonText, name } = this.state;
+    const { api } = this.context;
+    const { buttonText } = this.state;
+    const address = this.getAddress();
 
     return (
       <StyledCard>
         <CardHeader>Current Account</CardHeader>
         <CardContent>
-          <AddressSummary address={address} balance={new BN(10000)} name={name} />
+          {address
+            ? <Subscribe>{api.query.balances.freeBalance(address).pipe(map(this.renderBalance))}</Subscribe>
+            : <div>Loading...</div>
+          }
           <Stacked>
             <Address address={address} />
             <StackedHorizontal>
@@ -208,6 +175,13 @@ export class IdentityCard extends React.PureComponent<Props, State> {
         </Modal.Actions>
       </Modal>
     );
+  }
+
+  renderBalance = (balance: Balance) => {
+    const address = this.getAddress();
+    const name = keyring.getAccount(address).getMeta().name;
+
+    return <AddressSummary address={address} balance={balance} name={name} />;
   }
 
   renderError () {
