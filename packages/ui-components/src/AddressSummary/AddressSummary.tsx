@@ -5,8 +5,8 @@
 import IdentityIcon from '@polkadot/ui-identicon';
 import { AccountId, AccountIndex, Address } from '@polkadot/types';
 
-import React from 'react';
 import BN from 'bn.js';
+import React from 'react';
 
 import { Name, Stacked, StackedHorizontal } from '../Shared.styles';
 import BalanceDisplay from '../Balance';
