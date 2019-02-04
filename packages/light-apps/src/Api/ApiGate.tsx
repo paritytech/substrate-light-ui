@@ -8,7 +8,7 @@ import * as React from 'react';
 import { zip } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 
-import { ApiContext, ApiContextType } from './ApiContext';
+import { ApiContext } from './ApiContext';
 
 interface State {
   networkId?: number;
@@ -17,10 +17,12 @@ interface State {
 export class ApiGate extends React.PureComponent {
   static contextType = ApiContext;
 
+  context!: React.ContextType<typeof ApiContext>; // https://github.com/DefinitelyTyped/DefinitelyTyped/blob/97f8192f439efd11b127e7bb1c62d641ed364ec6/types/react/index.d.ts#L376
+
   state = {} as State;
 
   componentDidMount () {
-    const { api } = this.context as ApiContextType;
+    const { api } = this.context;
 
     // Get info about the current chain
     zip(

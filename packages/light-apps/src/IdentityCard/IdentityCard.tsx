@@ -29,6 +29,8 @@ type State = {
 export class IdentityCard extends React.PureComponent<Props, State> {
   static contextType = ApiContext;
 
+  context!: React.ContextType<typeof ApiContext>; // https://github.com/DefinitelyTyped/DefinitelyTyped/blob/97f8192f439efd11b127e7bb1c62d641ed364ec6/types/react/index.d.ts#L376
+
   state: State = {
     backupModalOpen: false,
     buttonText: 'Transfer',
@@ -135,7 +137,12 @@ export class IdentityCard extends React.PureComponent<Props, State> {
         <CardHeader>Current Account</CardHeader>
         <CardContent>
           {address
-            ? <Subscribe>{api.query.balances.freeBalance(address).pipe(map(this.renderBalance))}</Subscribe>
+            ? <Subscribe>
+              {
+                // FIXME using any because freeBalance gives a Codec here, not a Balance
+                api.query.balances.freeBalance(address).pipe(map(this.renderBalance as any))
+              }
+            </Subscribe>
             : <div>Loading...</div>
           }
           <Stacked>
