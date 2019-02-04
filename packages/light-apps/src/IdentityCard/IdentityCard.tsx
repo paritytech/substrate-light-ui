@@ -1,6 +1,7 @@
 // Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
+
 import { Address, AddressSummary, ErrorText, Icon, Input, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SuccessText, WithSpaceBetween } from '@polkadot/ui-components';
 import keyring from '@polkadot/ui-keyring';
 import { stringUpperFirst } from '@polkadot/util';
@@ -12,17 +13,17 @@ import { RouteComponentProps } from 'react-router-dom';
 
 import { StyledCard, CardHeader, CardContent } from './IdentityCard.styles';
 
-interface Props extends RouteComponentProps {}
+interface Props extends RouteComponentProps { }
 
 type State = {
   address: string,
   backupModalOpen: boolean,
   buttonText: string
-  error: string | null,
+  error?: string,
   forgetModalOpen: boolean,
   name?: string,
   password: string,
-  success: string | null
+  success?: string
 };
 
 const PLACEHOLDER_ADDRESS = '5'.padEnd(16, 'x');
@@ -32,10 +33,8 @@ export class IdentityCard extends React.Component<Props, State> {
     address: PLACEHOLDER_ADDRESS,
     backupModalOpen: false,
     buttonText: 'Transfer',
-    error: null,
     forgetModalOpen: false,
-    password: '',
-    success: null
+    password: ''
   };
 
   componentDidMount () {
@@ -155,12 +154,12 @@ export class IdentityCard extends React.Component<Props, State> {
     this.setState({ password: value });
   }
 
-  private onError = (value: string | null) => {
-    this.setState({ error: value, success: null });
+  private onError = (value: string) => {
+    this.setState({ error: value, success: undefined });
   }
 
-  private onSuccess = (value: string | null) => {
-    this.setState({ error: null, success: value });
+  private onSuccess = (value: string) => {
+    this.setState({ error: undefined, success: value });
   }
 
   render () {
@@ -195,16 +194,16 @@ export class IdentityCard extends React.Component<Props, State> {
         <Modal.Header> Please Confirm You Want to Backup this Account </Modal.Header>
         <h2>By pressing confirm you will be downloading a JSON keyfile that can later be used to unlock your account. </h2>
         <Modal.Actions>
-            <Stacked>
-              <Modal.SubHeader> Please encrypt your account first with the account's password. </Modal.SubHeader>
-              <Input min={8} onChange={this.onChangePassword} type='password' value={password} />
-              <StackedHorizontal>
-                <WithSpaceBetween>
-                  <Icon name='remove' color='red' /> <StyledLinkButton color='white' onClick={this.closeBackupModal}>No</StyledLinkButton>
-                  <Icon name='checkmark' color='green' /> <StyledLinkButton color='white' onClick={this.backupCurrentAccount}>Confirm Backup</StyledLinkButton>
-                </WithSpaceBetween>
-              </StackedHorizontal>
-            </Stacked>
+          <Stacked>
+            <Modal.SubHeader> Please encrypt your account first with the account's password. </Modal.SubHeader>
+            <Input min={8} onChange={this.onChangePassword} type='password' value={password} />
+            <StackedHorizontal>
+              <WithSpaceBetween>
+                <Icon name='remove' color='red' /> <StyledLinkButton color='white' onClick={this.closeBackupModal}>No</StyledLinkButton>
+                <Icon name='checkmark' color='green' /> <StyledLinkButton color='white' onClick={this.backupCurrentAccount}>Confirm Backup</StyledLinkButton>
+              </WithSpaceBetween>
+            </StackedHorizontal>
+          </Stacked>
         </Modal.Actions>
       </Modal>
     );
@@ -215,7 +214,7 @@ export class IdentityCard extends React.Component<Props, State> {
 
     return (
       <ErrorText>
-        {error || null}
+        {error}
       </ErrorText>
     );
   }
@@ -228,8 +227,8 @@ export class IdentityCard extends React.Component<Props, State> {
         <Modal.Header> Please Confirm You Want to Forget this Account </Modal.Header>
         <h2>Please confirm that you want to remove this account from your keyring. </h2>
         <Modal.Actions>
-            <Icon name='remove' color='red' /> <StyledLinkButton color='white' onClick={this.closeForgetModal}>No</StyledLinkButton>
-            <Icon name='checkmark' color='green' /> <StyledLinkButton color='white' onClick={this.forgetCurrentAccount}>Confirm Forget</StyledLinkButton>
+          <Icon name='remove' color='red' /> <StyledLinkButton color='white' onClick={this.closeForgetModal}>No</StyledLinkButton>
+          <Icon name='checkmark' color='green' /> <StyledLinkButton color='white' onClick={this.forgetCurrentAccount}>Confirm Forget</StyledLinkButton>
         </Modal.Actions>
       </Modal>
     );
@@ -240,7 +239,7 @@ export class IdentityCard extends React.Component<Props, State> {
 
     return (
       <SuccessText>
-        {success || null}
+        {success}
       </SuccessText>
     );
   }

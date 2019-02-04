@@ -6,16 +6,15 @@ import { ErrorText, Input, MarginTop, Modal, NavButton, NavLink, Stacked } from 
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-interface Props extends RouteComponentProps {}
+interface Props extends RouteComponentProps { }
 
 type State = {
-  error: string | null;
+  error?: string;
   recoveryPhrase: string;
 };
 
 export class ImportWithPhrase extends React.PureComponent<Props> {
   state: State = {
-    error: null,
     recoveryPhrase: ''
   };
 
@@ -39,7 +38,7 @@ export class ImportWithPhrase extends React.PureComponent<Props> {
     }
   }
 
-  private onError = (value: string | null) => {
+  private onError = (value: string) => {
     this.setState({
       error: value
     });
@@ -75,7 +74,7 @@ export class ImportWithPhrase extends React.PureComponent<Props> {
               </Modal.Actions>
             </Stacked>
           </Modal.Actions>
-          { this.renderError() }
+          {this.renderError()}
         </Stacked>
       </React.Fragment>
     );
@@ -86,7 +85,7 @@ export class ImportWithPhrase extends React.PureComponent<Props> {
 
     return (
       <ErrorText>
-        {error || null}
+        {error}
       </ErrorText>
     );
   }

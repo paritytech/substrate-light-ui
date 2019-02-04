@@ -4,13 +4,11 @@
 
 import { Container, Modal } from '@polkadot/ui-components';
 import React from 'react';
-import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 
 import { CreateNewAccountScreen, ImportOptionsScreen, SaveScreen } from './index';
 
-interface Props extends RouteComponentProps {}
-
-export class Onboarding extends React.PureComponent<Props> {
+export class Onboarding extends React.PureComponent {
   render () {
     return (
       <Modal

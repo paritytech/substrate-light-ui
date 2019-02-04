@@ -5,9 +5,8 @@
 import { AddressSummary, ErrorText, FadedText, Input, Modal, NavButton, NavLink, Segment, Stacked } from '@polkadot/ui-components';
 import keyring from '@polkadot/ui-keyring';
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
-
 import FileSaver from 'file-saver';
-import { inject } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
@@ -33,6 +32,7 @@ function generateAddressFromMnemonic (mnemonic: string): string {
 }
 
 @inject('onboardingStore')
+@observer
 export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
   state: State = {
     error: null,
