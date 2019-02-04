@@ -5,28 +5,25 @@
 import { Identity } from '@polkadot/identity-app';
 import { Transfer } from '@polkadot/transfer-app';
 import { Container } from '@polkadot/ui-components';
-
 import { inject } from 'mobx-react';
-import React from 'react';
-import { Route, RouteComponentProps, Switch } from 'react-router-dom';
+import * as React from 'react';
+import { Route, Switch } from 'react-router-dom';
 
 import { IdentityCard } from '../IdentityCard';
 import { NotFound } from './NotFound';
 import { Onboarding } from '../Onboarding';
 import { OnboardingStore } from '../stores/onboardingStore';
 
-interface Props extends RouteComponentProps {
-  onboardingStore: OnboardingStore;
+interface Props {
+  onboardingStore?: OnboardingStore;
 }
 
 @inject('onboardingStore')
 export class Content extends React.PureComponent<Props> {
   render () {
     const {
-      onboardingStore: {
-        isFirstRun
-      }
-    } = this.props;
+      isFirstRun
+    } = this.props.onboardingStore!;
 
     return (
       <Container>
@@ -34,12 +31,12 @@ export class Content extends React.PureComponent<Props> {
           isFirstRun
             ? <Route component={Onboarding} />
             : <React.Fragment>
-                <Route component={IdentityCard} />
-                <Switch>
-                  <Route path='/identity/:currentAddress' component={Identity} />
-                  <Route path='/transfer/:currentAddress' component={Transfer} />
-                  <Route component={NotFound} />
-                </Switch>
+              <Route component={IdentityCard} />
+              <Switch>
+                <Route path='/identity/:currentAddress' component={Identity} />
+                <Route path='/transfer/:currentAddress' component={Transfer} />
+                <Route component={NotFound} />
+              </Switch>
             </React.Fragment>
         }
       </Container>
