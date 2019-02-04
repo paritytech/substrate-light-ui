@@ -8,7 +8,7 @@ import { Card, Header, SubHeader, Stacked, WithSpaceAround } from './index';
 type Props = {
   children: React.ReactNode,
   header: string,
-  subheader: string,
+  subheader?: string,
   overflow?: string
 };
 

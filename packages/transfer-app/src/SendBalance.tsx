@@ -2,49 +2,125 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AddressSummary, Grid, Input, MarginTop, Stacked, SubHeader, WalletCard } from '@polkadot/ui-components';
+import { AddressSummary, Grid, Icon, Input, MarginTop, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, WalletCard } from '@polkadot/ui-components';
 
 import React from 'react';
+import { Step } from 'semantic-ui-react';
+
+import { SavedExternalAccounts } from './SavedExternalAccounts';
 
 type Props = {
   basePath: string;
 };
 
 type State = {
-  recipientAddress?: string
+  amount?: string,
+  isAddressValid: boolean,
+  open: boolean,
+  recipientAddress?: string,
+  step: number
 };
 
 export class SendBalance extends React.PureComponent<Props, State> {
-  state: State = {};
+  state: State = {
+    isAddressValid: false,
+    open: false,
+    step: 1
+  };
+
+  onChangeAmount = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      amount: value
+    });
+  }
 
   onChangeRecipientAddress = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
+      isAddressValid: value[0] === '5' && value.length === 48,
       recipientAddress: value
     });
   }
 
+  onClose = () => {
+    this.setState({
+      open: false
+    });
+  }
+
+  onSubmitTransfer = () => {
+    // FIXME: handle transfer
+  }
+
+  openSelectAccountsModal = () => {
+    this.setState({
+      open: true
+    });
+  }
+
+  selectExternalAccountTrigger = <StyledLinkButton onClick={this.openSelectAccountsModal}> Select From Saved External Accounts </StyledLinkButton>;
+
   render () {
-    const { recipientAddress } = this.state;
+    const { amount, isAddressValid, recipientAddress } = this.state;
 
     return (
       <WalletCard
-        header='Transfer balance'
-        subheader='Send balance of the currency of the current chain to a select account'>
-        <MarginTop />
+        header='Transfer balance'>
         <Grid>
-          <Grid.Row>
-            <Grid.Column width={4}>
-              <Stacked>
-                <SubHeader> Recipient </SubHeader>
-                <MarginTop />
-                <AddressSummary address={recipientAddress} size={32} />
-                <MarginTop />
-                <Input onChange={this.onChangeRecipientAddress} type='text' value={recipientAddress} />
-              </Stacked>
-            </Grid.Column>
+          <Grid.Row centered>
+            <MarginTop marginTop='3rem' />
+            { this.renderSelectAccountModal() }
+            <MarginTop />
+            <StackedHorizontal>
+              <Step.Group>
+                <Step completed={isAddressValid}>
+                  <Step.Title> Recipient </Step.Title>
+                  <Icon name='address book' color='blue' />
+                  <Step.Content>
+                    <MarginTop />
+                    <Stacked>
+                      <AddressSummary address={recipientAddress} size='small' />
+                      <Input onChange={this.onChangeRecipientAddress} type='text' value={recipientAddress} />
+                    </Stacked>
+                  </Step.Content>
+                </Step>
+
+                <Step completed={amount !== undefined}>
+                  <Step.Title> Amount </Step.Title>
+                  <Icon name='law' color='blue' />
+                  <Step.Content>
+                    <Stacked>
+                      <Input onChange={this.onChangeAmount} type='number' value={amount} />
+                    </Stacked>
+                  </Step.Content>
+                </Step>
+
+                <Step>
+                  <Icon name='send' color='blue' />
+                  <Step.Content>
+                    <NavButton onClick={this.onSubmitTransfer}>Submit Transfer</NavButton>
+                  </Step.Content>
+                </Step>
+              </Step.Group>
+            </StackedHorizontal>
           </Grid.Row>
         </Grid>
       </WalletCard>
+    );
+  }
+
+  renderSelectAccountModal () {
+    const { open } = this.state;
+
+    return (
+      <Modal
+        closeOnEscape={true}
+        closeOnDimmerClick={true}
+        dimmer='blurring'
+        open={open}
+        onClose={this.onClose}
+        trigger={this.selectExternalAccountTrigger}>
+          <SavedExternalAccounts {...this.props} />
+      </Modal>
     );
   }
 }

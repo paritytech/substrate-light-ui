@@ -38,25 +38,19 @@ export class SavedExternalAccounts extends React.PureComponent<Props> {
   }
 
   renderAllExternalAccountsFromKeyring () {
-    return (
-      <React.Fragment>
-        {
-          keyring.getPairs().filter(pair => pair.getMeta().isExternal).map(pair => {
-            return (
-              <React.Fragment key={pair.address()}>
-                <MarginTop />
-                <Link to={`/identity/${pair.address()}`}>
-                  <AddressSummary
-                    address={pair.address()}
-                    name={pair.getMeta().name}
-                    orientation='horizontal'
-                    size='small' />
-                </Link>
-              </React.Fragment>
-            );
-          });
-        }
-      </React.Fragment>
-    );
+    return keyring.getPairs().filter(pair => pair.getMeta().isExternal).map(pair => {
+      return (
+        <React.Fragment key={pair.address()}>
+          <MarginTop />
+          <Link to={`/identity/${pair.address()}`}>
+            <AddressSummary
+              address={pair.address()}
+              name={pair.getMeta().name}
+              orientation='horizontal'
+              size='small' />
+          </Link>
+        </React.Fragment>
+      );
+    });
   }
 }
