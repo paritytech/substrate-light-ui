@@ -1,0 +1,31 @@
+{
+  "name": "@substrate/ui-api",
+  "version": "0.1.0",
+  "repository": "https://github.com/polkadot-js/light-ui.git",
+  "description": "HOC to make api calls",
+  "license": "Apache-2.0",
+  "main": "build/index.js",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "start": "yarn build --watch",
+    "test": "jest --coverage"
+  },
+  "dependencies": {
+    "@types/recompose": "^0.30.3",
+    "recompose": "^0.30.0",
+    "symbol-observable": "^1.2.0"
+  },
+  "peerDependencies": {
+    "rxjs": "~6.2.2"
+  },
+  "devDependencies": {
+    "@polkadot/dev": "^0.23.14",
+    "@types/enzyme": "^3.1.16",
+    "@types/enzyme-adapter-react-16": "^1.0.3",
+    "enzyme": "^3.8.0",
+    "enzyme-adapter-react-16": "^1.8.0",
+    "react": "^16.7.0",
+    "rxjs": "~6.2.2"
+  }
+}
