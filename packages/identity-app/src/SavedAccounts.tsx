@@ -13,15 +13,6 @@ type Props = {
 };
 
 export class SavedAccounts extends React.PureComponent<Props> {
-  componentWillMount () {
-    // FIXME: Only load keyring once after light-api is set
-    try {
-      keyring.loadAll();
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
   render () {
     return (
       <WalletCard
@@ -30,7 +21,7 @@ export class SavedAccounts extends React.PureComponent<Props> {
         overflow='scroll'>
         <Stacked>
           <WithSpace>
-              { this.renderAllAccountsFromKeyring() }
+            {this.renderAllAccountsFromKeyring()}
           </WithSpace>
         </Stacked>
       </WalletCard>
