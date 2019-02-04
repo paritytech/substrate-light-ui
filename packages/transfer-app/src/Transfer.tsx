@@ -6,7 +6,6 @@ import { Container, Grid } from '@polkadot/ui-components';
 
 import React from 'react';
 
-import { SavedExternalAccounts } from './SavedExternalAccounts';
 import { SendBalance } from './SendBalance';
 
 type Props = {
@@ -18,13 +17,8 @@ export class Transfer extends React.PureComponent<Props> {
     return (
       <Container>
         <Grid>
-          <Grid.Row>
-            <Grid.Column width={10}>
-              <SendBalance {...this.props}/>
-            </Grid.Column>
-            <Grid.Column width={6}>
-              <SavedExternalAccounts {...this.props}/>
-            </Grid.Column>
+          <Grid.Row centered>
+            <SendBalance {...this.props}/>
           </Grid.Row>
         </Grid>
       </Container>
