@@ -6,8 +6,8 @@
 import 'symbol-observable';
 
 import { compose, mapPropsStreamWithConfig } from 'recompose';
-import { from, Observable } from 'rxjs';
-import { combineLatest, map, switchMap } from 'rxjs/operators';
+import { combineLatest, from, Observable } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 type RxFn<T> = (...args: any[]) => Observable<T>;
 
@@ -33,8 +33,10 @@ export const withOneObservable = <OwnProps, T>(
     fromESObservable: from,
     toESObservable: stream$ => stream$
   })(props$ =>
-    (props$ as Observable<OwnProps>).pipe(
-      combineLatest((props$ as Observable<OwnProps>).pipe(switchMap(rxFn))),
+    combineLatest(
+      props$,
+      (props$ as Observable<OwnProps>).pipe(switchMap(rxFn))
+    ).pipe(
       map(([props, value]) => ({ ...props, [key]: value }))
     )
   );

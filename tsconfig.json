@@ -2,11 +2,9 @@
   "extends": "./node_modules/@polkadot/dev/config/tsconfig",
   "compilerOptions": {
     "allowJs": false,
-    "allowSyntheticDefaultImports": false,
     "declaration": false,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
-    "isolatedModules": true,
     "module": "esnext",
     "noEmit": true,
     "resolveJsonModule": true,
