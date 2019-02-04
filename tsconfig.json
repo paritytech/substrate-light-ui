@@ -1,6 +1,14 @@
 {
   "extends": "./node_modules/@polkadot/dev/config/tsconfig",
   "compilerOptions": {
-    "experimentalDecorators": true
+    "allowJs": false,
+    "declaration": false,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "module": "esnext",
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": false,
   }
 }
