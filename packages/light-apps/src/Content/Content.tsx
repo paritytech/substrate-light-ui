@@ -20,7 +20,7 @@ interface Props {
 
 @inject('onboardingStore')
 @observer
-export class Content extends React.PureComponent<Props> {
+export class Content extends React.Component<Props> {
   render () {
     const {
       isFirstRun

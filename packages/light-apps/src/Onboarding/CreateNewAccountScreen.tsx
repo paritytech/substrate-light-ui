@@ -33,7 +33,7 @@ function generateAddressFromMnemonic (mnemonic: string): string {
 
 @inject('onboardingStore')
 @observer
-export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
+export class CreateNewAccountScreen extends React.Component<Props, State> {
   state: State = {
     error: null,
     mnemonic: '',

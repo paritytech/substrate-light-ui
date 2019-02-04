@@ -27,8 +27,9 @@ type State = {
 };
 
 const PLACEHOLDER_ADDRESS = '5'.padEnd(16, 'x');
+
 // FIXME: balance should come from LightAPI HOC's observables
-export class IdentityCard extends React.Component<Props, State> {
+export class IdentityCard extends React.PureComponent<Props, State> {
   state: State = {
     address: PLACEHOLDER_ADDRESS,
     backupModalOpen: false,
