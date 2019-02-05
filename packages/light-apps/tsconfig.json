@@ -1,6 +1,14 @@
 {
   "compilerOptions": {
-    "isolatedModules": true
+    "allowJs": false,
+    "declaration": false,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "module": "esnext",
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": false
   },
   "extends": "../../tsconfig",
   "include": [

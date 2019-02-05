@@ -43,6 +43,7 @@
     "electron-builder": "^20.38.4",
     "electron-devtools-installer": "^2.2.4",
     "electron-webpack": "^2.6.1",
+    "electron-webpack-ts": "^3.1.1",
     "webpack": "^4.28.3"
   },
   "dependencies": {
