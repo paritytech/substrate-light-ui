@@ -136,6 +136,7 @@ export class IdentityCard extends React.PureComponent<Props, State> {
             ? <Subscribe>
               {
                 // FIXME using any because freeBalance gives a Codec here, not a Balance
+                // Wait for @polkadot/api to have TS support for all query.*
                 api.query.balances.freeBalance(address).pipe(map(this.renderBalance as any))
               }
             </Subscribe>
