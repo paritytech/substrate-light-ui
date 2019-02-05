@@ -34,7 +34,7 @@ export class AddressBook extends React.PureComponent<Props, State> {
     this.setState({ name: value });
   }
 
-  private handleSaveAccountExternal = () => {
+  private handleSaveAccount = () => {
     const { name, lookupAddress } = this.state;
     // FIXME: after saving, also display its status in a modal with options to do a balance transfer to it:
     try {
@@ -42,7 +42,7 @@ export class AddressBook extends React.PureComponent<Props, State> {
         this.onError("You've already saved this address");
       }
 
-      keyring.saveAddress(lookupAddress, { name, isExternal: true });
+      keyring.saveAddress(lookupAddress, { name });
 
       this.onSuccess('Successfully saved address');
     } catch (e) {
@@ -62,7 +62,7 @@ export class AddressBook extends React.PureComponent<Props, State> {
     return (
       <WalletCard
         header='Address Book'
-        subheader='Inspect the status of any account and name it for later use' >
+        subheader='Inspect the status of any identity and name it for later use' >
         <MarginTop />
         <Stacked>
           <WithSpace>
@@ -78,7 +78,7 @@ export class AddressBook extends React.PureComponent<Props, State> {
               type='text'
             />
           </WithSpace>
-          <NavButton onClick={this.handleSaveAccountExternal} value='Save External Account' />
+          <NavButton onClick={this.handleSaveAccount} value='Save Identity' />
           { this.renderError() }
           { this.renderSuccess() }
         </Stacked>

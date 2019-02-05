@@ -4,17 +4,23 @@
 
 import { AddressSummary, Grid, Icon, Input, MarginTop, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, WalletCard } from '@polkadot/ui-components';
 
+import BN from 'bn.js';
 import React from 'react';
 import { Step } from 'semantic-ui-react';
+import { RouteComponentProps } from 'react-router-dom';
 
-import { SavedExternalAccounts } from './SavedExternalAccounts';
+import { Saved } from './Saved';
 
-type Props = {
+interface MatchParams {
+  currentAddress: string;
+}
+
+interface Props extends RouteComponentProps<MatchParams> {
   basePath: string;
-};
+}
 
 type State = {
-  amount?: string,
+  amount: BN,
   isAddressValid: boolean,
   open: boolean,
   recipientAddress?: string,
@@ -23,6 +29,7 @@ type State = {
 
 export class SendBalance extends React.PureComponent<Props, State> {
   state: State = {
+    amount: new BN(0),
     isAddressValid: false,
     open: false,
     step: 1
@@ -30,13 +37,13 @@ export class SendBalance extends React.PureComponent<Props, State> {
 
   onChangeAmount = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
-      amount: value
+      amount: new BN(value)
     });
   }
 
   onChangeRecipientAddress = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
-      isAddressValid: value[0] === '5' && value.length === 48,
+      isAddressValid: value[0] === '5' && value.length === 48, // FIXME: do a more thorough check
       recipientAddress: value
     });
   }
@@ -57,7 +64,7 @@ export class SendBalance extends React.PureComponent<Props, State> {
     });
   }
 
-  selectExternalAccountTrigger = <StyledLinkButton onClick={this.openSelectAccountsModal}> Select From Saved External Accounts </StyledLinkButton>;
+  selectExternalAccountTrigger = <StyledLinkButton onClick={this.openSelectAccountsModal}> Select From Saved Identities </StyledLinkButton>;
 
   render () {
     const { amount, isAddressValid, recipientAddress } = this.state;
@@ -67,9 +74,9 @@ export class SendBalance extends React.PureComponent<Props, State> {
         header='Transfer balance'>
         <Grid>
           <Grid.Row centered>
-            <MarginTop marginTop='3rem' />
+            <MarginTop marginTop='2rem' />
             { this.renderSelectAccountModal() }
-            <MarginTop />
+            <MarginTop marginTop='2rem' />
             <StackedHorizontal>
               <Step.Group>
                 <Step completed={isAddressValid}>
@@ -84,7 +91,7 @@ export class SendBalance extends React.PureComponent<Props, State> {
                   </Step.Content>
                 </Step>
 
-                <Step completed={amount !== undefined}>
+                <Step completed={!amount.isZero()}>
                   <Step.Title> Amount </Step.Title>
                   <Icon name='law' color='blue' />
                   <Step.Content>
@@ -119,7 +126,7 @@ export class SendBalance extends React.PureComponent<Props, State> {
         open={open}
         onClose={this.onClose}
         trigger={this.selectExternalAccountTrigger}>
-          <SavedExternalAccounts {...this.props} />
+          <Saved {...this.props} />
       </Modal>
     );
   }
