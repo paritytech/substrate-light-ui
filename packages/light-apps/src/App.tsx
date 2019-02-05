@@ -24,27 +24,27 @@ export class App extends React.PureComponent<Props> {
     const { apiContext } = this.props;
 
     return (
-      <BrowserRouter>
-        <ThemeProvider theme={substrateLightTheme}>
-          <ApiContext.Provider value={apiContext}>
-            <React.Fragment>
-              <GlobalStyle theme={substrateLightTheme} />
-              <NavLink to='/'>
-                <img
-                  src={substrateLogo}
-                  height={100}
-                  width={150}
-                />
-              </NavLink>
-              <Provider {...rootStore}>
-                <ApiGate>
+      <Provider {...rootStore}>
+        <ApiContext.Provider value={apiContext}>
+          <ApiGate>
+            <ThemeProvider theme={substrateLightTheme}>
+              <BrowserRouter>
+                <React.Fragment>
+                  <GlobalStyle theme={substrateLightTheme} />
+                  <NavLink to='/'>
+                    <img
+                      src={substrateLogo}
+                      height={100}
+                      width={150}
+                    />
+                  </NavLink>
                   <Route component={Content} />
-                </ApiGate>
-              </Provider>
-            </React.Fragment>
-          </ApiContext.Provider>
-        </ThemeProvider>
-      </BrowserRouter >
+                </React.Fragment>
+              </BrowserRouter >
+            </ThemeProvider>
+          </ApiGate>
+        </ApiContext.Provider>
+      </Provider>
     );
   }
 

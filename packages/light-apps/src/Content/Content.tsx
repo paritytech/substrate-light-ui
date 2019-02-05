@@ -11,7 +11,6 @@ import * as React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import { IdentityCard } from '../IdentityCard';
-import { NotFound } from './NotFound';
 import { Onboarding } from '../Onboarding';
 import { OnboardingStore } from '../stores/onboardingStore';
 
@@ -37,11 +36,12 @@ export class Content extends React.Component<Props> {
             : <React.Fragment>
               <Route component={IdentityCard} />
               <Switch>
+                <Redirect exact from='/' to={`/identity/${defaultAddress}`} />
                 <Redirect exact from='/identity' to={`/identity/${defaultAddress}`} />
                 <Redirect exact from='/transfer' to={`/transfer/${defaultAddress}`} />
                 <Route path='/identity/:currentAddress' component={Identity} />
                 <Route path='/transfer/:currentAddress' component={Transfer} />
-                <Route component={NotFound} />
+                <Redirect to='/' />
               </Switch>
             </React.Fragment>
         }

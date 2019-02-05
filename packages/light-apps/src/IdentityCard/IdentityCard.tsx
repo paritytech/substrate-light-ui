@@ -26,7 +26,7 @@ type State = {
   success?: string
 };
 
-export class IdentityCard extends React.PureComponent<Props, State> {
+export class IdentityCard extends React.Component<Props, State> {
   static contextType = ApiContext;
 
   context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
