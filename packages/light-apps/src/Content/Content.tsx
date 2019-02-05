@@ -24,7 +24,7 @@ interface Props {
 export class Content extends React.Component<Props> {
   render () {
     const [defaultAccount] = keyring.getPairs();
-
+    const defaultAddress = defaultAccount && defaultAccount.address();
     const {
       isFirstRun
     } = this.props.onboardingStore!;
@@ -32,13 +32,13 @@ export class Content extends React.Component<Props> {
     return (
       <Container>
         {
-          isFirstRun
+          (isFirstRun || !defaultAddress)
             ? <Route component={Onboarding} />
             : <React.Fragment>
               <Route component={IdentityCard} />
               <Switch>
-                <Redirect exact from='/identity' to={`/identity/${defaultAccount.address()}`} />
-                <Redirect exact from='/transfer' to={`/transfer/${defaultAccount.address()}`} />
+                <Redirect exact from='/identity' to={`/identity/${defaultAddress}`} />
+                <Redirect exact from='/transfer' to={`/transfer/${defaultAddress}`} />
                 <Route path='/identity/:currentAddress' component={Identity} />
                 <Route path='/transfer/:currentAddress' component={Transfer} />
                 <Route component={NotFound} />

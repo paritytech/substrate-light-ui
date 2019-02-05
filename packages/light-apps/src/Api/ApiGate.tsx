@@ -17,7 +17,7 @@ interface State {
 export class ApiGate extends React.PureComponent {
   static contextType = ApiContext;
 
-  context!: React.ContextType<typeof ApiContext>; // https://github.com/DefinitelyTyped/DefinitelyTyped/blob/97f8192f439efd11b127e7bb1c62d641ed364ec6/types/react/index.d.ts#L376
+  context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
 
   state = {} as State;
 

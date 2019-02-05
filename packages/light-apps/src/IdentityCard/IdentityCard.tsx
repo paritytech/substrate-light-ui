@@ -29,7 +29,7 @@ type State = {
 export class IdentityCard extends React.PureComponent<Props, State> {
   static contextType = ApiContext;
 
-  context!: React.ContextType<typeof ApiContext>; // https://github.com/DefinitelyTyped/DefinitelyTyped/blob/97f8192f439efd11b127e7bb1c62d641ed364ec6/types/react/index.d.ts#L376
+  context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
 
   state: State = {
     backupModalOpen: false,
@@ -37,10 +37,6 @@ export class IdentityCard extends React.PureComponent<Props, State> {
     forgetModalOpen: false,
     password: ''
   };
-
-  componentDidMount () {
-    console.log(this.props);
-  }
 
   closeBackupModal = () => {
     this.setState({
