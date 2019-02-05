@@ -30,11 +30,10 @@
     }
   },
   "scripts": {
-    "build": "tsc && electron-webpack",
-    "electron": "cross-env SKIP_PREFLIGHT_CHECK=true electron dist/main/main.js",
-    "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
+    "build": "electron-webpack",
+    "electron": "electron dist/main/main.js",
     "dist": "yarn build && electron-builder",
-    "start": "yarn build && cross-env ELECTRON_START_URL=http://localhost:3000 electron-webpack dev --ws-origins all",
+    "start": "cross-env ELECTRON_START_URL=http://localhost:3000 electron-webpack dev --ws-origins all",
     "test": "echo Skipped."
   },
   "devDependencies": {
