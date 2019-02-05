@@ -38,8 +38,6 @@ export class ApiGate extends React.PureComponent {
       keyring.setAddressPrefix(networkId);
       keyring.loadAll();
 
-      // I have some race condition when using keyring.getPairs right after
-      // keyring,.getAll(). Adding a 500ms delay here.
       this.setState({ networkId });
     });
   }
