@@ -5,7 +5,7 @@
 import substrateLogo from '@polkadot/ui-assets/parity-substrate.svg';
 import { Provider } from 'mobx-react';
 import * as React from 'react';
-import { BrowserRouter, NavLink } from 'react-router-dom';
+import { BrowserRouter, NavLink, Route } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import 'semantic-ui-css/semantic.min.css';
 
@@ -38,7 +38,7 @@ export class App extends React.PureComponent<Props> {
               </NavLink>
               <Provider {...rootStore}>
                 <ApiGate>
-                  <Content />
+                  <Route component={Content} />
                 </ApiGate>
               </Provider>
             </React.Fragment>

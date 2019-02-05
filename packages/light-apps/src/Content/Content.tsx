@@ -16,7 +16,7 @@ import { Onboarding } from '../Onboarding';
 import { OnboardingStore } from '../stores/onboardingStore';
 
 interface Props {
-  onboardingStore?: OnboardingStore;
+  onboardingStore: OnboardingStore;
 }
 
 @inject('onboardingStore')
@@ -26,8 +26,8 @@ export class Content extends React.Component<Props> {
     const [defaultAccount] = keyring.getPairs();
     const defaultAddress = defaultAccount && defaultAccount.address();
     const {
-      isFirstRun
-    } = this.props.onboardingStore!;
+      onboardingStore: { isFirstRun }
+    } = this.props;
 
     return (
       <Container>
