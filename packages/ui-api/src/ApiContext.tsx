@@ -3,10 +3,12 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import ApiRx from '@polkadot/api/rx';
+import keyring from '@polkadot/ui-keyring';
 import * as React from 'react';
 
 export interface ApiContextType {
   api: ApiRx;
+  keyring: typeof keyring;
 }
 
 export const ApiContext: React.Context<ApiContextType> = React.createContext({} as ApiContextType);

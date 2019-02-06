@@ -2,8 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { ApiContext } from '@polkadot/ui-api';
 import { AddressSummary, ErrorText, FadedText, Input, Modal, NavButton, NavLink, Segment, Stacked } from '@polkadot/ui-components';
-import keyring from '@polkadot/ui-keyring';
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
 import FileSaver from 'file-saver';
 import { inject, observer } from 'mobx-react';
@@ -24,16 +24,13 @@ type State = {
   password: string;
 };
 
-function generateAddressFromMnemonic (mnemonic: string): string {
-  const keypair = naclKeypairFromSeed(mnemonicToSeed(mnemonic));
-  return keyring.encodeAddress(
-    keypair.publicKey
-  );
-}
-
 @inject('onboardingStore')
 @observer
 export class CreateNewAccountScreen extends React.Component<Props, State> {
+  static contextType = ApiContext;
+
+  context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
+
   state: State = {
     error: null,
     mnemonic: '',
@@ -43,7 +40,7 @@ export class CreateNewAccountScreen extends React.Component<Props, State> {
 
   componentDidMount () {
     const mnemonic = mnemonicGenerate();
-    const address = generateAddressFromMnemonic(mnemonic);
+    const address = this.generateAddressFromMnemonic(mnemonic);
 
     this.setState({ address, mnemonic });
   }
@@ -54,6 +51,7 @@ export class CreateNewAccountScreen extends React.Component<Props, State> {
   }
 
   private createNewAccount = () => {
+    const { keyring } = this.context;
     const { history, onboardingStore: { setIsFirstRun } } = this.props;
     const { mnemonic, name, password } = this.state;
 
@@ -72,6 +70,15 @@ export class CreateNewAccountScreen extends React.Component<Props, State> {
     } else {
       this.onError('Please make sure all the fields are set');
     }
+  }
+
+  private generateAddressFromMnemonic (mnemonic: string): string {
+    const { keyring } = this.context;
+    const keypair = naclKeypairFromSeed(mnemonicToSeed(mnemonic));
+
+    return keyring.encodeAddress(
+      keypair.publicKey
+    );
   }
 
   private onChangeName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {

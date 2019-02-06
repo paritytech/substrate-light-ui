@@ -2,9 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { ApiContext } from '@polkadot/ui-api';
 import { ErrorText, Input, MarginTop, NavButton, Stacked, SubHeader, SuccessText, WalletCard, WithSpace } from '@polkadot/ui-components';
-import keyring from '@polkadot/ui-keyring';
-
 import React from 'react';
 
 type Props = {
@@ -19,6 +18,10 @@ type State = {
 };
 
 export class AddressBook extends React.PureComponent<Props, State> {
+  static contextType = ApiContext;
+
+  context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
+
   state: State = {
     error: null,
     lookupAddress: '',
@@ -35,6 +38,7 @@ export class AddressBook extends React.PureComponent<Props, State> {
   }
 
   private handleSaveAccountExternal = () => {
+    const { keyring } = this.context;
     const { name, lookupAddress } = this.state;
     // FIXME: after saving, also display its status in a modal with options to do a balance transfer to it:
     try {
@@ -79,8 +83,8 @@ export class AddressBook extends React.PureComponent<Props, State> {
             />
           </WithSpace>
           <NavButton onClick={this.handleSaveAccountExternal} value='Save External Account' />
-          { this.renderError() }
-          { this.renderSuccess() }
+          {this.renderError()}
+          {this.renderSuccess()}
         </Stacked>
       </WalletCard>
     );

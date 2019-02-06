@@ -1,8 +1,7 @@
 {
-  "name": "@polkadot/identity-app",
+  "name": "@polkadot/ui-api",
   "version": "0.1.0",
   "repository": "https://github.com/polkadot-js/light-ui.git",
-  "description": "Account management for Substrate client",
   "license": "Apache-2.0",
   "main": "build/index.js",
   "scripts": {
@@ -11,7 +10,11 @@
     "test": "echo skipped"
   },
   "dependencies": {
-    "@polkadot/ui-api": "0.1.0",
-    "@polkadot/ui-components": "0.1.0"
+    "@polkadot/api": "^0.42.2",
+    "@polkadot/types": "^0.33.25",
+    "@polkadot/ui-keyring": "^0.23.2"
+  },
+  "peerDependencies": {
+    "react": "^16.6.3"
   }
 }

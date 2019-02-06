@@ -3,8 +3,8 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { Address, AddressSummary, ErrorText, Icon, Input, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SuccessText, WithSpaceBetween } from '@polkadot/ui-components';
-import keyring from '@polkadot/ui-keyring';
 import { Balance } from '@polkadot/types';
+import { ApiContext } from '@polkadot/ui-api';
 import { stringUpperFirst } from '@polkadot/util';
 import FileSaver from 'file-saver';
 import React from 'react';
@@ -12,7 +12,6 @@ import { RouteComponentProps } from 'react-router-dom';
 import { Subscribe } from 'react-with-observable';
 import { map } from 'rxjs/operators';
 
-import { ApiContext } from '../Api/ApiContext';
 import { StyledCard, CardHeader, CardContent } from './IdentityCard.styles';
 
 interface Props extends RouteComponentProps { }
@@ -67,6 +66,7 @@ export class IdentityCard extends React.Component<Props, State> {
   forgetTrigger = <StyledLinkButton onClick={this.openForgetModal}>Forget</StyledLinkButton>;
 
   private backupCurrentAccount = () => {
+    const { keyring } = this.context;
     const { password } = this.state;
     const address = this.getAddress();
 
@@ -86,6 +86,7 @@ export class IdentityCard extends React.Component<Props, State> {
   }
 
   private forgetCurrentAccount = () => {
+    const { keyring } = this.context;
     const { history } = this.props;
     const address = this.getAddress();
 
@@ -182,6 +183,7 @@ export class IdentityCard extends React.Component<Props, State> {
   }
 
   renderBalance = (balance: Balance) => {
+    const { keyring } = this.context;
     const address = this.getAddress();
     const name = keyring.getAccount(address).getMeta().name;
 

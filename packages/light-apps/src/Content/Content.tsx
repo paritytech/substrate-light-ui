@@ -4,8 +4,8 @@
 
 import { Identity } from '@polkadot/identity-app';
 import { Transfer } from '@polkadot/transfer-app';
+import { ApiContext } from '@polkadot/ui-api';
 import { Container } from '@polkadot/ui-components';
-import keyring from '@polkadot/ui-keyring';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
@@ -21,7 +21,12 @@ interface Props {
 @inject('onboardingStore')
 @observer
 export class Content extends React.Component<Props> {
+  static contextType = ApiContext;
+
+  context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
+
   render () {
+    const { keyring } = this.context;
     const [defaultAccount] = keyring.getPairs();
     const defaultAddress = defaultAccount && defaultAccount.address();
     const {
