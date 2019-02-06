@@ -11,7 +11,7 @@ import { first, map } from 'rxjs/operators';
 import { ApiContext } from './ApiContext';
 
 interface State {
-  networkId?: number;
+  isReady: boolean;
 }
 
 export class ApiGate extends React.PureComponent {
@@ -19,7 +19,7 @@ export class ApiGate extends React.PureComponent {
 
   context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
 
-  state = {} as State;
+  state = { isReady: false } as State;
 
   componentDidMount () {
     const { api } = this.context;
@@ -38,15 +38,16 @@ export class ApiGate extends React.PureComponent {
       keyring.setAddressPrefix(networkId);
       keyring.loadAll();
 
-      this.setState({ networkId });
+      console.log('ISREADY');
+      this.setState({ isReady: true });
     });
   }
 
   render () {
     const { children } = this.props;
-    const { networkId } = this.state;
+    const { isReady } = this.state;
 
     // FIXME Return a nicer component when loading
-    return networkId ? children : <div>Loading...</div>;
+    return isReady ? children : <div>Loading...</div>;
   }
 }
