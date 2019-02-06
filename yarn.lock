@@ -1941,6 +1941,13 @@
   dependencies:
     "@types/color-convert" "*"
 
+"@types/create-subscription@^16.4.1":
+  version "16.4.1"
+  resolved "https://registry.yarnpkg.com/@types/create-subscription/-/create-subscription-16.4.1.tgz#694150d3877e65f654b98c0189da3590e39ff46d"
+  integrity sha512-SL9gXmqjLjPsHQIdalwnPDeSyH0pPNky7XNIWwu5oQhNKkE+jE7dqiOFWGtKIXOhwZ+EFi8uq79GZUe439oMCA==
+  dependencies:
+    "@types/react" "*"
+
 "@types/deasync@^0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@types/deasync/-/deasync-0.1.0.tgz#b2bd6c3fcde3cf67b8be4c2f70136ba8f157b45a"
