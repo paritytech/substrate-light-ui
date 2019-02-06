@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import 'symbol-observable'; // https://github.com/mmiszy/react-with-observable#install
-import * as React from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { App } from './App';

@@ -1809,16 +1809,6 @@
     "@types/store" "^2.0.1"
     store "^2.0.12"
 
-"@polkadot/ui-keyring@^0.25.8":
-  version "0.25.8"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-keyring/-/ui-keyring-0.25.8.tgz#cfdbe76e55da38eb84beccaf9000864bdc98ce49"
-  integrity sha512-JYdlhP90sSrS3zWm0U0kWv2dtDfn8NLQnKStBPoY6C74WPlPV/CxrY7YnC6Gc4RnjnI5fU1cAa9OCqIdlx3moQ==
-  dependencies:
-    "@babel/runtime" "^7.2.0"
-    "@types/store" "^2.0.1"
-    rxjs "^6.3.3"
-    store "^2.0.12"
-
 "@polkadot/ui-settings@^0.23.4":
   version "0.23.4"
   resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-0.23.4.tgz#75ff2e226434ff9f0e017abd4f045e295e7b0ff5"
@@ -4845,10 +4835,10 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-create-subscription@^16.7.0:
-  version "16.7.0"
-  resolved "https://registry.yarnpkg.com/create-subscription/-/create-subscription-16.7.0.tgz#4e728ba09dd6459a7f0f9140987e05719f00d15b"
-  integrity sha512-VdHVur/h0e3cwSm0JAVWWKOqEn5Z0YiKKwf3W+KawcTLsi4+GjeTq9zv+uNO3e4xMqA3nuKqsbmQAvC9Yq90uw==
+create-subscription@^16.8.0:
+  version "16.8.0"
+  resolved "https://registry.yarnpkg.com/create-subscription/-/create-subscription-16.8.0.tgz#65573ce1f508fd146a2971351600780bec023fc8"
+  integrity sha512-aXivlvvreoU4ZtCbUqSt+1izd44ZN0ABruHnyh31mYEDHx+QwtNg8DY8wrog4dtIPwPpfyFvWZ02z4EOvANpLg==
 
 crocket@^0.9.11:
   version "0.9.11"

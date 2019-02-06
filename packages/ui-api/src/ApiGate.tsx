@@ -5,7 +5,7 @@
 import ApiRx from '@polkadot/api/rx';
 import { ChainProperties } from '@polkadot/types';
 import keyring from '@polkadot/ui-keyring';
-import * as React from 'react';
+import React from 'react';
 import { Observable, zip } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 

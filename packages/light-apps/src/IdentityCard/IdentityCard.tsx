@@ -4,12 +4,11 @@
 
 import { Address, AddressSummary, ErrorText, Icon, Input, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SuccessText, WithSpaceBetween } from '@polkadot/ui-components';
 import { Balance } from '@polkadot/types';
-import { ApiContext } from '@polkadot/ui-api';
+import { ApiContext, Subscribe } from '@polkadot/ui-api';
 import { stringUpperFirst } from '@polkadot/util';
 import FileSaver from 'file-saver';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { Subscribe } from 'react-with-observable';
 import { map } from 'rxjs/operators';
 
 import { StyledCard, CardHeader, CardContent } from './IdentityCard.styles';

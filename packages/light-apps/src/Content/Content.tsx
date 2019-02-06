@@ -7,7 +7,7 @@ import { Transfer } from '@polkadot/transfer-app';
 import { ApiContext } from '@polkadot/ui-api';
 import { Container } from '@polkadot/ui-components';
 import { inject, observer } from 'mobx-react';
-import * as React from 'react';
+import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import { IdentityCard } from '../IdentityCard';

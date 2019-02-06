@@ -4,7 +4,7 @@
 
 import ApiRx from '@polkadot/api/rx';
 import keyring from '@polkadot/ui-keyring';
-import * as React from 'react';
+import React from 'react';
 
 export interface ApiContextType {
   api: ApiRx;

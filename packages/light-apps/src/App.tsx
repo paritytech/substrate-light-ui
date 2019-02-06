@@ -5,7 +5,7 @@
 import { ApiGate } from '@polkadot/ui-api';
 import substrateLogo from '@polkadot/ui-assets/parity-substrate.svg';
 import { Provider } from 'mobx-react';
-import * as React from 'react';
+import React from 'react';
 import { BrowserRouter, NavLink, Route } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import 'semantic-ui-css/semantic.min.css';
