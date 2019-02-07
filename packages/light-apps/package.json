@@ -20,7 +20,6 @@
     "@polkadot/identity-app": "0.1.0",
     "@polkadot/keyring": "^0.33.36",
     "@polkadot/transfer-app": "0.1.0",
-    "@polkadot/types": "^0.42.2",
     "@polkadot/ui-api": "0.1.0",
     "@polkadot/ui-assets": "^0.25.8",
     "@polkadot/ui-components": "0.1.0",
