@@ -5,12 +5,17 @@
 import { Container, Grid } from '@polkadot/ui-components';
 
 import React from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 
 import { SendBalance } from './SendBalance';
 
-type Props = {
+interface MatchParams {
+  currentAddress: string;
+}
+
+interface Props extends RouteComponentProps<MatchParams> {
   basePath: string;
-};
+}
 
 export class Transfer extends React.PureComponent<Props> {
   render () {
@@ -18,7 +23,7 @@ export class Transfer extends React.PureComponent<Props> {
       <Container>
         <Grid>
           <Grid.Row centered>
-            <SendBalance {...this.props}/>
+            <SendBalance {...this.props} />
           </Grid.Row>
         </Grid>
       </Container>

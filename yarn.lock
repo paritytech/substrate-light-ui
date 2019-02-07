@@ -1687,7 +1687,7 @@
   dependencies:
     "@babel/runtime" "^7.2.0"
 
-"@polkadot/keyring@^0.33.17", "@polkadot/keyring@^0.33.19", "@polkadot/keyring@^0.33.22", "@polkadot/keyring@^0.33.36":
+"@polkadot/keyring@^0.33.17", "@polkadot/keyring@^0.33.19", "@polkadot/keyring@^0.33.22":
   version "0.33.36"
   resolved "https://registry.yarnpkg.com/@polkadot/keyring/-/keyring-0.33.36.tgz#def02631369b1a2288ae95d32cadd63299f877f7"
   integrity sha512-UUyb0ua+b10FAt+dH5Vuua0mu+FH9WY+as+IoVNXyDY8PpHY+kg8MDXXrCGBueCF5CaiiAJP7gD5vp7U10nrEg==
