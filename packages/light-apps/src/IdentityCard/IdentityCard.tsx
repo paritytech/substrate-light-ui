@@ -5,13 +5,13 @@
 import { Balance } from '@polkadot/types';
 import { stringUpperFirst } from '@polkadot/util';
 import { ApiContext, Subscribe } from '@substrate/ui-api';
-import { Address, AddressSummary, ErrorText, Icon, Input, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SuccessText, WithSpaceBetween } from '@substrate/ui-components';
+import { Address, AddressSummary, ErrorText, Header, Icon, Input, MarginTop, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SuccessText, WithSpaceBetween } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { map } from 'rxjs/operators';
 
-import { StyledCard, CardHeader, CardContent } from './IdentityCard.styles';
+import { StyledCard, CardContent } from './IdentityCard.styles';
 
 interface Props extends RouteComponentProps { }
 
@@ -93,6 +93,8 @@ export class IdentityCard extends React.Component<Props, State> {
       // forget it from keyring
       keyring.forgetAccount(address);
 
+      this.closeForgetModal();
+
       history.push('/identity');
     } catch (e) {
       this.onError(e.message);
@@ -130,8 +132,8 @@ export class IdentityCard extends React.Component<Props, State> {
 
     return (
       <StyledCard>
-        <CardHeader>Current Account</CardHeader>
         <CardContent>
+          <Header> Current Account </Header>
           {address
             ? <Subscribe>
               {
@@ -142,14 +144,17 @@ export class IdentityCard extends React.Component<Props, State> {
             </Subscribe>
             : <div>Loading...</div>
           }
+          <MarginTop />
           <Stacked>
             <Address address={address} />
+            <MarginTop />
             <StackedHorizontal>
               {this.renderForgetConfirmationModal()}
               or
               {this.renderBackupConfirmationModal()}
             </StackedHorizontal>
           </Stacked>
+          <MarginTop />
           <NavButton value={buttonText} onClick={this.handleToggleApp} />
         </CardContent>
         {this.renderError()}

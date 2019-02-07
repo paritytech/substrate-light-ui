@@ -8,7 +8,7 @@ import styled from 'styled-components';
 const Segment = styled<any>(SUISegment)`
   &&& {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
     height: 3rem;
     margin: 0.3rem auto;

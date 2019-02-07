@@ -2,20 +2,30 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Container } from '@substrate/ui-components';
+import { Container, Grid } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-interface Props extends RouteComponentProps {
+import { SendBalance } from './SendBalance';
+
+interface MatchParams {
+  currentAddress: string;
+}
+
+interface Props extends RouteComponentProps<MatchParams> {
   basePath: string;
 }
 
-type State = {};
-
-export class Transfer extends React.PureComponent<Props, State> {
-  state: State = {};
-
+export class Transfer extends React.PureComponent<Props> {
   render () {
-    return <Container>'transfer card goes here'</Container>;
+    return (
+      <Container>
+        <Grid>
+          <Grid.Row centered>
+            <SendBalance {...this.props} />
+          </Grid.Row>
+        </Grid>
+      </Container>
+    );
   }
 }

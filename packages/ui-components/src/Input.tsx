@@ -39,8 +39,8 @@ export const TextInputArea = styled(SUIInput)`
     box-shadow: 0 2px 4px 0 rgba(${props => props.theme.black}, 0.5);
     background-color: ${props => props.theme.white};
     color: ${props => props.theme.grey};
-    height: $(props => props.height || 109px)
-    min-width: 100%;
+    height: $(props => props.height || 109px);
+    width: $(props => props.width || 300px);
   }
 `;
 
