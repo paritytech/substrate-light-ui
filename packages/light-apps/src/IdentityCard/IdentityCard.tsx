@@ -93,6 +93,8 @@ export class IdentityCard extends React.Component<Props, State> {
       // forget it from keyring
       keyring.forgetAccount(address);
 
+      this.closeForgetModal();
+
       history.push('/identity');
     } catch (e) {
       this.onError(e.message);

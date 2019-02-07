@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { AddressSummary, Grid, Icon, Input, MarginTop, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, WalletCard } from '@polkadot/ui-components';
-
+import { KeyringAddress } from '@polkadot/ui-keyring/types';
 import BN from 'bn.js';
 import React from 'react';
 import { Step } from 'semantic-ui-react';
@@ -21,9 +21,8 @@ interface Props extends RouteComponentProps<MatchParams> {
 
 type State = {
   amount: BN,
-  isAddressValid: boolean,
   open: boolean,
-  recipientAddress?: string,
+  recipientAddress?: KeyringAddress | string,
   step: number
 };
 
@@ -42,9 +41,10 @@ export class SendBalance extends React.PureComponent<Props, State> {
   }
 
   onChangeRecipientAddress = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    const { keyring } = this.context;
+
     this.setState({
-      isAddressValid: value[0] === '5' && value.length === 48, // FIXME: do a more thorough check
-      recipientAddress: value
+      recipientAddress: keyring.getAddress(value).address() || value
     });
   }
 
@@ -67,7 +67,7 @@ export class SendBalance extends React.PureComponent<Props, State> {
   selectExternalAccountTrigger = <StyledLinkButton onClick={this.openSelectAccountsModal}> Select From Saved Identities </StyledLinkButton>;
 
   render () {
-    const { amount, isAddressValid, recipientAddress } = this.state;
+    const { amount, recipientAddress } = this.state;
 
     return (
       <WalletCard
@@ -78,8 +78,8 @@ export class SendBalance extends React.PureComponent<Props, State> {
             { this.renderSelectAccountModal() }
             <MarginTop marginTop='2rem' />
             <StackedHorizontal>
-              <Step.Group>
-                <Step completed={isAddressValid}>
+              <Step.Group vertical>
+                <Step completed={recipientAddress && recipientAddress.isValid()}>
                   <Step.Title> Recipient </Step.Title>
                   <Icon name='address book' color='blue' />
                   <Step.Content>
@@ -109,6 +109,8 @@ export class SendBalance extends React.PureComponent<Props, State> {
                 </Step>
               </Step.Group>
             </StackedHorizontal>
+
+            <Saved />
           </Grid.Row>
         </Grid>
       </WalletCard>

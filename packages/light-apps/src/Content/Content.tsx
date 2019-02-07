@@ -42,6 +42,7 @@ export class Content extends React.Component<Props> {
               <Route component={IdentityCard} />
               <Switch>
                 <Redirect exact from='/' to={`/identity/${defaultAddress}`} />
+                <Redirect exact from='/' to={`/transfer/${defaultAddress}`} />
                 <Redirect exact from='/identity' to={`/identity/${defaultAddress}`} />
                 <Redirect exact from='/transfer' to={`/transfer/${defaultAddress}`} />
                 <Route path='/identity/:currentAddress' component={Identity} />

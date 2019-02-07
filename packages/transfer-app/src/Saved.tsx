@@ -3,8 +3,8 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { KeyringPair } from '@polkadot/keyring/types';
+import { ApiContext, Subscribe } from '@polkadot/ui-api';
 import { AddressSummary, Grid, MarginTop, NavLink, Stacked, SubHeader, WalletCard, WithSpace } from '@polkadot/ui-components';
-import keyring from '@polkadot/ui-keyring';
 import { KeyringAddress } from '@polkadot/ui-keyring/types';
 
 import React from 'react';
@@ -24,21 +24,18 @@ type State = {
 };
 
 export class Saved extends React.PureComponent<Props, State> {
+  static contextType = ApiContext;
+
+  context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
+
   state: State = {
     allAccounts: [],
     allAddresses: []
   };
 
-  componentWillMount () {
-    // FIXME: Only load keyring once after light-api is set
-    try {
-      keyring.loadAll();
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
   componentDidMount () {
+    const { keyring } = this.context;
+
     this.setState({
       allAccounts: keyring.getPairs(),
       allAddresses: keyring.getAddresses()
@@ -57,7 +54,7 @@ export class Saved extends React.PureComponent<Props, State> {
             <Stacked>
               <SubHeader> My Unlocked Accounts </SubHeader>
               <WithSpace>
-                  { this.renderAccounts() }
+                  { this.renderAccountsToSendFrom() }
               </WithSpace>
             </Stacked>
           </Grid.Column>
@@ -65,7 +62,7 @@ export class Saved extends React.PureComponent<Props, State> {
             <Stacked>
               <SubHeader> Saved Addresses </SubHeader>
               <WithSpace>
-                  { this.renderAddresses() }
+                  { this.renderAddressesToSendTo() }
               </WithSpace>
             </Stacked>
           </Grid.Column>
@@ -74,7 +71,7 @@ export class Saved extends React.PureComponent<Props, State> {
     );
   }
 
-  renderAccounts () {
+  renderAccountsToSendFrom () {
     const { allAccounts } = this.state;
 
     if (!allAccounts.length) {
@@ -85,7 +82,7 @@ export class Saved extends React.PureComponent<Props, State> {
       return (
         <React.Fragment key={`__unlocked_${pair.address()}`}>
           <MarginTop />
-          <Link to={`/identity/${pair.address()}`}>
+          <Link to={`/transfer/${pair.address()}`}>
             <AddressSummary
               address={pair.address()}
               name={pair.getMeta().name}
@@ -97,7 +94,7 @@ export class Saved extends React.PureComponent<Props, State> {
     });
   }
 
-  renderAddresses () {
+  renderAddressesToSendTo () {
     const { allAddresses } = this.state;
 
     if (!allAddresses.length) {
@@ -106,11 +103,16 @@ export class Saved extends React.PureComponent<Props, State> {
 
     return allAddresses.map((address: KeyringAddress) => {
       return (
-        <React.Fragment key={`__locked_${address}`}>
+        <React.Fragment key={`__locked_${address.address()}`}>
           <MarginTop />
-          <Link to={`/identity/${address}`}>
+          <Link to={{
+            pathname: '/transfer',
+            state: {
+              recipientAddress: address.address()
+            }
+          }}>
             <AddressSummary
-              address={address}
+              address={address.address()}
               orientation='horizontal'
               size='small' />
           </Link>

@@ -5,7 +5,7 @@
 import { Container, Grid } from '@polkadot/ui-components';
 
 import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { Redirect, Route, RouteComponentProps } from 'react-router-dom';
 
 import { SendBalance } from './SendBalance';
 
@@ -23,7 +23,8 @@ export class Transfer extends React.PureComponent<Props> {
       <Container>
         <Grid>
           <Grid.Row centered>
-            <SendBalance {...this.props} />
+            <Route path='/send' component={SendBalance}/>
+            <Redirect to='/send' />
           </Grid.Row>
         </Grid>
       </Container>
