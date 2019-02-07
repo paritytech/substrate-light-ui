@@ -37,7 +37,7 @@ export class AddressBook extends React.PureComponent<Props, State> {
     this.setState({ name: value });
   }
 
-  private handleSaveAccountExternal = () => {
+  private handleSaveAccount = () => {
     const { keyring } = this.context;
     const { name, lookupAddress } = this.state;
     // FIXME: after saving, also display its status in a modal with options to do a balance transfer to it:

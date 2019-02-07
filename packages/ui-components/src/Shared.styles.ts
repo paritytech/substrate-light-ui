@@ -100,11 +100,14 @@ export const StyledNavLink = styled<any>(Link)`
 `;
 
 export const StyledLinkButton = styled.button`
+  align-items: space-between;
   background: none;
   border: none;
   color: ${props => props.color || props.theme.lightBlue2};
+  display: flex;
   font-size: 15px;
   font-weight: 300;
+  justify-content: space-between;
 
   :hover {
     cursor: pointer;

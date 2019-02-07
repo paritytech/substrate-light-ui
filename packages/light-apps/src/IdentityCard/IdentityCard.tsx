@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Address, AddressSummary, ErrorText, Icon, Input, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SuccessText, WithSpaceBetween } from '@polkadot/ui-components';
+import { Address, AddressSummary, ErrorText, Header, Icon, Input, MarginTop, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SuccessText, WithSpaceBetween } from '@polkadot/ui-components';
 import { Balance } from '@polkadot/types';
 import { ApiContext, Subscribe } from '@polkadot/ui-api';
 import { stringUpperFirst } from '@polkadot/util';
@@ -11,7 +11,7 @@ import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { map } from 'rxjs/operators';
 
-import { StyledCard, CardHeader, CardContent } from './IdentityCard.styles';
+import { StyledCard, CardContent } from './IdentityCard.styles';
 
 interface Props extends RouteComponentProps { }
 
@@ -132,8 +132,8 @@ export class IdentityCard extends React.Component<Props, State> {
 
     return (
       <StyledCard>
-        <CardHeader>Current Account</CardHeader>
         <CardContent>
+          <Header> Current Account </Header>
           {address
             ? <Subscribe>
               {
@@ -144,14 +144,17 @@ export class IdentityCard extends React.Component<Props, State> {
             </Subscribe>
             : <div>Loading...</div>
           }
+          <MarginTop />
           <Stacked>
             <Address address={address} />
+            <MarginTop />
             <StackedHorizontal>
               {this.renderForgetConfirmationModal()}
               or
               {this.renderBackupConfirmationModal()}
             </StackedHorizontal>
           </Stacked>
+          <MarginTop />
           <NavButton value={buttonText} onClick={this.handleToggleApp} />
         </CardContent>
         {this.renderError()}

@@ -3,8 +3,8 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { KeyringPair } from '@polkadot/keyring/types';
-import { ApiContext, Subscribe } from '@polkadot/ui-api';
-import { AddressSummary, Grid, MarginTop, NavLink, Stacked, SubHeader, WalletCard, WithSpace } from '@polkadot/ui-components';
+import { ApiContext } from '@polkadot/ui-api';
+import { AddressSummary, Grid, MarginTop, NavLink, Stacked, StyledLinkButton, SubHeader, WalletCard, WithSpace } from '@polkadot/ui-components';
 import { KeyringAddress } from '@polkadot/ui-keyring/types';
 
 import React from 'react';
@@ -16,11 +16,16 @@ interface MatchParams {
 
 interface Props extends RouteComponentProps<MatchParams> {
   basePath: string;
+  onSelectAddress: (address: string) => void;
 }
 
 type State = {
   allAccounts: Array<KeyringPair>,
   allAddresses: Array<KeyringAddress>
+};
+
+type Memo = {
+  [index: string]: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 };
 
 export class Saved extends React.PureComponent<Props, State> {
@@ -32,6 +37,8 @@ export class Saved extends React.PureComponent<Props, State> {
     allAccounts: [],
     allAddresses: []
   };
+
+  memo: Memo = {};
 
   componentDidMount () {
     const { keyring } = this.context;
@@ -94,6 +101,23 @@ export class Saved extends React.PureComponent<Props, State> {
     });
   }
 
+  // Note: currying to pass value onClick without a closure:
+  // https://www.sitepoint.com/currying-in-functional-javascript/
+  handleSelectedRecipient = (address: string) => {
+    const { onSelectAddress } = this.props;
+
+    const handler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      e.preventDefault();
+      onSelectAddress(address);
+    };
+
+    if (!this.memo[address]) {
+      this.memo[address] = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handler(e);
+    }
+
+    return this.memo[address];
+  }
+
   renderAddressesToSendTo () {
     const { allAddresses } = this.state;
 
@@ -105,17 +129,13 @@ export class Saved extends React.PureComponent<Props, State> {
       return (
         <React.Fragment key={`__locked_${address.address()}`}>
           <MarginTop />
-          <Link to={{
-            pathname: '/transfer',
-            state: {
-              recipientAddress: address.address()
-            }
-          }}>
+          <StyledLinkButton onClick={this.handleSelectedRecipient(address.address())}>
             <AddressSummary
               address={address.address()}
+              name={address.getMeta().name}
               orientation='horizontal'
               size='small' />
-          </Link>
+          </StyledLinkButton>
         </React.Fragment>
       );
     });

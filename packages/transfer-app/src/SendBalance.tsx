@@ -2,7 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AddressSummary, Grid, Header, Icon, Input, MarginTop, NavButton, Stacked, StyledLinkButton } from '@polkadot/ui-components';
+import { ApiContext } from '@polkadot/ui-api';
+import { AddressSummary, Grid, Header, Icon, Input, MarginTop, NavButton, Stacked } from '@polkadot/ui-components';
 import { KeyringAddress } from '@polkadot/ui-keyring/types';
 import BN from 'bn.js';
 import React from 'react';
@@ -21,12 +22,17 @@ interface Props extends RouteComponentProps<MatchParams> {
 
 type State = {
   amount: BN,
+  isAddressValid: boolean,
   open: boolean,
   recipientAddress?: KeyringAddress | string,
   step: number
 };
 
 export class SendBalance extends React.PureComponent<Props, State> {
+  static contextType = ApiContext;
+
+  context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
+
   state: State = {
     amount: new BN(0),
     isAddressValid: false,
@@ -40,11 +46,17 @@ export class SendBalance extends React.PureComponent<Props, State> {
     });
   }
 
-  onChangeRecipientAddress = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-    const { keyring } = this.context;
-
+  onSelectAddress = (address: string) => {
     this.setState({
-      recipientAddress: keyring.getAddress(value).address() || value
+      isAddressValid: this.isValidAddress(address),
+      recipientAddress: address
+    });
+  }
+
+  onChangeRecipientAddress = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      isAddressValid: this.isValidAddress(value),
+      recipientAddress: value
     });
   }
 
@@ -64,8 +76,16 @@ export class SendBalance extends React.PureComponent<Props, State> {
     });
   }
 
+  isValidAddress = (address: KeyringAddress | string) => {
+    if (typeof address !== 'string') {
+      address = address.address();
+    }
+
+    return address[0] === '5' && address.length === 48;
+  }
+
   render () {
-    const { amount, recipientAddress } = this.state;
+    const { amount, isAddressValid, recipientAddress } = this.state;
 
     return (
         <Grid>
@@ -76,7 +96,7 @@ export class SendBalance extends React.PureComponent<Props, State> {
             <Grid.Column width='6'>
               <Stacked>
                 <Step.Group vertical>
-                  <Step completed={recipientAddress && recipientAddress.isValid()}>
+                  <Step completed={isAddressValid}>
                     <Step.Title> Recipient </Step.Title>
                     <Icon name='address book' color='blue' />
                     <Step.Content>
@@ -109,7 +129,7 @@ export class SendBalance extends React.PureComponent<Props, State> {
             </Grid.Column>
 
             <Grid.Column width='10'>
-              <Saved {...this.props} />
+              <Saved onSelectAddress={this.onSelectAddress} {...this.props} />
             </Grid.Column>
           </Grid.Row>
         </Grid>
