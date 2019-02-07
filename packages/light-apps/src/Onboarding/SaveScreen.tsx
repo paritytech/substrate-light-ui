@@ -2,10 +2,9 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { ApiContext } from '@polkadot/ui-api';
 import { AddressSummary, ErrorText, Input, Modal, NavButton, NavLink, Stacked } from '@polkadot/ui-components';
-import keyring from '@polkadot/ui-keyring';
-
-import { inject } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
@@ -29,7 +28,12 @@ type State = {
 };
 
 @inject('onboardingStore')
+@observer
 export class SaveScreen extends React.Component<Props, State> {
+  static contextType = ApiContext;
+
+  context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
+
   state: State = {
     error: null,
     jsonString: '',
@@ -66,6 +70,7 @@ export class SaveScreen extends React.Component<Props, State> {
   }
 
   private saveToWallet = () => {
+    const { keyring } = this.context;
     const { jsonString, name, recoveryPhrase, password } = this.state;
     const { history, match, onboardingStore: { setIsFirstRun } } = this.props;
 

@@ -2,8 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { ApiContext } from '@polkadot/ui-api';
 import { AddressSummary, MarginTop, Stacked, WalletCard, WithSpace } from '@polkadot/ui-components';
-import keyring from '@polkadot/ui-keyring';
 
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -13,14 +13,9 @@ type Props = {
 };
 
 export class SavedAccounts extends React.PureComponent<Props> {
-  componentWillMount () {
-    // FIXME: Only load keyring once after light-api is set
-    try {
-      keyring.loadAll();
-    } catch (e) {
-      console.log(e);
-    }
-  }
+  static contextType = ApiContext;
+
+  context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
 
   render () {
     return (
@@ -30,7 +25,7 @@ export class SavedAccounts extends React.PureComponent<Props> {
         subheader='To quickly move between accounts, select from the list of unlocked accounts below.'>
         <Stacked>
           <WithSpace>
-              { this.renderAllAccountsFromKeyring() }
+            {this.renderAllAccountsFromKeyring()}
           </WithSpace>
         </Stacked>
       </WalletCard>
@@ -38,6 +33,8 @@ export class SavedAccounts extends React.PureComponent<Props> {
   }
 
   renderAllAccountsFromKeyring () {
+    const { keyring } = this.context;
+
     return (
       <React.Fragment>
         {
