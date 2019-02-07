@@ -2,8 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { ApiContext } from '@polkadot/ui-api';
-import { AddressSummary, Grid, Header, Icon, Input, MarginTop, NavButton, Stacked } from '@polkadot/ui-components';
+import { ApiContext } from '@substrate/ui-api';
+import { AddressSummary, Grid, Header, Icon, Input, MarginTop, NavButton, Stacked } from '@substrate/ui-components';
 import { KeyringAddress } from '@polkadot/ui-keyring/types';
 import BN from 'bn.js';
 import React from 'react';
@@ -84,55 +84,55 @@ export class SendBalance extends React.PureComponent<Props, State> {
     return address[0] === '5' && address.length === 48;
   }
 
-  render () {
+  render() {
     const { amount, isAddressValid, recipientAddress } = this.state;
 
     return (
-        <Grid>
-          <Grid.Row centered>
-            <Header> Transfer Balance </Header>
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column width='6'>
-              <Stacked>
-                <Step.Group vertical>
-                  <Step completed={isAddressValid}>
-                    <Step.Title> Recipient </Step.Title>
-                    <Icon name='address book' color='blue' />
-                    <Step.Content>
-                      <MarginTop />
-                      <Stacked>
-                        <AddressSummary address={recipientAddress} size='small' />
-                        <Input onChange={this.onChangeRecipientAddress} type='text' value={recipientAddress} />
-                      </Stacked>
-                    </Step.Content>
-                  </Step>
+      <Grid>
+        <Grid.Row centered>
+          <Header> Transfer Balance </Header>
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column width='6'>
+            <Stacked>
+              <Step.Group vertical>
+                <Step completed={isAddressValid}>
+                  <Step.Title> Recipient </Step.Title>
+                  <Icon name='address book' color='blue' />
+                  <Step.Content>
+                    <MarginTop />
+                    <Stacked>
+                      <AddressSummary address={recipientAddress} size='small' />
+                      <Input onChange={this.onChangeRecipientAddress} type='text' value={recipientAddress} />
+                    </Stacked>
+                  </Step.Content>
+                </Step>
 
-                  <Step completed={!amount.isZero()}>
-                    <Step.Title> Amount </Step.Title>
-                    <Icon name='law' color='blue' />
-                    <Step.Content>
-                      <Stacked>
-                        <Input onChange={this.onChangeAmount} type='number' value={amount} />
-                      </Stacked>
-                    </Step.Content>
-                  </Step>
+                <Step completed={!amount.isZero()}>
+                  <Step.Title> Amount </Step.Title>
+                  <Icon name='law' color='blue' />
+                  <Step.Content>
+                    <Stacked>
+                      <Input onChange={this.onChangeAmount} type='number' value={amount} />
+                    </Stacked>
+                  </Step.Content>
+                </Step>
 
-                  <Step>
-                    <Icon name='send' color='blue' />
-                    <Step.Content>
-                      <NavButton onClick={this.onSubmitTransfer}>Submit Transfer</NavButton>
-                    </Step.Content>
-                  </Step>
-                </Step.Group>
-              </Stacked>
-            </Grid.Column>
+                <Step>
+                  <Icon name='send' color='blue' />
+                  <Step.Content>
+                    <NavButton onClick={this.onSubmitTransfer}>Submit Transfer</NavButton>
+                  </Step.Content>
+                </Step>
+              </Step.Group>
+            </Stacked>
+          </Grid.Column>
 
-            <Grid.Column width='10'>
-              <Saved onSelectAddress={this.onSelectAddress} {...this.props} />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
+          <Grid.Column width='10'>
+            <Saved onSelectAddress={this.onSelectAddress} {...this.props} />
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
     );
   }
 }

@@ -3,8 +3,8 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { KeyringPair } from '@polkadot/keyring/types';
-import { ApiContext } from '@polkadot/ui-api';
-import { AddressSummary, Grid, MarginTop, NavLink, Stacked, StyledLinkButton, SubHeader, WalletCard, WithSpace } from '@polkadot/ui-components';
+import { ApiContext } from '@substrate/ui-api';
+import { AddressSummary, Grid, MarginTop, NavLink, Stacked, StyledLinkButton, SubHeader, WalletCard, WithSpace } from '@substrate/ui-components';
 import { KeyringAddress } from '@polkadot/ui-keyring/types';
 
 import React from 'react';
@@ -40,7 +40,7 @@ export class Saved extends React.PureComponent<Props, State> {
 
   memo: Memo = {};
 
-  componentDidMount () {
+  componentDidMount() {
     const { keyring } = this.context;
 
     this.setState({
@@ -49,7 +49,7 @@ export class Saved extends React.PureComponent<Props, State> {
     });
   }
 
-  render () {
+  render() {
     return (
       <WalletCard
         header='Saved Identities'
@@ -61,7 +61,7 @@ export class Saved extends React.PureComponent<Props, State> {
             <Stacked>
               <SubHeader> My Unlocked Accounts </SubHeader>
               <WithSpace>
-                  { this.renderAccountsToSendFrom() }
+                {this.renderAccountsToSendFrom()}
               </WithSpace>
             </Stacked>
           </Grid.Column>
@@ -69,7 +69,7 @@ export class Saved extends React.PureComponent<Props, State> {
             <Stacked>
               <SubHeader> Saved Addresses </SubHeader>
               <WithSpace>
-                  { this.renderAddressesToSendTo() }
+                {this.renderAddressesToSendTo()}
               </WithSpace>
             </Stacked>
           </Grid.Column>
@@ -78,7 +78,7 @@ export class Saved extends React.PureComponent<Props, State> {
     );
   }
 
-  renderAccountsToSendFrom () {
+  renderAccountsToSendFrom() {
     const { allAccounts } = this.state;
 
     if (!allAccounts.length) {
@@ -118,7 +118,7 @@ export class Saved extends React.PureComponent<Props, State> {
     return this.memo[address];
   }
 
-  renderAddressesToSendTo () {
+  renderAddressesToSendTo() {
     const { allAddresses } = this.state;
 
     if (!allAddresses.length) {
@@ -141,7 +141,7 @@ export class Saved extends React.PureComponent<Props, State> {
     });
   }
 
-  renderEmpty () {
+  renderEmpty() {
     const { match } = this.props;
     const address = match.params.currentAddress;
 
