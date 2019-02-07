@@ -13,7 +13,7 @@
     "packages": [
       "packages/*"
     ],
-      "nohoist": [
+    "nohoist": [
       "**/electron-builder",
       "**/electron-builder/**",
       "**/electron-webpack",
@@ -31,6 +31,6 @@
     "test": "CI=true lerna run test --parallel"
   },
   "devDependencies": {
-    "@polkadot/dev": "^0.22.12"
+    "@polkadot/dev": "^0.23.14"
   }
 }

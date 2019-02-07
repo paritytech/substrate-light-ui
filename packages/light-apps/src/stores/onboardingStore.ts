@@ -10,8 +10,7 @@ const LS_KEY = `__substrate-light::firstRun`;
 const NODE_ENV = process.env.NODE_ENV;
 
 export class OnboardingStore {
-  @observable
-  isFirstRun?: boolean;
+  @observable isFirstRun = false;
 
   constructor () {
     if (NODE_ENV !== 'production') {

@@ -3,16 +3,13 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { Modal } from '@polkadot/ui-components';
-
 import React from 'react';
-import { Route, RouteComponentProps, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 import { ImportWithJson } from './ImportWithJson';
 import { ImportWithPhrase } from './ImportWithPhrase';
 
-interface Props extends RouteComponentProps {}
-
-export class ImportOptionsScreen extends React.PureComponent<Props> {
+export class ImportOptionsScreen extends React.PureComponent {
   render () {
     return (
       <React.Fragment>

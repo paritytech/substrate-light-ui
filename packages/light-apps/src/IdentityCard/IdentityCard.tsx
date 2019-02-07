@@ -1,67 +1,40 @@
 // Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
-import { Address, AddressSummary, ErrorText, Icon, Input, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SuccessText, WithSpaceBetween } from '@polkadot/ui-components';
-import keyring from '@polkadot/ui-keyring';
-import { stringUpperFirst } from '@polkadot/util';
 
-import BN from 'bn.js';
+import { Address, AddressSummary, ErrorText, Icon, Input, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SuccessText, WithSpaceBetween } from '@polkadot/ui-components';
+import { Balance } from '@polkadot/types';
+import { ApiContext, Subscribe } from '@polkadot/ui-api';
+import { stringUpperFirst } from '@polkadot/util';
 import FileSaver from 'file-saver';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
+import { map } from 'rxjs/operators';
 
 import { StyledCard, CardHeader, CardContent } from './IdentityCard.styles';
 
-interface Props extends RouteComponentProps {}
+interface Props extends RouteComponentProps { }
 
 type State = {
-  address: string,
   backupModalOpen: boolean,
   buttonText: string
-  error: string | null,
+  error?: string,
   forgetModalOpen: boolean,
-  name?: string,
   password: string,
-  success: string | null
+  success?: string
 };
 
-const PLACEHOLDER_ADDRESS = '5'.padEnd(16, 'x');
-// FIXME: balance should come from LightAPI HOC's observables
 export class IdentityCard extends React.Component<Props, State> {
+  static contextType = ApiContext;
+
+  context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
+
   state: State = {
-    address: PLACEHOLDER_ADDRESS,
     backupModalOpen: false,
     buttonText: 'Transfer',
-    error: null,
     forgetModalOpen: false,
-    password: '',
-    success: null
+    password: ''
   };
-
-  componentDidMount () {
-    const { location } = this.props;
-
-    const pairs = keyring.getPairs();
-
-    let address = '';
-    let name = '';
-
-    try {
-      address = location.pathname.split('/')[2];
-      name = keyring.getPair(address).getMeta().name;
-    } catch (e) {
-      console.warn(e);
-      const defaultAccount = pairs[0];
-      const defaultAddress = defaultAccount.address();
-      address = defaultAddress;
-      name = defaultAccount.getMeta().name;
-    }
-
-    this.setState({
-      address,
-      name
-    });
-  }
 
   closeBackupModal = () => {
     this.setState({
@@ -72,6 +45,10 @@ export class IdentityCard extends React.Component<Props, State> {
 
   closeForgetModal = () => {
     this.setState({ forgetModalOpen: false });
+  }
+
+  getAddress = () => {
+    return this.props.location.pathname.split('/')[2];
   }
 
   openBackupModal = () => {
@@ -88,7 +65,9 @@ export class IdentityCard extends React.Component<Props, State> {
   forgetTrigger = <StyledLinkButton onClick={this.openForgetModal}>Forget</StyledLinkButton>;
 
   private backupCurrentAccount = () => {
-    const { address, password } = this.state;
+    const { keyring } = this.context;
+    const { password } = this.state;
+    const address = this.getAddress();
 
     try {
       const pair = keyring.getPair(address);
@@ -106,42 +85,23 @@ export class IdentityCard extends React.Component<Props, State> {
   }
 
   private forgetCurrentAccount = () => {
-    const { address } = this.state;
+    const { keyring } = this.context;
     const { history } = this.props;
+    const address = this.getAddress();
 
     try {
       // forget it from keyring
       keyring.forgetAccount(address);
 
-      // redirect to the next keyring pair
-      const nextPair = keyring.getPairs()[0];
-      const nextAddress = nextPair.address();
-      const nextName = nextPair.getMeta().name;
-
-      const nextState = {
-        address: nextAddress,
-        forgetModalOpen: false,
-        name: nextName
-      };
-
-      const nextLocation = {
-        pathname: `/identity/${nextAddress}`,
-        state: nextState
-      };
-
-      this.setState(nextState);
-
-      this.onSuccess('Successfully forgot account from keyring');
-
-      history.push(nextLocation);
+      history.push('/identity');
     } catch (e) {
       this.onError(e.message);
     }
   }
 
   private handleToggleApp = () => {
-    const { address } = this.state;
     const { location, history } = this.props;
+    const address = this.getAddress();
 
     const to = location.pathname.split('/')[1].toLowerCase() === 'identity' ? 'transfer' : 'identity';
     const buttonText = stringUpperFirst(to);
@@ -155,22 +115,33 @@ export class IdentityCard extends React.Component<Props, State> {
     this.setState({ password: value });
   }
 
-  private onError = (value: string | null) => {
-    this.setState({ error: value, success: null });
+  private onError = (value: string) => {
+    this.setState({ error: value, success: undefined });
   }
 
-  private onSuccess = (value: string | null) => {
-    this.setState({ error: null, success: value });
+  private onSuccess = (value: string) => {
+    this.setState({ error: undefined, success: value });
   }
 
   render () {
-    const { address, buttonText, name } = this.state;
+    const { api } = this.context;
+    const { buttonText } = this.state;
+    const address = this.getAddress();
 
     return (
       <StyledCard>
         <CardHeader>Current Account</CardHeader>
         <CardContent>
-          <AddressSummary address={address} balance={new BN(10000)} name={name} />
+          {address
+            ? <Subscribe>
+              {
+                // FIXME using any because freeBalance gives a Codec here, not a Balance
+                // Wait for @polkadot/api to have TS support for all query.*
+                api.query.balances.freeBalance(address).pipe(map(this.renderBalance as any))
+              }
+            </Subscribe>
+            : <div>Loading...</div>
+          }
           <Stacked>
             <Address address={address} />
             <StackedHorizontal>
@@ -195,19 +166,27 @@ export class IdentityCard extends React.Component<Props, State> {
         <Modal.Header> Please Confirm You Want to Backup this Account </Modal.Header>
         <h2>By pressing confirm you will be downloading a JSON keyfile that can later be used to unlock your account. </h2>
         <Modal.Actions>
-            <Stacked>
-              <Modal.SubHeader> Please encrypt your account first with the account's password. </Modal.SubHeader>
-              <Input min={8} onChange={this.onChangePassword} type='password' value={password} />
-              <StackedHorizontal>
-                <WithSpaceBetween>
-                  <Icon name='remove' color='red' /> <StyledLinkButton color='white' onClick={this.closeBackupModal}>No</StyledLinkButton>
-                  <Icon name='checkmark' color='green' /> <StyledLinkButton color='white' onClick={this.backupCurrentAccount}>Confirm Backup</StyledLinkButton>
-                </WithSpaceBetween>
-              </StackedHorizontal>
-            </Stacked>
+          <Stacked>
+            <Modal.SubHeader> Please encrypt your account first with the account's password. </Modal.SubHeader>
+            <Input min={8} onChange={this.onChangePassword} type='password' value={password} />
+            <StackedHorizontal>
+              <WithSpaceBetween>
+                <Icon name='remove' color='red' /> <StyledLinkButton color='white' onClick={this.closeBackupModal}>No</StyledLinkButton>
+                <Icon name='checkmark' color='green' /> <StyledLinkButton color='white' onClick={this.backupCurrentAccount}>Confirm Backup</StyledLinkButton>
+              </WithSpaceBetween>
+            </StackedHorizontal>
+          </Stacked>
         </Modal.Actions>
       </Modal>
     );
+  }
+
+  renderBalance = (balance: Balance) => {
+    const { keyring } = this.context;
+    const address = this.getAddress();
+    const name = keyring.getAccount(address).getMeta().name;
+
+    return <AddressSummary address={address} balance={balance} name={name} />;
   }
 
   renderError () {
@@ -215,7 +194,7 @@ export class IdentityCard extends React.Component<Props, State> {
 
     return (
       <ErrorText>
-        {error || null}
+        {error}
       </ErrorText>
     );
   }
@@ -228,8 +207,8 @@ export class IdentityCard extends React.Component<Props, State> {
         <Modal.Header> Please Confirm You Want to Forget this Account </Modal.Header>
         <h2>Please confirm that you want to remove this account from your keyring. </h2>
         <Modal.Actions>
-            <Icon name='remove' color='red' /> <StyledLinkButton color='white' onClick={this.closeForgetModal}>No</StyledLinkButton>
-            <Icon name='checkmark' color='green' /> <StyledLinkButton color='white' onClick={this.forgetCurrentAccount}>Confirm Forget</StyledLinkButton>
+          <Icon name='remove' color='red' /> <StyledLinkButton color='white' onClick={this.closeForgetModal}>No</StyledLinkButton>
+          <Icon name='checkmark' color='green' /> <StyledLinkButton color='white' onClick={this.forgetCurrentAccount}>Confirm Forget</StyledLinkButton>
         </Modal.Actions>
       </Modal>
     );
@@ -240,7 +219,7 @@ export class IdentityCard extends React.Component<Props, State> {
 
     return (
       <SuccessText>
-        {success || null}
+        {success}
       </SuccessText>
     );
   }

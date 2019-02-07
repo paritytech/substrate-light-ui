@@ -4,42 +4,50 @@
 
 import { Identity } from '@polkadot/identity-app';
 import { Transfer } from '@polkadot/transfer-app';
+import { ApiContext } from '@polkadot/ui-api';
 import { Container } from '@polkadot/ui-components';
-
-import { inject } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import React from 'react';
-import { Route, RouteComponentProps, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 
 import { IdentityCard } from '../IdentityCard';
-import { NotFound } from './NotFound';
 import { Onboarding } from '../Onboarding';
 import { OnboardingStore } from '../stores/onboardingStore';
 
-interface Props extends RouteComponentProps {
+interface Props {
   onboardingStore: OnboardingStore;
 }
 
 @inject('onboardingStore')
-export class Content extends React.PureComponent<Props> {
+@observer
+export class Content extends React.Component<Props> {
+  static contextType = ApiContext;
+
+  context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
+
   render () {
+    const { keyring } = this.context;
+    const [defaultAccount] = keyring.getPairs();
+    const defaultAddress = defaultAccount && defaultAccount.address();
     const {
-      onboardingStore: {
-        isFirstRun
-      }
+      onboardingStore: { isFirstRun }
     } = this.props;
 
     return (
       <Container>
         {
-          isFirstRun
+          (isFirstRun || !defaultAddress)
             ? <Route component={Onboarding} />
             : <React.Fragment>
-                <Route component={IdentityCard} />
-                <Switch>
-                  <Route path='/identity/:currentAddress' component={Identity} />
-                  <Route path='/transfer/:currentAddress' component={Transfer} />
-                  <Route component={NotFound} />
-                </Switch>
+              <Route component={IdentityCard} />
+              <Switch>
+                <Redirect exact from='/' to={`/identity/${defaultAddress}`} />
+                <Redirect exact from='/identity' to={`/identity/${defaultAddress}`} />
+                <Redirect exact from='/transfer' to={`/transfer/${defaultAddress}`} />
+                <Route path='/identity/:currentAddress' component={Identity} />
+                <Route path='/transfer/:currentAddress' component={Transfer} />
+                <Redirect to='/' />
+              </Switch>
             </React.Fragment>
         }
       </Container>
