@@ -1,17 +1,18 @@
 {
-  "name": "@polkadot/identity-app",
+  "name": "@substrate/identity-app",
   "version": "0.1.0",
-  "repository": "https://github.com/polkadot-js/light-ui.git",
   "description": "Account management for Substrate client",
   "license": "Apache-2.0",
   "main": "build/index.js",
+  "private": true,
+  "repository": "https://github.com/paritytech/substrate-light-ui.git",
   "scripts": {
     "build": "tsc",
     "start": "yarn build --watch",
     "test": "echo skipped"
   },
   "dependencies": {
-    "@polkadot/ui-api": "0.1.0",
-    "@polkadot/ui-components": "0.1.0"
+    "@substrate/ui-api": "0.1.0",
+    "@substrate/ui-components": "0.1.0"
   }
 }

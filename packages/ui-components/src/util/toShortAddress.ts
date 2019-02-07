@@ -1,11 +1,11 @@
-// Copyright 2017-2018 @polkadot/light-apps authors & contributors
+// Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { AccountId, AccountIndex, Address } from '@polkadot/types';
 
 // FIXME: UI utils should be reused from @polkadot-js/ui, once it's there
-export default function toShortAddress (_address?: AccountId | AccountIndex | Address | string | null): string {
+export default function toShortAddress(_address?: AccountId | AccountIndex | Address | string | null): string {
   const address = (_address || '').toString();
 
   return (address.length > 15)

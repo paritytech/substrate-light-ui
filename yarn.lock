@@ -1687,7 +1687,7 @@
   dependencies:
     "@babel/runtime" "^7.2.0"
 
-"@polkadot/keyring@^0.33.17", "@polkadot/keyring@^0.33.19", "@polkadot/keyring@^0.33.22", "@polkadot/keyring@^0.33.36":
+"@polkadot/keyring@^0.33.36":
   version "0.33.36"
   resolved "https://registry.yarnpkg.com/@polkadot/keyring/-/keyring-0.33.36.tgz#def02631369b1a2288ae95d32cadd63299f877f7"
   integrity sha512-UUyb0ua+b10FAt+dH5Vuua0mu+FH9WY+as+IoVNXyDY8PpHY+kg8MDXXrCGBueCF5CaiiAJP7gD5vp7U10nrEg==
@@ -1748,25 +1748,6 @@
     "@polkadot/util" "^0.33.36"
     "@polkadot/util-crypto" "^0.33.36"
 
-"@polkadot/types@^0.33.25":
-  version "0.33.26"
-  resolved "https://registry.yarnpkg.com/@polkadot/types/-/types-0.33.26.tgz#78f706f8a49f85c6441b45b96f1629e6a4e82f46"
-  integrity sha512-ixKLzP8c1I41R7Q+v3sF3kK9W89SiHueSVkHWfDhjjrw8MzMsJeAv4rdFuD9mNBDOsO7pKBn79PXrn2BWdV8iA==
-  dependencies:
-    "@babel/runtime" "^7.2.0"
-    "@polkadot/keyring" "^0.33.17"
-    "@polkadot/util" "^0.33.17"
-
-"@polkadot/types@^0.34.3":
-  version "0.34.12"
-  resolved "https://registry.yarnpkg.com/@polkadot/types/-/types-0.34.12.tgz#fec2cdc4bcaa4f500c304da2265f8a9f6d967600"
-  integrity sha512-Shn6Fexjvk19+piAzI9Jw5iLz7tG52qHykFmLLxi62FFQ33KiPcamTGsIeSGmZX2Gviggu4+smjOLW/I1muHjQ==
-  dependencies:
-    "@babel/runtime" "^7.2.0"
-    "@polkadot/keyring" "^0.33.22"
-    "@polkadot/util" "^0.33.22"
-    core-js "^2.6.1"
-
 "@polkadot/types@^0.42.2":
   version "0.42.2"
   resolved "https://registry.yarnpkg.com/@polkadot/types/-/types-0.42.2.tgz#1cf2ce7108b490bebbb389412d36433bade93053"
@@ -1777,48 +1758,45 @@
     "@polkadot/util" "^0.33.36"
     core-js "^2.6.2"
 
-"@polkadot/ui-assets@^0.25.8":
-  version "0.25.8"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-assets/-/ui-assets-0.25.8.tgz#2e982411b07b9d7daeb96fcdcd33bf2bd472375f"
-  integrity sha512-ztw00jvtxgr9K+acz0mal10r1WBd406ctVqj9cLFxyscJqIv4Lxgr3VC9Sp3Rnp2QfBUmQA3q/sCHF4vrqKaXQ==
+"@polkadot/ui-assets@^0.25.9":
+  version "0.25.9"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-assets/-/ui-assets-0.25.9.tgz#976ecd75867d333430d36feb0fc1035d2e9aab3a"
+  integrity sha512-agfVfYRCv/V8LmP3nEClX2i3RsUJHq6W0kXGjpo7VYMGuANo2W9XK+2Pnu1eSqyXkZuLtg31di8lIFGX89NVZw==
   dependencies:
     "@babel/runtime" "^7.2.0"
 
-"@polkadot/ui-identicon@^0.23.2":
-  version "0.23.4"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-identicon/-/ui-identicon-0.23.4.tgz#4dbae1b46355d6e2f97f536640665e52fbb9e3b4"
-  integrity sha512-cj0mKsjLxbaOP5rhyjtj6xRRzH/yCXisFYZ01eO5uIGza02zcMoTNfBa27NONNTyGLcHtTGiG/1+FNHQ19nYwQ==
+"@polkadot/ui-identicon@^0.25.9":
+  version "0.25.9"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-identicon/-/ui-identicon-0.25.9.tgz#d26bc56557d26db58cb138e9adec99115dc476b0"
+  integrity sha512-xqncB8XIK6jelWt2CQ+XgyR/8A/uRuKz4laZ1bB3cl3H03tyRDc83oQBQJ6esFejG3VMreZ3wN0QEDMvCMNAFQ==
   dependencies:
     "@babel/runtime" "^7.2.0"
-    "@polkadot/keyring" "^0.33.19"
-    "@polkadot/ui-settings" "^0.23.4"
-    "@polkadot/util-crypto" "^0.33.19"
+    "@polkadot/ui-settings" "^0.25.9"
     "@types/color" "^3.0.0"
     "@types/react-copy-to-clipboard" "^4.2.6"
     color "^3.0.0"
     react-copy-to-clipboard "^5.0.1"
 
-"@polkadot/ui-keyring@^0.23.2":
-  version "0.23.4"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-keyring/-/ui-keyring-0.23.4.tgz#8adc3d07c9fa2621d9e1640960a7bfa3160979db"
-  integrity sha512-3A1OLCvywuFy/fjLwLYOSzyHaTPlQEKFx+HH7AXJ+FrsVmeBSTwB62SrXwgurKi44/dWnomDQ67JPvnJ2eFIRg==
-  dependencies:
-    "@babel/runtime" "^7.2.0"
-    "@polkadot/keyring" "^0.33.19"
-    "@polkadot/types" "^0.34.3"
-    "@types/store" "^2.0.1"
-    store "^2.0.12"
-
-"@polkadot/ui-settings@^0.23.4":
-  version "0.23.4"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-0.23.4.tgz#75ff2e226434ff9f0e017abd4f045e295e7b0ff5"
-  integrity sha512-p+Es5oqvq4LuYX3CBY3esreGqvd59/6UI7qM4CTrKqyX7u1XkcEsx8ukbj4CkyYOkfKGkdlHrINawIzgvUkNrg==
+"@polkadot/ui-keyring@^0.25.9":
+  version "0.25.9"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-keyring/-/ui-keyring-0.25.9.tgz#abd77949e5f6a6de53cc7cd63c4e6db51e3ea244"
+  integrity sha512-13Q+KupcCm9sioji+pEf/cyt+4dQyeZwXDCPNpx0Dg7g8HkPUjB87Wtk+KTE7eoI+cdfxPQkfbSpyIyce3wWfw==
   dependencies:
     "@babel/runtime" "^7.2.0"
     "@types/store" "^2.0.1"
+    rxjs "^6.3.3"
     store "^2.0.12"
 
-"@polkadot/util-crypto@^0.33.19", "@polkadot/util-crypto@^0.33.36":
+"@polkadot/ui-settings@^0.25.9":
+  version "0.25.9"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-0.25.9.tgz#3f0c73e2bdadb541495c4c8b65c0a66d5c0aab93"
+  integrity sha512-HuHyj9f+n3zQtH9UojK+7GxVWavWaLxWBPZ3YcxvFlevsGXK3/it051ckbC2Me5oOYGDzhEtapeFTMLma9V66w==
+  dependencies:
+    "@babel/runtime" "^7.2.0"
+    "@types/store" "^2.0.1"
+    store "^2.0.12"
+
+"@polkadot/util-crypto@^0.33.36":
   version "0.33.36"
   resolved "https://registry.yarnpkg.com/@polkadot/util-crypto/-/util-crypto-0.33.36.tgz#3b1fc84be7126fd92ee4de960baafb901e50b1a4"
   integrity sha512-kjzdOrBL8NKfZZdWIhQFim3yDWo6sHjWOuxJQt8k22pHa/ATF8zVZ6Xqi4r+wsfBa9S+G6AE5yyVOirVPQYeCQ==
@@ -1832,7 +1810,7 @@
     tweetnacl "^1.0.0"
     xxhashjs "^0.2.2"
 
-"@polkadot/util@^0.33.14", "@polkadot/util@^0.33.17", "@polkadot/util@^0.33.22", "@polkadot/util@^0.33.36":
+"@polkadot/util@^0.33.36":
   version "0.33.36"
   resolved "https://registry.yarnpkg.com/@polkadot/util/-/util-0.33.36.tgz#975590dd059f78209c9d398f72651ac393dd8245"
   integrity sha512-N5b46NYTNJODILXNGRxvW/8yeKiHjQv4k3YmJhYnslMsEbaXPvkePFUA2N8Ji1LQrAD8sQbaoG8aYoNaqHSJMA==
@@ -4745,7 +4723,7 @@ core-js@^1.0.0:
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-1.2.7.tgz#652294c14651db28fa93bd2d5ff2983a4f08c636"
   integrity sha1-ZSKUwUZR2yj6k70tX/KYOk8IxjY=
 
-core-js@^2.4.0, core-js@^2.5.0, core-js@^2.5.7, core-js@^2.6.1, core-js@^2.6.2:
+core-js@^2.4.0, core-js@^2.5.0, core-js@^2.5.7, core-js@^2.6.2:
   version "2.6.3"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.3.tgz#4b70938bdffdaf64931e66e2db158f0892289c49"
   integrity sha512-l00tmFFZOBHtYhN4Cz7k32VM7vTn3rE2ANjQDxdEN6zmXZ/xq1jQuutnmHvMG1ZJ7xd72+TA5YpUK8wz3rWsfQ==

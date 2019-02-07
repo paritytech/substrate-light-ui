@@ -2,12 +2,12 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { InputFile, Modal, NavLink, Stacked } from '@polkadot/ui-components';
 import { u8aToString } from '@polkadot/util';
+import { InputFile, Modal, NavLink, Stacked } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-interface Props extends RouteComponentProps {}
+interface Props extends RouteComponentProps { }
 
 export class ImportWithJson extends React.PureComponent<Props> {
   private handleFileUploaded = async (file: Uint8Array) => {

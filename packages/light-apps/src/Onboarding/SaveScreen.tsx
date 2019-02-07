@@ -2,8 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { ApiContext } from '@polkadot/ui-api';
-import { AddressSummary, ErrorText, Input, Modal, NavButton, NavLink, Stacked } from '@polkadot/ui-components';
+import { ApiContext } from '@substrate/ui-api';
+import { AddressSummary, ErrorText, Input, Modal, NavButton, NavLink, Stacked } from '@substrate/ui-components';
 import { inject, observer } from 'mobx-react';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
