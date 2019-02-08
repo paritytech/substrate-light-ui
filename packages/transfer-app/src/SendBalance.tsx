@@ -84,7 +84,7 @@ export class SendBalance extends React.PureComponent<Props, State> {
     return address[0] === '5' && address.length === 48;
   }
 
-  render() {
+  render () {
     const { amount, isAddressValid, recipientAddress } = this.state;
 
     return (

@@ -16,7 +16,7 @@ type Props = {
 };
 
 export class Identity extends React.PureComponent<Props> {
-  render () {
+  render() {
     const panes = [
       { menuItem: 'Address Book', render: () => <AddressBook {...this.props} /> },
       { menuItem: 'Wallet', render: () => <Wallet {...this.props} /> }
