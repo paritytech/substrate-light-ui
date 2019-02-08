@@ -3,7 +3,6 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { isUndefined } from '@polkadot/util';
-
 import React from 'react';
 import styled from 'styled-components';
 import SUIInput from 'semantic-ui-react/dist/commonjs/elements/Input/Input';
@@ -39,8 +38,8 @@ export const TextInputArea = styled(SUIInput)`
     box-shadow: 0 2px 4px 0 rgba(${props => props.theme.black}, 0.5);
     background-color: ${props => props.theme.white};
     color: ${props => props.theme.grey};
-    height: $(props => props.height || 109px)
-    min-width: 100%;
+    height: $(props => props.height || 109px);
+    width: $(props => props.width || 300px);
   }
 `;
 

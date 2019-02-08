@@ -4,7 +4,6 @@
 
 import { ApiContext } from '@polkadot/ui-api';
 import { AddressSummary, MarginTop, Stacked, WalletCard, WithSpace } from '@polkadot/ui-components';
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -21,8 +20,8 @@ export class SavedAccounts extends React.PureComponent<Props> {
     return (
       <WalletCard
         header='Saved Accounts'
-        subheader='To quickly move between accounts, select from the list of unlocked accounts below.'
-        overflow='scroll'>
+        overflow='scroll'
+        subheader='To quickly move between accounts, select from the list of unlocked accounts below.'>
         <Stacked>
           <WithSpace>
             {this.renderAllAccountsFromKeyring()}

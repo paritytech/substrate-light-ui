@@ -3,10 +3,9 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import IdentityIcon from '@polkadot/ui-identicon';
-import { AccountId, AccountIndex, Address } from '@polkadot/types';
-
-import React from 'react';
+import { KeyringAddress } from '@polkadot/ui-keyring/types';
 import BN from 'bn.js';
+import React from 'react';
 
 import { Name, Stacked, StackedHorizontal } from '../Shared.styles';
 import BalanceDisplay from '../Balance';
@@ -19,7 +18,7 @@ type SummaryStyles = {
 };
 
 type Props = {
-  address?: string | AccountId | AccountIndex | Address,
+  address?: string | KeyringAddress,
   balance?: BN,
   name?: string,
   orientation?: OrientationTypes,

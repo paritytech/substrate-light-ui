@@ -11,6 +11,7 @@ export const CardHeader = styled(SUICard.Header)`
     font-weight: 300;
     font-size: 28px;
     margin-top: 2rem;
+    border: none;
   }
 `;
 
@@ -19,12 +20,8 @@ export const CardHeader = styled(SUICard.Header)`
 // https://stackoverflow.com/questions/40686928/pseudo-elements-breaking-justify-content-space-between-in-flexbox-layout
 export const CardContent = styled(SUICard.Content)`
   &&& {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     padding: 3rem 1rem;
-    margin-left: 5rem;
-    min-width: 100%;
+    width: 75%;
     border: none;
   }
 `;
@@ -40,10 +37,8 @@ export const StyledCard = styled<any>(SUICard)`
     align-items: center;
     justify-content: center;
     text-align: center;
-    height: 15rem;
     min-width: 100%;
     box-shadow: 0 4px 5px 0 rgba(${props => props.theme.black}, 0.3);
     background-color: ${props => props.theme.white};
-    border: 0.5px solid ${props => props.theme.cardBorder};
   }
 `;
