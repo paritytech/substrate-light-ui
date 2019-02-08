@@ -23,7 +23,7 @@
   "scripts": {
     "prebuild": "yarn clean",
     "prepackage": "yarn build",
-    "prestart": "./prestart.sh",
+    "prestart": "./scripts/prestart.sh",
     "package": "cd packages/electron-app && yarn dist",
     "build": "lerna exec yarn build --stream",
     "clean": "polkadot-dev-clean-build",
