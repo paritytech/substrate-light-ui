@@ -7,7 +7,6 @@
   "main": "build/index.js",
   "scripts": {
     "build": "tsc",
-    "prestart": "yarn build",
     "start": "yarn build --watch",
     "test": "echo skipped"
   },
