@@ -1612,7 +1612,6 @@
     "@polkadot/api" "^0.42.2"
     "@polkadot/types" "^0.42.2"
     "@types/memoizee" "^0.4.2"
-<<<<<<< HEAD
     "@types/rx" "^4.1.1"
     memoizee "^0.4.14"
     rxjs "^6.3.3"
@@ -1637,32 +1636,6 @@
   resolved "https://registry.yarnpkg.com/@polkadot/dev/-/dev-0.23.14.tgz#e649dfaaab4fb1c8e8f2c1695a8b5367dd3ce2ce"
   integrity sha512-vmgS7THEvEp1v7iKw/QxanedAozSIRzUJWVHLUkIRyDSRfH3/iOFxEwNso0CNMULO1OHfIfhgDP+3lHj/IMB1A==
   dependencies:
-=======
-    "@types/rx" "^4.1.1"
-    memoizee "^0.4.14"
-    rxjs "^6.3.3"
-
-"@polkadot/api@^0.42.2":
-  version "0.42.2"
-  resolved "https://registry.yarnpkg.com/@polkadot/api/-/api-0.42.2.tgz#122f6efb4aa7b47ecfd3186342fbc8726abb9b53"
-  integrity sha512-wEvX7tC24ln7Yh3+hwmIkevCYrK6ai5ho1JG5r0LgmkcxgOeyNhxoRzpYXoJKDUWc/pn/EPUgRBq0KCn6yGOxA==
-  dependencies:
-    "@babel/runtime" "^7.2.0"
-    "@polkadot/api-derive" "^0.42.2"
-    "@polkadot/extrinsics" "^0.42.2"
-    "@polkadot/rpc-provider" "^0.42.2"
-    "@polkadot/rpc-rx" "^0.42.2"
-    "@polkadot/storage" "^0.42.2"
-    "@polkadot/types" "^0.42.2"
-    "@types/rx" "^4.1.1"
-    rxjs "^6.3.3"
-
-"@polkadot/dev@^0.23.14":
-  version "0.23.14"
-  resolved "https://registry.yarnpkg.com/@polkadot/dev/-/dev-0.23.14.tgz#e649dfaaab4fb1c8e8f2c1695a8b5367dd3ce2ce"
-  integrity sha512-vmgS7THEvEp1v7iKw/QxanedAozSIRzUJWVHLUkIRyDSRfH3/iOFxEwNso0CNMULO1OHfIfhgDP+3lHj/IMB1A==
-  dependencies:
->>>>>>> e90997c3d038a4b8433df030d437a20e04f72945
     "@babel/cli" "^7.2.3"
     "@babel/core" "^7.2.2"
     "@babel/plugin-proposal-class-properties" "^7.2.3"
@@ -1714,7 +1687,7 @@
   dependencies:
     "@babel/runtime" "^7.2.0"
 
-"@polkadot/keyring@^0.33.17", "@polkadot/keyring@^0.33.19", "@polkadot/keyring@^0.33.22":
+"@polkadot/keyring@^0.33.17", "@polkadot/keyring@^0.33.19", "@polkadot/keyring@^0.33.22", "@polkadot/keyring@^0.33.36":
   version "0.33.36"
   resolved "https://registry.yarnpkg.com/@polkadot/keyring/-/keyring-0.33.36.tgz#def02631369b1a2288ae95d32cadd63299f877f7"
   integrity sha512-UUyb0ua+b10FAt+dH5Vuua0mu+FH9WY+as+IoVNXyDY8PpHY+kg8MDXXrCGBueCF5CaiiAJP7gD5vp7U10nrEg==
@@ -1804,7 +1777,6 @@
     "@polkadot/util" "^0.33.36"
     core-js "^2.6.2"
 
-<<<<<<< HEAD
 "@polkadot/ui-api@^0.23.3":
   version "0.23.3"
   resolved "https://registry.yarnpkg.com/@polkadot/ui-api/-/ui-api-0.23.3.tgz#b35688d04e89c6ac4fe1e36aa1ba3451d78076f3"
@@ -1855,8 +1827,6 @@
     semantic-ui-react "^0.84.0"
     store "^2.0.12"
 
-=======
->>>>>>> e90997c3d038a4b8433df030d437a20e04f72945
 "@polkadot/ui-assets@^0.25.8":
   version "0.25.8"
   resolved "https://registry.yarnpkg.com/@polkadot/ui-assets/-/ui-assets-0.25.8.tgz#2e982411b07b9d7daeb96fcdcd33bf2bd472375f"
@@ -1901,7 +1871,6 @@
     "@types/store" "^2.0.1"
     store "^2.0.12"
 
-<<<<<<< HEAD
 "@polkadot/ui-keyring@^0.25.8":
   version "0.25.9"
   resolved "https://registry.yarnpkg.com/@polkadot/ui-keyring/-/ui-keyring-0.25.9.tgz#abd77949e5f6a6de53cc7cd63c4e6db51e3ea244"
@@ -1922,8 +1891,6 @@
     "@polkadot/types" "^0.42.2"
     rxjs-compat "^6.3.2"
 
-=======
->>>>>>> e90997c3d038a4b8433df030d437a20e04f72945
 "@polkadot/ui-settings@^0.23.4":
   version "0.23.4"
   resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-0.23.4.tgz#75ff2e226434ff9f0e017abd4f045e295e7b0ff5"
@@ -1933,7 +1900,6 @@
     "@types/store" "^2.0.1"
     store "^2.0.12"
 
-<<<<<<< HEAD
 "@polkadot/ui-settings@^0.25.8", "@polkadot/ui-settings@^0.25.9":
   version "0.25.9"
   resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-0.25.9.tgz#3f0c73e2bdadb541495c4c8b65c0a66d5c0aab93"
@@ -1943,8 +1909,6 @@
     "@types/store" "^2.0.1"
     store "^2.0.12"
 
-=======
->>>>>>> e90997c3d038a4b8433df030d437a20e04f72945
 "@polkadot/util-crypto@^0.33.19", "@polkadot/util-crypto@^0.33.36":
   version "0.33.36"
   resolved "https://registry.yarnpkg.com/@polkadot/util-crypto/-/util-crypto-0.33.36.tgz#3b1fc84be7126fd92ee4de960baafb901e50b1a4"
@@ -14146,14 +14110,11 @@ run-queue@^1.0.0, run-queue@^1.0.3:
   dependencies:
     aproba "^1.1.1"
 
-<<<<<<< HEAD
 rxjs-compat@^6.3.2:
   version "6.4.0"
   resolved "https://registry.yarnpkg.com/rxjs-compat/-/rxjs-compat-6.4.0.tgz#800923c15697948e1f30f18c531b12b49451c75c"
   integrity sha512-eo/O8RS83hJdJukCtA+IF6qnqa8FPOuVo+OPCzgVi+dbTle9KCdNv97IcQO0WwNVik7DJLKmf0F8uwzc0q40vw==
 
-=======
->>>>>>> e90997c3d038a4b8433df030d437a20e04f72945
 rxjs@^6.1.0, rxjs@^6.3.3, rxjs@^6.4.0:
   version "6.4.0"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.4.0.tgz#f3bb0fe7bda7fb69deac0c16f17b50b0b8790504"

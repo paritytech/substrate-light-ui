@@ -11,7 +11,7 @@
     "test": "echo skipped"
   },
   "dependencies": {
-    "@polkadot/ui-app": "^0.23.3",
+    "@polkadot/ui-api": "0.1.0",
     "@polkadot/ui-components": "0.1.0"
   }
 }

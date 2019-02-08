@@ -24,10 +24,6 @@ type State = {
   allAddresses: Array<KeyringAddress>
 };
 
-type Memo = {
-  [index: string]: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-};
-
 export class Saved extends React.PureComponent<Props, State> {
   static contextType = ApiContext;
 
@@ -37,8 +33,6 @@ export class Saved extends React.PureComponent<Props, State> {
     allAccounts: [],
     allAddresses: []
   };
-
-  memo: Memo = {};
 
   componentDidMount () {
     const { keyring } = this.context;
@@ -101,21 +95,12 @@ export class Saved extends React.PureComponent<Props, State> {
     });
   }
 
-  // Note: currying to pass value onClick without a closure:
-  // https://www.sitepoint.com/currying-in-functional-javascript/
-  handleSelectedRecipient = (address: string) => {
+  handleSelectedRecipient = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const { onSelectAddress } = this.props;
 
-    const handler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      e.preventDefault();
-      onSelectAddress(address);
-    };
+    const address = event.currentTarget.dataset.id;
 
-    if (!this.memo[address]) {
-      this.memo[address] = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handler(e);
-    }
-
-    return this.memo[address];
+    onSelectAddress(address!);
   }
 
   renderAddressesToSendTo () {
@@ -129,7 +114,7 @@ export class Saved extends React.PureComponent<Props, State> {
       return (
         <React.Fragment key={`__locked_${address.address()}`}>
           <MarginTop />
-          <StyledLinkButton onClick={this.handleSelectedRecipient(address.address())}>
+          <StyledLinkButton data-id={address.address()} onClick={this.handleSelectedRecipient}>
             <AddressSummary
               address={address.address()}
               name={address.getMeta().name}

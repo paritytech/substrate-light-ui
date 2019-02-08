@@ -4,7 +4,6 @@
 
 import { ApiContext } from '@polkadot/ui-api';
 import { AddressSummary, MarginTop, Stacked, WalletCard, WithSpace } from '@polkadot/ui-components';
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 

@@ -4,7 +4,6 @@
 
 import IdentityIcon from '@polkadot/ui-identicon';
 import { KeyringAddress } from '@polkadot/ui-keyring/types';
-
 import BN from 'bn.js';
 import React from 'react';
 
