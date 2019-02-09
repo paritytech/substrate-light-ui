@@ -5,24 +5,32 @@
 
 echo Prebuilding Dependent Apps...
 
-echo Building ui-components...
-pushd './packages/ui-components'
-yarn build
-popd
+# Exit immediately if a command exits with a non-zero status
+trap 'exit' ERR
 
-echo Building ui-api ...
-pushd './packages/ui-api'
-yarn build
-popd
+ROOT=`dirname "$0"`
+PROJECT_ROOT=`git rev-parse --show-toplevel`
 
-echo Building identity-app...
-pushd './packages/identity-app'
-yarn build
-popd
+# A list of dependent directories to build before light-apps
+SRCS=(
+	"packages/ui-components/"
+  "packages/ui-api/"
+	"packages/identity-app/"
+  "packages/transfer-app/"
+)
 
-echo Building transfer-app...
-pushd './packages/transfer-app'
-yarn build
-popd
+# Save current directory.
+pushd .
 
-echo Finished Prestart Build!
+cd $ROOT
+
+for SRC in "${SRCS[@]}"
+do
+  echo "*** Building $SRC ***"
+  cd "$PROJECT_ROOT/$SRC"
+
+  yarn build
+done
+
+# restore initial directory
+popd
