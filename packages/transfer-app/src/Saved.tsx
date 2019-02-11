@@ -21,7 +21,8 @@ interface Props extends RouteComponentProps<MatchParams> {
 
 type State = {
   allAccounts: SubjectInfo,
-  allAddresses: SubjectInfo
+  allAddresses: SubjectInfo,
+  subscriptions: Array<any> // fixme rx Subscription
 };
 
 export class Saved extends React.PureComponent<Props, State> {
@@ -31,20 +32,33 @@ export class Saved extends React.PureComponent<Props, State> {
 
   state: State = {
     allAccounts: {},
-    allAddresses: {}
+    allAddresses: {},
+    subscriptions: []
   };
 
   componentDidMount () {
-    accountObservable.subject.subscribe(accounts => {
+    const accSub = accountObservable.subject.subscribe(accounts => {
       this.setState({
         allAccounts: accounts
       });
     });
 
-    addressObservable.subject.subscribe(addresses => {
+    const addSub = addressObservable.subject.subscribe(addresses => {
       this.setState({
         allAddresses: addresses
       });
+    });
+
+    this.setState({
+      subscriptions: [accSub, addSub]
+    });
+  }
+
+  componentWillUnmount () {
+    const { subscriptions } = this.state;
+
+    subscriptions.forEach(sub => {
+      sub.unsubscribe();
     });
   }
 

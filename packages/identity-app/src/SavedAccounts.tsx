@@ -13,18 +13,25 @@ type Props = {
 };
 
 type State = {
-  allAccounts?: SubjectInfo
+  allAccounts?: SubjectInfo,
+  accountsSub?: any // FIXME: rx Subscription
 };
 
 export class SavedAccounts extends React.PureComponent<Props, State> {
   state: State = {};
 
   componentDidMount () {
-    accountObservable.subject.subscribe(accounts => {
+    const accountsSub = accountObservable.subject.subscribe(accounts => {
       this.setState({
         allAccounts: accounts
       });
     });
+
+    this.setState({ accountsSub });
+  }
+
+  componentWillUnmount () {
+    this.state.accountsSub.unsubscribe();
   }
 
   render () {
