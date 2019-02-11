@@ -189,6 +189,7 @@ export class IdentityCard extends React.Component<Props, State> {
   renderBalance = (balance: Balance) => {
     const { keyring } = this.context;
     const address = this.getAddress();
+
     const name = keyring.getAccount(address).getMeta().name;
 
     return <AddressSummary address={address} balance={balance} name={name} />;
