@@ -17,6 +17,8 @@ type State = {
 };
 
 export class SavedAccounts extends React.PureComponent<Props, State> {
+  state: State = {};
+
   componentDidMount () {
     accountObservable.subject.subscribe(accounts => {
       this.setState({
