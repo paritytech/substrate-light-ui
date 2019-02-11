@@ -2,10 +2,10 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Identity } from '@polkadot/identity-app';
-import { Transfer } from '@polkadot/transfer-app';
-import { ApiContext } from '@polkadot/ui-api';
-import { Container } from '@polkadot/ui-components';
+import { Identity } from '@substrate/identity-app';
+import { Transfer } from '@substrate/transfer-app';
+import { ApiContext } from '@substrate/ui-api';
+import { Container } from '@substrate/ui-components';
 import { inject, observer } from 'mobx-react';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
@@ -42,6 +42,7 @@ export class Content extends React.Component<Props> {
               <Route component={IdentityCard} />
               <Switch>
                 <Redirect exact from='/' to={`/identity/${defaultAddress}`} />
+                <Redirect exact from='/' to={`/transfer/${defaultAddress}`} />
                 <Redirect exact from='/identity' to={`/identity/${defaultAddress}`} />
                 <Redirect exact from='/transfer' to={`/transfer/${defaultAddress}`} />
                 <Route path='/identity/:currentAddress' component={Identity} />

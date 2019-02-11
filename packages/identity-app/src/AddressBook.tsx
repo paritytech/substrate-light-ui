@@ -2,8 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { ApiContext } from '@polkadot/ui-api';
-import { ErrorText, Input, MarginTop, NavButton, Stacked, SubHeader, SuccessText, WalletCard, WithSpace } from '@polkadot/ui-components';
+import { ApiContext } from '@substrate/ui-api';
+import { ErrorText, Input, MarginTop, NavButton, Stacked, SubHeader, SuccessText, WalletCard, WithSpace } from '@substrate/ui-components';
 import React from 'react';
 
 type Props = {

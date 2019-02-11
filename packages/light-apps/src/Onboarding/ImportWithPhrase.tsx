@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { ErrorText, Input, MarginTop, Modal, NavButton, NavLink, Stacked } from '@polkadot/ui-components';
+import { ErrorText, Input, MarginTop, Modal, NavButton, NavLink, Stacked } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
