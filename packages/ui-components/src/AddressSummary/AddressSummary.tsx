@@ -53,9 +53,7 @@ export class AddressSummary extends React.PureComponent<Props> {
     if (orientation === 'vertical') {
       return (
         <Stacked>
-          {
-            <IdentityIcon value={address as string || PLACEHOLDER_ADDRESS} theme={'substrate'} size={styles.identiconSize} />
-          }
+          <IdentityIcon value={address as string || PLACEHOLDER_ADDRESS} theme={'substrate'} size={styles.identiconSize} />
           <Name fontSize={styles.nameSize}> {name || PLACEHOLDER_NAME} </Name>
           <BalanceDisplay balance={balance} />
         </Stacked>
@@ -63,9 +61,7 @@ export class AddressSummary extends React.PureComponent<Props> {
     } else {
       return (
         <StackedHorizontal justify='space-around'>
-          {
-            <IdentityIcon value={address as string || PLACEHOLDER_ADDRESS} theme={'substrate'} size={styles.identiconSize} />
-          }
+          <IdentityIcon value={address as string || PLACEHOLDER_ADDRESS} theme={'substrate'} size={styles.identiconSize} />
           <Name fontSize={styles.nameSize}> {name || PLACEHOLDER_NAME} </Name>
           <BalanceDisplay balance={balance} />
         </StackedHorizontal>
