@@ -14,9 +14,9 @@ PROJECT_ROOT=`git rev-parse --show-toplevel`
 # A list of dependent directories to build before light-apps
 SRCS=(
 	"packages/ui-components/"
-  "packages/ui-api/"
+	"packages/ui-api/"
 	"packages/identity-app/"
-  "packages/transfer-app/"
+	"packages/transfer-app/"
 )
 
 # Save current directory.
