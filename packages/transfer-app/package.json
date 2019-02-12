@@ -1,6 +1,7 @@
 {
   "name": "@substrate/transfer-app",
   "version": "0.1.0",
+  "author": "Parity Technologies <admin@parity.io>",
   "description": "Basic app for transfering balances",
   "license": "Apache-2.0",
   "main": "build/index.js",

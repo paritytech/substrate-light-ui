@@ -1,6 +1,7 @@
 {
   "name": "@substrate/electron-app",
   "version": "0.1.0",
+  "author": "Parity Technologies <admin@parity.io>",
   "description": "Substrate Light UI",
   "license": "Apache-2.0",
   "private": true,
