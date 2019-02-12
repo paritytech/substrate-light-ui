@@ -7,6 +7,7 @@ import React from 'react';
 import Tab from 'semantic-ui-react/dist/commonjs/modules/Tab';
 
 import { AddressBook } from './AddressBook';
+import { Create } from './Create';
 import { SavedAccounts } from './SavedAccounts';
 import { Wallet } from './Wallet';
 
@@ -18,7 +19,8 @@ export class Identity extends React.PureComponent<Props> {
   render () {
     const panes = [
       { menuItem: 'Address Book', render: () => <AddressBook {...this.props} /> },
-      { menuItem: 'Wallet', render: () => <Wallet {...this.props} /> }
+      { menuItem: 'Wallet', render: () => <Wallet {...this.props} /> },
+      { menuItem: 'Create Account', render: () => <Create {...this.props} /> }
     ];
 
     return (
