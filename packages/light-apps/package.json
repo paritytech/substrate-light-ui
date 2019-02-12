@@ -1,9 +1,10 @@
 {
-  "name": "@polkadot/light-apps",
+  "name": "@substrate/light-apps",
   "version": "0.1.0",
-  "repository": "https://github.com/polkadot-js/light-ui.git",
   "description": "User interface optimized for the Substrate light client",
   "license": "Apache-2.0",
+  "private": true,
+  "repository": "https://github.com/paritytech/substrate-light-ui.git",
   "scripts": {
     "start": "BROWSER=none NODE_ENV=development react-scripts start",
     "build": "react-scripts build",
@@ -16,16 +17,19 @@
     "not op_mini all"
   ],
   "dependencies": {
-    "@polkadot/identity-app": "0.1.0",
-    "@polkadot/transfer-app": "0.1.0",
-    "@polkadot/ui-assets": "^0.23.1",
-    "@polkadot/ui-components": "0.1.0",
-    "@polkadot/ui-keyring": "^0.24.2",
-    "@polkadot/ui-settings": "^0.22.17",
-    "@polkadot/util": "^0.33.20",
-    "@polkadot/util-crypto": "^0.33.20",
+    "@polkadot/api": "^0.42.2",
+    "@polkadot/keyring": "^0.33.36",
+    "@polkadot/ui-assets": "^0.25.9",
+    "@polkadot/util": "^0.33.36",
+    "@polkadot/util-crypto": "^0.33.36",
+    "@substrate/identity-app": "0.1.0",
+    "@substrate/transfer-app": "0.1.0",
+    "@substrate/ui-api": "0.1.0",
+    "@substrate/ui-components": "0.1.0",
+    "@types/file-saver": "^2.0.0",
     "@types/react-dom": "^16.0.11",
     "@types/react-router-dom": "^4.3.1",
+    "file-saver": "^2.0.0",
     "mobx": "^5.8.0",
     "mobx-logger": "^0.7.1",
     "mobx-react": "^5.4.3",
@@ -33,7 +37,9 @@
     "react-dom": "^16.6.3",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.1",
+    "rxjs": "^6.4.0",
     "semantic-ui-css": "^2.4.1",
-    "store": "^2.0.12"
+    "store": "^2.0.12",
+    "symbol-observable": "^1.2.0"
   }
 }

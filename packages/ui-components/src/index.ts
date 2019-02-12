@@ -1,12 +1,11 @@
-// Copyright 2017-2018 @polkadot/light-apps authors & contributors
+// Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import Address from './Address';
 import AddressSummary from './AddressSummary';
 import BalanceDisplay from './Balance';
-import Container from './Container';
-import IdentityCard from './IdentityCard';
+import Grid from './Grid';
 import Icon from './Icon';
 import Input from './Input';
 import InputFile from './InputFile';
@@ -15,13 +14,13 @@ import Modal from './Modal';
 import NavButton from './NavButton';
 import NavLink from './NavLink';
 import Segment from './Segment';
+import WalletCard from './WalletCard';
 
 export {
   Address,
   AddressSummary,
   BalanceDisplay,
-  Container,
-  IdentityCard,
+  Grid,
   Icon,
   Input,
   InputFile,
@@ -29,7 +28,8 @@ export {
   Modal,
   NavButton,
   NavLink,
-  Segment
+  Segment,
+  WalletCard
 };
 
 export * from './types';

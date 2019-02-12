@@ -1,7 +1,9 @@
-// Copyright 2017-2018 @polkadot/light-apps authors & contributors
+// Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+// FIXME I'm not sure having stateful components/functions inside ui-components
+// is a good idea, everything here should be dumb/stateless
 import keyring from '@polkadot/ui-keyring';
 import { hexToU8a, isHex } from '@polkadot/util';
 

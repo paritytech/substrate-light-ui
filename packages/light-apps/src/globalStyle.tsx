@@ -1,10 +1,10 @@
-// Copyright 2017-2018 @polkadot/light-apps authors & contributors
+// Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { createGlobalStyle } from 'styled-components';
 
-export const GlobalStyle = createGlobalStyle`
+const GlobalStyle = createGlobalStyle`
   html {
     height: 100%;
   }
@@ -22,3 +22,17 @@ export const GlobalStyle = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
   }
 `;
+
+const substrateLightTheme = {
+  black: '#222',
+  cardBorder: '#f2f2f2',
+  darkBlue: '#5c53fc',
+  grey: '#888',
+  lightBlue1: '#53a0fd',
+  lightBlue2: '#51a0ec',
+  purple: '#8479f3',
+  segment: '#fdfefe',
+  white: '#ffffff'
+};
+
+export { substrateLightTheme, GlobalStyle };

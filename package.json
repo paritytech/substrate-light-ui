@@ -13,7 +13,7 @@
     "packages": [
       "packages/*"
     ],
-      "nohoist": [
+    "nohoist": [
       "**/electron-builder",
       "**/electron-builder/**",
       "**/electron-webpack",
@@ -26,12 +26,13 @@
     "lint": "tsc --noEmit && tslint --project .",
     "prebuild": "yarn clean",
     "prepackage": "yarn build",
+    "prestart": "./scripts/prestart.sh",
     "package": "cd packages/electron-app && yarn dist",
     "start": "lerna exec yarn start --parallel",
     "storybook": "cd packages/ui-components && yarn storybook",
     "test": "CI=true lerna run test --parallel"
   },
   "devDependencies": {
-    "@polkadot/dev": "^0.22.12"
+    "@polkadot/dev": "^0.23.14"
   }
 }
