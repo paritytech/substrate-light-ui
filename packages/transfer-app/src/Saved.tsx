@@ -2,11 +2,11 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { ApiContext } from '@polkadot/ui-api';
+import { ApiContext } from '@substrate/ui-api';
 import { AddressSummary, Grid, Icon, MarginTop, NavLink, Stacked, StackedHorizontal, SubHeader, WalletCard, WithSpace } from '@polkadot/ui-components';
-import { SubjectInfo } from '@polkadot/ui-keyring/observable/types';
-import accountObservable from '@polkadot/ui-keyring/observable/accounts';
-import addressObservable from '@polkadot/ui-keyring/observable/addresses';
+import { SubjectInfo } from '@substrate/ui-keyring/observable/types';
+import accountObservable from '@substrate/ui-keyring/observable/accounts';
+import addressObservable from '@substrate/ui-keyring/observable/addresses';
 import React from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 
@@ -91,7 +91,7 @@ export class Saved extends React.PureComponent<Props, State> {
             <Stacked>
               <SubHeader> My Unlocked Accounts </SubHeader>
               <WithSpace>
-                  { this.renderAccountsToSendFrom() }
+                {this.renderAccountsToSendFrom()}
               </WithSpace>
             </Stacked>
           </Grid.Column>
@@ -99,7 +99,7 @@ export class Saved extends React.PureComponent<Props, State> {
             <Stacked>
               <SubHeader> Saved Addresses </SubHeader>
               <WithSpace>
-                  { this.renderAddressesToSendTo() }
+                {this.renderAddressesToSendTo()}
               </WithSpace>
             </Stacked>
           </Grid.Column>

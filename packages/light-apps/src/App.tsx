@@ -2,8 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { ApiGate } from '@polkadot/ui-api';
 import substrateLogo from '@polkadot/ui-assets/parity-substrate.svg';
+import { ApiGate } from '@substrate/ui-api';
 import { Provider } from 'mobx-react';
 import React from 'react';
 import { BrowserRouter, NavLink, Route } from 'react-router-dom';
