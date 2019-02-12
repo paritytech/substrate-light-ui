@@ -3,8 +3,9 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { AddressSummary, MarginTop, Stacked, WalletCard, WithSpace } from '@substrate/ui-components';
-import accountObservable from '@subtrate/ui-keyring/observable/accounts';
-import { SingleAddress, SubjectInfo } from '@substrate/ui-keyring/observable/types';
+import accountObservable from '@polkadot/ui-keyring/observable/accounts';
+import { SingleAddress, SubjectInfo } from '@polkadot/ui-keyring/observable/types';
+import { Subscription } from 'rxjs';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -14,14 +15,14 @@ type Props = {
 
 type State = {
   allAccounts?: SubjectInfo,
-  accountsSub?: any // FIXME: rx Subscription
+  accountsSub?: Subscription
 };
 
 export class SavedAccounts extends React.PureComponent<Props, State> {
   state: State = {};
 
   componentDidMount () {
-    const accountsSub = accountObservable.subject.subscribe(accounts => {
+    const accountsSub = accountObservable.subject.subscribe((accounts: SubjectInfo) => {
       this.setState({
         allAccounts: accounts
       });
