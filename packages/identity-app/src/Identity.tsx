@@ -4,6 +4,7 @@
 
 import { Container, Grid } from '@polkadot/ui-components';
 import React from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 import Tab from 'semantic-ui-react/dist/commonjs/modules/Tab';
 
 import { AddressBook } from './AddressBook';
@@ -11,9 +12,9 @@ import { Create } from './Create';
 import { SavedAccounts } from './SavedAccounts';
 import { Wallet } from './Wallet';
 
-type Props = {
-  basePath: string
-};
+interface Props extends RouteComponentProps {
+  basePath: string;
+}
 
 export class Identity extends React.PureComponent<Props> {
   render () {

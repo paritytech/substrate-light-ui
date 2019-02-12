@@ -3,14 +3,15 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { ApiContext } from '@polkadot/ui-api';
-import { AddressSummary, ErrorText, FadedText, Input, Modal, NavButton, NavLink, Segment, Stacked } from '@polkadot/ui-components';
+import { AddressSummary, ErrorText, FadedText, Input, Modal, NavButton, Segment, Stacked } from '@polkadot/ui-components';
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
 import FileSaver from 'file-saver';
-import { inject, observer } from 'mobx-react';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-interface Props extends RouteComponentProps { }
+interface Props extends RouteComponentProps {
+  basePath: string;
+}
 
 type State = {
   address?: string;
