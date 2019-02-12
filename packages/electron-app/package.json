@@ -10,7 +10,7 @@
     "prebuild": "copyfiles -u 2 \"../light-apps/build/**/*\" static/",
     "build": "electron-webpack",
     "electron": "electron dist/main/main.js",
-    "dist": "yarn build && electron-builder",
+    "package": "electron-builder",
     "start": "cross-env ELECTRON_START_URL=http://localhost:3000 electron-webpack dev",
     "test": "echo Skipped."
   },
@@ -22,6 +22,7 @@
     "electron-builder": "^20.38.5",
     "electron-webpack": "^2.6.2",
     "electron-webpack-ts": "^3.1.1",
+    "source-map-support": "^0.5.10",
     "webpack": "^4.28.3"
   },
   "dependencies": {
