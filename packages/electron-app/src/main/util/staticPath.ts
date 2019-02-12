@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-declare var __static: string;
+import path from 'path';
 
 // Is our app packaged in a binary or still in Electron?
 const appIsPackaged = !process.defaultApp;
@@ -14,4 +14,4 @@ const appIsPackaged = !process.defaultApp;
  */
 export const staticPath = appIsPackaged
   ? __dirname.replace(/app\.asar$/, 'static')
-  : __static;
+  : path.join(process.cwd(), 'static');
