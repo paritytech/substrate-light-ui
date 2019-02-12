@@ -3,12 +3,14 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { ApiContext } from '@substrate/ui-api';
-import { AddressSummary, Grid, Icon, MarginTop, NavLink, Stacked, StackedHorizontal, SubHeader, WalletCard, WithSpace } from '@polkadot/ui-components';
-import { SubjectInfo } from '@substrate/ui-keyring/observable/types';
-import accountObservable from '@substrate/ui-keyring/observable/accounts';
-import addressObservable from '@substrate/ui-keyring/observable/addresses';
+import { AddressSummary, Grid, Icon, MarginTop, NavLink, Stacked, StackedHorizontal, SubHeader, WalletCard, WithSpace } from '@substrate/ui-components';
+import { SubjectInfo } from '@polkadot/ui-keyring/observable/types';
+import accountObservable from '@polkadot/ui-keyring/observable/accounts';
+import addressObservable from '@polkadot/ui-keyring/observable/addresses';
 import React from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
+import { map } from 'rxjs/operators';
+import { Subscribe } from 'react-with-observable';
 
 interface MatchParams {
   currentAddress: string;
@@ -19,48 +21,10 @@ interface Props extends RouteComponentProps<MatchParams> {
   onSelectAddress: (address: string, name: string) => void;
 }
 
-type State = {
-  allAccounts: SubjectInfo,
-  allAddresses: SubjectInfo,
-  subscriptions: Array<any> // fixme rx Subscription
-};
-
 export class Saved extends React.PureComponent<Props, State> {
   static contextType = ApiContext;
 
   context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
-
-  state: State = {
-    allAccounts: {},
-    allAddresses: {},
-    subscriptions: []
-  };
-
-  componentDidMount () {
-    const accSub = accountObservable.subject.subscribe(accounts => {
-      this.setState({
-        allAccounts: accounts
-      });
-    });
-
-    const addSub = addressObservable.subject.subscribe(addresses => {
-      this.setState({
-        allAddresses: addresses
-      });
-    });
-
-    this.setState({
-      subscriptions: [accSub, addSub]
-    });
-  }
-
-  componentWillUnmount () {
-    const { subscriptions } = this.state;
-
-    subscriptions.forEach(sub => {
-      sub.unsubscribe();
-    });
-  }
 
   forgetSelectedAddress = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     const { keyring } = this.context;
@@ -91,7 +55,15 @@ export class Saved extends React.PureComponent<Props, State> {
             <Stacked>
               <SubHeader> My Unlocked Accounts </SubHeader>
               <WithSpace>
-                {this.renderAccountsToSendFrom()}
+                <Subscribe>
+                  {
+                    accountObservable.subject.pipe(
+                      map((allAccounts: SubjectInfo) => {
+                        this.renderAccountsToSendFrom(allAccounts);
+                      }
+                    )
+                  }
+                </Subscribe>
               </WithSpace>
             </Stacked>
           </Grid.Column>
@@ -99,7 +71,15 @@ export class Saved extends React.PureComponent<Props, State> {
             <Stacked>
               <SubHeader> Saved Addresses </SubHeader>
               <WithSpace>
-                {this.renderAddressesToSendTo()}
+              <Subscribe>
+                {
+                  accountObservable.subject.pipe(
+                    map((allAddresses: SubjectInfo) => {
+                      this.renderAddressesToSendTo(allAddresses);
+                    }
+                  )
+                }
+              </Subscribe>
               </WithSpace>
             </Stacked>
           </Grid.Column>
@@ -108,14 +88,12 @@ export class Saved extends React.PureComponent<Props, State> {
     );
   }
 
-  renderAccountsToSendFrom () {
-    const { allAccounts } = this.state;
-
+  renderAccountsToSendFrom (allAccounts: SubjectInfo) {
     if (!allAccounts) {
       this.renderEmpty();
     }
 
-    return Object.values(allAccounts).map(account => {
+    return Object.values(allAccounts).map((account) => {
       return (
         <React.Fragment key={`__unlocked_${account.json.address}`}>
           <MarginTop />
@@ -131,9 +109,7 @@ export class Saved extends React.PureComponent<Props, State> {
     });
   }
 
-  renderAddressesToSendTo () {
-    const { allAddresses } = this.state;
-
+  renderAddressesToSendTo (allAddresses: SubjectInfo) {
     if (!allAddresses.length) {
       this.renderEmpty();
     }

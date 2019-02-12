@@ -5,12 +5,8 @@
 import { AddressSummary, MarginTop, Stacked, WalletCard, WithSpace } from '@substrate/ui-components';
 import accountObservable from '@polkadot/ui-keyring/observable/accounts';
 import { SingleAddress, SubjectInfo } from '@polkadot/ui-keyring/observable/types';
-<<<<<<< Updated upstream
-=======
 import { map } from 'rxjs/operators';
 import { Subscribe } from 'react-with-observable';
->>>>>>> Stashed changes
-import { Subscription } from 'rxjs';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -18,21 +14,8 @@ type Props = {
   basePath: string
 };
 
-type State = {
-  allAccounts?: SubjectInfo,
-  accountsSub?: Subscription
-};
-
 export class SavedAccounts extends React.PureComponent<Props, State> {
   state: State = {};
-
-  componentDidMount () {
-    const accountsSub = accountObservable.subject.subscribe((accounts: SubjectInfo) => {
-      this.setState({
-        allAccounts: accounts
-      });
-    });
-  }
 
   render () {
     return (
@@ -50,30 +33,24 @@ export class SavedAccounts extends React.PureComponent<Props, State> {
   }
 
   renderAllAccountsFromKeyring () {
-    const { allAccounts } = this.state;
-
     return (
       <Subscribe>
-        {
-          allAccounts.pipe(
-            map((allAccounts: SubjectInfo) =>
-              map((account: SingleAddress) => {
-                return (
-                  <React.Fragment key={account.json.address}>
-                    <MarginTop />
-                    <Link to={`/identity/${account.json.address}`}>
-                      <AddressSummary
-                        address={account.json.address}
-                        name={account.json.meta.name}
-                        orientation='horizontal'
-                        size='small' />
-                    </Link>
-                  </React.Fragment>
-                );
-              });
+        {accountObservable.subject.pipe(
+          map((allAccounts: SubjectInfo) =>
+            Object.values(allAccounts).map((account: SingleAddress) =>
+              <React.Fragment key={account.json.address}>
+                <MarginTop />
+                <Link to={`/identity/${account.json.address}`}>
+                  <AddressSummary
+                    address={account.json.address}
+                    name={account.json.meta.name}
+                    orientation='horizontal'
+                    size='small'
+                  />
+                </Link>
+              </React.Fragment>
             )
-          );
-        }
+          ))}
       </Subscribe>
     );
   }
