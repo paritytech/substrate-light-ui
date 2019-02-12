@@ -20,7 +20,7 @@ type State = {
   password: string;
 };
 
-export class CreateNewAccountScreen extends React.Component<Props, State> {
+export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
   static contextType = ApiContext;
 
   context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context

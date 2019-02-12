@@ -14,7 +14,7 @@ import { map } from 'rxjs/operators';
 import { IdentityCard } from '../IdentityCard';
 import { Onboarding } from '../Onboarding';
 
-export class Content extends React.Component {
+export class Content extends React.PureComponent {
   render () {
     return (
       <Container>

@@ -23,7 +23,7 @@ type State = {
   recoveryPhrase: string;
 };
 
-export class SaveScreen extends React.Component<Props, State> {
+export class SaveScreen extends React.PureComponent<Props, State> {
   static contextType = ApiContext;
 
   context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
