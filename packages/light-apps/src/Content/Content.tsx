@@ -2,55 +2,43 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import accounts from '@polkadot/ui-keyring/observable/accounts';
 import { Identity } from '@substrate/identity-app';
 import { Transfer } from '@substrate/transfer-app';
-import { ApiContext } from '@substrate/ui-api';
+import { Subscribe } from '@substrate/ui-api';
 import { Container } from '@substrate/ui-components';
-import { inject, observer } from 'mobx-react';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
+import { map } from 'rxjs/operators';
 
 import { IdentityCard } from '../IdentityCard';
 import { Onboarding } from '../Onboarding';
-import { OnboardingStore } from '../stores/onboardingStore';
 
-interface Props {
-  onboardingStore: OnboardingStore;
-}
-
-@inject('onboardingStore')
-@observer
-export class Content extends React.Component<Props> {
-  static contextType = ApiContext;
-
-  context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
-
+export class Content extends React.Component {
   render () {
-    const { keyring } = this.context;
-    const [defaultAccount] = keyring.getPairs();
-    const defaultAddress = defaultAccount && defaultAccount.address();
-    const {
-      onboardingStore: { isFirstRun }
-    } = this.props;
-
     return (
       <Container>
-        {
-          (isFirstRun || !defaultAddress)
-            ? <Route component={Onboarding} />
-            : <React.Fragment>
-              <Route component={IdentityCard} />
-              <Switch>
-                <Redirect exact from='/' to={`/identity/${defaultAddress}`} />
-                <Redirect exact from='/' to={`/transfer/${defaultAddress}`} />
-                <Redirect exact from='/identity' to={`/identity/${defaultAddress}`} />
-                <Redirect exact from='/transfer' to={`/transfer/${defaultAddress}`} />
-                <Route path='/identity/:currentAddress' component={Identity} />
-                <Route path='/transfer/:currentAddress' component={Transfer} />
-                <Redirect to='/' />
-              </Switch>
-            </React.Fragment>
-        }
+        <Subscribe>
+          {accounts.subject.pipe(
+            map(Object.values),
+            map(([defaultAccount]) => defaultAccount
+              ? (
+                <React.Fragment>
+                  <Route component={IdentityCard} />
+                  <Switch>
+                    <Redirect exact from='/' to={`/identity/${defaultAccount.json.address}`} />
+                    <Redirect exact from='/identity' to={`/identity/${defaultAccount.json.address}`} />
+                    <Redirect exact from='/transfer' to={`/transfer/${defaultAccount.json.address}`} />
+                    <Route path='/identity/:currentAddress' component={Identity} />
+                    <Route path='/transfer/:currentAddress' component={Transfer} />
+                    <Redirect to='/' />
+                  </Switch>
+                </React.Fragment>
+              )
+              : <Route component={Onboarding} />
+            )
+          )}
+        </Subscribe>
       </Container>
     );
   }
