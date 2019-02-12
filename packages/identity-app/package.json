@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@substrate/ui-api": "0.1.0",
-    "@substrate/ui-components": "0.1.0"
+    "@substrate/ui-components": "0.1.0",
+    "react-with-observable": "^2.0.1"
   }
 }

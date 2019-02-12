@@ -5,6 +5,11 @@
 import { AddressSummary, MarginTop, Stacked, WalletCard, WithSpace } from '@substrate/ui-components';
 import accountObservable from '@polkadot/ui-keyring/observable/accounts';
 import { SingleAddress, SubjectInfo } from '@polkadot/ui-keyring/observable/types';
+<<<<<<< Updated upstream
+=======
+import { map } from 'rxjs/operators';
+import { Subscribe } from 'react-with-observable';
+>>>>>>> Stashed changes
 import { Subscription } from 'rxjs';
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -27,12 +32,6 @@ export class SavedAccounts extends React.PureComponent<Props, State> {
         allAccounts: accounts
       });
     });
-
-    this.setState({ accountsSub });
-  }
-
-  componentWillUnmount () {
-    this.state.accountsSub.unsubscribe();
   }
 
   render () {
@@ -53,19 +52,29 @@ export class SavedAccounts extends React.PureComponent<Props, State> {
   renderAllAccountsFromKeyring () {
     const { allAccounts } = this.state;
 
-    return allAccounts && Object.values(allAccounts).map((account: SingleAddress) => {
-      return (
-        <React.Fragment key={account.json.address}>
-          <MarginTop />
-          <Link to={`/identity/${account.json.address}`}>
-            <AddressSummary
-              address={account.json.address}
-              name={account.json.meta.name}
-              orientation='horizontal'
-              size='small' />
-          </Link>
-        </React.Fragment>
-      );
-    });
+    return (
+      <Subscribe>
+        {
+          allAccounts.pipe(
+            map((allAccounts: SubjectInfo) =>
+              map((account: SingleAddress) => {
+                return (
+                  <React.Fragment key={account.json.address}>
+                    <MarginTop />
+                    <Link to={`/identity/${account.json.address}`}>
+                      <AddressSummary
+                        address={account.json.address}
+                        name={account.json.meta.name}
+                        orientation='horizontal'
+                        size='small' />
+                    </Link>
+                  </React.Fragment>
+                );
+              });
+            )
+          );
+        }
+      </Subscribe>
+    );
   }
 }
