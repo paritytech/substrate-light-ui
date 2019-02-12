@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { ApiContext } from '@polkadot/ui-api';
-import { AddressSummary, ErrorText, FadedText, Input, Modal, NavButton, NavLink, Segment, Stacked } from '@polkadot/ui-components';
+import { AddressSummary, ErrorText, Input, MnemonicSegment, Modal, NavButton, NavLink, Stacked } from '@polkadot/ui-components';
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
 import FileSaver from 'file-saver';
 import { inject, observer } from 'mobx-react';
@@ -45,11 +45,6 @@ export class CreateNewAccountScreen extends React.Component<Props, State> {
     this.setState({ address, mnemonic });
   }
 
-  private validateFields = () => {
-    const { mnemonic, name, password } = this.state;
-    return mnemonic.length && name && password.length;
-  }
-
   private createNewAccount = () => {
     const { keyring } = this.context;
     const { history, onboardingStore: { setIsFirstRun } } = this.props;
@@ -81,6 +76,13 @@ export class CreateNewAccountScreen extends React.Component<Props, State> {
     );
   }
 
+  private newMnemonic = () => {
+    const mnemonic = mnemonicGenerate();
+    const address = this.generateAddressFromMnemonic(mnemonic);
+
+    this.setState({ address, mnemonic });
+  }
+
   private onChangeName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
       name: value
@@ -99,6 +101,11 @@ export class CreateNewAccountScreen extends React.Component<Props, State> {
     });
   }
 
+  private validateFields = () => {
+    const { mnemonic, name, password } = this.state;
+    return mnemonic.length && name && password.length;
+  }
+
   render () {
     const { address, mnemonic, name } = this.state;
 
@@ -110,7 +117,7 @@ export class CreateNewAccountScreen extends React.Component<Props, State> {
             <AddressSummary address={address} name={name} />
             {this.renderSetName()}
             <Modal.SubHeader> Create from the following mnemonic phrase </Modal.SubHeader>
-            <Segment> <FadedText> {mnemonic} </FadedText> </Segment>
+            <MnemonicSegment onClick={this.newMnemonic} mnemonic={mnemonic} />
             {this.renderSetPassword()}
             {this.renderError()}
             {this.renderNewAccountActions()}

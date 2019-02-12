@@ -87,6 +87,17 @@ export const FileInputArea = styled.div`
   width: 363px;
 `;
 
+export const RefreshButton = styled.button`
+  border: none;
+  background-color: inherit;
+  color: ${props => props.theme.lightBlue1};
+
+  :hover {
+    cursor: pointer;
+    color: ${props => props.theme.darkBlue};
+  }
+`;
+
 export const StyledNavLink = styled<any>(Link)`
   background: none;
   border: none;

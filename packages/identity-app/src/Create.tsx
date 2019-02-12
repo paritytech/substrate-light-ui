@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { ApiContext } from '@polkadot/ui-api';
-import { AddressSummary, ErrorText, FadedText, Input, Modal, NavButton, Segment, Stacked } from '@polkadot/ui-components';
+import { AddressSummary, ErrorText, Input, MnemonicSegment, Modal, NavButton, Stacked } from '@polkadot/ui-components';
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
 import FileSaver from 'file-saver';
 import React from 'react';
@@ -34,16 +34,16 @@ export class Create extends React.PureComponent<Props, State> {
   };
 
   componentDidMount () {
-    const mnemonic = mnemonicGenerate();
-    const address = this.generateAddressFromMnemonic(mnemonic);
-
-    this.setState({ address, mnemonic });
+    this.newMnemonic();
   }
 
   private clearFields = () => {
+    const mnemonic = mnemonicGenerate();
+
     this.setState({
+      address: this.generateAddressFromMnemonic(mnemonic),
       error: null,
-      mnemonic: '',
+      mnemonic,
       name: '',
       password: ''
     });
@@ -71,11 +71,6 @@ export class Create extends React.PureComponent<Props, State> {
     }
   }
 
-  private validateFields = () => {
-    const { mnemonic, name, password } = this.state;
-    return mnemonic.length && name && password.length;
-  }
-
   private generateAddressFromMnemonic (mnemonic: string): string {
     const { keyring } = this.context;
     const keypair = naclKeypairFromSeed(mnemonicToSeed(mnemonic));
@@ -83,6 +78,13 @@ export class Create extends React.PureComponent<Props, State> {
     return keyring.encodeAddress(
       keypair.publicKey
     );
+  }
+
+  private newMnemonic = () => {
+    const mnemonic = mnemonicGenerate();
+    const address = this.generateAddressFromMnemonic(mnemonic);
+
+    this.setState({ address, mnemonic });
   }
 
   private onChangeName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
@@ -103,6 +105,11 @@ export class Create extends React.PureComponent<Props, State> {
     });
   }
 
+  private validateFields = () => {
+    const { mnemonic, name, password } = this.state;
+    return mnemonic.length && name && password.length;
+  }
+
   render () {
     const { address, mnemonic, name } = this.state;
 
@@ -114,7 +121,7 @@ export class Create extends React.PureComponent<Props, State> {
             <AddressSummary address={address} name={name} />
             {this.renderSetName()}
             <Modal.SubHeader> Create from the following mnemonic phrase </Modal.SubHeader>
-            <Segment> <FadedText> {mnemonic} </FadedText> </Segment>
+            <MnemonicSegment onClick={this.newMnemonic} mnemonic={mnemonic} />
             {this.renderSetPassword()}
             {this.renderError()}
             <NavButton onClick={this.createNewAccount}> Save </NavButton>
