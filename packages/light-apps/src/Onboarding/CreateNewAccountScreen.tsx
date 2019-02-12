@@ -9,8 +9,7 @@ import FileSaver from 'file-saver';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-interface Props extends RouteComponentProps {
-}
+interface Props extends RouteComponentProps { }
 
 type State = {
   address?: string;

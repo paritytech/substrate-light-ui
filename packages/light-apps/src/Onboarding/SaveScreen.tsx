@@ -11,8 +11,7 @@ interface MatchParams {
   importMethod: string;
 }
 
-interface Props extends RouteComponentProps<MatchParams> {
-}
+interface Props extends RouteComponentProps<MatchParams> { }
 
 type State = {
   address?: string;
