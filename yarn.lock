@@ -4891,7 +4891,7 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-create-subscription@^16.8.0:
+create-subscription@^16.8.0, create-subscription@^16.8.1:
   version "16.8.1"
   resolved "https://registry.yarnpkg.com/create-subscription/-/create-subscription-16.8.1.tgz#2466ae5eb11c74b8d00edc34c615fa5af5782386"
   integrity sha512-bQBvp8znMEVbWj8Z8Acc3a1j/Axvdx3hkTriKjeJuriPlRjwyY9ReGB8mbTavQmnflSDORB6XTLYO6V1WUsY/w==

@@ -14,9 +14,7 @@ type Props = {
   basePath: string
 };
 
-export class SavedAccounts extends React.PureComponent<Props, State> {
-  state: State = {};
-
+export class SavedAccounts extends React.PureComponent<Props> {
   render () {
     return (
       <WalletCard

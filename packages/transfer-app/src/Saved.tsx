@@ -4,7 +4,7 @@
 
 import { ApiContext } from '@substrate/ui-api';
 import { AddressSummary, Grid, Icon, MarginTop, NavLink, Stacked, StackedHorizontal, SubHeader, WalletCard, WithSpace } from '@substrate/ui-components';
-import { SubjectInfo } from '@polkadot/ui-keyring/observable/types';
+import { SingleAddress, SubjectInfo } from '@polkadot/ui-keyring/observable/types';
 import accountObservable from '@polkadot/ui-keyring/observable/accounts';
 import addressObservable from '@polkadot/ui-keyring/observable/addresses';
 import React from 'react';
@@ -21,7 +21,7 @@ interface Props extends RouteComponentProps<MatchParams> {
   onSelectAddress: (address: string, name: string) => void;
 }
 
-export class Saved extends React.PureComponent<Props, State> {
+export class Saved extends React.PureComponent<Props> {
   static contextType = ApiContext;
 
   context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
@@ -55,15 +55,7 @@ export class Saved extends React.PureComponent<Props, State> {
             <Stacked>
               <SubHeader> My Unlocked Accounts </SubHeader>
               <WithSpace>
-                <Subscribe>
-                  {
-                    accountObservable.subject.pipe(
-                      map((allAccounts: SubjectInfo) => {
-                        this.renderAccountsToSendFrom(allAccounts);
-                      }
-                    )
-                  }
-                </Subscribe>
+                { this.renderAccountsToSendFrom() }
               </WithSpace>
             </Stacked>
           </Grid.Column>
@@ -71,15 +63,7 @@ export class Saved extends React.PureComponent<Props, State> {
             <Stacked>
               <SubHeader> Saved Addresses </SubHeader>
               <WithSpace>
-              <Subscribe>
-                {
-                  accountObservable.subject.pipe(
-                    map((allAddresses: SubjectInfo) => {
-                      this.renderAddressesToSendTo(allAddresses);
-                    }
-                  )
-                }
-              </Subscribe>
+                { this.renderAddressesToSendTo() }
               </WithSpace>
             </Stacked>
           </Grid.Column>
@@ -88,51 +72,58 @@ export class Saved extends React.PureComponent<Props, State> {
     );
   }
 
-  renderAccountsToSendFrom (allAccounts: SubjectInfo) {
-    if (!allAccounts) {
-      this.renderEmpty();
-    }
-
-    return Object.values(allAccounts).map((account) => {
-      return (
-        <React.Fragment key={`__unlocked_${account.json.address}`}>
-          <MarginTop />
-          <Link to={`/transfer/${account.json.address}`}>
-            <AddressSummary
-              address={account.json.address}
-              name={account.json.meta.name}
-              orientation='horizontal'
-              size='small' />
-          </Link>
-        </React.Fragment>
-      );
-    });
+  renderAccountsToSendFrom () {
+    return (
+      <Subscribe>
+        {accountObservable.subject.pipe(
+          map((allAccounts: SubjectInfo) =>
+            !allAccounts
+              ? this.renderEmpty()
+              : Object.values(allAccounts).map((account: SingleAddress) =>
+                  <React.Fragment key={account.json.address}>
+                    <MarginTop />
+                    <Link to={`/identity/${account.json.address}`}>
+                      <AddressSummary
+                        address={account.json.address}
+                        name={account.json.meta.name}
+                        orientation='horizontal'
+                        size='small'
+                      />
+                    </Link>
+                  </React.Fragment>
+              )
+          ))}
+      </Subscribe>
+    );
   }
 
-  renderAddressesToSendTo (allAddresses: SubjectInfo) {
-    if (!allAddresses.length) {
-      this.renderEmpty();
-    }
-
-    return Object.values(allAddresses).map(address => {
-      return (
-        <React.Fragment key={`__locked_${address.json.address}`}>
-          <MarginTop />
-          <StackedHorizontal>
-            <Link to='#' data-address={address.json.address} data-name={address.json.meta.name} onClick={this.handleSelectedRecipient}>
-              <AddressSummary
-                address={address.json.address}
-                name={address.json.meta.name}
-                orientation='horizontal'
-                size='small' />
-            </Link>
-            <Link to='#' data-address={address.json.address} onClick={this.forgetSelectedAddress}>
-              <Icon name='close' />
-            </Link>
-          </StackedHorizontal>
-        </React.Fragment>
-      );
-    });
+  renderAddressesToSendTo () {
+    return (
+      <Subscribe>
+        {addressObservable.subject.pipe(
+          map((allAddresses: SubjectInfo) =>
+            !allAddresses
+              ? this.renderEmpty()
+              : Object.values(allAddresses).map((address: SingleAddress) =>
+                  <React.Fragment key={`__locked_${address.json.address}`}>
+                    <MarginTop />
+                    <StackedHorizontal>
+                      <Link to='#' data-address={address.json.address} data-name={address.json.meta.name} onClick={this.handleSelectedRecipient}>
+                        <AddressSummary
+                          address={address.json.address}
+                          name={address.json.meta.name}
+                          orientation='horizontal'
+                          size='small' />
+                      </Link>
+                      <Link to='#' data-address={address.json.address} onClick={this.forgetSelectedAddress}>
+                        <Icon name='close' />
+                      </Link>
+                    </StackedHorizontal>
+                  </React.Fragment>
+              )
+          ))}
+      </Subscribe>
+    );
   }
 
   renderEmpty () {
