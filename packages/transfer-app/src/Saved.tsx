@@ -82,7 +82,7 @@ export class Saved extends React.PureComponent<Props> {
               : Object.values(allAccounts).map((account: SingleAddress) =>
                   <React.Fragment key={account.json.address}>
                     <MarginTop />
-                    <Link to={`/identity/${account.json.address}`}>
+                    <Link to={`/transfer/${account.json.address}`}>
                       <AddressSummary
                         address={account.json.address}
                         name={account.json.meta.name}
@@ -102,7 +102,7 @@ export class Saved extends React.PureComponent<Props> {
       <Subscribe>
         {addressObservable.subject.pipe(
           map((allAddresses: SubjectInfo) =>
-            !allAddresses
+            !Object.keys(allAddresses).length
               ? this.renderEmpty()
               : Object.values(allAddresses).map((address: SingleAddress) =>
                   <React.Fragment key={`__locked_${address.json.address}`}>
@@ -132,7 +132,7 @@ export class Saved extends React.PureComponent<Props> {
 
     return (
       <React.Fragment>
-        <p> It looks like you don't have any saved accounts. <br /> You can add them from your address book in Identity app. </p>
+        <p> It looks like you don't have any saved accounts. You can add them from your address book in Identity app. </p>
         <NavLink to={`/identity/${address}`}> Take me there </NavLink>
       </React.Fragment>
     );

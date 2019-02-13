@@ -2,8 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { ApiContext } from '@polkadot/ui-api';
-import { AddressSummary, ErrorText, Input, MnemonicSegment, Modal, NavButton, Stacked } from '@polkadot/ui-components';
+import { ApiContext } from '@substrate/ui-api';
+import { AddressSummary, ErrorText, Input, MnemonicSegment, NavButton, Stacked, StackedHorizontal, SubHeader, WithSpaceBetween } from '@substrate/ui-components';
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
 import FileSaver from 'file-saver';
 import React from 'react';
@@ -114,20 +114,19 @@ export class Create extends React.PureComponent<Props, State> {
     const { address, mnemonic, name } = this.state;
 
     return (
-      <React.Fragment>
-        <Modal.Header> Create New Account </Modal.Header>
-        <Modal.Content>
-          <Stacked>
-            <AddressSummary address={address} name={name} />
+      <Stacked>
+        <AddressSummary address={address} name={name} />
+        <SubHeader> Create from the following mnemonic phrase </SubHeader>
+        <MnemonicSegment onClick={this.newMnemonic} mnemonic={mnemonic} />
+        <StackedHorizontal>
+          <WithSpaceBetween>
             {this.renderSetName()}
-            <Modal.SubHeader> Create from the following mnemonic phrase </Modal.SubHeader>
-            <MnemonicSegment onClick={this.newMnemonic} mnemonic={mnemonic} />
             {this.renderSetPassword()}
-            {this.renderError()}
-            <NavButton onClick={this.createNewAccount}> Save </NavButton>
-          </Stacked>
-        </Modal.Content>
-      </React.Fragment>
+          </WithSpaceBetween>
+        </StackedHorizontal>
+        {this.renderError()}
+        <NavButton onClick={this.createNewAccount}> Save </NavButton>
+      </Stacked>
     );
   }
 
@@ -145,8 +144,8 @@ export class Create extends React.PureComponent<Props, State> {
     const { name } = this.state;
 
     return (
-      <React.Fragment>
-        <Modal.SubHeader> Give it a name </Modal.SubHeader>
+      <Stacked>
+        <SubHeader> Give it a name </SubHeader>
         <Input
           autoFocus
           min={1}
@@ -154,7 +153,7 @@ export class Create extends React.PureComponent<Props, State> {
           type='text'
           value={name}
         />
-      </React.Fragment>
+      </Stacked>
     );
   }
 
@@ -162,15 +161,15 @@ export class Create extends React.PureComponent<Props, State> {
     const { password } = this.state;
 
     return (
-      <React.Fragment>
-        <Modal.SubHeader> Encrypt it with a passphrase </Modal.SubHeader>
+      <Stacked>
+        <SubHeader> Encrypt it with a passphrase </SubHeader>
         <Input
           min={8}
           onChange={this.onChangePassword}
           type='password'
           value={password}
         />
-      </React.Fragment>
+      </Stacked>
     );
   }
 

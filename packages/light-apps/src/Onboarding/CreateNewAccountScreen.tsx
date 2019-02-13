@@ -4,7 +4,7 @@
 
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
 import { ApiContext } from '@substrate/ui-api';
-import { AddressSummary, ErrorText, FadedText, Input, Modal, NavButton, NavLink, Segment, Stacked } from '@substrate/ui-components';
+import { AddressSummary, ErrorText, Input, MnemonicSegment, Modal, NavButton, NavLink, Stacked } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
