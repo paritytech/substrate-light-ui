@@ -1,10 +1,8 @@
 // Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
-
 import { ApiContext } from '@substrate/ui-api';
 import { AddressSummary, Grid, Header, Icon, Input, MarginTop, NavButton, Stacked } from '@substrate/ui-components';
-import { KeyringAddress } from '@polkadot/ui-keyring/types';
 import BN from 'bn.js';
 import React from 'react';
 import { Step } from 'semantic-ui-react';
@@ -24,7 +22,8 @@ type State = {
   amount: BN,
   isAddressValid: boolean,
   open: boolean,
-  recipientAddress?: KeyringAddress | string,
+  recipientAddress?: string,
+  recipientName?: string,
   step: number
 };
 
@@ -46,9 +45,10 @@ export class SendBalance extends React.PureComponent<Props, State> {
     });
   }
 
-  onSelectAddress = (address: string) => {
+  onSelectAddress = (address: string, name: string) => {
     this.setState({
       isAddressValid: this.isValidAddress(address),
+      recipientName: name,
       recipientAddress: address
     });
   }
@@ -76,16 +76,12 @@ export class SendBalance extends React.PureComponent<Props, State> {
     });
   }
 
-  isValidAddress = (address: KeyringAddress | string) => {
-    if (typeof address !== 'string') {
-      address = address.address();
-    }
-
+  isValidAddress = (address: string) => {
     return address[0] === '5' && address.length === 48;
   }
 
   render () {
-    const { amount, isAddressValid, recipientAddress } = this.state;
+    const { amount, isAddressValid, recipientAddress, recipientName } = this.state;
 
     return (
       <Grid>
@@ -102,7 +98,7 @@ export class SendBalance extends React.PureComponent<Props, State> {
                   <Step.Content>
                     <MarginTop />
                     <Stacked>
-                      <AddressSummary address={recipientAddress} size='small' />
+                      <AddressSummary address={recipientAddress} name={recipientName} size='small' />
                       <Input onChange={this.onChangeRecipientAddress} type='text' value={recipientAddress} />
                     </Stacked>
                   </Step.Content>

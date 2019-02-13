@@ -73,7 +73,7 @@ export class Wallet extends React.PureComponent<Props, State> {
               onChange={this.handleInputName}
               type='text' />
           </WithSpace>
-          <NavButton onClick={this.handleAddAccount} value='Create Account' />
+          <NavButton onClick={this.handleAddAccount} value='Add Account' />
         </Stacked>
         {this.renderError()}
         {this.renderSuccess()}
