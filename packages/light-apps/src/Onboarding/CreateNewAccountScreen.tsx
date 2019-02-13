@@ -6,15 +6,10 @@ import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot
 import { ApiContext } from '@substrate/ui-api';
 import { AddressSummary, ErrorText, FadedText, Input, Modal, NavButton, NavLink, Segment, Stacked } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
-import { inject, observer } from 'mobx-react';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { OnboardingStore } from '../stores/onboardingStore';
-
-interface Props extends RouteComponentProps {
-  onboardingStore: OnboardingStore;
-}
+interface Props extends RouteComponentProps { }
 
 type State = {
   address?: string;
@@ -24,9 +19,7 @@ type State = {
   password: string;
 };
 
-@inject('onboardingStore')
-@observer
-export class CreateNewAccountScreen extends React.Component<Props, State> {
+export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
   static contextType = ApiContext;
 
   context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
@@ -52,7 +45,7 @@ export class CreateNewAccountScreen extends React.Component<Props, State> {
 
   private createNewAccount = () => {
     const { keyring } = this.context;
-    const { history, onboardingStore: { setIsFirstRun } } = this.props;
+    const { history } = this.props;
     const { mnemonic, name, password } = this.state;
 
     if (this.validateFields()) {
@@ -63,8 +56,6 @@ export class CreateNewAccountScreen extends React.Component<Props, State> {
       const blob = new Blob([JSON.stringify(json)], { type: 'application/json; charset=utf-8' });
 
       FileSaver.saveAs(blob, `${address}.json`);
-
-      setIsFirstRun(false);
 
       history.push(`/identity/${address}`);
     } else {

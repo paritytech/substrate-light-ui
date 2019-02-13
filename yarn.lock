@@ -1826,39 +1826,39 @@
     "@polkadot/util" "^0.33.36"
     core-js "^2.6.2"
 
-"@polkadot/ui-assets@^0.25.9":
-  version "0.25.11"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-assets/-/ui-assets-0.25.11.tgz#08663f2790b15fbe25c5203792f0f271b7a76e70"
-  integrity sha512-zLdKM9gwB021Cvkl9Omvd46iWJwYAAX45TluG1PzZH4Z+Ppj6pDAwJV+Bv9r5/63f5E7mFjnMSyvHBq3QJIYog==
+"@polkadot/ui-assets@^0.25.10":
+  version "0.25.10"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-assets/-/ui-assets-0.25.10.tgz#f90c8cc420394ccf6b0d868cf8a700bb66f75aa1"
+  integrity sha512-RQEKXLMAKS7JkBoGSR378pPcnvPc17FVny8pJmbOHXIiG97+Qn03NEwYC22jKAk3WFtI8EobkAKj3Y7C1Zzjtg==
   dependencies:
     "@babel/runtime" "^7.2.0"
 
-"@polkadot/ui-identicon@^0.25.9":
-  version "0.25.11"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-identicon/-/ui-identicon-0.25.11.tgz#f5dd99fc1649e879054208d1bda6869226176cfe"
-  integrity sha512-h5TRO+sfwRuZeqjIMJw49veKogrWB5gnE5Y1ytNuSipYQ79DIfxHTSYzSm9jtnQsMacTM+aVX24x2NYiOquRhw==
+"@polkadot/ui-identicon@^0.25.10":
+  version "0.25.10"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-identicon/-/ui-identicon-0.25.10.tgz#50cb1c448b9c42f784b37e09f503124ab6c9ab26"
+  integrity sha512-ewrUbsnm5sQxd6//lJtRW90vjwBpUx0uKOF8zJwFGbJb2Po9dJnH9OdlZC0r0xrlQR7vLAzr+YoLKubKB7PM/A==
   dependencies:
     "@babel/runtime" "^7.2.0"
-    "@polkadot/ui-settings" "^0.25.11"
+    "@polkadot/ui-settings" "^0.25.10"
     "@types/color" "^3.0.0"
     "@types/react-copy-to-clipboard" "^4.2.6"
     color "^3.0.0"
     react-copy-to-clipboard "^5.0.1"
 
-"@polkadot/ui-keyring@^0.25.9":
-  version "0.25.11"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-keyring/-/ui-keyring-0.25.11.tgz#466d5bd956a76f52f322b2262474de992b540b20"
-  integrity sha512-q1Mlp5zF6j8VWXA84bicCKspX+Ria1BN0WO4PSHgjfzO5ehoCHtzNzU266hQPyv+QRdZZ+TtBq11gjQg/yyeZQ==
+"@polkadot/ui-keyring@^0.25.10":
+  version "0.25.10"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-keyring/-/ui-keyring-0.25.10.tgz#77b62be7c617c9c9d02abee327144c5f817eab17"
+  integrity sha512-SlpOLXIRBSkvGqaKXnUVDDKhWi2h+tNRn2K/cvXwYzWoV1hUT6Sz91IDTqeft1gcaQb9h/rz0VbXGi7tw3oP7Q==
   dependencies:
     "@babel/runtime" "^7.2.0"
     "@types/store" "^2.0.1"
     rxjs "^6.3.3"
     store "^2.0.12"
 
-"@polkadot/ui-settings@^0.25.11":
-  version "0.25.11"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-0.25.11.tgz#5f9a15bb43ff954f61834a535ad920eaee314c72"
-  integrity sha512-5rDkw0awPNQWerIiWQCF8TLBzhTjWzZXjig2vJp/1YoN9pD3kQnQ9zu7D3lBFet4LIqzl2XKfXGm0EGyxdQAhA==
+"@polkadot/ui-settings@^0.25.10":
+  version "0.25.10"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-0.25.10.tgz#6f19173c26a6c3b2d1bfa28dba444c9a2c833ff0"
+  integrity sha512-Yac76S9y8c4WVo9UcIQk5TQd2GxHQRiyJvfPo5w0tZRvzOKMKu5F/9GwwBtA/YYP8OkQB7H571lPGhKa6m5Mow==
   dependencies:
     "@babel/runtime" "^7.2.0"
     "@types/store" "^2.0.1"
@@ -7772,13 +7772,6 @@ hoist-non-react-statics@^2.5.0:
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.5.tgz#c5903cf409c0dfd908f388e619d86b9c1174cb47"
   integrity sha512-rqcy4pJo55FTTLWt+bU8ukscqHeE/e9KWvsOW2b/a3afxQZhwkQdT1rPPCJ0rYXdj4vNcasY8zHTH+jF/qStxw==
 
-hoist-non-react-statics@^3.0.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.0.tgz#b09178f0122184fb95acf525daaecb4d8f45958b"
-  integrity sha512-0XsbTXxgiaCDYDIWFcwkmerZPSwywfUqYmwT4jzewKTQSWoE6FCMoUVOeBJWK3E/CrWbxRG3m5GzY4lnIwGRBA==
-  dependencies:
-    react-is "^16.7.0"
-
 home-or-tmp@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/home-or-tmp/-/home-or-tmp-2.0.0.tgz#e36c3f2d2cae7d746a857e38d18d5f32a7882db8"
@@ -10342,24 +10335,6 @@ mkdirp@0.5.1, mkdirp@0.5.x, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdi
   integrity sha1-MAV0OOrGz3+MR2fzhkjWaX11yQM=
   dependencies:
     minimist "0.0.8"
-
-mobx-logger@^0.7.1:
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/mobx-logger/-/mobx-logger-0.7.1.tgz#6be44c726e14433463f5fa566f24f1768e2a9355"
-  integrity sha512-kAcNjzDGjILjvNiVrQZfVY6Bxs5YKt35rtwNuU/uneLq+E9zF5grnGmr95EMqqYSVpE6RjJLID3y3j0yQ/cvRA==
-
-mobx-react@^5.4.3:
-  version "5.4.3"
-  resolved "https://registry.yarnpkg.com/mobx-react/-/mobx-react-5.4.3.tgz#6709b7dd89670c40e9815914ac2ca49cc02bfb47"
-  integrity sha512-WC8yFlwvJ91hy8j6CrydAuFteUafcuvdITFQeHl3LRIf5ayfT/4W3M/byhEYD2BcJWejeXr8y4Rh2H26RunCRQ==
-  dependencies:
-    hoist-non-react-statics "^3.0.0"
-    react-lifecycles-compat "^3.0.2"
-
-mobx@^5.8.0:
-  version "5.9.0"
-  resolved "https://registry.yarnpkg.com/mobx/-/mobx-5.9.0.tgz#a08edd7132787f771409c9c33788a5df66ff7ce7"
-  integrity sha512-D3mY1uM3H9BP5duk5tTanrOq92yqetYKsprPJWvkKDrbs+fro59xrpWX+vtr10YoLgJIFz+a4A8lI+4YtqmCUQ==
 
 modify-values@^1.0.0:
   version "1.0.1"
@@ -13149,11 +13124,6 @@ react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1:
   version "16.8.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.1.tgz#a80141e246eb894824fb4f2901c0c50ef31d4cdb"
   integrity sha512-ioMCzVDWvCvKD8eeT+iukyWrBGrA3DiFYkXfBsVYIRdaREZuBjENG+KjrikavCLasozqRWTwFUagU/O4vPpRMA==
-
-react-lifecycles-compat@^3.0.2:
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
-  integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
 react-router-dom@^4.3.1:
   version "4.3.1"
