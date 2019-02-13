@@ -84,51 +84,51 @@ export class SendBalance extends React.PureComponent<Props, State> {
     const { amount, isAddressValid, recipientAddress, recipientName } = this.state;
 
     return (
-        <Grid>
-          <Grid.Row centered>
-            <Header> Transfer Balance </Header>
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column width='6'>
-              <Stacked>
-                <Step.Group vertical>
-                  <Step completed={isAddressValid}>
-                    <Step.Title> Recipient </Step.Title>
-                    <Icon name='address book' color='blue' />
-                    <Step.Content>
-                      <MarginTop />
-                      <Stacked>
-                        <AddressSummary address={recipientAddress} name={recipientName} size='small' />
-                        <Input onChange={this.onChangeRecipientAddress} type='text' value={recipientAddress} />
-                      </Stacked>
-                    </Step.Content>
-                  </Step>
+      <Grid>
+        <Grid.Row centered>
+          <Header> Transfer Balance </Header>
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column width='6'>
+            <Stacked>
+              <Step.Group vertical>
+                <Step completed={isAddressValid}>
+                  <Step.Title> Recipient </Step.Title>
+                  <Icon name='address book' color='blue' />
+                  <Step.Content>
+                    <MarginTop />
+                    <Stacked>
+                      <AddressSummary address={recipientAddress} name={recipientName} size='small' />
+                      <Input onChange={this.onChangeRecipientAddress} type='text' value={recipientAddress} />
+                    </Stacked>
+                  </Step.Content>
+                </Step>
 
-                  <Step completed={!amount.isZero()}>
-                    <Step.Title> Amount </Step.Title>
-                    <Icon name='law' color='blue' />
-                    <Step.Content>
-                      <Stacked>
-                        <Input onChange={this.onChangeAmount} type='number' value={amount} />
-                      </Stacked>
-                    </Step.Content>
-                  </Step>
+                <Step completed={!amount.isZero()}>
+                  <Step.Title> Amount </Step.Title>
+                  <Icon name='law' color='blue' />
+                  <Step.Content>
+                    <Stacked>
+                      <Input onChange={this.onChangeAmount} type='number' value={amount} />
+                    </Stacked>
+                  </Step.Content>
+                </Step>
 
-                  <Step>
-                    <Icon name='send' color='blue' />
-                    <Step.Content>
-                      <NavButton onClick={this.onSubmitTransfer}>Submit Transfer</NavButton>
-                    </Step.Content>
-                  </Step>
-                </Step.Group>
-              </Stacked>
-            </Grid.Column>
+                <Step>
+                  <Icon name='send' color='blue' />
+                  <Step.Content>
+                    <NavButton onClick={this.onSubmitTransfer}>Submit Transfer</NavButton>
+                  </Step.Content>
+                </Step>
+              </Step.Group>
+            </Stacked>
+          </Grid.Column>
 
-            <Grid.Column width='10'>
-              <Saved onSelectAddress={this.onSelectAddress} {...this.props} />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
+          <Grid.Column width='10'>
+            <Saved onSelectAddress={this.onSelectAddress} {...this.props} />
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
     );
   }
 }
