@@ -2,13 +2,15 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { ApiContext } from '@polkadot/ui-api';
-import { AddressSummary, Grid, Icon, MarginTop, NavLink, Stacked, StackedHorizontal, SubHeader, WalletCard, WithSpace } from '@polkadot/ui-components';
-import { SubjectInfo } from '@polkadot/ui-keyring/observable/types';
+import { ApiContext } from '@substrate/ui-api';
+import { AddressSummary, Grid, Icon, MarginTop, NavLink, Stacked, StackedHorizontal, SubHeader, WalletCard, WithSpace } from '@substrate/ui-components';
+import { SingleAddress, SubjectInfo } from '@polkadot/ui-keyring/observable/types';
 import accountObservable from '@polkadot/ui-keyring/observable/accounts';
 import addressObservable from '@polkadot/ui-keyring/observable/addresses';
 import React from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
+import { map } from 'rxjs/operators';
+import { Subscribe } from 'react-with-observable';
 
 interface MatchParams {
   currentAddress: string;
@@ -19,48 +21,10 @@ interface Props extends RouteComponentProps<MatchParams> {
   onSelectAddress: (address: string, name: string) => void;
 }
 
-type State = {
-  allAccounts: SubjectInfo,
-  allAddresses: SubjectInfo,
-  subscriptions: Array<any> // fixme rx Subscription
-};
-
-export class Saved extends React.PureComponent<Props, State> {
+export class Saved extends React.PureComponent<Props> {
   static contextType = ApiContext;
 
   context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
-
-  state: State = {
-    allAccounts: {},
-    allAddresses: {},
-    subscriptions: []
-  };
-
-  componentDidMount () {
-    const accSub = accountObservable.subject.subscribe(accounts => {
-      this.setState({
-        allAccounts: accounts
-      });
-    });
-
-    const addSub = addressObservable.subject.subscribe(addresses => {
-      this.setState({
-        allAddresses: addresses
-      });
-    });
-
-    this.setState({
-      subscriptions: [accSub, addSub]
-    });
-  }
-
-  componentWillUnmount () {
-    const { subscriptions } = this.state;
-
-    subscriptions.forEach(sub => {
-      sub.unsubscribe();
-    });
-  }
 
   forgetSelectedAddress = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     const { keyring } = this.context;
@@ -91,7 +55,7 @@ export class Saved extends React.PureComponent<Props, State> {
             <Stacked>
               <SubHeader> My Unlocked Accounts </SubHeader>
               <WithSpace>
-                  { this.renderAccountsToSendFrom() }
+                { this.renderAccountsToSendFrom() }
               </WithSpace>
             </Stacked>
           </Grid.Column>
@@ -99,7 +63,7 @@ export class Saved extends React.PureComponent<Props, State> {
             <Stacked>
               <SubHeader> Saved Addresses </SubHeader>
               <WithSpace>
-                  { this.renderAddressesToSendTo() }
+                { this.renderAddressesToSendTo() }
               </WithSpace>
             </Stacked>
           </Grid.Column>
@@ -109,54 +73,57 @@ export class Saved extends React.PureComponent<Props, State> {
   }
 
   renderAccountsToSendFrom () {
-    const { allAccounts } = this.state;
-
-    if (!allAccounts) {
-      this.renderEmpty();
-    }
-
-    return Object.values(allAccounts).map(account => {
-      return (
-        <React.Fragment key={`__unlocked_${account.json.address}`}>
-          <MarginTop />
-          <Link to={`/transfer/${account.json.address}`}>
-            <AddressSummary
-              address={account.json.address}
-              name={account.json.meta.name}
-              orientation='horizontal'
-              size='small' />
-          </Link>
-        </React.Fragment>
-      );
-    });
+    return (
+      <Subscribe>
+        {accountObservable.subject.pipe(
+          map((allAccounts: SubjectInfo) =>
+            !allAccounts
+              ? this.renderEmpty()
+              : Object.values(allAccounts).map((account: SingleAddress) =>
+                  <React.Fragment key={account.json.address}>
+                    <MarginTop />
+                    <Link to={`/identity/${account.json.address}`}>
+                      <AddressSummary
+                        address={account.json.address}
+                        name={account.json.meta.name}
+                        orientation='horizontal'
+                        size='small'
+                      />
+                    </Link>
+                  </React.Fragment>
+              )
+          ))}
+      </Subscribe>
+    );
   }
 
   renderAddressesToSendTo () {
-    const { allAddresses } = this.state;
-
-    if (!allAddresses.length) {
-      this.renderEmpty();
-    }
-
-    return Object.values(allAddresses).map(address => {
-      return (
-        <React.Fragment key={`__locked_${address.json.address}`}>
-          <MarginTop />
-          <StackedHorizontal>
-            <Link to='#' data-address={address.json.address} data-name={address.json.meta.name} onClick={this.handleSelectedRecipient}>
-              <AddressSummary
-                address={address.json.address}
-                name={address.json.meta.name}
-                orientation='horizontal'
-                size='small' />
-            </Link>
-            <Link to='#' data-address={address.json.address} onClick={this.forgetSelectedAddress}>
-              <Icon name='close' />
-            </Link>
-          </StackedHorizontal>
-        </React.Fragment>
-      );
-    });
+    return (
+      <Subscribe>
+        {addressObservable.subject.pipe(
+          map((allAddresses: SubjectInfo) =>
+            !allAddresses
+              ? this.renderEmpty()
+              : Object.values(allAddresses).map((address: SingleAddress) =>
+                  <React.Fragment key={`__locked_${address.json.address}`}>
+                    <MarginTop />
+                    <StackedHorizontal>
+                      <Link to='#' data-address={address.json.address} data-name={address.json.meta.name} onClick={this.handleSelectedRecipient}>
+                        <AddressSummary
+                          address={address.json.address}
+                          name={address.json.meta.name}
+                          orientation='horizontal'
+                          size='small' />
+                      </Link>
+                      <Link to='#' data-address={address.json.address} onClick={this.forgetSelectedAddress}>
+                        <Icon name='close' />
+                      </Link>
+                    </StackedHorizontal>
+                  </React.Fragment>
+              )
+          ))}
+      </Subscribe>
+    );
   }
 
   renderEmpty () {

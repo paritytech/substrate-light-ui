@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { ErrorText, Input, MarginTop, NavButton, Stacked, SubHeader, SuccessText, WalletCard, WithSpace } from '@polkadot/ui-components';
+import { ErrorText, Input, MarginTop, NavButton, Stacked, SubHeader, SuccessText, WalletCard, WithSpace } from '@substrate/ui-components';
 import React from 'react';
 
 type Props = {
@@ -73,10 +73,10 @@ export class Wallet extends React.PureComponent<Props, State> {
               onChange={this.handleInputName}
               type='text' />
           </WithSpace>
-          <NavButton onClick={this.handleAddAccount} value='Create Account' />
+          <NavButton onClick={this.handleAddAccount} value='Add Account' />
         </Stacked>
-        { this.renderError() }
-        { this.renderSuccess() }
+        {this.renderError()}
+        {this.renderSuccess()}
       </WalletCard>
     );
   }

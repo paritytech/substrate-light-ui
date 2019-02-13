@@ -2,10 +2,10 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Address, AddressSummary, ErrorText, Header, Icon, Input, MarginTop, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SuccessText, WithSpaceBetween } from '@polkadot/ui-components';
 import { Balance } from '@polkadot/types';
-import { ApiContext, Subscribe } from '@polkadot/ui-api';
 import { stringUpperFirst } from '@polkadot/util';
+import { ApiContext, Subscribe } from '@substrate/ui-api';
+import { Address, AddressSummary, ErrorText, Header, Icon, Input, MarginTop, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SuccessText, WithSpaceBetween } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -24,7 +24,7 @@ type State = {
   success?: string
 };
 
-export class IdentityCard extends React.Component<Props, State> {
+export class IdentityCard extends React.PureComponent<Props, State> {
   static contextType = ApiContext;
 
   context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context

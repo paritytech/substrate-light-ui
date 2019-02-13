@@ -1,9 +1,11 @@
 {
-  "name": "@polkadot/ui-api",
+  "name": "@substrate/ui-api",
   "version": "0.1.0",
-  "repository": "https://github.com/polkadot-js/light-ui.git",
+  "description": "Wrapper to connect React components to PolkadotJS Api",
   "license": "Apache-2.0",
   "main": "build/index.js",
+  "private": true,
+  "repository": "https://github.com/paritytech/substrate-light-ui.git",
   "scripts": {
     "build": "tsc",
     "start": "yarn build --watch",
@@ -11,8 +13,7 @@
   },
   "dependencies": {
     "@polkadot/api": "^0.42.2",
-    "@polkadot/types": "^0.33.25",
-    "@polkadot/ui-keyring": "^0.23.2",
+    "@polkadot/ui-keyring": "^0.25.10",
     "@types/create-subscription": "^16.4.1",
     "create-subscription": "^16.8.0",
     "react-with-observable": "^2.0.1"

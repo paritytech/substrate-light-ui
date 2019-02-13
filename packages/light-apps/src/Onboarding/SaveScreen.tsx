@@ -2,21 +2,16 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { ApiContext } from '@polkadot/ui-api';
-import { AddressSummary, ErrorText, Input, Modal, NavButton, NavLink, Stacked } from '@polkadot/ui-components';
-import { inject, observer } from 'mobx-react';
+import { ApiContext } from '@substrate/ui-api';
+import { AddressSummary, ErrorText, Input, Modal, NavButton, NavLink, Stacked } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-
-import { OnboardingStore } from '../stores/onboardingStore';
 
 interface MatchParams {
   importMethod: string;
 }
 
-interface Props extends RouteComponentProps<MatchParams> {
-  onboardingStore: OnboardingStore;
-}
+interface Props extends RouteComponentProps<MatchParams> { }
 
 type State = {
   address?: string;
@@ -27,9 +22,7 @@ type State = {
   recoveryPhrase: string;
 };
 
-@inject('onboardingStore')
-@observer
-export class SaveScreen extends React.Component<Props, State> {
+export class SaveScreen extends React.PureComponent<Props, State> {
   static contextType = ApiContext;
 
   context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
@@ -72,7 +65,7 @@ export class SaveScreen extends React.Component<Props, State> {
   private saveToWallet = () => {
     const { keyring } = this.context;
     const { jsonString, name, recoveryPhrase, password } = this.state;
-    const { history, match, onboardingStore: { setIsFirstRun } } = this.props;
+    const { history, match } = this.props;
 
     let pair;
 
@@ -84,8 +77,6 @@ export class SaveScreen extends React.Component<Props, State> {
       } else {
         pair = keyring.createAccountMnemonic(recoveryPhrase, password, { name });
       }
-
-      setIsFirstRun(false);
 
       history.push(`/identity/${pair.address()}`);
     } catch (e) {

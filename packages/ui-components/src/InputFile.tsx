@@ -1,4 +1,4 @@
-// Copyright 2017-2018 @polkadot/light-apps authors & contributors
+// Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
@@ -38,23 +38,23 @@ class InputFile extends React.PureComponent<Props, State> {
     const { file } = this.state;
 
     return (
-        <Dropzone
-          accept={accept}
-          multiple={false}
-          onDrop={this.onDrop}>
-           {({ getRootProps, getInputProps, isDragActive }) => {
-             return (
-               <FileInputArea {...getRootProps()}>
-                   <input {...getInputProps()} />
-                   {
-                     !file ?
-                       <FadedText>Drop file here...</FadedText> :
-                       <FadedText>{file.name}</FadedText>
-                   }
-               </FileInputArea>
-             );
-           }}
-       </Dropzone>
+      <Dropzone
+        accept={accept}
+        multiple={false}
+        onDrop={this.onDrop}>
+        {({ getRootProps, getInputProps, isDragActive }) => {
+          return (
+            <FileInputArea {...getRootProps()}>
+              <input {...getInputProps()} />
+              {
+                !file ?
+                  <FadedText>Drop file here...</FadedText> :
+                  <FadedText>{file.name}</FadedText>
+              }
+            </FileInputArea>
+          );
+        }}
+      </Dropzone>
     );
   }
 
