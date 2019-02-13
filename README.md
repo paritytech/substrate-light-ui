@@ -20,7 +20,7 @@ As of now, the main functions are as follows, in order of priority:
 
 Make sure you have [yarn >= 1.4.2](http://yarnpkg.com/) and [nodejs >= 10.10.0](https://nodejs.org/en/).
 
-For now, you also need to have an instance of [Substrate](https://github.com/paritytech/substrate) running locally on your machine. We plan of course to bundle Substrate into the Electron app very soon.
+**IMPORTANT.** For now, you also need to have an instance of [Substrate](https://github.com/paritytech/substrate) running locally on your machine, exposing a WebSocket on its default port 127.0.0.1:9944. We plan of course to bundle Substrate into the Electron app very soon, see #52.
 
 ### Clone this repo
 
@@ -36,7 +36,9 @@ yarn install
 yarn electron
 ```
 
-### Build binaries (takes more time)
+### Build binaries
+
+This command takes more time than the previous, but it'll produce a fully standalone binary.
 
 ```bash
 yarn package
