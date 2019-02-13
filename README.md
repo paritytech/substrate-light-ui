@@ -20,7 +20,7 @@ As of now, the main functions are as follows, in order of priority:
 
 Make sure you have [yarn >= 1.4.2](http://yarnpkg.com/) and [nodejs >= 10.10.0](https://nodejs.org/en/).
 
-**IMPORTANT.** For now, you also need to have an instance of [Substrate](https://github.com/paritytech/substrate) running locally on your machine, exposing a WebSocket on its default port 127.0.0.1:9944. We plan of course to bundle Substrate into the Electron app very soon, see #52.
+**IMPORTANT.** For now, you also need to have an instance of [Substrate](https://github.com/paritytech/substrate) running locally on your machine, exposing a WebSocket on its default port 127.0.0.1:9944. We plan of course to bundle Substrate into the Electron app very soon, see [#52](https://github.com/paritytech/substrate-light-ui/issues/52).
 
 ### Clone this repo
 
