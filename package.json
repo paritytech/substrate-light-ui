@@ -1,14 +1,11 @@
 {
   "name": "@polkadot/light-ui",
-  "description": "User interface optimized for the Substrate light client",
   "version": "0.1.0",
-  "private": true,
+  "author": "Parity Technologies <admin@parity.io>",
+  "description": "User interface optimized for the Substrate light client",
   "license": "Apache-2.0",
-  "author": "Parity Team <admin@parity.io>",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/paritytech/substrate-light-ui.git"
-  },
+  "private": true,
+  "repository": "https://github.com/paritytech/substrate-light-ui.git",
   "workspaces": {
     "packages": [
       "packages/*"
@@ -22,12 +19,14 @@
   },
   "scripts": {
     "prebuild": "yarn clean",
-    "prepackage": "yarn build",
-    "prestart": "./scripts/prestart.sh",
-    "package": "cd packages/electron-app && yarn dist",
     "build": "lerna exec yarn build --stream",
     "clean": "polkadot-dev-clean-build",
+    "preelectron": "yarn build",
+    "electron": "cd packages/electron-app && yarn electron",
     "lint": "tsc --noEmit && tslint --project .",
+    "prepackage": "yarn build",
+    "package": "cd packages/electron-app && yarn package",
+    "prestart": "./scripts/prestart.sh",
     "start": "lerna exec yarn start --parallel",
     "test": "CI=true lerna run test --parallel"
   },

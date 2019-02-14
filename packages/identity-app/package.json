@@ -1,6 +1,7 @@
 {
   "name": "@substrate/identity-app",
   "version": "0.1.0",
+  "author": "Parity Technologies <admin@parity.io>",
   "description": "Account management for Substrate client",
   "license": "Apache-2.0",
   "main": "build/index.js",
