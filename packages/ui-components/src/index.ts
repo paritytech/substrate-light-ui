@@ -10,6 +10,7 @@ import Icon from './Icon';
 import Input from './Input';
 import InputFile from './InputFile';
 import Menu from './Menu';
+import MnemonicSegment from './MnemonicSegment';
 import Modal from './Modal';
 import NavButton from './NavButton';
 import NavLink from './NavLink';
@@ -25,6 +26,7 @@ export {
   Input,
   InputFile,
   Menu,
+  MnemonicSegment,
   Modal,
   NavButton,
   NavLink,

@@ -5,10 +5,11 @@
 import { ApiContext } from '@substrate/ui-api';
 import { ErrorText, Input, MarginTop, NavButton, Stacked, SubHeader, SuccessText, WalletCard, WithSpace } from '@substrate/ui-components';
 import React from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 
-type Props = {
-  basePath: string
-};
+interface Props extends RouteComponentProps {
+  basePath: string;
+}
 
 type State = {
   error: string | null,
@@ -39,16 +40,16 @@ export class AddressBook extends React.PureComponent<Props, State> {
 
   private handleSaveAccount = () => {
     const { keyring } = this.context;
+    const { history } = this.props;
     const { name, lookupAddress } = this.state;
-    // FIXME: after saving, also display its status in a modal with options to do a balance transfer to it:
-    try {
-      if (keyring.getAddress(lookupAddress)) {
-        this.onError("You've already saved this address");
-      }
 
+    try {
+      // If the lookupaddress is already saved, just update the name
       keyring.saveAddress(lookupAddress, { name });
 
       this.onSuccess('Successfully saved address');
+
+      setInterval(() => history.push('/transfer'), 500);
     } catch (e) {
       this.onError(e.message);
     }
