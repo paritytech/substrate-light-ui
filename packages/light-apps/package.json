@@ -1,6 +1,7 @@
 {
   "name": "@substrate/light-apps",
   "version": "0.1.0",
+  "author": "Parity Technologies <admin@parity.io>",
   "description": "User interface optimized for the Substrate light client",
   "license": "Apache-2.0",
   "private": true,
@@ -16,6 +17,7 @@
     "not ie <= 11",
     "not op_mini all"
   ],
+  "homepage": "./",
   "dependencies": {
     "@polkadot/api": "^0.42.2",
     "@polkadot/keyring": "^0.33.36",

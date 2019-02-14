@@ -1,0 +1,21 @@
+{
+  "appId": "io.parity.substratelightui",
+  "linux": {
+    "category": "Utility",
+    "target": [
+      "AppImage",
+      "snap",
+      "deb",
+      "tar.xz"
+    ]
+  },
+  "mac": {
+    "category": "public.app-category.productivity"
+  },
+  "productName": "Parity Substrate Light UI",
+  "publish": "github",
+  "win": {
+    "publisherName": "Parity Technologies (UK) Ltd.",
+    "target": "nsis"
+  }
+}

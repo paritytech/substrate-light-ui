@@ -4,9 +4,13 @@
 
 import electron from 'electron';
 import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
+import path from 'path';
+import url from 'url';
+
+import { staticPath } from './util/staticPath';
 
 const { app, BrowserWindow } = electron;
-let mainWindow: Electron.BrowserWindow | null;
+let mainWindow: Electron.BrowserWindow | undefined;
 
 function createWindow () {
   mainWindow = new BrowserWindow({
@@ -16,7 +20,11 @@ function createWindow () {
   });
 
   mainWindow.loadURL(
-    process.env.ELECTRON_START_URL || 'http://127.0.0.1:3000'
+    process.env.ELECTRON_START_URL || url.format({
+      pathname: path.join(staticPath, 'build', 'index.html'),
+      protocol: 'file:',
+      slashes: true
+    })
   );
 
   if (process.env.NODE_ENV !== 'production') {
@@ -26,14 +34,25 @@ function createWindow () {
   }
 
   mainWindow.on('closed', () => {
-    mainWindow = null;
+    mainWindow = undefined;
   });
 }
 
 app.on('ready', createWindow);
 
-app.on('activate', () => {
-  if (mainWindow === null) {
+app.on('activate', function () {
+  // On OS X it's common to re-create a window in the app when the
+  // dock icon is clicked and there are no other windows open.
+  if (mainWindow === undefined) {
     createWindow();
+  }
+});
+
+// Quit when all windows are closed.
+app.on('window-all-closed', function () {
+  // On OS X it is common for applications and their menu bar
+  // to stay active until the user quits explicitly with Cmd + Q
+  if (process.platform !== 'darwin') {
+    app.quit();
   }
 });
