@@ -7,7 +7,7 @@ import { ChainProperties } from '@polkadot/types';
 import keyring from '@polkadot/ui-keyring';
 import React from 'react';
 import { Observable, zip } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { first, map, takeLast } from 'rxjs/operators';
 
 import { ApiContext } from './ApiContext';
 import { isTestChain } from './util';
@@ -27,11 +27,8 @@ export class ApiGate extends React.PureComponent {
       (this.api.rpc.system.chain()),
       // FIXME Correct types should come from @polkadot/api to avoid type assertion
       (this.api.rpc.system.properties() as unknown as Observable<ChainProperties>)
-    ).pipe(
-      take(2)
-    ).subscribe((chainInfo) => {
-      const chain = chainInfo[1].toString();
-      const properties = chainInfo[2];
+    )
+    .subscribe(([_, chain, properties]) => {
       const networkId = properties.get('networkId') || 42;
 
       // Setup keyring (loadAll) only after prefix has been set

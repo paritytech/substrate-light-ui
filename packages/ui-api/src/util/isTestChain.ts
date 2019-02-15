@@ -4,7 +4,7 @@
 
 import { isUndefined } from '@polkadot/util';
 
-const re = new RegExp('(dev|loc)', 'i');
+const re = new RegExp('(Development|Local)', 'i');
 
 export default function isTestChain (chain?: string): boolean {
   if (isUndefined(chain)) {

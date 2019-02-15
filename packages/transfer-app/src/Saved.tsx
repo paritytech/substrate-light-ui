@@ -90,6 +90,7 @@ export class Saved extends React.PureComponent<Props> {
                       orientation='horizontal'
                       size='64'
                       />
+                    </Link>
                     <Subscribe>
                       {
                         // FIXME using any because freeBalance gives a Codec here, not a Balance
@@ -97,7 +98,6 @@ export class Saved extends React.PureComponent<Props> {
                         api.query.balances.freeBalance(account.json.address).pipe(map(this.renderBalance as any))
                       }
                     </Subscribe>
-                    </Link>
                   </React.Fragment>
               )
           ))}
@@ -124,14 +124,14 @@ export class Saved extends React.PureComponent<Props> {
                           name={address.json.meta.name}
                           orientation='horizontal'
                           size='small' />
-                          <Subscribe>
-                            {
-                              // FIXME using any because freeBalance gives a Codec here, not a Balance
-                              // Wait for @polkadot/api to have TS support for all query.*
-                              api.query.balances.freeBalance(address.json.address).pipe(map(this.renderBalance as any))
-                            }
-                          </Subscribe>
                       </Link>
+                      <Subscribe>
+                        {
+                          // FIXME using any because freeBalance gives a Codec here, not a Balance
+                          // Wait for @polkadot/api to have TS support for all query.*
+                          api.query.balances.freeBalance(address.json.address).pipe(map(this.renderBalance as any))
+                        }
+                      </Subscribe>
                       <Link to='#' data-address={address.json.address} onClick={this.forgetSelectedAddress}>
                         <Icon name='close' />
                       </Link>
