@@ -89,7 +89,7 @@ export class SendBalance extends React.PureComponent<Props, State> {
            api.tx.balances
              // create transfer
              .transfer(recipientAddress, amount)
-             // sign the transcation
+             // sign the transaction
              .sign(senderPair, { nonce })
              // send the transaction
              .send()
