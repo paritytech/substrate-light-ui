@@ -1,12 +1,12 @@
 // Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
-
-import { ApiContext, Subscribe } from '@substrate/ui-api';
-import { AddressSummary, BalanceDisplay, Grid, Icon, MarginTop, NavLink, Stacked, StackedHorizontal, SubHeader, WalletCard, WithSpace } from '@substrate/ui-components';
+import { Balance } from '@polkadot/types';
 import { SingleAddress, SubjectInfo } from '@polkadot/ui-keyring/observable/types';
 import accountObservable from '@polkadot/ui-keyring/observable/accounts';
 import addressObservable from '@polkadot/ui-keyring/observable/addresses';
+import { ApiContext, Subscribe } from '@substrate/ui-api';
+import { AddressSummary, BalanceDisplay, Grid, Icon, MarginTop, NavLink, Stacked, StackedHorizontal, SubHeader, WalletCard, WithSpace } from '@substrate/ui-components';
 import React from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { map } from 'rxjs/operators';
@@ -88,7 +88,7 @@ export class Saved extends React.PureComponent<Props> {
                       address={account.json.address}
                       name={account.json.meta.name}
                       orientation='horizontal'
-                      size='64'
+                      size='medium'
                       />
                     </Link>
                     <Subscribe>

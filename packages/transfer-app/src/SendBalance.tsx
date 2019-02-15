@@ -2,7 +2,6 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 import ApiRx from '@polkadot/api/rx';
-import { Nonce } from '@polkadot/api/types';
 import { ApiContext } from '@substrate/ui-api';
 import { AddressSummary, ErrorText, Grid, Header, Icon, Input, MarginTop, NavButton, Stacked, SuccessText } from '@substrate/ui-components';
 import BN from 'bn.js';
@@ -10,7 +9,7 @@ import React from 'react';
 import { Step } from 'semantic-ui-react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Subscription } from 'rxjs';
-import { first, map, switchMap } from 'rxjs/operators';
+import { first, switchMap } from 'rxjs/operators';
 
 import { Saved } from './Saved';
 
@@ -103,7 +102,7 @@ export class SendBalance extends React.PureComponent<Props, State> {
         .pipe(
            first(),
            // pipe nonce into transfer
-           switchMap(nonce =>
+           switchMap((nonce: any) =>
              api.tx.balances
                // create transfer
                .transfer(recipientAddress, amount)
@@ -114,11 +113,13 @@ export class SendBalance extends React.PureComponent<Props, State> {
            )
         )
         // subscribe to overall result
+        // @ts-ignore
+        // FIXME: add the status and type types
         .subscribe(({ status, type }) => {
           if (type === 'Finalised') {
             this.onSuccess(`Completed at block hash ${status.asFinalised.toHex()}`);
           } else if (type === 'Dropped' || type === 'Usurped') {
-            this.onError(`${type} at ${status.asFinalised.toHex}`);
+            this.onError(`${type} at ${status}`);
           } else {
             console.log(`Status of transfer: ${type}...`);
           }

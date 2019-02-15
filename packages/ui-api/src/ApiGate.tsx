@@ -7,7 +7,6 @@ import { ChainProperties } from '@polkadot/types';
 import keyring from '@polkadot/ui-keyring';
 import React from 'react';
 import { Observable, zip } from 'rxjs';
-import { first, map, takeLast } from 'rxjs/operators';
 
 import { ApiContext } from './ApiContext';
 import { isTestChain } from './util';
@@ -33,7 +32,7 @@ export class ApiGate extends React.PureComponent {
 
       // Setup keyring (loadAll) only after prefix has been set
       keyring.setAddressPrefix(networkId);
-      keyring.setDevMode(isTestChain(chain || ''));
+      keyring.setDevMode(isTestChain(chain.toString() || ''));
       keyring.loadAll();
 
       this.setState({ isReady: true });

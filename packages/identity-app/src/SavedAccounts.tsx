@@ -2,6 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { Balance } from '@polkadot/types';
 import { AddressSummary, BalanceDisplay, MarginTop, Stacked, WalletCard, WithSpace } from '@substrate/ui-components';
 import accountObservable from '@polkadot/ui-keyring/observable/accounts';
 import { SingleAddress, SubjectInfo } from '@polkadot/ui-keyring/observable/types';
