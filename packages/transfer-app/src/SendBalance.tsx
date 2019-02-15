@@ -7,7 +7,6 @@ import { ApiContext } from '@substrate/ui-api';
 import { AddressSummary, Grid, Header, Icon, Input, MarginTop, NavButton, Stacked } from '@substrate/ui-components';
 import BN from 'bn.js';
 import React from 'react';
-import { first, switchMap } from 'rxjs/operators';
 import { Step } from 'semantic-ui-react';
 import { RouteComponentProps } from 'react-router-dom';
 

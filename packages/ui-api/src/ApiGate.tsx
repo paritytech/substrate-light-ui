@@ -7,9 +7,10 @@ import { ChainProperties } from '@polkadot/types';
 import keyring from '@polkadot/ui-keyring';
 import React from 'react';
 import { Observable, zip } from 'rxjs';
-import { first, map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 
 import { ApiContext } from './ApiContext';
+import { isTestChain } from './util';
 
 interface State {
   isReady: boolean;
@@ -23,16 +24,19 @@ export class ApiGate extends React.PureComponent {
     // Get info about the current chain
     zip(
       this.api.isReady,
+      (this.api.rpc.system.chain()),
       // FIXME Correct types should come from @polkadot/api to avoid type assertion
       (this.api.rpc.system.properties() as unknown as Observable<ChainProperties>)
     ).pipe(
-      map(([_, properties]) => properties),
-      first()
-    ).subscribe((properties) => {
+      take(2)
+    ).subscribe((chainInfo) => {
+      const chain = chainInfo[1];
+      const properties = chainInfo[2];
       const networkId = properties.get('networkId') || 42;
 
       // Setup keyring (loadAll) only after prefix has been set
       keyring.setAddressPrefix(networkId);
+      keyring.setDevMode(isTestChain(chain || ''));
       keyring.loadAll();
 
       this.setState({ isReady: true });
