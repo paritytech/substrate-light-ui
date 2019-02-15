@@ -2,13 +2,14 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 import ApiRx from '@polkadot/api/rx';
-// import { Nonce } from '@polkadot/api/types';
+import { Nonce } from '@polkadot/api/types';
 import { ApiContext } from '@substrate/ui-api';
 import { AddressSummary, Grid, Header, Icon, Input, MarginTop, NavButton, Stacked } from '@substrate/ui-components';
 import BN from 'bn.js';
 import React from 'react';
 import { Step } from 'semantic-ui-react';
 import { RouteComponentProps } from 'react-router-dom';
+import { first, map, switchMap } from 'rxjs/operators';
 
 import { Saved } from './Saved';
 
@@ -69,19 +70,35 @@ export class SendBalance extends React.PureComponent<Props, State> {
   }
 
   onSubmitTransfer = async () => {
+    const { keyring } = this.context;
     const { amount, recipientAddress } = this.state;
     const { match } = this.props;
 
     const api = await ApiRx.create().toPromise();
 
-    const sender = match.params.currentAddress;
+    const senderAddress = match.params.currentAddress;
+    const senderPair = keyring.getPair(senderAddress);
 
-    api.tx.balances
-      .transfer(recipientAddress, amount)
-      .signAndSend(sender)
+    // retrieve nonce for the account
+    api.query.system
+      .accountNonce(senderAddress)
+      .pipe(
+         first(),
+         // pipe nonce into transfer
+         switchMap(nonce =>
+           api.tx.balances
+             // create transfer
+             .transfer(recipientAddress, amount)
+             // sign the transcation
+             .sign(senderPair, { nonce })
+             // send the transaction
+             .send()
+         )
+      )
+      // subscribe to overall result
       .subscribe(({ status, type }) => {
         if (type === 'Finalised') {
-          console.log(`Successful transfer of ${amount} from ${sender} to ${recipientAddress} with hash ${status.asFinalised.toHex()}`);
+          console.log('Completed at block hash', status.asFinalised.toHex());
         } else {
           console.log(`Staus of transfer: ${type}`);
         }

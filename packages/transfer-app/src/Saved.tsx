@@ -2,15 +2,14 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { ApiContext } from '@substrate/ui-api';
-import { AddressSummary, Grid, Icon, MarginTop, NavLink, Stacked, StackedHorizontal, SubHeader, WalletCard, WithSpace } from '@substrate/ui-components';
+import { ApiContext, Subscribe } from '@substrate/ui-api';
+import { AddressSummary, BalanceDisplay, Grid, Icon, MarginTop, NavLink, Stacked, StackedHorizontal, SubHeader, WalletCard, WithSpace } from '@substrate/ui-components';
 import { SingleAddress, SubjectInfo } from '@polkadot/ui-keyring/observable/types';
 import accountObservable from '@polkadot/ui-keyring/observable/accounts';
 import addressObservable from '@polkadot/ui-keyring/observable/addresses';
 import React from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { map } from 'rxjs/operators';
-import { Subscribe } from 'react-with-observable';
 
 interface MatchParams {
   currentAddress: string;
@@ -73,6 +72,8 @@ export class Saved extends React.PureComponent<Props> {
   }
 
   renderAccountsToSendFrom () {
+    const { api } = this.context;
+
     return (
       <Subscribe>
         {accountObservable.subject.pipe(
@@ -83,12 +84,19 @@ export class Saved extends React.PureComponent<Props> {
                   <React.Fragment key={account.json.address}>
                     <MarginTop />
                     <Link to={`/transfer/${account.json.address}`}>
-                      <AddressSummary
-                        address={account.json.address}
-                        name={account.json.meta.name}
-                        orientation='horizontal'
-                        size='small'
+                    <AddressSummary
+                      address={account.json.address}
+                      name={account.json.meta.name}
+                      orientation='horizontal'
+                      size='64'
                       />
+                    <Subscribe>
+                      {
+                        // FIXME using any because freeBalance gives a Codec here, not a Balance
+                        // Wait for @polkadot/api to have TS support for all query.*
+                        api.query.balances.freeBalance(account.json.address).pipe(map(this.renderBalance as any))
+                      }
+                    </Subscribe>
                     </Link>
                   </React.Fragment>
               )
@@ -98,6 +106,8 @@ export class Saved extends React.PureComponent<Props> {
   }
 
   renderAddressesToSendTo () {
+    const { api } = this.context;
+
     return (
       <Subscribe>
         {addressObservable.subject.pipe(
@@ -114,6 +124,13 @@ export class Saved extends React.PureComponent<Props> {
                           name={address.json.meta.name}
                           orientation='horizontal'
                           size='small' />
+                          <Subscribe>
+                            {
+                              // FIXME using any because freeBalance gives a Codec here, not a Balance
+                              // Wait for @polkadot/api to have TS support for all query.*
+                              api.query.balances.freeBalance(address.json.address).pipe(map(this.renderBalance as any))
+                            }
+                          </Subscribe>
                       </Link>
                       <Link to='#' data-address={address.json.address} onClick={this.forgetSelectedAddress}>
                         <Icon name='close' />
@@ -123,6 +140,12 @@ export class Saved extends React.PureComponent<Props> {
               )
           ))}
       </Subscribe>
+    );
+  }
+
+  renderBalance = (balance: Balance) => {
+    return (
+      <BalanceDisplay balance={balance} />
     );
   }
 

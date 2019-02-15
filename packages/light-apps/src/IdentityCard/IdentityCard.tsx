@@ -5,7 +5,7 @@
 import { Balance } from '@polkadot/types';
 import { stringUpperFirst } from '@polkadot/util';
 import { ApiContext, Subscribe } from '@substrate/ui-api';
-import { Address, AddressSummary, ErrorText, Header, Icon, Input, MarginTop, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SuccessText, WithSpaceBetween } from '@substrate/ui-components';
+import { Address, AddressSummary, BalanceDisplay, ErrorText, Header, Icon, Input, MarginTop, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SuccessText, WithSpaceBetween } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -13,7 +13,11 @@ import { map } from 'rxjs/operators';
 
 import { StyledCard, CardContent } from './IdentityCard.styles';
 
-interface Props extends RouteComponentProps { }
+interface MatchParams {
+  currentAddress: string;
+}
+
+interface Props extends RouteComponentProps<MatchParams> { }
 
 type State = {
   backupModalOpen: boolean,
@@ -126,22 +130,27 @@ export class IdentityCard extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { api } = this.context;
+    const { api, keyring } = this.context;
     const { buttonText } = this.state;
     const address = this.getAddress();
+    const name = keyring.getAccount(address).getMeta().name;
 
     return (
       <StyledCard>
         <CardContent>
           <Header> Current Account </Header>
           {address
-            ? <Subscribe>
-              {
-                // FIXME using any because freeBalance gives a Codec here, not a Balance
-                // Wait for @polkadot/api to have TS support for all query.*
-                api.query.balances.freeBalance(address).pipe(map(this.renderBalance as any))
-              }
-            </Subscribe>
+            ?
+            <React.Fragment>
+              <AddressSummary address={address} name={name} />
+              <Subscribe>
+                {
+                  // FIXME using any because freeBalance gives a Codec here, not a Balance
+                  // Wait for @polkadot/api to have TS support for all query.*
+                  api.query.balances.freeBalance(address).pipe(map(this.renderBalance as any))
+                }
+              </Subscribe>
+            </React.Fragment>
             : <div>Loading...</div>
           }
           <MarginTop />
@@ -187,12 +196,7 @@ export class IdentityCard extends React.PureComponent<Props, State> {
   }
 
   renderBalance = (balance: Balance) => {
-    const { keyring } = this.context;
-    const address = this.getAddress();
-
-    const name = keyring.getAccount(address).getMeta().name;
-
-    return <AddressSummary address={address} balance={balance} name={name} />;
+    return <BalanceDisplay balance={balance} />;
   }
 
   renderError () {

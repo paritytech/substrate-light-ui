@@ -4,11 +4,9 @@
 
 import IdentityIcon from '@polkadot/ui-identicon';
 import { KeyringAddress } from '@polkadot/ui-keyring/types';
-import BN from 'bn.js';
 import React from 'react';
 
 import { Name, Stacked, StackedHorizontal } from '../Shared.styles';
-import BalanceDisplay from '../Balance';
 
 type OrientationTypes = 'horizontal' | 'vertical';
 type SizeTypes = 'tiny' | 'small' | 'medium' | 'large';
@@ -19,7 +17,6 @@ type SummaryStyles = {
 
 type Props = {
   address?: string | KeyringAddress,
-  balance?: BN,
   name?: string,
   orientation?: OrientationTypes,
   size?: SizeTypes
@@ -30,7 +27,7 @@ const PLACEHOLDER_ADDRESS = '5'.padEnd(16, 'x');
 
 export class AddressSummary extends React.PureComponent<Props> {
   render () {
-    const { address, balance, name, orientation = 'vertical', size = 'medium' } = this.props;
+    const { address, name, orientation = 'vertical', size = 'medium' } = this.props;
     let styles: SummaryStyles = { identiconSize: 16, nameSize: '14px' };
 
     switch (size) {
@@ -55,7 +52,6 @@ export class AddressSummary extends React.PureComponent<Props> {
         <Stacked>
           <IdentityIcon value={address as string || PLACEHOLDER_ADDRESS} theme={'substrate'} size={styles.identiconSize} />
           <Name fontSize={styles.nameSize}> {name || PLACEHOLDER_NAME} </Name>
-          <BalanceDisplay balance={balance} />
         </Stacked>
       );
     } else {
@@ -63,7 +59,6 @@ export class AddressSummary extends React.PureComponent<Props> {
         <StackedHorizontal justify='space-around'>
           <IdentityIcon value={address as string || PLACEHOLDER_ADDRESS} theme={'substrate'} size={styles.identiconSize} />
           <Name fontSize={styles.nameSize}> {name || PLACEHOLDER_NAME} </Name>
-          <BalanceDisplay balance={balance} />
         </StackedHorizontal>
       );
     }
