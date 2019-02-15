@@ -1,10 +1,13 @@
 // Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
+import ApiRx from '@polkadot/api/rx';
+// import { Nonce } from '@polkadot/api/types';
 import { ApiContext } from '@substrate/ui-api';
 import { AddressSummary, Grid, Header, Icon, Input, MarginTop, NavButton, Stacked } from '@substrate/ui-components';
 import BN from 'bn.js';
 import React from 'react';
+import { first, switchMap } from 'rxjs/operators';
 import { Step } from 'semantic-ui-react';
 import { RouteComponentProps } from 'react-router-dom';
 
@@ -66,8 +69,24 @@ export class SendBalance extends React.PureComponent<Props, State> {
     });
   }
 
-  onSubmitTransfer = () => {
-    // FIXME: handle transfer
+  onSubmitTransfer = async () => {
+    const { amount, recipientAddress } = this.state;
+    const { match } = this.props;
+
+    const api = await ApiRx.create().toPromise();
+
+    const sender = match.params.currentAddress;
+
+    api.tx.balances
+      .transfer(recipientAddress, amount)
+      .signAndSend(sender)
+      .subscribe(({ status, type }) => {
+        if (type === 'Finalised') {
+          console.log(`Successful transfer of ${amount} from ${sender} to ${recipientAddress} with hash ${status.asFinalised.toHex()}`);
+        } else {
+          console.log(`Staus of transfer: ${type}`);
+        }
+      });
   }
 
   openSelectAccountsModal = () => {
