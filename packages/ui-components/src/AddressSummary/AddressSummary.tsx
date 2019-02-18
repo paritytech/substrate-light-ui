@@ -17,7 +17,7 @@ type SummaryStyles = {
 
 type Props = {
   address?: string | KeyringAddress,
-  name?: string,
+  name?: string | React.ReactNode,
   orientation?: OrientationTypes,
   size?: SizeTypes
 };
