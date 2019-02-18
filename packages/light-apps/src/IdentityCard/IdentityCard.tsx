@@ -13,15 +13,11 @@ import { map } from 'rxjs/operators';
 
 import { StyledCard, CardContent } from './IdentityCard.styles';
 
-interface MatchParams {
-  currentAddress: string;
-}
-
-interface Props extends RouteComponentProps<MatchParams> { }
+interface Props extends RouteComponentProps { }
 
 type State = {
   backupModalOpen: boolean,
-  buttonText: string
+  buttonText?: string
   error?: string,
   forgetModalOpen: boolean,
   password: string,
@@ -35,10 +31,20 @@ export class IdentityCard extends React.PureComponent<Props, State> {
 
   state: State = {
     backupModalOpen: false,
-    buttonText: 'Transfer',
     forgetModalOpen: false,
     password: ''
   };
+
+  componentDidMount () {
+    const currentLocation = location.pathname.split('/')[1].toLowerCase();
+
+    const to = currentLocation === 'identity' ? 'transfer' : 'identity';
+    const buttonText = stringUpperFirst(to);
+
+    this.setState({
+      buttonText
+    });
+  }
 
   closeBackupModal = () => {
     this.setState({
@@ -108,13 +114,24 @@ export class IdentityCard extends React.PureComponent<Props, State> {
   private handleToggleApp = () => {
     const { location, history } = this.props;
     const address = this.getAddress();
+    const currentLocation = location.pathname.split('/')[1].toLowerCase();
 
-    const to = location.pathname.split('/')[1].toLowerCase() === 'identity' ? 'transfer' : 'identity';
+    console.log('current location -> ', currentLocation);
+
+    const to = currentLocation === 'identity' ? 'transfer' : 'identity';
     const buttonText = stringUpperFirst(to);
 
-    history.push(`/${to}/${address}`);
+    console.log('to -> ', to);
+    console.log('button => ', buttonText);
 
-    this.setState({ buttonText });
+    const nextLocation = {
+      pathname: `/${to}/${address}`,
+      state: {
+        buttonText: buttonText
+      }
+    };
+
+    history.push(nextLocation);
   }
 
   private onChangePassword = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {

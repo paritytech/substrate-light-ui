@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 import ApiRx from '@polkadot/api/rx';
 import { ApiContext } from '@substrate/ui-api';
-import { AddressSummary, ErrorText, Grid, Header, Icon, Input, MarginTop, NavButton, Stacked, SuccessText } from '@substrate/ui-components';
+import { AddressSummary, ErrorText, FadedText, Grid, Header, Icon, Input, MarginTop, NavButton, Stacked, SuccessText } from '@substrate/ui-components';
 import BN from 'bn.js';
 import React from 'react';
 import { Step } from 'semantic-ui-react';
@@ -27,6 +27,7 @@ type State = {
   isAddressValid: boolean,
   nonceSubscription?: Subscription,
   open: boolean,
+  pending: string | null,
   recipientAddress?: string,
   recipientName?: string,
   step: number,
@@ -43,6 +44,7 @@ export class SendBalance extends React.PureComponent<Props, State> {
     error: null,
     isAddressValid: false,
     open: false,
+    pending: null,
     step: 1,
     success: null
   };
@@ -73,9 +75,14 @@ export class SendBalance extends React.PureComponent<Props, State> {
   }
 
   onChangeRecipientAddress = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    const { keyring } = this.context;
+
+    const isAddressValid = this.isValidAddress(value);
+
     this.setState({
-      isAddressValid: this.isValidAddress(value),
-      recipientAddress: value
+      isAddressValid,
+      recipientAddress: value,
+      recipientName: isAddressValid ? keyring.getAccount(value).getMeta().name : ''
     });
   }
 
@@ -89,6 +96,16 @@ export class SendBalance extends React.PureComponent<Props, State> {
     const { keyring } = this.context;
     const { amount, recipientAddress } = this.state;
     const { match } = this.props;
+
+    if (!recipientAddress) {
+      this.onError('Please sure recipient address is set.');
+      return;
+    }
+
+    if (!amount || amount === 0) {
+      this.onError('Please sure you are sending more than 0 balance.');
+      return;
+    }
 
     const api = await ApiRx.create().toPromise();
 
@@ -121,7 +138,7 @@ export class SendBalance extends React.PureComponent<Props, State> {
           } else if (type === 'Dropped' || type === 'Usurped') {
             this.onError(`${type} at ${status}`);
           } else {
-            console.log(`Status of transfer: ${type}...`);
+            this.onPending(`Status of transfer: ${type}...`);
           }
         });
 
@@ -140,11 +157,15 @@ export class SendBalance extends React.PureComponent<Props, State> {
   }
 
   private onError = (value: string | null) => {
-    this.setState({ error: value, success: null });
+    this.setState({ error: value, pending: null, success: null });
   }
 
   private onSuccess = (value: string | null) => {
-    this.setState({ error: null, success: value });
+    this.setState({ error: null, pending: null, success: value });
+  }
+
+  private onPending = (value: string | null) => {
+    this.setState({ error: null, pending: value, success: null });
   }
 
   render () {
@@ -156,8 +177,15 @@ export class SendBalance extends React.PureComponent<Props, State> {
           <Header> Transfer Balance </Header>
         </Grid.Row>
         <Grid.Row>
+          <Grid.Column width='10'>
+            <Saved onSelectAddress={this.onSelectAddress} {...this.props} />
+          </Grid.Column>
+
           <Grid.Column width='6'>
             <Stacked>
+              {this.renderSuccess()}
+              {this.renderError()}
+              {this.renderPending()}
               <Step.Group vertical>
                 <Step completed={isAddressValid}>
                   <Step.Title> Recipient </Step.Title>
@@ -188,13 +216,7 @@ export class SendBalance extends React.PureComponent<Props, State> {
                   </Step.Content>
                 </Step>
               </Step.Group>
-              {this.renderSuccess()}
-              {this.renderError()}
             </Stacked>
-          </Grid.Column>
-
-          <Grid.Column width='10'>
-            <Saved onSelectAddress={this.onSelectAddress} {...this.props} />
           </Grid.Column>
         </Grid.Row>
       </Grid>
@@ -218,6 +240,16 @@ export class SendBalance extends React.PureComponent<Props, State> {
       <SuccessText>
         {success || null}
       </SuccessText>
+    );
+  }
+
+  renderPending () {
+    const { pending } = this.state;
+
+    return (
+      <FadedText>
+        {pending || null}
+      </FadedText>
     );
   }
 }

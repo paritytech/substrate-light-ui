@@ -83,14 +83,16 @@ export class Saved extends React.PureComponent<Props> {
               : Object.values(allAccounts).map((account: SingleAddress) =>
                   <React.Fragment key={account.json.address}>
                     <MarginTop />
-                    <Link to={`/transfer/${account.json.address}`}>
                     <AddressSummary
                       address={account.json.address}
-                      name={account.json.meta.name}
+                      name={
+                        <Link to={`/transfer/${account.json.address}`}>
+                          {account.json.meta.name}
+                        </Link>
+                      }
                       orientation='horizontal'
-                      size='medium'
+                      size='small'
                       />
-                    </Link>
                     <Subscribe>
                       {
                         // FIXME using any because freeBalance gives a Codec here, not a Balance

@@ -45,10 +45,13 @@ export class SavedAccounts extends React.PureComponent<Props> {
             Object.values(allAccounts).map((account: SingleAddress) =>
               <React.Fragment key={account.json.address}>
                 <MarginTop />
-                <Link to={`/identity/${account.json.address}`}>
                   <AddressSummary
                     address={account.json.address}
-                    name={account.json.meta.name}
+                    name={
+                      <Link to={`/identity/${account.json.address}`}>
+                        {account.json.meta.name}
+                      </Link>
+                    }
                     orientation='horizontal'
                     size='small'
                   />
@@ -59,7 +62,6 @@ export class SavedAccounts extends React.PureComponent<Props> {
                       api.query.balances.freeBalance(account.json.address).pipe(map(this.renderBalance as any))
                     }
                   </Subscribe>
-                </Link>
               </React.Fragment>
             )
           ))}
