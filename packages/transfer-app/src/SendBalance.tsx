@@ -102,7 +102,7 @@ export class SendBalance extends React.PureComponent<Props, State> {
       return;
     }
 
-    if (!amount || amount === 0) {
+    if (!amount || amount.isZero()) {
       this.onError('Please sure you are sending more than 0 balance.');
       return;
     }
