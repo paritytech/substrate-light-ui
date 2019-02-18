@@ -189,7 +189,7 @@ export class SendBalance extends React.PureComponent<Props, State> {
               <Step.Group vertical>
                 <Step completed={isAddressValid}>
                   <Step.Title> Recipient </Step.Title>
-                  <Icon name='address book' color='blue' />
+                  <Icon name='address book' />
                   <Step.Content>
                     <MarginTop />
                     <Stacked>
@@ -201,7 +201,7 @@ export class SendBalance extends React.PureComponent<Props, State> {
 
                 <Step completed={!amount.isZero()}>
                   <Step.Title> Amount </Step.Title>
-                  <Icon name='law' color='blue' />
+                  <Icon name='law' />
                   <Step.Content>
                     <Stacked>
                       <Input onChange={this.onChangeAmount} type='number' value={amount} />
@@ -210,7 +210,7 @@ export class SendBalance extends React.PureComponent<Props, State> {
                 </Step>
 
                 <Step>
-                  <Icon name='send' color='blue' />
+                  <Icon name='send' />
                   <Step.Content>
                     <NavButton onClick={this.onSubmitTransfer}>Submit Transfer</NavButton>
                   </Step.Content>
