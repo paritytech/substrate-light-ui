@@ -1,12 +1,15 @@
 // Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
+import ApiRx from '@polkadot/api/rx';
 import { ApiContext } from '@substrate/ui-api';
-import { AddressSummary, Grid, Header, Icon, Input, MarginTop, NavButton, Stacked } from '@substrate/ui-components';
+import { AddressSummary, ErrorText, Grid, Header, Icon, Input, MarginTop, NavButton, Stacked, SuccessText } from '@substrate/ui-components';
 import BN from 'bn.js';
 import React from 'react';
 import { Step } from 'semantic-ui-react';
 import { RouteComponentProps } from 'react-router-dom';
+import { Subscription } from 'rxjs';
+import { first, switchMap } from 'rxjs/operators';
 
 import { Saved } from './Saved';
 
@@ -20,11 +23,14 @@ interface Props extends RouteComponentProps<MatchParams> {
 
 type State = {
   amount: BN,
+  error: string | null,
   isAddressValid: boolean,
+  nonceSubscription?: Subscription,
   open: boolean,
   recipientAddress?: string,
   recipientName?: string,
-  step: number
+  step: number,
+  success: string | null
 };
 
 export class SendBalance extends React.PureComponent<Props, State> {
@@ -34,10 +40,23 @@ export class SendBalance extends React.PureComponent<Props, State> {
 
   state: State = {
     amount: new BN(0),
+    error: null,
     isAddressValid: false,
     open: false,
-    step: 1
+    step: 1,
+    success: null
   };
+
+  // FIXME handle subscriptions with react-with-observable
+  componentWillUnmount () {
+    const { nonceSubscription } = this.state;
+
+    nonceSubscription && nonceSubscription.unsubscribe();
+  }
+
+  isValidAddress = (address: string) => {
+    return address[0] === '5' && address.length === 48;
+  }
 
   onChangeAmount = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
@@ -66,8 +85,52 @@ export class SendBalance extends React.PureComponent<Props, State> {
     });
   }
 
-  onSubmitTransfer = () => {
-    // FIXME: handle transfer
+  onSubmitTransfer = async () => {
+    const { keyring } = this.context;
+    const { amount, recipientAddress } = this.state;
+    const { match } = this.props;
+
+    const api = await ApiRx.create().toPromise();
+
+    const senderAddress = match.params.currentAddress;
+    const senderPair = keyring.getPair(senderAddress);
+
+    try {
+      // retrieve nonce for the account
+      const nonceSubscription = api.query.system
+        .accountNonce(senderAddress)
+        .pipe(
+           first(),
+           // pipe nonce into transfer
+           switchMap((nonce: any) =>
+             api.tx.balances
+               // create transfer
+               .transfer(recipientAddress, amount)
+               // sign the transaction
+               .sign(senderPair, { nonce })
+               // send the transaction
+               .send()
+           )
+        )
+        // subscribe to overall result
+        // @ts-ignore
+        // FIXME: add the status and type types
+        .subscribe(({ status, type }) => {
+          if (type === 'Finalised') {
+            this.onSuccess(`Completed at block hash ${status.asFinalised.toHex()}`);
+          } else if (type === 'Dropped' || type === 'Usurped') {
+            this.onError(`${type} at ${status}`);
+          } else {
+            console.log(`Status of transfer: ${type}...`);
+          }
+        });
+
+      this.setState({
+        nonceSubscription
+      });
+    } catch (error) {
+      this.onError(error);
+    }
   }
 
   openSelectAccountsModal = () => {
@@ -76,8 +139,12 @@ export class SendBalance extends React.PureComponent<Props, State> {
     });
   }
 
-  isValidAddress = (address: string) => {
-    return address[0] === '5' && address.length === 48;
+  private onError = (value: string | null) => {
+    this.setState({ error: value, success: null });
+  }
+
+  private onSuccess = (value: string | null) => {
+    this.setState({ error: null, success: value });
   }
 
   render () {
@@ -121,6 +188,8 @@ export class SendBalance extends React.PureComponent<Props, State> {
                   </Step.Content>
                 </Step>
               </Step.Group>
+              {this.renderSuccess()}
+              {this.renderError()}
             </Stacked>
           </Grid.Column>
 
@@ -129,6 +198,26 @@ export class SendBalance extends React.PureComponent<Props, State> {
           </Grid.Column>
         </Grid.Row>
       </Grid>
+    );
+  }
+
+  renderError () {
+    const { error } = this.state;
+
+    return (
+      <ErrorText>
+        {error || null}
+      </ErrorText>
+    );
+  }
+
+  renderSuccess () {
+    const { success } = this.state;
+
+    return (
+      <SuccessText>
+        {success || null}
+      </SuccessText>
     );
   }
 }
