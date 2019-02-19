@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 import ApiRx from '@polkadot/api/rx';
 import { ApiContext } from '@substrate/ui-api';
-import { AddressSummary, ErrorText, FadedText, Grid, Header, Loading, Icon, Input, MarginTop, NavButton, Stacked, SuccessText } from '@substrate/ui-components';
+import { AddressSummary, ErrorText, Grid, Header, Loading, Icon, Input, MarginTop, NavButton, Stacked, SuccessText } from '@substrate/ui-components';
 import BN from 'bn.js';
 import React from 'react';
 import { Step } from 'semantic-ui-react';
@@ -168,7 +168,7 @@ export class SendBalance extends React.PureComponent<Props, State> {
     this.setState({ error: null, pending: null, success: value });
   }
 
-  private onPending = (value: string | null) => {
+  private onPending = (value: string | React.ReactNode | null) => {
     this.setState({ error: null, pending: value, success: null });
   }
 

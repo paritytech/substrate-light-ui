@@ -5,15 +5,25 @@
 import React from 'react';
 import { Dimmer, Loader } from 'semantic-ui-react';
 
-const Loading = ({ active, children = null }) => (
-  <React.Fragment>
-    <Dimmer active={true}>
-      <Loader>
-        Loading
-      </Loader>
-      {children}
-    </Dimmer>
-  </React.Fragment>
-);
+type Props = {
+  active: boolean,
+  children?: React.ReactNode | string
+};
+
+class Loading extends React.PureComponent<Props> {
+  render () {
+    const { active, children } = this.props;
+    return (
+      <React.Fragment>
+        <Dimmer active={active}>
+          <Loader>
+            Loading
+          </Loader>
+          {children}
+        </Dimmer>
+      </React.Fragment>
+    );
+  }
+}
 
 export default Loading;
