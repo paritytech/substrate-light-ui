@@ -5,7 +5,7 @@
 import { Balance } from '@polkadot/types';
 import { stringUpperFirst } from '@polkadot/util';
 import { ApiContext, Subscribe } from '@substrate/ui-api';
-import { Address, AddressSummary, BalanceDisplay, ErrorText, Header, Icon, Input, MarginTop, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SuccessText, WithSpaceBetween } from '@substrate/ui-components';
+import { Address, AddressSummary, BalanceDisplay, ErrorText, Header, Icon, Input, Loading, MarginTop, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SuccessText, WithSpaceBetween } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -16,10 +16,12 @@ import { StyledCard, CardContent } from './IdentityCard.styles';
 interface Props extends RouteComponentProps { }
 
 type State = {
+  address?: string,
   backupModalOpen: boolean,
   buttonText?: string
   error?: string,
   forgetModalOpen: boolean,
+  name?: string,
   password: string,
   success?: string
 };
@@ -36,13 +38,20 @@ export class IdentityCard extends React.PureComponent<Props, State> {
   };
 
   componentDidMount () {
+    const { keyring } = this.context;
+
     const currentLocation = location.pathname.split('/')[1].toLowerCase();
+
+    const address = this.getAddress();
+    const name = address && keyring.getAccount(address).getMeta().name;
 
     const to = currentLocation === 'identity' ? 'transfer' : 'identity';
     const buttonText = stringUpperFirst(to);
 
     this.setState({
-      buttonText
+      address,
+      buttonText,
+      name
     });
   }
 
@@ -116,13 +125,8 @@ export class IdentityCard extends React.PureComponent<Props, State> {
     const address = this.getAddress();
     const currentLocation = location.pathname.split('/')[1].toLowerCase();
 
-    console.log('current location -> ', currentLocation);
-
     const to = currentLocation === 'identity' ? 'transfer' : 'identity';
     const buttonText = stringUpperFirst(to);
-
-    console.log('to -> ', to);
-    console.log('button => ', buttonText);
 
     const nextLocation = {
       pathname: `/${to}/${address}`,
@@ -147,10 +151,8 @@ export class IdentityCard extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { api, keyring } = this.context;
-    const { buttonText } = this.state;
-    const address = this.getAddress();
-    const name = keyring.getAccount(address).getMeta().name;
+    const { api } = this.context;
+    const { address, buttonText, name } = this.state;
 
     return (
       <StyledCard>
@@ -168,7 +170,7 @@ export class IdentityCard extends React.PureComponent<Props, State> {
                 }
               </Subscribe>
             </React.Fragment>
-            : <div>Loading...</div>
+            : <Loading active />
           }
           <MarginTop />
           <Stacked>

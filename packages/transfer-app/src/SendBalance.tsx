@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 import ApiRx from '@polkadot/api/rx';
 import { ApiContext } from '@substrate/ui-api';
-import { AddressSummary, ErrorText, FadedText, Grid, Header, Icon, Input, MarginTop, NavButton, Stacked, SuccessText } from '@substrate/ui-components';
+import { AddressSummary, ErrorText, FadedText, Grid, Header, Loading, Icon, Input, MarginTop, NavButton, Stacked, SuccessText } from '@substrate/ui-components';
 import BN from 'bn.js';
 import React from 'react';
 import { Step } from 'semantic-ui-react';
@@ -27,7 +27,7 @@ type State = {
   isAddressValid: boolean,
   nonceSubscription?: Subscription,
   open: boolean,
-  pending: string | null,
+  pending: string | React.ReactNode | null,
   recipientAddress?: string,
   recipientName?: string,
   step: number,
@@ -138,7 +138,11 @@ export class SendBalance extends React.PureComponent<Props, State> {
           } else if (type === 'Dropped' || type === 'Usurped') {
             this.onError(`${type} at ${status}`);
           } else {
-            this.onPending(`Status of transfer: ${type}...`);
+            this.onPending(
+              <Loading active>
+                {`Status of transfer: ${type}...`}
+              </Loading>
+            );
           }
         });
 
@@ -169,7 +173,7 @@ export class SendBalance extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { amount, isAddressValid, recipientAddress, recipientName } = this.state;
+    const { amount, isAddressValid, pending, recipientAddress, recipientName } = this.state;
 
     return (
       <Grid>
@@ -185,7 +189,6 @@ export class SendBalance extends React.PureComponent<Props, State> {
             <Stacked>
               {this.renderSuccess()}
               {this.renderError()}
-              {this.renderPending()}
               <Step.Group vertical>
                 <Step completed={isAddressValid}>
                   <Step.Title> Recipient </Step.Title>
@@ -212,7 +215,11 @@ export class SendBalance extends React.PureComponent<Props, State> {
                 <Step>
                   <Icon name='send' />
                   <Step.Content>
-                    <NavButton onClick={this.onSubmitTransfer}>Submit Transfer</NavButton>
+                    {
+                      pending
+                        ? this.renderPending()
+                        : <NavButton onClick={this.onSubmitTransfer}>Submit Transfer</NavButton>
+                    }
                   </Step.Content>
                 </Step>
               </Step.Group>
@@ -246,10 +253,6 @@ export class SendBalance extends React.PureComponent<Props, State> {
   renderPending () {
     const { pending } = this.state;
 
-    return (
-      <FadedText>
-        {pending || null}
-      </FadedText>
-    );
+    return pending || null;
   }
 }
