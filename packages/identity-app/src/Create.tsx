@@ -1,7 +1,6 @@
 // Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
-
 import { ApiContext } from '@substrate/ui-api';
 import { AddressSummary, ErrorText, Input, MnemonicSegment, NavButton, Stacked, StackedHorizontal, SubHeader, WithSpaceBetween } from '@substrate/ui-components';
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
