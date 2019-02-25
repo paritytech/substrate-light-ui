@@ -9,7 +9,7 @@ cache:
   directories:
     - node_modules
 install:
-  - yarn install
+  - yarn upgrade && yarn install
 script:
   - yarn build
   - yarn lint
