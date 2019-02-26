@@ -16,10 +16,12 @@ import { StyledCard, CardContent } from './IdentityCard.styles';
 interface Props extends RouteComponentProps { }
 
 type State = {
+  address?: string,
   backupModalOpen: boolean,
   buttonText?: string
   error?: string,
   forgetModalOpen: boolean,
+  name?: string
   password: string,
   success?: string
 };
@@ -36,13 +38,20 @@ export class IdentityCard extends React.PureComponent<Props, State> {
   };
 
   componentDidMount () {
+    const { keyring } = this.context;
+
     const currentLocation = location.pathname.split('/')[1].toLowerCase();
 
     const to = currentLocation === 'identity' ? 'transfer' : 'identity';
     const buttonText = stringUpperFirst(to);
 
+    const address = this.getAddress();
+    const name = address && keyring.getAccount(address).getMeta().name;
+
     this.setState({
-      buttonText
+      address,
+      buttonText,
+      name
     });
   }
 
@@ -147,10 +156,8 @@ export class IdentityCard extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { api, keyring } = this.context;
-    const { buttonText } = this.state;
-    const address = this.getAddress();
-    const name = keyring.getAccount(address).getMeta().name;
+    const { api } = this.context;
+    const { address, buttonText, name } = this.state;
 
     return (
       <StyledCard>
