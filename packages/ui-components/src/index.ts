@@ -9,6 +9,7 @@ import Grid from './Grid';
 import Icon from './Icon';
 import Input from './Input';
 import InputFile from './InputFile';
+import Loading from './Loading';
 import Menu from './Menu';
 import MnemonicSegment from './MnemonicSegment';
 import Modal from './Modal';
@@ -25,6 +26,7 @@ export {
   Icon,
   Input,
   InputFile,
+  Loading,
   Menu,
   MnemonicSegment,
   Modal,
