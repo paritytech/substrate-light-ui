@@ -2,6 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { Loading } from '@substrate/ui-components';
 import ApiRx from '@polkadot/api/rx';
 import { ChainProperties } from '@polkadot/types';
 import keyring from '@polkadot/ui-keyring';
@@ -43,9 +44,8 @@ export class ApiGate extends React.PureComponent {
     const { children } = this.props;
     const { isReady } = this.state;
 
-    // FIXME Return a nicer component when loading
     return isReady
       ? <ApiContext.Provider value={{ api: this.api, keyring }}>{children}</ApiContext.Provider>
-      : <div>Loading...</div>;
+      : <Loading active />;
   }
 }
