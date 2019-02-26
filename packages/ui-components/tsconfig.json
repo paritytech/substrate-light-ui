@@ -4,5 +4,6 @@
     "outDir": "./build"
   },
   "extends": "../../tsconfig",
-  "include": ["./src"]
+  "include": ["./src"],
+  "types": ["node", "jest"]
 }

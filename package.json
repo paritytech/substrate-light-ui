@@ -18,14 +18,14 @@
     ]
   },
   "scripts": {
-    "prebuild": "yarn clean",
     "build": "lerna exec yarn build --stream",
     "clean": "polkadot-dev-clean-build",
-    "preelectron": "yarn build",
     "electron": "cd packages/electron-app && yarn electron",
     "lint": "tsc --noEmit && tslint --project .",
-    "prepackage": "yarn build",
     "package": "cd packages/electron-app && yarn package",
+    "prebuild": "yarn clean",
+    "preelectron": "yarn build",
+    "prepackage": "yarn build",
     "prestart": "./scripts/prestart.sh",
     "start": "lerna exec yarn start --parallel",
     "test": "CI=true lerna run test --parallel"
