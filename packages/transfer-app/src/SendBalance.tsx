@@ -97,6 +97,8 @@ export class SendBalance extends React.PureComponent<Props, State> {
     const { amount, recipientAddress } = this.state;
     const { match } = this.props;
 
+    const senderAddress = match.params.currentAddress;
+
     if (!recipientAddress) {
       this.onError('Please sure recipient address is set.');
       return;
@@ -107,9 +109,13 @@ export class SendBalance extends React.PureComponent<Props, State> {
       return;
     }
 
+    if (recipientAddress === senderAddress) {
+      this.onError('Sender and recipient addresses cannot be the same.');
+      return;
+    }
+
     const api = await ApiRx.create().toPromise();
 
-    const senderAddress = match.params.currentAddress;
     const senderPair = keyring.getPair(senderAddress);
 
     try {
