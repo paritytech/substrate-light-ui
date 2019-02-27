@@ -125,13 +125,8 @@ export class IdentityCard extends React.PureComponent<Props, State> {
     const address = this.getAddress();
     const currentLocation = location.pathname.split('/')[1].toLowerCase();
 
-    console.log('current location -> ', currentLocation);
-
     const to = currentLocation === 'identity' ? 'transfer' : 'identity';
     const buttonText = stringUpperFirst(to);
-
-    console.log('to -> ', to);
-    console.log('button => ', buttonText);
 
     const nextLocation = {
       pathname: `/${to}/${address}`,

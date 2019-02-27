@@ -16,6 +16,7 @@ import Modal from './Modal';
 import NavButton from './NavButton';
 import NavLink from './NavLink';
 import Segment from './Segment';
+import TextArea from './TextArea';
 import WalletCard from './WalletCard';
 
 export {
@@ -33,6 +34,7 @@ export {
   NavButton,
   NavLink,
   Segment,
+  TextArea,
   WalletCard
 };
 

@@ -33,7 +33,11 @@ export class ApiGate extends React.PureComponent {
 
       // Setup keyring (loadAll) only after prefix has been set
       keyring.setAddressPrefix(networkId);
-      keyring.setDevMode(isTestChain(chain.toString() || ''));
+
+      if (process.env.NODE_ENV !== 'production') {
+        keyring.setDevMode(isTestChain(chain.toString() || ''));
+      }
+
       keyring.loadAll();
 
       this.setState({ isReady: true });

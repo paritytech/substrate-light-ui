@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { ApiContext } from '@substrate/ui-api';
-import { AddressSummary, ErrorText, Input, MnemonicSegment, NavButton, Stacked, StackedHorizontal, SubHeader, WithSpaceBetween } from '@substrate/ui-components';
+import { AddressSummary, ErrorText, FadedText, Input, MarginTop, MnemonicSegment, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SubHeader, WithSpaceAround } from '@substrate/ui-components';
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
 import FileSaver from 'file-saver';
 import React from 'react';
@@ -13,12 +13,16 @@ interface Props extends RouteComponentProps {
   basePath: string;
 }
 
+type Steps = 'create' | 'rewrite';
+
 type State = {
   address?: string;
   error: string | null;
   mnemonic: string;
   name: string;
   password: string;
+  rewritePhrase?: string;
+  step: Steps;
 };
 
 export class Create extends React.PureComponent<Props, State> {
@@ -30,7 +34,8 @@ export class Create extends React.PureComponent<Props, State> {
     error: null,
     mnemonic: '',
     name: '',
-    password: ''
+    password: '',
+    step: 'create'
   };
 
   componentDidMount () {
@@ -99,34 +104,74 @@ export class Create extends React.PureComponent<Props, State> {
     });
   }
 
+  private onChangeRewritePhrase = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      rewritePhrase: value
+    });
+
+    if (value === this.state.mnemonic) {
+      this.onError('');
+    } else {
+      this.onError('Mnemonic does not match rewrite');
+    }
+  }
+
   private onError = (value: string | null) => {
     this.setState({
       error: value
     });
   }
 
+  private toggleStep = () => {
+    const { address, password, step } = this.state;
+
+    if (address && password) {
+      this.setState({
+        step: step === 'create' ? 'rewrite' : 'create'
+      });
+    } else {
+      this.onError('Please make sure all fields are set.');
+    }
+  }
+
   private validateFields = () => {
-    const { mnemonic, name, password } = this.state;
-    return mnemonic.length && name && password.length;
+    const { mnemonic, name, password, rewritePhrase } = this.state;
+    return mnemonic.length && name && password.length && rewritePhrase === mnemonic;
   }
 
   render () {
-    const { address, mnemonic, name } = this.state;
+    const { address, name, step } = this.state;
 
     return (
       <Stacked>
         <AddressSummary address={address} name={name} />
-        <SubHeader> Create from the following mnemonic phrase </SubHeader>
-        <MnemonicSegment onClick={this.newMnemonic} mnemonic={mnemonic} />
-        <StackedHorizontal>
-          <WithSpaceBetween>
-            {this.renderSetName()}
-            {this.renderSetPassword()}
-          </WithSpaceBetween>
-        </StackedHorizontal>
+        {
+          step === 'create'
+            ? this.renderCreateStep()
+            : this.renderRewriteStep()
+        }
         {this.renderError()}
-        <NavButton onClick={this.createNewAccount}> Save </NavButton>
       </Stacked>
+    );
+  }
+
+  renderCreateStep () {
+    const { mnemonic } = this.state;
+
+    return (
+      <React.Fragment>
+        <Stacked>
+          <SubHeader> Create from the following mnemonic phrase </SubHeader>
+          <MnemonicSegment onClick={this.newMnemonic} mnemonic={mnemonic} />
+          <WithSpaceAround>
+            <StackedHorizontal>
+              {this.renderSetName()}
+              {this.renderSetPassword()}
+            </StackedHorizontal>
+          </WithSpaceAround>
+          <NavButton onClick={this.toggleStep}> Next </NavButton>
+        </Stacked>
+      </React.Fragment>
     );
   }
 
@@ -137,6 +182,34 @@ export class Create extends React.PureComponent<Props, State> {
       <ErrorText>
         {error || null}
       </ErrorText>
+    );
+  }
+
+  renderRewriteStep () {
+    const { mnemonic, rewritePhrase } = this.state;
+
+    return (
+      <React.Fragment>
+        <Stacked>
+          <SubHeader> Copy Your Mnemonic Somewhere Safe </SubHeader>
+          <FadedText> If someone gets hold of this mnemonic they could drain your account</FadedText>
+          <MnemonicSegment onClick={this.newMnemonic} mnemonic={mnemonic} />
+          <MarginTop />
+          <FadedText> Rewrite Mnemonic Below </FadedText>
+          <Input
+            autoFocus
+            fluid
+            onChange={this.onChangeRewritePhrase}
+            type='text'
+            value={rewritePhrase} />
+          <WithSpaceAround>
+            <StackedHorizontal>
+              <StyledLinkButton onClick={this.toggleStep}> Back </StyledLinkButton>
+              <NavButton onClick={this.createNewAccount}> Save </NavButton>
+            </StackedHorizontal>
+          </WithSpaceAround>
+        </Stacked>
+      </React.Fragment>
     );
   }
 
