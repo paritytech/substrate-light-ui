@@ -4,12 +4,14 @@
 
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
 import { ApiContext } from '@substrate/ui-api';
-import { AddressSummary, ErrorText, Input, MnemonicSegment, Modal, NavButton, NavLink, Stacked } from '@substrate/ui-components';
+import { AddressSummary, ErrorText, FadedText, Input, MarginTop, MnemonicSegment, Modal, NavButton, NavLink, Stacked, StackedHorizontal, StyledLinkButton, SubHeader, WithSpaceAround } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
 interface Props extends RouteComponentProps { }
+
+type Steps = 'create' | 'rewrite';
 
 type State = {
   address?: string;
@@ -17,6 +19,8 @@ type State = {
   mnemonic: string;
   name: string;
   password: string;
+  rewritePhrase?: string;
+  step: Steps;
 };
 
 export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
@@ -28,7 +32,8 @@ export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
     error: null,
     mnemonic: '',
     name: '',
-    password: ''
+    password: '',
+    step: 'create'
   };
 
   componentDidMount () {
@@ -86,35 +91,70 @@ export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
     });
   }
 
+  private onChangeRewritePhrase = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      rewritePhrase: value
+    });
+
+    if (value === this.state.mnemonic) {
+      this.onError('');
+    } else {
+      this.onError('Mnemonic does not match rewrite');
+    }
+  }
+
   private onError = (value: string | null) => {
     this.setState({
       error: value
     });
   }
+  private toggleStep = () => {
+    const { address, password, step } = this.state;
+
+    if (address && password) {
+      this.setState({
+        step: step === 'create' ? 'rewrite' : 'create'
+      });
+    } else {
+      this.onError('Please make sure all fields are set.');
+    }
+  }
 
   private validateFields = () => {
-    const { mnemonic, name, password } = this.state;
-    return mnemonic.length && name && password.length;
+    const { mnemonic, name, password, rewritePhrase } = this.state;
+    return mnemonic.length && name && password.length && rewritePhrase === mnemonic;
   }
 
   render () {
-    const { address, mnemonic, name } = this.state;
+    const { step } = this.state;
 
     return (
       <React.Fragment>
         <Modal.Header> Create New Account </Modal.Header>
         <Modal.Content>
-          <Stacked>
-            <AddressSummary address={address} name={name} />
-            {this.renderSetName()}
-            <Modal.SubHeader> Create from the following mnemonic phrase </Modal.SubHeader>
-            <MnemonicSegment onClick={this.newMnemonic} mnemonic={mnemonic} />
-            {this.renderSetPassword()}
-            {this.renderError()}
-            {this.renderNewAccountActions()}
-          </Stacked>
+          {
+            step === 'create'
+              ? this.renderCreateStep()
+              : this.renderRewriteStep()
+          }
         </Modal.Content>
       </React.Fragment>
+    );
+  }
+
+  renderCreateStep () {
+    const { address, mnemonic, name } = this.state;
+
+    return (
+      <Stacked>
+        <AddressSummary address={address} name={name} />
+        {this.renderSetName()}
+        <Modal.SubHeader> Create from the following mnemonic phrase </Modal.SubHeader>
+        <MnemonicSegment onClick={this.newMnemonic} mnemonic={mnemonic} />
+        {this.renderSetPassword()}
+        {this.renderError()}
+        {this.renderNewAccountActions()}
+      </Stacked>
     );
   }
 
@@ -125,6 +165,48 @@ export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
       <ErrorText>
         {error || null}
       </ErrorText>
+    );
+  }
+
+  renderNewAccountActions () {
+    return (
+      <React.Fragment>
+        <Modal.Actions>
+          <Stacked>
+            <NavButton onClick={this.toggleStep}> Next </NavButton>
+            <Modal.FadedText>or</Modal.FadedText>
+            <NavLink to='/import/withJson'> Import an existing account </NavLink>
+          </Stacked>
+        </Modal.Actions>
+      </React.Fragment>
+    );
+  }
+
+  renderRewriteStep () {
+    const { mnemonic, rewritePhrase } = this.state;
+
+    return (
+      <React.Fragment>
+        <Stacked>
+          <SubHeader> Copy Your Mnemonic Somewhere Safe </SubHeader>
+          <FadedText> If someone gets hold of this mnemonic they could drain your account</FadedText>
+          <MnemonicSegment onClick={this.newMnemonic} mnemonic={mnemonic} />
+          <MarginTop />
+          <FadedText> Rewrite Mnemonic Below </FadedText>
+          <Input
+            autoFocus
+            fluid
+            onChange={this.onChangeRewritePhrase}
+            type='text'
+            value={rewritePhrase} />
+          <WithSpaceAround>
+            <StackedHorizontal>
+              <StyledLinkButton onClick={this.toggleStep}> Back </StyledLinkButton>
+              <NavButton onClick={this.createNewAccount}> Save </NavButton>
+            </StackedHorizontal>
+          </WithSpaceAround>
+        </Stacked>
+      </React.Fragment>
     );
   }
 
@@ -157,20 +239,6 @@ export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
           type='password'
           value={password}
         />
-      </React.Fragment>
-    );
-  }
-
-  renderNewAccountActions () {
-    return (
-      <React.Fragment>
-        <Modal.Actions>
-          <Stacked>
-            <NavButton onClick={this.createNewAccount}> Save </NavButton>
-            <Modal.FadedText>or</Modal.FadedText>
-            <NavLink to='/import/withJson'> Import an existing account </NavLink>
-          </Stacked>
-        </Modal.Actions>
       </React.Fragment>
     );
   }
