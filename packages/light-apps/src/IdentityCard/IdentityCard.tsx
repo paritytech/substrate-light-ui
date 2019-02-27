@@ -5,7 +5,7 @@
 import { Balance } from '@polkadot/types';
 import { stringUpperFirst } from '@polkadot/util';
 import { ApiContext, Subscribe } from '@substrate/ui-api';
-import { Address, AddressSummary, BalanceDisplay, ErrorText, Header, Icon, Input, MarginTop, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SuccessText, WithSpaceBetween } from '@substrate/ui-components';
+import { Address, AddressSummary, BalanceDisplay, ErrorText, FadedText, Header, Icon, Input, MarginTop, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SuccessText, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -195,21 +195,25 @@ export class IdentityCard extends React.PureComponent<Props, State> {
     const { backupModalOpen, password } = this.state;
 
     return (
-      <Modal trigger={this.backupTrigger} open={backupModalOpen} basic>
-        <Modal.Header> Please Confirm You Want to Backup this Account </Modal.Header>
-        <h2>By pressing confirm you will be downloading a JSON keyfile that can later be used to unlock your account. </h2>
-        <Modal.Actions>
+      <Modal closeOnDimmerClick closeOnEscape open={backupModalOpen} trigger={this.backupTrigger}>
+        <WithSpaceAround>
           <Stacked>
-            <Modal.SubHeader> Please encrypt your account first with the account's password. </Modal.SubHeader>
-            <Input min={8} onChange={this.onChangePassword} type='password' value={password} />
-            <StackedHorizontal>
-              <WithSpaceBetween>
-                <Icon name='remove' color='red' /> <StyledLinkButton color='white' onClick={this.closeBackupModal}>No</StyledLinkButton>
-                <Icon name='checkmark' color='green' /> <StyledLinkButton color='white' onClick={this.backupCurrentAccount}>Confirm Backup</StyledLinkButton>
-              </WithSpaceBetween>
-            </StackedHorizontal>
+            <Modal.SubHeader> Please Confirm You Want to Backup this Account </Modal.SubHeader>
+            <FadedText>By pressing confirm you will be downloading a JSON keyfile that can later be used to unlock your account. </FadedText>
+            <Modal.Actions>
+              <Stacked>
+                <FadedText> Please encrypt your account first with the account's password. </FadedText>
+                <Input fluid min={8} onChange={this.onChangePassword} type='password' value={password} />
+                <StackedHorizontal>
+                  <WithSpaceBetween>
+                    <StyledLinkButton onClick={this.closeBackupModal}><Icon name='remove' color='red' /> <FadedText>Cancel</FadedText></StyledLinkButton>
+                    <StyledLinkButton onClick={this.backupCurrentAccount}><Icon name='checkmark' color='green' /> <FadedText>Confirm Backup</FadedText></StyledLinkButton>
+                  </WithSpaceBetween>
+                </StackedHorizontal>
+              </Stacked>
+            </Modal.Actions>
           </Stacked>
-        </Modal.Actions>
+        </WithSpaceAround>
       </Modal>
     );
   }
@@ -232,13 +236,21 @@ export class IdentityCard extends React.PureComponent<Props, State> {
     const { forgetModalOpen } = this.state;
 
     return (
-      <Modal trigger={this.forgetTrigger} open={forgetModalOpen} basic>
-        <Modal.Header> Please Confirm You Want to Forget this Account </Modal.Header>
-        <h2>Please confirm that you want to remove this account from your keyring. </h2>
-        <Modal.Actions>
-          <Icon name='remove' color='red' /> <StyledLinkButton color='white' onClick={this.closeForgetModal}>No</StyledLinkButton>
-          <Icon name='checkmark' color='green' /> <StyledLinkButton color='white' onClick={this.forgetCurrentAccount}>Confirm Forget</StyledLinkButton>
-        </Modal.Actions>
+      <Modal closeOnDimmerClick={true} closeOnEscape={true} open={forgetModalOpen} trigger={this.forgetTrigger}>
+        <WithSpaceAround>
+          <Stacked>
+            <Modal.SubHeader> Please Confirm You Want to Forget this Account </Modal.SubHeader>
+            <b>By pressing confirm, you will be removing this account from your Saved Accounts. </b>
+            <MarginTop />
+            <FadedText> You can restore this later from your mnemonic phrase or json backup file. </FadedText>
+            <Modal.Actions>
+              <StackedHorizontal>
+                <StyledLinkButton onClick={this.closeForgetModal}><Icon name='remove' color='red' /> <FadedText> Cancel </FadedText> </StyledLinkButton>
+                <StyledLinkButton onClick={this.forgetCurrentAccount}><Icon name='checkmark' color='green' /> <FadedText> Confirm Forget </FadedText> </StyledLinkButton>
+              </StackedHorizontal>
+            </Modal.Actions>
+          </Stacked>
+        </WithSpaceAround>
       </Modal>
     );
   }
