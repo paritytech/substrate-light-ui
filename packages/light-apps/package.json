@@ -19,7 +19,7 @@
   ],
   "homepage": "./",
   "dependencies": {
-    "@polkadot/api": "^0.42.2",
+    "@polkadot/api": "^0.45.19",
     "@polkadot/keyring": "^0.33.36",
     "@polkadot/ui-assets": "^0.25.10",
     "@polkadot/ui-keyring": "^0.25.10",
