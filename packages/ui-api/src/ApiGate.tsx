@@ -31,14 +31,12 @@ export class ApiGate extends React.PureComponent {
     .subscribe(([_, chain, properties]) => {
       const networkId = properties.get('networkId') || 42;
 
-      // Setup keyring (loadAll) only after prefix has been set
-      keyring.setAddressPrefix(networkId);
-
-      if (process.env.NODE_ENV !== 'production') {
-        keyring.setDevMode(isTestChain(chain.toString() || ''));
-      }
-
-      keyring.loadAll();
+      // keyring with Schnorrkel support
+      keyring.loadAll({
+        addressPrefix: networkId,
+        isDevelopment: isTestChain(chain.toString()),
+        type: 'ed25519'
+      });
 
       this.setState({ isReady: true });
     });
