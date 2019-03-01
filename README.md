@@ -55,4 +55,17 @@ yarn package
 yarn start
 ```
 
+### Run Substrate Locally (https://substrate.readme.io/)
+In development it can be useful to have a local dev instance of Substrate running. You can do this by running:
+```
+curl https://getsubstrate.io -sSf | bash
+```
+to get the latest Substrate (it is a fast moving project and things break a lot so if you find things are breaking on master, make sure you're not running a very outdated version).
+
+To run it:
+```
+substrate --dev
+```
+
+
 > Troubleshooting: If it hangs on a white screen in Electron even though it has compiled and has been syncing for a long time, then simply choose 'View > Reload' (CMD + R on macOS) from the Electron menu. If the menu is not shown in the tray, then by clicking the Electron window and then holding down the ALT key to reveal it.
