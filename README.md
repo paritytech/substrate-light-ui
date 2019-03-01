@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/paritytech/substrate-light-ui.svg?branch=master)](https://travis-ci.org/paritytech/substrate-light-ui)
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=paritytech/substrate-light-ui)](https://dependabot.com)
 
 # substrate-light-ui
