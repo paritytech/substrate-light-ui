@@ -936,7 +936,7 @@
   dependencies:
     regenerator-runtime "^0.12.0"
 
-"@babel/runtime@^7.1.2", "@babel/runtime@^7.2.0":
+"@babel/runtime@^7.1.2", "@babel/runtime@^7.2.0", "@babel/runtime@^7.3.4":
   version "7.3.4"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.3.4.tgz#73d12ba819e365fcf7fd152aed56d6df97d21c83"
   integrity sha512-IvfvnMdSaLBateu0jfsYIpZTxAc2cKEXEMiezGGN75QcBcecDUKd3PgLAncT0oOgxKy8dd8hrJKj9MfzgfZd6g==
@@ -1854,14 +1854,14 @@
     color "^3.0.0"
     react-copy-to-clipboard "^5.0.1"
 
-"@polkadot/ui-keyring@^0.25.10":
-  version "0.25.12"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-keyring/-/ui-keyring-0.25.12.tgz#087df5cac62c9fb3d07ca210d06adf59f47b06f3"
-  integrity sha512-mtVSwVIbIRzGonF2ufa5ooeCB7E0/LoCh/KISbtkzu7cGsI7+ENelz1NrB9oXYJQM7tu6rt449J0k8ZCwGJkmg==
+"@polkadot/ui-keyring@^0.28.6":
+  version "0.28.6"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-keyring/-/ui-keyring-0.28.6.tgz#3cb8c44a28d0fc4b64f79b6217074016b24009d7"
+  integrity sha512-9Ul29TSEqdcxl1go3m91AIZjXbvDoyK383Q9FpDQN/OnYDwbshCHFY7NPIu4rn/7fbMBkPHX8uQQhX7IdYIiPw==
   dependencies:
-    "@babel/runtime" "^7.2.0"
+    "@babel/runtime" "^7.3.4"
     "@types/store" "^2.0.1"
-    rxjs "^6.3.3"
+    rxjs "^6.4.0"
     store "^2.0.12"
 
 "@polkadot/ui-settings@^0.25.12":

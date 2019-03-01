@@ -15,7 +15,7 @@
   "dependencies": {
     "@substrate/ui-components": "0.1.0",
     "@polkadot/api": "^0.42.2",
-    "@polkadot/ui-keyring": "^0.25.10",
+    "@polkadot/ui-keyring": "^0.28.6",
     "@types/create-subscription": "^16.4.1",
     "create-subscription": "^16.8.0",
     "react-with-observable": "^2.0.1"
