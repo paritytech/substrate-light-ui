@@ -19,7 +19,7 @@
     "@polkadot/util": "^0.33.36",
     "@types/styled-components": "4.1.0",
     "react-dropzone": "^8.0.2",
-    "semantic-ui-react": "^0.83.0",
+    "semantic-ui-react": "^0.85.0",
     "styled-components": "4.1.0"
   },
   "peerDependencies": {
