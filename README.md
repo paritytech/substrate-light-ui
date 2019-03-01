@@ -1,3 +1,5 @@
+[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=paritytech/substrate-light-ui)](https://dependabot.com)
+
 # substrate-light-ui
 
 Light client focused user interface for the Polkadot and Substrate networks. It is currently being built as an Electron app, and will be migrated to a web app once wasm compilation of the Substrate Light node is available.
