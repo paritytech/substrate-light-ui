@@ -1811,7 +1811,7 @@
     memoizee "^0.4.14"
     rxjs "^6.4.0"
 
-"@polkadot/schnorrkel-js@^0.1.2-2":
+"@polkadot/schnorrkel-js@^0.1.2-3":
   version "0.1.2-3"
   resolved "https://registry.yarnpkg.com/@polkadot/schnorrkel-js/-/schnorrkel-js-0.1.2-3.tgz#9117ac5126b465a1cf53c2b6bb68a17efc7e0390"
   integrity sha512-1LgF4wtER3q5uqY67CdOsQQ/SBqT6v0ZKQIS3cOTVByF16WtApD6U324uCJyMdie+GZFv0xr/40I4Ni2It+8jw==
@@ -1886,13 +1886,13 @@
     store "^2.0.12"
 
 "@polkadot/util-crypto@^0.34.35":
-  version "0.34.35"
-  resolved "https://registry.yarnpkg.com/@polkadot/util-crypto/-/util-crypto-0.34.35.tgz#82b04d2e5903ca315bda0f22438b026162963c70"
-  integrity sha512-n6zzswFnsG62cZMAliV/VIZUDiW0gKjCrjMaiT9ozzZ9TUjUDNLbFtJ++15vp3s0cl4mnluhGXZKuWRjqhQIHw==
+  version "0.34.37"
+  resolved "https://registry.yarnpkg.com/@polkadot/util-crypto/-/util-crypto-0.34.37.tgz#b4ce0a2e8bbbcbdf4aecb59a43d98c25588dfe40"
+  integrity sha512-zsgV+7mYr2OyFRa2sgjE1sIRclyR4GpcNc2rZIn2OaGkOEJRbQ53u3eoATFIKz7SgfKmBzo2uv7bbfr3UyGw/A==
   dependencies:
     "@babel/runtime" "^7.3.4"
-    "@polkadot/schnorrkel-js" "^0.1.2-2"
-    "@polkadot/util" "^0.34.35"
+    "@polkadot/schnorrkel-js" "^0.1.2-3"
+    "@polkadot/util" "^0.34.37"
     "@types/bip39" "^2.4.2"
     "@types/pbkdf2" "^3.0.0"
     "@types/secp256k1" "^3.5.0"
@@ -1905,7 +1905,7 @@
     tweetnacl "^1.0.1"
     xxhashjs "^0.2.2"
 
-"@polkadot/util@^0.34.20", "@polkadot/util@^0.34.35":
+"@polkadot/util@^0.34.20", "@polkadot/util@^0.34.35", "@polkadot/util@^0.34.37":
   version "0.34.37"
   resolved "https://registry.yarnpkg.com/@polkadot/util/-/util-0.34.37.tgz#86545ca8c9a692ec80ddf697094bcd31f6099302"
   integrity sha512-g0Xh8RDZQBYuIzQ3mFHIWoTaNsGLySijS4GF1BIL9pFfDpHzJvXSQpg+bU2L/chHc1Z7BvIDgi60UVH+0SGbwQ==
