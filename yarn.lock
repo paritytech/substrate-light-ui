@@ -1865,16 +1865,17 @@
   dependencies:
     "@babel/runtime" "^7.3.1"
 
-"@polkadot/ui-identicon@^0.25.10":
-  version "0.25.12"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-identicon/-/ui-identicon-0.25.12.tgz#1eb2b26ec8be268e52f79865d0b6e93f83a47f0a"
-  integrity sha512-ICr+nPeOb6CLovApWJCyCgFxnnS8ji49gFA4Mku8Sna+y4yMpRGoBD5OEFuD/DBGavzP+tcMLg3vtUqcl7dtPA==
+"@polkadot/ui-identicon@^0.28.8":
+  version "0.28.8"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-identicon/-/ui-identicon-0.28.8.tgz#00cfbbac365cf3b43fa57bb430a3b00542ad8f9b"
+  integrity sha512-gI0S+/oLeBBl201hu6uufbXPp646KuVvm0FyXRgdPGu7eFl/iQFlREGGM32lwbysn1pv/HOAfaA2xRn/7tYfRg==
   dependencies:
-    "@babel/runtime" "^7.2.0"
-    "@polkadot/ui-settings" "^0.25.12"
+    "@babel/runtime" "^7.3.4"
+    "@polkadot/ui-settings" "^0.28.8"
     "@types/color" "^3.0.0"
     "@types/react-copy-to-clipboard" "^4.2.6"
     color "^3.0.0"
+    jdenticon "^2.1.1"
     react-copy-to-clipboard "^5.0.1"
 
 "@polkadot/ui-keyring@^0.28.6":
@@ -1887,12 +1888,12 @@
     rxjs "^6.4.0"
     store "^2.0.12"
 
-"@polkadot/ui-settings@^0.25.12":
-  version "0.25.12"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-0.25.12.tgz#5d78697db87c406190216d7a67eecb7ebf9ef7e1"
-  integrity sha512-vgPu+hzUL6Zm/umzpwMmXucIdsAV8LdjgtQzO9Q5cQRqfLOyJHxcu6vMypPuOrMCoQj3Z6/n3UTWecT3QwCENw==
+"@polkadot/ui-settings@^0.28.8":
+  version "0.28.8"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-0.28.8.tgz#f7e989aab4c4379916d6dbe7d8c64720af40531f"
+  integrity sha512-Ht8tzilf0ztNSK5X+GSPEcsxIF8+Kbj9poXs5z+RbL9L/alqDHyLaKFdvtKQxzmC5cxI8E6j8Qw9hN81ygh6MA==
   dependencies:
-    "@babel/runtime" "^7.2.0"
+    "@babel/runtime" "^7.3.4"
     "@types/store" "^2.0.1"
     store "^2.0.12"
 
@@ -4211,6 +4212,11 @@ caniuse-lite@^1.0.0, caniuse-lite@^1.0.30000884, caniuse-lite@^1.0.30000887, can
   version "1.0.30000939"
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000939.tgz#b9ab7ac9e861bf78840b80c5dfbc471a5cd7e679"
   integrity sha512-oXB23ImDJOgQpGjRv1tCtzAvJr4/OvrHi5SO2vUgB0g0xpdZZoA/BxfImiWfdwoYdUTtQrPsXsvYU/dmCSM8gg==
+
+canvas-renderer@~2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/canvas-renderer/-/canvas-renderer-2.1.1.tgz#d91fe9511ab48056ff9fa8a04514bede76535f55"
+  integrity sha512-/V0XetN7s1Mk3NO7x2wxPZYv0pLMQtGAhecuOuKR88beiYCUle1AbCcFZNLu+4NVzi9RVHS0rXtIgzPEaKidLw==
 
 capture-exit@^1.2.0:
   version "1.2.0"
@@ -8950,6 +8956,13 @@ istanbul-reports@^1.5.1:
   integrity sha512-+cfoZ0UXzWjhAdzosCPP3AN8vvef8XDkWtTfgaN+7L3YTpNYITnCaEkceo5SEYy644VkHka/P1FvkWvrG/rrJw==
   dependencies:
     handlebars "^4.0.3"
+
+jdenticon@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/jdenticon/-/jdenticon-2.1.1.tgz#f9288e87b3466e2c5f05948c68db58e1c9e1b800"
+  integrity sha512-bFD210JMaK2RMHGSkdDXqdQzasMrVIGDfxUMXD/Uwq2t7g9Njb4T6kms5TrocsLU0CDmQCoB0laGJ6JETiprsg==
+  dependencies:
+    canvas-renderer "~2.1.1"
 
 jest-changed-files@^23.4.2:
   version "23.4.2"
