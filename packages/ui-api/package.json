@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@substrate/ui-components": "0.1.0",
-    "@polkadot/api": "^0.45.19",
+    "@polkadot/api": "^0.46.3",
     "@polkadot/ui-keyring": "^0.28.6",
     "@types/create-subscription": "^16.4.1",
     "create-subscription": "^16.8.0",
