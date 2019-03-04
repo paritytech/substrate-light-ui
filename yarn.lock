@@ -1878,9 +1878,9 @@
     react-copy-to-clipboard "^5.0.1"
 
 "@polkadot/ui-keyring@^0.28.6":
-  version "0.28.6"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-keyring/-/ui-keyring-0.28.6.tgz#3cb8c44a28d0fc4b64f79b6217074016b24009d7"
-  integrity sha512-9Ul29TSEqdcxl1go3m91AIZjXbvDoyK383Q9FpDQN/OnYDwbshCHFY7NPIu4rn/7fbMBkPHX8uQQhX7IdYIiPw==
+  version "0.28.8"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-keyring/-/ui-keyring-0.28.8.tgz#26eb81dd390cb6a740395ff86dd367f28ab75fc3"
+  integrity sha512-wNZGscllVMV0oRF7xCwifddxWo9Xl7S9/+aJxHhquyzfBvnb6Lsvnhx5UXZMLqRBBGSJC1CZu/Efn7rMsLfIBw==
   dependencies:
     "@babel/runtime" "^7.3.4"
     "@types/store" "^2.0.1"
