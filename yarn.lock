@@ -1858,12 +1858,12 @@
     "@polkadot/util" "^0.34.37"
     core-js "^2.6.5"
 
-"@polkadot/ui-assets@^0.26.2":
-  version "0.26.9"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-assets/-/ui-assets-0.26.9.tgz#25990dc9de13520d4e77e9073cc5d2554c2eee38"
-  integrity sha512-NFwkwr344KDUGZtjrm96upKweat3qwP6SvyFYisUwknSv6u6zFWoVprCgrf6xv7JyyDXahkwOgdjED6Sw1NwFg==
+"@polkadot/ui-assets@^0.28.8":
+  version "0.28.8"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-assets/-/ui-assets-0.28.8.tgz#a9bc06ef123a9d87ba54703acab162933e5064ff"
+  integrity sha512-1ykQfxssTP6ZjU+9ysIM97R9wnqYaUy+L+Vu7/nvKZTssKOqbuwI10wtyeai5BNe6Z1psPzgvY4V7O4jDHC0jA==
   dependencies:
-    "@babel/runtime" "^7.3.1"
+    "@babel/runtime" "^7.3.4"
 
 "@polkadot/ui-identicon@^0.28.8":
   version "0.28.8"
