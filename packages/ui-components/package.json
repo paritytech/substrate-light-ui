@@ -27,6 +27,7 @@
     "react": "^16.6.3"
   },
   "devDependencies": {
+    "@storybook/addon-knobs": "^4.1.13",
     "@storybook/react": "^4.1.4",
     "@types/storybook__react": "^4.0.0",
     "storybook-addon-styled-component-theme": "^1.1.1"
