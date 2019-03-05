@@ -1852,7 +1852,7 @@
     tweetnacl "^1.0.1"
     xxhashjs "^0.2.2"
 
-"@polkadot/util@^0.34.35", "@polkadot/util@^0.34.37":
+"@polkadot/util@^0.34.37":
   version "0.34.37"
   resolved "https://registry.yarnpkg.com/@polkadot/util/-/util-0.34.37.tgz#86545ca8c9a692ec80ddf697094bcd31f6099302"
   integrity sha512-g0Xh8RDZQBYuIzQ3mFHIWoTaNsGLySijS4GF1BIL9pFfDpHzJvXSQpg+bU2L/chHc1Z7BvIDgi60UVH+0SGbwQ==
@@ -1867,6 +1867,23 @@
     chalk "^2.4.2"
     core-js "^2.6.5"
     deasync "^0.1.14"
+    ip-regex "^4.0.0"
+    moment "^2.24.0"
+
+"@polkadot/util@^0.35.2":
+  version "0.35.2"
+  resolved "https://registry.yarnpkg.com/@polkadot/util/-/util-0.35.2.tgz#53ed5632651b8266dcb181179a1572cc9c15be8e"
+  integrity sha512-X9zF4e+AvdyQVy9VP8QcHbQcJRCArKRt/CvjkSlqMerRt+fsLxj3K3iJRo4el5Wi0gKpZRq08owKhJgh4iLbLA==
+  dependencies:
+    "@babel/runtime" "^7.3.4"
+    "@types/bn.js" "^4.11.4"
+    "@types/camelcase" "^4.1.0"
+    "@types/deasync" "^0.1.0"
+    "@types/ip-regex" "^3.0.0"
+    bn.js "^4.11.8"
+    camelcase "^5.0.0"
+    chalk "^2.4.2"
+    core-js "^2.6.5"
     ip-regex "^4.0.0"
     moment "^2.24.0"
 
