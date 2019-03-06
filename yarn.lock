@@ -5202,9 +5202,9 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     sha.js "^2.4.8"
 
 create-subscription@^16.8.0:
-  version "16.8.3"
-  resolved "https://registry.yarnpkg.com/create-subscription/-/create-subscription-16.8.3.tgz#10152df3e89b7fcd6b19cbec0c20eb9982c30cd7"
-  integrity sha512-4QgGiIi8xkANeI7kPyq4KtxTELxwRi/pyZyUOFLHOoU88eq3YLJJfIGjptBy6K4nZhNmReYM1PqhJ3JfocKZqQ==
+  version "16.8.4"
+  resolved "https://registry.yarnpkg.com/create-subscription/-/create-subscription-16.8.4.tgz#c3103db3ea02b757b74e602f25d580b02d4b9e8c"
+  integrity sha512-MK2UDD/U+vAiZronjw3TSMQG74ATvNVCdQCoqQLqpYkHPvD31ZREGVidgeinbS9gcxpDVDte6VdGqta5tmvI4g==
 
 crocket@^0.9.11:
   version "0.9.11"
