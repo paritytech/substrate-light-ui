@@ -5,20 +5,23 @@
 import React from 'react';
 import BN from 'bn.js';
 
+import { DynamicSizeText } from './Shared.styles';
+
 type Props = {
-  balance?: BN
+  balance?: BN,
+  fontSize?: number
 };
 
 const PLACEHOLDER_BALANCE = 0;
 
 export default class BalanceDisplay extends React.PureComponent<Props> {
   render () {
-    const { balance } = this.props;
+    const { balance, fontSize } = this.props;
 
     return (
-        <React.Fragment>
+        <DynamicSizeText fontSize={fontSize}>
           Balance: { (balance && balance.toString(10)) || PLACEHOLDER_BALANCE }
-        </React.Fragment>
+        </DynamicSizeText>
     );
   }
 }
