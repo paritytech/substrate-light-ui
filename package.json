@@ -14,7 +14,10 @@
       "**/electron-builder",
       "**/electron-builder/**",
       "**/electron-webpack",
-      "**/electron-webpack/**"
+      "**/electron-webpack/**",
+      "**/jest",
+      "**/webpack",
+      "**/webpack-dev-server"
     ]
   },
   "scripts": {
