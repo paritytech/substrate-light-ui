@@ -2,9 +2,12 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { ApiContext } from '@substrate/ui-api';
-import { AddressSummary, MarginTop, Stacked, WalletCard, WithSpace } from '@substrate/ui-components';
-
+import { Balance } from '@polkadot/types';
+import { AddressSummary, BalanceDisplay, MarginTop, Stacked, WalletCard, WithSpace } from '@substrate/ui-components';
+import accountObservable from '@polkadot/ui-keyring/observable/accounts';
+import { SingleAddress, SubjectInfo } from '@polkadot/ui-keyring/observable/types';
+import { ApiContext, Subscribe } from '@substrate/ui-api';
+import { map } from 'rxjs/operators';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -33,27 +36,40 @@ export class SavedAccounts extends React.PureComponent<Props> {
   }
 
   renderAllAccountsFromKeyring () {
-    const { keyring } = this.context;
+    const { api } = this.context;
 
     return (
-      <React.Fragment>
-        {
-          keyring.getPairs().map(pair => {
-            return (
-              <React.Fragment key={pair.address()}>
+      <Subscribe>
+        {accountObservable.subject.pipe(
+          map((allAccounts: SubjectInfo) =>
+            Object.values(allAccounts).map((account: SingleAddress) =>
+              <React.Fragment key={account.json.address}>
                 <MarginTop />
-                <Link to={`/identity/${pair.address()}`}>
                   <AddressSummary
-                    address={pair.address()}
-                    name={pair.getMeta().name}
+                    address={account.json.address}
+                    name={
+                      <Link to={`/identity/${account.json.address}`}>
+                        {account.json.meta.name}
+                      </Link>
+                    }
                     orientation='horizontal'
-                    size='small' />
-                </Link>
+                    size='small'
+                  />
+                  <Subscribe>
+                    {
+                      // FIXME using any because freeBalance gives a Codec here, not a Balance
+                      // Wait for @polkadot/api to have TS support for all query.*
+                      api.query.balances.freeBalance(account.json.address).pipe(map(this.renderBalance as any))
+                    }
+                  </Subscribe>
               </React.Fragment>
-            );
-          })
-        }
-      </React.Fragment>
+            )
+          ))}
+      </Subscribe>
     );
+  }
+
+  renderBalance = (balance: Balance) => {
+    return <BalanceDisplay balance={balance} />;
   }
 }

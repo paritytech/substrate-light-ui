@@ -2,14 +2,16 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
 import { ApiContext } from '@substrate/ui-api';
-import { AddressSummary, ErrorText, FadedText, Input, MarginTop, MnemonicSegment, Modal, NavButton, NavLink, Stacked, StackedHorizontal, StyledLinkButton, SubHeader, WithSpaceAround } from '@substrate/ui-components';
+import { AddressSummary, ErrorText, FadedText, Input, MarginTop, MnemonicSegment, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SubHeader, WithSpaceAround } from '@substrate/ui-components';
+import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
 import FileSaver from 'file-saver';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-interface Props extends RouteComponentProps { }
+interface Props extends RouteComponentProps {
+  basePath: string;
+}
 
 type Steps = 'create' | 'rewrite';
 
@@ -23,7 +25,7 @@ type State = {
   step: Steps;
 };
 
-export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
+export class Create extends React.PureComponent<Props, State> {
   static contextType = ApiContext;
 
   context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
@@ -37,10 +39,19 @@ export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
   };
 
   componentDidMount () {
-    const mnemonic = mnemonicGenerate();
-    const address = this.generateAddressFromMnemonic(mnemonic);
+    this.newMnemonic();
+  }
 
-    this.setState({ address, mnemonic });
+  private clearFields = () => {
+    const mnemonic = mnemonicGenerate();
+
+    this.setState({
+      address: this.generateAddressFromMnemonic(mnemonic),
+      error: null,
+      mnemonic,
+      name: '',
+      password: ''
+    });
   }
 
   private createNewAccount = () => {
@@ -58,6 +69,8 @@ export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
       FileSaver.saveAs(blob, `${address}.json`);
 
       history.push(`/identity/${address}`);
+
+      this.clearFields();
     } else {
       this.onError('Please make sure all the fields are set');
     }
@@ -108,6 +121,7 @@ export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
       error: value
     });
   }
+
   private toggleStep = () => {
     const { address, password, step } = this.state;
 
@@ -126,35 +140,38 @@ export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { step } = this.state;
-
-    return (
-      <React.Fragment>
-        <Modal.Header> Create New Account </Modal.Header>
-        <Modal.Content>
-          {
-            step === 'create'
-              ? this.renderCreateStep()
-              : this.renderRewriteStep()
-          }
-        </Modal.Content>
-      </React.Fragment>
-    );
-  }
-
-  renderCreateStep () {
-    const { address, mnemonic, name } = this.state;
+    const { address, name, step } = this.state;
 
     return (
       <Stacked>
         <AddressSummary address={address} name={name} />
-        {this.renderSetName()}
-        <Modal.SubHeader> Create from the following mnemonic phrase </Modal.SubHeader>
-        <MnemonicSegment onClick={this.newMnemonic} mnemonic={mnemonic} />
-        {this.renderSetPassword()}
+        {
+          step === 'create'
+            ? this.renderCreateStep()
+            : this.renderRewriteStep()
+        }
         {this.renderError()}
-        {this.renderNewAccountActions()}
       </Stacked>
+    );
+  }
+
+  renderCreateStep () {
+    const { mnemonic } = this.state;
+
+    return (
+      <React.Fragment>
+        <Stacked>
+          <SubHeader> Create from the following mnemonic phrase </SubHeader>
+          <MnemonicSegment onClick={this.newMnemonic} mnemonic={mnemonic} />
+          <WithSpaceAround>
+            <StackedHorizontal>
+              {this.renderSetName()}
+              {this.renderSetPassword()}
+            </StackedHorizontal>
+          </WithSpaceAround>
+          <NavButton onClick={this.toggleStep}> Next </NavButton>
+        </Stacked>
+      </React.Fragment>
     );
   }
 
@@ -165,20 +182,6 @@ export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
       <ErrorText>
         {error || null}
       </ErrorText>
-    );
-  }
-
-  renderNewAccountActions () {
-    return (
-      <React.Fragment>
-        <Modal.Actions>
-          <Stacked>
-            <NavButton onClick={this.toggleStep}> Next </NavButton>
-            <Modal.FadedText>or</Modal.FadedText>
-            <NavLink to='/import/withJson'> Import an existing account </NavLink>
-          </Stacked>
-        </Modal.Actions>
-      </React.Fragment>
     );
   }
 
@@ -214,8 +217,8 @@ export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
     const { name } = this.state;
 
     return (
-      <React.Fragment>
-        <Modal.SubHeader> Give it a name </Modal.SubHeader>
+      <Stacked>
+        <SubHeader> Give it a name </SubHeader>
         <Input
           autoFocus
           min={1}
@@ -223,7 +226,7 @@ export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
           type='text'
           value={name}
         />
-      </React.Fragment>
+      </Stacked>
     );
   }
 
@@ -231,15 +234,16 @@ export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
     const { password } = this.state;
 
     return (
-      <React.Fragment>
-        <Modal.SubHeader> Encrypt it with a passphrase </Modal.SubHeader>
+      <Stacked>
+        <SubHeader> Encrypt it with a passphrase </SubHeader>
         <Input
           min={8}
           onChange={this.onChangePassword}
           type='password'
           value={password}
         />
-      </React.Fragment>
+      </Stacked>
     );
   }
+
 }

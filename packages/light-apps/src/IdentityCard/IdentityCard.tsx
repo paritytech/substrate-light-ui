@@ -5,7 +5,7 @@
 import { Balance } from '@polkadot/types';
 import { stringUpperFirst } from '@polkadot/util';
 import { ApiContext, Subscribe } from '@substrate/ui-api';
-import { Address, AddressSummary, ErrorText, Header, Icon, Input, MarginTop, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SuccessText, WithSpaceBetween } from '@substrate/ui-components';
+import { Address, AddressSummary, BalanceDisplay, ErrorText, FadedText, Header, Icon, Input, MarginTop, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SuccessText, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -16,25 +16,44 @@ import { StyledCard, CardContent } from './IdentityCard.styles';
 interface Props extends RouteComponentProps { }
 
 type State = {
+  address?: string,
   backupModalOpen: boolean,
-  buttonText: string
+  buttonText?: string
   error?: string,
   forgetModalOpen: boolean,
+  name?: string
   password: string,
   success?: string
 };
 
-export class IdentityCard extends React.Component<Props, State> {
+export class IdentityCard extends React.PureComponent<Props, State> {
   static contextType = ApiContext;
 
   context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
 
   state: State = {
     backupModalOpen: false,
-    buttonText: 'Transfer',
     forgetModalOpen: false,
     password: ''
   };
+
+  componentDidMount () {
+    const { keyring } = this.context;
+
+    const currentLocation = location.pathname.split('/')[1].toLowerCase();
+
+    const to = currentLocation === 'identity' ? 'transfer' : 'identity';
+    const buttonText = stringUpperFirst(to);
+
+    const address = this.getAddress();
+    const name = address && keyring.getAccount(address).getMeta().name;
+
+    this.setState({
+      address,
+      buttonText,
+      name
+    });
+  }
 
   closeBackupModal = () => {
     this.setState({
@@ -104,13 +123,19 @@ export class IdentityCard extends React.Component<Props, State> {
   private handleToggleApp = () => {
     const { location, history } = this.props;
     const address = this.getAddress();
+    const currentLocation = location.pathname.split('/')[1].toLowerCase();
 
-    const to = location.pathname.split('/')[1].toLowerCase() === 'identity' ? 'transfer' : 'identity';
+    const to = currentLocation === 'identity' ? 'transfer' : 'identity';
     const buttonText = stringUpperFirst(to);
 
-    history.push(`/${to}/${address}`);
+    const nextLocation = {
+      pathname: `/${to}/${address}`,
+      state: {
+        buttonText: buttonText
+      }
+    };
 
-    this.setState({ buttonText });
+    history.push(nextLocation);
   }
 
   private onChangePassword = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
@@ -127,21 +152,24 @@ export class IdentityCard extends React.Component<Props, State> {
 
   render () {
     const { api } = this.context;
-    const { buttonText } = this.state;
-    const address = this.getAddress();
+    const { address, buttonText, name } = this.state;
 
     return (
       <StyledCard>
         <CardContent>
           <Header> Current Account </Header>
           {address
-            ? <Subscribe>
-              {
-                // FIXME using any because freeBalance gives a Codec here, not a Balance
-                // Wait for @polkadot/api to have TS support for all query.*
-                api.query.balances.freeBalance(address).pipe(map(this.renderBalance as any))
-              }
-            </Subscribe>
+            ?
+            <React.Fragment>
+              <AddressSummary address={address} name={name} />
+              <Subscribe>
+                {
+                  // FIXME using any because freeBalance gives a Codec here, not a Balance
+                  // Wait for @polkadot/api to have TS support for all query.*
+                  api.query.balances.freeBalance(address).pipe(map(this.renderBalance as any))
+                }
+              </Subscribe>
+            </React.Fragment>
             : <div>Loading...</div>
           }
           <MarginTop />
@@ -167,31 +195,31 @@ export class IdentityCard extends React.Component<Props, State> {
     const { backupModalOpen, password } = this.state;
 
     return (
-      <Modal trigger={this.backupTrigger} open={backupModalOpen} basic>
-        <Modal.Header> Please Confirm You Want to Backup this Account </Modal.Header>
-        <h2>By pressing confirm you will be downloading a JSON keyfile that can later be used to unlock your account. </h2>
-        <Modal.Actions>
+      <Modal closeOnDimmerClick closeOnEscape open={backupModalOpen} trigger={this.backupTrigger}>
+        <WithSpaceAround>
           <Stacked>
-            <Modal.SubHeader> Please encrypt your account first with the account's password. </Modal.SubHeader>
-            <Input min={8} onChange={this.onChangePassword} type='password' value={password} />
-            <StackedHorizontal>
-              <WithSpaceBetween>
-                <Icon name='remove' color='red' /> <StyledLinkButton color='white' onClick={this.closeBackupModal}>No</StyledLinkButton>
-                <Icon name='checkmark' color='green' /> <StyledLinkButton color='white' onClick={this.backupCurrentAccount}>Confirm Backup</StyledLinkButton>
-              </WithSpaceBetween>
-            </StackedHorizontal>
+            <Modal.SubHeader> Please Confirm You Want to Backup this Account </Modal.SubHeader>
+            <FadedText>By pressing confirm you will be downloading a JSON keyfile that can later be used to unlock your account. </FadedText>
+            <Modal.Actions>
+              <Stacked>
+                <FadedText> Please encrypt your account first with the account's password. </FadedText>
+                <Input fluid min={8} onChange={this.onChangePassword} type='password' value={password} />
+                <StackedHorizontal>
+                  <WithSpaceBetween>
+                    <StyledLinkButton onClick={this.closeBackupModal}><Icon name='remove' color='red' /> <FadedText>Cancel</FadedText></StyledLinkButton>
+                    <StyledLinkButton onClick={this.backupCurrentAccount}><Icon name='checkmark' color='green' /> <FadedText>Confirm Backup</FadedText></StyledLinkButton>
+                  </WithSpaceBetween>
+                </StackedHorizontal>
+              </Stacked>
+            </Modal.Actions>
           </Stacked>
-        </Modal.Actions>
+        </WithSpaceAround>
       </Modal>
     );
   }
 
   renderBalance = (balance: Balance) => {
-    const { keyring } = this.context;
-    const address = this.getAddress();
-    const name = keyring.getAccount(address).getMeta().name;
-
-    return <AddressSummary address={address} balance={balance} name={name} />;
+    return <BalanceDisplay balance={balance} />;
   }
 
   renderError () {
@@ -208,13 +236,21 @@ export class IdentityCard extends React.Component<Props, State> {
     const { forgetModalOpen } = this.state;
 
     return (
-      <Modal trigger={this.forgetTrigger} open={forgetModalOpen} basic>
-        <Modal.Header> Please Confirm You Want to Forget this Account </Modal.Header>
-        <h2>Please confirm that you want to remove this account from your keyring. </h2>
-        <Modal.Actions>
-          <Icon name='remove' color='red' /> <StyledLinkButton color='white' onClick={this.closeForgetModal}>No</StyledLinkButton>
-          <Icon name='checkmark' color='green' /> <StyledLinkButton color='white' onClick={this.forgetCurrentAccount}>Confirm Forget</StyledLinkButton>
-        </Modal.Actions>
+      <Modal closeOnDimmerClick={true} closeOnEscape={true} open={forgetModalOpen} trigger={this.forgetTrigger}>
+        <WithSpaceAround>
+          <Stacked>
+            <Modal.SubHeader> Please Confirm You Want to Forget this Account </Modal.SubHeader>
+            <b>By pressing confirm, you will be removing this account from your Saved Accounts. </b>
+            <MarginTop />
+            <FadedText> You can restore this later from your mnemonic phrase or json backup file. </FadedText>
+            <Modal.Actions>
+              <StackedHorizontal>
+                <StyledLinkButton onClick={this.closeForgetModal}><Icon name='remove' color='red' /> <FadedText> Cancel </FadedText> </StyledLinkButton>
+                <StyledLinkButton onClick={this.forgetCurrentAccount}><Icon name='checkmark' color='green' /> <FadedText> Confirm Forget </FadedText> </StyledLinkButton>
+              </StackedHorizontal>
+            </Modal.Actions>
+          </Stacked>
+        </WithSpaceAround>
       </Modal>
     );
   }

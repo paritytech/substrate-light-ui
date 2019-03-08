@@ -1,14 +1,15 @@
 // Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
-
-import { KeyringPair } from '@polkadot/keyring/types';
-import { ApiContext } from '@substrate/ui-api';
-import { AddressSummary, Grid, MarginTop, NavLink, Stacked, StyledLinkButton, SubHeader, WalletCard, WithSpace } from '@substrate/ui-components';
-import { KeyringAddress } from '@polkadot/ui-keyring/types';
-
+import { Balance } from '@polkadot/types';
+import { SingleAddress, SubjectInfo } from '@polkadot/ui-keyring/observable/types';
+import accountObservable from '@polkadot/ui-keyring/observable/accounts';
+import addressObservable from '@polkadot/ui-keyring/observable/addresses';
+import { ApiContext, Subscribe } from '@substrate/ui-api';
+import { AddressSummary, BalanceDisplay, Grid, Icon, MarginTop, NavLink, Stacked, StackedHorizontal, SubHeader, WalletCard, WithSpace } from '@substrate/ui-components';
 import React from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
+import { map } from 'rxjs/operators';
 
 interface MatchParams {
   currentAddress: string;
@@ -16,31 +17,29 @@ interface MatchParams {
 
 interface Props extends RouteComponentProps<MatchParams> {
   basePath: string;
-  onSelectAddress: (address: string) => void;
+  onSelectAddress: (address: string, name: string) => void;
 }
 
-type State = {
-  allAccounts: Array<KeyringPair>,
-  allAddresses: Array<KeyringAddress>
-};
-
-export class Saved extends React.PureComponent<Props, State> {
+export class Saved extends React.PureComponent<Props> {
   static contextType = ApiContext;
 
   context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
 
-  state: State = {
-    allAccounts: [],
-    allAddresses: []
-  };
-
-  componentDidMount () {
+  forgetSelectedAddress = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     const { keyring } = this.context;
 
-    this.setState({
-      allAccounts: keyring.getPairs(),
-      allAddresses: keyring.getAddresses()
-    });
+    const address = event.currentTarget.dataset.address;
+
+    keyring.forgetAddress(address!);
+  }
+
+  handleSelectedRecipient = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    const { onSelectAddress } = this.props;
+
+    const address = event.currentTarget.dataset.address;
+    const name = event.currentTarget.dataset.name;
+
+    onSelectAddress(address!, name!);
   }
 
   render () {
@@ -55,7 +54,7 @@ export class Saved extends React.PureComponent<Props, State> {
             <Stacked>
               <SubHeader> My Unlocked Accounts </SubHeader>
               <WithSpace>
-                {this.renderAccountsToSendFrom()}
+                { this.renderAccountsToSendFrom() }
               </WithSpace>
             </Stacked>
           </Grid.Column>
@@ -63,7 +62,7 @@ export class Saved extends React.PureComponent<Props, State> {
             <Stacked>
               <SubHeader> Saved Addresses </SubHeader>
               <WithSpace>
-                {this.renderAddressesToSendTo()}
+                { this.renderAddressesToSendTo() }
               </WithSpace>
             </Stacked>
           </Grid.Column>
@@ -73,57 +72,83 @@ export class Saved extends React.PureComponent<Props, State> {
   }
 
   renderAccountsToSendFrom () {
-    const { allAccounts } = this.state;
+    const { api } = this.context;
 
-    if (!allAccounts.length) {
-      this.renderEmpty();
-    }
-
-    return allAccounts.map((pair: KeyringPair) => {
-      return (
-        <React.Fragment key={`__unlocked_${pair.address()}`}>
-          <MarginTop />
-          <Link to={`/transfer/${pair.address()}`}>
-            <AddressSummary
-              address={pair.address()}
-              name={pair.getMeta().name}
-              orientation='horizontal'
-              size='small' />
-          </Link>
-        </React.Fragment>
-      );
-    });
-  }
-
-  handleSelectedRecipient = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    const { onSelectAddress } = this.props;
-
-    const address = event.currentTarget.dataset.id;
-
-    onSelectAddress(address!);
+    return (
+      <Subscribe>
+        {accountObservable.subject.pipe(
+          map((allAccounts: SubjectInfo) =>
+            !allAccounts
+              ? this.renderEmpty()
+              : Object.values(allAccounts).map((account: SingleAddress) =>
+                  <React.Fragment key={account.json.address}>
+                    <MarginTop />
+                    <AddressSummary
+                      address={account.json.address}
+                      name={
+                        <Link to={`/transfer/${account.json.address}`}>
+                          {account.json.meta.name}
+                        </Link>
+                      }
+                      orientation='horizontal'
+                      size='small'
+                      />
+                    <Subscribe>
+                      {
+                        // FIXME using any because freeBalance gives a Codec here, not a Balance
+                        // Wait for @polkadot/api to have TS support for all query.*
+                        api.query.balances.freeBalance(account.json.address).pipe(map(this.renderBalance as any))
+                      }
+                    </Subscribe>
+                  </React.Fragment>
+              )
+          ))}
+      </Subscribe>
+    );
   }
 
   renderAddressesToSendTo () {
-    const { allAddresses } = this.state;
+    const { api } = this.context;
 
-    if (!allAddresses.length) {
-      this.renderEmpty();
-    }
+    return (
+      <Subscribe>
+        {addressObservable.subject.pipe(
+          map((allAddresses: SubjectInfo) =>
+            !Object.keys(allAddresses).length
+              ? this.renderEmpty()
+              : Object.values(allAddresses).map((address: SingleAddress) =>
+                  <React.Fragment key={`__locked_${address.json.address}`}>
+                    <MarginTop />
+                    <StackedHorizontal>
+                      <Link to='#' data-address={address.json.address} data-name={address.json.meta.name} onClick={this.handleSelectedRecipient}>
+                        <AddressSummary
+                          address={address.json.address}
+                          name={address.json.meta.name}
+                          orientation='horizontal'
+                          size='small' />
+                      </Link>
+                      <Subscribe>
+                        {
+                          // FIXME using any because freeBalance gives a Codec here, not a Balance
+                          // Wait for @polkadot/api to have TS support for all query.*
+                          api.query.balances.freeBalance(address.json.address).pipe(map(this.renderBalance as any))
+                        }
+                      </Subscribe>
+                      <Link to='#' data-address={address.json.address} onClick={this.forgetSelectedAddress}>
+                        <Icon name='close' />
+                      </Link>
+                    </StackedHorizontal>
+                  </React.Fragment>
+              )
+          ))}
+      </Subscribe>
+    );
+  }
 
-    return allAddresses.map((address: KeyringAddress) => {
-      return (
-        <React.Fragment key={`__locked_${address.address()}`}>
-          <MarginTop />
-          <StyledLinkButton data-id={address.address()} onClick={this.handleSelectedRecipient}>
-            <AddressSummary
-              address={address.address()}
-              name={address.getMeta().name}
-              orientation='horizontal'
-              size='small' />
-          </StyledLinkButton>
-        </React.Fragment>
-      );
-    });
+  renderBalance = (balance: Balance) => {
+    return (
+      <BalanceDisplay balance={balance} />
+    );
   }
 
   renderEmpty () {
@@ -132,7 +157,7 @@ export class Saved extends React.PureComponent<Props, State> {
 
     return (
       <React.Fragment>
-        <p> It looks like you don't have any saved accounts. <br /> You can add them from your address book in Identity app. </p>
+        <p> It looks like you don't have any saved accounts. You can add them from your address book in Identity app. </p>
         <NavLink to={`/identity/${address}`}> Take me there </NavLink>
       </React.Fragment>
     );

@@ -9,11 +9,14 @@ import Grid from './Grid';
 import Icon from './Icon';
 import Input from './Input';
 import InputFile from './InputFile';
+import Loading from './Loading';
 import Menu from './Menu';
+import MnemonicSegment from './MnemonicSegment';
 import Modal from './Modal';
 import NavButton from './NavButton';
 import NavLink from './NavLink';
 import Segment from './Segment';
+import TextArea from './TextArea';
 import WalletCard from './WalletCard';
 
 export {
@@ -24,11 +27,14 @@ export {
   Icon,
   Input,
   InputFile,
+  Loading,
   Menu,
+  MnemonicSegment,
   Modal,
   NavButton,
   NavLink,
   Segment,
+  TextArea,
   WalletCard
 };
 

@@ -1,5 +1,6 @@
 {
   "name": "@substrate/ui-api",
+  "author": "Parity Technologies <admin@parity.io>",
   "version": "0.1.0",
   "description": "Wrapper to connect React components to PolkadotJS Api",
   "license": "Apache-2.0",
@@ -12,8 +13,9 @@
     "test": "echo skipped"
   },
   "dependencies": {
-    "@polkadot/api": "^0.42.2",
-    "@polkadot/ui-keyring": "^0.25.9",
+    "@substrate/ui-components": "0.1.0",
+    "@polkadot/api": "^0.46.3",
+    "@polkadot/ui-keyring": "^0.28.6",
     "@types/create-subscription": "^16.4.1",
     "create-subscription": "^16.8.0",
     "react-with-observable": "^2.0.1"

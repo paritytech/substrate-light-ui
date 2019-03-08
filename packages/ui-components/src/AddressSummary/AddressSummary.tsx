@@ -4,7 +4,6 @@
 
 import IdentityIcon from '@polkadot/ui-identicon';
 import { KeyringAddress } from '@polkadot/ui-keyring/types';
-import BN from 'bn.js';
 import React from 'react';
 
 import { DynamicSizeText, Stacked, StackedHorizontal } from '../Shared.styles';
@@ -19,8 +18,7 @@ type SummaryStyles = {
 
 type Props = {
   address?: string | KeyringAddress,
-  balance?: BN,
-  name?: string,
+  name?: string | React.ReactNode,
   orientation?: OrientationTypes,
   size?: SizeTypes
 };
@@ -30,7 +28,7 @@ const PLACEHOLDER_ADDRESS = '5'.padEnd(16, 'x');
 
 export class AddressSummary extends React.PureComponent<Props> {
   render () {
-    const { address, balance, name, orientation = 'vertical', size = 'medium' } = this.props;
+    const { address, name, orientation = 'vertical', size = 'medium' } = this.props;
     let styles: SummaryStyles = { identiconSize: 16, nameSize: '14px' };
 
     switch (size) {

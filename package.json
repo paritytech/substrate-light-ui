@@ -1,14 +1,11 @@
 {
   "name": "@polkadot/light-ui",
-  "description": "User interface optimized for the Substrate light client",
   "version": "0.1.0",
-  "private": true,
+  "author": "Parity Technologies <admin@parity.io>",
+  "description": "User interface optimized for the Substrate light client",
   "license": "Apache-2.0",
-  "author": "Parity Team <admin@parity.io>",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/paritytech/substrate-light-ui.git"
-  },
+  "private": true,
+  "repository": "https://github.com/paritytech/substrate-light-ui.git",
   "workspaces": {
     "packages": [
       "packages/*"
@@ -17,22 +14,27 @@
       "**/electron-builder",
       "**/electron-builder/**",
       "**/electron-webpack",
-      "**/electron-webpack/**"
+      "**/electron-webpack/**",
+      "**/jest",
+      "**/webpack",
+      "**/webpack-dev-server"
     ]
   },
   "scripts": {
     "build": "lerna exec yarn build --stream",
     "clean": "polkadot-dev-clean-build",
+    "electron": "cd packages/electron-app && yarn electron",
     "lint": "tsc --noEmit && tslint --project .",
+    "package": "cd packages/electron-app && yarn package",
     "prebuild": "yarn clean",
+    "preelectron": "yarn build",
     "prepackage": "yarn build",
     "prestart": "./scripts/prestart.sh",
-    "package": "cd packages/electron-app && yarn dist",
     "start": "lerna exec yarn start --parallel",
     "storybook": "cd packages/ui-components && yarn storybook",
     "test": "CI=true lerna run test --parallel"
   },
   "devDependencies": {
-    "@polkadot/dev": "^0.23.14"
+    "@polkadot/dev": "^0.25.11"
   }
 }

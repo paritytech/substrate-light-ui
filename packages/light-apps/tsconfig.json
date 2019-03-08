@@ -8,7 +8,12 @@
     "module": "esnext",
     "noEmit": true,
     "resolveJsonModule": true,
-    "skipLibCheck": false
+    "skipLibCheck": false,
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ]
   },
   "extends": "../../tsconfig",
   "include": [
