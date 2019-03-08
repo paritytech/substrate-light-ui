@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import SUIContainer from 'semantic-ui-react/dist/commonjs/elements/Container';
 import SUICard from 'semantic-ui-react/dist/commonjs/views/Card';
 
-import { HeaderProps, MarginTopProps, NameProps, StackProps, SubHeaderProps, WithSpaceAroundProps } from './StyleProps';
+import { HeaderProps, MarginTopProps, DynamicSizeTextProps, StackProps, SubHeaderProps, WithSpaceAroundProps } from './StyleProps';
 
 export const Container = styled(SUIContainer)`
   padding: 1.5rem;
@@ -73,7 +73,7 @@ export const Header = styled.h2<HeaderProps>`
   text-align: center;
 `;
 
-export const Name = styled.p<NameProps>`
+export const DynamicSizeText = styled.p<DynamicSizeTextProps>`
   font-size: ${props => props.fontSize || '20px'};
   font-weight: ${props => props.fontWeight || '500'};
   margin: 0 0;

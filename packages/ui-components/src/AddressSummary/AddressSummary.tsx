@@ -7,7 +7,7 @@ import { KeyringAddress } from '@polkadot/ui-keyring/types';
 import BN from 'bn.js';
 import React from 'react';
 
-import { Name, Stacked, StackedHorizontal } from '../Shared.styles';
+import { DynamicSizeText, Stacked, StackedHorizontal } from '../Shared.styles';
 import BalanceDisplay from '../Balance';
 
 type OrientationTypes = 'horizontal' | 'vertical';
@@ -54,16 +54,16 @@ export class AddressSummary extends React.PureComponent<Props> {
       return (
         <Stacked>
           <IdentityIcon value={address as string || PLACEHOLDER_ADDRESS} theme={'substrate'} size={styles.identiconSize} />
-          <Name fontSize={styles.nameSize}> {name || PLACEHOLDER_NAME} </Name>
-          <BalanceDisplay balance={balance} />
+          <DynamicSizeText fontSize={styles.nameSize}> {name || PLACEHOLDER_NAME} </DynamicSizeText>
+          <BalanceDisplay fontSize={styles.nameSize} balance={balance} />
         </Stacked>
       );
     } else {
       return (
         <StackedHorizontal justify='space-around'>
           <IdentityIcon value={address as string || PLACEHOLDER_ADDRESS} theme={'substrate'} size={styles.identiconSize} />
-          <Name fontSize={styles.nameSize}> {name || PLACEHOLDER_NAME} </Name>
-          <BalanceDisplay balance={balance} />
+          <DynamicSizeText fontSize={styles.nameSize}> {name || PLACEHOLDER_NAME} </DynamicSizeText>
+          <BalanceDisplay fontSize={styles.nameSize} balance={balance} />
         </StackedHorizontal>
       );
     }

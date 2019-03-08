@@ -1,3 +1,7 @@
+// Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
+// This software may be modified and distributed under the terms
+// of the Apache-2.0 license. See the LICENSE file for details.
+
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { storiesOf } from '@storybook/react';
@@ -18,5 +22,5 @@ storiesOf('NavLink', module)
     <NavLink to={text('to', '/there')}> {text('child', 'Link Value')} </NavLink>
   ))
   .add('with value prop', () => (
-    <NavLink to={text('to', '/there')} value={text('Terms & Conditions')}> {text('child', 'Link Value')} </NavLink>
+    <NavLink to={text('to', '/there')} value={text('Value', 'Terms & Conditions')}> {text('Child', 'Link Value')} </NavLink>
   ));
