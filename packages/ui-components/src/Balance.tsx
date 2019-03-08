@@ -9,7 +9,7 @@ import { DynamicSizeText } from './Shared.styles';
 
 type Props = {
   balance?: BN,
-  fontSize?: number
+  fontSize?: string
 };
 
 const PLACEHOLDER_BALANCE = 0;
