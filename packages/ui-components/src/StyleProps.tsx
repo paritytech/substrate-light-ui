@@ -6,7 +6,7 @@ export interface MarginTopProps {
   marginTop?: string;
 }
 
-export interface DynamicSizeText {
+export interface DynamicSizeTextProps {
   fontWeight?: string;
   fontSize?: string;
 }
