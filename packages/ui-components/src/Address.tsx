@@ -4,7 +4,8 @@
 
 import React from 'react';
 
-import CopyButton from '../CopyButton';
+import CopyButton from './CopyButton';
+import Segment from './Segment';
 
 type Props = {
   address?: string
@@ -12,15 +13,17 @@ type Props = {
 
 const PLACEHOLDER_ADDRESS = '5'.padEnd(16, 'x');
 
-export class Address extends React.PureComponent<Props> {
+class Address extends React.PureComponent<Props> {
   render () {
     const { address } = this.props;
 
     return (
-      <React.Fragment>
+      <Segment>
         {address || PLACEHOLDER_ADDRESS}
         <CopyButton value={address} />
-      </React.Fragment>
+      </Segment>
     );
   }
 }
+
+export default Address;
