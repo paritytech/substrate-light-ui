@@ -2,14 +2,15 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import BN from 'bn.js';
 import IdentityIcon from '@polkadot/ui-identicon';
 import { KeyringAddress } from '@polkadot/ui-keyring/types';
 import React from 'react';
 
+import BalanceDisplay from '../Balance';
 import { DynamicSizeText, Stacked, StackedHorizontal } from '../Shared.styles';
+import { OrientationTypes, SizeTypes } from './types';
 
-type OrientationTypes = 'horizontal' | 'vertical';
-type SizeTypes = 'tiny' | 'small' | 'medium' | 'large';
 type SummaryStyles = {
   identiconSize: number,
   nameSize: string
@@ -17,6 +18,7 @@ type SummaryStyles = {
 
 type Props = {
   address?: string | KeyringAddress,
+  balance?: BN,
   name?: string | React.ReactNode,
   orientation?: OrientationTypes,
   size?: SizeTypes
@@ -27,7 +29,7 @@ const PLACEHOLDER_ADDRESS = '5'.padEnd(16, 'x');
 
 export class AddressSummary extends React.PureComponent<Props> {
   render () {
-    const { address, name, orientation = 'vertical', size = 'medium' } = this.props;
+    const { address, balance, name, orientation = 'vertical', size = 'medium' } = this.props;
     let styles: SummaryStyles = { identiconSize: 16, nameSize: '14px' };
 
     switch (size) {
@@ -52,6 +54,7 @@ export class AddressSummary extends React.PureComponent<Props> {
         <Stacked>
           <IdentityIcon value={address as string || PLACEHOLDER_ADDRESS} theme={'substrate'} size={styles.identiconSize} />
           <DynamicSizeText fontSize={styles.nameSize}> {name || PLACEHOLDER_NAME} </DynamicSizeText>
+          { balance && <BalanceDisplay balance={balance} /> }
         </Stacked>
       );
     } else {
@@ -59,6 +62,7 @@ export class AddressSummary extends React.PureComponent<Props> {
         <StackedHorizontal justify='space-around'>
           <IdentityIcon value={address as string || PLACEHOLDER_ADDRESS} theme={'substrate'} size={styles.identiconSize} />
           <DynamicSizeText fontSize={styles.nameSize}> {name || PLACEHOLDER_NAME} </DynamicSizeText>
+          { balance && <BalanceDisplay balance={balance} /> }
         </StackedHorizontal>
       );
     }

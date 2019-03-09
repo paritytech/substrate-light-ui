@@ -5,8 +5,7 @@
 import BN from 'bn.js';
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { action } from '@storybook/addon-actions';
-import { number, object, select, text, withKnobs } from '@storybook/addon-knobs/react';
+import { object, select, text, withKnobs } from '@storybook/addon-knobs/react';
 
 import AddressSummary from '../src/AddressSummary';
 
@@ -18,8 +17,14 @@ storiesOf('Address Sumary', module)
   .add('summary', () => (
     <AddressSummary
       address={text('address', '5GeJHN5EcUGPoa5pUwYkXjymoDVN1DJHsBR4UGX4XRAwKBVk')}
-      balance={number('balance', new BN(123))}
+      balance={object('balance', new BN(123))}
       name={text('name', 'Joe Schmoe')}
-      orientation={select('orientation', orientations)}
-      size={select('size', sizes)}/>
+      orientation={
+        // @ts-ignore select() DefinitelyTyped signature needs updating at source
+        select('orientation', orientations)
+      }
+      size={
+        // @ts-ignore select() DefinitelyTyped signature needs updating at source
+        select('size', sizes)
+      }/>
   ));

@@ -31,6 +31,8 @@
     "@storybook/addon-knobs": "^4.1.13",
     "@storybook/addon-links": "^4.1.13",
     "@storybook/react": "^4.1.4",
+    "@types/storybook__addon-actions": "^3.4.2",
+    "@types/storybook__addon-knobs": "^4.0.2",
     "@types/storybook__react": "^4.0.0",
     "storybook-addon-styled-component-theme": "^1.1.1"
   }

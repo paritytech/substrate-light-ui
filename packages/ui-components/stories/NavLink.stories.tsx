@@ -5,7 +5,6 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { storiesOf } from '@storybook/react';
-import { action } from '@storybook/addon-actions';
 import { withKnobs, text } from '@storybook/addon-knobs/react';
 
 import NavLink from '../src/NavLink';
@@ -13,7 +12,7 @@ import NavLink from '../src/NavLink';
 storiesOf('NavLink', module)
   .addDecorator(withKnobs)
   .addDecorator(story => (
-    <MemoryRouter intitialEntries={['/']}>{story()}</MemoryRouter>
+    <MemoryRouter>{story()}</MemoryRouter>
   ))
   .add('no children', () => (
     <NavLink to={text('to', '/there')} />
