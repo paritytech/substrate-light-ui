@@ -1844,13 +1844,13 @@
     store "^2.0.12"
 
 "@polkadot/util-crypto@^0.35.2", "@polkadot/util-crypto@^0.35.4", "@polkadot/util-crypto@^0.35.7":
-  version "0.35.7"
-  resolved "https://registry.yarnpkg.com/@polkadot/util-crypto/-/util-crypto-0.35.7.tgz#c7eae4a4bf3a033eb72128a10126227be7722d09"
-  integrity sha512-w44O9t41emL96yBy1670oHz3635R1OPsPA6SWeohL4CTYatzRVs5kn3dGGSAokMzuRbiaGTlWSCzQLbE6NJ2bw==
+  version "0.35.9"
+  resolved "https://registry.yarnpkg.com/@polkadot/util-crypto/-/util-crypto-0.35.9.tgz#e387d1e6c987bffa734f4480a664ce6a7bc753d8"
+  integrity sha512-PgXAcB4o8IEn1HHlCrE2vwHSp54t/7Lhw4CndHC+0Ialla2pDDWYlQ0BkveNLHTttJPz2Dw5exZd3ZgNWPvIHQ==
   dependencies:
     "@babel/runtime" "^7.3.4"
     "@polkadot/schnorrkel-js" "^0.1.2-3"
-    "@polkadot/util" "^0.35.7"
+    "@polkadot/util" "^0.35.9"
     "@types/bip39" "^2.4.2"
     "@types/pbkdf2" "^3.0.0"
     "@types/secp256k1" "^3.5.0"
@@ -1863,10 +1863,10 @@
     tweetnacl "^1.0.1"
     xxhashjs "^0.2.2"
 
-"@polkadot/util@^0.35.3", "@polkadot/util@^0.35.4", "@polkadot/util@^0.35.7":
-  version "0.35.7"
-  resolved "https://registry.yarnpkg.com/@polkadot/util/-/util-0.35.7.tgz#b560a38aba332792457b4b0799634bb818dc4d09"
-  integrity sha512-baKr2OawDhuAhlo/CkgNDfaz+r5z12T0Hk4+y85h7lV8HuG+5GV1u9YHP4mHoX95BweEfvfQuGES3ErIBlGyOg==
+"@polkadot/util@^0.35.3", "@polkadot/util@^0.35.4", "@polkadot/util@^0.35.7", "@polkadot/util@^0.35.9":
+  version "0.35.9"
+  resolved "https://registry.yarnpkg.com/@polkadot/util/-/util-0.35.9.tgz#bddcf307f313b8415ee15cfc784813f344753cae"
+  integrity sha512-9ed1AXLYL9pg5LVxC6uh4/Xnsy27qxTfWAeImDIobXl109pDU5CGli2hi02VRDIBaXpacf1/vRFrci46XSwLhA==
   dependencies:
     "@babel/runtime" "^7.3.4"
     "@types/bn.js" "^4.11.4"
