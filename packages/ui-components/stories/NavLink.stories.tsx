@@ -8,10 +8,12 @@ import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { withKnobs, text } from '@storybook/addon-knobs/react';
 
+import { withTheme } from './customDecorators/withTheme';
 import NavLink from '../src/NavLink';
 
 storiesOf('NavLink', module)
   .addDecorator(withKnobs)
+  .addDecorator(withTheme)
   .addDecorator(story => (
     <MemoryRouter intitialEntries={['/']}>{story()}</MemoryRouter>
   ))

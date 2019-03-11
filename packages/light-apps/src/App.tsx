@@ -10,7 +10,7 @@ import { ThemeProvider } from 'styled-components';
 import 'semantic-ui-css/semantic.min.css';
 
 import { Content } from './Content';
-import { GlobalStyle, substrateLightTheme } from './globalStyle';
+import { GlobalStyle, substrateLightTheme } from '@substrate/ui-components';
 
 export class App extends React.PureComponent {
   render () {
@@ -19,7 +19,7 @@ export class App extends React.PureComponent {
         <ThemeProvider theme={substrateLightTheme}>
           <BrowserRouter>
             <React.Fragment>
-              <GlobalStyle theme={substrateLightTheme} />
+              <GlobalStyle />
               <NavLink to='/'>
                 <img
                   src={substrateLogo}
