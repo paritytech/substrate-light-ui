@@ -1,5 +1,5 @@
 {
-  "name": "@polkadot/light-ui",
+  "name": "@substrate/light-ui",
   "version": "0.1.0",
   "author": "Parity Technologies <admin@parity.io>",
   "description": "User interface optimized for the Substrate light client",
