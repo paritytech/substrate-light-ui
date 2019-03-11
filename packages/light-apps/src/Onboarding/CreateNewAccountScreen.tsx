@@ -33,6 +33,7 @@ export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
     mnemonic: '',
     name: '',
     password: '',
+    rewritePhrase: '',
     step: 'create'
   };
 
