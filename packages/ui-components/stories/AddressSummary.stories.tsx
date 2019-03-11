@@ -7,6 +7,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { object, select, text, withKnobs } from '@storybook/addon-knobs/react';
 
+import { withTheme } from './customDecorators/withTheme';
 import AddressSummary from '../src/AddressSummary';
 
 let orientations = ['horizontal', 'vertical'];
@@ -14,6 +15,7 @@ let sizes = ['tiny', 'small', 'medium', 'large'];
 
 storiesOf('Address Sumary', module)
   .addDecorator(withKnobs)
+  .addDecorator(withTheme)
   .add('summary', () => (
     <AddressSummary
       address={text('address', '5GeJHN5EcUGPoa5pUwYkXjymoDVN1DJHsBR4UGX4XRAwKBVk')}

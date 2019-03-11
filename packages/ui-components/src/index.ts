@@ -38,5 +38,6 @@ export {
   WalletCard
 };
 
+export * from './globalStyle';
 export * from './types';
 export * from './Shared.styles';

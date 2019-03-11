@@ -7,10 +7,12 @@ import { MemoryRouter } from 'react-router-dom';
 import { storiesOf } from '@storybook/react';
 import { withKnobs, text } from '@storybook/addon-knobs/react';
 
+import { withTheme } from './customDecorators/withTheme';
 import NavLink from '../src/NavLink';
 
 storiesOf('NavLink', module)
   .addDecorator(withKnobs)
+  .addDecorator(withTheme)
   .addDecorator(story => (
     <MemoryRouter>{story()}</MemoryRouter>
   ))

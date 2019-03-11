@@ -6,6 +6,8 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { object, select, text, withKnobs } from '@storybook/addon-knobs/react';
 
+import { withTheme } from './customDecorators/withTheme';
+import Input from '../src/Input';
 import WalletCard from '../src/WalletCard';
 
 const overflowOptions = [
@@ -19,6 +21,7 @@ const overflowOptions = [
 
 storiesOf('Wallet Card', module)
   .addDecorator(withKnobs)
+  .addDecorator(withTheme)
   .add('empty props', () => (
     <WalletCard />
   ))
@@ -26,5 +29,10 @@ storiesOf('Wallet Card', module)
     <WalletCard
       header={text('header', 'Simple Header For This Card')}
       subheader={text('subheader', 'And this is a subheader')}
-      overflow={select('overflow', overflowOptions)}/>
+      overflow={select('overflow', overflowOptions)}>
+      <Input
+        withLabel
+        label={text('label', 'input something')}
+      />
+    </WalletCard>
   ));
