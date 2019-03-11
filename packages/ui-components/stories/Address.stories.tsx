@@ -6,7 +6,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs, text } from '@storybook/addon-knobs/react';
 
-import { withTheme } from './customDecorators/withTheme';
+import { withTheme } from './customDecorators';
 import Address from '../src/Address';
 
 storiesOf('Address Segment', module)

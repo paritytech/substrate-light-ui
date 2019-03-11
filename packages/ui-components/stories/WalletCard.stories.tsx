@@ -6,7 +6,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { object, select, text, withKnobs } from '@storybook/addon-knobs/react';
 
-import { withTheme } from './customDecorators/withTheme';
+import { withTheme } from './customDecorators';
 import Input from '../src/Input';
 import WalletCard from '../src/WalletCard';
 
