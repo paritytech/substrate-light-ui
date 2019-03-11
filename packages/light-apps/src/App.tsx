@@ -2,15 +2,16 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import 'semantic-ui-css/semantic.min.css';
 import substrateLogo from '@polkadot/ui-assets/parity-substrate.svg';
 import { ApiGate } from '@substrate/ui-api';
+import { GlobalStyle, substrateLightTheme } from '@substrate/ui-components';
+
 import React from 'react';
 import { BrowserRouter, NavLink, Route } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
-import 'semantic-ui-css/semantic.min.css';
 
 import { Content } from './Content';
-import { GlobalStyle, substrateLightTheme } from '@substrate/ui-components';
 
 export class App extends React.PureComponent {
   render () {

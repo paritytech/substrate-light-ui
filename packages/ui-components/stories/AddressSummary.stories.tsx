@@ -8,7 +8,7 @@ import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { number, object, select, text, withKnobs } from '@storybook/addon-knobs/react';
 
-import { withTheme } from './customDecorators/withTheme';
+import { withTheme } from './customDecorators';
 import AddressSummary from '../src/AddressSummary';
 
 let orientations = ['horizontal', 'vertical'];
