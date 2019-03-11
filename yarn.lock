@@ -1853,9 +1853,9 @@
     xxhashjs "^0.2.2"
 
 "@polkadot/util@^0.35.1", "@polkadot/util@^0.35.3", "@polkadot/util@^0.35.4":
-  version "0.35.4"
-  resolved "https://registry.yarnpkg.com/@polkadot/util/-/util-0.35.4.tgz#1e84ca76c08768b8ac7d73c84308c1d7d1077295"
-  integrity sha512-JhhfqDBcxHud3dlBt6xqDvnCS52mz7RN1QJOZMiOTrf12vyq3GN6NrEUcTOgiTGy3mUyB2t+5zx24VX8HrTeKA==
+  version "0.35.7"
+  resolved "https://registry.yarnpkg.com/@polkadot/util/-/util-0.35.7.tgz#b560a38aba332792457b4b0799634bb818dc4d09"
+  integrity sha512-baKr2OawDhuAhlo/CkgNDfaz+r5z12T0Hk4+y85h7lV8HuG+5GV1u9YHP4mHoX95BweEfvfQuGES3ErIBlGyOg==
   dependencies:
     "@babel/runtime" "^7.3.4"
     "@types/bn.js" "^4.11.4"
