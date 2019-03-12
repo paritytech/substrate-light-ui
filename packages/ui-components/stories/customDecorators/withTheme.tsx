@@ -6,11 +6,14 @@ import React from 'react';
 import { ThemeProvider } from 'styled-components';
 
 import { GlobalStyle, substrateLightTheme } from '../../src/globalStyle';
+import { RenderFunction } from '../types';
 
-export const withTheme = (storyFn) => {
+export const withTheme = (storyFn: RenderFunction) => {
   return (
     <React.Fragment>
       <GlobalStyle />
+      // @ts-ignore
+      // FIXME: signature defined as theme: T | ((theme: T) => T), this should be passing lint
       <ThemeProvider theme={substrateLightTheme}>
         {storyFn()}
       </ThemeProvider>

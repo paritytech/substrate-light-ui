@@ -30,6 +30,7 @@ storiesOf('Input', module)
         labelPosition='left'
         onChange={action('typed')}
         placeholder='placeholder...'
+        size={select('size', sizes, 'small')}
         type={select('input type', inputTypes, 'text')} />
     </Container>
   ));

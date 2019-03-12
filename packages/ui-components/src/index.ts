@@ -6,6 +6,7 @@ import Accordion from './Accordion';
 import Address from './Address';
 import AddressSummary from './AddressSummary';
 import BalanceDisplay from './Balance';
+import Card from './Card';
 import Grid from './Grid';
 import Icon from './Icon';
 import InputFile from './InputFile';
@@ -24,6 +25,7 @@ export {
   Address,
   AddressSummary,
   BalanceDisplay,
+  Card,
   Grid,
   Icon,
   InputFile,
