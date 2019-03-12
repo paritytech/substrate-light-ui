@@ -10,7 +10,7 @@ type Props = {
   children?: any,
   fontSize?: string,
   fontWeight?: string,
-  onClick?: () => void,
+  onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
   value?: string
 };
 

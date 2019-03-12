@@ -4,7 +4,8 @@
 
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { withKnobs, text } from '@storybook/addon-knobs';
+import { action } from '@storybook/addon-actions';
+import { text, withKnobs } from '@storybook/addon-knobs';
 
 import { withTheme } from './customDecorators';
 import NavButton from '../src/NavButton';
@@ -16,15 +17,18 @@ storiesOf('NavButton', module)
     <NavButton />
   ))
   .add('with child string', () => (
-    <NavButton> {text('child', 'Button')} </NavButton>
+    <NavButton onClick={action('clicked')}> {text('child', 'Button')} </NavButton>
   ))
   .add('with value prop', () => (
-    <NavButton value={text('value', 'Button')}> This should be ignored </NavButton>
+    <NavButton
+      onClick={action('clicked')}
+      value={text('value', 'Button')}> This should be ignored </NavButton>
   ))
   .add('with font props', () => (
     <NavButton
       fontSize={text('font size', '17px')}
-      fontWeight={text('font weight', '500')}>
+      fontWeight={text('font weight', '500')}
+      onClick={action('clicked')}>
         {text('child', 'Button')}
     </NavButton>
   ));

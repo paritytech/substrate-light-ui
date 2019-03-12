@@ -4,6 +4,7 @@
 
 import React from 'react';
 import { storiesOf } from '@storybook/react';
+import { action } from '@storybook/addon-actions';
 import { select, text, withKnobs } from '@storybook/addon-knobs';
 
 import { withMemoryRouter, withTheme } from './customDecorators';
@@ -31,11 +32,12 @@ storiesOf('Wallet Card', module)
       overflow={select('overflow', overflowOptions, 'auto')}>
       <Input
         label={text('label', 'input something')}
+        onChange={action('typed')}
         size={select('size', sizes, 'tiny')}
       />
       <MarginTop />
-      <NavButton value={text('button text', 'Submit')}/>
+      <NavButton onClick={action('clicked')} value={text('button text', 'Submit')}/>
       <MarginTop />
-      <NavLink to={text('to', 'there')} value={text('link text', 'Link')}/>
+      <NavLink onClick={action('clicked')} to={text('to', 'there')} value={text('link text', 'Link')}/>
     </WalletCard>
   ));

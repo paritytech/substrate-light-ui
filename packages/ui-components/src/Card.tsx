@@ -5,8 +5,6 @@ import React from 'react';
 import SUICard from 'semantic-ui-react/dist/commonjs/views/Card';
 import styled from 'styled-components';
 
-import { Header, SubHeader } from './index';
-
 type Props = {
   [index: string]: any;
 };
@@ -18,13 +16,13 @@ const StyledCard = styled<any>(SUICard)`
   box-shadow: 0 4px 5px 1px rgba(0, 0, 0, 0.3);
   height: 357px;
   width: 100%;
-  overflow: ${(props: Props) => props.overflow || 'none'};
+  overflow: ${props => props.overflow || 'none'};
  }
 `;
 
 export class Card extends React.PureComponent<Props> {
-  static Header = Header;
-  static Description = SubHeader;
+  static Header = SUICard.Header;
+  static Description = SUICard.Description;
   static Content = SUICard.Content;
 
   render () {

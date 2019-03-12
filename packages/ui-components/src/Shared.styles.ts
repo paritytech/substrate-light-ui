@@ -10,8 +10,7 @@ import SUIInput from 'semantic-ui-react/dist/commonjs/elements/Input';
 import { HeaderProps, MarginTopProps, DynamicSizeTextProps, StackProps, SubHeaderProps, WithSpaceAroundProps } from './StyleProps';
 
 export const Input = styled<any>(SUIInput)`
-  padding: 1rem;
-  minWidth: 100%;
+
 `;
 
 export const Container = styled(SUIContainer)`
