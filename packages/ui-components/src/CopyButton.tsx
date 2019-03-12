@@ -6,7 +6,7 @@ import React from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import styled from 'styled-components';
 
-import Icon from './Icon';
+import { Icon } from './index';
 
 type Props = {
   value?: string
