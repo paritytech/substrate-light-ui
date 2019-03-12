@@ -83,6 +83,7 @@ export const DynamicSizeText = styled.p<DynamicSizeTextProps>`
   font-size: ${props => props.fontSize || '20px'};
   font-weight: ${props => props.fontWeight || '500'};
   margin: 0 0;
+  text-align: center;
 `;
 
 export const FileInputArea = styled.div`
@@ -174,4 +175,5 @@ export const SubHeader = styled.h3<SubHeaderProps>`
   font-weight: 600;
   font-size: 15px;
   margin: 1rem auto 0.3rem auto;
+  text-align: center;
 `;
