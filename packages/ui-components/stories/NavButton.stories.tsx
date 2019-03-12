@@ -6,27 +6,25 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs, text } from '@storybook/addon-knobs';
 
-import { withMemoryRouter, withTheme } from './customDecorators';
-import NavLink from '../src/NavLink';
+import { withTheme } from './customDecorators';
+import NavButton from '../src/NavButton';
 
-storiesOf('NavLink', module)
+storiesOf('NavButton', module)
   .addDecorator(withKnobs)
   .addDecorator(withTheme)
-  .addDecorator(withMemoryRouter)
   .add('no children', () => (
-    <NavLink to={text('to', '/there')} />
+    <NavButton />
   ))
   .add('with child string', () => (
-    <NavLink to={text('to', '/there')}> {text('child', 'Link')} </NavLink>
+    <NavButton> {text('child', 'Button')} </NavButton>
   ))
   .add('with value prop', () => (
-    <NavLink to={text('to', '/there')} value={text('Value', 'Terms and Conditions')}> this should be ignored </NavLink>
+    <NavButton value={text('value', 'Button')}> This should be ignored </NavButton>
   ))
   .add('with font props', () => (
-    <NavLink
+    <NavButton
       fontSize={text('font size', '17px')}
-      fontWeight={text('font weight', '500')}
-      to={text('to', '/there')}>
-        {text('child', 'Link')}
-    </NavLink>
+      fontWeight={text('font weight', '500')}>
+        {text('child', 'Button')}
+    </NavButton>
   ));

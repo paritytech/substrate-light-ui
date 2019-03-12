@@ -6,8 +6,14 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import SUIContainer from 'semantic-ui-react/dist/commonjs/elements/Container';
 import SUICard from 'semantic-ui-react/dist/commonjs/views/Card';
+import SUIInput from 'semantic-ui-react/dist/commonjs/elements/Input';
 
 import { HeaderProps, MarginTopProps, DynamicSizeTextProps, StackProps, SubHeaderProps, WithSpaceAroundProps } from './StyleProps';
+
+export const Input = styled<any>(SUIInput)`
+  padding: 1rem;
+  minWidth: 100%;
+`;
 
 export const Container = styled(SUIContainer)`
   padding: 1.5rem;
@@ -136,6 +142,7 @@ export const StyledNavButton = styled.button`
   border-radius: 15px;
   box-shadow: 0 4px 6px 0 rgba(${props => props.theme.black}, 0.3);
   color: ${props => props.theme.white};
+  fontSize: 18px;
   height: 42px;
   width: 134px;
 

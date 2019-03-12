@@ -5,7 +5,7 @@
 import BN from 'bn.js';
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { object, select, text, withKnobs } from '@storybook/addon-knobs/react';
+import { object, select, text, withKnobs } from '@storybook/addon-knobs';
 
 import { withTheme } from './customDecorators';
 import AddressSummary from '../src/AddressSummary';

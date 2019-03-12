@@ -10,10 +10,11 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    height: 100%;
-    width: 100%;
+    minHeight: 100%;
+    minWidth: 100%;
     display: flex;
     justify-content: center;
+    align-items: center;
     margin: 0;
     padding: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
@@ -22,14 +23,15 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
+// ordered darkest to lightest
 const substrateLightTheme = {
   black: '#222',
-  cardBorder: '#f2f2f2',
-  darkBlue: '#5c53fc',
   grey: '#888',
-  lightBlue1: '#53a0fd',
-  lightBlue2: '#51a0ec',
   purple: '#8479f3',
+  darkBlue: '#5c53fc',
+  lightBlue2: '#51a0ec',
+  lightBlue1: '#53a0fd',
+  cardBorder: '#f2f2f2',
   segment: '#fdfefe',
   white: '#ffffff'
 };
