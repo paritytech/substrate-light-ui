@@ -5,14 +5,13 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { text, withKnobs } from '@storybook/addon-knobs';
 
-import { substrateLightTheme } from '../src/globalStyle';
-import { Card, Container, DynamicSizeText, ErrorText, FadedText, Header, SubHeader, SuccessText } from '../src';
+import { Card, Container, DynamicSizeText, ErrorText, FadedText, Header, SubHeader, SuccessText, substrateLightTheme } from '../src';
 
 const colorPaletteCard = (color: string, hex: string) => (
   <Card style={{ flex: `1 0 calc(33.333% - 20px)`, maxWidth: `calc(33.333% - 20px)` }}>
     <div style={{ background: hex, width: '100%', height: '85%' }} />
     <Card.Content style={{ display: 'flex column', textAlign: 'center' }}>
-      <Card.Header> <b>Color:</b> {color} </Card.Header>
+      <Card.Header> {color} </Card.Header>
       <Card.Description> <b>Hex:</b> {hex} </Card.Description>
     </Card.Content>
   </Card>
@@ -21,7 +20,7 @@ const colorPaletteCard = (color: string, hex: string) => (
 storiesOf('Theme', module)
   .addDecorator(withKnobs)
   .add('colors', () => (
-    <Container style={{ display: 'flex', flexFlow: 'row wrap', width: '100%' }}>
+    <Container style={{ display: 'flex', flexFlow: 'row wrap', width: '90%' }}>
       {
         Object.entries(substrateLightTheme).map(([color, hex]) => {
           return colorPaletteCard(color, hex);

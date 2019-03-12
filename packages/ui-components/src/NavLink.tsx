@@ -10,16 +10,17 @@ type Props = {
   children?: React.ReactNode,
   fontSize?: string,
   fontWeight?: string,
+  onClick?: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void,
   to: string,
   value?: string
 };
 
 export default class NavLink extends React.PureComponent<Props> {
   render () {
-    const { children, fontSize = '17px', fontWeight = '300', to, value } = this.props;
+    const { children, fontSize = '17px', fontWeight = '300', onClick, to, value } = this.props;
 
     return (
-      <StyledNavLink to={to}>
+      <StyledNavLink onClick={onClick} to={to}>
         <DynamicSizeText
           fontSize={fontSize}
           fontWeight={fontWeight}>

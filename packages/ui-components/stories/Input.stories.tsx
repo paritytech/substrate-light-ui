@@ -8,7 +8,7 @@ import { action } from '@storybook/addon-actions';
 import { boolean, select, text, withKnobs } from '@storybook/addon-knobs';
 
 import { withTheme } from './customDecorators';
-import { Container, Input } from '../src';
+import { Input } from '../src';
 
 const inputTypes = ['number', 'password', 'text'];
 const sizes = ['mini', 'tiny', 'small', 'medium', 'large', 'big', 'huge', 'massive'];
@@ -20,17 +20,15 @@ storiesOf('Input', module)
     <Input />
   ))
   .add('with props', () => (
-    <Container style={{ background: 'white', width: '100%' }}>
-      <Input
-        disabled={boolean('disabled', false)}
-        fluid
-        focus={boolean('focus', false)}
-        inverted={boolean('inverted', false)}
-        label={text('label', 'Kg')}
-        labelPosition='left'
-        onChange={action('typed')}
-        placeholder='placeholder...'
-        size={select('size', sizes, 'small')}
-        type={select('input type', inputTypes, 'text')} />
-    </Container>
+    <Input
+      disabled={boolean('disabled', false)}
+      focus={boolean('focus', false)}
+      inverted={boolean('inverted', false)}
+      icon={{ name: 'search', link: true }}
+      label={text('label', 'Kg')}
+      labelPosition='left'
+      onChange={action('typed')}
+      placeholder='placeholder...'
+      size={select('size', sizes, 'small')}
+      type={select('input type', inputTypes, 'text')} />
   ));
