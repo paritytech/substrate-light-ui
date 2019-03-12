@@ -4,22 +4,27 @@
 
 import React from 'react';
 
-import { StyledNavLink } from './Shared.styles';
+import { DynamicSizeText, StyledNavLink } from './Shared.styles';
 
 type Props = {
   children?: React.ReactNode,
-  value?: string,
-  to: string
+  fontSize?: string,
+  fontWeight?: string,
+  to: string,
+  value?: string
 };
 
 export default class NavLink extends React.PureComponent<Props> {
   render () {
-    const { children, to, value } = this.props;
+    const { children, fontSize = '17px', fontWeight = '300', to, value } = this.props;
 
     return (
       <StyledNavLink to={to}>
-        {value}
-        {children}
+        <DynamicSizeText
+          fontSize={fontSize}
+          fontWeight={fontWeight}>
+          {value || children}
+        </DynamicSizeText>
       </StyledNavLink>
     );
   }

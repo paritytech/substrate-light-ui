@@ -18,8 +18,16 @@ storiesOf('NavLink', module)
     <NavLink to={text('to', '/there')} />
   ))
   .add('with child string', () => (
-    <NavLink to={text('to', '/there')}> {text('child', 'Link Value')} </NavLink>
+    <NavLink to={text('to', '/there')}> {text('child', 'Link')} </NavLink>
   ))
   .add('with value prop', () => (
-    <NavLink to={text('to', '/there')} value={text('Value', 'Terms & Conditions')}> {text('Child', 'Link Value')} </NavLink>
+    <NavLink to={text('to', '/there')} value={text('Value', 'Terms and Conditions')}> this should be ignored </NavLink>
+  ))
+  .add('with font props', () => (
+    <NavLink
+      fontSize={text('font size', '17px')}
+      fontWeight={text('font weight', '500')}
+      to={text('to', '/there')}>
+        {text('child', 'Link')}
+    </NavLink>
   ));

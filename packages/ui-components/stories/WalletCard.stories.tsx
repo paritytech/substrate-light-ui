@@ -4,11 +4,10 @@
 
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { object, select, text, withKnobs } from '@storybook/addon-knobs/react';
+import { object, select, text, withKnobs } from '@storybook/addon-knobs';
 
-import { withTheme } from './customDecorators';
-import Input from '../src/Input';
-import WalletCard from '../src/WalletCard';
+import { withMemoryRouter, withTheme } from './customDecorators';
+import { Input, MarginTop, NavButton, NavLink, WalletCard } from '../src';
 
 const overflowOptions = [
   'none',
@@ -21,6 +20,7 @@ const overflowOptions = [
 
 storiesOf('Wallet Card', module)
   .addDecorator(withKnobs)
+  .addDecorator(withMemoryRouter)
   .addDecorator(withTheme)
   .add('empty props', () => (
     <WalletCard />
@@ -29,10 +29,20 @@ storiesOf('Wallet Card', module)
     <WalletCard
       header={text('header', 'Simple Header For This Card')}
       subheader={text('subheader', 'And this is a subheader')}
+      overflow={select('overflow', overflowOptions)} />
+  ))
+  .add('with children', () => (
+    <WalletCard
+      header={text('header', 'Simple Header For This Card')}
+      subheader={text('subheader', 'And this is a subheader')}
       overflow={select('overflow', overflowOptions)}>
       <Input
-        withLabel
         label={text('label', 'input something')}
+        size='huge'
       />
+      <MarginTop />
+      <NavButton value={text('button text', 'Submit')}/>
+      <MarginTop />
+      <NavLink to={text('to', 'there')} value={text('link text', 'Link')}/>
     </WalletCard>
   ));

@@ -9,11 +9,11 @@ import { GlobalStyle, substrateLightTheme } from '../../src/globalStyle';
 
 export const withTheme = (storyFn) => {
   return (
-    <ThemeProvider theme={substrateLightTheme}>
-      <React.Fragment>
-        <GlobalStyle />
+    <React.Fragment>
+      <GlobalStyle />
+      <ThemeProvider theme={substrateLightTheme}>
         {storyFn()}
-      </React.Fragment>
-    </ThemeProvider>
+      </ThemeProvider>
+    </React.Fragment>
   );
 };

@@ -8,7 +8,6 @@ import AddressSummary from './AddressSummary';
 import BalanceDisplay from './Balance';
 import Grid from './Grid';
 import Icon from './Icon';
-import Input from './Input';
 import InputFile from './InputFile';
 import Loading from './Loading';
 import Menu from './Menu';
@@ -27,7 +26,6 @@ export {
   BalanceDisplay,
   Grid,
   Icon,
-  Input,
   InputFile,
   Loading,
   Menu,

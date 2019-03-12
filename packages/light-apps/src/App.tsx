@@ -35,5 +35,4 @@ export class App extends React.PureComponent {
       </ApiGate>
     );
   }
-
 }
