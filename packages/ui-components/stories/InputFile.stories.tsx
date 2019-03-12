@@ -20,7 +20,7 @@ storiesOf('Input File', module)
   ))
   .add('with props', () => (
     <InputFile
-      accept={select('accept', fileTypes)}
+      accept={select('accept', fileTypes, 'text/plain')}
       onChange={action('file dropped')}
       placeholder={text('placeholder', 'Drop something here...')}/>
   ));

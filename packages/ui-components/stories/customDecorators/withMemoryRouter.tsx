@@ -4,6 +4,8 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
-export const withMemoryRouter = (storyFn) => (
+import { RenderFunction } from '../types';
+
+export const withMemoryRouter = (storyFn: RenderFunction) => (
   <MemoryRouter>{storyFn()}</MemoryRouter>
 );

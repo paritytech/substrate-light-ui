@@ -3,13 +3,12 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { action } from '@storybook/addon-actions';
-import { boolean, select, text, withKnobs } from '@storybook/addon-knobs';
+import { text, withKnobs } from '@storybook/addon-knobs';
 
 import { substrateLightTheme } from '../src/globalStyle';
-import { Card, Container, DynamicSizeText, ErrorText, FadedText, Grid, Header, SubHeader, SuccessText } from '../src';
+import { Card, Container, DynamicSizeText, ErrorText, FadedText, Header, SubHeader, SuccessText } from '../src';
 
-const colorPaletteCard = (color, hex) => (
+const colorPaletteCard = (color: string, hex: string) => (
   <Card style={{ flex: `1 0 calc(33.333% - 20px)`, maxWidth: `calc(33.333% - 20px)` }}>
     <div style={{ background: hex, width: '100%', height: '85%' }} />
     <Card.Content style={{ display: 'flex column', textAlign: 'center' }}>

@@ -5,7 +5,6 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import SUIContainer from 'semantic-ui-react/dist/commonjs/elements/Container';
-import SUICard from 'semantic-ui-react/dist/commonjs/views/Card';
 import SUIInput from 'semantic-ui-react/dist/commonjs/elements/Input';
 
 import { HeaderProps, MarginTopProps, DynamicSizeTextProps, StackProps, SubHeaderProps, WithSpaceAroundProps } from './StyleProps';
@@ -17,17 +16,6 @@ export const Input = styled<any>(SUIInput)`
 
 export const Container = styled(SUIContainer)`
   padding: 1.5rem;
-`;
-
-export const Card = styled<any>(SUICard)`
- &&& {
-  background-color: #ffffff;
-  border-radius: 2px;
-  box-shadow: 0 4px 5px 1px rgba(0, 0, 0, 0.3);
-  height: 357px;
-  width: 100%;
-  overflow: ${props => props.overflow || 'none'};
- }
 `;
 
 export const FadedText = styled.p`
