@@ -2,24 +2,45 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 import React from 'react';
-import { Icon } from 'semantic-ui-react';
+import { action } from '@storybook/addon-actions';
 import { withKnobs, text, select, boolean, object } from '@storybook/addon-knobs';
+import { linkTo } from '@storybook/addon-links';
 import { storiesOf } from '@storybook/react';
 
-import { Accordion } from '../src';
+import { withTheme } from './customDecorators';
+
+import { Accordion, Icon, StackedHorizontal, SubHeader } from '../src';
 
 storiesOf('Accordion', module)
   .addDecorator(withKnobs)
-  .add('inactive with no children or title', () => (
+  .addDecorator(withTheme)
+  .add('no props', () => (
     <Accordion />
   ))
-  .add('inactive with content and title', () => (
-    <Accordion fluid inverted styled>
+  .add('inactive', () => (
+    <Accordion fluid={boolean('fluid', false)} inverted={boolean('inverted', false)} styled={boolean('styled', false)}>
       <Accordion.Title active={boolean('active', false)}>
-        <Icon name='dropdown' /> Title Goes Here
+        <StackedHorizontal>
+          <Icon name='dropdown' onClick={linkTo('Accordion', 'active')}/>
+          <SubHeader noMargin> Click Icon </SubHeader>
+        </StackedHorizontal>
       </Accordion.Title>
       <Accordion.Content active={boolean('active', false)}>
         Hello this is my content
       </Accordion.Content>
     </Accordion>
-  ));
+  ))
+  .add('active', () => (
+    <Accordion fluid={boolean('fluid', false)} inverted={boolean('inverted', false)} styled={boolean('styled', false)}>
+      <Accordion.Title active={boolean('active', true)}>
+        <StackedHorizontal>
+          <Icon name='dropdown' onClick={linkTo('Accordion', 'inactive')}/>
+          <SubHeader noMargin> Click Icon </SubHeader>
+        </StackedHorizontal>
+      </Accordion.Title>
+      <Accordion.Content active={boolean('active', true)}>
+        Hello this is my content
+      </Accordion.Content>
+    </Accordion>
+  ))
+  ;

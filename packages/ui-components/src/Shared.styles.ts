@@ -161,6 +161,6 @@ export const SubHeader = styled.h3<SubHeaderProps>`
   color: ${props => props.theme.lightBlue2};
   font-weight: 600;
   font-size: 15px;
-  margin: 1rem auto 0.3rem auto;
+  margin: ${props => props.noMargin ? `0 0` : `1rem auto 0.3rem auto`};
   text-align: center;
 `;

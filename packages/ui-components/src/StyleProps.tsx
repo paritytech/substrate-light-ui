@@ -20,6 +20,7 @@ export interface StackProps {
 export interface SubHeaderProps {
   color?: string;
   margin?: string;
+  noMargin?: boolean;
 }
 
 export interface WithSpaceAroundProps {
