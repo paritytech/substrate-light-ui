@@ -7269,10 +7269,10 @@ file-saver@^2.0.0:
   resolved "https://registry.yarnpkg.com/file-saver/-/file-saver-2.0.1.tgz#7fe2242af1cbc559a29d8176078a8b56d781fa79"
   integrity sha512-dCB3K7/BvAcUmtmh1DzFdv0eXSVJ9IAFt1mw3XZfAexodNRoE29l3xB2EX4wH2q8m/UTzwzEPq/ArYk98kUkBQ==
 
-file-selector@^0.1.10:
-  version "0.1.10"
-  resolved "https://registry.yarnpkg.com/file-selector/-/file-selector-0.1.10.tgz#5e39e07fb330de63143e4be90d207358ea39e28e"
-  integrity sha512-wr0KDRkIZPDUc5zHsBEbtIa0A5apzA15aYGdDFYzUnGFVF+uXO5izWTRtA3oj+HO7+RMi76XqKdcx66gNmsBcw==
+file-selector@^0.1.11:
+  version "0.1.11"
+  resolved "https://registry.yarnpkg.com/file-selector/-/file-selector-0.1.11.tgz#4648d1303fc594afe8638d0f35caed38697d32cf"
+  integrity sha512-NopCegJ7QuoqVzUdSLcZb0M9IFO69CSFZzuZhZBasfQxepNwa1ehL6L9UKe3EyBof3EUeraccfJocLCRAvtxdg==
   dependencies:
     tslib "^1.9.0"
 
@@ -13521,12 +13521,12 @@ react-dom@^16.6.3:
     scheduler "^0.13.4"
 
 react-dropzone@^10.0.0:
-  version "10.0.0"
-  resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-10.0.0.tgz#7ced4a3cde9e0ab3e8073570a0e4f0edbf004a34"
-  integrity sha512-5PPPH0reRDStgISi5tKZgez67VP+t1hKD9cuH+2Y3t+ddmBzaVdd4KEhBXSsBdod73T4XqUMKgAJSTH0iOqZhw==
+  version "10.0.2"
+  resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-10.0.2.tgz#995bcded065647a880f45c72ac9af0eff7dea1b1"
+  integrity sha512-BVRYlwcR8so0fHVTtCc3gAqcqf3+VIF6I91yc4JbhODPPPNV5SRFnnJNZn1XRvnh3s1QZ11lrXhDnuN82/ASdA==
   dependencies:
     attr-accept "^1.1.3"
-    file-selector "^0.1.10"
+    file-selector "^0.1.11"
     prop-types "^15.7.2"
 
 react-error-overlay@^5.1.4:
