@@ -2016,6 +2016,23 @@
     ip-regex "^4.0.0"
     moment "^2.24.0"
 
+"@polkadot/util@^0.36.2":
+  version "0.36.2"
+  resolved "https://registry.yarnpkg.com/@polkadot/util/-/util-0.36.2.tgz#a10af6f8d5d317e04d99096d35c2095c1b5fdacd"
+  integrity sha512-OTdRyCq/l0M/6nINWVhBjnHGAhYN7MLRDNbo1LE8ytjULPI4wYq4kbSjFcaeir0hLm+wISBxi/MynMSx5cX7fw==
+  dependencies:
+    "@babel/runtime" "^7.3.4"
+    "@types/bn.js" "^4.11.4"
+    "@types/camelcase" "^4.1.0"
+    "@types/deasync" "^0.1.0"
+    "@types/ip-regex" "^3.0.0"
+    bn.js "^4.11.8"
+    camelcase "^5.0.0"
+    chalk "^2.4.2"
+    core-js "^2.6.5"
+    ip-regex "^4.0.0"
+    moment "^2.24.0"
+
 "@posthtml/esm@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@posthtml/esm/-/esm-1.0.0.tgz#09bcb28a02438dcee22ad1970ca1d85a000ae0cf"
