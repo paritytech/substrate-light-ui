@@ -1940,10 +1940,10 @@
     "@polkadot/util" "^0.35.7"
     core-js "^2.6.5"
 
-"@polkadot/ui-assets@^0.28.8":
-  version "0.28.8"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-assets/-/ui-assets-0.28.8.tgz#a9bc06ef123a9d87ba54703acab162933e5064ff"
-  integrity sha512-1ykQfxssTP6ZjU+9ysIM97R9wnqYaUy+L+Vu7/nvKZTssKOqbuwI10wtyeai5BNe6Z1psPzgvY4V7O4jDHC0jA==
+"@polkadot/ui-assets@^0.29.1":
+  version "0.29.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-assets/-/ui-assets-0.29.1.tgz#5b262c908c4dce48042bf068d24401dd7baa2bbd"
+  integrity sha512-sEk9GuA0LYuytTFbFjsd1PsRKW7xe/CPxj5L8GfG6TSFh/yCGZfZLD/jkq+451OxxnkX83sbOjKYFY+FyycX3Q==
   dependencies:
     "@babel/runtime" "^7.3.4"
 
