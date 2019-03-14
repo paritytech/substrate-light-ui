@@ -2,8 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 import React from 'react';
-import { action } from '@storybook/addon-actions';
-import { withKnobs, text, select, boolean, object } from '@storybook/addon-knobs';
+import { withKnobs, boolean } from '@storybook/addon-knobs';
 import { linkTo } from '@storybook/addon-links';
 import { storiesOf } from '@storybook/react';
 

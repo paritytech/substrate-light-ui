@@ -9,7 +9,7 @@ import React from 'react';
 
 import BalanceDisplay from '../Balance';
 import { DynamicSizeText, Stacked, StackedHorizontal } from '../Shared.styles';
-import { OrientationTypes, SizeTypes } from './types';
+import { OrientationType, SizeType } from './types';
 
 type SummaryStyles = {
   identiconSize: number,
@@ -20,8 +20,8 @@ type Props = {
   address?: string | KeyringAddress,
   balance?: BN,
   name?: string | React.ReactNode,
-  orientation?: OrientationTypes,
-  size?: SizeTypes
+  orientation?: OrientationType,
+  size?: SizeType
 };
 
 const PLACEHOLDER_NAME = 'No Name';

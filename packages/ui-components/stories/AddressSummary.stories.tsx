@@ -9,9 +9,10 @@ import { object, select, text, withKnobs } from '@storybook/addon-knobs';
 
 import { withTheme } from './customDecorators';
 import AddressSummary from '../src/AddressSummary';
+import { OrientationType, SizeType } from '../src/AddressSummary/types';
 
-let orientations = ['horizontal', 'vertical'];
-let sizes = ['tiny', 'small', 'medium', 'large'];
+let orientations: Array<OrientationType> = ['horizontal', 'vertical'];
+let sizes: Array<SizeType> = ['tiny', 'small', 'medium', 'large'];
 
 storiesOf('Address Sumary', module)
   .addDecorator(withKnobs)
@@ -22,11 +23,9 @@ storiesOf('Address Sumary', module)
       balance={object('balance', new BN(123))}
       name={text('name', 'Joe Schmoe')}
       orientation={
-        // @ts-ignore select() DefinitelyTyped signature needs updating at source
-        select('orientation', orientations)
+        select('orientation', orientations, orientations[0])
       }
       size={
-        // @ts-ignore select() DefinitelyTyped signature needs updating at source
-        select('size', sizes)
+        select('size', sizes, sizes[0])
       }/>
   ));
