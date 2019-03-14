@@ -25,12 +25,19 @@
     "clean": "polkadot-dev-clean-build",
     "electron": "cd packages/electron-app && yarn electron",
     "lint": "tsc --noEmit && tslint --project .",
+<<<<<<< HEAD
     "package": "cd packages/electron-app && yarn package",
     "prebuild": "yarn clean",
     "preelectron": "yarn build",
     "prepackage": "yarn build",
     "prestart": "./scripts/prestart.sh",
+=======
+    "prebuild": "yarn clean",
+    "prepackage": "yarn build",
+    "package": "cd packages/electron-app && yarn dist",
+>>>>>>> initial storybook setup, type definitions
     "start": "lerna exec yarn start --parallel",
+    "storybook": "cd packages/ui-components && yarn storybook",
     "test": "CI=true lerna run test --parallel"
   },
   "devDependencies": {
