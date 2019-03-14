@@ -9,9 +9,11 @@
   "repository": "https://github.com/paritytech/substrate-light-ui.git",
   "scripts": {
     "build": "tsc",
+    "build-storybook": "build-storybook -c .storybook -o .out",
     "start": "yarn build --watch",
-    "test": "echo skipped",
-    "storybook": "start-storybook -p 9001 -c .storybook"
+    "storybook": "start-storybook -p 9001 -c .storybook",
+    "deploy-storybook": "storybook-to-ghpages",
+    "test": "echo skipped"
   },
   "dependencies": {
     "@polkadot/types": "^0.46.9",
@@ -31,6 +33,7 @@
     "@storybook/addon-knobs": "^4.1.13",
     "@storybook/addon-links": "^4.1.13",
     "@storybook/react": "^4.1.4",
+    "@storybook/storybook-deployer": "^2.8.1",
     "@types/storybook__addon-actions": "^3.4.2",
     "@types/storybook__addon-knobs": "^4.0.2",
     "@types/storybook__addon-links": "^3.3.4",
