@@ -15,7 +15,7 @@
   "dependencies": {
     "@polkadot/types": "^0.46.9",
     "@polkadot/ui-identicon": "^0.28.8",
-    "@polkadot/ui-keyring": "^0.28.8",
+    "@polkadot/ui-keyring": "^0.29.1",
     "@polkadot/util": "^0.35.9",
     "@types/styled-components": "4.1.0",
     "react-dropzone": "^10.0.0",

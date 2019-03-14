@@ -1960,10 +1960,10 @@
     jdenticon "^2.1.1"
     react-copy-to-clipboard "^5.0.1"
 
-"@polkadot/ui-keyring@^0.28.8":
-  version "0.28.8"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-keyring/-/ui-keyring-0.28.8.tgz#26eb81dd390cb6a740395ff86dd367f28ab75fc3"
-  integrity sha512-wNZGscllVMV0oRF7xCwifddxWo9Xl7S9/+aJxHhquyzfBvnb6Lsvnhx5UXZMLqRBBGSJC1CZu/Efn7rMsLfIBw==
+"@polkadot/ui-keyring@^0.29.1":
+  version "0.29.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-keyring/-/ui-keyring-0.29.1.tgz#19b1d059764b232badb635ea71585aa832e6a7d8"
+  integrity sha512-e6GlhFdI9TFmRqyDFkfURkUiPul53MjbL5g/+m3vHdQzuc6NwUl4T4m6pOHlu7OkpgxFJZLYOISH7I6vxuZ4vQ==
   dependencies:
     "@babel/runtime" "^7.3.4"
     "@types/store" "^2.0.1"
