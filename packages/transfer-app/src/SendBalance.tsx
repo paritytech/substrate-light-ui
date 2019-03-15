@@ -1,15 +1,13 @@
 // Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
-import ApiRx from '@polkadot/api/rx';
+
 import { ApiContext } from '@substrate/ui-api';
-import { AddressSummary, ErrorText, Grid, Header, Icon, Input, Loading, MarginTop, NavButton, Stacked, SuccessText } from '@substrate/ui-components';
+import { AddressSummary, ErrorText, Grid, Header, Icon, Input, Loading, MarginTop, NavButton, Stacked, Step, SuccessText } from '@substrate/ui-components';
 import BN from 'bn.js';
 import React from 'react';
-import { Step } from 'semantic-ui-react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Subscription } from 'rxjs';
-import { first, switchMap } from 'rxjs/operators';
 
 import { Saved } from './Saved';
 
@@ -25,7 +23,7 @@ type State = {
   amount: BN,
   error: string | null,
   isAddressValid: boolean,
-  nonceSubscription?: Subscription,
+  subscription?: Subscription,
   open: boolean,
   pending: string | React.ReactNode | null,
   recipientAddress?: string,
@@ -36,6 +34,8 @@ type State = {
 
 export class SendBalance extends React.PureComponent<Props, State> {
   static contextType = ApiContext;
+
+  private subscription: Subscription | undefined;
 
   context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
 
@@ -49,11 +49,15 @@ export class SendBalance extends React.PureComponent<Props, State> {
     success: null
   };
 
-  // FIXME handle subscriptions with react-with-observable
   componentWillUnmount () {
-    const { nonceSubscription } = this.state;
+    this.closeSubscription();
+  }
 
-    nonceSubscription && nonceSubscription.unsubscribe();
+  closeSubscription () {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+      this.subscription = undefined;
+    }
   }
 
   isValidAddress = (address: string) => {
@@ -92,8 +96,16 @@ export class SendBalance extends React.PureComponent<Props, State> {
     });
   }
 
+  onError = (value: string | null) => {
+    this.setState({ error: value, pending: null, success: null });
+  }
+
+  onPending = (value: string | React.ReactNode | null) => {
+    this.setState({ error: null, pending: value, success: null });
+  }
+
   onSubmitTransfer = async () => {
-    const { keyring } = this.context;
+    const { api, keyring } = this.context;
     const { amount, recipientAddress } = this.state;
     const { match } = this.props;
 
@@ -114,34 +126,21 @@ export class SendBalance extends React.PureComponent<Props, State> {
       return;
     }
 
-    const api = await ApiRx.create().toPromise();
-
     const senderPair = keyring.getPair(senderAddress);
 
     try {
       // retrieve nonce for the account
-      const nonceSubscription = api.query.system
-        .accountNonce(senderAddress)
-        .pipe(
-           first(),
-           // pipe nonce into transfer
-           switchMap((nonce: any) =>
-             api.tx.balances
-               // create transfer
-               .transfer(recipientAddress, amount)
-               // sign the transaction
-               .sign(senderPair, { nonce })
-               // send the transaction
-               .send()
-           )
-        )
-        // subscribe to overall result
-        // @ts-ignore
-        // FIXME: add the status and type types
+      this.subscription = api.tx.balances
+        // create transfer
+        .transfer(recipientAddress, amount)
+        // send the transaction
+        .signAndSend(senderPair)
         .subscribe(({ status, type }) => {
           if (type === 'Finalised') {
+            this.closeSubscription();
             this.onSuccess(`Completed at block hash ${status.asFinalised.toHex()}`);
           } else if (type === 'Dropped' || type === 'Usurped') {
+            this.closeSubscription();
             this.onError(`${type} at ${status}`);
           } else {
             this.onPending(
@@ -151,31 +150,19 @@ export class SendBalance extends React.PureComponent<Props, State> {
             );
           }
         });
-
-      this.setState({
-        nonceSubscription
-      });
     } catch (error) {
       this.onError(error);
     }
+  }
+
+  onSuccess = (value: string | null) => {
+    this.setState({ error: null, pending: null, success: value });
   }
 
   openSelectAccountsModal = () => {
     this.setState({
       open: true
     });
-  }
-
-  private onError = (value: string | null) => {
-    this.setState({ error: value, pending: null, success: null });
-  }
-
-  private onSuccess = (value: string | null) => {
-    this.setState({ error: null, pending: null, success: value });
-  }
-
-  private onPending = (value: string | React.ReactNode | null) => {
-    this.setState({ error: null, pending: value, success: null });
   }
 
   render () {
@@ -240,9 +227,9 @@ export class SendBalance extends React.PureComponent<Props, State> {
   renderError () {
     const { error } = this.state;
 
-    return (
+    return error && (
       <ErrorText>
-        {error || null}
+        {error}
       </ErrorText>
     );
   }
@@ -250,9 +237,9 @@ export class SendBalance extends React.PureComponent<Props, State> {
   renderSuccess () {
     const { success } = this.state;
 
-    return (
+    return success && (
       <SuccessText>
-        {success || null}
+        {success}
       </SuccessText>
     );
   }
