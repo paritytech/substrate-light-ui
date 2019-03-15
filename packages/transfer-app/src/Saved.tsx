@@ -6,18 +6,14 @@ import { SingleAddress, SubjectInfo } from '@polkadot/ui-keyring/observable/type
 import accountObservable from '@polkadot/ui-keyring/observable/accounts';
 import addressObservable from '@polkadot/ui-keyring/observable/addresses';
 import { ApiContext, Subscribe } from '@substrate/ui-api';
-import { AddressSummary, BalanceDisplay, Grid, Icon, MarginTop, NavLink, Stacked, StackedHorizontal, SubHeader, WalletCard, WithSpace } from '@substrate/ui-components';
+import { AddressSummary, BalanceDisplay, Grid, MarginTop, NavLink, Stacked, StackedHorizontal, SubHeader, WalletCard, WithSpace } from '@substrate/ui-components';
 import React from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { map } from 'rxjs/operators';
 
-interface MatchParams {
-  currentAddress: string;
-}
+import { MatchParams } from './types';
 
 interface Props extends RouteComponentProps<MatchParams> {
-  basePath: string;
-  onSelectAddress: (address: string, name: string) => void;
 }
 
 export class Saved extends React.PureComponent<Props> {
@@ -25,21 +21,12 @@ export class Saved extends React.PureComponent<Props> {
 
   context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
 
-  forgetSelectedAddress = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-    const { keyring } = this.context;
-
-    const address = event.currentTarget.dataset.address;
-
-    keyring.forgetAddress(address!);
-  }
-
   handleSelectedRecipient = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-    const { onSelectAddress } = this.props;
 
     const address = event.currentTarget.dataset.address;
     const name = event.currentTarget.dataset.name;
 
-    onSelectAddress(address!, name!);
+    console.log(address, name);
   }
 
   render () {
@@ -54,7 +41,7 @@ export class Saved extends React.PureComponent<Props> {
             <Stacked>
               <SubHeader> My Unlocked Accounts </SubHeader>
               <WithSpace>
-                { this.renderAccountsToSendFrom() }
+                {this.renderAccountsToSendFrom()}
               </WithSpace>
             </Stacked>
           </Grid.Column>
@@ -62,7 +49,7 @@ export class Saved extends React.PureComponent<Props> {
             <Stacked>
               <SubHeader> Saved Addresses </SubHeader>
               <WithSpace>
-                { this.renderAddressesToSendTo() }
+                {this.renderAddressesToSendTo()}
               </WithSpace>
             </Stacked>
           </Grid.Column>
@@ -81,26 +68,26 @@ export class Saved extends React.PureComponent<Props> {
             !allAccounts
               ? this.renderEmpty()
               : Object.values(allAccounts).map((account: SingleAddress) =>
-                  <React.Fragment key={account.json.address}>
-                    <MarginTop />
-                    <AddressSummary
-                      address={account.json.address}
-                      name={
-                        <Link to={`/transfer/${account.json.address}`}>
-                          {account.json.meta.name}
-                        </Link>
-                      }
-                      orientation='horizontal'
-                      size='small'
-                      />
-                    <Subscribe>
-                      {
-                        // FIXME using any because freeBalance gives a Codec here, not a Balance
-                        // Wait for @polkadot/api to have TS support for all query.*
-                        api.query.balances.freeBalance(account.json.address).pipe(map(this.renderBalance as any))
-                      }
-                    </Subscribe>
-                  </React.Fragment>
+                <React.Fragment key={account.json.address}>
+                  <MarginTop />
+                  <AddressSummary
+                    address={account.json.address}
+                    name={
+                      <Link to={`/transfer/${account.json.address}`}>
+                        {account.json.meta.name}
+                      </Link>
+                    }
+                    orientation='horizontal'
+                    size='small'
+                  />
+                  <Subscribe>
+                    {
+                      // FIXME using any because freeBalance gives a Codec here, not a Balance
+                      // Wait for @polkadot/api to have TS support for all query.*
+                      api.query.balances.freeBalance(account.json.address).pipe(map(this.renderBalance as any))
+                    }
+                  </Subscribe>
+                </React.Fragment>
               )
           ))}
       </Subscribe>
@@ -117,28 +104,25 @@ export class Saved extends React.PureComponent<Props> {
             !Object.keys(allAddresses).length
               ? this.renderEmpty()
               : Object.values(allAddresses).map((address: SingleAddress) =>
-                  <React.Fragment key={`__locked_${address.json.address}`}>
-                    <MarginTop />
-                    <StackedHorizontal>
-                      <Link to='#' data-address={address.json.address} data-name={address.json.meta.name} onClick={this.handleSelectedRecipient}>
-                        <AddressSummary
-                          address={address.json.address}
-                          name={address.json.meta.name}
-                          orientation='horizontal'
-                          size='small' />
-                      </Link>
-                      <Subscribe>
-                        {
-                          // FIXME using any because freeBalance gives a Codec here, not a Balance
-                          // Wait for @polkadot/api to have TS support for all query.*
-                          api.query.balances.freeBalance(address.json.address).pipe(map(this.renderBalance as any))
-                        }
-                      </Subscribe>
-                      <Link to='#' data-address={address.json.address} onClick={this.forgetSelectedAddress}>
-                        <Icon name='close' />
-                      </Link>
-                    </StackedHorizontal>
-                  </React.Fragment>
+                <React.Fragment key={`__locked_${address.json.address}`}>
+                  <MarginTop />
+                  <StackedHorizontal>
+                    <Link to='#' data-address={address.json.address} data-name={address.json.meta.name} onClick={this.handleSelectedRecipient}>
+                      <AddressSummary
+                        address={address.json.address}
+                        name={address.json.meta.name}
+                        orientation='horizontal'
+                        size='small' />
+                    </Link>
+                    <Subscribe>
+                      {
+                        // FIXME using any because freeBalance gives a Codec here, not a Balance
+                        // Wait for @polkadot/api to have TS support for all query.*
+                        api.query.balances.freeBalance(address.json.address).pipe(map(this.renderBalance as any))
+                      }
+                    </Subscribe>
+                  </StackedHorizontal>
+                </React.Fragment>
               )
           ))}
       </Subscribe>
@@ -152,13 +136,12 @@ export class Saved extends React.PureComponent<Props> {
   }
 
   renderEmpty () {
-    const { match } = this.props;
-    const address = match.params.currentAddress;
+    const { match: { params: { currentAddress } } } = this.props;
 
     return (
       <React.Fragment>
         <p> It looks like you don't have any saved accounts. You can add them from your address book in Identity app. </p>
-        <NavLink to={`/identity/${address}`}> Take me there </NavLink>
+        <NavLink to={`/identity/${currentAddress}`}> Take me there </NavLink>
       </React.Fragment>
     );
   }
