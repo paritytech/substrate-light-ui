@@ -2,10 +2,13 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import IdentityIcon from '@polkadot/ui-identicon';
 import { ApiContext } from '@substrate/ui-api';
+import { Icon, Stacked } from '@substrate/ui-components';
+import BN from 'bn.js';
 import { Subscription } from 'rxjs';
 import React from 'react';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps, Redirect } from 'react-router';
 
 import { MatchParams, TransferParams } from './types';
 
@@ -19,42 +22,33 @@ export class SentBalance extends React.PureComponent<Props> {
   context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
 
   componentDidMount () {
-    const { history, location: { state }, match: { params: { currentAddress } } } = this.props;
-
-    if (!state.amount || !state.recipientAddress) {
-      // This happens when we refresh the page while a tx is sending. In this
-      // case, we just redirect to send a tx page.
-      history.push(`/transfer/${currentAddress}`);
-      return;
-    }
-
-    const { api, keyring } = this.context;
-    const { amount, recipientAddress } = state;
-    const senderPair = keyring.getPair(currentAddress);
+    // const { api, keyring } = this.context;
+    // const { amount, recipientAddress } = state;
+    // const senderPair = keyring.getPair(currentAddress);
 
     // Send the tx
     // TODO Use React context to save it if we come back later.
     // retrieve nonce for the account
-    this.subscription = api.tx.balances
-      // create transfer
-      .transfer(recipientAddress, amount)
-      // send the transaction
-      .signAndSend(senderPair)
-      .subscribe(({ status, type }) => {
-        if (type === 'Finalised') {
-          this.closeSubscription();
-          this.onSuccess(`Completed at block hash ${status.asFinalised.toHex()}`);
-        } else if (type === 'Dropped' || type === 'Usurped') {
-          this.closeSubscription();
-          this.onError(`${type} at ${status}`);
-        } else {
-          this.onPending(
-            <Loading active>
-              {`Status of transfer: ${type}...`}
-            </Loading>
-          );
-        }
-      });
+    // this.subscription = api.tx.balances
+    //   // create transfer
+    //   .transfer(recipientAddress, amount)
+    //   // send the transaction
+    //   .signAndSend(senderPair)
+    //   .subscribe(({ status, type }) => {
+    //     if (type === 'Finalised') {
+    //       this.closeSubscription();
+    //       this.onSuccess(`Completed at block hash ${status.asFinalised.toHex()}`);
+    //     } else if (type === 'Dropped' || type === 'Usurped') {
+    //       this.closeSubscription();
+    //       this.onError(`${type} at ${status}`);
+    //     } else {
+    //       this.onPending(
+    //         <Loading active>
+    //           {`Status of transfer: ${type}...`}
+    //         </Loading>
+    //       );
+    //     }
+    //   });
   }
 
   componentWillUnmount () {
@@ -69,6 +63,26 @@ export class SentBalance extends React.PureComponent<Props> {
   }
 
   render () {
-    return 'HELLO';
+    const { location: { state }, match: { params: { currentAddress } } } = this.props;
+
+    if (!(state.amount instanceof BN) || !state.recipientAddress) {
+      // This happens when we refresh the page while a tx is sending. In this
+      // case, we just redirect to send a tx page.
+      return <Redirect to={`/transfer/${currentAddress}`} />;
+    }
+
+    const { amount, recipientAddress } = state;
+
+    return (
+      <Stacked>
+        <Icon name='check' />
+        <div>
+          Summary:
+          <IdentityIcon theme='substrate' size={16} value={currentAddress} />
+          sending {amount.toString()} units to
+          <IdentityIcon theme='substrate' size={16} value={recipientAddress} />
+        </div>
+      </Stacked>
+    );
   }
 }

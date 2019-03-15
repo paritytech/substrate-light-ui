@@ -48,7 +48,7 @@ export class SendBalance extends React.PureComponent<Props, State> {
     this.setState({ error: value });
   }
 
-  onSubmitTransfer = async () => {
+  onSubmitTransfer = () => {
     const { history, match: { params: { currentAddress: senderAddress } } } = this.props;
     const { amount, recipientAddress } = this.state;
 
