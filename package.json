@@ -34,6 +34,6 @@
     "test": "CI=true lerna run test --parallel"
   },
   "devDependencies": {
-    "@polkadot/dev": "^0.25.13"
+    "@polkadot/dev": "^0.26.1"
   }
 }
