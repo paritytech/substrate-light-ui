@@ -21,6 +21,7 @@ const StyledCard = styled<any>(SUICard)`
 `;
 
 export class Card extends React.PureComponent<Props> {
+  // TODO: move away from the defaults and use custom subcomponents
   static Header = SUICard.Header;
   static Description = SUICard.Description;
   static Content = SUICard.Content;

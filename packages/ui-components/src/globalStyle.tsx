@@ -31,8 +31,8 @@ const substrateLightTheme = {
   darkBlue: '#5c53fc',
   lightBlue2: '#51a0ec',
   lightBlue1: '#53a0fd',
-  cardBorder: '#f2f2f2',
-  segment: '#fdfefe',
+  eggShell: '#f2f2f2',
+  babyBlueLight: '#fdfefe',
   white: '#ffffff'
 };
 
