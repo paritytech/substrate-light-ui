@@ -12,7 +12,7 @@
     "build-storybook": "build-storybook -c .storybook -o .out",
     "start": "yarn build --watch",
     "storybook": "start-storybook -p 9001 -c .storybook",
-    "deploy-storybook": "storybook-to-ghpages",
+    "deploy-storybook": "yarn build-storybook && storybook-to-ghpages",
     "test": "echo skipped"
   },
   "dependencies": {
