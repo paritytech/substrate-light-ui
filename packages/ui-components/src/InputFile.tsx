@@ -31,6 +31,8 @@ const defaultAccept = ['application/json, text/plain'].join(',');
 
 // FIXME: this component is reused here and in @polkadot/apps - should be moved to @polkadot/ui
 class InputFile extends React.PureComponent<Props, State> {
+  static defaultProps: any;
+
   state: State = {};
 
   render () {
