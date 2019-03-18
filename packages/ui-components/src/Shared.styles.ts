@@ -5,23 +5,16 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import SUIContainer from 'semantic-ui-react/dist/commonjs/elements/Container';
-import SUICard from 'semantic-ui-react/dist/commonjs/views/Card';
+import SUIInput from 'semantic-ui-react/dist/commonjs/elements/Input';
 
-import { HeaderProps, MarginTopProps, NameProps, StackProps, SubHeaderProps, WithSpaceAroundProps } from './StyleProps';
+import { HeaderProps, MarginTopProps, DynamicSizeTextProps, StackProps, SubHeaderProps, WithSpaceAroundProps } from './StyleProps';
+
+export const Input = styled<any>(SUIInput)`
+
+`;
 
 export const Container = styled(SUIContainer)`
   padding: 1.5rem;
-`;
-
-export const Card = styled<any>(SUICard)`
- &&& {
-  background-color: #ffffff;
-  border-radius: 2px;
-  box-shadow: 0 4px 5px 1px rgba(0, 0, 0, 0.3);
-  height: 357px;
-  width: 100%;
-  overflow: ${props => props.overflow || 'none'};
- }
 `;
 
 export const FadedText = styled.p`
@@ -73,10 +66,11 @@ export const Header = styled.h2<HeaderProps>`
   text-align: center;
 `;
 
-export const Name = styled.p<NameProps>`
+export const DynamicSizeText = styled.p<DynamicSizeTextProps>`
   font-size: ${props => props.fontSize || '20px'};
   font-weight: ${props => props.fontWeight || '500'};
   margin: 0 0;
+  text-align: center;
 `;
 
 export const FileInputArea = styled.div`
@@ -136,6 +130,7 @@ export const StyledNavButton = styled.button`
   border-radius: 15px;
   box-shadow: 0 4px 6px 0 rgba(${props => props.theme.black}, 0.3);
   color: ${props => props.theme.white};
+  fontSize: 18px;
   height: 42px;
   width: 134px;
 
@@ -166,5 +161,6 @@ export const SubHeader = styled.h3<SubHeaderProps>`
   color: ${props => props.theme.lightBlue2};
   font-weight: 600;
   font-size: 15px;
-  margin: 1rem auto 0.3rem auto;
+  margin: ${props => props.noMargin ? `0 0` : `1rem auto 0.3rem auto`};
+  text-align: center;
 `;

@@ -4,22 +4,27 @@
 
 import React from 'react';
 
-import { StyledNavButton } from './Shared.styles';
+import { DynamicSizeText, StyledNavButton } from './Shared.styles';
 
 type Props = {
   children?: any,
+  fontSize?: string,
+  fontWeight?: string,
+  onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
   value?: string
-  onClick?: () => void
 };
 
 export default class NavButton extends React.PureComponent<Props> {
   render () {
-    const { children, onClick, value } = this.props;
+    const { children, fontSize = '17px', fontWeight = '300', onClick, value } = this.props;
 
     return (
       <StyledNavButton onClick={onClick}>
-        {value}
-        {children}
+        <DynamicSizeText
+          fontSize={fontSize}
+          fontWeight={fontWeight}>
+            {value || children}
+        </DynamicSizeText>
       </StyledNavButton>
     );
   }

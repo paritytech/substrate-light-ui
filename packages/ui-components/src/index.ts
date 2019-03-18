@@ -2,12 +2,13 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import Accordion from './Accordion';
 import Address from './Address';
 import AddressSummary from './AddressSummary';
 import BalanceDisplay from './Balance';
+import Card from './Card';
 import Grid from './Grid';
 import Icon from './Icon';
-import Input from './Input';
 import InputFile from './InputFile';
 import Loading from './Loading';
 import Menu from './Menu';
@@ -20,12 +21,13 @@ import TextArea from './TextArea';
 import WalletCard from './WalletCard';
 
 export {
+  Accordion,
   Address,
   AddressSummary,
   BalanceDisplay,
+  Card,
   Grid,
   Icon,
-  Input,
   InputFile,
   Loading,
   Menu,
@@ -38,5 +40,6 @@ export {
   WalletCard
 };
 
+export * from './globalStyle';
 export * from './types';
 export * from './Shared.styles';

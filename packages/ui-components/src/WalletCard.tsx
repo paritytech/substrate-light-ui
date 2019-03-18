@@ -22,7 +22,7 @@ class WalletCard extends React.PureComponent<Props> {
           <Stacked>
             <Header margin='0.2rem 0'> {header} </Header>
             <SubHeader margin='0rem auto'> {subheader} </SubHeader>
-            <Stacked justify='flex-start' textAlign='left'>
+            <Stacked>
               {children}
             </Stacked>
           </Stacked>

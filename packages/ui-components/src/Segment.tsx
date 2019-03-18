@@ -13,7 +13,7 @@ const Segment = styled<any>(SUISegment)`
     height: 3rem;
     margin: 0.3rem auto;
     box-shadow: 0 2px 2px 0 rgba(${props => props.theme.black}, 0.3);
-    background-color: ${props => props.theme.segment};
+    background-color: ${props => props.theme.babyBlueLight};
   }
 `;
 
