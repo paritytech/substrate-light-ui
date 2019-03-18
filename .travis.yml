@@ -15,7 +15,7 @@ deploy:
   skip_cleanup: true
   github_token: $GH_TOKEN
   keep_history: true
-  local_dir: .out
+  local_dir: packages/ui-components/.out
   on:
     branch: master
 install:
