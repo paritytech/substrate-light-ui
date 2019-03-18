@@ -12,9 +12,9 @@ cache:
     - node_modules
 deploy:
   provider: pages
-  skip-cleanup: true
-  github-token: $GITHUB_TOKEN
-  keep-history: true
+  skip_cleanup: true
+  github_token: $GH_TOKEN
+  keep_history: true
   local_dir: .out
   on:
     branch: master
