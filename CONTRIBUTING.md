@@ -27,9 +27,9 @@ When contributing to this repository, please first check whether the issue has a
 5. You may merge the Pull Request in once you have the sign-off of two other developers, or if you
    do not have permission to do that, you may request the second reviewer to merge it for you.
 
-// FIXME: update scripts
+**N.B.** We mostly manage dependency version update with Dependabot. The only exception is with `@polkadot/**` dependencies, which we update running these [scripts][updateScripts] locally. Checkout the dependencies locally into the same root directory as `substrate-light-apps`, update the Directories array in `./update.sh` as relevant at the time of running [e.g. `DIRECTORIES=( "dev" "common" "api" "ui" "light-apps" )`] and run `./update.sh`.
 
-**N.B.** We mostly manage dependency version update with Dependabot. The only exception is with `@polkadot/**` dependencies, which we update running these [scripts][updateScripts] locally. We do this to make sure all `@polkadot/**` dependencies are updated together.
+We do this to make sure all `@polkadot/**` dependencies are updated together as otherwise "things will break."
 
 ## Code of Conduct
 
