@@ -13,8 +13,8 @@
     "test": "echo skipped"
   },
   "dependencies": {
-    "@polkadot/api": "^0.46.9",
-    "@polkadot/ui-keyring": "^0.28.8",
+    "@polkadot/api": "^0.48.1",
+    "@polkadot/ui-keyring": "^0.31.1",
     "@substrate/ui-components": "0.1.0",
     "@types/create-subscription": "^16.4.1",
     "create-subscription": "^16.8.0",
