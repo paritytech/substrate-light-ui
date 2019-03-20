@@ -31,6 +31,9 @@ When contributing to this repository, please first check whether the issue has a
 
 We do this to make sure all `@polkadot/**` dependencies are updated together as otherwise "things will break."
 
+## Commit Messages
+Please follow the standards outlined in Conventional Commits: https://www.conventionalcommits.org/en/v1.0.0-beta.3/#specification
+
 ## Code of Conduct
 
 ### Our Pledge
