@@ -4,12 +4,13 @@
 
 import IdentityIcon from '@polkadot/ui-identicon';
 import { ApiContext } from '@substrate/ui-api';
-import { Header, Icon, Margin, Stacked, SubHeader } from '@substrate/ui-components';
+import { Icon, Margin, Stacked, SubHeader } from '@substrate/ui-components';
 import BN from 'bn.js';
 import { Subscription } from 'rxjs';
 import React from 'react';
 import { RouteComponentProps, Redirect } from 'react-router';
 
+import { BlueHeader } from './SentBalance.styles';
 import { MatchParams, TransferParams } from './types';
 
 interface Props extends RouteComponentProps<MatchParams, {}, Partial<TransferParams>> { }
@@ -65,7 +66,7 @@ export class SentBalance extends React.PureComponent<Props> {
   render () {
     const { location: { state }, match: { params: { currentAddress } } } = this.props;
 
-    if (!(state.amount instanceof BN) || !state.recipientAddress) {
+    if (!state || !(state.amount instanceof BN) || !state.recipientAddress) {
       // This happens when we refresh the page while a tx is sending. In this
       // case, we just redirect to the send tx page.
       return <Redirect to={`/transfer/${currentAddress}`} />;
@@ -77,7 +78,7 @@ export class SentBalance extends React.PureComponent<Props> {
       <Stacked>
         <Margin bottom>
           <Icon name='check' size='huge' />
-          <Header>Transaction completed!</Header>
+          <BlueHeader>Transaction completed!</BlueHeader>
         </Margin>
 
         <Margin top>
