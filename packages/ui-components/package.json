@@ -32,7 +32,7 @@
     "@storybook/addon-actions": "^4.1.13",
     "@storybook/addon-knobs": "^4.1.13",
     "@storybook/addon-links": "^4.1.13",
-    "@storybook/react": "^4.1.4",
+    "@storybook/react": "^5.0.2",
     "@storybook/storybook-deployer": "^2.8.1",
     "@types/storybook__addon-actions": "^3.4.2",
     "@types/storybook__addon-knobs": "^4.0.2",
