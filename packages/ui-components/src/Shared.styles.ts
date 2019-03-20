@@ -5,13 +5,16 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import SUIContainer from 'semantic-ui-react/dist/commonjs/elements/Container';
+import SUIDropdown from 'semantic-ui-react/dist/commonjs/modules/Dropdown';
 import SUIInput from 'semantic-ui-react/dist/commonjs/elements/Input';
 
 import { HeaderProps, MarginTopProps, DynamicSizeTextProps, StackProps, SubHeaderProps, WithSpaceAroundProps } from './StyleProps';
 
-export const Input = styled<any>(SUIInput)`
-
+// FIXME: customize as needed
+export const Dropdown = styled<any>(SUIDropdown)`
+  color: ${props => props.theme.black};
 `;
+export const Input = styled<any>(SUIInput)``;
 
 export const Container = styled(SUIContainer)`
   padding: 1.5rem;
