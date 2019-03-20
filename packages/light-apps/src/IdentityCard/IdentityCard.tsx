@@ -18,6 +18,7 @@ interface Props extends RouteComponentProps { }
 type State = {
   backupModalOpen: boolean,
   error?: string,
+  expanded: boolean,
   forgetModalOpen: boolean,
   password: string,
   success?: string
@@ -30,6 +31,7 @@ export class IdentityCard extends React.PureComponent<Props, State> {
 
   state: State = {
     backupModalOpen: false,
+    expanded: false,
     forgetModalOpen: false,
     password: ''
   };
@@ -205,8 +207,10 @@ export class IdentityCard extends React.PureComponent<Props, State> {
     );
   }
 
-  renderBalance = (balance: Balance) => {
-    return <BalanceDisplay balance={balance} />;
+  renderSummary = (balance: Balance) => {
+    const { address, name } = this.state;
+
+    return <AddressSummary address={address} balance={balance} name={name} />;
   }
 
   renderError () {
