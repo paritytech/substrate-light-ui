@@ -4,7 +4,7 @@
 
 import IdentityIcon from '@polkadot/ui-identicon';
 import { ApiContext } from '@substrate/ui-api';
-import { Icon, Margin, Stacked, SubHeader } from '@substrate/ui-components';
+import { Header, Icon, Margin, Stacked, SubHeader } from '@substrate/ui-components';
 import BN from 'bn.js';
 import { Subscription } from 'rxjs';
 import React from 'react';
@@ -77,17 +77,23 @@ export class SentBalance extends React.PureComponent<Props> {
       <Stacked>
         <Margin bottom>
           <Icon name='check' size='huge' />
+          <Header>Transaction completed!</Header>
         </Margin>
 
         <Margin top>
           <SubHeader>Summary:</SubHeader>
-          <Margin display='inline' left='small' right='small' top='small'>
+          <Margin as='span' left='small' right='small' top='small'>
             <IdentityIcon theme='substrate' size={16} value={currentAddress} />
           </Margin>
           sending {amount.toString()} units to
-          <Margin display='inline' left='small' right='small' top='small'>
+          <Margin as='span' left='small' right='small' top='small'>
             <IdentityIcon theme='substrate' size={16} value={recipientAddress} />
           </Margin>
+        </Margin>
+
+        <Margin top='huge'>
+          <SubHeader>Click here</SubHeader>
+          <p>to view full details</p>
         </Margin>
       </Stacked>
     );

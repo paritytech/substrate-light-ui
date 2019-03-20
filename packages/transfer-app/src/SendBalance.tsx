@@ -68,7 +68,7 @@ export class SendBalance extends React.PureComponent<Props, State> {
     });
   }
 
-  render() {
+  render () {
     const { keyring } = this.context;
     const { amount, recipientAddress } = this.state;
 
@@ -111,7 +111,7 @@ export class SendBalance extends React.PureComponent<Props, State> {
     );
   }
 
-  renderError() {
+  renderError () {
     const { error } = this.state;
 
     return error && (

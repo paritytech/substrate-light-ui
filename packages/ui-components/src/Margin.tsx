@@ -5,11 +5,10 @@
 import { compose, curry, prop } from 'ramda';
 import styled from 'styled-components';
 
-import { SUIDisplay, SUISize } from './types';
+import { SUISize } from './types';
 
 export interface MarginProps {
   bottom?: SUISize | boolean; // bottom=true means bottom='medium'
-  display?: SUIDisplay;
   left?: SUISize | boolean;
   right?: SUISize | boolean;
   top?: SUISize | boolean;
@@ -37,13 +36,8 @@ const sizeValues = (size?: SUISize | boolean) => {
 const getMarginValue = curry(compose(sizeValues, prop));
 
 export const Margin = styled.div<MarginProps>`
-  display: ${props => props.display}
   margin-bottom: ${getMarginValue('bottom')}
   margin-left: ${getMarginValue('left')}
   margin-right: ${getMarginValue('right')}
   margin-top: ${getMarginValue('top')}
 `;
-
-Margin.defaultProps = {
-  display: 'block'
-};

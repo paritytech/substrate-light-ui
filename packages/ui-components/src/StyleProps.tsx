@@ -2,8 +2,6 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { SUIDisplay } from './types';
-
 export interface HeaderProps {
   margin?: string;
 }
@@ -21,7 +19,6 @@ export interface StackProps {
 
 export interface SubHeaderProps {
   color?: string;
-  display?: SUIDisplay;
   margin?: string;
   noMargin?: boolean;
 }
