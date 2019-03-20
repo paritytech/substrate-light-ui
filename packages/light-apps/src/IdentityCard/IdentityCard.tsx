@@ -186,8 +186,8 @@ export class IdentityCard extends React.PureComponent<Props, State> {
               floating
               onChange={this.handleToggleApp}
               options={APP_OPTIONS}
-              placeholder={currentLocation}
-              selection />
+              selection
+              value={currentLocation} />
           </StackedHorizontal>
         </Accordion.Title>
         <Accordion.Content active={expanded}>
