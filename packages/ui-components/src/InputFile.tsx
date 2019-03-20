@@ -5,9 +5,10 @@
 import React from 'react';
 import Dropzone from 'react-dropzone';
 
-import { FadedText, FileInputArea } from './Shared.styles';
+import { ErrorText, FadedText, FileInputArea } from './Shared.styles';
 
 type State = {
+  error?: string,
   file?: {
     name: string,
     size: number
@@ -16,8 +17,6 @@ type State = {
 
 type Props = {
   accept?: string,
-  isDisabled?: boolean,
-  isError?: boolean,
   onChange?: (data: Uint8Array) => void,
   placeholder?: string
 };
@@ -28,14 +27,17 @@ type LoadEvent = {
   }
 };
 
-const accept = ['application/json, text/plain'].join();
+const defaultAccept = ['application/json, text/plain'].join(',');
 
 // FIXME: this component is reused here and in @polkadot/apps - should be moved to @polkadot/ui
 class InputFile extends React.PureComponent<Props, State> {
+  static defaultProps: any;
+
   state: State = {};
 
   render () {
-    const { file } = this.state;
+    const { error, file } = this.state;
+    const { accept, placeholder } = this.props;
 
     return (
       <Dropzone
@@ -47,10 +49,11 @@ class InputFile extends React.PureComponent<Props, State> {
             <FileInputArea {...getRootProps()}>
               <input {...getInputProps()} />
               {
-                !file ?
-                  <FadedText>Drop file here...</FadedText> :
-                  <FadedText>{file.name}</FadedText>
+                !file
+                  ? <FadedText>{ placeholder }</FadedText>
+                  : <FadedText>{file.name}</FadedText>
               }
+              <ErrorText> {error} </ErrorText>
             </FileInputArea>
           );
         }}
@@ -69,7 +72,7 @@ class InputFile extends React.PureComponent<Props, State> {
       };
 
       reader.onerror = () => {
-        // ignore
+        this.onError();
       };
 
       // @ts-ignore
@@ -89,6 +92,15 @@ class InputFile extends React.PureComponent<Props, State> {
       reader.readAsArrayBuffer(file);
     });
   }
+
+  private onError = () => {
+    this.setState({ error: 'There was an issue with uploading this file. Please check it and try again.' });
+  }
 }
+
+InputFile.defaultProps = {
+  accept: defaultAccept,
+  placeholder: 'Drop file here...'
+};
 
 export default InputFile;

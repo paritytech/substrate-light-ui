@@ -6,7 +6,7 @@ export interface MarginTopProps {
   marginTop?: string;
 }
 
-export interface NameProps {
+export interface DynamicSizeTextProps {
   fontWeight?: string;
   fontSize?: string;
 }
@@ -20,6 +20,7 @@ export interface StackProps {
 export interface SubHeaderProps {
   color?: string;
   margin?: string;
+  noMargin?: boolean;
 }
 
 export interface WithSpaceAroundProps {

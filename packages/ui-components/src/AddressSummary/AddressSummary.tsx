@@ -2,14 +2,15 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import BN from 'bn.js';
 import IdentityIcon from '@polkadot/ui-identicon';
 import { KeyringAddress } from '@polkadot/ui-keyring/types';
 import React from 'react';
 
-import { Name, Stacked, StackedHorizontal } from '../Shared.styles';
+import BalanceDisplay from '../Balance';
+import { DynamicSizeText, Stacked, StackedHorizontal } from '../Shared.styles';
+import { OrientationType, SizeType } from './types';
 
-type OrientationTypes = 'horizontal' | 'vertical';
-type SizeTypes = 'tiny' | 'small' | 'medium' | 'large';
 type SummaryStyles = {
   identiconSize: number,
   nameSize: string
@@ -17,9 +18,10 @@ type SummaryStyles = {
 
 type Props = {
   address?: string | KeyringAddress,
+  balance?: BN,
   name?: string | React.ReactNode,
-  orientation?: OrientationTypes,
-  size?: SizeTypes
+  orientation?: OrientationType,
+  size?: SizeType
 };
 
 const PLACEHOLDER_NAME = 'No Name';
@@ -27,7 +29,7 @@ const PLACEHOLDER_ADDRESS = '5'.padEnd(16, 'x');
 
 export class AddressSummary extends React.PureComponent<Props> {
   render () {
-    const { address, name, orientation = 'vertical', size = 'medium' } = this.props;
+    const { address, balance, name, orientation = 'vertical', size = 'medium' } = this.props;
     let styles: SummaryStyles = { identiconSize: 16, nameSize: '14px' };
 
     switch (size) {
@@ -51,14 +53,16 @@ export class AddressSummary extends React.PureComponent<Props> {
       return (
         <Stacked>
           <IdentityIcon value={address as string || PLACEHOLDER_ADDRESS} theme={'substrate'} size={styles.identiconSize} />
-          <Name fontSize={styles.nameSize}> {name || PLACEHOLDER_NAME} </Name>
+          <DynamicSizeText fontSize={styles.nameSize}> {name || PLACEHOLDER_NAME} </DynamicSizeText>
+          { balance && <BalanceDisplay balance={balance} /> }
         </Stacked>
       );
     } else {
       return (
         <StackedHorizontal justify='space-around'>
           <IdentityIcon value={address as string || PLACEHOLDER_ADDRESS} theme={'substrate'} size={styles.identiconSize} />
-          <Name fontSize={styles.nameSize}> {name || PLACEHOLDER_NAME} </Name>
+          <DynamicSizeText fontSize={styles.nameSize}> {name || PLACEHOLDER_NAME} </DynamicSizeText>
+          { balance && <BalanceDisplay balance={balance} /> }
         </StackedHorizontal>
       );
     }
