@@ -5,7 +5,7 @@
 import { Balance } from '@polkadot/types';
 import { stringUpperFirst } from '@polkadot/util';
 import { ApiContext, Subscribe } from '@substrate/ui-api';
-import { Address, AddressSummary, BalanceDisplay, ErrorText, FadedText, Header, Icon, Input, MarginTop, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SuccessText, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
+import { Accordion, Address, AddressSummary, ErrorText, FadedText, Header, Icon, Input, MarginTop, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SuccessText, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -20,6 +20,7 @@ type State = {
   backupModalOpen: boolean,
   buttonText?: string
   error?: string,
+  expanded: boolean,
   forgetModalOpen: boolean,
   name?: string
   password: string,
@@ -33,6 +34,7 @@ export class IdentityCard extends React.PureComponent<Props, State> {
 
   state: State = {
     backupModalOpen: false,
+    expanded: false,
     forgetModalOpen: false,
     password: ''
   };
@@ -103,6 +105,12 @@ export class IdentityCard extends React.PureComponent<Props, State> {
     }
   }
 
+  private toggleIdCard = () => {
+    this.setState({
+      expanded: !this.state.expanded
+    });
+  }
+
   private forgetCurrentAccount = () => {
     const { keyring } = this.context;
     const { history } = this.props;
@@ -152,42 +160,47 @@ export class IdentityCard extends React.PureComponent<Props, State> {
 
   render () {
     const { api } = this.context;
-    const { address, buttonText, name } = this.state;
+    const { address, buttonText, expanded } = this.state;
 
     return (
-      <StyledCard>
-        <CardContent>
-          <Header> Current Account </Header>
-          {address
-            ?
-            <React.Fragment>
-              <AddressSummary address={address} name={name} />
-              <Subscribe>
-                {
-                  // FIXME using any because freeBalance gives a Codec here, not a Balance
-                  // Wait for @polkadot/api to have TS support for all query.*
-                  api.query.balances.freeBalance(address).pipe(map(this.renderBalance as any))
-                }
-              </Subscribe>
-            </React.Fragment>
-            : <div>Loading...</div>
-          }
-          <MarginTop />
-          <Stacked>
-            <Address address={address} />
-            <MarginTop />
-            <StackedHorizontal>
-              {this.renderForgetConfirmationModal()}
-              or
-              {this.renderBackupConfirmationModal()}
-            </StackedHorizontal>
-          </Stacked>
-          <MarginTop />
-          <NavButton value={buttonText} onClick={this.handleToggleApp} />
-        </CardContent>
-        {this.renderError()}
-        {this.renderSuccess()}
-      </StyledCard>
+      <Accordion active={expanded} fluid>
+        <Accordion.Title active={expanded} styled>
+          <Icon name='dropdown' onClick={this.toggleIdCard} />
+          
+        </Accordion.Title>
+        <Accordion.Content active={expanded}>
+          <StyledCard>
+            <CardContent>
+              <Header> Current Account </Header>
+              {address
+                ?
+                  <Subscribe>
+                    {
+                      // FIXME using any because freeBalance gives a Codec here, not a Balance
+                      // Wait for @polkadot/api to have TS support for all query.*
+                      api.query.balances.freeBalance(address).pipe(map(this.renderSummary as any))
+                    }
+                  </Subscribe>
+                : <div>Loading...</div>
+              }
+              <MarginTop />
+              <Stacked>
+                <Address address={address} />
+                <MarginTop />
+                <StackedHorizontal>
+                  {this.renderForgetConfirmationModal()}
+                  or
+                  {this.renderBackupConfirmationModal()}
+                </StackedHorizontal>
+              </Stacked>
+              <MarginTop />
+              <NavButton value={buttonText} onClick={this.handleToggleApp} />
+            </CardContent>
+            {this.renderError()}
+            {this.renderSuccess()}
+          </StyledCard>
+        </Accordion.Content>
+      </Accordion>
     );
   }
 
@@ -218,8 +231,10 @@ export class IdentityCard extends React.PureComponent<Props, State> {
     );
   }
 
-  renderBalance = (balance: Balance) => {
-    return <BalanceDisplay balance={balance} />;
+  renderSummary = (balance: Balance) => {
+    const { address, name } = this.state;
+
+    return <AddressSummary address={address} balance={balance} name={name} />;
   }
 
   renderError () {
