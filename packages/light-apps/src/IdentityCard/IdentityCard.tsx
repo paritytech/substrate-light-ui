@@ -24,6 +24,19 @@ type State = {
   success?: string
 };
 
+// TODO: Add Governance Once That's in
+const APP_OPTIONS = [
+  {
+    key: 'Identity',
+    text: 'Identity',
+    value: 'Identity'
+  },
+  {
+    key: 'Transfer',
+    text: 'Transfer',
+    value: 'Transfer'
+  }];
+
 export class IdentityCard extends React.PureComponent<Props, State> {
   static contextType = ApiContext;
 
