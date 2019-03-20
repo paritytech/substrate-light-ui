@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { ApiContext } from '@substrate/ui-api';
-import { AddressSummary, ErrorText, FadedText, Input, MarginTop, MnemonicSegment, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SubHeader, WithSpaceAround } from '@substrate/ui-components';
+import { AddressSummary, ErrorText, FadedText, Input, Margin, MnemonicSegment, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SubHeader, WithSpaceAround } from '@substrate/ui-components';
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
 import FileSaver from 'file-saver';
 import React from 'react';
@@ -194,7 +194,7 @@ export class Create extends React.PureComponent<Props, State> {
           <SubHeader> Copy Your Mnemonic Somewhere Safe </SubHeader>
           <FadedText> If someone gets hold of this mnemonic they could drain your account</FadedText>
           <MnemonicSegment onClick={this.newMnemonic} mnemonic={mnemonic} />
-          <MarginTop />
+          <Margin top />
           <FadedText> Rewrite Mnemonic Below </FadedText>
           <Input
             autoFocus

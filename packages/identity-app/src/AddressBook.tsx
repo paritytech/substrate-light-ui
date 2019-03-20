@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { ApiContext } from '@substrate/ui-api';
-import { ErrorText, Input, MarginTop, NavButton, Stacked, SubHeader, SuccessText, WalletCard, WithSpace } from '@substrate/ui-components';
+import { ErrorText, Input, Margin, NavButton, Stacked, SubHeader, SuccessText, WalletCard, WithSpace } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
@@ -68,7 +68,7 @@ export class AddressBook extends React.PureComponent<Props, State> {
       <WalletCard
         header='Address Book'
         subheader='Inspect the status of any identity and name it for later use' >
-        <MarginTop />
+        <Margin top />
         <Stacked>
           <WithSpace>
             <SubHeader> Lookup Account By Address </SubHeader>
@@ -76,7 +76,7 @@ export class AddressBook extends React.PureComponent<Props, State> {
               onChange={this.handleInputAddressLookup}
               type='text'
             />
-            <MarginTop />
+            <Margin top />
             <SubHeader> Name </SubHeader>
             <Input
               onChange={this.handleInputName}

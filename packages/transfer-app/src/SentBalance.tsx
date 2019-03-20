@@ -4,7 +4,7 @@
 
 import IdentityIcon from '@polkadot/ui-identicon';
 import { ApiContext } from '@substrate/ui-api';
-import { Icon, Stacked } from '@substrate/ui-components';
+import { Icon, Margin, Stacked, SubHeader } from '@substrate/ui-components';
 import BN from 'bn.js';
 import { Subscription } from 'rxjs';
 import React from 'react';
@@ -67,7 +67,7 @@ export class SentBalance extends React.PureComponent<Props> {
 
     if (!(state.amount instanceof BN) || !state.recipientAddress) {
       // This happens when we refresh the page while a tx is sending. In this
-      // case, we just redirect to send a tx page.
+      // case, we just redirect to the send tx page.
       return <Redirect to={`/transfer/${currentAddress}`} />;
     }
 
@@ -75,13 +75,20 @@ export class SentBalance extends React.PureComponent<Props> {
 
     return (
       <Stacked>
-        <Icon name='check' />
-        <div>
-          Summary:
-          <IdentityIcon theme='substrate' size={16} value={currentAddress} />
+        <Margin bottom>
+          <Icon name='check' size='huge' />
+        </Margin>
+
+        <Margin top>
+          <SubHeader>Summary:</SubHeader>
+          <Margin display='inline' left='small' right='small' top='small'>
+            <IdentityIcon theme='substrate' size={16} value={currentAddress} />
+          </Margin>
           sending {amount.toString()} units to
-          <IdentityIcon theme='substrate' size={16} value={recipientAddress} />
-        </div>
+          <Margin display='inline' left='small' right='small' top='small'>
+            <IdentityIcon theme='substrate' size={16} value={recipientAddress} />
+          </Margin>
+        </Margin>
       </Stacked>
     );
   }

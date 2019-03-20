@@ -6,7 +6,7 @@ import { SingleAddress, SubjectInfo } from '@polkadot/ui-keyring/observable/type
 import accountObservable from '@polkadot/ui-keyring/observable/accounts';
 import addressObservable from '@polkadot/ui-keyring/observable/addresses';
 import { ApiContext, Subscribe } from '@substrate/ui-api';
-import { AddressSummary, BalanceDisplay, Grid, MarginTop, NavLink, Stacked, StackedHorizontal, SubHeader, WalletCard, WithSpace } from '@substrate/ui-components';
+import { AddressSummary, BalanceDisplay, Grid, Margin, NavLink, Stacked, StackedHorizontal, SubHeader, WalletCard, WithSpace } from '@substrate/ui-components';
 import React from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { map } from 'rxjs/operators';
@@ -35,7 +35,7 @@ export class Saved extends React.PureComponent<Props> {
         header='Saved Identities'
         overflow='scroll'
         subheader='Quickly select an identity that you have previously saved to transfer balance to'>
-        <MarginTop marginTop='3.5rem' />
+        <Margin top='huge' />
         <Grid>
           <Grid.Column width={8}>
             <Stacked>
@@ -46,7 +46,7 @@ export class Saved extends React.PureComponent<Props> {
             </Stacked>
           </Grid.Column>
           <Grid.Column width={8}>
-            <Stacked>
+            <Stacked justify='flex-start'>
               <SubHeader> Saved Addresses </SubHeader>
               <WithSpace>
                 {this.renderAddressesToSendTo()}
@@ -69,7 +69,7 @@ export class Saved extends React.PureComponent<Props> {
               ? this.renderEmpty()
               : Object.values(allAccounts).map((account: SingleAddress) =>
                 <React.Fragment key={account.json.address}>
-                  <MarginTop />
+                  <Margin top />
                   <AddressSummary
                     address={account.json.address}
                     name={
@@ -105,7 +105,7 @@ export class Saved extends React.PureComponent<Props> {
               ? this.renderEmpty()
               : Object.values(allAddresses).map((address: SingleAddress) =>
                 <React.Fragment key={`__locked_${address.json.address}`}>
-                  <MarginTop />
+                  <Margin top />
                   <StackedHorizontal>
                     <Link to='#' data-address={address.json.address} data-name={address.json.meta.name} onClick={this.handleSelectedRecipient}>
                       <AddressSummary

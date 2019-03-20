@@ -4,7 +4,7 @@
 
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
 import { ApiContext } from '@substrate/ui-api';
-import { AddressSummary, ErrorText, FadedText, Input, MarginTop, MnemonicSegment, Modal, NavButton, NavLink, Stacked, StackedHorizontal, StyledLinkButton, SubHeader, WithSpaceAround } from '@substrate/ui-components';
+import { AddressSummary, ErrorText, FadedText, Input, Margin, MnemonicSegment, Modal, NavButton, NavLink, Stacked, StackedHorizontal, StyledLinkButton, SubHeader, WithSpaceAround } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -192,7 +192,7 @@ export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
           <SubHeader> Copy Your Mnemonic Somewhere Safe </SubHeader>
           <FadedText> If someone gets hold of this mnemonic they could drain your account</FadedText>
           <MnemonicSegment onClick={this.newMnemonic} mnemonic={mnemonic} />
-          <MarginTop />
+          <Margin top />
           <FadedText> Rewrite Mnemonic Below </FadedText>
           <Input
             autoFocus

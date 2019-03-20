@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { ApiContext } from '@substrate/ui-api';
-import { AddressSummary, ErrorText, Icon, Input, MarginTop, NavButton, Stacked, Step } from '@substrate/ui-components';
+import { AddressSummary, ErrorText, Icon, Input, Margin, NavButton, Stacked, Step } from '@substrate/ui-components';
 import BN from 'bn.js';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -68,7 +68,7 @@ export class SendBalance extends React.PureComponent<Props, State> {
     });
   }
 
-  render () {
+  render() {
     const { keyring } = this.context;
     const { amount, recipientAddress } = this.state;
 
@@ -82,7 +82,7 @@ export class SendBalance extends React.PureComponent<Props, State> {
             <Step.Title> Recipient </Step.Title>
             <Icon name='address book' />
             <Step.Content>
-              <MarginTop />
+              <Margin top />
               <Stacked>
                 <AddressSummary address={recipientAddress} name={recipientName} size='small' />
                 <Input onChange={this.onChangeRecipientAddress} type='text' value={recipientAddress} />
@@ -111,7 +111,7 @@ export class SendBalance extends React.PureComponent<Props, State> {
     );
   }
 
-  renderError () {
+  renderError() {
     const { error } = this.state;
 
     return error && (

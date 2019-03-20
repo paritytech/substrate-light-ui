@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import SUIContainer from 'semantic-ui-react/dist/commonjs/elements/Container';
 import SUIInput from 'semantic-ui-react/dist/commonjs/elements/Input';
 
-import { HeaderProps, MarginTopProps, DynamicSizeTextProps, StackProps, SubHeaderProps, WithSpaceAroundProps } from './StyleProps';
+import { HeaderProps, DynamicSizeTextProps, StackProps, SubHeaderProps, WithSpaceAroundProps } from './StyleProps';
 
 export const Input = styled<any>(SUIInput)`
 
@@ -33,10 +33,6 @@ export const SuccessText = styled.p`
   color: green;
   text-align: center;
   font-weight: 500;
-`;
-
-export const MarginTop = styled.div<MarginTopProps>`
-  margin-top: ${props => props.marginTop || '1rem'};
 `;
 
 export const WithSpace = styled.div`
@@ -141,20 +137,22 @@ export const StyledNavButton = styled.button`
 
 export const Stacked = styled.div<StackProps>`
   align-items: ${props => props.align || 'center'};
-  display: flex column;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
   justify-content: ${props => props.justify || 'center'};
   min-height: 100%;
   text-align: ${props => props.textAlign || 'center'};
-  vertical-align: middle;
 `;
 
 export const StackedHorizontal = styled.div<StackProps>`
   align-items: ${props => props.align || 'center'};
   display: flex;
+  flex: 1;
+  flex-direction: row;
   justify-content: ${props => props.justify || 'center'};
   min-width: 100%;
   text-align: ${props => props.textAlign || 'center'};
-  vertical-align: middle;
 `;
 
 export const SubHeader = styled.h3<SubHeaderProps>`

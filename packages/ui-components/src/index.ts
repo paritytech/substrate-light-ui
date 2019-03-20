@@ -43,5 +43,6 @@ export {
 };
 
 export * from './globalStyle';
+export * from './Margin';
 export * from './types';
 export * from './Shared.styles';
