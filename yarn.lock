@@ -2361,17 +2361,18 @@
     react-lifecycles-compat "^3.0.4"
     util-deprecate "^1.0.2"
 
-"@storybook/addon-links@^4.1.13":
-  version "4.1.14"
-  resolved "https://registry.yarnpkg.com/@storybook/addon-links/-/addon-links-4.1.14.tgz#c76a9862f4cee3383a90f848f31660860ad16807"
-  integrity sha512-0Txj7RErNRfDxAxw+ZqQ6sxy5K54KTOPzdJAtGV3V4HqDYmykAE5R7TM1r6BXoJ5yZ4hwG4vK40ChwfYzjHG4w==
+"@storybook/addon-links@^5.0.2":
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-links/-/addon-links-5.0.2.tgz#a908a8a62806f585830b8b9775ea29798b975266"
+  integrity sha512-E72zfaz/kih1yMtx7B/FUQcbS1TA+I8tW+veub7MO0fxoEhNj4WiDdRe+antyxNsD0CHKIPor24E9OsglwLdzg==
   dependencies:
-    "@storybook/addons" "4.1.14"
-    "@storybook/components" "4.1.14"
-    "@storybook/core-events" "4.1.14"
-    core-js "^2.5.7"
+    "@storybook/addons" "5.0.2"
+    "@storybook/core-events" "5.0.2"
+    common-tags "^1.8.0"
+    core-js "^2.6.5"
     global "^4.3.2"
     prop-types "^15.6.2"
+    qs "^6.5.2"
 
 "@storybook/addons@4.1.14":
   version "4.1.14"
@@ -2380,6 +2381,17 @@
   dependencies:
     "@storybook/channels" "4.1.14"
     "@storybook/components" "4.1.14"
+    global "^4.3.2"
+    util-deprecate "^1.0.2"
+
+"@storybook/addons@5.0.2":
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/@storybook/addons/-/addons-5.0.2.tgz#429a65db9806a90c77193309f0cf64c5cdc65bc2"
+  integrity sha512-TVx/rCFB+gGtCfInXWpZpSzP1xuzDEge8oUkxUmylz75jVOMAfuP8OViCMxeyjFGZHLPxUOdtiJglptVZAMipg==
+  dependencies:
+    "@storybook/channels" "5.0.2"
+    "@storybook/client-logger" "5.0.2"
+    core-js "^2.6.5"
     global "^4.3.2"
     util-deprecate "^1.0.2"
 
@@ -2397,10 +2409,24 @@
   resolved "https://registry.yarnpkg.com/@storybook/channels/-/channels-4.1.14.tgz#8af55d028d7f86f5a9abb9329df7e9d1121f404b"
   integrity sha512-2BpKF7MXWfJeY9lRHrUseJ6JoZXshmo9B4np7TAex3NXOeRLsptQMCfQXgMgUMDQhABc0o9XBAruQOb9zMyd7w==
 
+"@storybook/channels@5.0.2":
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/@storybook/channels/-/channels-5.0.2.tgz#7b841cfe83c4f3766d91076a44c0f4014bcd3e45"
+  integrity sha512-pNX/7m7Y1LZb+BAKg5nzDB87JSVlahk2M1KfC9veqL4g2wDnlZRqweWwCvJaYmCChoD9FWZRhYo1IFdhduxdzQ==
+  dependencies:
+    core-js "^2.6.5"
+
 "@storybook/client-logger@4.1.14":
   version "4.1.14"
   resolved "https://registry.yarnpkg.com/@storybook/client-logger/-/client-logger-4.1.14.tgz#73a408280af594f66259f750bd058534f7a3a95f"
   integrity sha512-8Vb4DaGvUsc/voPxOW2LAJZBK5ac8btvesGZZJO43HVWpmROLPrCcoKIUFLWgPmmXyHTkLuheTn9tcbok1BowQ==
+
+"@storybook/client-logger@5.0.2":
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/@storybook/client-logger/-/client-logger-5.0.2.tgz#14c2773f6f5cc50fea007445b4a4bf7e83703915"
+  integrity sha512-4A7tBiU5gb0xCbGCQyY5YE7F/0fxXIUCKUA1299x/H1foD0JR1/JImwGAgSpowBe2R2n3vxK9uLdncKnXUrlSQ==
+  dependencies:
+    core-js "^2.6.5"
 
 "@storybook/components@4.1.14":
   version "4.1.14"
@@ -2422,6 +2448,13 @@
   version "4.1.14"
   resolved "https://registry.yarnpkg.com/@storybook/core-events/-/core-events-4.1.14.tgz#919a577bab7d4c45ea6cb83f6cf8b35782a8f671"
   integrity sha512-UBVTWZonTD5hHR7huWs15mYMKJONjQC6GBQy5AvKDpAIXtAlHe75mv5aZM5gRTP/ThtNE9V1HO4IF3C54dvUjg==
+
+"@storybook/core-events@5.0.2":
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/@storybook/core-events/-/core-events-5.0.2.tgz#5fb775d18a96c0c73c630112ab6ce2e1cb8bc92e"
+  integrity sha512-wHi0UHwADSko77KUGN9/WtyhrKdQ8A0zwoPBcermFMqYoka3bcgyEkNKuvt6KuRyO3NT5FYhR0XWQPpNUOXkqw==
+  dependencies:
+    core-js "^2.6.5"
 
 "@storybook/core@4.1.14":
   version "4.1.14"
