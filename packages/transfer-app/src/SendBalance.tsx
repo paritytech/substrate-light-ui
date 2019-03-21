@@ -73,7 +73,7 @@ export class SendBalance extends React.PureComponent<Props, State> {
     const { amount, recipientAddress } = this.state;
 
     const isAddressValid = !!recipientAddress && this.isValidAddress(recipientAddress);
-    const recipientName = isAddressValid ? keyring.getAccount(recipientAddress!).getMeta().name : '';
+    const recipientName = isAddressValid ? keyring.getAccount(recipientAddress).getMeta().name : '';
 
     return (
       <Stacked>
