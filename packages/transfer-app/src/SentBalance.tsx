@@ -2,7 +2,9 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { SubmittableResult } from '@polkadot/api/SubmittableExtrinsic';
 import IdentityIcon from '@polkadot/ui-identicon';
+import { logger } from '@polkadot/util';
 import { ApiContext } from '@substrate/ui-api';
 import { Icon, Margin, Stacked, SubHeader } from '@substrate/ui-components';
 import BN from 'bn.js';
@@ -10,50 +12,60 @@ import { Subscription } from 'rxjs';
 import React from 'react';
 import { RouteComponentProps, Redirect } from 'react-router';
 
-import { BlueHeader } from './SentBalance.styles';
+import { BlueHeader, InlineSubHeader } from './SentBalance.styles';
 import { MatchParams, TransferParams } from './types';
 
 interface Props extends RouteComponentProps<MatchParams, {}, Partial<TransferParams>> { }
 
-export class SentBalance extends React.PureComponent<Props> {
+interface State {
+  showDetails: boolean;
+  txResult?: SubmittableResult;
+}
+
+const l = logger('transfer-app');
+
+export class SentBalance extends React.PureComponent<Props, State> {
   static contextType = ApiContext;
 
   private subscription: Subscription | undefined;
 
   context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
 
+  state: State = {
+    showDetails: false
+  };
+
   componentDidMount () {
-    // const { api, keyring } = this.context;
-    // const { amount, recipientAddress } = state;
-    // const senderPair = keyring.getPair(currentAddress);
+    const { api, keyring } = this.context;
+    const { location: { state }, match: { params: { currentAddress } } } = this.props;
+
+    if (!state || !(state.amount instanceof BN) || !state.recipientAddress) {
+      // This happens when we refresh the page while a tx is sending. In this
+      // case, we just redirect to the send tx page.
+      return;
+    }
+
+    const { amount, recipientAddress } = state;
+    const senderPair = keyring.getPair(currentAddress);
+
+    l.log('sending tx from', currentAddress, 'to', recipientAddress, 'of amount', amount);
 
     // Send the tx
     // TODO Use React context to save it if we come back later.
     // retrieve nonce for the account
-    // this.subscription = api.tx.balances
-    //   // create transfer
-    //   .transfer(recipientAddress, amount)
-    //   // send the transaction
-    //   .signAndSend(senderPair)
-    //   .subscribe(({ status, type }) => {
-    //     if (type === 'Finalised') {
-    //       this.closeSubscription();
-    //       this.onSuccess(`Completed at block hash ${status.asFinalised.toHex()}`);
-    //     } else if (type === 'Dropped' || type === 'Usurped') {
-    //       this.closeSubscription();
-    //       this.onError(`${type} at ${status}`);
-    //     } else {
-    //       this.onPending(
-    //         <Loading active>
-    //           {`Status of transfer: ${type}...`}
-    //         </Loading>
-    //       );
-    //     }
-    //   });
-  }
-
-  componentWillUnmount () {
-    this.closeSubscription();
+    this.subscription = api.tx.balances
+      // create transfer
+      .transfer(recipientAddress, amount)
+      // send the transaction
+      .signAndSend(senderPair)
+      .subscribe((txResult) => {
+        l.log('tx status update:', txResult);
+        this.setState(state => ({ ...state, txResult }));
+        const { type } = txResult;
+        if (['Finalised', 'Dropped', 'Usurped'].includes(type)) {
+          this.closeSubscription();
+        }
+      });
   }
 
   closeSubscription () {
@@ -63,26 +75,27 @@ export class SentBalance extends React.PureComponent<Props> {
     }
   }
 
-  render () {
-    const { location: { state }, match: { params: { currentAddress } } } = this.props;
+  toggleDetails = () => this.setState({ showDetails: !this.state.showDetails });
 
-    if (!state || !(state.amount instanceof BN) || !state.recipientAddress) {
+  render () {
+    const { location, match: { params: { currentAddress } } } = this.props;
+
+    if (!location.state || !(location.state.amount instanceof BN) || !location.state.recipientAddress) {
       // This happens when we refresh the page while a tx is sending. In this
       // case, we just redirect to the send tx page.
       return <Redirect to={`/transfer/${currentAddress}`} />;
     }
 
-    const { amount, recipientAddress } = state;
+    const { amount, recipientAddress } = location.state;
+    const { showDetails } = this.state;
 
     return (
       <Stacked>
-        <Margin bottom>
-          <Icon name='check' size='huge' />
-          <BlueHeader>Transaction completed!</BlueHeader>
-        </Margin>
+
+        {this.renderTxStatus()}
 
         <Margin top>
-          <SubHeader>Summary:</SubHeader>
+          <InlineSubHeader>Summary:</InlineSubHeader>
           <Margin as='span' left='small' right='small' top='small'>
             <IdentityIcon theme='substrate' size={16} value={currentAddress} />
           </Margin>
@@ -93,10 +106,50 @@ export class SentBalance extends React.PureComponent<Props> {
         </Margin>
 
         <Margin top='huge'>
-          <SubHeader>Click here</SubHeader>
-          <p>to view full details</p>
+          <SubHeader onClick={this.toggleDetails}>
+            {showDetails ? 'Hide' : 'Click here'}
+          </SubHeader>
+          {showDetails ? this.renderDetails() : <p>to view full details</p>}
         </Margin>
       </Stacked>
     );
+  }
+
+  renderDetails () {
+    const { location: { state }, match: { params: { currentAddress } } } = this.props;
+    const { amount, recipientAddress } = state;
+
+    return (
+      <div>
+        <p>From: {currentAddress}</p>
+        <p>To: {recipientAddress}</p>
+        <p>Amount: {amount!.toString()} units</p>
+        <p>Fees: [TODO]</p>
+        <p>Total amount (amount + fees): [TODO]</p>
+      </div>
+    );
+  }
+
+  renderTxStatus () {
+    const { txResult } = this.state;
+
+    switch (txResult && txResult.type) {
+      case 'Finalised':
+        return <Margin bottom>
+          <Icon name='check' size='huge' />
+          <BlueHeader>Transaction completed!</BlueHeader>
+        </Margin>;
+      case 'Dropped':
+      case 'Usurped':
+        return <Margin bottom>
+          <Icon error name='cross' size='huge' />
+          <BlueHeader>Transaction error!</BlueHeader>
+        </Margin>;
+      default:
+        return <Margin bottom>
+          <Icon loading name='spinner' size='huge' />
+          <BlueHeader>Sending...</BlueHeader>
+        </Margin>;
+    }
   }
 }
