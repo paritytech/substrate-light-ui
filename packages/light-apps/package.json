@@ -22,7 +22,7 @@
     "@polkadot/api": "^0.48.1",
     "@polkadot/keyring": "^0.38.1",
     "@polkadot/ui-assets": "^0.31.1",
-    "@polkadot/ui-keyring": "^0.31.1",
+    "@polkadot/ui-keyring": "^0.33.1",
     "@polkadot/util": "^0.38.1",
     "@polkadot/util-crypto": "^0.38.1",
     "@substrate/identity-app": "0.1.0",
