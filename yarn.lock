@@ -6448,9 +6448,9 @@ create-react-context@^0.2.2:
     gud "^1.0.0"
 
 create-subscription@^16.8.0:
-  version "16.8.4"
-  resolved "https://registry.yarnpkg.com/create-subscription/-/create-subscription-16.8.4.tgz#c3103db3ea02b757b74e602f25d580b02d4b9e8c"
-  integrity sha512-MK2UDD/U+vAiZronjw3TSMQG74ATvNVCdQCoqQLqpYkHPvD31ZREGVidgeinbS9gcxpDVDte6VdGqta5tmvI4g==
+  version "16.8.5"
+  resolved "https://registry.yarnpkg.com/create-subscription/-/create-subscription-16.8.5.tgz#6956758a9ca4ecb0d77b339a57e56a8c719a3f4a"
+  integrity sha512-1Yq5nd60GjcaHfuIlK5EnVM93IV4Oy18o9NSA3nmkjvtss4mFztDNbMUbxTv59kY7ERwBpmZ9lEwe9tO0IWEHA==
 
 crocket@^0.9.11:
   version "0.9.11"
