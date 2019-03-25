@@ -6,13 +6,13 @@ import { SubmittableResult } from '@polkadot/api/SubmittableExtrinsic';
 import IdentityIcon from '@polkadot/ui-identicon';
 import { logger } from '@polkadot/util';
 import { ApiContext } from '@substrate/ui-api';
-import { Icon, Margin, Stacked, SubHeader } from '@substrate/ui-components';
+import { Icon, InlineSubHeader, Margin, Stacked, SubHeader } from '@substrate/ui-components';
 import BN from 'bn.js';
 import { Subscription } from 'rxjs';
 import React from 'react';
 import { RouteComponentProps, Redirect } from 'react-router';
 
-import { BlueHeader, InlineSubHeader } from './SentBalance.styles';
+import { NoMarginHeader } from './SentBalance.styles';
 import { MatchParams, TransferParams } from './types';
 
 interface Props extends RouteComponentProps<MatchParams, {}, Partial<TransferParams>> { }
@@ -58,7 +58,7 @@ export class SentBalance extends React.PureComponent<Props, State> {
       .transfer(recipientAddress, amount)
       // send the transaction
       .signAndSend(senderPair)
-      .subscribe((txResult) => {
+      .subscribe((txResult: SubmittableResult) => {
         l.log('tx status update:', txResult);
         this.setState(state => ({ ...state, txResult }));
         const { type } = txResult;
@@ -137,18 +137,18 @@ export class SentBalance extends React.PureComponent<Props, State> {
       case 'Finalised':
         return <Margin bottom>
           <Icon name='check' size='huge' />
-          <BlueHeader>Transaction completed!</BlueHeader>
+          <NoMarginHeader color='lightBlue1' >Transaction completed!</NoMarginHeader>
         </Margin>;
       case 'Dropped':
       case 'Usurped':
         return <Margin bottom>
           <Icon error name='cross' size='huge' />
-          <BlueHeader>Transaction error!</BlueHeader>
+          <NoMarginHeader color='lightBlue1'>Transaction error!</NoMarginHeader>
         </Margin>;
       default:
         return <Margin bottom>
           <Icon loading name='spinner' size='huge' />
-          <BlueHeader>Sending...</BlueHeader>
+          <NoMarginHeader color='lightBlue1'>Sending...</NoMarginHeader>
         </Margin>;
     }
   }

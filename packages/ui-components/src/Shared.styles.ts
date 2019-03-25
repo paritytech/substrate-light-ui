@@ -54,7 +54,7 @@ export const WithPadding = styled.div`
 `;
 
 export const Header = styled.h2<HeaderProps>`
-  color: ${props => props.theme.grey};
+  color: ${props => props.color ? props.theme[props.color] : props.theme.grey};
   font-weight: 300;
   font-size: 28px;
   margin: ${props => props.margin || '2rem 0'};
@@ -161,4 +161,8 @@ export const SubHeader = styled.h3<SubHeaderProps>`
   font-size: 15px;
   margin: ${props => props.noMargin ? `0 0` : `1rem auto 0.3rem auto`};
   text-align: center;
+`;
+
+export const InlineSubHeader = styled(SubHeader)`
+  display: inline;
 `;

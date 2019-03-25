@@ -2,14 +2,9 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Header, SubHeader } from '@substrate/ui-components';
+import { Header } from '@substrate/ui-components';
 import styled from 'styled-components';
 
-export const BlueHeader = styled(Header)`
-  color: ${props => props.theme.lightBlue1};
+export const NoMarginHeader = styled(Header)`
   margin-top: 0;
-`;
-
-export const InlineSubHeader = styled(SubHeader)`
-  display: inline;
 `;
