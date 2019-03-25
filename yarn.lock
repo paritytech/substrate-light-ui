@@ -15217,9 +15217,9 @@ react-dom@^16.6.3, react-dom@^16.7.0:
     scheduler "^0.13.4"
 
 react-dropzone@^10.0.0:
-  version "10.0.5"
-  resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-10.0.5.tgz#b42d851b6c8bc8d448da057f7d6ff6e1bed0e5c0"
-  integrity sha512-N8/XNN5AqEPKvL/Tr9m8MiVgLpW8ECIo1SxnS2qg8119M4/+xpF1rEfXDo/2+sTs/NPN8PdH7viNd/67HJghrg==
+  version "10.0.6"
+  resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-10.0.6.tgz#3fdc5bbac38cf0663cc787568243865fb5d01107"
+  integrity sha512-pWC6i1UVlMIpkw/VHnDYrFXv+5udoSEbO8AgqMjRWC2RwzDOpzZP7kKgijVwEJKRboZ486lU8kCi1WULB0Tc6w==
   dependencies:
     attr-accept "^1.1.3"
     file-selector "^0.1.11"
