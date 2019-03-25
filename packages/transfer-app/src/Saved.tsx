@@ -21,14 +21,6 @@ export class Saved extends React.PureComponent<Props> {
 
   context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
 
-  handleSelectedRecipient = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-
-    const address = event.currentTarget.dataset.address;
-    const name = event.currentTarget.dataset.name;
-
-    console.log(address, name);
-  }
-
   render () {
     return (
       <WalletCard
@@ -96,6 +88,7 @@ export class Saved extends React.PureComponent<Props> {
 
   renderAddressesToSendTo () {
     const { api } = this.context;
+    const { match: { params: { currentAddress } } } = this.props;
 
     return (
       <Subscribe>
@@ -107,9 +100,15 @@ export class Saved extends React.PureComponent<Props> {
                 <React.Fragment key={`__locked_${address.json.address}`}>
                   <Margin top />
                   <StackedHorizontal>
-                    <Link to='#' data-address={address.json.address} data-name={address.json.meta.name} onClick={this.handleSelectedRecipient}>
+                    <Link to={{
+                      pathname: `/transfer/${currentAddress}`,
+                      state: {
+                        recipientAddress: address.json.address // FIXME This doesn't seem to work due to the flickers
+                      }
+                    }}>
                       <AddressSummary
                         address={address.json.address}
+                        data-address={address.json.address} // Trick to avoid creating a new React component
                         name={address.json.meta.name}
                         orientation='horizontal'
                         size='small' />

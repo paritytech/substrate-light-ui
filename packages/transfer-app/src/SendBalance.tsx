@@ -27,6 +27,15 @@ export class SendBalance extends React.PureComponent<Props, State> {
     recipientAddress: ''
   };
 
+  componentDidMount () {
+    const { location } = this.props;
+    if (location.state && location.state.recipientAddress) {
+      this.setState({
+        recipientAddress: location.state.recipientAddress
+      });
+    }
+  }
+
   isValidAddress = (address: string) => {
     // TODO Do a checksum too
     return address[0] === '5' && address.length === 48;
