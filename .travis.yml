@@ -15,7 +15,7 @@ script:
   - yarn lint
   - yarn test
 before_deploy:
-  - yarn run build-storybook
+  - yarn run storybook-build
 deploy:
   provider: pages
   skip_cleanup: true
