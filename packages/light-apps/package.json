@@ -19,7 +19,7 @@
   ],
   "homepage": "./",
   "dependencies": {
-    "@polkadot/ui-assets": "^0.32.1",
+    "@polkadot/ui-assets": "^0.33.1",
     "@substrate/identity-app": "0.1.0",
     "@substrate/transfer-app": "0.1.0",
     "@substrate/ui-api": "0.1.0",
