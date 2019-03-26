@@ -8,7 +8,7 @@ import { action } from '@storybook/addon-actions';
 import { select, text, withKnobs } from '@storybook/addon-knobs';
 
 import { withMemoryRouter, withTheme } from './customDecorators';
-import { Input, MarginTop, NavButton, NavLink, WalletCard } from '../src';
+import { Input, Margin, NavButton, NavLink, WalletCard } from '../src';
 
 const overflowOptions = [
   'none',
@@ -35,9 +35,9 @@ storiesOf('Wallet Card', module)
         onChange={action('typed')}
         size={select('size', sizes, 'tiny')}
       />
-      <MarginTop />
-      <NavButton onClick={action('clicked')} value={text('button text', 'Submit')}/>
-      <MarginTop />
-      <NavLink onClick={action('clicked')} to={text('to', 'there')} value={text('link text', 'Link')}/>
+      <Margin top />
+      <NavButton onClick={action('clicked')} value={text('button text', 'Submit')} />
+      <Margin top />
+      <NavLink onClick={action('clicked')} to={text('to', 'there')} value={text('link text', 'Link')} />
     </WalletCard>
   ));

@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { ErrorText, Input, MarginTop, Modal, NavButton, NavLink, Stacked } from '@substrate/ui-components';
+import { ErrorText, Input, Margin, Modal, NavButton, NavLink, Stacked } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
@@ -64,7 +64,7 @@ export class ImportWithPhrase extends React.PureComponent<Props> {
           <Modal.Actions>
             <Stacked>
               <NavButton onClick={this.handleUnlockWithPhrase}>Unlock</NavButton>
-              <MarginTop />
+              <Margin top />
               <Modal.Actions>
                 <Stacked>
                   <NavLink to='/import/withJson'> Import with JSON Instead </NavLink>

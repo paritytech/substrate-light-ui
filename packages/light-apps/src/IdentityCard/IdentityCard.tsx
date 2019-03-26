@@ -5,7 +5,7 @@
 import { Balance } from '@polkadot/types';
 import { stringUpperFirst } from '@polkadot/util';
 import { ApiContext, Subscribe } from '@substrate/ui-api';
-import { Address, AddressSummary, BalanceDisplay, ErrorText, FadedText, Header, Icon, Input, MarginTop, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SuccessText, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
+import { Address, AddressSummary, BalanceDisplay, ErrorText, FadedText, Header, Icon, Input, Margin, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SuccessText, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -172,17 +172,17 @@ export class IdentityCard extends React.PureComponent<Props, State> {
             </React.Fragment>
             : <div>Loading...</div>
           }
-          <MarginTop />
+          <Margin top />
           <Stacked>
             <Address address={address} />
-            <MarginTop />
+            <Margin top />
             <StackedHorizontal>
               {this.renderForgetConfirmationModal()}
               or
               {this.renderBackupConfirmationModal()}
             </StackedHorizontal>
           </Stacked>
-          <MarginTop />
+          <Margin top />
           <NavButton value={buttonText} onClick={this.handleToggleApp} />
         </CardContent>
         {this.renderError()}
@@ -241,7 +241,7 @@ export class IdentityCard extends React.PureComponent<Props, State> {
           <Stacked>
             <Modal.SubHeader> Please Confirm You Want to Forget this Account </Modal.SubHeader>
             <b>By pressing confirm, you will be removing this account from your Saved Accounts. </b>
-            <MarginTop />
+            <Margin top />
             <FadedText> You can restore this later from your mnemonic phrase or json backup file. </FadedText>
             <Modal.Actions>
               <StackedHorizontal>

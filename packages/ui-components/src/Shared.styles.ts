@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import SUIContainer from 'semantic-ui-react/dist/commonjs/elements/Container';
 import SUIInput from 'semantic-ui-react/dist/commonjs/elements/Input';
 
-import { HeaderProps, MarginTopProps, DynamicSizeTextProps, StackProps, SubHeaderProps, WithSpaceAroundProps } from './StyleProps';
+import { HeaderProps, DynamicSizeTextProps, StackProps, SubHeaderProps, WithSpaceAroundProps } from './StyleProps';
 
 export const Input = styled<any>(SUIInput)`
 
@@ -35,10 +35,6 @@ export const SuccessText = styled.p`
   font-weight: 500;
 `;
 
-export const MarginTop = styled.div<MarginTopProps>`
-  margin-top: ${props => props.marginTop || '1rem'};
-`;
-
 export const WithSpace = styled.div`
   margin: 1rem auto;
 `;
@@ -58,7 +54,7 @@ export const WithPadding = styled.div`
 `;
 
 export const Header = styled.h2<HeaderProps>`
-  color: ${props => props.theme.grey};
+  color: ${props => props.color ? props.theme[props.color] : props.theme.grey};
   font-weight: 300;
   font-size: 28px;
   margin: ${props => props.margin || '2rem 0'};
@@ -141,20 +137,22 @@ export const StyledNavButton = styled.button`
 
 export const Stacked = styled.div<StackProps>`
   align-items: ${props => props.align || 'center'};
-  display: flex column;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
   justify-content: ${props => props.justify || 'center'};
   min-height: 100%;
   text-align: ${props => props.textAlign || 'center'};
-  vertical-align: middle;
 `;
 
 export const StackedHorizontal = styled.div<StackProps>`
   align-items: ${props => props.align || 'center'};
   display: flex;
+  flex: 1;
+  flex-direction: row;
   justify-content: ${props => props.justify || 'center'};
   min-width: 100%;
   text-align: ${props => props.textAlign || 'center'};
-  vertical-align: middle;
 `;
 
 export const SubHeader = styled.h3<SubHeaderProps>`
@@ -163,4 +161,8 @@ export const SubHeader = styled.h3<SubHeaderProps>`
   font-size: 15px;
   margin: ${props => props.noMargin ? `0 0` : `1rem auto 0.3rem auto`};
   text-align: center;
+`;
+
+export const InlineSubHeader = styled(SubHeader)`
+  display: inline;
 `;

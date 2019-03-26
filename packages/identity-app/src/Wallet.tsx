@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { ErrorText, Input, MarginTop, NavButton, Stacked, SubHeader, SuccessText, WalletCard, WithSpace } from '@substrate/ui-components';
+import { ErrorText, Input, Margin, NavButton, Stacked, SubHeader, SuccessText, WalletCard, WithSpace } from '@substrate/ui-components';
 import React from 'react';
 
 type Props = {
@@ -60,14 +60,14 @@ export class Wallet extends React.PureComponent<Props, State> {
       <WalletCard
         header='Wallet'
         subheader='Manage your secret keys' >
-        <MarginTop />
+        <Margin top />
         <Stacked>
           <WithSpace>
             <SubHeader> Recovery Phrase </SubHeader>
             <Input
               onChange={this.handleInputRecoveryPhrase}
               type='text' />
-            <MarginTop />
+            <Margin top />
             <SubHeader> Name </SubHeader>
             <Input
               onChange={this.handleInputName}
