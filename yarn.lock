@@ -2383,14 +2383,14 @@
     uuid "^3.3.2"
 
 "@storybook/addon-knobs@^4.1.13":
-  version "4.1.14"
-  resolved "https://registry.yarnpkg.com/@storybook/addon-knobs/-/addon-knobs-4.1.14.tgz#48bc37f58707cb00960a501f24f702c993f17ad8"
-  integrity sha512-ScMi3iZxdOYMzVv7jMUqfgyPBWYwkSW4OLrVFIr5/EPP9mAOwnlYz+tI/8zM6w7/cvdEPY2pCilKt2zhzEMQ9w==
+  version "4.1.16"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-knobs/-/addon-knobs-4.1.16.tgz#9308169ff6b03562c7e7a836244a8c826c9abc05"
+  integrity sha512-3sMFOrRKTvjoBdFT6UEEsd4gGvItuopUWwNHoaSBTCGzIX2+YDs2vvsVXdhB80IYtkiiCKVTl2micNWep+fQ9A==
   dependencies:
     "@emotion/styled" "^0.10.6"
-    "@storybook/addons" "4.1.14"
-    "@storybook/components" "4.1.14"
-    "@storybook/core-events" "4.1.14"
+    "@storybook/addons" "4.1.16"
+    "@storybook/components" "4.1.16"
+    "@storybook/core-events" "4.1.16"
     copy-to-clipboard "^3.0.8"
     core-js "^2.5.7"
     escape-html "^1.0.3"
@@ -2424,6 +2424,16 @@
     global "^4.3.2"
     util-deprecate "^1.0.2"
 
+"@storybook/addons@4.1.16":
+  version "4.1.16"
+  resolved "https://registry.yarnpkg.com/@storybook/addons/-/addons-4.1.16.tgz#f9b63d6086dd094536e39e24e8a6d7e06f7ed7a7"
+  integrity sha512-RSvlE/yOpEvRaleeeucRlIZkxUK0QvQxPGtcNOy+H/sE2ZIi9DB3bjhFnhWDaeqW8AYHfxA1hzujeO7kWYV0dw==
+  dependencies:
+    "@storybook/channels" "4.1.16"
+    "@storybook/components" "4.1.16"
+    global "^4.3.2"
+    util-deprecate "^1.0.2"
+
 "@storybook/channel-postmessage@4.1.14":
   version "4.1.14"
   resolved "https://registry.yarnpkg.com/@storybook/channel-postmessage/-/channel-postmessage-4.1.14.tgz#003dfbf8dd62f4f3f9d9b7766e72f57377a8589e"
@@ -2437,6 +2447,11 @@
   version "4.1.14"
   resolved "https://registry.yarnpkg.com/@storybook/channels/-/channels-4.1.14.tgz#8af55d028d7f86f5a9abb9329df7e9d1121f404b"
   integrity sha512-2BpKF7MXWfJeY9lRHrUseJ6JoZXshmo9B4np7TAex3NXOeRLsptQMCfQXgMgUMDQhABc0o9XBAruQOb9zMyd7w==
+
+"@storybook/channels@4.1.16":
+  version "4.1.16"
+  resolved "https://registry.yarnpkg.com/@storybook/channels/-/channels-4.1.16.tgz#b935a5e5b762ba0f7ebb6d833e35a57dbfc02858"
+  integrity sha512-1lQ52C5eGXFuIFxaoaghNpszKSeW0UPF/BU1Yjd3F0k5Ud43PPPhhdQ0CpnWYj+UbfhwWFZmf2bhT/qpzpCQcQ==
 
 "@storybook/client-logger@4.1.14":
   version "4.1.14"
@@ -2459,10 +2474,31 @@
     react-textarea-autosize "^7.0.4"
     render-fragment "^0.1.1"
 
+"@storybook/components@4.1.16":
+  version "4.1.16"
+  resolved "https://registry.yarnpkg.com/@storybook/components/-/components-4.1.16.tgz#fb850b8a16142c570b550a8b62035734d519b2b5"
+  integrity sha512-pAUSLRhu8Gm7HI0CA3GDkBlDgQdiPQkC+CBheX992lg+pbGNb9sAuclFDsGZCJwq2XURkbgKxJFuqcitO5F38g==
+  dependencies:
+    "@emotion/core" "^0.13.1"
+    "@emotion/provider" "^0.11.2"
+    "@emotion/styled" "^0.10.6"
+    global "^4.3.2"
+    lodash "^4.17.11"
+    prop-types "^15.6.2"
+    react-inspector "^2.3.0"
+    react-split-pane "^0.1.84"
+    react-textarea-autosize "^7.0.4"
+    render-fragment "^0.1.1"
+
 "@storybook/core-events@4.1.14":
   version "4.1.14"
   resolved "https://registry.yarnpkg.com/@storybook/core-events/-/core-events-4.1.14.tgz#919a577bab7d4c45ea6cb83f6cf8b35782a8f671"
   integrity sha512-UBVTWZonTD5hHR7huWs15mYMKJONjQC6GBQy5AvKDpAIXtAlHe75mv5aZM5gRTP/ThtNE9V1HO4IF3C54dvUjg==
+
+"@storybook/core-events@4.1.16":
+  version "4.1.16"
+  resolved "https://registry.yarnpkg.com/@storybook/core-events/-/core-events-4.1.16.tgz#1f159c3086ae26681f468be4d56e7d388302f662"
+  integrity sha512-uVZzo3lcBKp/lly2Bt9q2AcZULXVVqGGqtHunRBFrbmJhJnNNr7G6XpajdQOcT6uo6eQ0xEEPMp0wn1+yh863A==
 
 "@storybook/core@4.1.14":
   version "4.1.14"
