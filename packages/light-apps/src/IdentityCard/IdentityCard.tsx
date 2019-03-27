@@ -139,8 +139,6 @@ export class IdentityCard extends React.PureComponent<Props, State> {
     const { api } = this.context;
     const address = this.getAddress();
 
-    console.log('render IdentityCard');
-
     return (
       <StyledCard>
         <CardContent>
