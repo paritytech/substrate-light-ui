@@ -25,7 +25,7 @@ export class Subscribe extends React.Component<{}, State> {
 
   setupSubscription () {
     const { children } = this.props;
-    if (children !== undefined && children !== null) {
+    if (children) {
       // Observables may be scheduled async or sync, so this subscribe callback
       // might immediately run or it it might not.
       this.subscription = childrenToObservable(children).subscribe(node => {
