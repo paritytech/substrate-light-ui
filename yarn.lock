@@ -2829,13 +2829,6 @@
   dependencies:
     "@types/color-convert" "*"
 
-"@types/create-subscription@^16.4.1":
-  version "16.4.2"
-  resolved "https://registry.yarnpkg.com/@types/create-subscription/-/create-subscription-16.4.2.tgz#fffa842de6c1988a24e13cabb91589ec6196bc7d"
-  integrity sha512-37gHB9C9I7/Hpbcisud4sATnXohnJNbDTwuwlRWbOJ/cNDVopwZFh2OnXbVdrMnlMu8UYGtXcdoFl3c+2mBNew==
-  dependencies:
-    "@types/react" "*"
-
 "@types/deasync@^0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@types/deasync/-/deasync-0.1.0.tgz#b2bd6c3fcde3cf67b8be4c2f70136ba8f157b45a"
@@ -6424,11 +6417,6 @@ create-react-context@^0.2.2:
   dependencies:
     fbjs "^0.8.0"
     gud "^1.0.0"
-
-create-subscription@^16.8.0:
-  version "16.8.5"
-  resolved "https://registry.yarnpkg.com/create-subscription/-/create-subscription-16.8.5.tgz#6956758a9ca4ecb0d77b339a57e56a8c719a3f4a"
-  integrity sha512-1Yq5nd60GjcaHfuIlK5EnVM93IV4Oy18o9NSA3nmkjvtss4mFztDNbMUbxTv59kY7ERwBpmZ9lEwe9tO0IWEHA==
 
 crocket@^0.9.11:
   version "0.9.11"
@@ -15158,11 +15146,6 @@ react-treebeard@^3.1.0:
     prop-types "^15.6.2"
     shallowequal "^1.1.0"
     velocity-react "^1.4.1"
-
-react-with-observable@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/react-with-observable/-/react-with-observable-2.0.1.tgz#c44991832029821b826801733d3ecf44b4e0d039"
-  integrity sha512-XXYYiCYhWO2TENON0/EYdSXOJegSuUjywKOvTwsdYMZjamRY0vuycVldVepsl8knJ+C0Siih6ZmLCspgAIHezw==
 
 react@^16.6.3, react@^16.7.0:
   version "16.8.5"

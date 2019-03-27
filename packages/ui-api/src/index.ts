@@ -4,4 +4,4 @@
 
 export * from './ApiContext';
 export * from './ApiGate';
-export { Subscribe } from 'react-with-observable';
+export { Subscribe } from './Subscribe';
