@@ -157,6 +157,6 @@ import { b } from '../my/moduleB';
 
 - React class properties and methods follow eslint's [`react/sort-comp`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/sort-comp.md#rule-details) rule for ordering. However, we do make some exceptions:
 
-  - Closures such as `handleButtonClick = () => { /* code goes here */}` are often used instead of method in React to avoid binding with `this`. These properties are considered as methods.
+  - Closures such as `handleButtonClick = () => { /* code goes here */}` are often used instead of methods in React to avoid binding with `this`. These properties are considered as methods.
   - If a function is used for rendering, then we prefix the function name with `render`, and add it *after* the `render` function. Render functions often contain JSX.
   - All methods should be public, for consistency.
