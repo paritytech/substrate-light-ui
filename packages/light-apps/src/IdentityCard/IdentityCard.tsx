@@ -16,12 +16,9 @@ import { StyledCard, CardContent } from './IdentityCard.styles';
 interface Props extends RouteComponentProps { }
 
 type State = {
-  address?: string,
   backupModalOpen: boolean,
-  buttonText?: string
   error?: string,
   forgetModalOpen: boolean,
-  name?: string
   password: string,
   success?: string
 };
@@ -37,53 +34,12 @@ export class IdentityCard extends React.PureComponent<Props, State> {
     password: ''
   };
 
-  componentDidMount () {
-    const { keyring } = this.context;
-
-    const currentLocation = location.pathname.split('/')[1].toLowerCase();
-
-    const to = currentLocation === 'identity' ? 'transfer' : 'identity';
-    const buttonText = stringUpperFirst(to);
-
-    const address = this.getAddress();
-    const name = address && keyring.getAccount(address).getMeta().name;
-
-    this.setState({
-      address,
-      buttonText,
-      name
-    });
-  }
-
-  closeBackupModal = () => {
-    this.setState({
-      backupModalOpen: false,
-      password: ''
-    });
-  }
-
-  closeForgetModal = () => {
-    this.setState({ forgetModalOpen: false });
-  }
-
-  getAddress = () => {
-    return this.props.location.pathname.split('/')[2];
-  }
-
-  openBackupModal = () => {
-    this.setState({ backupModalOpen: true });
-  }
-
-  openForgetModal = () => {
-    this.setState({ forgetModalOpen: true });
-  }
-
   // Note: this violates the "order functions alphabetically" rule of thumb, but makes it more readable
   // to have it all in the same place.
   backupTrigger = <StyledLinkButton onClick={this.openBackupModal}>Backup</StyledLinkButton>;
   forgetTrigger = <StyledLinkButton onClick={this.openForgetModal}>Forget</StyledLinkButton>;
 
-  private backupCurrentAccount = () => {
+  backupCurrentAccount = () => {
     const { keyring } = this.context;
     const { password } = this.state;
     const address = this.getAddress();
@@ -103,7 +59,18 @@ export class IdentityCard extends React.PureComponent<Props, State> {
     }
   }
 
-  private forgetCurrentAccount = () => {
+  closeBackupModal = () => {
+    this.setState({
+      backupModalOpen: false,
+      password: ''
+    });
+  }
+
+  closeForgetModal = () => {
+    this.setState({ forgetModalOpen: false });
+  }
+
+  forgetCurrentAccount = () => {
     const { keyring } = this.context;
     const { history } = this.props;
     const address = this.getAddress();
@@ -120,39 +87,57 @@ export class IdentityCard extends React.PureComponent<Props, State> {
     }
   }
 
-  private handleToggleApp = () => {
+  getAddress = () => {
+    return this.props.location.pathname.split('/')[2];
+  }
+
+  getButtonText = () => {
+    const currentLocation = location.pathname.split('/')[1].toLowerCase();
+
+    const to = currentLocation === 'identity' ? 'transfer' : 'identity';
+    return stringUpperFirst(to);
+  }
+
+  getName = () => {
+    const { keyring } = this.context;
+    const address = this.getAddress();
+
+    return address && keyring.getAccount(address).getMeta().name;
+  }
+
+  handleToggleApp = () => {
     const { location, history } = this.props;
     const address = this.getAddress();
     const currentLocation = location.pathname.split('/')[1].toLowerCase();
 
     const to = currentLocation === 'identity' ? 'transfer' : 'identity';
-    const buttonText = stringUpperFirst(to);
 
-    const nextLocation = {
-      pathname: `/${to}/${address}`,
-      state: {
-        buttonText: buttonText
-      }
-    };
-
-    history.push(nextLocation);
+    history.push(`/${to}/${address}`);
   }
 
-  private onChangePassword = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+  onChangePassword = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ password: value });
   }
 
-  private onError = (value: string) => {
+  onError = (value: string) => {
     this.setState({ error: value, success: undefined });
   }
 
-  private onSuccess = (value: string) => {
+  onSuccess = (value: string) => {
     this.setState({ error: undefined, success: value });
+  }
+
+  openBackupModal = () => {
+    this.setState({ backupModalOpen: true });
+  }
+
+  openForgetModal = () => {
+    this.setState({ forgetModalOpen: true });
   }
 
   render () {
     const { api } = this.context;
-    const { address, buttonText, name } = this.state;
+    const address = this.getAddress();
 
     return (
       <StyledCard>
@@ -161,7 +146,7 @@ export class IdentityCard extends React.PureComponent<Props, State> {
           {address
             ?
             <React.Fragment>
-              <AddressSummary address={address} name={name} />
+              <AddressSummary address={address} name={this.getName()} />
               <Subscribe>
                 {
                   // FIXME using any because freeBalance gives a Codec here, not a Balance
@@ -183,7 +168,7 @@ export class IdentityCard extends React.PureComponent<Props, State> {
             </StackedHorizontal>
           </Stacked>
           <Margin top />
-          <NavButton value={buttonText} onClick={this.handleToggleApp} />
+          <NavButton value={this.getButtonText()} onClick={this.handleToggleApp} />
         </CardContent>
         {this.renderError()}
         {this.renderSuccess()}
