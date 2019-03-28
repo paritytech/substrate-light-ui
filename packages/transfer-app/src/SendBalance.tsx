@@ -45,7 +45,7 @@ export class SendBalance extends React.PureComponent<Props, State> {
       prevProps.location.state.recipientAddress !== this.props.location.state.recipientAddress
     ) {
       this.setState({
-        recipientAddress: this.props.location.state.recipientAddress!
+        recipientAddress: this.props.location.state.recipientAddress
       });
     }
   }
