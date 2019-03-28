@@ -50,6 +50,23 @@ export class Saved extends React.PureComponent<Props> {
     );
   }
 
+  renderBalance = (balance: Balance) => {
+    return (
+      <BalanceDisplay balance={balance} />
+    );
+  }
+
+  renderEmpty () {
+    const { match: { params: { currentAddress } } } = this.props;
+
+    return (
+      <React.Fragment>
+        <p> It looks like you don't have any saved accounts. You can add them from your address book in Identity app. </p>
+        <NavLink to={`/identity/${currentAddress}`}> Take me there </NavLink>
+      </React.Fragment>
+    );
+  }
+
   renderMyAccounts () {
     const { api } = this.context;
     const { match: { params: { currentAddress } } } = this.props;
@@ -131,23 +148,6 @@ export class Saved extends React.PureComponent<Props> {
               )
           ))}
       </Subscribe>
-    );
-  }
-
-  renderBalance = (balance: Balance) => {
-    return (
-      <BalanceDisplay balance={balance} />
-    );
-  }
-
-  renderEmpty () {
-    const { match: { params: { currentAddress } } } = this.props;
-
-    return (
-      <React.Fragment>
-        <p> It looks like you don't have any saved accounts. You can add them from your address book in Identity app. </p>
-        <NavLink to={`/identity/${currentAddress}`}> Take me there </NavLink>
-      </React.Fragment>
     );
   }
 }
