@@ -33,7 +33,7 @@ export class Saved extends React.PureComponent<Props> {
             <Stacked>
               <SubHeader> My Unlocked Accounts </SubHeader>
               <WithSpace>
-                {this.renderAccountsToSendFrom()}
+                {this.renderMyAccounts()}
               </WithSpace>
             </Stacked>
           </Grid.Column>
@@ -41,7 +41,7 @@ export class Saved extends React.PureComponent<Props> {
             <Stacked justify='flex-start'>
               <SubHeader> Saved Addresses </SubHeader>
               <WithSpace>
-                {this.renderAddressesToSendTo()}
+                {this.renderMyAddresses()}
               </WithSpace>
             </Stacked>
           </Grid.Column>
@@ -50,8 +50,26 @@ export class Saved extends React.PureComponent<Props> {
     );
   }
 
-  renderAccountsToSendFrom () {
+  renderBalance = (balance: Balance) => {
+    return (
+      <BalanceDisplay balance={balance} />
+    );
+  }
+
+  renderEmpty () {
+    const { match: { params: { currentAddress } } } = this.props;
+
+    return (
+      <React.Fragment>
+        <p> It looks like you don't have any saved accounts. You can add them from your address book in Identity app. </p>
+        <NavLink to={`/identity/${currentAddress}`}> Take me there </NavLink>
+      </React.Fragment>
+    );
+  }
+
+  renderMyAccounts () {
     const { api } = this.context;
+    const { match: { params: { currentAddress } } } = this.props;
 
     return (
       <Subscribe>
@@ -65,7 +83,12 @@ export class Saved extends React.PureComponent<Props> {
                   <AddressSummary
                     address={account.json.address}
                     name={
-                      <Link to={`/transfer/${account.json.address}`}>
+                      <Link to={{
+                        pathname: `/transfer/${currentAddress}`,
+                        state: {
+                          recipientAddress: account.json.address
+                        }
+                      }}>
                         {account.json.meta.name}
                       </Link>
                     }
@@ -86,7 +109,7 @@ export class Saved extends React.PureComponent<Props> {
     );
   }
 
-  renderAddressesToSendTo () {
+  renderMyAddresses () {
     const { api } = this.context;
     const { match: { params: { currentAddress } } } = this.props;
 
@@ -103,7 +126,7 @@ export class Saved extends React.PureComponent<Props> {
                     <Link to={{
                       pathname: `/transfer/${currentAddress}`,
                       state: {
-                        recipientAddress: address.json.address // FIXME This doesn't seem to work due to the flickers
+                        recipientAddress: address.json.address
                       }
                     }}>
                       <AddressSummary
@@ -125,23 +148,6 @@ export class Saved extends React.PureComponent<Props> {
               )
           ))}
       </Subscribe>
-    );
-  }
-
-  renderBalance = (balance: Balance) => {
-    return (
-      <BalanceDisplay balance={balance} />
-    );
-  }
-
-  renderEmpty () {
-    const { match: { params: { currentAddress } } } = this.props;
-
-    return (
-      <React.Fragment>
-        <p> It looks like you don't have any saved accounts. You can add them from your address book in Identity app. </p>
-        <NavLink to={`/identity/${currentAddress}`}> Take me there </NavLink>
-      </React.Fragment>
     );
   }
 }

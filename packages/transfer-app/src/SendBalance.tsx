@@ -36,6 +36,20 @@ export class SendBalance extends React.PureComponent<Props, State> {
     }
   }
 
+  componentDidUpdate (prevProps: Props) {
+    // Update state if location state has changed
+    if (
+      prevProps.location.state &&
+      this.props.location.state &&
+      this.props.location.state.recipientAddress &&
+      prevProps.location.state.recipientAddress !== this.props.location.state.recipientAddress
+    ) {
+      this.setState({
+        recipientAddress: this.props.location.state.recipientAddress
+      });
+    }
+  }
+
   isValidAddress = (address: string) => {
     // TODO Do a checksum too
     return address[0] === '5' && address.length === 48;
