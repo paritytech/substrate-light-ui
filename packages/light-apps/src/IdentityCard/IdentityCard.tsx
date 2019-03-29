@@ -5,7 +5,7 @@
 import { Balance } from '@polkadot/types';
 import { stringUpperFirst } from '@polkadot/util';
 import { ApiContext, Subscribe } from '@substrate/ui-api';
-import { Accordion, Address, AddressSummary, Dropdown, ErrorText, FadedText, Header, Icon, Input, MarginTop, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SuccessText, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
+import { Accordion, Address, AddressSummary, Dropdown, ErrorText, FadedText, Header, Icon, Input, Margin, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SuccessText, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -16,13 +16,10 @@ import { StyledCard, CardContent } from './IdentityCard.styles';
 interface Props extends RouteComponentProps { }
 
 type State = {
-  address?: string,
   backupModalOpen: boolean,
-  buttonText?: string
   error?: string,
   expanded: boolean,
   forgetModalOpen: boolean,
-  name?: string
   password: string,
   success?: string
 };
@@ -52,53 +49,12 @@ export class IdentityCard extends React.PureComponent<Props, State> {
     password: ''
   };
 
-  componentDidMount () {
-    const { keyring } = this.context;
-
-    const currentLocation = location.pathname.split('/')[1].toLowerCase();
-
-    const to = currentLocation === 'identity' ? 'transfer' : 'identity';
-    const buttonText = stringUpperFirst(to);
-
-    const address = this.getAddress();
-    const name = address && keyring.getAccount(address).getMeta().name;
-
-    this.setState({
-      address,
-      buttonText,
-      name
-    });
-  }
-
-  closeBackupModal = () => {
-    this.setState({
-      backupModalOpen: false,
-      password: ''
-    });
-  }
-
-  closeForgetModal = () => {
-    this.setState({ forgetModalOpen: false });
-  }
-
-  getAddress = () => {
-    return this.props.location.pathname.split('/')[2];
-  }
-
-  openBackupModal = () => {
-    this.setState({ backupModalOpen: true });
-  }
-
-  openForgetModal = () => {
-    this.setState({ forgetModalOpen: true });
-  }
-
   // Note: this violates the "order functions alphabetically" rule of thumb, but makes it more readable
   // to have it all in the same place.
   backupTrigger = <StyledLinkButton onClick={this.openBackupModal}>Backup</StyledLinkButton>;
   forgetTrigger = <StyledLinkButton onClick={this.openForgetModal}>Forget</StyledLinkButton>;
 
-  private backupCurrentAccount = () => {
+  backupCurrentAccount = () => {
     const { keyring } = this.context;
     const { password } = this.state;
     const address = this.getAddress();
@@ -118,13 +74,18 @@ export class IdentityCard extends React.PureComponent<Props, State> {
     }
   }
 
-  private toggleIdCard = () => {
+  closeBackupModal = () => {
     this.setState({
-      expanded: !this.state.expanded
+      backupModalOpen: false,
+      password: ''
     });
   }
 
-  private forgetCurrentAccount = () => {
+  closeForgetModal = () => {
+    this.setState({ forgetModalOpen: false });
+  }
+
+  forgetCurrentAccount = () => {
     const { keyring } = this.context;
     const { history } = this.props;
     const address = this.getAddress();
@@ -141,40 +102,66 @@ export class IdentityCard extends React.PureComponent<Props, State> {
     }
   }
 
-  private handleToggleApp = () => {
+  getAddress = () => {
+    return this.props.location.pathname.split('/')[2];
+  }
+
+  getButtonText = () => {
+    const currentLocation = location.pathname.split('/')[1].toLowerCase();
+
+    const to = currentLocation === 'identity' ? 'transfer' : 'identity';
+    return stringUpperFirst(to);
+  }
+
+  getName = () => {
+    const { keyring } = this.context;
+    const address = this.getAddress();
+
+    return address && keyring.getAccount(address).getMeta().name;
+  }
+
+  handleToggleApp = () => {
     const { location, history } = this.props;
     const address = this.getAddress();
     const currentLocation = location.pathname.split('/')[1].toLowerCase();
 
     const to = currentLocation === 'identity' ? 'transfer' : 'identity';
-    const buttonText = stringUpperFirst(to);
 
-    const nextLocation = {
-      pathname: `/${to}/${address}`,
-      state: {
-        buttonText: buttonText
-      }
-    };
-
-    history.push(nextLocation);
+    history.push(`/${to}/${address}`);
   }
 
-  private onChangePassword = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+  onChangePassword = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ password: value });
   }
 
-  private onError = (value: string) => {
+  onError = (value: string) => {
     this.setState({ error: value, success: undefined });
   }
 
-  private onSuccess = (value: string) => {
+  onSuccess = (value: string) => {
     this.setState({ error: undefined, success: value });
+  }
+
+  openBackupModal = () => {
+    this.setState({ backupModalOpen: true });
+  }
+
+  openForgetModal = () => {
+    this.setState({ forgetModalOpen: true });
+  }
+
+  toggleIdCard = () => {
+    this.setState({
+      expanded: !this.state.expanded
+    });
   }
 
   render () {
     const { api } = this.context;
-    const { address, buttonText, expanded } = this.state;
-    const currentLocation = this.props.location.pathname.split('/')[1].toLowerCase();
+    const { expanded } = this.state;
+
+    const address = this.getAddress();
+    const currentLocation = location.pathname.split('/')[1].toLowerCase();
 
     return (
       <Accordion active={expanded} fluid>
@@ -192,37 +179,39 @@ export class IdentityCard extends React.PureComponent<Props, State> {
         </Accordion.Title>
         <Accordion.Content active={expanded}>
           <StyledCard>
-            <CardContent>
-              <Header> Current Account </Header>
-              {address
-                ?
-                  <Subscribe>
-                    {
-                      // FIXME using any because freeBalance gives a Codec here, not a Balance
-                      // Wait for @polkadot/api to have TS support for all query.*
-                      api.query.balances.freeBalance(address).pipe(map(this.renderSummary as any))
-                    }
-                  </Subscribe>
-                : <div>Loading...</div>
-              }
-              <MarginTop />
-              <Stacked>
-                <Address address={address} />
-                <MarginTop />
-                <StackedHorizontal>
-                  {this.renderForgetConfirmationModal()}
-                  or
-                  {this.renderBackupConfirmationModal()}
-                </StackedHorizontal>
-              </Stacked>
-              <MarginTop />
-              <NavButton value={buttonText} onClick={this.handleToggleApp} />
-            </CardContent>
-            {this.renderError()}
-            {this.renderSuccess()}
-          </StyledCard>
-        </Accordion.Content>
-      </Accordion>
+          <CardContent>
+            <Header> Current Account </Header>
+            {address
+              ?
+              <React.Fragment>
+                <Subscribe>
+                  {
+                    // FIXME using any because freeBalance gives a Codec here, not a Balance
+                    // Wait for @polkadot/api to have TS support for all query.*
+                    api.query.balances.freeBalance(address).pipe(map(this.renderSummary as any))
+                  }
+                </Subscribe>
+              </React.Fragment>
+              : <div>Loading...</div>
+            }
+            <Margin top />
+            <Stacked>
+              <Address address={address} />
+              <Margin top />
+              <StackedHorizontal>
+                {this.renderForgetConfirmationModal()}
+                or
+                {this.renderBackupConfirmationModal()}
+              </StackedHorizontal>
+            </Stacked>
+            <Margin top />
+            <NavButton value={this.getButtonText()} onClick={this.handleToggleApp} />
+          </CardContent>
+          {this.renderError()}
+          {this.renderSuccess()}
+        </StyledCard>
+       </Accordion.Content>
+     </Accordion>
     );
   }
 
@@ -254,9 +243,7 @@ export class IdentityCard extends React.PureComponent<Props, State> {
   }
 
   renderSummary = (balance: Balance) => {
-    const { address, name } = this.state;
-
-    return <AddressSummary address={address} balance={balance} name={name} />;
+    return <AddressSummary address={this.getAddress()} balance={balance} name={this.getName()} />;
   }
 
   renderError () {
@@ -278,7 +265,7 @@ export class IdentityCard extends React.PureComponent<Props, State> {
           <Stacked>
             <Modal.SubHeader> Please Confirm You Want to Forget this Account </Modal.SubHeader>
             <b>By pressing confirm, you will be removing this account from your Saved Accounts. </b>
-            <MarginTop />
+            <Margin top />
             <FadedText> You can restore this later from your mnemonic phrase or json backup file. </FadedText>
             <Modal.Actions>
               <StackedHorizontal>

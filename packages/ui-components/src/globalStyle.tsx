@@ -4,7 +4,7 @@
 
 import { createGlobalStyle } from 'styled-components';
 
-const GlobalStyle = createGlobalStyle`
+export const GlobalStyle = createGlobalStyle`
   html {
     height: 100%;
   }
@@ -23,7 +23,7 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 // ordered darkest to lightest
-const substrateLightTheme = {
+export const substrateLightTheme = {
   black: '#222',
   grey: '#888',
   purple: '#8479f3',
@@ -35,4 +35,4 @@ const substrateLightTheme = {
   white: '#ffffff'
 };
 
-export { substrateLightTheme, GlobalStyle };
+export type Color = keyof typeof substrateLightTheme;

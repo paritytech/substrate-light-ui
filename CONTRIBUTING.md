@@ -3,16 +3,20 @@
 When contributing to this repository, please first check whether the issue has already been logged, and if not, please file the ticket by creating a New Issue.
 
 ## Logging an Issue
+
 1. Make sure this issue has not already been raised. If a relevant issue has been closed already please reopen it or make a reference to it in a new issue.
 2. Add appropriate labels to the issue (e.g. F1-documentation)
 3. Add the issue to the appropriate Project and/or Milestones. If unsure, leave it blank.
 4. For minor issues, it is acceptable to describe the problem and offer a potential route to fix it. For more involved feature requests or bugs, please include the following details at the minimum:
+
 ##### For bugs:
+
 - current system OS, repository branch,
 - steps to reproduce
 - stack trace
 
 ##### For feature requests:
+
 - rationale
 - paint the feature step by step (in words)
 - mockup (optional)
@@ -32,6 +36,7 @@ When contributing to this repository, please first check whether the issue has a
 We do this to make sure all `@polkadot/**` dependencies are updated together as otherwise "things will break."
 
 ## Commit Messages
+
 Please follow the standards outlined in Conventional Commits: https://www.conventionalcommits.org/en/v1.0.0-beta.3/#specification
 
 ## Code of Conduct
@@ -109,3 +114,49 @@ available at [http://contributor-covenant.org/version/1/4][version]
 [homepage]: http://contributor-covenant.org
 [version]: http://contributor-covenant.org/version/1/4/
 [updateScripts]: https://gist.github.com/jacogr/9f0c8b33a7f14d944925787643dbf55b
+
+## Styleguides
+
+All TypeScript code must adhere to the [semistandard style](https://github.com/Flet/semistandard). These rules are programmatically enforced by [`tslint`](https://github.com/bukalapak/tslint-config-semistandard).
+
+Moreover, we follow the following rules:
+
+- Put brackets around arguments in closures, even if there's only one argument.
+
+```diff
+- const f = x => x + 1;
++ const f = (x) => x + 1;
+```
+
+- Add a blank line before a function's `return` statement.
+
+```diff
+function f () {
+  const x = get_random_number();
++
+  return x;
+}
+```
+
+- Separate imports into 2 blocks: absolute imports and relative imports.
+
+```diff
+import { a } from 'react';
++
+import { b } from '../my/moduleB';
+```
+
+- Sort imports alphabetically by package name. The character '@' comes before alphanumerical characters.
+
+```diff
+- import { a, b } from 'react';
+- import { c, d } from '@polkadot/api';
++ import { c, d } from '@polkadot/api';
++ import { a, b } from 'react';
+```
+
+- React class properties and methods follow eslint's [`react/sort-comp`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/sort-comp.md#rule-details) rule for ordering. However, we do make some exceptions:
+
+  - Closures such as `handleButtonClick = () => { /* code goes here */}` are often used instead of methods in React to avoid binding with `this`. These properties are considered as methods.
+  - If a function is used for rendering, then we prefix the function name with `render`, and add it *after* the `render` function. Render functions often contain JSX.
+  - All methods should be public, for consistency.
