@@ -2,7 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-export { Step } from 'semantic-ui-react';
+// We export these ones as-is from SUI
+export { Dropdown, Step } from 'semantic-ui-react';
 
 import Accordion from './Accordion';
 import Address from './Address';
