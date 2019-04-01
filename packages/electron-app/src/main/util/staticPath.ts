@@ -2,10 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { app } from 'electron';
 import path from 'path';
-
-// Is our app packaged in a binary or still in Electron?
-const appIsPackaged = !process.defaultApp;
 
 /**
  * Get the path to the `static` folder.
@@ -14,6 +12,6 @@ const appIsPackaged = !process.defaultApp;
  * @see https://github.com/electron-userland/electron-webpack/issues/52
  * @see https://github.com/electron-userland/electron-webpack/issues/157
  */
-export const staticPath = appIsPackaged
+export const staticPath = app.isPackaged
   ? __dirname.replace(/app\.asar$/, 'static')
   : path.join(process.cwd(), 'static');
