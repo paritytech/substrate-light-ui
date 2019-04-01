@@ -2233,10 +2233,10 @@
     "@polkadot/keyring" "^0.41.1"
     "@polkadot/util" "^0.41.1"
 
-"@polkadot/ui-assets@^0.33.1":
-  version "0.33.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-assets/-/ui-assets-0.33.1.tgz#bfd242aa98c9b7cffba13d6c542f314487322739"
-  integrity sha512-7rGxD1O5Q7PxkBnf4CvLrgfPX6OZFSCfcSr0ZewNMP/qCkgGaXuQwGGmPcnbuyjg/pJEVVD7l7Ibj495xnwEkw==
+"@polkadot/ui-assets@^0.36.1":
+  version "0.36.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-assets/-/ui-assets-0.36.1.tgz#44ca8754fbfe818ba1e487ac0970ba74824bb275"
+  integrity sha512-29OZqotnbS3dpnNVFUPl4pIzKNPXlgsxfMFgfq3v5bJGRZxrZ8iWfAXbg1tWJCWoul6nuHCk8LNpfE/UpLkpqQ==
   dependencies:
     "@babel/runtime" "^7.3.4"
 
