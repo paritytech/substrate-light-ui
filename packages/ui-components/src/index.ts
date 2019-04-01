@@ -3,7 +3,11 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 // We export these ones as-is from SUI
-export { Dropdown, Step } from 'semantic-ui-react';
+export {
+  Dropdown, DropdownProps,
+  DropdownItem, DropdownItemProps,
+  Step, StepProps
+} from 'semantic-ui-react';
 
 import Accordion from './Accordion';
 import Address from './Address';
