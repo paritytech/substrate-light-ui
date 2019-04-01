@@ -141,7 +141,6 @@ export const Stacked = styled.div<StackProps>`
   flex: 1;
   flex-direction: column;
   justify-content: ${props => props.justify || 'center'};
-  min-height: 100%;
   text-align: ${props => props.textAlign || 'center'};
 `;
 
