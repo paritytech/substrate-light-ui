@@ -1084,14 +1084,7 @@
   dependencies:
     regenerator-runtime "^0.12.0"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.3.4":
-  version "7.3.4"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.3.4.tgz#73d12ba819e365fcf7fd152aed56d6df97d21c83"
-  integrity sha512-IvfvnMdSaLBateu0jfsYIpZTxAc2cKEXEMiezGGN75QcBcecDUKd3PgLAncT0oOgxKy8dd8hrJKj9MfzgfZd6g==
-  dependencies:
-    regenerator-runtime "^0.12.0"
-
-"@babel/runtime@^7.4.0":
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.0":
   version "7.4.0"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.4.0.tgz#d523416573f19aa12784639e631257c7fc58c0aa"
   integrity sha512-/eftZ45kD0OfOFHAmN02WP6N1NVphY+lBf8c2Q/P9VW3tj+N5NlBBAWfqOLOl96YDGMqpIBO5O/hQNx4A/lAng==
@@ -2247,13 +2240,13 @@
   dependencies:
     "@babel/runtime" "^7.3.4"
 
-"@polkadot/ui-identicon@^0.33.1":
-  version "0.33.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-identicon/-/ui-identicon-0.33.1.tgz#12002ab1106123da4dffdce1598d39e63fa7c91b"
-  integrity sha512-zRJ363qeZBmQRfTFBaWm068FPVrgIzEgZ6LlY7rYAksGfrDiJPgYNjlRtmdLVGDge1HZ++YvDRtMypqKOF9lWA==
+"@polkadot/ui-identicon@^0.36.1":
+  version "0.36.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-identicon/-/ui-identicon-0.36.1.tgz#711b727297b2e095d689a883ce9c89b4c3911f1d"
+  integrity sha512-y+v/8JVU7UltkElrp4JfsVnFATWf3vA4MgCZfPQMFuUk5+jlYFpL6s1QQ3HH1LP7gAmj2QdAluynvWowu33Y5w==
   dependencies:
     "@babel/runtime" "^7.3.4"
-    "@polkadot/ui-settings" "^0.33.1"
+    "@polkadot/ui-settings" "^0.36.1"
     "@types/color" "^3.0.0"
     "@types/react-copy-to-clipboard" "^4.2.6"
     color "^3.0.0"
@@ -2272,13 +2265,13 @@
     store "^2.0.12"
     styled-components "^4.1.3"
 
-"@polkadot/ui-settings@^0.33.1":
-  version "0.33.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-0.33.1.tgz#3e483854b1c9ae37d0a6d67c47f81e0b803c5a3d"
-  integrity sha512-aytL4MOLu2EWFujDVwN60I5RDeqdRULo4zq8yDK3w783LPHNKXaPBrUyVteE4K+CsstNKTjuxWhqDE5Gw6F1pw==
+"@polkadot/ui-settings@^0.36.1":
+  version "0.36.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-0.36.1.tgz#2e0cb860bf976ce7a865ec84047b9f49b6dd4835"
+  integrity sha512-W4mOPITF1is2Ccs3UF6RBeHq87NKegGoXRtltMceVgBG1R9u/4BLEWWQH6fT+tzSUzG8TD4//R47LHQ6L31BDw==
   dependencies:
     "@babel/runtime" "^7.3.4"
-    "@polkadot/util" "^0.40.1"
+    "@polkadot/util" "^0.75.1"
     "@types/store" "^2.0.1"
     store "^2.0.12"
 
@@ -2304,10 +2297,10 @@
     tweetnacl "^1.0.1"
     xxhashjs "^0.2.2"
 
-"@polkadot/util@^0.40.1":
-  version "0.40.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/util/-/util-0.40.1.tgz#4a990d134ea394425e9b1ceb8a7f1fc0868a5a66"
-  integrity sha512-S9owTDNIB7sNFzon4lK/c9A+6O73XcoCPAIYA3TtNg494qA1X8exesenVJgVFzqht/Z3B/RAXLsEa8DSk9BycQ==
+"@polkadot/util@^0.41.1":
+  version "0.41.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/util/-/util-0.41.1.tgz#b67762a0a7408138d843adc7240944e704e819e7"
+  integrity sha512-1mFHxxdXyRgeFk0ygfJklzsf6HiEEMikrpUgr+3Dw5S7KromjPD8EbWkpcZQZ3Png5PTwGyjrx7MYY4Ajiu5xQ==
   dependencies:
     "@babel/runtime" "^7.4.0"
     "@types/bn.js" "^4.11.4"
@@ -2319,10 +2312,10 @@
     ip-regex "^4.0.0"
     moment "^2.24.0"
 
-"@polkadot/util@^0.41.1":
-  version "0.41.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/util/-/util-0.41.1.tgz#b67762a0a7408138d843adc7240944e704e819e7"
-  integrity sha512-1mFHxxdXyRgeFk0ygfJklzsf6HiEEMikrpUgr+3Dw5S7KromjPD8EbWkpcZQZ3Png5PTwGyjrx7MYY4Ajiu5xQ==
+"@polkadot/util@^0.75.1":
+  version "0.75.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/util/-/util-0.75.1.tgz#f1719b7ac416e73d0683e443498b9693d7ac42f4"
+  integrity sha512-rXd8J6MR0MLFoi1duddUNL0ftKBtpuysgxUU4hGuVq335jS7xqNAV//nwwLXSLCsOkd3rlLJSz6mxbFXH/PfrQ==
   dependencies:
     "@babel/runtime" "^7.4.0"
     "@types/bn.js" "^4.11.4"
