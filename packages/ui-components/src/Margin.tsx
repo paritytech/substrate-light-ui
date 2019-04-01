@@ -2,7 +2,9 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { compose, curry } from 'fp-ts/lib/function';
+import { compose } from 'fp-ts/lib/function';
+import { Functor } from 'fp-ts/lib/Functor';
+import { Option } from 'fp-ts/lib/Option';
 import styled from 'styled-components';
 
 import { SUISize } from './types';
@@ -20,7 +22,7 @@ export interface MarginProps {
 /**
  * Mapping between <Margin />'s size and its CSS value.
  */
-function sizeValues (size?: MarginPropsValue) {
+function sizeValues (size: MarginPropsValue) {
   switch (size) {
     case 'small': return '0.5rem';
     case true:
@@ -36,11 +38,14 @@ function sizeValues (size?: MarginPropsValue) {
 /**
  * Get value from prop.
  */
-// curry<keyof MarginProps, MarginProps, any>
-const getMarginValue = (position: keyof MarginProps) => (obj: MarginProps) => {
-  return sizeValues(prop(position, obj));
-
-};
+const getMarginValue = compose<
+  keyof MarginProps,
+  (props: MarginProps) => Option<MarginPropsValue>,
+  (props: MarginProps) => ReturnType<typeof sizeValues>
+>(
+  map(sizeValues),
+  prop
+);
 
 export const Margin = styled.div<MarginProps>`
   margin-bottom: ${getMarginValue('bottom')}
