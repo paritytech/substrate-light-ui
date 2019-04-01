@@ -9,7 +9,7 @@ import React from 'react';
 export class ManageAccounts extends React.PureComponent {
   render () {
     return (
-
+      hello
     );
   }
 }

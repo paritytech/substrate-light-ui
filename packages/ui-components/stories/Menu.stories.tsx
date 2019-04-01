@@ -5,6 +5,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs, boolean, text } from '@storybook/addon-knobs';
+import { linkTo } from '@storybook/addon-links';
 import Dropdown from 'semantic-ui-react/dist/commonjs/modules/Dropdown';
 
 import { withTheme } from './customDecorators';
@@ -36,6 +37,20 @@ storiesOf('Menu', module)
       <Dropdown
         options={dropdownValues}
         placeholder='click me!'
+        selection={boolean('selection', true)}
+        vertical={boolean('vertical', true)} />
+    </Menu>
+  ))
+  .add('with multiple dropdowns', () => (
+    <Menu>
+      <Dropdown
+        options={dropdownValues}
+        placeholder='im first!'
+        selection={boolean('selection', true)}
+        vertical={boolean('vertical', true)} />
+      <Dropdown
+        options={dropdownValues}
+        placeholder='me second!'
         selection={boolean('selection', true)}
         vertical={boolean('vertical', true)} />
     </Menu>
