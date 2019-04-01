@@ -20,7 +20,8 @@ function createWindow () {
   });
 
   mainWindow.loadURL(
-    process.env.ELECTRON_START_URL || url.format({
+    (process.env.NODE_ENV !== 'production' && process.env.ELECTRON_START_URL) ||
+    url.format({
       pathname: path.join(staticPath, 'build', 'index.html'),
       protocol: 'file:',
       slashes: true
