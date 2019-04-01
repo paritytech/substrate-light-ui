@@ -8,21 +8,14 @@ import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import Tab from 'semantic-ui-react/dist/commonjs/modules/Tab';
 
-import { AddressBook } from './AddressBook';
-import { Create } from './Create';
-import { SavedAccounts } from './SavedAccounts';
-import { Wallet } from './Wallet';
+import { ManageAccounts } from './ManageAccounts';
 
-interface Props extends RouteComponentProps {
-  basePath: string;
-}
+interface Props extends RouteComponentProps {}
 
 export class Identity extends React.PureComponent<Props> {
   render () {
     const panes = [
-      { menuItem: 'Address Book', render: () => <AddressBook {...this.props} /> },
-      { menuItem: 'Wallet', render: () => <Wallet {...this.props} /> },
-      { menuItem: 'Create Account', render: () => <Create {...this.props} /> }
+      { menuItem: 'Manage Accounts', render: () => <ManageAccounts {...this.props} /> }
     ];
 
     return (
@@ -33,7 +26,7 @@ export class Identity extends React.PureComponent<Props> {
               <Tab panes={panes} menu={{ borderless: true }} />
             </Grid.Column>
             <Grid.Column width={6}>
-              <SavedAccounts {...this.props} />
+              nothing else
             </Grid.Column>
           </Grid.Row>
         </Grid>
