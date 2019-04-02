@@ -34,11 +34,6 @@ export class IdentityCard extends React.PureComponent<Props, State> {
     password: ''
   };
 
-  // Note: this violates the "order functions alphabetically" rule of thumb, but makes it more readable
-  // to have it all in the same place.
-  backupTrigger = <StyledLinkButton onClick={this.openBackupModal}>Backup</StyledLinkButton>;
-  forgetTrigger = <StyledLinkButton onClick={this.openForgetModal}>Forget</StyledLinkButton>;
-
   backupCurrentAccount = () => {
     const { keyring } = this.context;
     const { password } = this.state;
@@ -134,6 +129,11 @@ export class IdentityCard extends React.PureComponent<Props, State> {
   openForgetModal = () => {
     this.setState({ forgetModalOpen: true });
   }
+
+  // Note: this violates the "order functions alphabetically" rule of thumb, but makes it more readable
+  // to have it all in the same place, plus tsc will complain about the onclick callbacks not init yet.
+  backupTrigger = <StyledLinkButton onClick={this.openBackupModal}>Backup</StyledLinkButton>;
+  forgetTrigger = <StyledLinkButton onClick={this.openForgetModal}>Forget</StyledLinkButton>;
 
   render () {
     const { api } = this.context;

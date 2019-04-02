@@ -61,8 +61,8 @@ export class SentBalance extends React.PureComponent<Props, State> {
       .subscribe((txResult: SubmittableResult) => {
         l.log('tx status update:', txResult);
         this.setState(state => ({ ...state, txResult }));
-        const { type } = txResult;
-        if (['Finalised', 'Dropped', 'Usurped'].includes(type)) {
+        const { status: { isFinalized, isDropped, isUsurped } } = txResult;
+        if (isFinalized || isDropped || isUsurped) {
           this.closeSubscription();
         }
       });
@@ -133,8 +133,8 @@ export class SentBalance extends React.PureComponent<Props, State> {
   renderTxStatus () {
     const { txResult } = this.state;
 
-    switch (txResult && txResult.type) {
-      case 'Finalised':
+    switch (txResult && txResult.status.type) {
+      case 'Finalized':
         return <Margin bottom>
           <Icon name='check' size='huge' />
           <NoMarginHeader color='lightBlue1' >Transaction completed!</NoMarginHeader>
