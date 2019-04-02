@@ -5,7 +5,6 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs, boolean, text } from '@storybook/addon-knobs';
-import { linkTo } from '@storybook/addon-links';
 import Dropdown from 'semantic-ui-react/dist/commonjs/modules/Dropdown';
 
 import { withTheme } from './customDecorators';

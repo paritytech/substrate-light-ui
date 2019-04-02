@@ -8,3 +8,5 @@
 export interface MatchParams {
   currentAddress: string;
 }
+
+export type IdentityManagementScreen = 'Edit' | 'Create' | 'Restore' | 'Add' | 'Lookup';
