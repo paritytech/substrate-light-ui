@@ -15,6 +15,7 @@
     "test": "echo skipped"
   },
   "dependencies": {
+    "@polkadot/apps": "^0.29.1",
     "@polkadot/ui-identicon": "^0.36.1",
     "@polkadot/ui-keyring": "^0.36.1",
     "@types/styled-components": "4.1.0",
