@@ -27,7 +27,7 @@ export class Wallet extends React.PureComponent<Props, State> {
   };
 
   // Just adds the account, but user will need to unlock it later if they wish to use it.
-  private handleAddAccount = () => {
+  handleAddAccount = () => {
     // const { name, recoveryPhrase } = this.state;
     // FIXME: after saving, also display its status in a modal with options to do a balance transfer to it (need to unlock first)
     try {
@@ -39,19 +39,19 @@ export class Wallet extends React.PureComponent<Props, State> {
     }
   }
 
-  private handleInputName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+  handleInputName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ name: value });
   }
 
-  private handleInputRecoveryPhrase = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+  handleInputRecoveryPhrase = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ recoveryPhrase: value });
   }
 
-  private onError = (value: string | null) => {
+  onError = (value: string | null) => {
     this.setState({ error: value, success: null });
   }
 
-  private onSuccess = (value: string | null) => {
+  onSuccess = (value: string | null) => {
     this.setState({ error: null, success: value });
   }
 

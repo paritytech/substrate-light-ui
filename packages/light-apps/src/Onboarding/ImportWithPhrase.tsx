@@ -18,7 +18,7 @@ export class ImportWithPhrase extends React.PureComponent<Props> {
     recoveryPhrase: ''
   };
 
-  private handleUnlockWithPhrase = () => {
+  handleUnlockWithPhrase = () => {
     const { recoveryPhrase } = this.state;
     const { history } = this.props;
 
@@ -38,13 +38,13 @@ export class ImportWithPhrase extends React.PureComponent<Props> {
     }
   }
 
-  private onError = (value: string) => {
+  onError = (value: string) => {
     this.setState({
       error: value
     });
   }
 
-  private onChangePhrase = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+  onChangePhrase = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
       recoveryPhrase: value
     });

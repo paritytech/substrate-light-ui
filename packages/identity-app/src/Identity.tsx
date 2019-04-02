@@ -11,9 +11,9 @@ import Menu from 'semantic-ui-react/dist/commonjs/collections/Menu';
 
 import { SavedAccounts } from './SavedAccounts';
 import { ManageAccounts } from './ManageAccounts';
-import { IdentityManagementScreen } from './types';
+import { IdentityManagementScreen, MatchParams } from './types';
 
-interface Props extends RouteComponentProps {}
+interface Props extends RouteComponentProps<MatchParams> {}
 
 type State = {
   screen: IdentityManagementScreen
@@ -83,21 +83,26 @@ export class Identity extends React.PureComponent<Props> {
             />
         </Menu>
 
-        {
-          ['Edit', 'Create', 'Restore'].includes(screen)
-            ? this.renderManageAccounts()
-            : this.renderManageAddresses()
-        }
+        <Grid>
+          {
+            ['Edit', 'Create', 'Restore'].includes(screen)
+              ? this.renderManageAccounts()
+              : this.renderManageAddresses()
+          }
+        </Grid>
       </Container>
     );
   }
 
   renderManageAccounts () {
+    const { screen } = this.state;
+    const { match: { params: { currentAddress } } } = this.props;
+
     return (
-      <React.Fragment>
-        <SavedAccounts />
-        <ManageAccounts screen={screen} />
-      </React.Fragment>
+      <Grid.Row>
+        <Grid.Column width={7}> <SavedAccounts /> </Grid.Column>
+        <Grid.Column width={9}> <ManageAccounts address={currentAddress} screen={screen} /> </Grid.Column>
+      </Grid.Row>
     );
   }
 

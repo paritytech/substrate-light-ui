@@ -30,15 +30,15 @@ export class AddressBook extends React.PureComponent<Props, State> {
     success: null
   };
 
-  private handleInputAddressLookup = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+  handleInputAddressLookup = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ lookupAddress: value });
   }
 
-  private handleInputName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+  handleInputName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ name: value });
   }
 
-  private handleSaveAccount = () => {
+  handleSaveAccount = () => {
     const { keyring } = this.context;
     const { history } = this.props;
     const { name, lookupAddress } = this.state;
@@ -55,11 +55,11 @@ export class AddressBook extends React.PureComponent<Props, State> {
     }
   }
 
-  private onError = (value: string | null) => {
+  onError = (value: string | null) => {
     this.setState({ error: value, success: null });
   }
 
-  private onSuccess = (value: string | null) => {
+  onSuccess = (value: string | null) => {
     this.setState({ error: null, success: value });
   }
 

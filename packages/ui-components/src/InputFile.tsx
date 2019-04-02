@@ -61,7 +61,7 @@ class InputFile extends React.PureComponent<Props, State> {
     );
   }
 
-  private onDrop = (files: Array<File>) => {
+  onDrop = (files: Array<File>) => {
     const { onChange } = this.props;
 
     files.forEach((file) => {
@@ -93,7 +93,7 @@ class InputFile extends React.PureComponent<Props, State> {
     });
   }
 
-  private onError = () => {
+  onError = () => {
     this.setState({ error: 'There was an issue with uploading this file. Please check it and try again.' });
   }
 }

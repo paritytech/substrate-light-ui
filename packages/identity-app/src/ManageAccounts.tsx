@@ -6,9 +6,11 @@ import React from 'react';
 import { ErrorText } from '@substrate/ui-components';
 
 import { Create } from './Create';
+import { Edit } from './Edit';
 import { IdentityManagementScreen } from './types';
 
 type Props = {
+  address: string,
   screen: IdentityManagementScreen
 };
 
@@ -40,7 +42,7 @@ export class ManageAccounts extends React.PureComponent<Props> {
 
   renderEditScreen () {
     return (
-      <p> Edit screen goes here </p>
+      <Edit address={this.props.address} />
     );
   }
 
