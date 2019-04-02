@@ -14,7 +14,6 @@ interface Props extends RouteComponentProps<MatchParams> {
 }
 
 type State = {
-  address?: string;
   error: string | null;
   name: string;
 };
@@ -39,6 +38,13 @@ export class Edit extends React.PureComponent<Props, State> {
     });
   }
 
+  handleSubmit = () => {
+    const { keyring } = this.context;
+    const { name } = this.state;
+
+    keyring.saveAccountMeta(keyring.getPair(this.props.address), { name: name });
+  }
+
   onChangeName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
       name: value
@@ -58,10 +64,12 @@ export class Edit extends React.PureComponent<Props, State> {
     return (
       <Stacked>
         <AddressSummary address={address} name={name} />
-        {this.renderSetName()}
-        {this.renderKeyringCryptoSetting()}
-        {this.renderError()}
-        <NavButton onClick={this.handleSubmit} />
+        <WithSpaceAround>
+          {this.renderSetName()}
+          {this.renderKeyringCryptoType()}
+          {this.renderError()}
+          <NavButton onClick={this.handleSubmit} value={'Confirm'} />
+        </WithSpaceAround>
       </Stacked>
     );
   }
@@ -78,12 +86,15 @@ export class Edit extends React.PureComponent<Props, State> {
 
   // Warning: this should not be edittable,
   // but may be useful to make it visible.
-  renderKeyringCryptoSetting () {
+  renderKeyringCryptoType () {
     const { keyring } = this.context;
-    const cryptoSetting = keyring.getPair(this.props.address).type;
+    const cryptoType = keyring.getPair(this.props.address).type;
 
     return (
-      <Segment> {cryptoSetting} </Segment>
+      <Input
+        disabled
+        label={'Keypair Crypto Type'}
+        value={cryptoType} />
     );
   }
 
@@ -95,6 +106,7 @@ export class Edit extends React.PureComponent<Props, State> {
         <SubHeader> Enter The Name You Wish To Give This Account </SubHeader>
         <Input
           autoFocus
+          label={'Name'}
           min={1}
           onChange={this.onChangeName}
           type='text'
