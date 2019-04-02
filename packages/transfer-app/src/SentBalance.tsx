@@ -134,7 +134,7 @@ export class SentBalance extends React.PureComponent<Props, State> {
     const { txResult } = this.state;
 
     switch (txResult && txResult.status.type) {
-      case 'Finalised':
+      case 'Finalized':
         return <Margin bottom>
           <Icon name='check' size='huge' />
           <NoMarginHeader color='lightBlue1' >Transaction completed!</NoMarginHeader>
