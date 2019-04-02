@@ -16,7 +16,6 @@ export * from './Card';
 export * from './globalStyle';
 export * from './Grid';
 export * from './Icon';
-export * from './InputAddress';
 export * from './InputFile';
 export * from './Loading';
 export * from './Margin';
