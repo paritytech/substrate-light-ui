@@ -4,50 +4,29 @@
 
 // We export these ones as-is from SUI
 export {
-  Dropdown, DropdownProps,
   DropdownItem, DropdownItemProps,
   Step, StepProps
 } from 'semantic-ui-react';
 
-import Accordion from './Accordion';
-import Address from './Address';
-import AddressSummary from './AddressSummary';
-import BalanceDisplay from './Balance';
-import Card from './Card';
-import Grid from './Grid';
-import Icon from './Icon';
-import InputFile from './InputFile';
-import Loading from './Loading';
-import Menu from './Menu';
-import MnemonicSegment from './MnemonicSegment';
-import Modal from './Modal';
-import NavButton from './NavButton';
-import NavLink from './NavLink';
-import Segment from './Segment';
-import TextArea from './TextArea';
-import WalletCard from './WalletCard';
-
-export {
-  Accordion,
-  Address,
-  AddressSummary,
-  BalanceDisplay,
-  Card,
-  Grid,
-  Icon,
-  InputFile,
-  Loading,
-  Menu,
-  MnemonicSegment,
-  Modal,
-  NavButton,
-  NavLink,
-  Segment,
-  TextArea,
-  WalletCard
-};
-
+export * from './Accordion';
+export * from './Address';
+export * from './AddressSummary';
+export * from './Balance';
+export * from './Card';
 export * from './globalStyle';
+export * from './Grid';
+export * from './Icon';
+export * from './InputAddress';
+export * from './InputFile';
+export * from './Loading';
 export * from './Margin';
-export * from './types';
+export * from './Menu';
+export * from './MnemonicSegment';
+export * from './Modal';
+export * from './NavButton';
+export * from './NavLink';
+export * from './Segment';
 export * from './Shared.styles';
+export * from './TextArea';
+export * from './types';
+export * from './WalletCard';

@@ -9,8 +9,6 @@ type MenuDef = typeof SUIMenu & {
   Divider: typeof SUIDivider
 };
 
-const Menu: MenuDef = SUIMenu as MenuDef;
+export const Menu: MenuDef = SUIMenu as MenuDef;
 
 Menu.Divider = SUIDivider;
-
-export default Menu;

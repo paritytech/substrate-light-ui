@@ -3,8 +3,8 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import styled from 'styled-components';
 import SUIModal from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
+import styled from 'styled-components';
 
 import { Header, FadedText, SubHeader } from './Shared.styles';
 
@@ -27,7 +27,7 @@ const StyledActions = styled(StyledContent)`
 `;
 
 // FIXME: this component is reused here and in @polkadot/apps - should be moved to @polkadot/ui
-export default class Modal extends React.PureComponent<Props> {
+export class Modal extends React.PureComponent<Props> {
   static Actions = StyledActions;
   static Content = StyledContent;
   static Header = Header;

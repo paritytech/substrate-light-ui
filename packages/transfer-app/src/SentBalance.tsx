@@ -37,7 +37,7 @@ export class SentBalance extends React.PureComponent<Props, State> {
 
   componentDidMount () {
     const { api, keyring } = this.context;
-    const { location: { state }, match: { params: { currentAddress } } } = this.props;
+    const { location: { state }, match: { params: { currentAccount } } } = this.props;
 
     if (!state || !(state.amount instanceof BN) || !state.recipientAddress) {
       // This happens when we refresh the page while a tx is sending. In this
@@ -46,9 +46,9 @@ export class SentBalance extends React.PureComponent<Props, State> {
     }
 
     const { amount, recipientAddress } = state;
-    const senderPair = keyring.getPair(currentAddress);
+    const senderPair = keyring.getPair(currentAccount);
 
-    l.log('sending tx from', currentAddress, 'to', recipientAddress, 'of amount', amount);
+    l.log('sending tx from', currentAccount, 'to', recipientAddress, 'of amount', amount);
 
     // Send the tx
     // TODO Use React context to save it if we come back later.
@@ -78,12 +78,12 @@ export class SentBalance extends React.PureComponent<Props, State> {
   toggleDetails = () => this.setState({ showDetails: !this.state.showDetails });
 
   render () {
-    const { location, match: { params: { currentAddress } } } = this.props;
+    const { location, match: { params: { currentAccount } } } = this.props;
 
     if (!location.state || !(location.state.amount instanceof BN) || !location.state.recipientAddress) {
       // This happens when we refresh the page while a tx is sending. In this
       // case, we just redirect to the send tx page.
-      return <Redirect to={`/transfer/${currentAddress}`} />;
+      return <Redirect to={`/transfer/${currentAccount}`} />;
     }
 
     const { amount, recipientAddress } = location.state;
@@ -97,7 +97,7 @@ export class SentBalance extends React.PureComponent<Props, State> {
         <Margin top>
           <InlineSubHeader>Summary:</InlineSubHeader>
           <Margin as='span' left='small' right='small' top='small'>
-            <IdentityIcon theme='substrate' size={16} value={currentAddress} />
+            <IdentityIcon theme='substrate' size={16} value={currentAccount} />
           </Margin>
           sending {amount.toString()} units to
           <Margin as='span' left='small' right='small' top='small'>
@@ -116,12 +116,12 @@ export class SentBalance extends React.PureComponent<Props, State> {
   }
 
   renderDetails () {
-    const { location: { state }, match: { params: { currentAddress } } } = this.props;
+    const { location: { state }, match: { params: { currentAccount } } } = this.props;
     const { amount, recipientAddress } = state;
 
     return (
       <div>
-        <p>From: {currentAddress}</p>
+        <p>From: {currentAccount}</p>
         <p>To: {recipientAddress}</p>
         <p>Amount: {amount!.toString()} units</p>
         <p>Fees: [TODO]</p>

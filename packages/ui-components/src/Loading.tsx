@@ -10,7 +10,7 @@ type Props = {
   children?: React.ReactNode | string
 };
 
-class Loading extends React.PureComponent<Props> {
+export class Loading extends React.PureComponent<Props> {
   render () {
     const { active, children } = this.props;
     return (
@@ -25,5 +25,3 @@ class Loading extends React.PureComponent<Props> {
     );
   }
 }
-
-export default Loading;

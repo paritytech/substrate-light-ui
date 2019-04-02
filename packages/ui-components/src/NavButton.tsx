@@ -14,7 +14,7 @@ type Props = {
   value?: string
 };
 
-export default class NavButton extends React.PureComponent<Props> {
+export class NavButton extends React.PureComponent<Props> {
   render () {
     const { children, fontSize = '17px', fontWeight = '300', onClick, value } = this.props;
 
@@ -23,7 +23,7 @@ export default class NavButton extends React.PureComponent<Props> {
         <DynamicSizeText
           fontSize={fontSize}
           fontWeight={fontWeight}>
-            {value || children}
+          {value || children}
         </DynamicSizeText>
       </StyledNavButton>
     );

@@ -3,14 +3,15 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import { Icon, FadedText, RefreshButton, Segment } from './index';
+
+import { Icon, FadedText, RefreshButton, Segment } from './';
 
 type Props = {
   mnemonic?: string,
   onClick?: () => void
 };
 
-export default class MnemonicSegment extends React.PureComponent<Props> {
+export class MnemonicSegment extends React.PureComponent<Props> {
   render () {
     const { mnemonic, onClick } = this.props;
 

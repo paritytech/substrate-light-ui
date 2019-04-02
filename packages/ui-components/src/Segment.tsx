@@ -5,7 +5,7 @@
 import SUISegment from 'semantic-ui-react/dist/commonjs/elements/Segment';
 import styled from 'styled-components';
 
-const Segment = styled<any>(SUISegment)`
+export const Segment = styled<any>(SUISegment)`
   &&& {
     display: flex;
     justify-content: center;
@@ -16,5 +16,3 @@ const Segment = styled<any>(SUISegment)`
     background-color: ${props => props.theme.babyBlueLight};
   }
 `;
-
-export default Segment;

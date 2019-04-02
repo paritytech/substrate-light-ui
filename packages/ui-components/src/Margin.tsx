@@ -2,13 +2,9 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { compose } from 'fp-ts/lib/function';
-import { Functor } from 'fp-ts/lib/Functor';
-import { Option } from 'fp-ts/lib/Option';
 import styled from 'styled-components';
 
 import { SUISize } from './types';
-import { prop } from './util/fp';
 
 type MarginPropsValue = SUISize | boolean | undefined;
 
@@ -38,14 +34,8 @@ function sizeValues (size: MarginPropsValue) {
 /**
  * Get value from prop.
  */
-const getMarginValue = compose<
-  keyof MarginProps,
-  (props: MarginProps) => Option<MarginPropsValue>,
-  (props: MarginProps) => ReturnType<typeof sizeValues>
->(
-  map(sizeValues),
-  prop
-);
+const getMarginValue = (position: keyof MarginProps) => (props: MarginProps) =>
+  sizeValues(props[position]);
 
 export const Margin = styled.div<MarginProps>`
   margin-bottom: ${getMarginValue('bottom')}

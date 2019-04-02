@@ -29,8 +29,8 @@ export class Content extends React.PureComponent {
                     <Redirect exact from='/' to={`/identity/${defaultAccount.json.address}`} />
                     <Redirect exact from='/identity' to={`/identity/${defaultAccount.json.address}`} />
                     <Redirect exact from='/transfer' to={`/transfer/${defaultAccount.json.address}`} />
-                    <Route path='/identity/:currentAddress' component={Identity} />
-                    <Route path='/transfer/:currentAddress' component={Transfer} />
+                    <Route path='/identity/:currentAccount' component={Identity} />
+                    <Route path='/transfer/:currentAccount' component={Transfer} />
                     <Redirect to='/' />
                   </Switch>
                 </React.Fragment>

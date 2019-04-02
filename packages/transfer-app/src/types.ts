@@ -5,10 +5,10 @@
 import BN from 'bn.js';
 
 /**
- * All paths inside transfer are sub-routes of: `/transfer/:currentAddress`
+ * All paths inside transfer are sub-routes of: `/transfer/:currentAccount`
  */
 export interface MatchParams {
-  currentAddress: string;
+  currentAccount: string;
 }
 
 /**

@@ -15,7 +15,7 @@ type Props = {
   value?: string
 };
 
-export default class NavLink extends React.PureComponent<Props> {
+export class NavLink extends React.PureComponent<Props> {
   render () {
     const { children, fontSize = '17px', fontWeight = '300', onClick, to, value } = this.props;
 

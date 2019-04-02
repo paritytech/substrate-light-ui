@@ -6,15 +6,14 @@ import addresses$ from '@polkadot/ui-keyring/observable/addresses';
 import accounts$ from '@polkadot/ui-keyring/observable/accounts';
 import { SubjectInfo } from '@polkadot/ui-keyring/observable/types';
 import { Subscribe } from '@substrate/ui-api';
-import { Container, Grid, Header } from '@substrate/ui-components';
+import { Container, Grid, Header, InputAddress } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { map, tap } from 'rxjs/operators';
-
-import { AddressDropdown } from './AddressDropdown';
+import { combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 interface MatchParams {
-  currentAddress: string;
+  currentAccount: string;
 }
 
 interface Props extends RouteComponentProps<MatchParams> {
@@ -32,7 +31,11 @@ export class Transfer extends React.PureComponent<Props> {
 
           <Grid.Row>
             <Subscribe>
-              {accounts$.subject.pipe(tap(console.log), map(this.renderDropdown))}
+              {combineLatest(accounts$.subject, addresses$.subject)
+                .pipe(
+                  map(([accounts, addresses]) => this.renderDropdown(accounts, addresses))
+                )
+              }
             </Subscribe>
           </Grid.Row>
         </Grid>
@@ -41,6 +44,13 @@ export class Transfer extends React.PureComponent<Props> {
   }
 
   renderDropdown = (accounts: SubjectInfo, addresses: SubjectInfo) => {
-    return <AddressDropdown accounts={addresses} />;
+    return <InputAddress
+      accounts={accounts}
+      addresses={addresses}
+      defaultValue={this.props.match.params.currentAccount}
+      fluid
+      placeholder='Send from...'
+      selection
+    />;
   }
 }
