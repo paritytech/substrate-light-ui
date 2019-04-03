@@ -5,7 +5,6 @@
 import { Balance } from '@polkadot/types';
 import { ApiContext, Subscribe } from '@substrate/ui-api';
 import { BalanceDisplay, ErrorText, Form, Input, NavButton, StackedHorizontal, SubHeader } from '@substrate/ui-components';
-import BN from 'bn.js';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Observable, Subscription } from 'rxjs';
@@ -38,19 +37,24 @@ export class SendBalance extends React.PureComponent<Props, State> {
   subscription?: Subscription;
 
   componentDidMount () {
-    const { api } = this.context;
-    const { match: { params: { currentAccount } } } = this.props;
+    this.subscribeBalance();
+  }
 
-    // Subscribe to sender's balance
-    // FIXME using any because freeBalance gives a Codec here, not a Balance
-    // Wait for @polkadot/api to have TS support for all query.*
-    this.subscription = (api.query.balances.freeBalance(currentAccount) as Observable<Balance>)
-      .subscribe((balance) => this.setState({ balance }));
+  componentDidUpdate (prevProps: Props) {
+    if (prevProps.match.params.currentAccount !== this.props.match.params.currentAccount) {
+      this.closeSubscription();
+      this.subscribeBalance();
+    }
   }
 
   componentWillUnmount () {
+    this.closeSubscription();
+  }
+
+  closeSubscription () {
     if (this.subscription) {
       this.subscription.unsubscribe();
+      this.subscription = undefined;
     }
   }
 
@@ -85,12 +89,12 @@ export class SendBalance extends React.PureComponent<Props, State> {
     this.setState({ error });
   }
 
-  handleSubmit = (event: React.FormEvent) => {
-    const { history, match: { params: { currentAccount } } } = this.props;
+  handleSubmit = () => {
+    const { history, match: { params: { currentAccount, recipientAddress } } } = this.props;
     const { amount, balance } = this.state;
 
     // Do validation on amount
-    const amountBn = new BN(amount);
+    const amountBn = new Balance(amount);
 
     if (!balance) {
       // FIXME Improve UX here
@@ -114,7 +118,21 @@ export class SendBalance extends React.PureComponent<Props, State> {
     }
 
     // If everything is correct, then go to sent
-    history.push(`/transfer/${currentAccount}/sent`);
+    history.push(`/transfer/${currentAccount}/sent`, {
+      amount: amountBn,
+      recipientAddress
+    });
+  }
+
+  subscribeBalance = () => {
+    const { api } = this.context;
+    const { match: { params: { currentAccount } } } = this.props;
+
+    // Subscribe to sender's balance
+    // FIXME using any because freeBalance gives a Codec here, not a Balance
+    // Wait for @polkadot/api to have TS support for all query.*
+    this.subscription = (api.query.balances.freeBalance(currentAccount) as Observable<Balance>)
+      .subscribe((balance) => this.setState({ balance }));
   }
 
   render () {

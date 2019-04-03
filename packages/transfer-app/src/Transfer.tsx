@@ -7,6 +7,7 @@ import React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 
 import { SendBalance } from './SendBalance';
+import { SentBalance } from './SentBalance';
 
 interface MatchParams {
   currentAccount: string;
@@ -23,7 +24,7 @@ export class Transfer extends React.PureComponent<Props> {
         <Header>Transfer Balance</Header>
 
         <Switch>
-          <Route component={SendBalance} path='/transfer/:currentAccount/sent'></Route>
+          <Route component={SentBalance} path='/transfer/:currentAccount/sent'></Route>
           <Route component={SendBalance} path='/transfer/:currentAccount/:recipientAddress'></Route>
           <Route component={SendBalance}></Route>
         </Switch>
