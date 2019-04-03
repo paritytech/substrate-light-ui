@@ -18,6 +18,7 @@
     "@polkadot/ui-app": "^0.29.1",
     "@polkadot/ui-identicon": "^0.36.1",
     "@polkadot/ui-keyring": "^0.36.1",
+    "@polkadot/ui-signer": "^0.29.1",
     "@types/styled-components": "4.1.0",
     "react-dropzone": "^10.0.0",
     "semantic-ui-react": "^0.86.0",
