@@ -7,7 +7,7 @@ import IdentityIcon from '@polkadot/ui-identicon';
 import { Balance } from '@polkadot/types';
 import { logger } from '@polkadot/util';
 import { ApiContext } from '@substrate/ui-api';
-import { Icon, Margin, Segment, Stacked, StackedHorizontal, SubHeader } from '@substrate/ui-components';
+import { Icon, Margin, NavButton, Segment, Stacked, StackedHorizontal, SubHeader } from '@substrate/ui-components';
 import { Subscription } from 'rxjs';
 import React from 'react';
 import { RouteComponentProps, Redirect } from 'react-router';
@@ -41,6 +41,9 @@ export class SentBalance extends React.PureComponent<Props, State> {
   };
 
   componentDidMount () {
+    // FIXME Instead of sending here, we should implement a simple tx queue
+    // in React Context, so that if the user navigates away and back to this
+    // page, his transaction status is still here.
     const { api, keyring } = this.context;
     const { location, match: { params: { currentAccount } } } = this.props;
 
@@ -80,6 +83,14 @@ export class SentBalance extends React.PureComponent<Props, State> {
     }
   }
 
+  handleNewTransfer = () => {
+    const { history, match: { params: { currentAccount } } } = this.props;
+
+    // FIXME Remove the tx from the tx queue once we have it
+
+    history.push(`/transfer/${currentAccount}`);
+  }
+
   toggleDetails = () => this.setState({ showDetails: !this.state.showDetails });
 
   render () {
@@ -93,7 +104,7 @@ export class SentBalance extends React.PureComponent<Props, State> {
     }
 
     const { amount, recipientAddress } = location.state;
-    const { showDetails } = this.state;
+    const { showDetails, txResult } = this.state;
 
     return (
       <StackedHorizontal alignItems='flex-start'>
@@ -118,6 +129,9 @@ export class SentBalance extends React.PureComponent<Props, State> {
             {showDetails ? 'Hide' : 'Click here'}
           </SubHeader>
           {showDetails ? this.renderDetails() : <p>to view full details</p>}
+          {txResult && txResult.status.isFinalized && (
+            <NavButton onClick={this.handleNewTransfer}>New Transfer</NavButton>
+          )}
         </RightDiv>
       </StackedHorizontal>
     );
