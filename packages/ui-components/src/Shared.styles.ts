@@ -136,20 +136,20 @@ export const StyledNavButton = styled.button`
 `;
 
 export const Stacked = styled.div<StackProps>`
-  align-items: ${props => props.align || 'center'};
+  align-items: ${props => props.alignItems || 'center'};
   display: flex;
   flex: 1;
   flex-direction: column;
-  justify-content: ${props => props.justify || 'center'};
+  justify-content: ${props => props.justifyContent || 'center'};
   text-align: ${props => props.textAlign || 'center'};
 `;
 
 export const StackedHorizontal = styled.div<StackProps>`
-  align-items: ${props => props.align || 'center'};
+  align-items: ${props => props.alignItems || 'center'};
   display: flex;
   flex: 1;
   flex-direction: row;
-  justify-content: ${props => props.justify || 'center'};
+  justify-content: ${props => props.justifyContent || 'center'};
   min-width: 100%;
   text-align: ${props => props.textAlign || 'center'};
 `;
@@ -159,7 +159,7 @@ export const SubHeader = styled.h3<SubHeaderProps>`
   font-weight: 600;
   font-size: 15px;
   margin: ${props => props.noMargin ? `0 0` : `1rem auto 0.3rem auto`};
-  text-align: center;
+  text-align: ${props => props.textAlign || 'center'};
 `;
 
 export const InlineSubHeader = styled(SubHeader)`

@@ -59,7 +59,7 @@ export class AddressSummary extends React.PureComponent<Props> {
       );
     } else {
       return (
-        <StackedHorizontal justify='space-around'>
+        <StackedHorizontal justifyContent='space-around'>
           <IdentityIcon value={address as string || PLACEHOLDER_ADDRESS} theme={'substrate'} size={styles.identiconSize} />
           <DynamicSizeText fontSize={styles.nameSize}> {name || PLACEHOLDER_NAME} </DynamicSizeText>
           {balance && <BalanceDisplay balance={balance} />}

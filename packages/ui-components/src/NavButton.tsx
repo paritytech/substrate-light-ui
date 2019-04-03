@@ -6,20 +6,19 @@ import React from 'react';
 
 import { DynamicSizeText, StyledNavButton } from './Shared.styles';
 
-type Props = {
-  children?: any,
-  fontSize?: string,
-  fontWeight?: string,
-  onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
-  value?: string
-};
+interface Props extends React.HTMLAttributes<HTMLButtonElement> {
+  children?: any;
+  fontSize?: string;
+  fontWeight?: string;
+  value?: string;
+}
 
 export class NavButton extends React.PureComponent<Props> {
   render () {
-    const { children, fontSize = '17px', fontWeight = '300', onClick, value } = this.props;
+    const { children, fontSize = '17px', fontWeight = '300', value, ...rest } = this.props;
 
     return (
-      <StyledNavButton onClick={onClick}>
+      <StyledNavButton {...rest}>
         <DynamicSizeText
           fontSize={fontSize}
           fontWeight={fontWeight}>

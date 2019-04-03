@@ -4,7 +4,7 @@
 
 import { SubmittableResult } from '@polkadot/api/SubmittableExtrinsic';
 import IdentityIcon from '@polkadot/ui-identicon';
-import { logger } from '@polkadot/util';
+// import { logger } from '@polkadot/util';
 import { ApiContext } from '@substrate/ui-api';
 import { Icon, InlineSubHeader, Margin, Stacked, SubHeader } from '@substrate/ui-components';
 import BN from 'bn.js';
@@ -13,16 +13,16 @@ import React from 'react';
 import { RouteComponentProps, Redirect } from 'react-router';
 
 import { NoMarginHeader } from './SentBalance.styles';
-import { MatchParams, TransferParams } from './types';
+import { MatchParams } from './types';
 
-interface Props extends RouteComponentProps<MatchParams, {}, Partial<TransferParams>> { }
+interface Props extends RouteComponentProps<MatchParams> { }
 
 interface State {
   showDetails: boolean;
   txResult?: SubmittableResult;
 }
 
-const l = logger('transfer-app');
+// const l = logger('transfer-app');
 
 export class SentBalance extends React.PureComponent<Props, State> {
   static contextType = ApiContext;
@@ -35,38 +35,38 @@ export class SentBalance extends React.PureComponent<Props, State> {
     showDetails: false
   };
 
-  componentDidMount () {
-    const { api, keyring } = this.context;
-    const { location: { state }, match: { params: { currentAccount } } } = this.props;
+  // componentDidMount () {
+  //   const { api, keyring } = this.context;
+  //   const { location: { state }, match: { params: { currentAccount } } } = this.props;
 
-    if (!state || !(state.amount instanceof BN) || !state.recipientAddress) {
-      // This happens when we refresh the page while a tx is sending. In this
-      // case, we just redirect to the send tx page.
-      return;
-    }
+  //   if (!state || !(state.amount instanceof BN) || !state.recipientAddress) {
+  //     // This happens when we refresh the page while a tx is sending. In this
+  //     // case, we just redirect to the send tx page.
+  //     return;
+  //   }
 
-    const { amount, recipientAddress } = state;
-    const senderPair = keyring.getPair(currentAccount);
+  //   const { amount, recipientAddress } = state;
+  //   const senderPair = keyring.getPair(currentAccount);
 
-    l.log('sending tx from', currentAccount, 'to', recipientAddress, 'of amount', amount);
+  //   l.log('sending tx from', currentAccount, 'to', recipientAddress, 'of amount', amount);
 
-    // Send the tx
-    // TODO Use React context to save it if we come back later.
-    // retrieve nonce for the account
-    this.subscription = api.tx.balances
-      // create transfer
-      .transfer(recipientAddress, amount)
-      // send the transaction
-      .signAndSend(senderPair)
-      .subscribe((txResult: SubmittableResult) => {
-        l.log('tx status update:', txResult);
-        this.setState(state => ({ ...state, txResult }));
-        const { status: { isFinalized, isDropped, isUsurped } } = txResult;
-        if (isFinalized || isDropped || isUsurped) {
-          this.closeSubscription();
-        }
-      });
-  }
+  //   // Send the tx
+  //   // TODO Use React context to save it if we come back later.
+  //   // retrieve nonce for the account
+  //   this.subscription = api.tx.balances
+  //     // create transfer
+  //     .transfer(recipientAddress, amount)
+  //     // send the transaction
+  //     .signAndSend(senderPair)
+  //     .subscribe((txResult: SubmittableResult) => {
+  //       l.log('tx status update:', txResult);
+  //       this.setState(state => ({ ...state, txResult }));
+  //       const { status: { isFinalized, isDropped, isUsurped } } = txResult;
+  //       if (isFinalized || isDropped || isUsurped) {
+  //         this.closeSubscription();
+  //       }
+  //     });
+  // }
 
   closeSubscription () {
     if (this.subscription) {

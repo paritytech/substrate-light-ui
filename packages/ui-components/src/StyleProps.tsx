@@ -15,15 +15,16 @@ export interface DynamicSizeTextProps {
 }
 
 export interface StackProps {
-  align?: string;
-  justify?: string;
-  textAlign?: string;
+  alignItems?: string; // FIXME Use union of possible string
+  justifyContent?: string; // FIXME Use union of possible string
+  textAlign?: string; // FIXME Use union of possible string
 }
 
 export interface SubHeaderProps {
   color?: string;
   margin?: string;
   noMargin?: boolean;
+  textAlign?: string;
 }
 
 export interface WithSpaceAroundProps {

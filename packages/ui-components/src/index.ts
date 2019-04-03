@@ -5,6 +5,8 @@
 // We export these ones as-is from SUI
 export {
   DropdownItem, DropdownItemProps,
+  Form, FormProps,
+  Input, InputProps,
   Step, StepProps
 } from 'semantic-ui-react';
 
