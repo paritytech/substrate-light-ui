@@ -8,7 +8,7 @@ import { storiesOf } from '@storybook/react';
 import { object, select, text, withKnobs } from '@storybook/addon-knobs';
 
 import { withTheme } from './customDecorators';
-import AddressSummary from '../src/AddressSummary';
+import { AddressSummary } from '../src/AddressSummary';
 import { OrientationType, SizeType } from '../src/AddressSummary/types';
 
 let orientations: Array<OrientationType> = ['horizontal', 'vertical'];
@@ -27,5 +27,6 @@ storiesOf('Address Sumary', module)
       }
       size={
         select('size', sizes, sizes[0])
-      }/>
+      }
+    />
   ));

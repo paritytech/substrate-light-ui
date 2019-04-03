@@ -7,7 +7,7 @@ import { storiesOf } from '@storybook/react';
 import { withKnobs, text } from '@storybook/addon-knobs';
 
 import { withTheme } from './customDecorators';
-import Address from '../src/Address';
+import { Address } from '../src/Address';
 
 storiesOf('Address Segment', module)
   .addDecorator(withKnobs)

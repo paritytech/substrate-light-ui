@@ -6,7 +6,7 @@ import React from 'react';
 
 import { DynamicSizeText, StyledNavButton } from './Shared.styles';
 
-interface Props extends React.HTMLAttributes<HTMLButtonElement> {
+interface Props extends React.AllHTMLAttributes<HTMLButtonElement> {
   children?: any;
   fontSize?: string;
   fontWeight?: string;
@@ -18,6 +18,7 @@ export class NavButton extends React.PureComponent<Props> {
     const { children, fontSize = '17px', fontWeight = '300', value, ...rest } = this.props;
 
     return (
+      // @ts-ignore FIXME I can't get this to work, though it should...
       <StyledNavButton {...rest}>
         <DynamicSizeText
           fontSize={fontSize}
