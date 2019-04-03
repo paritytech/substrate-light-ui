@@ -113,6 +113,7 @@ export class SendBalance extends React.PureComponent<Props, State> {
     }
 
     if (amountBn.gt(balance)) {
+      // FIXME Substract fees
       this.handleError('You do not have enough balance to make this transfer.');
       return;
     }

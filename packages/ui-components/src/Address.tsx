@@ -5,7 +5,7 @@
 import React from 'react';
 
 import { CopyButton } from './CopyButton';
-import { Segment } from './Segment';
+import { FlexSegment } from './FlexSegment';
 
 type Props = {
   address?: string
@@ -18,10 +18,10 @@ export class Address extends React.PureComponent<Props> {
     const { address } = this.props;
 
     return (
-      <Segment>
+      <FlexSegment>
         {address || PLACEHOLDER_ADDRESS}
         <CopyButton value={address} />
-      </Segment>
+      </FlexSegment>
     );
   }
 }

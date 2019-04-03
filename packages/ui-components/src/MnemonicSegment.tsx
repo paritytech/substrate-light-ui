@@ -4,7 +4,7 @@
 
 import React from 'react';
 
-import { Icon, FadedText, RefreshButton, Segment } from './';
+import { Icon, FadedText, FlexSegment, RefreshButton } from './';
 
 type Props = {
   mnemonic?: string,
@@ -16,12 +16,12 @@ export class MnemonicSegment extends React.PureComponent<Props> {
     const { mnemonic, onClick } = this.props;
 
     return (
-      <Segment>
+      <FlexSegment>
         <FadedText style={{ margin: '0 auto' }}> {mnemonic} </FadedText>
         <RefreshButton>
           <Icon onClick={onClick} name='refresh' />
         </RefreshButton>
-      </Segment>
+      </FlexSegment>
     );
   }
 }

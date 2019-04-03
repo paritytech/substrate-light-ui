@@ -7,6 +7,7 @@ export {
   DropdownItem, DropdownItemProps,
   Form, FormProps,
   Input, InputProps,
+  Segment, SegmentProps,
   Step, StepProps
 } from 'semantic-ui-react';
 
@@ -15,6 +16,7 @@ export * from './Address';
 export * from './AddressSummary';
 export * from './Balance';
 export * from './Card';
+export * from './FlexSegment';
 export * from './globalStyle';
 export * from './Grid';
 export * from './Icon';
@@ -26,7 +28,6 @@ export * from './MnemonicSegment';
 export * from './Modal';
 export * from './NavButton';
 export * from './NavLink';
-export * from './Segment';
 export * from './Shared.styles';
 export * from './TextArea';
 export * from './types';

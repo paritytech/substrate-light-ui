@@ -5,7 +5,7 @@
 import SUISegment from 'semantic-ui-react/dist/commonjs/elements/Segment';
 import styled from 'styled-components';
 
-export const Segment = styled<any>(SUISegment)`
+export const FlexSegment = styled<any>(SUISegment)`
   &&& {
     display: flex;
     justify-content: center;

@@ -7,7 +7,7 @@ import IdentityIcon from '@polkadot/ui-identicon';
 import { Balance } from '@polkadot/types';
 import { logger } from '@polkadot/util';
 import { ApiContext } from '@substrate/ui-api';
-import { Icon, Margin, Stacked, StackedHorizontal, SubHeader } from '@substrate/ui-components';
+import { Icon, Margin, Segment, Stacked, StackedHorizontal, SubHeader } from '@substrate/ui-components';
 import { Subscription } from 'rxjs';
 import React from 'react';
 import { RouteComponentProps, Redirect } from 'react-router';
@@ -128,13 +128,13 @@ export class SentBalance extends React.PureComponent<Props, State> {
     const { amount, recipientAddress } = state;
 
     return (
-      <div>
+      <Segment placeholder>
         <p>From: {currentAccount}</p>
         <p>To: {recipientAddress}</p>
         <p>Amount: {amount!.toString()} units</p>
         <p>Fees: [TODO]</p>
         <p>Total amount (amount + fees): [TODO]</p>
-      </div>
+      </Segment>
     );
   }
 
