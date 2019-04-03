@@ -9,9 +9,10 @@ import { boolean, select, text, withKnobs } from '@storybook/addon-knobs';
 
 import { withTheme } from './customDecorators';
 import { Input } from '../src';
+import { SUIInputSize } from '../src/types';
 
 const inputTypes = ['number', 'password', 'text'];
-const sizes = ['mini', 'tiny', 'small', 'medium', 'large', 'big', 'huge', 'massive'];
+const sizes: SUIInputSize[] = ['mini', 'small', 'large', 'big', 'huge', 'massive'];
 
 storiesOf('Input', module)
   .addDecorator(withKnobs)

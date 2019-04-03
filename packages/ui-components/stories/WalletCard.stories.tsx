@@ -9,6 +9,7 @@ import { select, text, withKnobs } from '@storybook/addon-knobs';
 
 import { withMemoryRouter, withTheme } from './customDecorators';
 import { Input, Margin, NavButton, NavLink, WalletCard } from '../src';
+import { SUIInputSize } from '../src/types';
 
 const overflowOptions = [
   'none',
@@ -19,7 +20,7 @@ const overflowOptions = [
   'visible'
 ];
 
-const sizes = ['mini', 'tiny', 'small', 'medium', 'large', 'big', 'huge', 'massive'];
+const sizes: SUIInputSize[] = ['mini', 'small', 'large', 'big', 'huge', 'massive'];
 
 storiesOf('Wallet Card', module)
   .addDecorator(withKnobs)
@@ -33,7 +34,7 @@ storiesOf('Wallet Card', module)
       <Input
         label={text('label', 'input something')}
         onChange={action('typed')}
-        size={select('size', sizes, 'tiny')}
+        size={select('size', sizes, 'mini')}
       />
       <Margin top />
       <NavButton onClick={action('clicked')} value={text('button text', 'Submit')} />
