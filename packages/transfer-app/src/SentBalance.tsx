@@ -14,7 +14,6 @@ import { RouteComponentProps, Redirect } from 'react-router';
 
 import { CenterDiv, LeftDiv, RightDiv } from './Transfer.styles';
 import { MatchParams } from './types';
-import { delay } from 'rxjs/operators';
 
 interface SentState {
   amount?: Balance;
@@ -64,9 +63,8 @@ export class SentBalance extends React.PureComponent<Props, State> {
       .transfer(recipientAddress, amount)
       // send the transaction
       .signAndSend(senderPair)
-      .pipe(delay(2000))
       .subscribe((txResult: SubmittableResult) => {
-        l.log('tx status update:', txResult);
+        l.log('Tx status update:', txResult);
         this.setState(state => ({ ...state, txResult }));
         const { status: { isFinalized, isDropped, isUsurped } } = txResult;
         if (isFinalized || isDropped || isUsurped) {
