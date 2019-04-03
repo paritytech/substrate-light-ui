@@ -1142,10 +1142,17 @@
   dependencies:
     regenerator-runtime "^0.12.0"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.3.1", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.0", "@babel/runtime@^7.4.2":
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.0", "@babel/runtime@^7.4.2":
   version "7.4.2"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.4.2.tgz#f5ab6897320f16decd855eed70b705908a313fe8"
   integrity sha512-7Bl2rALb7HpvXFL7TETNzKSAeBVCPHELzc0C//9FCxN8nsiueWSJBqaF+2oIJScyILStASR/Cx5WMkXGYTiJFA==
+  dependencies:
+    regenerator-runtime "^0.13.2"
+
+"@babel/runtime@^7.3.1":
+  version "7.4.3"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.4.3.tgz#79888e452034223ad9609187a0ad1fe0d2ad4bdc"
+  integrity sha512-9lsJwJLxDh/T3Q3SZszfWOTkk3pHbkmH+3KY+zwIDmsNlxsumuhS2TH3NIpktU4kNvfzy+k3eLT7aTJSPTo0OA==
   dependencies:
     regenerator-runtime "^0.13.2"
 
@@ -2169,18 +2176,6 @@
     "@polkadot/types" "^0.75.1"
     "@polkadot/util-crypto" "^0.75.1"
 
-"@polkadot/apps@^0.29.1":
-  version "0.29.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/apps/-/apps-0.29.1.tgz#b392b0a9a5bfd799b59ff2557954ef06af33b676"
-  integrity sha512-bJEtJXHAGC+iUjMGoe1fGcnQW5AV/NTQxVMhxun5DLwicz1G7g9WU3lyz7H8jx5xGsGum50CNFo0yLUT353wEg==
-  dependencies:
-    "@babel/runtime" "^7.4.0"
-    "@polkadot/ui-app" "^0.29.1"
-    "@polkadot/ui-assets" "^0.36.1"
-    "@polkadot/ui-signer" "^0.29.1"
-    "@types/react-tooltip" "^3.9.1"
-    react-tooltip "^3.9.2"
-
 "@polkadot/dev@^0.25.13":
   version "0.25.13"
   resolved "https://registry.yarnpkg.com/@polkadot/dev/-/dev-0.25.13.tgz#2cb3888cba59409dc0e5f829b41c738e34e8fad7"
@@ -2397,14 +2392,6 @@
     "@polkadot/util" "^0.75.1"
     "@types/store" "^2.0.1"
     store "^2.0.12"
-
-"@polkadot/ui-signer@^0.29.1":
-  version "0.29.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-signer/-/ui-signer-0.29.1.tgz#1915649bdd471c38c2c541c8b4f524354f42cfa5"
-  integrity sha512-nZARAR4YbjQnL8ItKvXjfqDInnyxlIDGS6zlgkdngG8QgYrkUqnl3452LTpIr/55EeOaZFwxJWCPPaGQIy7JXQ==
-  dependencies:
-    "@babel/runtime" "^7.4.0"
-    "@polkadot/ui-app" "^0.29.1"
 
 "@polkadot/ui-util@^0.36.1":
   version "0.36.1"
@@ -3125,13 +3112,6 @@
   integrity sha512-12+VOu1+xiC8RPc9yrgHCyLI79VswjtuqeS2gPrMcywH6tkc8rGIUhs4LaL3AJPqo5d+RPnfRpNKiJ7MK2Qhcg==
   dependencies:
     "@types/history" "*"
-    "@types/react" "*"
-
-"@types/react-tooltip@^3.9.1":
-  version "3.9.2"
-  resolved "https://registry.yarnpkg.com/@types/react-tooltip/-/react-tooltip-3.9.2.tgz#c46ee03cc8631ec1b130feef02af119dbe3639d2"
-  integrity sha512-nw8yikdyULgQoZWSkMgjMVd7nnrjlnUJc4U8NtuxCmTIloEgQTJpI6O/KrWTBK8cNP67KZy/fGgjZ9rOQsdwBQ==
-  dependencies:
     "@types/react" "*"
 
 "@types/react@*":
@@ -9799,9 +9779,9 @@ i18next-xhr-backend@^2.0.1:
   integrity sha512-CP0XPjJsTE4hY1rM1KXFYo63Ib61EBLEcTvMDyJwr0vs9p/UTuA3ENCmzSs9+ghZgWSjdOigc0oUERHaxctbsQ==
 
 i18next@^15.0.4:
-  version "15.0.8"
-  resolved "https://registry.yarnpkg.com/i18next/-/i18next-15.0.8.tgz#4a52ba8b422832f334fe2fb464e8ad4785899211"
-  integrity sha512-ayzNwJ9NHtqEeAG0nQ6yKFbIpZULpDeesjVnfWQaPwbH7Anee8QwRAYPNWHtFCmDZV9FZaKiEbfo1scH8+KSDg==
+  version "15.0.9"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-15.0.9.tgz#42536407a921bb5a8535a4c090a26f16827a1884"
+  integrity sha512-IdVj7DqErUuMbGuj2dFT431T7zKlmDci63eae6pNA/bMwgBZKT74/KnwHXE0WH7ivo2EV/LNme4pP4Yw6vB79w==
   dependencies:
     "@babel/runtime" "^7.3.1"
 
@@ -15354,14 +15334,6 @@ react-textarea-autosize@^7.0.4:
   integrity sha512-c2FlR/fP0qbxmlrW96SdrbgP/v0XZMTupqB90zybvmDVDutytUgPl7beU35klwcTeMepUIQEpQUn3P3bdshGPg==
   dependencies:
     "@babel/runtime" "^7.1.2"
-    prop-types "^15.6.0"
-
-react-tooltip@^3.9.2:
-  version "3.10.0"
-  resolved "https://registry.yarnpkg.com/react-tooltip/-/react-tooltip-3.10.0.tgz#268b5ef519fd8a1369288d1f086f42c90d5da7ef"
-  integrity sha512-GGdxJvM1zSFztkTP7gCQbLTstWr1OOoMpJ5WZUGhimj0nhRY+MPz+92MpEnKmj0cftJ9Pd/M6FfSl0sfzmZWkg==
-  dependencies:
-    classnames "^2.2.5"
     prop-types "^15.6.0"
 
 react-transition-group@^2.0.0:
