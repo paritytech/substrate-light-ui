@@ -93,6 +93,12 @@ export class SendBalance extends React.PureComponent<Props, State> {
     const { history, match: { params: { currentAccount, recipientAddress } } } = this.props;
     const { amount, balance } = this.state;
 
+    // Do validation on account/address
+    if (currentAccount === recipientAddress) {
+      this.handleError('You cannot send balance to yourself.');
+      return;
+    }
+
     // Do validation on amount
     const amountBn = new Balance(amount);
 
