@@ -4,18 +4,23 @@
 
 import { SubmittableResult } from '@polkadot/api/SubmittableExtrinsic';
 import IdentityIcon from '@polkadot/ui-identicon';
+import { Balance } from '@polkadot/types';
 import { logger } from '@polkadot/util';
 import { ApiContext } from '@substrate/ui-api';
-import { Icon, InlineSubHeader, Margin, Stacked, SubHeader } from '@substrate/ui-components';
-import BN from 'bn.js';
+import { Icon, Margin, NavButton, Segment, Stacked, StackedHorizontal, SubHeader } from '@substrate/ui-components';
 import { Subscription } from 'rxjs';
 import React from 'react';
 import { RouteComponentProps, Redirect } from 'react-router';
 
-import { NoMarginHeader } from './SentBalance.styles';
-import { MatchParams, TransferParams } from './types';
+import { CenterDiv, LeftDiv, RightDiv } from './Transfer.styles';
+import { MatchParams } from './types';
 
-interface Props extends RouteComponentProps<MatchParams, {}, Partial<TransferParams>> { }
+interface SentState {
+  amount?: Balance;
+  recipientAddress?: string;
+}
+
+interface Props extends RouteComponentProps<MatchParams, {}, SentState> { }
 
 interface State {
   showDetails: boolean;
@@ -36,19 +41,22 @@ export class SentBalance extends React.PureComponent<Props, State> {
   };
 
   componentDidMount () {
+    // FIXME Instead of sending here, we should implement a simple tx queue
+    // in React Context, so that if the user navigates away and back to this
+    // page, his transaction status is still here.
     const { api, keyring } = this.context;
-    const { location: { state }, match: { params: { currentAddress } } } = this.props;
+    const { location, match: { params: { currentAccount } } } = this.props;
 
-    if (!state || !(state.amount instanceof BN) || !state.recipientAddress) {
+    if (!location.state || !(location.state.amount instanceof Balance) || !location.state.recipientAddress) {
       // This happens when we refresh the page while a tx is sending. In this
       // case, we just redirect to the send tx page.
       return;
     }
 
-    const { amount, recipientAddress } = state;
-    const senderPair = keyring.getPair(currentAddress);
+    const { amount, recipientAddress } = location.state;
+    const senderPair = keyring.getPair(currentAccount);
 
-    l.log('sending tx from', currentAddress, 'to', recipientAddress, 'of amount', amount);
+    l.log('Sending tx from', currentAccount, 'to', recipientAddress, 'of amount', amount);
 
     // Send the tx
     // TODO Use React context to save it if we come back later.
@@ -59,7 +67,7 @@ export class SentBalance extends React.PureComponent<Props, State> {
       // send the transaction
       .signAndSend(senderPair)
       .subscribe((txResult: SubmittableResult) => {
-        l.log('tx status update:', txResult);
+        l.log('Tx status update:', txResult);
         this.setState(state => ({ ...state, txResult }));
         const { status: { isFinalized, isDropped, isUsurped } } = txResult;
         if (isFinalized || isDropped || isUsurped) {
@@ -75,58 +83,72 @@ export class SentBalance extends React.PureComponent<Props, State> {
     }
   }
 
+  handleNewTransfer = () => {
+    const { history, match: { params: { currentAccount } } } = this.props;
+
+    // FIXME Remove the tx from the tx queue once we have it
+
+    history.push(`/transfer/${currentAccount}`);
+  }
+
   toggleDetails = () => this.setState({ showDetails: !this.state.showDetails });
 
   render () {
-    const { location, match: { params: { currentAddress } } } = this.props;
+    const { location, match: { params: { currentAccount } } } = this.props;
 
-    if (!location.state || !(location.state.amount instanceof BN) || !location.state.recipientAddress) {
+    if (!location.state || !(location.state.amount instanceof Balance) || !location.state.recipientAddress) {
+      l.warn(`Refreshed on ${location.pathname} with no location state, redirecting to send balance.`);
       // This happens when we refresh the page while a tx is sending. In this
       // case, we just redirect to the send tx page.
-      return <Redirect to={`/transfer/${currentAddress}`} />;
+      return <Redirect to={`/transfer/${currentAccount}`} />;
     }
 
     const { amount, recipientAddress } = location.state;
-    const { showDetails } = this.state;
+    const { showDetails, txResult } = this.state;
 
     return (
-      <Stacked>
+      <StackedHorizontal alignItems='flex-start'>
 
-        {this.renderTxStatus()}
+        <LeftDiv>
+          {this.renderTxStatus()}
+        </LeftDiv>
 
-        <Margin top>
-          <InlineSubHeader>Summary:</InlineSubHeader>
+        <CenterDiv>
+          <SubHeader>Summary:</SubHeader>
           <Margin as='span' left='small' right='small' top='small'>
-            <IdentityIcon theme='substrate' size={16} value={currentAddress} />
+            <IdentityIcon theme='substrate' size={16} value={currentAccount} />
           </Margin>
           sending {amount.toString()} units to
           <Margin as='span' left='small' right='small' top='small'>
             <IdentityIcon theme='substrate' size={16} value={recipientAddress} />
           </Margin>
-        </Margin>
+        </CenterDiv>
 
-        <Margin top='huge'>
+        <RightDiv>
           <SubHeader onClick={this.toggleDetails}>
             {showDetails ? 'Hide' : 'Click here'}
           </SubHeader>
           {showDetails ? this.renderDetails() : <p>to view full details</p>}
-        </Margin>
-      </Stacked>
+          {txResult && txResult.status.isFinalized && (
+            <NavButton onClick={this.handleNewTransfer}>New Transfer</NavButton>
+          )}
+        </RightDiv>
+      </StackedHorizontal>
     );
   }
 
   renderDetails () {
-    const { location: { state }, match: { params: { currentAddress } } } = this.props;
+    const { location: { state }, match: { params: { currentAccount } } } = this.props;
     const { amount, recipientAddress } = state;
 
     return (
-      <div>
-        <p>From: {currentAddress}</p>
+      <Segment placeholder>
+        <p>From: {currentAccount}</p>
         <p>To: {recipientAddress}</p>
         <p>Amount: {amount!.toString()} units</p>
         <p>Fees: [TODO]</p>
         <p>Total amount (amount + fees): [TODO]</p>
-      </div>
+      </Segment>
     );
   }
 
@@ -135,21 +157,21 @@ export class SentBalance extends React.PureComponent<Props, State> {
 
     switch (txResult && txResult.status.type) {
       case 'Finalized':
-        return <Margin bottom>
-          <Icon name='check' size='huge' />
-          <NoMarginHeader color='lightBlue1' >Transaction completed!</NoMarginHeader>
-        </Margin>;
+        return <Stacked>
+          <SubHeader color='lightBlue1' >Transaction completed!</SubHeader>
+          <Icon name='check' size='big' />
+        </Stacked>;
       case 'Dropped':
       case 'Usurped':
-        return <Margin bottom>
-          <Icon error name='cross' size='huge' />
-          <NoMarginHeader color='lightBlue1'>Transaction error!</NoMarginHeader>
-        </Margin>;
+        return <Stacked>
+          <SubHeader color='lightBlue1'>Transaction error!</SubHeader>
+          <Icon error name='cross' size='big' />
+        </Stacked>;
       default:
-        return <Margin bottom>
-          <Icon loading name='spinner' size='huge' />
-          <NoMarginHeader color='lightBlue1'>Sending...</NoMarginHeader>
-        </Margin>;
+        return <Stacked>
+          <SubHeader color='lightBlue1'>Sending...</SubHeader>
+          <Icon loading name='spinner' size='big' />
+        </Stacked>;
     }
   }
 }

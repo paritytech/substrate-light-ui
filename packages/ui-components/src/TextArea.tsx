@@ -13,16 +13,14 @@ type Props = {
   value?: string
 };
 
-class TextArea extends React.PureComponent<Props> {
+export class TextArea extends React.PureComponent<Props> {
   render () {
     const { placeholder, rows, value } = this.props;
 
     return (
       <Form>
-        <SUITextArea placeholder={placeholder} rows={rows} style={{ minHeight: '100px' }} value={value}/>
+        <SUITextArea placeholder={placeholder} rows={rows} style={{ minHeight: '100px' }} value={value} />
       </Form>
     );
   }
 }
-
-export default TextArea;

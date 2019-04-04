@@ -2,18 +2,26 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { ApiContext } from '@substrate/ui-api';
-import { AddressSummary, ErrorText, Icon, Input, Margin, NavButton, Stacked, Step } from '@substrate/ui-components';
-import BN from 'bn.js';
+import { Balance } from '@polkadot/types';
+import { ApiContext, Subscribe } from '@substrate/ui-api';
+import { BalanceDisplay, ErrorText, Form, Input, NavButton, StackedHorizontal, SubHeader } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
+import { Observable, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { MatchParams, TransferParams } from './types';
+import { MatchParams } from './types';
+import { CenterDiv, InputAddress, LeftDiv, RightDiv } from './Transfer.styles';
 
-interface Props extends RouteComponentProps<MatchParams, {}, Partial<TransferParams>> { }
+interface SendMatchParams extends MatchParams {
+  recipientAddress?: string;
+}
 
-interface State extends TransferParams {
-  amount: BN;
+interface Props extends RouteComponentProps<SendMatchParams> { }
+
+interface State {
+  amount: string;
+  balance?: Balance; // The balance of the sender
   error?: string;
 }
 
@@ -23,115 +31,184 @@ export class SendBalance extends React.PureComponent<Props, State> {
   context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
 
   state: State = {
-    amount: new BN(0),
-    recipientAddress: ''
+    amount: ''
   };
 
+  subscription?: Subscription;
+
   componentDidMount () {
-    const { location } = this.props;
-    if (location.state && location.state.recipientAddress) {
-      this.setState({
-        recipientAddress: location.state.recipientAddress
-      });
-    }
+    this.subscribeBalance();
   }
 
   componentDidUpdate (prevProps: Props) {
-    // Update state if location state has changed
-    if (
-      prevProps.location.state &&
-      this.props.location.state &&
-      this.props.location.state.recipientAddress &&
-      prevProps.location.state.recipientAddress !== this.props.location.state.recipientAddress
-    ) {
-      this.setState({
-        recipientAddress: this.props.location.state.recipientAddress
-      });
+    if (prevProps.match.params.currentAccount !== this.props.match.params.currentAccount) {
+      this.closeSubscription();
+      this.subscribeBalance();
     }
   }
 
-  isValidAddress = (address: string) => {
-    // TODO Do a checksum too
-    return address[0] === '5' && address.length === 48;
+  componentWillUnmount () {
+    this.closeSubscription();
   }
 
-  onChangeAmount = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+  closeSubscription () {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+      this.subscription = undefined;
+    }
+  }
+
+  handleChangeAmount = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
-      amount: new BN(value)
+      amount: value,
+      error: undefined
     });
   }
 
-  onChangeRecipientAddress = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+  handleChangeCurrentAccount = (account: string) => {
+    const { history, match: { params: { recipientAddress } } } = this.props;
+
     this.setState({
-      recipientAddress: value
+      error: undefined
     });
+
+    history.push(`/transfer/${account}/${recipientAddress}`);
   }
 
-  onError = (value?: string) => {
-    this.setState({ error: value });
+  handleChangeRecipientAddress = (recipientAddress: string) => {
+    const { history, match: { params: { currentAccount } } } = this.props;
+
+    this.setState({
+      error: undefined
+    });
+
+    history.push(`/transfer/${currentAccount}/${recipientAddress}`);
   }
 
-  onSubmitTransfer = () => {
-    const { history, match: { params: { currentAddress: senderAddress } } } = this.props;
-    const { amount, recipientAddress } = this.state;
+  handleError = (error: string) => {
+    this.setState({ error });
+  }
 
-    if (!recipientAddress) {
-      this.onError('Please make sure recipient address is set.');
+  handleSubmit = () => {
+    const { history, match: { params: { currentAccount, recipientAddress } } } = this.props;
+    const { amount, balance } = this.state;
+
+    // Do validation on account/address
+    if (currentAccount === recipientAddress) {
+      this.handleError('You cannot send balance to yourself.');
       return;
     }
 
-    if (amount.isZero()) {
-      this.onError('Please make sure you are sending more than 0 balance.');
+    // Do validation on amount
+    const amountBn = new Balance(amount);
+
+    if (!balance) {
+      // FIXME Improve UX here
+      this.handleError("Please try again in a few seconds as we're fetching your balance.");
       return;
     }
 
-    history.push(`/transfer/${senderAddress}/sent`, {
-      amount,
+    if (amountBn.isNeg()) {
+      this.handleError('Please enter a positive amount to transfer.');
+      return;
+    }
+
+    if (amountBn.isZero()) {
+      this.handleError('Please make sure you are sending more than 0 balance.');
+      return;
+    }
+
+    if (amountBn.gt(balance)) {
+      // FIXME Substract fees
+      this.handleError('You do not have enough balance to make this transfer.');
+      return;
+    }
+
+    // If everything is correct, then go to sent
+    history.push(`/transfer/${currentAccount}/sent`, {
+      amount: amountBn,
       recipientAddress
     });
   }
 
-  render () {
-    const { keyring } = this.context;
-    const { amount, recipientAddress } = this.state;
+  subscribeBalance = () => {
+    const { api } = this.context;
+    const { match: { params: { currentAccount } } } = this.props;
 
-    const isAddressValid = !!recipientAddress && this.isValidAddress(recipientAddress);
-    const recipientName = isAddressValid ? keyring.getAccount(recipientAddress).getMeta().name : '';
+    // Subscribe to sender's balance
+    // FIXME using any because freeBalance gives a Codec here, not a Balance
+    // Wait for @polkadot/api to have TS support for all query.*
+    this.subscription = (api.query.balances.freeBalance(currentAccount) as Observable<Balance>)
+      .subscribe((balance) => this.setState({ balance }));
+  }
+
+  render () {
+    const { api } = this.context;
+    const { match: { params: { currentAccount, recipientAddress } } } = this.props;
+    const { amount, balance, error } = this.state;
+
+    // const isAddressValid = !!recipientAddress && this.isValidAddress(recipientAddress);
+    // const recipientName = isAddressValid ? keyring.getAccount(recipientAddress).getMeta().name : '';
 
     return (
-      <Stacked>
-        <Step.Group vertical>
-          <Step completed={isAddressValid}>
-            <Step.Title> Recipient </Step.Title>
-            <Icon name='address book' />
-            <Step.Content>
-              <Margin top />
-              <Stacked>
-                <AddressSummary address={recipientAddress} name={recipientName} size='small' />
-                <Input onChange={this.onChangeRecipientAddress} type='text' value={recipientAddress} />
-              </Stacked>
-            </Step.Content>
-          </Step>
+      <Form onSubmit={this.handleSubmit}>
+        <StackedHorizontal alignItems='flex-start'>
+          <LeftDiv>
+            <SubHeader textAlign='left'>Sender Account:</SubHeader>
+            <InputAddress
+              onChange={this.handleChangeCurrentAccount}
+              type='account'
+              value={currentAccount}
+              withLabel={false}
+            />
+            {this.renderBalance(balance)}
+          </LeftDiv>
 
-          <Step completed={!amount.isZero()}>
-            <Step.Title> Amount </Step.Title>
-            <Icon name='law' />
-            <Step.Content>
-              <Stacked>
-                <Input onChange={this.onChangeAmount} type='number' value={amount} />
-              </Stacked>
-            </Step.Content>
-          </Step>
+          <CenterDiv>
+            <SubHeader textAlign='left'>Amount:</SubHeader>
+            <Input
+              fluid
+              label='UNIT'
+              labelPosition='right'
+              min={0}
+              onChange={this.handleChangeAmount}
+              placeholder='e.g. 1.00'
+              type='number'
+              value={amount}
+            />
+          </CenterDiv>
 
-          <Step>
-            <Icon name='send' />
-            <Step.Content>
-              <NavButton onClick={this.onSubmitTransfer}>Submit Transfer</NavButton>
-            </Step.Content>
-          </Step>
-        </Step.Group>
-      </Stacked>
+          <RightDiv>
+            <SubHeader textAlign='left'>Recipient Address:</SubHeader>
+            <InputAddress
+              label={null}
+              onChange={this.handleChangeRecipientAddress}
+              type='all'
+              value={recipientAddress}
+              withLabel={false}
+            />
+            {recipientAddress && <Subscribe>
+              {
+                // FIXME using any because freeBalance gives a Codec here, not a Balance
+                // Wait for @polkadot/api to have TS support for all query.*
+                api.query.balances.freeBalance(recipientAddress).pipe(map(this.renderBalance as any))
+              }
+            </Subscribe>}
+          </RightDiv>
+        </StackedHorizontal>
+        <StackedHorizontal>
+          <LeftDiv />
+          <CenterDiv>{this.renderError()}</CenterDiv>
+          <RightDiv>
+            <NavButton disabled={!!error}>Submit</NavButton>
+          </RightDiv>
+        </StackedHorizontal>
+      </Form>
     );
+  }
+
+  renderBalance (balance?: Balance) {
+    return balance && <BalanceDisplay balance={balance} />;
   }
 
   renderError () {

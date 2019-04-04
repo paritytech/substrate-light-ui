@@ -14,7 +14,7 @@ type Props = {
 
 const PLACEHOLDER_BALANCE = 0;
 
-export default class BalanceDisplay extends React.PureComponent<Props> {
+export class BalanceDisplay extends React.PureComponent<Props> {
   render () {
     const { balance, fontSize } = this.props;
 

@@ -3,5 +3,12 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 export type SUIDisplay = 'inline' | 'block';
+
 export type SUIPosition = 'bottom' | 'left' | 'right' | 'top';
+
+/**
+ * Size for <Input />
+ */
+export type SUIInputSize = 'mini' | 'small' | 'large' | 'big' | 'huge' | 'massive';
+
 export type SUISize = 'mini' | 'tiny' | 'small' | 'medium' | 'large' | 'big' | 'huge' | 'massive';

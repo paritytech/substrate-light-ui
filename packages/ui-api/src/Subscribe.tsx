@@ -51,7 +51,7 @@ export class Subscribe extends React.Component<{}, State> {
     }
   }
 
-  componentWillUmount () {
+  componentWillUnmount () {
     this.teardownSubscription();
   }
 

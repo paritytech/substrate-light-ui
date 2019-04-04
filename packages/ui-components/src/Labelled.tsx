@@ -12,7 +12,7 @@ type Props = {
   withLabel?: boolean
 };
 
-export default class Labelled extends React.PureComponent<Props> {
+export class Labelled extends React.PureComponent<Props> {
   render () {
     const { children, isHidden = false, label, withLabel = false } = this.props;
 

@@ -30,8 +30,11 @@ type LoadEvent = {
 const defaultAccept = ['application/json, text/plain'].join(',');
 
 // FIXME: this component is reused here and in @polkadot/apps - should be moved to @polkadot/ui
-class InputFile extends React.PureComponent<Props, State> {
-  static defaultProps: any;
+export class InputFile extends React.PureComponent<Props, State> {
+  static defaultProps: Props = {
+    accept: defaultAccept,
+    placeholder: 'Drop file here...'
+  };
 
   state: State = {};
 
@@ -50,7 +53,7 @@ class InputFile extends React.PureComponent<Props, State> {
               <input {...getInputProps()} />
               {
                 !file
-                  ? <FadedText>{ placeholder }</FadedText>
+                  ? <FadedText>{placeholder}</FadedText>
                   : <FadedText>{file.name}</FadedText>
               }
               <ErrorText> {error} </ErrorText>
@@ -97,10 +100,3 @@ class InputFile extends React.PureComponent<Props, State> {
     this.setState({ error: 'There was an issue with uploading this file. Please check it and try again.' });
   }
 }
-
-InputFile.defaultProps = {
-  accept: defaultAccept,
-  placeholder: 'Drop file here...'
-};
-
-export default InputFile;

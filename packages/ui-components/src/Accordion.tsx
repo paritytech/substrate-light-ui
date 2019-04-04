@@ -9,7 +9,7 @@ type Props = {
   [index: string]: any
 };
 
-export default class Accordion extends PureComponent<Props> {
+export class Accordion extends PureComponent<Props> {
   // TODO: move away from the defaults and use custom subcomponents
   static Accordion = SUIAccordion.Accordion;
   static Content = SUIAccordion.Content;
