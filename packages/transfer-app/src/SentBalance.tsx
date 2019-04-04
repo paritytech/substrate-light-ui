@@ -44,7 +44,7 @@ export class SentBalance extends React.PureComponent<Props, State> {
     // FIXME Instead of sending here, we should implement a simple tx queue
     // in React Context, so that if the user navigates away and back to this
     // page, his transaction status is still here.
-    const { api, keyring } = this.context;
+    const { alertStore, api, keyring } = this.context;
     const { location, match: { params: { currentAccount } } } = this.props;
 
     if (!location.state || !(location.state.amount instanceof Balance) || !location.state.recipientAddress) {
@@ -67,9 +67,17 @@ export class SentBalance extends React.PureComponent<Props, State> {
       // send the transaction
       .signAndSend(senderPair)
       .subscribe((txResult: SubmittableResult) => {
-        l.log('Tx status update:', txResult);
+        l.log(`Tx status update: ${txResult.status}`);
         this.setState(state => ({ ...state, txResult }));
         const { status: { isFinalized, isDropped, isUsurped } } = txResult;
+
+        if (isFinalized) {
+          alertStore.enqueue({
+            content: <p>HELLO</p>,
+            type: 'success'
+          });
+        }
+
         if (isFinalized || isDropped || isUsurped) {
           this.closeSubscription();
         }

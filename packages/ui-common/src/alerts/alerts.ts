@@ -4,12 +4,7 @@
 
 import React from 'react';
 
-enum AlertType {
-  ERROR,
-  INFO,
-  SUCCESS,
-  WARNING
-}
+export type AlertType = 'error' | 'info' | 'success' | 'warning';
 
 export interface Alert {
   content: React.ReactNode;
