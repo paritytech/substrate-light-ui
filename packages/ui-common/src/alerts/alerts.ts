@@ -16,6 +16,12 @@ export interface Alert {
   type: AlertType;
 }
 
+export interface AlertStore {
+  readonly alerts: Alert[];
+  enqueue (newItem: Alert): void;
+  dequeue (): void;
+}
+
 /**
  * Add element to end of queue.
  */
@@ -30,15 +36,7 @@ function dequeue<T> (queue: T[]) {
   return queue.slice(0, -1);
 }
 
-function dequeueN<T> (queue: T[], n: number): [T, T[]] {
-  if (n === ) {
-    return [queue];
-  }
-
-  return dequeueN(queue, n - 1).concat();
-}
-
-function initAlerts () {
+export function initStore () {
   let alerts: Alert[] = [];
 
   return ({
@@ -46,12 +44,12 @@ function initAlerts () {
       return alerts;
     },
 
-    add (newItem: Alert) {
-      alerts = addToQueue(alerts, newItem);
+    enqueue (newItem: Alert) {
+      alerts = enqueue(alerts, newItem);
     },
 
-    removeNth (n: number) {
-
+    dequeue () {
+      alerts = dequeue(alerts);
     }
-  });
+  }) as AlertStore;
 }
