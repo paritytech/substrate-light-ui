@@ -16,10 +16,42 @@ export interface Alert {
   type: AlertType;
 }
 
-function addToQueue<T> (state: T[], newItem: T) {
-  return state.concat(newItem);
+/**
+ * Add element to end of queue.
+ */
+function enqueue<T> (queue: T[], newItem: T) {
+  return queue.concat(newItem);
 }
 
-function removeNth<T> (state: T[], n: number) {
+/**
+ * Remove last element of queue.
+ */
+function dequeue<T> (queue: T[]) {
+  return queue.slice(0, -1);
+}
 
+function dequeueN<T> (queue: T[], n: number): [T, T[]] {
+  if (n === ) {
+    return [queue];
+  }
+
+  return dequeueN(queue, n - 1).concat();
+}
+
+function initAlerts () {
+  let alerts: Alert[] = [];
+
+  return ({
+    get alerts () {
+      return alerts;
+    },
+
+    add (newItem: Alert) {
+      alerts = addToQueue(alerts, newItem);
+    },
+
+    removeNth (n: number) {
+
+    }
+  });
 }
