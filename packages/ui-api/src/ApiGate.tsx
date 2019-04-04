@@ -16,8 +16,13 @@ interface State {
   isReady: boolean;
 }
 
-export class ApiGate extends React.PureComponent {
+interface Props {
+  loadingComponent: React.ReactNode;
+}
+
+export class ApiGate extends React.PureComponent<Props> {
   private api = new ApiRx();
+
   state = { isReady: false } as State;
 
   componentDidMount () {
@@ -28,18 +33,18 @@ export class ApiGate extends React.PureComponent {
       // FIXME Correct types should come from @polkadot/api to avoid type assertion
       (this.api.rpc.system.properties() as unknown as Observable<ChainProperties>)
     )
-    .subscribe(([_, chain, properties]) => {
-      const networkId = properties.get('networkId') || 42;
+      .subscribe(([_, chain, properties]) => {
+        const networkId = properties.get('networkId') || 42;
 
-      // keyring with Schnorrkel support
-      keyring.loadAll({
-        addressPrefix: networkId,
-        isDevelopment: isTestChain(chain.toString()),
-        type: 'ed25519'
+        // keyring with Schnorrkel support
+        keyring.loadAll({
+          addressPrefix: networkId,
+          isDevelopment: isTestChain(chain.toString()),
+          type: 'ed25519'
+        });
+
+        this.setState({ isReady: true });
       });
-
-      this.setState({ isReady: true });
-    });
   }
 
   render () {
