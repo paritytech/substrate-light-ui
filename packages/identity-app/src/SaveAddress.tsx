@@ -62,7 +62,7 @@ export class SaveAddress extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { address, name } = this.state;
+    const { lookupAddress, name } = this.state;
 
     return (
       <WalletCard
@@ -76,7 +76,7 @@ export class SaveAddress extends React.PureComponent<Props, State> {
               label='Address'
               onChange={this.handleInputAddressLookup}
               type='text'
-              value={address}
+              value={lookupAddress}
             />
             <Margin top />
             <Input

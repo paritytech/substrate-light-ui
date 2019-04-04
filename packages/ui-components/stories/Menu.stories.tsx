@@ -4,7 +4,7 @@
 
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { withKnobs, boolean, text } from '@storybook/addon-knobs';
+import { withKnobs, boolean } from '@storybook/addon-knobs';
 import Dropdown from 'semantic-ui-react/dist/commonjs/modules/Dropdown';
 
 import { withTheme } from './customDecorators';
