@@ -2,7 +2,6 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Loading } from '@substrate/ui-components';
 import ApiRx from '@polkadot/api/rx';
 import { ChainProperties } from '@polkadot/types';
 import keyring from '@polkadot/ui-keyring';
@@ -10,7 +9,7 @@ import React from 'react';
 import { Observable, zip } from 'rxjs';
 
 import { initStore } from './Alerts';
-import { Context } from './Context';
+import { AppContext } from './AppContext';
 import { isTestChain } from './util';
 
 interface System {
@@ -81,7 +80,7 @@ export class ContextGate extends React.PureComponent<Props> {
 
     console.log('system', system);
 
-    return <Context.Provider value={{
+    return <AppContext.Provider value={{
       alerts: this.alerts,
       api: this.api,
       isReady,
@@ -89,6 +88,6 @@ export class ContextGate extends React.PureComponent<Props> {
       system
     }}>
       {children}
-    </Context.Provider>;
+    </AppContext.Provider>;
   }
 }

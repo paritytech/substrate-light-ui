@@ -23,4 +23,4 @@ export interface AppContextType {
   readonly system: any;
 }
 
-export const Context: React.Context<AppContextType> = React.createContext({} as AppContextType);
+export const AppContext: React.Context<AppContextType> = React.createContext({} as AppContextType);

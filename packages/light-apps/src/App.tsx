@@ -4,7 +4,7 @@
 
 import 'semantic-ui-css/semantic.min.css';
 import substrateLogo from '@polkadot/ui-assets/parity-substrate.svg';
-import { ApiGate } from '@substrate/ui-api';
+import { ApiGate } from '@substrate/ui-common';
 import { GlobalStyle, substrateLightTheme } from '@substrate/ui-components';
 
 import React from 'react';
