@@ -15,7 +15,7 @@ import { MatchParams } from './types';
 
 interface Props extends RouteComponentProps<MatchParams> {}
 
-export class SavedAccounts extends React.PureComponent<Props> {
+export class SavedAddresses extends React.PureComponent<Props> {
   static contextType = ApiContext;
 
   context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context

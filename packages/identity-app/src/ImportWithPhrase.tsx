@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { ApiContext } from '@substrate/ui-api';
-import { ErrorText, Input, Modal, Stacked } from '@substrate/ui-components';
+import { ErrorText, Input, Modal, NavButton, Stacked } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
@@ -32,16 +32,19 @@ export class ImportWithPhrase extends React.PureComponent<Props> {
     const { name, password, recoveryPhrase } = this.state;
     const { history } = this.props;
 
-    if (!password) {
-      this.onError('Please enter the password you used to create this account');
-      return false;
-    }
-
     try {
+      if (!password) {
+        throw new Error('Please enter the password you used to create this account');
+      }
+
       if (recoveryPhrase && recoveryPhrase.split(' ').length === 12) {
-        keyring.createAccountMnemonic(recoveryPhrase, password);
+        const meta = { name: name };
+
+        let pair = keyring.createAccountMnemonic(recoveryPhrase, password, meta);
+
+        history.push(`identity/${pair.address()}`);
       } else {
-        this.onError('Invalid phrase. Please check it and try again.');
+        throw new Error('Invalid phrase. Please check it and try again.');
       }
     } catch (e) {
       this.onError(e.message);
@@ -51,6 +54,12 @@ export class ImportWithPhrase extends React.PureComponent<Props> {
   onChangeName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
       name: value
+    });
+  }
+
+  onChangePassword = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      password: value
     });
   }
 
@@ -70,21 +79,25 @@ export class ImportWithPhrase extends React.PureComponent<Props> {
     const { name, password, recoveryPhrase } = this.state;
 
     return (
-      <Stacked justify='space-between'>
+      <Stacked justify='space-between' align='space-between'>
         <Modal.SubHeader> Import Account from Mnemonic Recovery Phrase </Modal.SubHeader>
         <Input
+          label='Phrase'
           onChange={this.onChangePhrase}
           type='text'
           value={recoveryPhrase} />
         <Input
+          label='Name'
           onChange={this.onChangeName}
           type='text'
           value={name} />
         <Input
+          label='Password'
           onChange={this.onChangePassword}
           type='password'
           value={password} />
         <NavButton onClick={this.handleUnlockWithPhrase} value='Restore' />
+
         {this.renderError()}
       </Stacked>
     );

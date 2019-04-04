@@ -28,9 +28,15 @@ export class Restore extends React.PureComponent<Props> {
     });
   }
 
-  toggleScreen = () => {
+  toJsonScreen = () => {
     this.setState({
-      screen: this.state.screen === 'JSON' ? 'Phrase' : 'JSON'
+      screen: 'JSON'
+    });
+  }
+
+  toPhraseScreen = () => {
+    this.setState({
+      screen: 'Phrase'
     });
   }
 
@@ -40,8 +46,8 @@ export class Restore extends React.PureComponent<Props> {
     return (
       <React.Fragment>
         <Menu>
-          <StyledLinkButton onClick={this.toggleScreen}> With JSON </StyledLinkButton>
-          <StyledLinkButton onClick={this.toggleScreen}> With Phrase </StyledLinkButton>
+          <StyledLinkButton onClick={this.toJsonScreen}> With JSON </StyledLinkButton>
+          <StyledLinkButton onClick={this.toPhraseScreen}> With Phrase </StyledLinkButton>
         </Menu>
         {
           screen === 'JSON'

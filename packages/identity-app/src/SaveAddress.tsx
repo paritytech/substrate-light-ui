@@ -16,7 +16,7 @@ type State = {
   success: string | null
 };
 
-export class AddressBook extends React.PureComponent<Props, State> {
+export class SaveAddress extends React.PureComponent<Props, State> {
   static contextType = ApiContext;
 
   context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
@@ -62,26 +62,31 @@ export class AddressBook extends React.PureComponent<Props, State> {
   }
 
   render () {
+    const { address, name } = this.state;
+
     return (
       <WalletCard
-        header='Address Book'
+        header='Save Address'
         subheader='Inspect the status of any identity and name it for later use' >
         <Margin top />
         <Stacked>
           <WithSpace>
-            <SubHeader> Lookup Account By Address </SubHeader>
+            <SubHeader> Save Address </SubHeader>
             <Input
+              label='Address'
               onChange={this.handleInputAddressLookup}
               type='text'
+              value={address}
             />
             <Margin top />
-            <SubHeader> Name </SubHeader>
             <Input
+              label='Name'
               onChange={this.handleInputName}
               type='text'
+              value={name}
             />
           </WithSpace>
-          <NavButton onClick={this.handleSaveAccount} value='Save Identity' />
+          <NavButton onClick={this.handleSaveAccount} value='Save Address' />
           { this.renderError() }
           { this.renderSuccess() }
         </Stacked>

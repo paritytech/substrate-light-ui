@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Container, Grid } from '@substrate/ui-components';
+import { Grid } from '@substrate/ui-components';
 
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -12,6 +12,7 @@ import Menu from 'semantic-ui-react/dist/commonjs/collections/Menu';
 import { SavedAccounts } from './SavedAccounts';
 import { SavedAddresses } from './SavedAddresses';
 import { ManageAccounts } from './ManageAccounts';
+import { ManageAddresses } from './ManageAddresses';
 import { IdentityManagementScreen, MatchParams } from './types';
 
 interface Props extends RouteComponentProps<MatchParams> {}
@@ -40,11 +41,6 @@ const accountManagementOptions = [
 
 const addressManagementOptions = [
   {
-    key: 'Lookup',
-    text: 'Lookup',
-    value: 'Lookup'
-  },
-  {
     key: 'Add',
     text: 'Add',
     value: 'Add'
@@ -68,27 +64,6 @@ export class Identity extends React.PureComponent<Props> {
     return (
       <Grid>
         <Grid.Row>
-          <Grid.Column width={7} />
-          <Grid.Column width={9}>
-            <Menu>
-              <Dropdown
-                  fluid
-                  onChange={this.handleMenuOptionSelected}
-                  options={accountManagementOptions}
-                  placeholder='Manage Accounts'
-                  selection
-                />
-              <Dropdown
-                  fluid
-                  onChange={this.handleMenuOptionSelected}
-                  options={addressManagementOptions}
-                  placeholder='Manage Addresses'
-                  selection
-                />
-            </Menu>
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
             {
               ['Edit', 'Create', 'Restore'].includes(screen)
                 ? this.renderManageAccounts()
@@ -106,19 +81,47 @@ export class Identity extends React.PureComponent<Props> {
     return (
       <React.Fragment>
         <Grid.Column width={7}> <SavedAccounts {...this.props} /> </Grid.Column>
-        <Grid.Column width={9}> <ManageAccounts address={currentAddress} screen={screen} {...this.props} /> </Grid.Column>
+        <Grid.Column width={9}>
+          { this.renderMenu() }
+          <ManageAccounts address={currentAddress} screen={screen} {...this.props} />
+        </Grid.Column>
       </React.Fragment>
     );
   }
 
   renderManageAddresses () {
     const { screen } = this.state;
-    // const { match: { params: { currentAddress } } } = this.props;
+    const { match: { params: { currentAddress } } } = this.props;
 
     return (
       <React.Fragment>
         <Grid.Column width={7}> <SavedAddresses {...this.props} /> </Grid.Column>
+        <Grid.Column width={9}>
+          { this.renderMenu() }
+          <ManageAddresses address={currentAddress} screen={screen} {...this.props} />
+        </Grid.Column>
       </React.Fragment>
+    );
+  }
+
+  renderMenu () {
+    return (
+      <Menu>
+        <Dropdown
+            fluid
+            onChange={this.handleMenuOptionSelected}
+            options={accountManagementOptions}
+            placeholder='Manage Accounts'
+            selection
+          />
+        <Dropdown
+            fluid
+            onChange={this.handleMenuOptionSelected}
+            options={addressManagementOptions}
+            placeholder='Manage Addresses'
+            selection
+          />
+      </Menu>
     );
   }
 }

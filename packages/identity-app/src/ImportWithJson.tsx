@@ -13,8 +13,8 @@ interface Props extends RouteComponentProps {
 }
 
 type State = {
-  jsonString?: string,
-  password?: string,
+  jsonString: string,
+  password: string,
   step: 'upload' | 'password'
 };
 
@@ -24,6 +24,8 @@ export class ImportWithJson extends React.PureComponent<Props, State> {
   context!: React.ContextType<typeof ApiContext>;
 
   state: State = {
+    jsonString: '',
+    password: '',
     step: 'upload'
   };
 
