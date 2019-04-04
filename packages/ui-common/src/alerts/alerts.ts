@@ -30,10 +30,10 @@ function enqueue<T> (queue: T[], newItem: T) {
 }
 
 /**
- * Remove last element of queue.
+ * Remove first element of queue.
  */
 function dequeue<T> (queue: T[]) {
-  return queue.slice(0, -1);
+  return queue.slice(1);
 }
 
 export function initStore () {
