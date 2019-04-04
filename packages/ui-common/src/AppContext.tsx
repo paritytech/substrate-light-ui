@@ -22,7 +22,7 @@ export interface System {
 // or use one context for everything:
 // https://github.com/facebook/react/issues/12397#issuecomment-462142714
 export interface AppContextType {
-  alerts: AlertStore; // UI alerts
+  alertStore: AlertStore; // UI alerts
   api: ApiRx; // From @polkadot/api
   isReady: boolean; // Are api and keyring loaded?
   keyring: typeof keyring; // From @polkadot/ui-keyring

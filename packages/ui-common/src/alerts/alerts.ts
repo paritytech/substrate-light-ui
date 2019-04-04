@@ -36,7 +36,7 @@ function dequeue<T> (queue: T[]) {
   return queue.slice(1);
 }
 
-export function initStore () {
+export function alertStore () {
   let alerts: Alert[] = [];
 
   return ({

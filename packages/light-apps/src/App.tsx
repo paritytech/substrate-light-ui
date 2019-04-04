@@ -6,11 +6,11 @@ import 'semantic-ui-css/semantic.min.css';
 import substrateLogo from '@polkadot/ui-assets/parity-substrate.svg';
 import { AppContext, ContextGate } from '@substrate/ui-common';
 import { GlobalStyle, Loading, substrateLightTheme } from '@substrate/ui-components';
-
 import React from 'react';
 import { BrowserRouter, NavLink } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
+import { Alerts } from './Alerts';
 import { Content } from './Content';
 
 export class App extends React.PureComponent {
@@ -35,6 +35,7 @@ export class App extends React.PureComponent {
               <AppContext.Consumer>
                 {({ isReady }) => isReady ? <Content /> : <Loading active />}
               </AppContext.Consumer>
+              <Alerts />
             </React.Fragment>
           </BrowserRouter >
         </ThemeProvider>

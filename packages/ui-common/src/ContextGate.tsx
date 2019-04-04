@@ -9,7 +9,7 @@ import { logger } from '@polkadot/util';
 import React from 'react';
 import { Observable, zip } from 'rxjs';
 
-import { initStore } from './alerts';
+import { alertStore } from './alerts';
 import { AppContext, System } from './AppContext';
 import { isTestChain } from './util';
 
@@ -23,7 +23,7 @@ const INIT_ERROR = new Error('Please wait for `isReady` before fetching this pro
 const l = logger('ui-common');
 
 export class ContextGate extends React.PureComponent<{}, State> {
-  alerts = initStore();
+  alertStore = alertStore();
 
   api = new ApiRx();
 
@@ -73,7 +73,7 @@ export class ContextGate extends React.PureComponent<{}, State> {
     const { isReady, system } = this.state;
 
     return <AppContext.Provider value={{
-      alerts: this.alerts,
+      alertStore: this.alertStore,
       api: this.api,
       isReady,
       keyring,

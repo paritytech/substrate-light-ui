@@ -7,6 +7,7 @@ export {
   DropdownItem, DropdownItemProps,
   Form, FormProps,
   Input, InputProps,
+  Message, MessageProps,
   Segment, SegmentProps,
   Step, StepProps
 } from 'semantic-ui-react';
@@ -14,6 +15,7 @@ export {
 export * from './Accordion';
 export * from './Address';
 export * from './AddressSummary';
+export * from './Alert';
 export * from './Balance';
 export * from './Card';
 export * from './FlexSegment';
