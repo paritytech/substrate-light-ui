@@ -30,10 +30,10 @@ export class ContextGate extends React.PureComponent<{}, State> {
   state: State = {
     isReady: false,
     system: {
-      get chain () {
+      get chain (): never {
         throw INIT_ERROR;
       },
-      get properties () {
+      get properties (): never {
         throw INIT_ERROR;
       }
     }
