@@ -19,8 +19,6 @@ export class App extends React.PureComponent {
   context!: React.ContextType<typeof AppContext>; // http://bit.ly/typescript-and-react-context
 
   render () {
-    const { isReady } = this.context;
-
     return (
       <ContextGate>
         <ThemeProvider theme={substrateLightTheme}>
@@ -34,7 +32,9 @@ export class App extends React.PureComponent {
                   width={150}
                 />
               </NavLink>
-              {isReady ? <Content /> : <Loading active />}
+              <AppContext.Consumer>
+                {({ isReady }) => isReady ? <Content /> : <Loading active />}
+              </AppContext.Consumer>
             </React.Fragment>
           </BrowserRouter >
         </ThemeProvider>

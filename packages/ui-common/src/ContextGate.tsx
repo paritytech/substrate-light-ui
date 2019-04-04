@@ -10,13 +10,8 @@ import React from 'react';
 import { Observable, zip } from 'rxjs';
 
 import { initStore } from './alerts';
-import { AppContext } from './AppContext';
+import { AppContext, System } from './AppContext';
 import { isTestChain } from './util';
-
-interface System {
-  chain: any;
-  properties: any;
-}
 
 interface State {
   isReady: boolean;
