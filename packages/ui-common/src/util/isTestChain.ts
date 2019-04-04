@@ -2,12 +2,10 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-const re = new RegExp('^(Development|Local Testnet)$');
-
-export default function isTestChain (chain?: string | null): boolean {
+export function isTestChain (chain?: string) {
   if (!chain) {
     return false;
   }
 
-  return !!re.test(chain.toString());
+  return ['Development', 'Local Testnet'].includes(chain);
 }

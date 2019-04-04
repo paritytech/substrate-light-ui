@@ -1,5 +1,5 @@
 {
-  "name": "@substrate/ui-api",
+  "name": "@substrate/ui-common",
   "author": "Parity Technologies <admin@parity.io>",
   "version": "0.1.0",
   "description": "Wrapper to connect React components to PolkadotJS Api",

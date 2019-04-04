@@ -7,8 +7,8 @@ import keyring from '@polkadot/ui-keyring';
 import React from 'react';
 
 export interface ApiContextType {
-  api: ApiRx;
-  keyring: typeof keyring;
+  readonly api: ApiRx;
+  readonly keyring: typeof keyring;
 }
 
-export const ApiContext: React.Context<ApiContextType> = React.createContext({} as ApiContextType);
+export const Context: React.Context<ApiContextType> = React.createContext({} as ApiContextType);

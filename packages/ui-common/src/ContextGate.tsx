@@ -9,7 +9,7 @@ import keyring from '@polkadot/ui-keyring';
 import React from 'react';
 import { Observable, zip } from 'rxjs';
 
-import { ApiContext } from './ApiContext';
+import { Context } from './Context';
 import { isTestChain } from './util';
 
 interface State {
@@ -20,7 +20,7 @@ interface Props {
   loadingComponent: React.ReactNode;
 }
 
-export class ApiGate extends React.PureComponent<Props> {
+export class ContextGate extends React.PureComponent<Props> {
   private api = new ApiRx();
 
   state = { isReady: false } as State;
@@ -52,7 +52,7 @@ export class ApiGate extends React.PureComponent<Props> {
     const { isReady } = this.state;
 
     return isReady
-      ? <ApiContext.Provider value={{ api: this.api, keyring }}>{children}</ApiContext.Provider>
+      ? <Context.Provider value={{ api: this.api, keyring }}>{children}</Context.Provider>
       : <Loading active />;
   }
 }
