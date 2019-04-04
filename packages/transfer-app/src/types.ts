@@ -2,19 +2,9 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import BN from 'bn.js';
-
 /**
- * All paths inside transfer are sub-routes of: `/transfer/:currentAddress`
+ * All paths inside transfer are sub-routes of: `/transfer/:currentAccount`
  */
 export interface MatchParams {
-  currentAddress: string;
-}
-
-/**
- * Params needed for api.tx.balances.tranfer().
- */
-export interface TransferParams {
-  amount: BN;
-  recipientAddress: string;
+  currentAccount: string;
 }

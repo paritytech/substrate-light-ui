@@ -6,7 +6,7 @@ import React from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import styled from 'styled-components';
 
-import { Icon } from './index';
+import { Icon } from './Icon';
 
 type Props = {
   value?: string
@@ -27,7 +27,7 @@ const StyledCopyButton = styled.button`
   }
 `;
 
-export default class CopyButton extends React.PureComponent<Props, State> {
+export class CopyButton extends React.PureComponent<Props, State> {
   state: State = {
     copied: false
   };

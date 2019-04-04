@@ -8,7 +8,7 @@ import { action } from '@storybook/addon-actions';
 import { text, withKnobs } from '@storybook/addon-knobs';
 
 import { withTheme } from './customDecorators';
-import NavButton from '../src/NavButton';
+import { NavButton } from '../src/NavButton';
 
 storiesOf('NavButton', module)
   .addDecorator(withKnobs)
@@ -29,6 +29,6 @@ storiesOf('NavButton', module)
       fontSize={text('font size', '17px')}
       fontWeight={text('font weight', '500')}
       onClick={action('clicked')}>
-        {text('child', 'Button')}
+      {text('child', 'Button')}
     </NavButton>
   ));

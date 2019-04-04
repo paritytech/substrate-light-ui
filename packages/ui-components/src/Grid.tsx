@@ -9,7 +9,8 @@ type Props = {
   [index: string]: any
 };
 
-export default class Grid extends React.PureComponent<Props> {
+export class Grid extends React.PureComponent<Props> {
+  // FIXME To be overwritten by our own styles
   static Column = SUIGrid.Column;
   static Row = SUIGrid.Row;
 

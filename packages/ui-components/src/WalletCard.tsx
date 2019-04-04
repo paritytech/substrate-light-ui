@@ -12,7 +12,7 @@ type Props = {
   overflow?: string
 };
 
-class WalletCard extends React.PureComponent<Props> {
+export class WalletCard extends React.PureComponent<Props> {
   render () {
     const { children, header, overflow = 'none', subheader } = this.props;
 
@@ -31,5 +31,3 @@ class WalletCard extends React.PureComponent<Props> {
     );
   }
 }
-
-export default WalletCard;

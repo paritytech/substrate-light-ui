@@ -7,7 +7,7 @@ import IdentityIcon from '@polkadot/ui-identicon';
 import { KeyringAddress } from '@polkadot/ui-keyring/types';
 import React from 'react';
 
-import BalanceDisplay from '../Balance';
+import { BalanceDisplay } from '../Balance';
 import { DynamicSizeText, Stacked, StackedHorizontal } from '../Shared.styles';
 import { OrientationType, SizeType } from './types';
 
@@ -54,15 +54,15 @@ export class AddressSummary extends React.PureComponent<Props> {
         <Stacked>
           <IdentityIcon value={address as string || PLACEHOLDER_ADDRESS} theme={'substrate'} size={styles.identiconSize} />
           <DynamicSizeText fontSize={styles.nameSize}> {name || PLACEHOLDER_NAME} </DynamicSizeText>
-          { balance && <BalanceDisplay balance={balance} /> }
+          {balance && <BalanceDisplay balance={balance} />}
         </Stacked>
       );
     } else {
       return (
-        <StackedHorizontal justify='space-around'>
+        <StackedHorizontal justifyContent='space-around'>
           <IdentityIcon value={address as string || PLACEHOLDER_ADDRESS} theme={'substrate'} size={styles.identiconSize} />
           <DynamicSizeText fontSize={styles.nameSize}> {name || PLACEHOLDER_NAME} </DynamicSizeText>
-          { balance && <BalanceDisplay balance={balance} /> }
+          {balance && <BalanceDisplay balance={balance} />}
         </StackedHorizontal>
       );
     }

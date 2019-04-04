@@ -8,7 +8,7 @@ import { action } from '@storybook/addon-actions';
 import { text, withKnobs } from '@storybook/addon-knobs';
 
 import { withMemoryRouter, withTheme } from './customDecorators';
-import NavLink from '../src/NavLink';
+import { NavLink } from '../src/NavLink';
 
 storiesOf('NavLink', module)
   .addDecorator(withKnobs)
@@ -29,6 +29,6 @@ storiesOf('NavLink', module)
       fontSize={text('font size', '17px')}
       fontWeight={text('font weight', '500')}
       to={text('to', '/there')}>
-        {text('child', 'Link')}
+      {text('child', 'Link')}
     </NavLink>
   ));
