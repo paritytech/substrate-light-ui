@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { ApiContext } from '@substrate/ui-api';
-import { AddressSummary, ErrorText, FadedText, Input, Margin, MnemonicSegment, NavButton, Segment, Stacked, StackedHorizontal, StyledLinkButton, SubHeader, WithSpaceAround } from '@substrate/ui-components';
+import { AddressSummary, ErrorText, Input, NavButton, Stacked, SubHeader, WithSpaceAround } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 

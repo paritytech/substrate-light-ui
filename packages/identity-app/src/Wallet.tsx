@@ -5,9 +5,7 @@
 import { ErrorText, Input, Margin, NavButton, Stacked, SubHeader, SuccessText, WalletCard, WithSpace } from '@substrate/ui-components';
 import React from 'react';
 
-type Props = {
-  basePath: string
-};
+type Props = {};
 
 type State = {
   error: string | null,

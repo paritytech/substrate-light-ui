@@ -10,6 +10,7 @@ import Dropdown, { DropdownProps } from 'semantic-ui-react/dist/commonjs/modules
 import Menu from 'semantic-ui-react/dist/commonjs/collections/Menu';
 
 import { SavedAccounts } from './SavedAccounts';
+import { SavedAddresses } from './SavedAddresses';
 import { ManageAccounts } from './ManageAccounts';
 import { IdentityManagementScreen, MatchParams } from './types';
 
@@ -65,32 +66,36 @@ export class Identity extends React.PureComponent<Props> {
     const { screen } = this.state;
 
     return (
-      <Container>
-        <Menu>
-          <Dropdown
-              fluid
-              onChange={this.handleMenuOptionSelected}
-              options={accountManagementOptions}
-              placeholder='Manage Accounts'
-              selection
-            />
-          <Dropdown
-              fluid
-              onChange={this.handleMenuOptionSelected}
-              options={addressManagementOptions}
-              placeholder='Manage Addresses'
-              selection
-            />
-        </Menu>
-
-        <Grid>
-          {
-            ['Edit', 'Create', 'Restore'].includes(screen)
-              ? this.renderManageAccounts()
-              : this.renderManageAddresses()
-          }
-        </Grid>
-      </Container>
+      <Grid>
+        <Grid.Row>
+          <Grid.Column width={7} />
+          <Grid.Column width={9}>
+            <Menu>
+              <Dropdown
+                  fluid
+                  onChange={this.handleMenuOptionSelected}
+                  options={accountManagementOptions}
+                  placeholder='Manage Accounts'
+                  selection
+                />
+              <Dropdown
+                  fluid
+                  onChange={this.handleMenuOptionSelected}
+                  options={addressManagementOptions}
+                  placeholder='Manage Addresses'
+                  selection
+                />
+            </Menu>
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+            {
+              ['Edit', 'Create', 'Restore'].includes(screen)
+                ? this.renderManageAccounts()
+                : this.renderManageAddresses()
+            }
+        </Grid.Row>
+      </Grid>
     );
   }
 
@@ -99,20 +104,21 @@ export class Identity extends React.PureComponent<Props> {
     const { match: { params: { currentAddress } } } = this.props;
 
     return (
-      <Grid.Row>
-        <Grid.Column width={7}> <SavedAccounts /> </Grid.Column>
-        <Grid.Column width={9}> <ManageAccounts address={currentAddress} screen={screen} /> </Grid.Column>
-      </Grid.Row>
+      <React.Fragment>
+        <Grid.Column width={7}> <SavedAccounts {...this.props} /> </Grid.Column>
+        <Grid.Column width={9}> <ManageAccounts address={currentAddress} screen={screen} {...this.props} /> </Grid.Column>
+      </React.Fragment>
     );
   }
 
   renderManageAddresses () {
-    return ('implement this later ');
-    // return (
-    //   <React.Fragment>
-    //     <SavedAddresses />
-    //     <ManageAddresses screen={screen} />
-    //   <React.Fragment>
-    // );
+    const { screen } = this.state;
+    // const { match: { params: { currentAddress } } } = this.props;
+
+    return (
+      <React.Fragment>
+        <Grid.Column width={7}> <SavedAddresses {...this.props} /> </Grid.Column>
+      </React.Fragment>
+    );
   }
 }

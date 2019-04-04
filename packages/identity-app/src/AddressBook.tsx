@@ -7,9 +7,7 @@ import { ErrorText, Input, Margin, NavButton, Stacked, SubHeader, SuccessText, W
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-interface Props extends RouteComponentProps {
-  basePath: string;
-}
+interface Props extends RouteComponentProps {}
 
 type State = {
   error: string | null,

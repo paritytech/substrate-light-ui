@@ -3,16 +3,18 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 import { ErrorText } from '@substrate/ui-components';
 
 import { Create } from './Create';
 import { Edit } from './Edit';
-import { IdentityManagementScreen } from './types';
+import { Restore } from './Restore';
+import { IdentityManagementScreen, MatchParams } from './types';
 
-type Props = {
-  address: string,
-  screen: IdentityManagementScreen
-};
+interface Props extends RouteComponentProps<MatchParams> {
+  address: string;
+  screen: IdentityManagementScreen;
+}
 
 export class ManageAccounts extends React.PureComponent<Props> {
   render () {
@@ -36,13 +38,13 @@ export class ManageAccounts extends React.PureComponent<Props> {
 
   renderCreateScreen () {
     return (
-      <Create />
+      <Create {...this.props} />
     );
   }
 
   renderEditScreen () {
     return (
-      <Edit address={this.props.address} />
+      <Edit address={this.props.address} {...this.props} />
     );
   }
 
@@ -54,7 +56,7 @@ export class ManageAccounts extends React.PureComponent<Props> {
 
   renderRestoreScreen () {
     return (
-      <p> Restore screen goes here </p>
+      <Restore {...this.props} />
     );
   }
 }

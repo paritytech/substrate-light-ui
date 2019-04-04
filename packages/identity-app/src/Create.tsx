@@ -9,9 +9,7 @@ import FileSaver from 'file-saver';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-interface Props extends RouteComponentProps {
-  basePath: string;
-}
+interface Props extends RouteComponentProps {}
 
 type Steps = 'create' | 'rewrite';
 
@@ -198,7 +196,6 @@ export class Create extends React.PureComponent<Props, State> {
           <FadedText> Rewrite Mnemonic Below </FadedText>
           <Input
             autoFocus
-            fluid
             onChange={this.onChangeRewritePhrase}
             type='text'
             value={rewritePhrase} />

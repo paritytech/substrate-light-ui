@@ -14,9 +14,7 @@ interface MatchParams {
   currentAddress: string;
 }
 
-interface Props extends RouteComponentProps<MatchParams> {
-  basePath: string;
-}
+interface Props extends RouteComponentProps<MatchParams> {}
 
 export class Transfer extends React.PureComponent<Props> {
   render () {

@@ -13,9 +13,7 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 
 import { MatchParams } from './types';
 
-interface Props extends RouteComponentProps<MatchParams> {
-  basePath: string;
-}
+interface Props extends RouteComponentProps<MatchParams> {}
 
 export class SavedAccounts extends React.PureComponent<Props> {
   static contextType = ApiContext;
