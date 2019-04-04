@@ -5,7 +5,7 @@
 import { Balance } from '@polkadot/types';
 import { stringUpperFirst } from '@polkadot/util';
 import { ApiContext, Subscribe } from '@substrate/ui-api';
-import { Address, AddressSummary, BalanceDisplay, ErrorText, FadedText, Header, Icon, Input, Margin, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SuccessText, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
+import { Accordion, Address, AddressSummary, Dropdown, ErrorText, FadedText, Header, Icon, Input, Margin, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SuccessText, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -154,42 +154,60 @@ export class IdentityCard extends React.PureComponent<Props, State> {
 
   render () {
     const { api } = this.context;
+    const { expanded } = this.state;
+
     const address = this.getAddress();
+    const currentLocation = location.pathname.split('/')[1].toLowerCase();
 
     return (
-      <StyledCard>
-        <CardContent>
-          <Header> Current Account </Header>
-          {address
-            ?
-            <React.Fragment>
-              <AddressSummary address={address} name={this.getName()} />
-              <Subscribe>
-                {
-                  // FIXME using any because freeBalance gives a Codec here, not a Balance
-                  // Wait for @polkadot/api to have TS support for all query.*
-                  api.query.balances.freeBalance(address).pipe(map(this.renderBalance as any))
-                }
-              </Subscribe>
-            </React.Fragment>
-            : <div>Loading...</div>
-          }
-          <Margin top />
-          <Stacked>
+      <Accordion active={expanded} fluid>
+        <Accordion.Title active={expanded} styled>
+          <StackedHorizontal>
+            <Icon name='dropdown' onClick={this.toggleIdCard} />
             <Address address={address} />
+            <Dropdown
+              floating
+              onChange={this.handleToggleApp}
+              options={APP_OPTIONS}
+              selection
+              value={currentLocation} />
+          </StackedHorizontal>
+        </Accordion.Title>
+        <Accordion.Content active={expanded}>
+          <StyledCard>
+          <CardContent>
+            <Header> Current Account </Header>
+            {address
+              ?
+              <React.Fragment>
+                <Subscribe>
+                  {
+                    // FIXME using any because freeBalance gives a Codec here, not a Balance
+                    // Wait for @polkadot/api to have TS support for all query.*
+                    api.query.balances.freeBalance(address).pipe(map(this.renderSummary as any))
+                  }
+                </Subscribe>
+              </React.Fragment>
+              : <div>Loading...</div>
+            }
             <Margin top />
-            <StackedHorizontal>
-              {this.renderForgetConfirmationModal()}
-              or
-              {this.renderBackupConfirmationModal()}
-            </StackedHorizontal>
-          </Stacked>
-          <Margin top />
-          <NavButton value={this.getButtonText()} onClick={this.handleToggleApp} />
-        </CardContent>
-        {this.renderError()}
-        {this.renderSuccess()}
-      </StyledCard>
+            <Stacked>
+              <Address address={address} />
+              <Margin top />
+              <StackedHorizontal>
+                {this.renderForgetConfirmationModal()}
+                or
+                {this.renderBackupConfirmationModal()}
+              </StackedHorizontal>
+            </Stacked>
+            <Margin top />
+            <NavButton value={this.getButtonText()} onClick={this.handleToggleApp} />
+          </CardContent>
+          {this.renderError()}
+          {this.renderSuccess()}
+        </StyledCard>
+       </Accordion.Content>
+     </Accordion>
     );
   }
 
