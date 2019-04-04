@@ -1142,14 +1142,7 @@
   dependencies:
     regenerator-runtime "^0.12.0"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.0", "@babel/runtime@^7.4.2":
-  version "7.4.2"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.4.2.tgz#f5ab6897320f16decd855eed70b705908a313fe8"
-  integrity sha512-7Bl2rALb7HpvXFL7TETNzKSAeBVCPHELzc0C//9FCxN8nsiueWSJBqaF+2oIJScyILStASR/Cx5WMkXGYTiJFA==
-  dependencies:
-    regenerator-runtime "^0.13.2"
-
-"@babel/runtime@^7.3.1":
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.3.1", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.0", "@babel/runtime@^7.4.2", "@babel/runtime@^7.4.3":
   version "7.4.3"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.4.3.tgz#79888e452034223ad9609187a0ad1fe0d2ad4bdc"
   integrity sha512-9lsJwJLxDh/T3Q3SZszfWOTkk3pHbkmH+3KY+zwIDmsNlxsumuhS2TH3NIpktU4kNvfzy+k3eLT7aTJSPTo0OA==
@@ -2343,12 +2336,12 @@
     semantic-ui-react "^0.85.0"
     store "^2.0.12"
 
-"@polkadot/ui-assets@^0.36.1":
-  version "0.36.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-assets/-/ui-assets-0.36.1.tgz#44ca8754fbfe818ba1e487ac0970ba74824bb275"
-  integrity sha512-29OZqotnbS3dpnNVFUPl4pIzKNPXlgsxfMFgfq3v5bJGRZxrZ8iWfAXbg1tWJCWoul6nuHCk8LNpfE/UpLkpqQ==
+"@polkadot/ui-assets@^0.37.1":
+  version "0.37.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-assets/-/ui-assets-0.37.1.tgz#01b273cfeb119c2fd71aeb185b52be112b04ccb4"
+  integrity sha512-yxdYyqZ6kle30hSIsZig/auCSaTLc1F7TN2kfPnUQN2QorUp0rggbennIL7Jx6SVRE8ri6Vb1JTsazL4KFqIKA==
   dependencies:
-    "@babel/runtime" "^7.3.4"
+    "@babel/runtime" "^7.4.3"
 
 "@polkadot/ui-identicon@^0.36.1":
   version "0.36.1"
