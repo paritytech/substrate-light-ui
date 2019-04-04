@@ -3,12 +3,13 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import ApiRx from '@polkadot/api/rx';
-import { ChainProperties } from '@polkadot/types';
+import { ChainProperties, Text } from '@polkadot/types';
 import keyring from '@polkadot/ui-keyring';
+import { logger } from '@polkadot/util';
 import React from 'react';
 import { Observable, zip } from 'rxjs';
 
-import { initStore } from './Alerts';
+import { initStore } from './alerts';
 import { AppContext } from './AppContext';
 import { isTestChain } from './util';
 
@@ -22,13 +23,11 @@ interface State {
   system: System;
 }
 
-interface Props {
-  loadingComponent: React.ReactNode;
-}
-
 const INIT_ERROR = new Error('Please wait for `isReady` before fetching this property');
 
-export class ContextGate extends React.PureComponent<Props> {
+const l = logger('ui-common');
+
+export class ContextGate extends React.PureComponent<{}, State> {
   alerts = initStore();
 
   api = new ApiRx();
@@ -49,25 +48,25 @@ export class ContextGate extends React.PureComponent<Props> {
     // Get info about the current chain
     zip(
       this.api.isReady,
-      (this.api.rpc.system.chain()),
+      (this.api.rpc.system.chain() as Observable<Text>),
       // FIXME Correct types should come from @polkadot/api to avoid type assertion
       (this.api.rpc.system.properties() as Observable<ChainProperties>)
     )
       .subscribe(([_, chain, properties]) => {
-        const networkId = properties.get('networkId') || 42;
-
         // keyring with Schnorrkel support
         keyring.loadAll({
-          addressPrefix: networkId,
+          addressPrefix: properties.get('networkId'),
           isDevelopment: isTestChain(chain.toString()),
           type: 'ed25519'
         });
+
+        l.log(`Api ready, connected to chain "${chain}" with properties ${JSON.stringify(properties)}`);
 
         this.setState(state => ({
           ...state,
           isReady: true,
           system: {
-            chain,
+            chain: chain.toString(),
             properties
           }
         }));
@@ -77,8 +76,6 @@ export class ContextGate extends React.PureComponent<Props> {
   render () {
     const { children } = this.props;
     const { isReady, system } = this.state;
-
-    console.log('system', system);
 
     return <AppContext.Provider value={{
       alerts: this.alerts,

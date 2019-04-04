@@ -4,19 +4,25 @@
 
 import 'semantic-ui-css/semantic.min.css';
 import substrateLogo from '@polkadot/ui-assets/parity-substrate.svg';
-import { ApiGate } from '@substrate/ui-common';
-import { GlobalStyle, substrateLightTheme } from '@substrate/ui-components';
+import { AppContext, ContextGate } from '@substrate/ui-common';
+import { GlobalStyle, Loading, substrateLightTheme } from '@substrate/ui-components';
 
 import React from 'react';
-import { BrowserRouter, NavLink, Route } from 'react-router-dom';
+import { BrowserRouter, NavLink } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
 import { Content } from './Content';
 
 export class App extends React.PureComponent {
+  static contextType = AppContext;
+
+  context!: React.ContextType<typeof AppContext>; // http://bit.ly/typescript-and-react-context
+
   render () {
+    const { isReady } = this.context;
+
     return (
-      <ApiGate>
+      <ContextGate>
         <ThemeProvider theme={substrateLightTheme}>
           <BrowserRouter>
             <React.Fragment>
@@ -28,11 +34,11 @@ export class App extends React.PureComponent {
                   width={150}
                 />
               </NavLink>
-              <Route component={Content} />
+              {isReady ? <Content /> : <Loading active />}
             </React.Fragment>
           </BrowserRouter >
         </ThemeProvider>
-      </ApiGate>
+      </ContextGate>
     );
   }
 }
