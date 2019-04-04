@@ -6,7 +6,7 @@ import ApiRx from '@polkadot/api/rx';
 import keyring from '@polkadot/ui-keyring';
 import React from 'react';
 
-import { AlertStore } from './Alerts';
+import { AlertStore } from './alerts';
 
 // The reasons why we regroup all contexts in one big context is:
 // 1. I don't like the render props syntax with the context consumer. -Amaury
