@@ -11,6 +11,14 @@ export class Alerts extends React.PureComponent {
 
   context!: React.ContextType<typeof AppContext>; // http://bit.ly/typescript-and-react-context
 
+  handleDismiss = () => {
+    const { alertStore } = this.context;
+
+    // FIXME We suppose that there's only one Alert at a time for now. If/when
+    // we have multiple alert, we should call alertStore.removeNth().
+    alertStore.dequeue();
+  }
+
   render () {
     const { alertStore } = this.context;
 
@@ -24,6 +32,7 @@ export class Alerts extends React.PureComponent {
           <Alert
             error={alert.type === 'error'}
             info={alert.type === 'info'}
+            onDismiss={this.handleDismiss}
             success={alert.type === 'success'}
             warning={alert.type === 'warning'}
           >
