@@ -5,6 +5,7 @@
 import { Message as SUIMessage, MessageProps as AlertProps } from 'semantic-ui-react';
 import styled from 'styled-components';
 
+// FIXME Put correct colors for `colors.{error,info,warning}`
 const colors = {
   error: (props: any) => [props.theme.purple, props.theme.lightBlue1, props.theme.lightBlue2],
   info: (props: any) => [props.theme.purple, props.theme.lightBlue1, props.theme.lightBlue2],
