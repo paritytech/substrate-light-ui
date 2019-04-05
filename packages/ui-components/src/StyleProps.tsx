@@ -2,6 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { LinkProps } from 'react-router-dom';
+
 import { Color } from './globalStyle';
 
 export interface HeaderProps {
@@ -18,6 +20,10 @@ export interface StackProps {
   alignItems?: string; // FIXME Use union of possible string
   justifyContent?: string; // FIXME Use union of possible string
   textAlign?: string; // FIXME Use union of possible string
+}
+
+export interface StyledNavLinkProps extends LinkProps {
+  inverted?: boolean;
 }
 
 export interface SubHeaderProps {

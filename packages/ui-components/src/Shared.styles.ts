@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import SUIContainer from 'semantic-ui-react/dist/commonjs/elements/Container';
 
-import { HeaderProps, DynamicSizeTextProps, StackProps, SubHeaderProps, WithSpaceAroundProps } from './StyleProps';
+import { HeaderProps, DynamicSizeTextProps, StackProps, StyledNavLinkProps, SubHeaderProps, WithSpaceAroundProps } from './StyleProps';
 
 export const Container = styled(SUIContainer)`
   padding: 1.5rem;
@@ -83,10 +83,10 @@ export const RefreshButton = styled.button`
   }
 `;
 
-export const StyledNavLink = styled<any>(Link)`
+export const StyledNavLink = styled(Link)<StyledNavLinkProps>`
   background: none;
   border: none;
-  color: ${props => props.theme.lightBlue2};
+  color: ${props => props.inverted ? props.theme.white : props.theme.lightBlue2};
   font-size: 15px;
   font-weight: 300;
 
@@ -145,7 +145,6 @@ export const StackedHorizontal = styled.div<StackProps>`
   flex: 1;
   flex-direction: row;
   justify-content: ${props => props.justifyContent || 'center'};
-  min-width: 100%;
   text-align: ${props => props.textAlign || 'center'};
 `;
 

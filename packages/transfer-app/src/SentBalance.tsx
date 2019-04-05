@@ -7,10 +7,10 @@ import IdentityIcon from '@polkadot/ui-identicon';
 import { Balance } from '@polkadot/types';
 import { logger } from '@polkadot/util';
 import { AppContext } from '@substrate/ui-common';
-import { Icon, Margin, NavButton, Segment, Stacked, StackedHorizontal, SubHeader } from '@substrate/ui-components';
+import { Icon, Margin, Message, NavButton,NavLink, Segment, Stacked, StackedHorizontal, SubHeader } from '@substrate/ui-components';
 import { Subscription } from 'rxjs';
 import React from 'react';
-import { RouteComponentProps, Redirect } from 'react-router';
+import { RouteComponentProps, Redirect } from 'react-router-dom';
 
 import { CenterDiv, LeftDiv, RightDiv } from './Transfer.styles';
 import { MatchParams } from './types';
@@ -66,22 +66,33 @@ export class SentBalance extends React.PureComponent<Props, State> {
       .transfer(recipientAddress, amount)
       // send the transaction
       .signAndSend(senderPair)
-      .subscribe((txResult: SubmittableResult) => {
-        l.log(`Tx status update: ${txResult.status}`);
-        this.setState(state => ({ ...state, txResult }));
-        const { status: { isFinalized, isDropped, isUsurped } } = txResult;
+      .subscribe(
+        (txResult: SubmittableResult) => {
+          l.log(`Tx status update: ${txResult.status}`);
+          this.setState(state => ({ ...state, txResult }));
+          const { status: { isFinalized, isDropped, isUsurped } } = txResult;
 
-        if (isFinalized) {
+          if (isFinalized) {
+            alertStore.enqueue({
+              content: this.renderSuccess(),
+              type: 'success'
+            });
+          }
+
+          if (isFinalized || isDropped || isUsurped) {
+            this.closeSubscription();
+          }
+        },
+        (error) => {
           alertStore.enqueue({
-            content: <p>HELLO</p>,
-            type: 'success'
+            content: <Message.Content>
+              <Message.Header>Error!</Message.Header>
+              <Message.Content>{JSON.stringify(error)}</Message.Content>
+            </Message.Content>,
+            type: 'error'
           });
         }
-
-        if (isFinalized || isDropped || isUsurped) {
-          this.closeSubscription();
-        }
-      });
+      );
   }
 
   closeSubscription () {
@@ -111,7 +122,6 @@ export class SentBalance extends React.PureComponent<Props, State> {
       return <Redirect to={`/transfer/${currentAccount}`} />;
     }
 
-    const { amount, recipientAddress } = location.state;
     const { showDetails, txResult } = this.state;
 
     return (
@@ -123,13 +133,7 @@ export class SentBalance extends React.PureComponent<Props, State> {
 
         <CenterDiv>
           <SubHeader>Summary:</SubHeader>
-          <Margin as='span' left='small' right='small' top='small'>
-            <IdentityIcon theme='substrate' size={16} value={currentAccount} />
-          </Margin>
-          sending {amount.toString()} units to
-          <Margin as='span' left='small' right='small' top='small'>
-            <IdentityIcon theme='substrate' size={16} value={recipientAddress} />
-          </Margin>
+          {this.renderSummary()}
         </CenterDiv>
 
         <RightDiv>
@@ -157,6 +161,37 @@ export class SentBalance extends React.PureComponent<Props, State> {
         <p>Fees: [TODO]</p>
         <p>Total amount (amount + fees): [TODO]</p>
       </Segment>
+    );
+  }
+
+  renderSummary () {
+    const { location, match: { params: { currentAccount } } } = this.props;
+    const { amount, recipientAddress } = location.state;
+
+    return (
+      <StackedHorizontal>
+        <Margin as='span' left='small' right='small' top='small'>
+          <IdentityIcon theme='substrate' size={16} value={currentAccount} />
+        </Margin>
+        sent {amount!.toString()} units to
+        <Margin as='span' left='small' right='small' top='small'>
+          <IdentityIcon theme='substrate' size={16} value={recipientAddress} />
+        </Margin>
+      </StackedHorizontal>
+    );
+  }
+
+  renderSuccess () {
+    const { match: { params: { currentAccount } } } = this.props;
+
+    return (
+      <Message.Content>
+        <StackedHorizontal justifyContent='space-around'>
+          <span>Transaction Completed!</span>
+          {this.renderSummary()}
+          <NavLink inverted to={`/transfer/${currentAccount}/sent`}>View transfer details</NavLink>
+        </StackedHorizontal>
+      </Message.Content>
     );
   }
 

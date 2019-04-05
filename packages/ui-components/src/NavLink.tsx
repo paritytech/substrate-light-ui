@@ -5,22 +5,20 @@
 import React from 'react';
 
 import { DynamicSizeText, StyledNavLink } from './Shared.styles';
+import { StyledNavLinkProps } from './StyleProps';
 
-type Props = {
-  children?: React.ReactNode,
-  fontSize?: string,
-  fontWeight?: string,
-  onClick?: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void,
-  to: string,
-  value?: string
-};
+interface Props extends StyledNavLinkProps {
+  fontSize?: string;
+  fontWeight?: string;
+  value?: string;
+}
 
 export class NavLink extends React.PureComponent<Props> {
   render () {
-    const { children, fontSize = '17px', fontWeight = '300', onClick, to, value } = this.props;
+    const { children, fontSize = '17px', fontWeight = '300', value, ...rest } = this.props;
 
     return (
-      <StyledNavLink onClick={onClick} to={to}>
+      <StyledNavLink {...rest}>
         <DynamicSizeText
           fontSize={fontSize}
           fontWeight={fontWeight}>
