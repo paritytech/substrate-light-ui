@@ -75,7 +75,7 @@ export class ImportWithPhrase extends React.PureComponent<Props> {
     });
   }
 
-  render() {
+  render () {
     const { name, password, recoveryPhrase } = this.state;
 
     return (
@@ -103,7 +103,7 @@ export class ImportWithPhrase extends React.PureComponent<Props> {
     );
   }
 
-  renderError() {
+  renderError () {
     const { error } = this.state;
 
     return (

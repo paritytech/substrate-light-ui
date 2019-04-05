@@ -26,7 +26,7 @@ export class Edit extends React.PureComponent<Props, State> {
     name: ''
   };
 
-  componentDidMount() {
+  componentDidMount () {
     const { keyring } = this.context;
     const address = this.getAddress();
 
@@ -63,7 +63,7 @@ export class Edit extends React.PureComponent<Props, State> {
     });
   }
 
-  render() {
+  render () {
     const { name } = this.state;
     const address = this.getAddress();
 
@@ -80,7 +80,7 @@ export class Edit extends React.PureComponent<Props, State> {
     );
   }
 
-  renderError() {
+  renderError () {
     const { error } = this.state;
 
     return (
@@ -92,7 +92,7 @@ export class Edit extends React.PureComponent<Props, State> {
 
   // Warning: this should not be edittable,
   // but may be useful to make it visible.
-  renderKeyringCryptoType() {
+  renderKeyringCryptoType () {
     const { keyring } = this.context;
     const address = this.getAddress();
 
@@ -106,7 +106,7 @@ export class Edit extends React.PureComponent<Props, State> {
     );
   }
 
-  renderSetName() {
+  renderSetName () {
     const { name } = this.state;
 
     return (

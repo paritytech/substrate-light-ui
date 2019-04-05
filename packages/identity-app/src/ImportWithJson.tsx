@@ -60,7 +60,7 @@ export class ImportWithJson extends React.PureComponent<Props, State> {
     }
   }
 
-  render() {
+  render () {
     const { step } = this.state;
 
     return (

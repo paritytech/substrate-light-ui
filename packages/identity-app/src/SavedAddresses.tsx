@@ -20,7 +20,7 @@ export class SavedAddresses extends React.PureComponent<Props> {
 
   context!: React.ContextType<typeof AppContext>; // http://bit.ly/typescript-and-react-context
 
-  render() {
+  render () {
     return (
       <WalletCard
         header='Saved Addresses'
@@ -35,7 +35,7 @@ export class SavedAddresses extends React.PureComponent<Props> {
     );
   }
 
-  renderAllAddressesFromKeyring() {
+  renderAllAddressesFromKeyring () {
     const { api } = this.context;
     const { match: { params: { currentAccount } } } = this.props;
 
