@@ -38,18 +38,25 @@ export class SaveAddress extends React.PureComponent<Props, State> {
     this.setState({ name: value });
   }
 
-  handleSaveAccount = () => {
+  handleSaveAddress = () => {
     const { keyring } = this.context;
     const { history, match: { params: { currentAccount } } } = this.props;
     const { name, lookupAddress } = this.state;
 
     try {
+      // if address already saved under this name: throw
+      const address = keyring.getAddress(lookupAddress);
+      if (address && address.getMeta().name === name) {
+        throw new Error('This address has already been saved under this name.');
+      }
+
       // If the lookupaddress is already saved, just update the name
       keyring.saveAddress(lookupAddress, { name });
 
       this.onSuccess('Successfully saved address');
 
-      setInterval(() => history.push(`/transfer/${currentAccount}/${lookupAddress}`), 500);
+      // short lag time to show the address being added before redirecting
+      setTimeout(() => history.push(`/transfer/${currentAccount}/${lookupAddress}`), 500);
     } catch (e) {
       this.onError(e.message);
     }
@@ -88,7 +95,7 @@ export class SaveAddress extends React.PureComponent<Props, State> {
               value={name}
             />
           </WithSpace>
-          <NavButton onClick={this.handleSaveAccount} value='Save Address' />
+          <NavButton onClick={this.handleSaveAddress} value='Save Address' />
           { this.renderError() }
           { this.renderSuccess() }
         </Stacked>
