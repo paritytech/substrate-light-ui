@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { ApiContext } from '@substrate/ui-api';
+import { AppContext } from '@substrate/ui-common';
 import { ErrorText, Input, Modal, NavButton, Stacked } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -17,9 +17,9 @@ type State = {
 };
 
 export class ImportWithPhrase extends React.PureComponent<Props> {
-  static contextType = ApiContext;
+  static contextType = AppContext;
 
-  context!: React.ContextType<typeof ApiContext>;
+  context!: React.ContextType<typeof AppContext>;
 
   state: State = {
     name: '',
@@ -75,7 +75,7 @@ export class ImportWithPhrase extends React.PureComponent<Props> {
     });
   }
 
-  render () {
+  render() {
     const { name, password, recoveryPhrase } = this.state;
 
     return (
@@ -103,7 +103,7 @@ export class ImportWithPhrase extends React.PureComponent<Props> {
     );
   }
 
-  renderError () {
+  renderError() {
     const { error } = this.state;
 
     return (

@@ -9,7 +9,7 @@ import { RouteComponentProps } from 'react-router-dom';
 
 import { MatchParams } from './types';
 
-interface Props extends RouteComponentProps<MatchParams> {}
+interface Props extends RouteComponentProps<MatchParams> { }
 
 type State = {
   error: string | null,
@@ -18,7 +18,7 @@ type State = {
   success: string | null
 };
 
-export class AddressBook extends React.PureComponent<Props, State> {
+export class SaveAddress extends React.PureComponent<Props, State> {
   static contextType = AppContext;
 
   context!: React.ContextType<typeof AppContext>; // http://bit.ly/typescript-and-react-context
@@ -96,8 +96,8 @@ export class AddressBook extends React.PureComponent<Props, State> {
             />
           </WithSpace>
           <NavButton onClick={this.handleSaveAddress} value='Save Address' />
-          { this.renderError() }
-          { this.renderSuccess() }
+          {this.renderError()}
+          {this.renderSuccess()}
         </Stacked>
       </WalletCard>
     );

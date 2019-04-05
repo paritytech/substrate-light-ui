@@ -2,14 +2,14 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { ApiContext } from '@substrate/ui-api';
+import { AppContext } from '@substrate/ui-common';
 import { AddressSummary, ErrorText, Input, NavButton, Stacked, SubHeader, WithSpaceAround } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
 import { MatchParams } from './types';
 
-interface Props extends RouteComponentProps<MatchParams> {}
+interface Props extends RouteComponentProps<MatchParams> { }
 
 type State = {
   error: string | null;
@@ -17,16 +17,16 @@ type State = {
 };
 
 export class Edit extends React.PureComponent<Props, State> {
-  static contextType = ApiContext;
+  static contextType = AppContext;
 
-  context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
+  context!: React.ContextType<typeof AppContext>; // http://bit.ly/typescript-and-react-context
 
   state: State = {
     error: null,
     name: ''
   };
 
-  componentDidMount () {
+  componentDidMount() {
     const { keyring } = this.context;
     const address = this.getAddress();
 
@@ -63,7 +63,7 @@ export class Edit extends React.PureComponent<Props, State> {
     });
   }
 
-  render () {
+  render() {
     const { name } = this.state;
     const address = this.getAddress();
 
@@ -80,7 +80,7 @@ export class Edit extends React.PureComponent<Props, State> {
     );
   }
 
-  renderError () {
+  renderError() {
     const { error } = this.state;
 
     return (
@@ -92,7 +92,7 @@ export class Edit extends React.PureComponent<Props, State> {
 
   // Warning: this should not be edittable,
   // but may be useful to make it visible.
-  renderKeyringCryptoType () {
+  renderKeyringCryptoType() {
     const { keyring } = this.context;
     const address = this.getAddress();
 
@@ -106,7 +106,7 @@ export class Edit extends React.PureComponent<Props, State> {
     );
   }
 
-  renderSetName () {
+  renderSetName() {
     const { name } = this.state;
 
     return (
