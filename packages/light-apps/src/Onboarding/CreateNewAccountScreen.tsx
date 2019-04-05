@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
-import { ApiContext } from '@substrate/ui-api';
+import { AppContext } from '@substrate/ui-common';
 import { AddressSummary, ErrorText, FadedText, Input, Margin, MnemonicSegment, Modal, NavButton, NavLink, Stacked, StackedHorizontal, StyledLinkButton, SubHeader, WithSpaceAround } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
 import React from 'react';
@@ -24,9 +24,9 @@ type State = {
 };
 
 export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
-  static contextType = ApiContext;
+  static contextType = AppContext;
 
-  context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
+  context!: React.ContextType<typeof AppContext>; // http://bit.ly/typescript-and-react-context
 
   state: State = {
     error: null,

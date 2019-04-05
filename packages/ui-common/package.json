@@ -1,5 +1,5 @@
 {
-  "name": "@substrate/ui-api",
+  "name": "@substrate/ui-common",
   "author": "Parity Technologies <admin@parity.io>",
   "version": "0.1.0",
   "description": "Wrapper to connect React components to PolkadotJS Api",
@@ -14,8 +14,7 @@
   },
   "dependencies": {
     "@polkadot/api": "^0.76.1",
-    "@polkadot/ui-keyring": "^0.37.1",
-    "@substrate/ui-components": "0.1.0"
+    "@polkadot/ui-keyring": "^0.37.1"
   },
   "peerDependencies": {
     "react": "^16.6.3"

@@ -4,7 +4,7 @@
 
 import { Balance } from '@polkadot/types';
 import { stringUpperFirst } from '@polkadot/util';
-import { ApiContext, Subscribe } from '@substrate/ui-api';
+import { AppContext, Subscribe } from '@substrate/ui-common';
 import { Address, AddressSummary, BalanceDisplay, ErrorText, FadedText, Header, Icon, Input, Margin, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SuccessText, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
 import React from 'react';
@@ -24,9 +24,9 @@ type State = {
 };
 
 export class IdentityCard extends React.PureComponent<Props, State> {
-  static contextType = ApiContext;
+  static contextType = AppContext;
 
-  context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
+  context!: React.ContextType<typeof AppContext>; // http://bit.ly/typescript-and-react-context
 
   state: State = {
     backupModalOpen: false,

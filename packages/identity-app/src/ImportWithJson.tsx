@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { u8aToString } from '@polkadot/util';
-import { ApiContext } from '@substrate/ui-api';
+import { AppContext } from '@substrate/ui-common';
 import { Card, Input, InputFile, NavButton, Stacked, SubHeader } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -19,9 +19,9 @@ type State = {
 };
 
 export class ImportWithJson extends React.PureComponent<Props, State> {
-  static contextType = ApiContext;
+  static contextType = AppContext;
 
-  context!: React.ContextType<typeof ApiContext>;
+  context!: React.ContextType<typeof AppContext>;
 
   state: State = {
     jsonString: '',

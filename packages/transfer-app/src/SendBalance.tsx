@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { Balance } from '@polkadot/types';
-import { ApiContext, Subscribe } from '@substrate/ui-api';
+import { AppContext, Subscribe } from '@substrate/ui-common';
 import { BalanceDisplay, ErrorText, Form, Input, NavButton, StackedHorizontal, SubHeader } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -26,9 +26,9 @@ interface State {
 }
 
 export class SendBalance extends React.PureComponent<Props, State> {
-  static contextType = ApiContext;
+  static contextType = AppContext;
 
-  context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
+  context!: React.ContextType<typeof AppContext>; // http://bit.ly/typescript-and-react-context
 
   state: State = {
     amount: ''
