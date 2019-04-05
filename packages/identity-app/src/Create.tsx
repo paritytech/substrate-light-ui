@@ -9,9 +9,7 @@ import FileSaver from 'file-saver';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-interface Props extends RouteComponentProps {
-  basePath: string;
-}
+interface Props extends RouteComponentProps {}
 
 type Steps = 'create' | 'rewrite';
 
@@ -42,7 +40,7 @@ export class Create extends React.PureComponent<Props, State> {
     this.newMnemonic();
   }
 
-  private clearFields = () => {
+  clearFields = () => {
     const mnemonic = mnemonicGenerate();
 
     this.setState({
@@ -54,7 +52,7 @@ export class Create extends React.PureComponent<Props, State> {
     });
   }
 
-  private createNewAccount = () => {
+  createNewAccount = () => {
     const { keyring } = this.context;
     const { history } = this.props;
     const { mnemonic, name, password } = this.state;
@@ -76,7 +74,7 @@ export class Create extends React.PureComponent<Props, State> {
     }
   }
 
-  private generateAddressFromMnemonic (mnemonic: string): string {
+  generateAddressFromMnemonic (mnemonic: string): string {
     const { keyring } = this.context;
     const keypair = naclKeypairFromSeed(mnemonicToSeed(mnemonic));
 
@@ -85,26 +83,26 @@ export class Create extends React.PureComponent<Props, State> {
     );
   }
 
-  private newMnemonic = () => {
+  newMnemonic = () => {
     const mnemonic = mnemonicGenerate();
     const address = this.generateAddressFromMnemonic(mnemonic);
 
     this.setState({ address, mnemonic });
   }
 
-  private onChangeName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+  onChangeName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
       name: value
     });
   }
 
-  private onChangePassword = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+  onChangePassword = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
       password: value
     });
   }
 
-  private onChangeRewritePhrase = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+  onChangeRewritePhrase = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
       rewritePhrase: value
     });
@@ -116,13 +114,13 @@ export class Create extends React.PureComponent<Props, State> {
     }
   }
 
-  private onError = (value: string | null) => {
+  onError = (value: string | null) => {
     this.setState({
       error: value
     });
   }
 
-  private toggleStep = () => {
+  toggleStep = () => {
     const { address, password, step } = this.state;
 
     if (address && password) {
@@ -134,7 +132,7 @@ export class Create extends React.PureComponent<Props, State> {
     }
   }
 
-  private validateFields = () => {
+  validateFields = () => {
     const { mnemonic, name, password, rewritePhrase } = this.state;
     return mnemonic.length && name && password.length && rewritePhrase === mnemonic;
   }
@@ -198,7 +196,6 @@ export class Create extends React.PureComponent<Props, State> {
           <FadedText> Rewrite Mnemonic Below </FadedText>
           <Input
             autoFocus
-            fluid
             onChange={this.onChangeRewritePhrase}
             type='text'
             value={rewritePhrase} />
