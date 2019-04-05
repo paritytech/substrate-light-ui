@@ -3,10 +3,10 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 /**
- * All paths inside transfer are sub-routes of: `/identity/:currentAddress`
+ * All paths inside transfer are sub-routes of: `/identity/:currentAccount`
  */
 export interface MatchParams {
-  currentAddress: string;
+  currentAccount: string;
 }
 
 export type IdentityManagementScreen = 'Edit' | 'Create' | 'Restore' | 'Add' | 'Lookup';

@@ -76,14 +76,14 @@ export class Identity extends React.PureComponent<Props> {
 
   renderManageAccounts () {
     const { screen } = this.state;
-    const { match: { params: { currentAddress } } } = this.props;
+    const { match: { params: { currentAccount } } } = this.props;
 
     return (
       <React.Fragment>
         <Grid.Column width={7}> <SavedAccounts {...this.props} /> </Grid.Column>
         <Grid.Column width={9}>
           { this.renderMenu() }
-          <ManageAccounts address={currentAddress} screen={screen} {...this.props} />
+          <ManageAccounts address={currentAccount} screen={screen} {...this.props} />
         </Grid.Column>
       </React.Fragment>
     );
@@ -91,14 +91,14 @@ export class Identity extends React.PureComponent<Props> {
 
   renderManageAddresses () {
     const { screen } = this.state;
-    const { match: { params: { currentAddress } } } = this.props;
+    const { match: { params: { currentAccount } } } = this.props;
 
     return (
       <React.Fragment>
         <Grid.Column width={7}> <SavedAddresses {...this.props} /> </Grid.Column>
         <Grid.Column width={9}>
           { this.renderMenu() }
-          <ManageAddresses address={currentAddress} screen={screen} {...this.props} />
+          <ManageAddresses address={currentAccount} screen={screen} {...this.props} />
         </Grid.Column>
       </React.Fragment>
     );
@@ -117,7 +117,7 @@ export class Identity extends React.PureComponent<Props> {
             options={accountManagementOptions}
             placeholder='Manage Accounts'
             selection
-            text={menuOption === 'Accounts' ? screen : null}
+            text={menuOption === 'Accounts' ? screen as string : undefined}
           />
         <Dropdown
             fluid
@@ -125,7 +125,7 @@ export class Identity extends React.PureComponent<Props> {
             options={addressManagementOptions}
             placeholder='Manage Addresses'
             selection
-            text={menuOption === 'Addresses' ? screen : null}
+            text={menuOption === 'Addresses' ? screen as string : undefined}
           />
       </Menu>
     );

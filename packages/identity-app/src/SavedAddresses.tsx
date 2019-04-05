@@ -37,7 +37,7 @@ export class SavedAddresses extends React.PureComponent<Props> {
 
   renderAllAddressesFromKeyring () {
     const { api } = this.context;
-    const { match: { params: { currentAddress } } } = this.props;
+    const { match: { params: { currentAccount } } } = this.props;
 
     return (
       <Subscribe>
@@ -50,7 +50,7 @@ export class SavedAddresses extends React.PureComponent<Props> {
                   <Margin top />
                   <StackedHorizontal>
                     <Link to={{
-                      pathname: `/identity/${currentAddress}`,
+                      pathname: `/identity/${currentAccount}`,
                       state: {
                         editing: address.json.address
                       }
