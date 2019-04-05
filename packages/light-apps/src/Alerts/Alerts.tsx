@@ -28,11 +28,11 @@ export class Alerts extends React.PureComponent {
 
     return (
       <React.Fragment>
-        {alertStore.alerts.map((alert, index) => (
+        {alertStore.alerts.map((alert) => (
           <Alert
             error={alert.type === 'error'}
             info={alert.type === 'info'}
-            key={index} // FIXME Use a real ID
+            key={alert.id}
             onDismiss={this.handleDismiss}
             success={alert.type === 'success'}
             warning={alert.type === 'warning'}

@@ -8,8 +8,11 @@ export type AlertType = 'error' | 'info' | 'success' | 'warning';
 
 export interface Alert {
   content: React.ReactNode;
+  id: number;
   type: AlertType;
 }
+
+export type AlertWithoutId = Pick<Alert, Exclude<keyof Alert, 'id'>>;
 
 export interface AlertStore {
   readonly alerts: Alert[];

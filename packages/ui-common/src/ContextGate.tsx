@@ -9,7 +9,7 @@ import { logger } from '@polkadot/util';
 import React from 'react';
 import { Observable, zip } from 'rxjs';
 
-import { Alert, AlertStore, dequeue, enqueue } from './alerts';
+import { Alert, AlertStore, AlertWithoutId, dequeue, enqueue } from './alerts';
 import { AppContext, System } from './AppContext';
 import { isTestChain } from './util';
 
@@ -34,6 +34,12 @@ const l = logger('ui-common');
 // FIXME we could probably split this out into small modular contexts once we
 // use https://reactjs.org/docs/hooks-reference.html#usecontext
 export class ContextGate extends React.PureComponent<{}, State> {
+  /**
+   * Hold an internal counter of alerts, see:
+   * https://github.com/paritytech/substrate-light-ui/pull/253#discussion_r272556331
+   */
+  alertStoreCount = 0;
+
   api = new ApiRx();
 
   state: State = {
@@ -93,10 +99,15 @@ export class ContextGate extends React.PureComponent<{}, State> {
     }));
   }
 
-  alertStoreEnqueue = (newItem: Alert) => {
+  alertStoreEnqueue = (newItem: AlertWithoutId) => {
+    ++this.alertStoreCount;
+
     this.setState((state) => ({
       ...state,
-      alertStore: this.alertStoreCreate(enqueue(state.alertStore.alerts, newItem))
+      alertStore: this.alertStoreCreate(enqueue(state.alertStore.alerts, {
+        ...newItem,
+        id: this.alertStoreCount
+      }))
     }));
   }
 
