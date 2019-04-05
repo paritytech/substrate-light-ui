@@ -6,13 +6,14 @@ import React from 'react';
 
 export type AlertType = 'error' | 'info' | 'success' | 'warning';
 
-export interface Alert {
+export interface AlertWithoutId {
   content: React.ReactNode;
-  id: number;
   type: AlertType;
 }
 
-export type AlertWithoutId = Pick<Alert, Exclude<keyof Alert, 'id'>>;
+export interface Alert extends AlertWithoutId {
+  id: number;
+}
 
 export interface AlertStore {
   readonly alerts: Alert[];
