@@ -27,16 +27,16 @@ export class Edit extends React.PureComponent<Props, State> {
     error: null,
     name: ''
   };
-
-  componentDidMount () {
-    const { keyring } = this.context;
-
-    const name = keyring.getPair(this.props.address).getMeta().name;
-
-    this.setState({
-      name
-    });
-  }
+  //
+  // componentDidMount () {
+  //   const { keyring } = this.context;
+  //
+  //   const name = keyring.getPair(this.props.address).getMeta().name;
+  //
+  //   this.setState({
+  //     name
+  //   });
+  // }
 
   handleSubmit = () => {
     const { keyring } = this.context;
@@ -66,7 +66,6 @@ export class Edit extends React.PureComponent<Props, State> {
         <AddressSummary address={address} name={name} />
         <WithSpaceAround>
           {this.renderSetName()}
-          {this.renderKeyringCryptoType()}
           {this.renderError()}
           <NavButton onClick={this.handleSubmit} value={'Confirm'} />
         </WithSpaceAround>
@@ -86,17 +85,17 @@ export class Edit extends React.PureComponent<Props, State> {
 
   // Warning: this should not be edittable,
   // but may be useful to make it visible.
-  renderKeyringCryptoType () {
-    const { keyring } = this.context;
-    const cryptoType = keyring.getPair(this.props.address).type;
-
-    return (
-      <Input
-        disabled
-        label={'Keypair Crypto Type'}
-        value={cryptoType} />
-    );
-  }
+  // renderKeyringCryptoType () {
+  //   const { keyring } = this.context;
+  //   const cryptoType = keyring.getPair(this.props.address).type;
+  //
+  //   return (
+  //     <Input
+  //       disabled
+  //       label={'Keypair Crypto Type'}
+  //       value={cryptoType} />
+  //   );
+  // }
 
   renderSetName () {
     const { name } = this.state;
