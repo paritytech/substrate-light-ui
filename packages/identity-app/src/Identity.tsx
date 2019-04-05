@@ -105,6 +105,10 @@ export class Identity extends React.PureComponent<Props> {
   }
 
   renderMenu () {
+    const { screen } = this.state;
+
+    const menuOption = ['Add'].includes(screen) ? 'Addresses' : 'Accounts';
+
     return (
       <Menu>
         <Dropdown
@@ -113,6 +117,7 @@ export class Identity extends React.PureComponent<Props> {
             options={accountManagementOptions}
             placeholder='Manage Accounts'
             selection
+            text={menuOption === 'Accounts' ? screen : null}
           />
         <Dropdown
             fluid
@@ -120,6 +125,7 @@ export class Identity extends React.PureComponent<Props> {
             options={addressManagementOptions}
             placeholder='Manage Addresses'
             selection
+            text={menuOption === 'Addresses' ? screen : null}
           />
       </Menu>
     );

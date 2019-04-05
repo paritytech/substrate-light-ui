@@ -9,9 +9,7 @@ import { RouteComponentProps } from 'react-router-dom';
 
 import { MatchParams } from './types';
 
-interface Props extends RouteComponentProps<MatchParams> {
-  address: string;
-}
+interface Props extends RouteComponentProps<MatchParams> {}
 
 type State = {
   error: string | null;
@@ -30,19 +28,27 @@ export class Edit extends React.PureComponent<Props, State> {
 
   componentDidMount () {
     const { keyring } = this.context;
+    const address = this.getAddress();
 
-    const name = keyring.getPair(this.props.address).getMeta().name;
+    const name = keyring.getPair(address).getMeta().name;
 
     this.setState({
       name
     });
   }
 
+  getAddress = () => {
+    const { match: { params: { currentAccount } } } = this.props;
+
+    return currentAccount;
+  }
+
   handleSubmit = () => {
     const { keyring } = this.context;
     const { name } = this.state;
+    const address = this.getAddress();
 
-    keyring.saveAccountMeta(keyring.getPair(this.props.address), { name: name });
+    keyring.saveAccountMeta(keyring.getPair(address), { name: name });
   }
 
   onChangeName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,7 +65,7 @@ export class Edit extends React.PureComponent<Props, State> {
 
   render () {
     const { name } = this.state;
-    const { address } = this.props;
+    const address = this.getAddress();
 
     return (
       <Stacked>
@@ -88,7 +94,9 @@ export class Edit extends React.PureComponent<Props, State> {
   // but may be useful to make it visible.
   renderKeyringCryptoType () {
     const { keyring } = this.context;
-    const cryptoType = keyring.getPair(this.props.address).type;
+    const address = this.getAddress();
+
+    const cryptoType = keyring.getPair(address).type;
 
     return (
       <Input

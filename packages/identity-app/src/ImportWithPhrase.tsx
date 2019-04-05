@@ -79,7 +79,7 @@ export class ImportWithPhrase extends React.PureComponent<Props> {
     const { name, password, recoveryPhrase } = this.state;
 
     return (
-      <Stacked justify='space-between' align='space-between'>
+      <Stacked justifyContent='space-between'>
         <Modal.SubHeader> Import Account from Mnemonic Recovery Phrase </Modal.SubHeader>
         <Input
           label='Phrase'

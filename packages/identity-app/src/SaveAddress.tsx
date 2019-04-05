@@ -7,7 +7,9 @@ import { ErrorText, Input, Margin, NavButton, Stacked, SubHeader, SuccessText, W
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-interface Props extends RouteComponentProps {}
+import { MatchParams } from './types';
+
+interface Props extends RouteComponentProps<MatchParams> {}
 
 type State = {
   error: string | null,
@@ -38,7 +40,7 @@ export class SaveAddress extends React.PureComponent<Props, State> {
 
   handleSaveAccount = () => {
     const { keyring } = this.context;
-    const { history } = this.props;
+    const { history, match: { params: { currentAccount } } } = this.props;
     const { name, lookupAddress } = this.state;
 
     try {
@@ -47,7 +49,7 @@ export class SaveAddress extends React.PureComponent<Props, State> {
 
       this.onSuccess('Successfully saved address');
 
-      setInterval(() => history.push('/transfer'), 500);
+      setInterval(() => history.push(`/transfer/${currentAccount}/${lookupAddress}`), 500);
     } catch (e) {
       this.onError(e.message);
     }
