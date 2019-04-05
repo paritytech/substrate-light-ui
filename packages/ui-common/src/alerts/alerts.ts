@@ -17,7 +17,7 @@ export interface Alert extends AlertWithoutId {
 
 export interface AlertStore {
   readonly alerts: Alert[];
-  enqueue (newItem: Alert): void;
+  enqueue (newItem: AlertWithoutId): void;
   dequeue (): void;
 }
 
