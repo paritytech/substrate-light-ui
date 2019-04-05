@@ -4,7 +4,7 @@
 
 // import { Balance } from '@polkadot/types';
 import { stringUpperFirst } from '@polkadot/util';
-import { ApiContext } from '@substrate/ui-api';
+import { ApiContext } from '@substrate/ui-common';
 import { Address, Menu } from '@substrate/ui-components';
 import Dropdown, { DropdownProps } from 'semantic-ui-react/dist/commonjs/modules/Dropdown';
 

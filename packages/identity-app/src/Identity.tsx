@@ -2,12 +2,10 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Grid, Margin, WithSpaceAround } from '@substrate/ui-components';
+import { Dropdown, DropdownProps, Grid, Margin, Menu, WithSpaceAround } from '@substrate/ui-components';
 
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import Dropdown, { DropdownProps } from 'semantic-ui-react/dist/commonjs/modules/Dropdown';
-import Menu from 'semantic-ui-react/dist/commonjs/collections/Menu';
 
 import { SavedAccounts } from './SavedAccounts';
 import { SavedAddresses } from './SavedAddresses';
@@ -18,6 +16,7 @@ import { IdentityManagementScreen, MatchParams } from './types';
 interface Props extends RouteComponentProps<MatchParams> {}
 
 type State = {
+  menuOption: 'Accounts' | 'Addresses',
   screen: IdentityManagementScreen
 };
 
@@ -47,13 +46,18 @@ const addressManagementOptions = [
   }
 ];
 
-export class Identity extends React.PureComponent<Props> {
+export class Identity extends React.PureComponent<Props, State> {
   state: State = {
+    menuOption: 'Accounts',
     screen: 'Edit'
   };
 
   handleMenuOptionSelected = (event: React.SyntheticEvent<HTMLElement, Event>, { value }: DropdownProps) => {
+    // @ts-ignore value won't be undefined but is an option in DropdownProps
+    const menuOption = ['Add'].includes(value) ? 'Addresses' : 'Accounts';
+    // @ts-ignore value won't be undefined but is an option in DropdownProps
     this.setState({
+      menuOption,
       screen: value
     });
   }
@@ -76,7 +80,7 @@ export class Identity extends React.PureComponent<Props> {
 
   renderManageAccounts () {
     const { screen } = this.state;
-    const { match: { params: { currentAddress } } } = this.props;
+    const { match: { params: { currentAccount } } } = this.props;
 
     return (
       <React.Fragment>
@@ -85,7 +89,7 @@ export class Identity extends React.PureComponent<Props> {
           { this.renderMenu() }
           <Margin top />
           <WithSpaceAround>
-            <ManageAccounts address={currentAddress} screen={screen} {...this.props} />
+            <ManageAccounts address={currentAccount} screen={screen} {...this.props} />
           </WithSpaceAround>
         </Grid.Column>
       </React.Fragment>
@@ -94,7 +98,7 @@ export class Identity extends React.PureComponent<Props> {
 
   renderManageAddresses () {
     const { screen } = this.state;
-    const { match: { params: { currentAddress } } } = this.props;
+    const { match: { params: { currentAccount } } } = this.props;
 
     return (
       <React.Fragment>
@@ -103,7 +107,7 @@ export class Identity extends React.PureComponent<Props> {
           { this.renderMenu() }
           <Margin top />
           <WithSpaceAround>
-            <ManageAddresses address={currentAddress} screen={screen} {...this.props} />
+            <ManageAddresses address={currentAccount} screen={screen} {...this.props} />
           </WithSpaceAround>
         </Grid.Column>
       </React.Fragment>
@@ -111,22 +115,24 @@ export class Identity extends React.PureComponent<Props> {
   }
 
   renderMenu () {
+    const { menuOption, screen } = this.state;
+
     return (
       <Menu>
         <Dropdown
-            fluid
-            onChange={this.handleMenuOptionSelected}
-            options={accountManagementOptions}
-            placeholder='Manage Accounts'
-            selection
-          />
+          item
+          onChange={this.handleMenuOptionSelected}
+          options={accountManagementOptions}
+          text={menuOption === 'Accounts' ? screen as string : 'Manage Accounts'}
+          value={menuOption === 'Accounts' && screen as string}
+        />
         <Dropdown
-            fluid
-            onChange={this.handleMenuOptionSelected}
-            options={addressManagementOptions}
-            placeholder='Manage Addresses'
-            selection
-          />
+          item
+          onChange={this.handleMenuOptionSelected}
+          options={addressManagementOptions}
+          text={menuOption === 'Addresses' ? screen as string : 'Manage Addresses'}
+          value={menuOption === 'Addresses' && screen as string}
+        />
       </Menu>
     );
   }

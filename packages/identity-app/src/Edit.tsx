@@ -2,16 +2,14 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { ApiContext } from '@substrate/ui-api';
+import { AppContext } from '@substrate/ui-common';
 import { AddressSummary, ErrorText, Input, NavButton, Stacked, SubHeader, WithSpaceAround } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
 import { MatchParams } from './types';
 
-interface Props extends RouteComponentProps<MatchParams> {
-  address: string;
-}
+interface Props extends RouteComponentProps<MatchParams> { }
 
 type State = {
   error: string | null;
@@ -19,30 +17,38 @@ type State = {
 };
 
 export class Edit extends React.PureComponent<Props, State> {
-  static contextType = ApiContext;
+  static contextType = AppContext;
 
-  context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
+  context!: React.ContextType<typeof AppContext>; // http://bit.ly/typescript-and-react-context
 
   state: State = {
     error: null,
     name: ''
   };
-  //
-  // componentDidMount () {
-  //   const { keyring } = this.context;
-  //
-  //   const name = keyring.getPair(this.props.address).getMeta().name;
-  //
-  //   this.setState({
-  //     name
-  //   });
-  // }
+
+  componentDidMount () {
+    const { keyring } = this.context;
+    const address = this.getAddress();
+
+    const name = keyring.getPair(address).getMeta().name;
+
+    this.setState({
+      name
+    });
+  }
+
+  getAddress = () => {
+    const { match: { params: { currentAccount } } } = this.props;
+
+    return currentAccount;
+  }
 
   handleSubmit = () => {
     const { keyring } = this.context;
     const { name } = this.state;
+    const address = this.getAddress();
 
-    keyring.saveAccountMeta(keyring.getPair(this.props.address), { name: name });
+    keyring.saveAccountMeta(keyring.getPair(address), { name: name });
   }
 
   onChangeName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,13 +65,14 @@ export class Edit extends React.PureComponent<Props, State> {
 
   render () {
     const { name } = this.state;
-    const { address } = this.props;
+    const address = this.getAddress();
 
     return (
       <Stacked>
         <AddressSummary address={address} name={name} />
         <WithSpaceAround>
           {this.renderSetName()}
+          {this.renderKeyringCryptoType()}
           {this.renderError()}
           <NavButton onClick={this.handleSubmit} value={'Confirm'} />
         </WithSpaceAround>
@@ -85,17 +92,19 @@ export class Edit extends React.PureComponent<Props, State> {
 
   // Warning: this should not be edittable,
   // but may be useful to make it visible.
-  // renderKeyringCryptoType () {
-  //   const { keyring } = this.context;
-  //   const cryptoType = keyring.getPair(this.props.address).type;
-  //
-  //   return (
-  //     <Input
-  //       disabled
-  //       label={'Keypair Crypto Type'}
-  //       value={cryptoType} />
-  //   );
-  // }
+  renderKeyringCryptoType () {
+    const { keyring } = this.context;
+    const address = this.getAddress();
+
+    const cryptoType = keyring.getPair(address).type;
+
+    return (
+      <Input
+        disabled
+        label={'Keypair Crypto Type'}
+        value={cryptoType} />
+    );
+  }
 
   renderSetName () {
     const { name } = this.state;

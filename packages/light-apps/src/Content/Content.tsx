@@ -5,7 +5,7 @@
 import accounts from '@polkadot/ui-keyring/observable/accounts';
 import { Identity } from '@substrate/identity-app';
 import { Transfer } from '@substrate/transfer-app';
-import { Subscribe } from '@substrate/ui-api';
+import { Subscribe } from '@substrate/ui-common';
 import { Container } from '@substrate/ui-components';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';

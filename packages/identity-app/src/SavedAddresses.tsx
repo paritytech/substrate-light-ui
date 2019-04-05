@@ -6,19 +6,19 @@ import { Balance } from '@polkadot/types';
 import { AddressSummary, BalanceDisplay, Margin, Stacked, StackedHorizontal, WalletCard, WithSpace } from '@substrate/ui-components';
 import addressObservable from '@polkadot/ui-keyring/observable/addresses';
 import { SingleAddress, SubjectInfo } from '@polkadot/ui-keyring/observable/types';
-import { ApiContext, Subscribe } from '@substrate/ui-api';
+import { AppContext, Subscribe } from '@substrate/ui-common';
 import { map } from 'rxjs/operators';
 import React from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 
 import { MatchParams } from './types';
 
-interface Props extends RouteComponentProps<MatchParams> {}
+interface Props extends RouteComponentProps<MatchParams> { }
 
 export class SavedAddresses extends React.PureComponent<Props> {
-  static contextType = ApiContext;
+  static contextType = AppContext;
 
-  context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
+  context!: React.ContextType<typeof AppContext>; // http://bit.ly/typescript-and-react-context
 
   render () {
     return (
@@ -38,7 +38,7 @@ export class SavedAddresses extends React.PureComponent<Props> {
 
   renderAllAddressesFromKeyring () {
     const { api } = this.context;
-    const { match: { params: { currentAddress } } } = this.props;
+    const { match: { params: { currentAccount } } } = this.props;
 
     return (
       <Subscribe>
@@ -51,7 +51,7 @@ export class SavedAddresses extends React.PureComponent<Props> {
                   <Margin top />
                   <StackedHorizontal>
                     <Link to={{
-                      pathname: `/identity/${currentAddress}`,
+                      pathname: `/identity/${currentAccount}`,
                       state: {
                         editing: address.json.address
                       }

@@ -6,7 +6,7 @@ import { Balance } from '@polkadot/types';
 import { AddressSummary, BalanceDisplay, Margin, Stacked, WalletCard, WithSpace } from '@substrate/ui-components';
 import accountObservable from '@polkadot/ui-keyring/observable/accounts';
 import { SingleAddress, SubjectInfo } from '@polkadot/ui-keyring/observable/types';
-import { ApiContext, Subscribe } from '@substrate/ui-api';
+import { AppContext, Subscribe } from '@substrate/ui-common';
 import { map } from 'rxjs/operators';
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -14,9 +14,9 @@ import { Link } from 'react-router-dom';
 type Props = {};
 
 export class SavedAccounts extends React.PureComponent<Props> {
-  static contextType = ApiContext;
+  static contextType = AppContext;
 
-  context!: React.ContextType<typeof ApiContext>; // http://bit.ly/typescript-and-react-context
+  context!: React.ContextType<typeof AppContext>; // http://bit.ly/typescript-and-react-context
 
   render () {
     return (
