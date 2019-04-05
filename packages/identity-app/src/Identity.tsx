@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Grid } from '@substrate/ui-components';
+import { Grid, Margin, WithSpaceAround } from '@substrate/ui-components';
 
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -83,7 +83,10 @@ export class Identity extends React.PureComponent<Props> {
         <Grid.Column width={7}> <SavedAccounts {...this.props} /> </Grid.Column>
         <Grid.Column width={9}>
           { this.renderMenu() }
-          <ManageAccounts address={currentAddress} screen={screen} {...this.props} />
+          <Margin top />
+          <WithSpaceAround>
+            <ManageAccounts address={currentAddress} screen={screen} {...this.props} />
+          </WithSpaceAround>
         </Grid.Column>
       </React.Fragment>
     );
@@ -98,7 +101,10 @@ export class Identity extends React.PureComponent<Props> {
         <Grid.Column width={7}> <SavedAddresses {...this.props} /> </Grid.Column>
         <Grid.Column width={9}>
           { this.renderMenu() }
-          <ManageAddresses address={currentAddress} screen={screen} {...this.props} />
+          <Margin top />
+          <WithSpaceAround>
+            <ManageAddresses address={currentAddress} screen={screen} {...this.props} />
+          </WithSpaceAround>
         </Grid.Column>
       </React.Fragment>
     );

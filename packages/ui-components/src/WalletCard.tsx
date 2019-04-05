@@ -8,16 +8,17 @@ import { Card, Header, SubHeader, Stacked, WithSpaceAround } from './index';
 type Props = {
   children: React.ReactNode,
   header: string,
+  height?: string,
   subheader?: string,
   overflow?: string
 };
 
 export class WalletCard extends React.PureComponent<Props> {
   render () {
-    const { children, header, overflow = 'none', subheader } = this.props;
+    const { children, header, height, overflow = 'none', subheader } = this.props;
 
     return (
-      <Card raised overflow={overflow}>
+      <Card height={height} raised overflow={overflow}>
         <WithSpaceAround>
           <Stacked>
             <Header margin='0.2rem 0'> {header} </Header>
