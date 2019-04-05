@@ -20,31 +20,13 @@ export interface AlertStore {
 /**
  * Add element to end of queue.
  */
-function enqueue<T> (queue: T[], newItem: T) {
+export function enqueue<T> (queue: T[], newItem: T) {
   return queue.concat(newItem);
 }
 
 /**
  * Remove first element of queue.
  */
-function dequeue<T> (queue: T[]) {
+export function dequeue<T> (queue: T[]) {
   return queue.slice(1);
-}
-
-export function alertStore () {
-  let alerts: Alert[] = [];
-
-  return ({
-    get alerts () {
-      return alerts;
-    },
-
-    enqueue (newItem: Alert) {
-      alerts = enqueue(alerts, newItem);
-    },
-
-    dequeue () {
-      alerts = dequeue(alerts);
-    }
-  }) as AlertStore;
 }

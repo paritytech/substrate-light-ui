@@ -9,11 +9,13 @@ import { logger } from '@polkadot/util';
 import React from 'react';
 import { Observable, zip } from 'rxjs';
 
-import { alertStore } from './alerts';
+import { Alert, AlertStore, dequeue, enqueue } from './alerts';
 import { AppContext, System } from './AppContext';
 import { isTestChain } from './util';
 
+// Holds the state for all the contexts
 interface State {
+  alertStore: AlertStore;
   isReady: boolean;
   system: System;
 }
@@ -22,12 +24,20 @@ const INIT_ERROR = new Error('Please wait for `isReady` before fetching this pro
 
 const l = logger('ui-common');
 
+// The reasons why we regroup all contexts in one big context is:
+// 1. I don't like the render props syntax with the context consumer. -Amaury
+// 2. We want to access Context in lifecycle methods like componentDidMount.
+// It's either adding a wrapper and passing as props, like:
+// https://github.com/facebook/react/issues/12397#issuecomment-375501574
+// or use one context for everything:
+// https://github.com/facebook/react/issues/12397#issuecomment-462142714
+// FIXME we could probably split this out into small modular contexts once we
+// use https://reactjs.org/docs/hooks-reference.html#usecontext
 export class ContextGate extends React.PureComponent<{}, State> {
-  alertStore = alertStore();
-
   api = new ApiRx();
 
   state: State = {
+    alertStore: this.alertStoreCreate([]),
     isReady: false,
     system: {
       get chain (): never {
@@ -68,12 +78,34 @@ export class ContextGate extends React.PureComponent<{}, State> {
       });
   }
 
+  alertStoreCreate (alerts: Alert[]): AlertStore {
+    return {
+      alerts,
+      dequeue: () => this.alertStoreDequeue(),
+      enqueue: (newItem: Alert) => this.alertStoreEnqueue(newItem)
+    };
+  }
+
+  alertStoreDequeue = () => {
+    this.setState((state) => ({
+      ...state,
+      alertStore: this.alertStoreCreate(dequeue(state.alertStore.alerts))
+    }));
+  }
+
+  alertStoreEnqueue = (newItem: Alert) => {
+    this.setState((state) => ({
+      ...state,
+      alertStore: this.alertStoreCreate(enqueue(state.alertStore.alerts, newItem))
+    }));
+  }
+
   render () {
     const { children } = this.props;
-    const { isReady, system } = this.state;
+    const { alertStore, isReady, system } = this.state;
 
     return <AppContext.Provider value={{
-      alertStore: this.alertStore,
+      alertStore,
       api: this.api,
       isReady,
       keyring,

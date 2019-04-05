@@ -14,13 +14,6 @@ export interface System {
   properties: ChainProperties;
 }
 
-// The reasons why we regroup all contexts in one big context is:
-// 1. I don't like the render props syntax with the context consumer. -Amaury
-// 2. We want to access Context in lifecycle methods like componentDidMount.
-// It's either adding a wrapper and passing as props, like:
-// https://github.com/facebook/react/issues/12397#issuecomment-375501574
-// or use one context for everything:
-// https://github.com/facebook/react/issues/12397#issuecomment-462142714
 export interface AppContextType {
   alertStore: AlertStore; // UI alerts
   api: ApiRx; // From @polkadot/api
