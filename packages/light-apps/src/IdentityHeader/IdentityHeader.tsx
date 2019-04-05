@@ -68,9 +68,10 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
   }
 
   handleChangeCurrentAccount = (account: string) => {
-    const { history, match: { params } } = this.props;
+    const { history } = this.props;
+    const currentLocation = this.getCurrentLocation();
 
-    console.log(account, history, params);
+    history.push(`/${currentLocation}/${account}`);
   }
 
   handleToggleApp = (event: React.SyntheticEvent<HTMLElement, Event>, { value }: DropdownProps) => {
