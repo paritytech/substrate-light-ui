@@ -18,6 +18,7 @@ import { IdentityManagementScreen, MatchParams } from './types';
 interface Props extends RouteComponentProps<MatchParams> {}
 
 type State = {
+  menuOption: 'Accounts' | 'Addresses',
   screen: IdentityManagementScreen
 };
 
@@ -47,13 +48,18 @@ const addressManagementOptions = [
   }
 ];
 
-export class Identity extends React.PureComponent<Props> {
+export class Identity extends React.PureComponent<Props, State> {
   state: State = {
+    menuOption: 'Accounts',
     screen: 'Edit'
   };
 
   handleMenuOptionSelected = (event: React.SyntheticEvent<HTMLElement, Event>, { value }: DropdownProps) => {
+    // @ts-ignore value won't be undefined but is an option in DropdownProps
+    const menuOption = ['Add'].includes(value) ? 'Addresses' : 'Accounts';
+    // @ts-ignore value won't be undefined but is an option in DropdownProps
     this.setState({
+      menuOption,
       screen: value
     });
   }
@@ -105,28 +111,24 @@ export class Identity extends React.PureComponent<Props> {
   }
 
   renderMenu () {
-    const { screen } = this.state;
-
-    const menuOption = ['Add'].includes(screen) ? 'Addresses' : 'Accounts';
+    const { menuOption, screen } = this.state;
 
     return (
       <Menu>
         <Dropdown
-            fluid
-            onChange={this.handleMenuOptionSelected}
-            options={accountManagementOptions}
-            placeholder='Manage Accounts'
-            selection
-            text={menuOption === 'Accounts' ? screen as string : undefined}
-          />
+          item
+          onChange={this.handleMenuOptionSelected}
+          options={accountManagementOptions}
+          text={menuOption === 'Accounts' ? screen as string : 'Manage Accounts'}
+          value={menuOption === 'Accounts' && screen as string}
+        />
         <Dropdown
-            fluid
-            onChange={this.handleMenuOptionSelected}
-            options={addressManagementOptions}
-            placeholder='Manage Addresses'
-            selection
-            text={menuOption === 'Addresses' ? screen as string : undefined}
-          />
+          item
+          onChange={this.handleMenuOptionSelected}
+          options={addressManagementOptions}
+          text={menuOption === 'Addresses' ? screen as string : 'Manage Addresses'}
+          value={menuOption === 'Addresses' && screen as string}
+        />
       </Menu>
     );
   }

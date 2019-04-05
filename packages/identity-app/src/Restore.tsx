@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { ErrorText, Menu, StyledLinkButton } from '@substrate/ui-components';
+import { ErrorText, Menu } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
@@ -45,9 +45,9 @@ export class Restore extends React.PureComponent<Props> {
 
     return (
       <React.Fragment>
-        <Menu>
-          <StyledLinkButton onClick={this.toJsonScreen}> With JSON </StyledLinkButton>
-          <StyledLinkButton onClick={this.toPhraseScreen}> With Phrase </StyledLinkButton>
+        <Menu secondary>
+          <Menu.Item active={screen === 'JSON'} onClick={this.toJsonScreen}> With JSON </Menu.Item>
+          <Menu.Item active={screen === 'Phrase'} onClick={this.toPhraseScreen}> With Phrase </Menu.Item>
         </Menu>
         {
           screen === 'JSON'
