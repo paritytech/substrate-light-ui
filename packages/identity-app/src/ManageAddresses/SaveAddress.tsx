@@ -7,7 +7,7 @@ import { ErrorText, Input, Margin, NavButton, Stacked, SubHeader, SuccessText, W
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { MatchParams } from './types';
+import { MatchParams } from '../types';
 
 interface Props extends RouteComponentProps<MatchParams> { }
 

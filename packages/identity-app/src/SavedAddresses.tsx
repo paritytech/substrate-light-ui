@@ -49,18 +49,13 @@ export class SavedAddresses extends React.PureComponent<Props> {
                 <React.Fragment key={`__locked_${address.json.address}`}>
                   <Margin top />
                   <StackedHorizontal>
-                    <Link to={{
-                      pathname: `/identity/${currentAccount}`,
-                      state: {
-                        editing: address.json.address
-                      }
-                    }}>
+                    <Link to={`/identity/${currentAccount}/addresses/${address.json.address}`}>
                       <AddressSummary
                         address={address.json.address}
-                        data-address={address.json.address} // Trick to avoid creating a new React component
                         name={address.json.meta.name}
                         orientation='horizontal'
-                        size='small' />
+                        size='small'
+                      />
                     </Link>
                     <Subscribe>
                       {

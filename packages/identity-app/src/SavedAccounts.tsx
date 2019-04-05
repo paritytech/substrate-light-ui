@@ -46,7 +46,7 @@ export class SavedAccounts extends React.PureComponent<Props> {
                 <AddressSummary
                   address={account.json.address}
                   name={
-                    <Link to={`/identity/${account.json.address}`}>
+                    <Link to={`/identity/${account.json.address}/edit`}>
                       {account.json.meta.name}
                     </Link>
                   }
