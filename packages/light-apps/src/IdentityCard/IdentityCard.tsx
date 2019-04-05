@@ -130,8 +130,10 @@ export class IdentityCard extends React.PureComponent<Props, State> {
     this.setState({ forgetModalOpen: true });
   }
 
-  // Note: this violates the "order functions alphabetically" rule of thumb, but makes it more readable
-  // to have it all in the same place, plus tsc will complain about the onclick callbacks not init yet.
+  /* Note: this violates the "order functions alphabetically" rule of thumb, but makes it more readable
+     to have it all in the same place. Also, it is down here as openBackupModal and openForgetModal need
+     to be initialized first else tsc will complain.
+   */
   backupTrigger = <StyledLinkButton onClick={this.openBackupModal}>Backup</StyledLinkButton>;
   forgetTrigger = <StyledLinkButton onClick={this.openForgetModal}>Forget</StyledLinkButton>;
 

@@ -11,9 +11,7 @@ import { map } from 'rxjs/operators';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-type Props = {
-  basePath: string
-};
+type Props = {};
 
 export class SavedAccounts extends React.PureComponent<Props> {
   static contextType = ApiContext;

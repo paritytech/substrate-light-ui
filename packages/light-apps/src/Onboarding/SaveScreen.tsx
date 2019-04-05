@@ -62,7 +62,7 @@ export class SaveScreen extends React.PureComponent<Props, State> {
     }
   }
 
-  private saveToWallet = () => {
+  saveToWallet = () => {
     const { keyring } = this.context;
     const { jsonString, name, recoveryPhrase, password } = this.state;
     const { history, match } = this.props;
@@ -84,19 +84,19 @@ export class SaveScreen extends React.PureComponent<Props, State> {
     }
   }
 
-  private onChangeName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+  onChangeName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
       name: value
     });
   }
 
-  private onChangePassword = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+  onChangePassword = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
       password: value
     });
   }
 
-  private onError = (value: string | null) => {
+  onError = (value: string | null) => {
     this.setState({
       error: value
     });
