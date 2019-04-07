@@ -28,7 +28,8 @@ const APP_OPTIONS = [
 interface Props extends RouteComponentProps { }
 
 type State = {
-  balance?: Balance
+  balance?: Balance,
+  chain?: any
 };
 
 export class IdentityHeader extends React.PureComponent<Props, State> {
@@ -40,24 +41,32 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
 
   };
 
-  subscription?: Subscription;
+  balanceSub?: Subscription;
+  chainSub?: Subscription;
 
   componentDidMount () {
     this.subscribeBalance();
+    this.subscribeChain();
   }
 
   componentDidUpdate (prevProps: Props) {
     if (prevProps.location.pathname.split('/')[2]
         !== this.props.location.pathname.split('/')[2]) {
-      this.closeSubscription();
+      this.closeAllSubscriptions();
       this.subscribeBalance();
+      this.subscribeChain();
     }
   }
 
-  closeSubscription () {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-      this.subscription = undefined;
+  closeAllSubscriptions () {
+    if (this.balanceSub) {
+      this.balanceSub.unsubscribe();
+      this.balanceSub = undefined;
+    }
+
+    if (this.chainSub) {
+      this.chainSub.unsubscribe();
+      this.chainSub = undefined;
     }
   }
 
@@ -101,18 +110,27 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
     // Subscribe to sender's balance
     // FIXME using any because freeBalance gives a Codec here, not a Balance
     // Wait for @polkadot/api to have TS support for all query.*
-    this.subscription = (api.query.balances.freeBalance(currentAccount) as Observable<Balance>)
+    this.balanceSub = (api.query.balances.freeBalance(currentAccount) as Observable<Balance>)
       .subscribe((balance) => this.setState({ balance }));
   }
 
+  subscribeChain = () => {
+    const { api } = this.context;
+
+    this.chainSub = (api.rpc.system.chain()).subscribe(chain => this.setState({ chain }));
+  }
+
   render () {
-    const { balance } = this.state;
+    const { balance, chain } = this.state;
 
     const address = this.getAddress();
     const currentLocation = this.getCurrentLocation();
 
     return (
       <Menu>
+        <Menu.Item>
+          { chain }
+        </Menu.Item>
         <Menu.Item>
           <InputAddress
             label={null}
