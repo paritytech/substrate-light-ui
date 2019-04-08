@@ -6,18 +6,11 @@ import { Dropdown, Menu } from '@substrate/ui-components';
 import React from 'react';
 import { Link, Route, RouteComponentProps, Switch } from 'react-router-dom';
 
-import { SaveAddress } from './SaveAddress';
+import { Add } from './Add';
+import { Edit } from './Edit';
 import { MatchParams } from '../types';
 
 interface Props extends RouteComponentProps<MatchParams> { }
-
-const menuOptions = [
-  {
-    key: 'Add',
-    text: 'Add',
-    value: 'Add'
-  }
-];
 
 export class ManageAddresses extends React.PureComponent<Props> {
   render () {
@@ -25,8 +18,8 @@ export class ManageAddresses extends React.PureComponent<Props> {
       <React.Fragment>
         {this.renderMenu()}
         <Switch>
-          {/* FIXME add route for Edit component */}
-          <Route component={SaveAddress} />
+          <Route path='/identity/:currentAccount/addresses/:address' component={Edit} />
+          <Route component={Add} />
         </Switch>
       </React.Fragment>
     );
@@ -40,11 +33,11 @@ export class ManageAddresses extends React.PureComponent<Props> {
         <Menu.Item as={Link} to={`/identity/${currentAccount}`}>
           Manage Accounts
         </Menu.Item>
-        <Dropdown
-          item
-          options={menuOptions}
-          value='Add'
-        />
+        <Dropdown item text='Add'>
+          <Dropdown.Menu>
+            <Dropdown.Item as={Link} to={`/identity/${currentAccount}/addresses`}>Add</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
       </Menu>
     );
   }

@@ -43,18 +43,18 @@ export class Edit extends React.PureComponent<Props, State> {
     return currentAccount;
   }
 
+  handleInputName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      name: value
+    });
+  }
+
   handleSubmit = () => {
     const { keyring } = this.context;
     const { name } = this.state;
     const address = this.getAddress();
 
     keyring.saveAccountMeta(keyring.getPair(address), { name: name });
-  }
-
-  onChangeName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      name: value
-    });
   }
 
   onError = (value: string | null) => {
@@ -116,7 +116,7 @@ export class Edit extends React.PureComponent<Props, State> {
           autoFocus
           label={'Name'}
           min={1}
-          onChange={this.onChangeName}
+          onChange={this.handleInputName}
           type='text'
           value={name}
         />
