@@ -16,16 +16,16 @@ export class Identity extends React.PureComponent {
     return (
       <Grid>
         <Grid.Row>
-          <Grid.Column width={7}>
-            <Switch>
-              <Route path='/identity/:currentAccount/addresses' component={SavedAddresses} />
-              <Route path='/identity/:currentAccount' component={SavedAccounts} />
-            </Switch>
-          </Grid.Column>
           <Grid.Column width={9}>
             <Switch>
               <Route path='/identity/:currentAccount/addresses' component={ManageAddresses} />
               <Route path='/identity/:currentAccount' component={ManageAccounts} />
+            </Switch>
+          </Grid.Column>
+          <Grid.Column width={7}>
+            <Switch>
+              <Route path='/identity/:currentAccount/addresses' component={SavedAddresses} />
+              <Route path='/identity/:currentAccount' component={SavedAccounts} />
             </Switch>
           </Grid.Column>
         </Grid.Row>
