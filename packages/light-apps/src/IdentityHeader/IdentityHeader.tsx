@@ -163,6 +163,6 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
   }
 
   renderBalance (balance?: Balance) {
-    return balance && <BalanceDisplay balance={balance} />;
+    return balance && <BalanceDisplay balance={balance} fontSize={'12px'} />;
   }
 }
