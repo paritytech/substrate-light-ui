@@ -17,7 +17,7 @@ import { Onboarding } from '../Onboarding';
 export class Content extends React.PureComponent {
   render () {
     return (
-      <Container>
+      <Container fluid>
         <Subscribe>
           {accounts.subject.pipe(
             map(Object.values),

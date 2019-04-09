@@ -120,24 +120,24 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { system } = this.context;
+    const { system: { chain, health, name, version } } = this.context;
     const { balance, blockNumber } = this.state;
 
     const address = this.getAddress();
     const currentLocation = this.getCurrentLocation();
 
-    const isSyncing = system.health.isSyncing;
+    const isSyncing = health.isSyncing;
 
     return (
       <Menu>
         <Menu.Item>
           <Stacked>
             <NodeStatus isSyncing={isSyncing} />
-            <FadedText> { system.chain } </FadedText>
+            <FadedText> { name } {version} </FadedText>
           </Stacked>
         </Menu.Item>
         <Menu.Item>
-          { blockNumber && <BlockCounter blockNumber={blockNumber} /> }
+          <BlockCounter blockNumber={blockNumber} chainName={chain} />
         </Menu.Item>
         <Menu.Item>
           <InputAddress
@@ -163,6 +163,6 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
   }
 
   renderBalance (balance?: Balance) {
-    return balance && <BalanceDisplay balance={balance} fontSize={'12px'} />;
+    return balance && <BalanceDisplay balance={balance} fontSize={'14px'} />;
   }
 }

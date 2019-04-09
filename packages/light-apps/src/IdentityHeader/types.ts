@@ -9,5 +9,6 @@ export type NodeStatusProps = {
 };
 
 export type BlockCounterProps = {
-  blockNumber: BlockNumber;
+  blockNumber?: BlockNumber;
+  chainName?: string;
 };

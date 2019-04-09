@@ -9,10 +9,8 @@ import { Margin, StackedHorizontal } from '@substrate/ui-components';
 
 import { BlockCounterProps, NodeStatusProps } from './types';
 
-export const BlockCounter = ({ blockNumber }: BlockCounterProps) => (
-  <StackedHorizontal>
-    <p> Block #: {blockNumber && blockNumber.toString()} </p>
-  </StackedHorizontal>
+export const BlockCounter = ({ blockNumber, chainName }: BlockCounterProps) => (
+  <p> {chainName && chainName.toString()} #: {blockNumber && blockNumber.toString()} </p>
 );
 
 // These styles are the same as if we added `fluid={true}` prop. Unfortunately

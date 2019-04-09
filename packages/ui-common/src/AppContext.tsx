@@ -12,7 +12,9 @@ import { AlertStore } from './alerts';
 export interface System {
   chain: string;
   health: Health;
+  name: string;
   properties: ChainProperties;
+  version: string;
 }
 
 export interface AppContextType {

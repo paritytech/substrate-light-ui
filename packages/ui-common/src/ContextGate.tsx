@@ -10,7 +10,7 @@ import React from 'react';
 import { Observable, zip } from 'rxjs';
 
 import { Alert, AlertStore, AlertWithoutId, dequeue, enqueue } from './alerts';
-import { AppContext, Chain, System } from './AppContext';
+import { AppContext, System } from './AppContext';
 import { isTestChain } from './util';
 
 // Holds the state for all the contexts
@@ -52,7 +52,13 @@ export class ContextGate extends React.PureComponent<{}, State> {
       get health (): never {
         throw INIT_ERROR;
       },
+      get name (): never {
+        throw INIT_ERROR;
+      },
       get properties (): never {
+        throw INIT_ERROR;
+      },
+      get version (): never {
         throw INIT_ERROR;
       }
     }
@@ -60,14 +66,16 @@ export class ContextGate extends React.PureComponent<{}, State> {
 
   componentDidMount () {
     // Get info about the current chain
+    // FIXME Correct types should come from @polkadot/api to avoid type assertion
     zip(
       this.api.isReady,
       (this.api.rpc.system.chain() as Observable<Text>),
       (this.api.rpc.system.health() as Observable<Health>),
-      // FIXME Correct types should come from @polkadot/api to avoid type assertion
-      (this.api.rpc.system.properties() as Observable<ChainProperties>)
+      (this.api.rpc.system.name() as Observable<Text>),
+      (this.api.rpc.system.properties() as Observable<ChainProperties>),
+      (this.api.rpc.system.version() as Observable<Text>)
     )
-      .subscribe(([_, chain, health, properties]) => {
+      .subscribe(([_, chain, health, name, properties, version]) => {
         // keyring with Schnorrkel support
         keyring.loadAll({
           addressPrefix: properties.get('networkId'),
@@ -83,7 +91,9 @@ export class ContextGate extends React.PureComponent<{}, State> {
           system: {
             chain: chain.toString(),
             health,
-            properties
+            name: name.toString(),
+            properties,
+            version: version.toString()
           }
         }));
       });
