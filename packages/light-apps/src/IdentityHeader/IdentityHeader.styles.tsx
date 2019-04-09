@@ -7,7 +7,13 @@ import PolkadotInputAddress from '@polkadot/ui-app/InputAddress';
 import styled from 'styled-components';
 import { Margin, StackedHorizontal } from '@substrate/ui-components';
 
-import { NodeStatusProps } from './types';
+import { BlockCounterProps, NodeStatusProps } from './types';
+
+export const BlockCounter = ({ blockNumber }: BlockCounterProps) => (
+  <StackedHorizontal>
+    <p> Block #: {blockNumber && blockNumber.toString()} </p>
+  </StackedHorizontal>
+);
 
 // These styles are the same as if we added `fluid={true}` prop. Unfortunately
 // PolkadotInputAddress doesn't pass down props to SUI components.
@@ -31,7 +37,7 @@ const GreenCircle = () => (
 );
 
 export const NodeStatus = ({ isSyncing }: NodeStatusProps) => (
-  <StackedHorizontal >
+  <StackedHorizontal>
     { isSyncing.eq(true) ? <RedCircle /> : <GreenCircle /> }
     <Margin left='small' />
     <p> Status: {isSyncing.eq(true) ? 'Syncing' : 'Synced'} </p>

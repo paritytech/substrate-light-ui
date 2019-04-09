@@ -3,15 +3,11 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import ApiRx from '@polkadot/api/rx';
-import { BlockNumber, ChainProperties, Health } from '@polkadot/types';
+import { ChainProperties, Health } from '@polkadot/types';
 import keyring from '@polkadot/ui-keyring';
 import React from 'react';
 
 import { AlertStore } from './alerts';
-
-export interface Chain {
-  blockNumber: BlockNumber;
-}
 
 export interface System {
   chain: string;
@@ -24,7 +20,6 @@ export interface AppContextType {
   api: ApiRx; // From @polkadot/api
   isReady: boolean; // Are api and keyring loaded?
   keyring: typeof keyring; // From @polkadot/ui-keyring
-  chain: Chain;
   system: System; // Information about the chain
 }
 

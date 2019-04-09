@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import ApiRx from '@polkadot/api/rx';
-import { ChainProperties, Header, Health, Text } from '@polkadot/types';
+import { ChainProperties, Health, Text } from '@polkadot/types';
 import keyring from '@polkadot/ui-keyring';
 import { logger } from '@polkadot/util';
 import React from 'react';
@@ -16,7 +16,6 @@ import { isTestChain } from './util';
 // Holds the state for all the contexts
 interface State {
   alertStore: AlertStore;
-  chain: Chain;
   isReady: boolean;
   system: System;
 }
@@ -46,11 +45,6 @@ export class ContextGate extends React.PureComponent<{}, State> {
   state: State = {
     alertStore: this.alertStoreCreate([]),
     isReady: false,
-    chain: {
-      get blockNumber (): never {
-        throw INIT_ERROR;
-      }
-    },
     system: {
       get chain (): never {
         throw INIT_ERROR;
@@ -69,12 +63,11 @@ export class ContextGate extends React.PureComponent<{}, State> {
     zip(
       this.api.isReady,
       (this.api.rpc.system.chain() as Observable<Text>),
-      (this.api.rpc.chain.subscribeNewHead() as Observable<Header>),
       (this.api.rpc.system.health() as Observable<Health>),
       // FIXME Correct types should come from @polkadot/api to avoid type assertion
       (this.api.rpc.system.properties() as Observable<ChainProperties>)
     )
-      .subscribe(([_, chain, head, health, properties]) => {
+      .subscribe(([_, chain, health, properties]) => {
         // keyring with Schnorrkel support
         keyring.loadAll({
           addressPrefix: properties.get('networkId'),
@@ -86,9 +79,6 @@ export class ContextGate extends React.PureComponent<{}, State> {
 
         this.setState(state => ({
           ...state,
-          chain: {
-            blockNumber: head.blockNumber
-          },
           isReady: true,
           system: {
             chain: chain.toString(),
@@ -128,12 +118,11 @@ export class ContextGate extends React.PureComponent<{}, State> {
 
   render () {
     const { children } = this.props;
-    const { alertStore, chain, isReady, system } = this.state;
+    const { alertStore, isReady, system } = this.state;
 
     return <AppContext.Provider value={{
       alertStore,
       api: this.api,
-      chain,
       isReady,
       keyring,
       system
