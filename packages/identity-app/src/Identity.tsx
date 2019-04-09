@@ -2,138 +2,34 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Dropdown, DropdownProps, Grid, Margin, Menu, WithSpaceAround } from '@substrate/ui-components';
-
+import { Grid } from '@substrate/ui-components';
 import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 import { SavedAccounts } from './SavedAccounts';
 import { SavedAddresses } from './SavedAddresses';
 import { ManageAccounts } from './ManageAccounts';
 import { ManageAddresses } from './ManageAddresses';
-import { IdentityManagementScreen, MatchParams } from './types';
 
-interface Props extends RouteComponentProps<MatchParams> {}
-
-type State = {
-  menuOption: 'Accounts' | 'Addresses',
-  screen: IdentityManagementScreen
-};
-
-const accountManagementOptions = [
-  {
-    key: 'Edit',
-    text: 'Edit',
-    value: 'Edit'
-  },
-  {
-    key: 'Create',
-    text: 'Create',
-    value: 'Create'
-  },
-  {
-    key: 'Restore',
-    text: 'Restore',
-    value: 'Restore'
-  }
-];
-
-const addressManagementOptions = [
-  {
-    key: 'Add',
-    text: 'Add',
-    value: 'Add'
-  }
-];
-
-export class Identity extends React.PureComponent<Props, State> {
-  state: State = {
-    menuOption: 'Accounts',
-    screen: 'Edit'
-  };
-
-  handleMenuOptionSelected = (event: React.SyntheticEvent<HTMLElement, Event>, { value }: DropdownProps) => {
-    // @ts-ignore value won't be undefined but is an option in DropdownProps
-    const menuOption = ['Add'].includes(value) ? 'Addresses' : 'Accounts';
-    // @ts-ignore value won't be undefined but is an option in DropdownProps
-    this.setState({
-      menuOption,
-      screen: value
-    });
-  }
-
+export class Identity extends React.PureComponent {
   render () {
-    const { screen } = this.state;
-
     return (
       <Grid>
         <Grid.Row>
-            {
-              ['Edit', 'Create', 'Restore'].includes(screen)
-                ? this.renderManageAccounts()
-                : this.renderManageAddresses()
-            }
+          <Grid.Column width={9}>
+            <Switch>
+              <Route path='/identity/:currentAccount/addresses' component={ManageAddresses} />
+              <Route path='/identity/:currentAccount' component={ManageAccounts} />
+            </Switch>
+          </Grid.Column>
+          <Grid.Column width={7}>
+            <Switch>
+              <Route path='/identity/:currentAccount/addresses' component={SavedAddresses} />
+              <Route path='/identity/:currentAccount' component={SavedAccounts} />
+            </Switch>
+          </Grid.Column>
         </Grid.Row>
       </Grid>
-    );
-  }
-
-  renderManageAccounts () {
-    const { screen } = this.state;
-    const { match: { params: { currentAccount } } } = this.props;
-
-    return (
-      <React.Fragment>
-        <Grid.Column width={7}> <SavedAccounts {...this.props} /> </Grid.Column>
-        <Grid.Column width={9}>
-          { this.renderMenu() }
-          <Margin top />
-          <WithSpaceAround>
-            <ManageAccounts address={currentAccount} screen={screen} {...this.props} />
-          </WithSpaceAround>
-        </Grid.Column>
-      </React.Fragment>
-    );
-  }
-
-  renderManageAddresses () {
-    const { screen } = this.state;
-    const { match: { params: { currentAccount } } } = this.props;
-
-    return (
-      <React.Fragment>
-        <Grid.Column width={7}> <SavedAddresses {...this.props} /> </Grid.Column>
-        <Grid.Column width={9}>
-          { this.renderMenu() }
-          <Margin top />
-          <WithSpaceAround>
-            <ManageAddresses address={currentAccount} screen={screen} {...this.props} />
-          </WithSpaceAround>
-        </Grid.Column>
-      </React.Fragment>
-    );
-  }
-
-  renderMenu () {
-    const { menuOption, screen } = this.state;
-
-    return (
-      <Menu>
-        <Dropdown
-          item
-          onChange={this.handleMenuOptionSelected}
-          options={accountManagementOptions}
-          text={menuOption === 'Accounts' ? screen as string : 'Manage Accounts'}
-          value={menuOption === 'Accounts' && screen as string}
-        />
-        <Dropdown
-          item
-          onChange={this.handleMenuOptionSelected}
-          options={addressManagementOptions}
-          text={menuOption === 'Addresses' ? screen as string : 'Manage Addresses'}
-          value={menuOption === 'Addresses' && screen as string}
-        />
-      </Menu>
     );
   }
 }

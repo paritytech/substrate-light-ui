@@ -7,7 +7,7 @@ import { AddressSummary, ErrorText, Input, NavButton, Stacked, SubHeader, WithSp
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { MatchParams } from './types';
+import { MatchParams } from '../types';
 
 interface Props extends RouteComponentProps<MatchParams> { }
 
@@ -43,18 +43,18 @@ export class Edit extends React.PureComponent<Props, State> {
     return currentAccount;
   }
 
+  handleInputName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      name: value
+    });
+  }
+
   handleSubmit = () => {
     const { keyring } = this.context;
     const { name } = this.state;
     const address = this.getAddress();
 
     keyring.saveAccountMeta(keyring.getPair(address), { name: name });
-  }
-
-  onChangeName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      name: value
-    });
   }
 
   onError = (value: string | null) => {
@@ -116,7 +116,7 @@ export class Edit extends React.PureComponent<Props, State> {
           autoFocus
           label={'Name'}
           min={1}
-          onChange={this.onChangeName}
+          onChange={this.handleInputName}
           type='text'
           value={name}
         />

@@ -4,9 +4,10 @@
 
 // We export these ones as-is from SUI
 export {
-  DropdownItem, DropdownItemProps, DropdownProps,
+  Dropdown, DropdownProps,
   Form, FormProps,
   Input, InputProps,
+  Menu, MenuProps,
   Message, MessageProps,
   Segment, SegmentProps,
   Step, StepProps

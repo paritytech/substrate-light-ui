@@ -60,10 +60,11 @@ export class ContextGate extends React.PureComponent<{}, State> {
     zip(
       this.api.isReady,
       (this.api.rpc.system.chain() as Observable<Text>),
+      (this.api.rpc.system.health() as Observable<Text>),
       // FIXME Correct types should come from @polkadot/api to avoid type assertion
       (this.api.rpc.system.properties() as Observable<ChainProperties>)
     )
-      .subscribe(([_, chain, properties]) => {
+      .subscribe(([_, chain, health, properties]) => {
         // keyring with Schnorrkel support
         keyring.loadAll({
           addressPrefix: properties.get('networkId'),
@@ -78,6 +79,7 @@ export class ContextGate extends React.PureComponent<{}, State> {
           isReady: true,
           system: {
             chain: chain.toString(),
+            health,
             properties
           }
         }));

@@ -10,7 +10,7 @@ import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Observable, Subscription } from 'rxjs';
 
-import { InputAddress } from './IdentityHeader.styles';
+import { InputAddress, NodeStatus } from './IdentityHeader.styles';
 
 // TODO: Add Governance Once That's in
 const APP_OPTIONS = [
@@ -28,8 +28,7 @@ const APP_OPTIONS = [
 interface Props extends RouteComponentProps { }
 
 type State = {
-  balance?: Balance,
-  chain?: any
+  balance?: Balance
 };
 
 export class IdentityHeader extends React.PureComponent<Props, State> {
@@ -42,11 +41,9 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
   };
 
   balanceSub?: Subscription;
-  chainSub?: Subscription;
 
   componentDidMount () {
     this.subscribeBalance();
-    this.subscribeChain();
   }
 
   componentDidUpdate (prevProps: Props) {
@@ -54,7 +51,6 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
         !== this.props.location.pathname.split('/')[2]) {
       this.closeAllSubscriptions();
       this.subscribeBalance();
-      this.subscribeChain();
     }
   }
 
@@ -62,11 +58,6 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
     if (this.balanceSub) {
       this.balanceSub.unsubscribe();
       this.balanceSub = undefined;
-    }
-
-    if (this.chainSub) {
-      this.chainSub.unsubscribe();
-      this.chainSub = undefined;
     }
   }
 
@@ -114,22 +105,22 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
       .subscribe((balance) => this.setState({ balance }));
   }
 
-  subscribeChain = () => {
-    const { api } = this.context;
-
-    this.chainSub = (api.rpc.system.chain()).subscribe(chain => this.setState({ chain }));
-  }
-
   render () {
-    const { balance, chain } = this.state;
+    const { system } = this.context;
+    const { balance } = this.state;
 
     const address = this.getAddress();
     const currentLocation = this.getCurrentLocation();
 
+    const isSyncing = system.health.isSyncing.toString();
+
     return (
       <Menu>
         <Menu.Item>
-          { chain }
+          { system.chain }
+        </Menu.Item>
+        <Menu.Item>
+          <NodeStatus isSyncing={isSyncing} />
         </Menu.Item>
         <Menu.Item>
           <InputAddress

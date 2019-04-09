@@ -11,6 +11,7 @@ import { AlertStore } from './alerts';
 
 export interface System {
   chain: string;
+  health: any; // FIXME: types
   properties: ChainProperties;
 }
 
