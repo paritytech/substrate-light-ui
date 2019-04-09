@@ -2,13 +2,11 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import BN from 'bn.js';
 import IdentityIcon from '@polkadot/ui-identicon';
-import { KeyringAddress } from '@polkadot/ui-keyring/types';
 import React from 'react';
 
-import { BalanceDisplay } from '../Balance';
-import { DynamicSizeText, Stacked, StackedHorizontal } from '../Shared.styles';
+import { Balance } from '../Balance';
+import { DynamicSizeText, Stacked, StackedHorizontal } from '../../Shared.styles';
 import { OrientationType, SizeType } from './types';
 
 type SummaryStyles = {
@@ -17,8 +15,7 @@ type SummaryStyles = {
 };
 
 type Props = {
-  address?: string | KeyringAddress,
-  balance?: BN,
+  address?: string,
   name?: string | React.ReactNode,
   orientation?: OrientationType,
   size?: SizeType
@@ -29,7 +26,7 @@ const PLACEHOLDER_ADDRESS = '5'.padEnd(16, 'x');
 
 export class AddressSummary extends React.PureComponent<Props> {
   render () {
-    const { address, balance, name, orientation = 'vertical', size = 'medium' } = this.props;
+    const { address, name, orientation = 'vertical', size = 'medium' } = this.props;
     let styles: SummaryStyles = { identiconSize: 16, nameSize: '14px' };
 
     switch (size) {
@@ -54,7 +51,7 @@ export class AddressSummary extends React.PureComponent<Props> {
         <Stacked>
           <IdentityIcon value={address as string || PLACEHOLDER_ADDRESS} theme={'substrate'} size={styles.identiconSize} />
           <DynamicSizeText fontSize={styles.nameSize}> {name || PLACEHOLDER_NAME} </DynamicSizeText>
-          {balance && <BalanceDisplay balance={balance} />}
+          <Balance address={address} />
         </Stacked>
       );
     } else {
@@ -62,7 +59,7 @@ export class AddressSummary extends React.PureComponent<Props> {
         <StackedHorizontal justifyContent='space-around'>
           <IdentityIcon value={address as string || PLACEHOLDER_ADDRESS} theme={'substrate'} size={styles.identiconSize} />
           <DynamicSizeText fontSize={styles.nameSize}> {name || PLACEHOLDER_NAME} </DynamicSizeText>
-          {balance && <BalanceDisplay balance={balance} />}
+          <Balance address={address} />
         </StackedHorizontal>
       );
     }

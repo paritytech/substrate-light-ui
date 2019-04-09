@@ -8,8 +8,8 @@ import { storiesOf } from '@storybook/react';
 import { object, select, text, withKnobs } from '@storybook/addon-knobs';
 
 import { withTheme } from './customDecorators';
-import { AddressSummary } from '../src/AddressSummary';
-import { OrientationType, SizeType } from '../src/AddressSummary/types';
+import { AddressSummary } from '../src/stateful/AddressSummary';
+import { OrientationType, SizeType } from '../src/stateful/AddressSummary/types';
 
 let orientations: Array<OrientationType> = ['horizontal', 'vertical'];
 let sizes: Array<SizeType> = ['tiny', 'small', 'medium', 'large'];
@@ -20,7 +20,6 @@ storiesOf('Address Sumary', module)
   .add('summary', () => (
     <AddressSummary
       address={text('address', '5GeJHN5EcUGPoa5pUwYkXjymoDVN1DJHsBR4UGX4XRAwKBVk')}
-      balance={object('balance', new BN(123))}
       name={text('name', 'Joe Schmoe')}
       orientation={
         select('orientation', orientations, orientations[0])

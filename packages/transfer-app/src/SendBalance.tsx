@@ -2,13 +2,12 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Balance } from '@polkadot/types';
-import { AppContext, Subscribe } from '@substrate/ui-common';
-import { BalanceDisplay, ErrorText, Form, Input, NavButton, StackedHorizontal, SubHeader } from '@substrate/ui-components';
+import { Balance as BalanceType } from '@polkadot/types';
+import { AppContext } from '@substrate/ui-common';
+import { Balance, ErrorText, Form, Input, NavButton, StackedHorizontal, SubHeader } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 import { MatchParams } from './types';
 import { CenterDiv, InputAddress, LeftDiv, RightDiv } from './Transfer.styles';
@@ -21,7 +20,7 @@ interface Props extends RouteComponentProps<SendMatchParams> { }
 
 interface State {
   amount: string;
-  balance?: Balance; // The balance of the sender
+  balance?: BalanceType; // The balance of the sender
   error?: string;
 }
 
@@ -100,7 +99,7 @@ export class SendBalance extends React.PureComponent<Props, State> {
     }
 
     // Do validation on amount
-    const amountBn = new Balance(amount);
+    const amountBn = new BalanceType(amount);
 
     if (!balance) {
       // FIXME Improve UX here
@@ -138,14 +137,13 @@ export class SendBalance extends React.PureComponent<Props, State> {
     // Subscribe to sender's balance
     // FIXME using any because freeBalance gives a Codec here, not a Balance
     // Wait for @polkadot/api to have TS support for all query.*
-    this.subscription = (api.query.balances.freeBalance(currentAccount) as Observable<Balance>)
+    this.subscription = (api.query.balances.freeBalance(currentAccount) as Observable<BalanceType>)
       .subscribe((balance) => this.setState({ balance }));
   }
 
   render () {
-    const { api } = this.context;
     const { match: { params: { currentAccount, recipientAddress } } } = this.props;
-    const { amount, balance, error } = this.state;
+    const { amount, error } = this.state;
 
     // const isAddressValid = !!recipientAddress && this.isValidAddress(recipientAddress);
     // const recipientName = isAddressValid ? keyring.getAccount(recipientAddress).getMeta().name : '';
@@ -161,7 +159,6 @@ export class SendBalance extends React.PureComponent<Props, State> {
               value={currentAccount}
               withLabel={false}
             />
-            {this.renderBalance(balance)}
           </LeftDiv>
 
           <CenterDiv>
@@ -187,13 +184,7 @@ export class SendBalance extends React.PureComponent<Props, State> {
               value={recipientAddress}
               withLabel={false}
             />
-            {recipientAddress && <Subscribe>
-              {
-                // FIXME using any because freeBalance gives a Codec here, not a Balance
-                // Wait for @polkadot/api to have TS support for all query.*
-                api.query.balances.freeBalance(recipientAddress).pipe(map(this.renderBalance as any))
-              }
-            </Subscribe>}
+            <Balance address={recipientAddress} />
           </RightDiv>
         </StackedHorizontal>
         <StackedHorizontal>
@@ -205,10 +196,6 @@ export class SendBalance extends React.PureComponent<Props, State> {
         </StackedHorizontal>
       </Form>
     );
-  }
-
-  renderBalance (balance?: Balance) {
-    return balance && <BalanceDisplay balance={balance} />;
   }
 
   renderError () {
