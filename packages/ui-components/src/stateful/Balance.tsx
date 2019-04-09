@@ -21,11 +21,11 @@ export class Balance extends React.PureComponent<BalanceProps> {
   context!: React.ContextType<typeof AppContext>; // http://bit.ly/typescript-and-react-context
 
   render () {
-    const { api } = this.context;
+    const { api, system: { properties } } = this.context;
     const { address, ...rest } = this.props;
 
     if (!address) {
-      return <BalanceDisplay balance={ZERO_BALANCE} {...rest} />;
+      return <BalanceDisplay balance={ZERO_BALANCE} tokenSymbol={properties.tokenSymbol} {...rest} />;
     }
 
     return (
@@ -40,8 +40,9 @@ export class Balance extends React.PureComponent<BalanceProps> {
   }
 
   renderBalance = (balance: BalanceType) => {
+    const { system: { properties } } = this.context;
     const { address, ...rest } = this.props;
 
-    return <BalanceDisplay balance={balance} {...rest} />;
+    return <BalanceDisplay balance={balance} tokenSymbol={properties.tokenSymbol} {...rest} />;
   }
 }

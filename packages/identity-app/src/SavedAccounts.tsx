@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AddressSummary, Balance, Margin, Stacked, WalletCard, WithSpace } from '@substrate/ui-components';
+import { AddressSummary, Margin, Stacked, WalletCard, WithSpace } from '@substrate/ui-components';
 import accountObservable from '@polkadot/ui-keyring/observable/accounts';
 import { SingleAddress, SubjectInfo } from '@polkadot/ui-keyring/observable/types';
 import { Subscribe } from '@substrate/ui-common';
@@ -47,7 +47,6 @@ export class SavedAccounts extends React.PureComponent<Props> {
                   orientation='horizontal'
                   size='small'
                 />
-                <Balance address={account.json.address} />
               </React.Fragment>
             )
           ))}

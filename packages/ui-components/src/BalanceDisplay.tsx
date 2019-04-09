@@ -10,24 +10,24 @@ import { DynamicSizeText } from './Shared.styles';
 export type BalanceDisplayProps = {
   balance?: Balance,
   fontSize?: string,
-  unit?: string
+  tokenSymbol?: string
 };
 
 const PLACEHOLDER_BALANCE = new Balance(0);
-const PLACEHOLDER_UNIT = 'UNIT';
+const PLACEHOLDER_TOKEN_SYMBOL = 'UNIT';
 
 export class BalanceDisplay extends React.PureComponent<BalanceDisplayProps> {
   static defaultProps = {
     balance: PLACEHOLDER_BALANCE,
-    unit: PLACEHOLDER_UNIT
+    tokenSymbol: PLACEHOLDER_TOKEN_SYMBOL
   };
 
   render () {
-    const { balance, fontSize, unit } = this.props;
+    const { balance, fontSize, tokenSymbol } = this.props;
 
     return (
       <DynamicSizeText fontSize={fontSize}>
-        Balance: {(balance!.toString(10))} {unit}
+        Balance: {(balance!.toString(10))} {tokenSymbol}
       </DynamicSizeText>
     );
   }
