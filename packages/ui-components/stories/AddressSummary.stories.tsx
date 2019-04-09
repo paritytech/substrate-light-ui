@@ -2,10 +2,9 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import BN from 'bn.js';
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { object, select, text, withKnobs } from '@storybook/addon-knobs';
+import { select, text, withKnobs } from '@storybook/addon-knobs';
 
 import { withTheme } from './customDecorators';
 import { AddressSummary } from '../src/stateful/AddressSummary';
