@@ -3,19 +3,20 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import ApiRx from '@polkadot/api/rx';
-import { ChainProperties, Text } from '@polkadot/types';
+import { ChainProperties, Header, Health, Text } from '@polkadot/types';
 import keyring from '@polkadot/ui-keyring';
 import { logger } from '@polkadot/util';
 import React from 'react';
 import { Observable, zip } from 'rxjs';
 
 import { Alert, AlertStore, AlertWithoutId, dequeue, enqueue } from './alerts';
-import { AppContext, System } from './AppContext';
+import { AppContext, Chain, System } from './AppContext';
 import { isTestChain } from './util';
 
 // Holds the state for all the contexts
 interface State {
   alertStore: AlertStore;
+  chain: Chain;
   isReady: boolean;
   system: System;
 }
@@ -68,8 +69,8 @@ export class ContextGate extends React.PureComponent<{}, State> {
     zip(
       this.api.isReady,
       (this.api.rpc.system.chain() as Observable<Text>),
-      (this.api.rpc.chain.subscribeNewHead() as Observable<Text>),
-      (this.api.rpc.system.health() as Observable<Text>),
+      (this.api.rpc.chain.subscribeNewHead() as Observable<Header>),
+      (this.api.rpc.system.health() as Observable<Health>),
       // FIXME Correct types should come from @polkadot/api to avoid type assertion
       (this.api.rpc.system.properties() as Observable<ChainProperties>)
     )
