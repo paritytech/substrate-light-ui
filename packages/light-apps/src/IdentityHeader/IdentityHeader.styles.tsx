@@ -20,20 +20,20 @@ export const InputAddress = styled(PolkadotInputAddress)`
 
 const RedCircle = () => (
   <svg height='10' width='10'>
-    <circle cx='5' cy='5' r='5' fill='red' />
+    <circle cx='5' cy='5' r='5' fill='#ff0000' />
   </svg>
 );
 
 const GreenCircle = () => (
   <svg height='10' width='10'>
-    <circle cx='5' cy='5' r='5' fill='green' />
+    <circle cx='5' cy='5' r='5' fill='#79c879' />
   </svg>
 );
 
 export const NodeStatus = ({ isSyncing }: NodeStatusProps) => (
   <StackedHorizontal >
-    { isSyncing ? <RedCircle /> : <GreenCircle /> }
+    { isSyncing.eq(true) ? <RedCircle /> : <GreenCircle /> }
     <Margin left='small' />
-    <p> Status: {isSyncing ? 'Syncing' : 'Synced'} </p>
+    <p> Status: {isSyncing.eq(true) ? 'Syncing' : 'Synced'} </p>
   </StackedHorizontal>
 );

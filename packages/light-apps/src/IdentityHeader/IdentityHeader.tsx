@@ -5,7 +5,7 @@
 import { Balance } from '@polkadot/types';
 import { stringUpperFirst } from '@polkadot/util';
 import { AppContext } from '@substrate/ui-common';
-import { BalanceDisplay, Dropdown, DropdownProps, Menu } from '@substrate/ui-components';
+import { BalanceDisplay, Dropdown, DropdownProps, FadedText, Menu, Stacked } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Observable, Subscription } from 'rxjs';
@@ -112,15 +112,15 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
     const address = this.getAddress();
     const currentLocation = this.getCurrentLocation();
 
-    const isSyncing = system.health.isSyncing.toString();
+    const isSyncing = system.health.isSyncing;
 
     return (
       <Menu>
         <Menu.Item>
-          { system.chain }
-        </Menu.Item>
-        <Menu.Item>
-          <NodeStatus isSyncing={isSyncing} />
+          <Stacked>
+            <NodeStatus isSyncing={isSyncing} />
+            <FadedText> { system.chain } </FadedText>
+          </Stacked>
         </Menu.Item>
         <Menu.Item>
           <InputAddress
