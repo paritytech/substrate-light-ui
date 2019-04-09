@@ -15,7 +15,7 @@ const StyledCard = styled<any>(SUICard)`
   background-color: #ffffff;
   border-radius: 2px;
   box-shadow: 0 4px 5px 1px rgba(0, 0, 0, 0.3);
-  height: 357px;
+  height: ${props => props.height || '357px'};
   width: 100%;
   overflow: ${props => props.overflow || 'none'};
  }

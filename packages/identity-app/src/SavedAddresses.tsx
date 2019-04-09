@@ -24,6 +24,7 @@ export class SavedAddresses extends React.PureComponent<Props> {
     return (
       <WalletCard
         header='Saved Addresses'
+        height='100%'
         overflow='scroll'
         subheader='select saved addresses to edit meta.'>
         <Stacked>

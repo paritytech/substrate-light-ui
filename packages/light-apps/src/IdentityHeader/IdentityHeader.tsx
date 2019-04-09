@@ -2,28 +2,43 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Balance } from '@polkadot/types';
-import { stringUpperFirst } from '@polkadot/util';
-import { AppContext, Subscribe } from '@substrate/ui-common';
-import { Address, AddressSummary, BalanceDisplay, ErrorText, FadedText, Header, Icon, Input, Margin, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SuccessText, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
+import { Balance, BlockNumber, Header } from '@polkadot/types';
+import { stringUpperFirst } from '@polkadot/util';
+import { AppContext } from '@substrate/ui-common';
+import { BalanceDisplay, Dropdown, DropdownProps, FadedText, Icon, Input, Margin, Menu, Modal, Stacked, StackedHorizontal, StyledLinkButton, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { map } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
 
-import { StyledCard, CardContent } from './IdentityCard.styles';
+import { BlockCounter, InputAddress, NodeStatus } from './IdentityHeader.styles';
+
+// TODO: Add Governance Once That's in
+const APP_OPTIONS = [
+  {
+    key: 'Identity',
+    text: 'Identity',
+    value: 'Identity'
+  },
+  {
+    key: 'Transfer',
+    text: 'Transfer',
+    value: 'Transfer'
+  }];
 
 interface Props extends RouteComponentProps { }
 
 type State = {
+  balance?: Balance,
+  blockNumber?: BlockNumber,
   backupModalOpen: boolean,
-  error?: string,
   forgetModalOpen: boolean,
-  password: string,
-  success?: string
+  error?: string,
+  success?: string,
+  password: string
 };
 
-export class IdentityCard extends React.PureComponent<Props, State> {
+export class IdentityHeader extends React.PureComponent<Props, State> {
   static contextType = AppContext;
 
   context!: React.ContextType<typeof AppContext>; // http://bit.ly/typescript-and-react-context
@@ -33,6 +48,35 @@ export class IdentityCard extends React.PureComponent<Props, State> {
     forgetModalOpen: false,
     password: ''
   };
+
+  balanceSub?: Subscription;
+  chainHeadSub?: Subscription;
+
+  componentDidMount () {
+    this.subscribeBalance();
+    this.subscribeChainHead();
+  }
+
+  componentDidUpdate (prevProps: Props) {
+    if (prevProps.location.pathname.split('/')[2]
+        !== this.props.location.pathname.split('/')[2]) {
+      this.closeAllSubscriptions();
+      this.subscribeBalance();
+      this.subscribeChainHead();
+    }
+  }
+
+  closeAllSubscriptions () {
+    if (this.balanceSub) {
+      this.balanceSub.unsubscribe();
+      this.balanceSub = undefined;
+    }
+
+    if (this.chainHeadSub) {
+      this.chainHeadSub.unsubscribe();
+      this.chainHeadSub = undefined;
+    }
+  }
 
   backupCurrentAccount = () => {
     const { keyring } = this.context;
@@ -86,11 +130,12 @@ export class IdentityCard extends React.PureComponent<Props, State> {
     return this.props.location.pathname.split('/')[2];
   }
 
-  getButtonText = () => {
+  getCurrentLocation = () => {
+    const { location } = this.props;
+
     const currentLocation = location.pathname.split('/')[1].toLowerCase();
 
-    const to = currentLocation === 'identity' ? 'transfer' : 'identity';
-    return stringUpperFirst(to);
+    return currentLocation;
   }
 
   getName = () => {
@@ -100,14 +145,18 @@ export class IdentityCard extends React.PureComponent<Props, State> {
     return address && keyring.getAccount(address).getMeta().name;
   }
 
-  handleToggleApp = () => {
-    const { location, history } = this.props;
+  handleChangeCurrentAccount = (account: string) => {
+    const { history } = this.props;
+    const currentLocation = this.getCurrentLocation();
+
+    history.push(`/${currentLocation}/${account}`);
+  }
+
+  handleToggleApp = (event: React.SyntheticEvent<HTMLElement, Event>, { value }: DropdownProps) => {
+    const { history } = this.props;
     const address = this.getAddress();
-    const currentLocation = location.pathname.split('/')[1].toLowerCase();
 
-    const to = currentLocation === 'identity' ? 'transfer' : 'identity';
-
-    history.push(`/${to}/${address}`);
+    history.push(`/${value}/${address}`);
   }
 
   onChangePassword = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
@@ -115,11 +164,21 @@ export class IdentityCard extends React.PureComponent<Props, State> {
   }
 
   onError = (value: string) => {
-    this.setState({ error: value, success: undefined });
+    const { alertStore } = this.context;
+
+    alertStore.enqueue({
+      content: value,
+      type: 'error'
+    });
   }
 
   onSuccess = (value: string) => {
-    this.setState({ error: undefined, success: value });
+    const { alertStore } = this.context;
+
+    alertStore.enqueue({
+      content: value,
+      type: 'success'
+    });
   }
 
   openBackupModal = () => {
@@ -134,48 +193,82 @@ export class IdentityCard extends React.PureComponent<Props, State> {
      to have it all in the same place. Also, it is down here as openBackupModal and openForgetModal need
      to be initialized first else tsc will complain.
    */
-  backupTrigger = <StyledLinkButton onClick={this.openBackupModal}>Backup</StyledLinkButton>;
-  forgetTrigger = <StyledLinkButton onClick={this.openForgetModal}>Forget</StyledLinkButton>;
+  backupTrigger = <Dropdown.Item closeOnFocus icon='arrow alternate circle down' onClick={this.openBackupModal} text='Backup Account' />;
+  forgetTrigger = <Dropdown.Item closeOnFocus icon='trash' onClick={this.openForgetModal} text='Forget Account' />;
+
+  subscribeBalance = () => {
+    const { api } = this.context;
+    const currentAccount = this.getAddress();
+
+    // Subscribe to sender's balance
+    // FIXME using any because freeBalance gives a Codec here, not a Balance
+    // Wait for @polkadot/api to have TS support for all query.*
+    this.balanceSub = (api.query.balances.freeBalance(currentAccount) as Observable<Balance>)
+      .subscribe((balance) => this.setState({ balance }));
+  }
+
+  subscribeChainHead = () => {
+    const { api } = this.context;
+
+    this.chainHeadSub = (api.rpc.chain.subscribeNewHead() as Observable<Header>)
+      .subscribe((header) => this.setState({ blockNumber: header.blockNumber }));
+  }
 
   render () {
-    const { api } = this.context;
+    const { system: { chain, health, name, version } } = this.context;
+    const { balance, blockNumber } = this.state;
+
     const address = this.getAddress();
+    const currentLocation = this.getCurrentLocation();
+
+    const isSyncing = health.isSyncing;
 
     return (
-      <StyledCard>
-        <CardContent>
-          <Header> Current Account </Header>
-          {address
-            ?
-            <React.Fragment>
-              <AddressSummary address={address} name={this.getName()} />
-              <Subscribe>
-                {
-                  // FIXME using any because freeBalance gives a Codec here, not a Balance
-                  // Wait for @polkadot/api to have TS support for all query.*
-                  api.query.balances.freeBalance(address).pipe(map(this.renderBalance as any))
-                }
-              </Subscribe>
-            </React.Fragment>
-            : <div>Loading...</div>
-          }
-          <Margin top />
+      <Menu>
+        <Menu.Item>
           <Stacked>
-            <Address address={address} />
-            <Margin top />
-            <StackedHorizontal>
-              {this.renderForgetConfirmationModal()}
-              or
-              {this.renderBackupConfirmationModal()}
-            </StackedHorizontal>
+            <NodeStatus isSyncing={isSyncing} />
+            <FadedText> { name } {version} </FadedText>
           </Stacked>
-          <Margin top />
-          <NavButton value={this.getButtonText()} onClick={this.handleToggleApp} />
-        </CardContent>
-        {this.renderError()}
-        {this.renderSuccess()}
-      </StyledCard>
+        </Menu.Item>
+        <Menu.Item>
+          <BlockCounter blockNumber={blockNumber} chainName={chain} />
+        </Menu.Item>
+        <Menu.Item>
+          <InputAddress
+            label={null}
+            onChange={this.handleChangeCurrentAccount}
+            type='all'
+            value={address}
+            withLabel={false}
+          />
+        </Menu.Item>
+        <Menu.Item>
+          {this.renderBalance(balance)}
+        </Menu.Item>
+        <Dropdown
+          item
+          onChange={this.handleToggleApp}
+          options={APP_OPTIONS}
+          text={stringUpperFirst(currentLocation)}
+          value={stringUpperFirst(currentLocation)}
+          />
+        <Dropdown
+          icon='setting'
+          item
+          text='Settings'
+          >
+          <Dropdown.Menu>
+            {this.renderBackupConfirmationModal()}
+            {this.renderForgetConfirmationModal()}
+          </Dropdown.Menu>
+        </Dropdown>
+     </Menu>
     );
+  }
+
+  renderBalance (balance?: Balance) {
+    return balance && <BalanceDisplay balance={balance} fontSize={'14px'} />;
   }
 
   renderBackupConfirmationModal () {
@@ -190,7 +283,7 @@ export class IdentityCard extends React.PureComponent<Props, State> {
             <Modal.Actions>
               <Stacked>
                 <FadedText> Please encrypt your account first with the account's password. </FadedText>
-                <Input fluid min={8} onChange={this.onChangePassword} type='password' value={password} />
+                <Input onChange={this.onChangePassword} type='password' value={password} />
                 <StackedHorizontal>
                   <WithSpaceBetween>
                     <StyledLinkButton onClick={this.closeBackupModal}><Icon name='remove' color='red' /> <FadedText>Cancel</FadedText></StyledLinkButton>
@@ -202,20 +295,6 @@ export class IdentityCard extends React.PureComponent<Props, State> {
           </Stacked>
         </WithSpaceAround>
       </Modal>
-    );
-  }
-
-  renderBalance = (balance: Balance) => {
-    return <BalanceDisplay balance={balance} />;
-  }
-
-  renderError () {
-    const { error } = this.state;
-
-    return (
-      <ErrorText>
-        {error}
-      </ErrorText>
     );
   }
 
@@ -239,16 +318,6 @@ export class IdentityCard extends React.PureComponent<Props, State> {
           </Stacked>
         </WithSpaceAround>
       </Modal>
-    );
-  }
-
-  renderSuccess () {
-    const { success } = this.state;
-
-    return (
-      <SuccessText>
-        {success}
-      </SuccessText>
     );
   }
 }

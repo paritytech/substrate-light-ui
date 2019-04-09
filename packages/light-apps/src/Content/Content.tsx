@@ -11,20 +11,20 @@ import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { map } from 'rxjs/operators';
 
-import { IdentityCard } from '../IdentityCard';
+import { IdentityHeader } from '../IdentityHeader';
 import { Onboarding } from '../Onboarding';
 
 export class Content extends React.PureComponent {
   render () {
     return (
-      <Container>
+      <Container fluid>
         <Subscribe>
           {accounts.subject.pipe(
             map(Object.values),
             map(([defaultAccount]) => defaultAccount
               ? (
                 <React.Fragment>
-                  <Route component={IdentityCard} />
+                  <Route component={IdentityHeader} />
                   <Switch>
                     <Redirect exact from='/' to={`/identity/${defaultAccount.json.address}`} />
                     <Redirect exact from='/identity' to={`/identity/${defaultAccount.json.address}`} />

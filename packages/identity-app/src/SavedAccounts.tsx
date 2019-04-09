@@ -22,6 +22,7 @@ export class SavedAccounts extends React.PureComponent<Props> {
     return (
       <WalletCard
         header='Saved Accounts'
+        height='100%'
         overflow='scroll'
         subheader='To quickly move between accounts, select from the list of unlocked accounts below.'>
         <Stacked>

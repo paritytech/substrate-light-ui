@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import ApiRx from '@polkadot/api/rx';
-import { ChainProperties, Text } from '@polkadot/types';
+import { ChainProperties, Health, Text } from '@polkadot/types';
 import keyring from '@polkadot/ui-keyring';
 import { logger } from '@polkadot/util';
 import React from 'react';
@@ -49,7 +49,16 @@ export class ContextGate extends React.PureComponent<{}, State> {
       get chain (): never {
         throw INIT_ERROR;
       },
+      get health (): never {
+        throw INIT_ERROR;
+      },
+      get name (): never {
+        throw INIT_ERROR;
+      },
       get properties (): never {
+        throw INIT_ERROR;
+      },
+      get version (): never {
         throw INIT_ERROR;
       }
     }
@@ -57,13 +66,16 @@ export class ContextGate extends React.PureComponent<{}, State> {
 
   componentDidMount () {
     // Get info about the current chain
+    // FIXME Correct types should come from @polkadot/api to avoid type assertion
     zip(
       this.api.isReady,
       (this.api.rpc.system.chain() as Observable<Text>),
-      // FIXME Correct types should come from @polkadot/api to avoid type assertion
-      (this.api.rpc.system.properties() as Observable<ChainProperties>)
+      (this.api.rpc.system.health() as Observable<Health>),
+      (this.api.rpc.system.name() as Observable<Text>),
+      (this.api.rpc.system.properties() as Observable<ChainProperties>),
+      (this.api.rpc.system.version() as Observable<Text>)
     )
-      .subscribe(([_, chain, properties]) => {
+      .subscribe(([_, chain, health, name, properties, version]) => {
         // keyring with Schnorrkel support
         keyring.loadAll({
           addressPrefix: properties.get('networkId'),
@@ -78,7 +90,10 @@ export class ContextGate extends React.PureComponent<{}, State> {
           isReady: true,
           system: {
             chain: chain.toString(),
-            properties
+            health,
+            name: name.toString(),
+            properties,
+            version: version.toString()
           }
         }));
       });
