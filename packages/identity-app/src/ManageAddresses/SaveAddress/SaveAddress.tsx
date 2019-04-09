@@ -4,7 +4,7 @@
 
 import { isFunction } from '@polkadot/util';
 import { AppContext } from '@substrate/ui-common';
-import { ErrorText, Form, Input, Margin, NavButton, Stacked, SubHeader, SuccessText, WithSpace } from '@substrate/ui-components';
+import { ErrorText, Form, Input, Margin, NavButton, Stacked, SuccessText } from '@substrate/ui-components';
 import React from 'react';
 
 interface Props {
@@ -113,25 +113,23 @@ export class SaveAddress extends React.PureComponent<Props, State> {
     return (
       <Form onSubmit={this.handleSubmit}>
         <Stacked>
-          <WithSpace>
-            <SubHeader> Save Address </SubHeader>
-            <Input
-              disabled={addressDisabled}
-              label='Address'
-              onChange={this.handleInputAddress}
-              required
-              type='text'
-              value={address}
-            />
-            <Margin top />
-            <Input
-              label='Name'
-              onChange={this.handleInputName}
-              required
-              type='text'
-              value={name}
-            />
-          </WithSpace>
+          <Input
+            disabled={addressDisabled}
+            label='Address'
+            onChange={this.handleInputAddress}
+            required
+            type='text'
+            value={address}
+          />
+          <Margin top />
+          <Input
+            label='Name'
+            onChange={this.handleInputName}
+            required
+            type='text'
+            value={name}
+          />
+          <Margin top />
           <NavButton type='submit' value='Save Address' />
           {this.renderError()}
           {this.renderSuccess()}
