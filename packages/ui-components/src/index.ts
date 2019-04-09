@@ -18,6 +18,7 @@ export * from './Address';
 export * from './Alert';
 export * from './BalanceDisplay';
 export * from './Card';
+export * from './constants';
 export * from './FlexSegment';
 export * from './globalStyle';
 export * from './Grid';

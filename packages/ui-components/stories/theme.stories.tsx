@@ -4,9 +4,9 @@
 
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { text, withKnobs } from '@storybook/addon-knobs';
+import { select, text, withKnobs } from '@storybook/addon-knobs';
 
-import { Card, Container, DynamicSizeText, ErrorText, FadedText, Header, SubHeader, SuccessText, substrateLightTheme } from '../src';
+import { Card, Container, DynamicSizeText, ErrorText, FadedText, FONT_SIZES, FontSize,Header, SubHeader, SuccessText, substrateLightTheme } from '../src';
 
 const colorPaletteCard = (color: string, hex: string) => (
   <Card style={{ flex: `1 0 calc(33.333% - 20px)`, maxWidth: `calc(33.333% - 20px)` }}>
@@ -37,7 +37,7 @@ storiesOf('Theme', module)
       <ErrorText> Error </ErrorText>
       <FadedText> Faded </FadedText>
       <DynamicSizeText
-        fontSize={text('fontSize', '14px')}
+        fontSize={select('font size', FONT_SIZES, 'medium') as FontSize}
         fontWeight={text('fontWeight', '500')}>
           Dynamic
       </DynamicSizeText>

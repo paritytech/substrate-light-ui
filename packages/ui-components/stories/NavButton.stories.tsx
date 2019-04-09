@@ -5,10 +5,12 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import { text, withKnobs } from '@storybook/addon-knobs';
+import { select, text, withKnobs } from '@storybook/addon-knobs';
 
 import { withTheme } from './customDecorators';
+import { FONT_SIZES } from '../src/constants';
 import { NavButton } from '../src/NavButton';
+import { FontSize } from '../src/types';
 
 storiesOf('NavButton', module)
   .addDecorator(withKnobs)
@@ -26,7 +28,7 @@ storiesOf('NavButton', module)
   ))
   .add('with font props', () => (
     <NavButton
-      fontSize={text('font size', '17px')}
+      fontSize={select('font size', FONT_SIZES, 'medium') as FontSize}
       fontWeight={text('font weight', '500')}
       onClick={action('clicked')}>
       {text('child', 'Button')}
