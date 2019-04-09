@@ -45,6 +45,11 @@ export class ContextGate extends React.PureComponent<{}, State> {
   state: State = {
     alertStore: this.alertStoreCreate([]),
     isReady: false,
+    chain: {
+      get blockNumber (): never {
+        throw INIT_ERROR;
+      }
+    },
     system: {
       get chain (): never {
         throw INIT_ERROR;
@@ -63,11 +68,12 @@ export class ContextGate extends React.PureComponent<{}, State> {
     zip(
       this.api.isReady,
       (this.api.rpc.system.chain() as Observable<Text>),
+      (this.api.rpc.chain.subscribeNewHead() as Observable<Text>),
       (this.api.rpc.system.health() as Observable<Text>),
       // FIXME Correct types should come from @polkadot/api to avoid type assertion
       (this.api.rpc.system.properties() as Observable<ChainProperties>)
     )
-      .subscribe(([_, chain, health, properties]) => {
+      .subscribe(([_, chain, head, health, properties]) => {
         // keyring with Schnorrkel support
         keyring.loadAll({
           addressPrefix: properties.get('networkId'),
@@ -79,6 +85,9 @@ export class ContextGate extends React.PureComponent<{}, State> {
 
         this.setState(state => ({
           ...state,
+          chain: {
+            blockNumber: head.blockNumber
+          },
           isReady: true,
           system: {
             chain: chain.toString(),
@@ -118,11 +127,12 @@ export class ContextGate extends React.PureComponent<{}, State> {
 
   render () {
     const { children } = this.props;
-    const { alertStore, isReady, system } = this.state;
+    const { alertStore, chain, isReady, system } = this.state;
 
     return <AppContext.Provider value={{
       alertStore,
       api: this.api,
+      chain,
       isReady,
       keyring,
       system

@@ -106,13 +106,14 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { system } = this.context;
+    const { chain, system } = this.context;
     const { balance } = this.state;
 
     const address = this.getAddress();
     const currentLocation = this.getCurrentLocation();
 
     const isSyncing = system.health.isSyncing;
+    const blockNumber = chain.blockNumber.toString();
 
     return (
       <Menu>
@@ -121,6 +122,9 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
             <NodeStatus isSyncing={isSyncing} />
             <FadedText> { system.chain } </FadedText>
           </Stacked>
+        </Menu.Item>
+        <Menu.Item>
+          { blockNumber }
         </Menu.Item>
         <Menu.Item>
           <InputAddress
