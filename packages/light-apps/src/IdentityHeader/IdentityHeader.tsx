@@ -138,9 +138,8 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
 
   handleChangeCurrentAccount = (account: string) => {
     const { history } = this.props;
-    const currentLocation = this.getCurrentLocation();
 
-    history.push(`/${currentLocation}/${account}`);
+    history.push(`/identity/${account}`);
   }
 
   handleToggleApp = (_event: React.SyntheticEvent<HTMLElement, Event>, { value }: DropdownProps) => {
@@ -218,7 +217,7 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
           <InputAddress
             label={null}
             onChange={this.handleChangeCurrentAccount}
-            type='all'
+            type='account'
             value={address}
             withLabel={false}
           />
