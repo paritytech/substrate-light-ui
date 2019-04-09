@@ -4,6 +4,7 @@
 
 import styled from 'styled-components';
 
+import { MARGIN_SIZES } from './constants';
 import { SUISize } from './types';
 
 type MarginPropsValue = SUISize | boolean | undefined;
@@ -20,13 +21,14 @@ export interface MarginProps {
  */
 function sizeValues (size: MarginPropsValue) {
   switch (size) {
-    case 'small': return '0.5rem';
     case true:
+      return MARGIN_SIZES.medium;
+    case 'small':
     case 'medium':
-      return '1rem';
-    case 'large': return '1rem';
-    case 'big': return '2rem';
-    case 'huge': return '3.5rem';
+    case 'large':
+    case 'big':
+    case 'huge':
+      return MARGIN_SIZES[size];
     default: return '0';
   }
 }

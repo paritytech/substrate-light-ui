@@ -8,6 +8,7 @@ import SUIContainer from 'semantic-ui-react/dist/commonjs/elements/Container';
 import SUIDropdown from 'semantic-ui-react/dist/commonjs/modules/Dropdown';
 import SUIInput from 'semantic-ui-react/dist/commonjs/elements/Input';
 
+import { FONT_SIZES, MARGIN_SIZES } from './constants';
 import { HeaderProps, DynamicSizeTextProps, StackProps, StyledNavLinkProps, SubHeaderProps, WithSpaceAroundProps } from './StyleProps';
 
 // FIXME: customize as needed
@@ -17,7 +18,7 @@ export const Dropdown = styled<any>(SUIDropdown)`
 export const Input = styled<any>(SUIInput)``;
 
 export const Container = styled(SUIContainer)`
-  padding: 1.5rem;
+  padding: ${MARGIN_SIZES.large};
 `;
 
 export const FadedText = styled.p`
@@ -39,12 +40,12 @@ export const SuccessText = styled.p`
 `;
 
 export const WithSpace = styled.div`
-  margin: 1rem auto;
+  margin: ${MARGIN_SIZES.medium} auto;
 `;
 
 export const WithSpaceAround = styled.div<WithSpaceAroundProps>`
-  margin: ${props => props.margin || '1rem 1rem'};
-  padding: ${props => props.padding || '1rem 1rem'};
+  margin: ${props => MARGIN_SIZES[props.margin || 'medium']};
+  padding: ${props => MARGIN_SIZES[props.padding || 'medium']};
 `;
 
 export const WithSpaceBetween = styled.div`
@@ -53,20 +54,20 @@ export const WithSpaceBetween = styled.div`
 `;
 
 export const WithPadding = styled.div`
-  padding: 1rem auto;
+  padding: ${MARGIN_SIZES.medium} auto;
 `;
 
 export const Header = styled.h2<HeaderProps>`
   color: ${props => props.color ? props.theme[props.color] : props.theme.grey};
   font-weight: 300;
-  font-size: 28px;
-  margin: ${props => props.margin || '2rem 0'};
-  padding: 0.5rem 1rem;
+  font-size: ${FONT_SIZES.big};
+  margin: ${props => props.margin ? MARGIN_SIZES[props.margin] : `${MARGIN_SIZES.big} 0`};
+  padding: ${MARGIN_SIZES.small} ${MARGIN_SIZES.medium};
   text-align: center;
 `;
 
 export const DynamicSizeText = styled.p<DynamicSizeTextProps>`
-  font-size: ${props => props.fontSize || '20px'};
+  font-size: ${props => FONT_SIZES[props.fontSize || 'medium']};
   font-weight: ${props => props.fontWeight || '500'};
   margin: 0 0;
   text-align: center;
@@ -91,11 +92,11 @@ export const RefreshButton = styled.button`
   }
 `;
 
-export const StyledNavLink = styled(Link)<StyledNavLinkProps>`
+export const StyledNavLink = styled(Link) <StyledNavLinkProps>`
   background: none;
   border: none;
   color: ${props => props.inverted ? props.theme.white : props.theme.lightBlue2};
-  font-size: 15px;
+  font-size: ${FONT_SIZES.medium};
   font-weight: 300;
 
   :hover {
@@ -109,7 +110,7 @@ export const StyledLinkButton = styled.button`
   border: none;
   color: ${props => props.color || props.theme.lightBlue2};
   display: flex;
-  font-size: 15px;
+  font-size: ${FONT_SIZES.medium};
   font-weight: 300;
   justify-content: space-between;
 
@@ -129,7 +130,7 @@ export const StyledNavButton = styled.button`
   border-radius: 15px;
   box-shadow: 0 4px 6px 0 rgba(${props => props.theme.black}, 0.3);
   color: ${props => props.theme.white};
-  fontSize: 18px;
+  fontSize: ${FONT_SIZES.large};
   height: 42px;
   width: 134px;
 
@@ -159,7 +160,7 @@ export const StackedHorizontal = styled.div<StackProps>`
 export const SubHeader = styled.h3<SubHeaderProps>`
   color: ${props => props.theme.lightBlue2};
   font-weight: 600;
-  font-size: 15px;
+  font-size: ${FONT_SIZES.medium};
   margin: ${props => props.noMargin ? `0 0` : `1rem auto 0.3rem auto`};
   text-align: ${props => props.textAlign || 'center'};
 `;

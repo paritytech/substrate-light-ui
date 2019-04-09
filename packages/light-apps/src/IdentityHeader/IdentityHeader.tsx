@@ -224,7 +224,7 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
           />
         </Menu.Item>
         <Menu.Item>
-          <Balance address={address} fontSize={'14px'} />
+          <Balance address={address} fontSize='medium' />
         </Menu.Item>
         <Dropdown
           item

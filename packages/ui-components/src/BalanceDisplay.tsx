@@ -5,11 +5,12 @@
 import { Balance } from '@polkadot/types';
 import React from 'react';
 
+import { FontSize } from './types';
 import { DynamicSizeText } from './Shared.styles';
 
 export type BalanceDisplayProps = {
   balance?: Balance,
-  fontSize?: string,
+  fontSize?: FontSize,
   tokenSymbol?: string
 };
 
@@ -17,8 +18,9 @@ const PLACEHOLDER_BALANCE = new Balance(0);
 const PLACEHOLDER_TOKEN_SYMBOL = 'UNIT';
 
 export class BalanceDisplay extends React.PureComponent<BalanceDisplayProps> {
-  static defaultProps = {
+  static defaultProps: BalanceDisplayProps = {
     balance: PLACEHOLDER_BALANCE,
+    fontSize: 'large',
     tokenSymbol: PLACEHOLDER_TOKEN_SYMBOL
   };
 

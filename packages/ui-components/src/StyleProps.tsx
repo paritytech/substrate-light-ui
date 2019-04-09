@@ -5,15 +5,16 @@
 import { LinkProps } from 'react-router-dom';
 
 import { Color } from './globalStyle';
+import { FontSize, MarginSize } from './types';
 
 export interface HeaderProps {
   color?: Color;
-  margin?: string;
+  margin?: MarginSize;
 }
 
 export interface DynamicSizeTextProps {
   fontWeight?: string;
-  fontSize?: string;
+  fontSize?: FontSize;
 }
 
 export interface StackProps {
@@ -28,12 +29,12 @@ export interface StyledNavLinkProps extends LinkProps {
 
 export interface SubHeaderProps {
   color?: string;
-  margin?: string;
+  margin?: MarginSize;
   noMargin?: boolean;
   textAlign?: string;
 }
 
 export interface WithSpaceAroundProps {
-  margin?: string;
-  padding?: string;
+  margin?: MarginSize;
+  padding?: MarginSize;
 }
