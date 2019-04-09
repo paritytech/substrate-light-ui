@@ -5,7 +5,7 @@
 import React from 'react';
 import PolkadotInputAddress from '@polkadot/ui-app/InputAddress';
 import styled from 'styled-components';
-import { FadedText, StackedHorizontal } from '@substrate/ui-components';
+import { Margin, StackedHorizontal } from '@substrate/ui-components';
 
 import { NodeStatusProps } from './types';
 
@@ -14,21 +14,26 @@ import { NodeStatusProps } from './types';
 export const InputAddress = styled(PolkadotInputAddress)`
   .dropdown {
     min-width: 0;
-    width: 100%;
+    width: '25%;
   }
 `;
 
-const Circle = styled.span`
-  background-color: ${props => props.color || 'red'};
-  height: '25p';
-  width: '25px';
-  border-radius: 50%;
-  display: inline-block;
-`;
+const RedCircle = () => (
+  <svg height='10' width='10'>
+    <circle cx='5' cy='5' r='5' fill='red' />
+  </svg>
+);
+
+const GreenCircle = () => (
+  <svg height='10' width='10'>
+    <circle cx='5' cy='5' r='5' fill='green' />
+  </svg>
+);
 
 export const NodeStatus = ({ isSyncing }: NodeStatusProps) => (
-  <StackedHorizontal>
-    <FadedText> Node Status: </FadedText>
-    { isSyncing ? <Circle color='red' /> : <Circle color='green' /> }
+  <StackedHorizontal >
+    { isSyncing ? <RedCircle /> : <GreenCircle /> }
+    <Margin left='small' />
+    <p> Status: {isSyncing ? 'Syncing' : 'Synced'} </p>
   </StackedHorizontal>
 );

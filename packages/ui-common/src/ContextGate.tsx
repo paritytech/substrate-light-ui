@@ -49,6 +49,9 @@ export class ContextGate extends React.PureComponent<{}, State> {
       get chain (): never {
         throw INIT_ERROR;
       },
+      get health (): never {
+        throw INIT_ERROR;
+      },
       get properties (): never {
         throw INIT_ERROR;
       }
