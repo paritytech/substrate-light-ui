@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { AppContext } from '@substrate/ui-common';
-import { ErrorText, Input, Modal, NavButton, Stacked } from '@substrate/ui-components';
+import { ErrorText, Input, Margin, Modal, NavButton, Stacked } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
@@ -86,18 +86,20 @@ export class ImportWithPhrase extends React.PureComponent<Props> {
           onChange={this.onChangePhrase}
           type='text'
           value={recoveryPhrase} />
+        <Margin top />
         <Input
           label='Name'
           onChange={this.onChangeName}
           type='text'
           value={name} />
+        <Margin top />
         <Input
           label='Password'
           onChange={this.onChangePassword}
           type='password'
           value={password} />
+        <Margin top />
         <NavButton onClick={this.handleUnlockWithPhrase} value='Restore' />
-
         {this.renderError()}
       </Stacked>
     );
