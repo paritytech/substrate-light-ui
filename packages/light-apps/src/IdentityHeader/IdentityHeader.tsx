@@ -42,7 +42,7 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
 
   chainHeadSub?: Subscription;
 
-  componentDidMount() {
+  componentDidMount () {
     const { keyring } = this.context;
 
     this.subscribeChainHead();
@@ -56,7 +56,7 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
     });
   }
 
-  componentDidUpdate(prevProps: Props) {
+  componentDidUpdate (prevProps: Props) {
     if (prevProps.location.pathname.split('/')[2]
       !== this.props.location.pathname.split('/')[2]) {
       this.closeAllSubscriptions();
@@ -64,7 +64,7 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
     }
   }
 
-  closeAllSubscriptions() {
+  closeAllSubscriptions () {
     if (this.chainHeadSub) {
       this.chainHeadSub.unsubscribe();
       this.chainHeadSub = undefined;
@@ -78,7 +78,7 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
 
     keyring.saveAccountMeta(keyring.getPair(address), { name: newName });
 
-    this.setState({name: newName}, () => {
+    this.setState({ name: newName }, () => {
       this.closeRenameModal();
       this.onSuccess('Successfully renamed account!');
     });
@@ -218,7 +218,7 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
       .subscribe((header) => this.setState({ blockNumber: header.blockNumber }));
   }
 
-  render() {
+  render () {
     const address = this.getAddress();
 
     return (
@@ -231,8 +231,8 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
             value={address}
             withLabel={false}
           />
-          <Margin left="medium" />
-          <NavLink to="/accounts/add">
+          <Margin left='medium' />
+          <NavLink to='/accounts/add'>
             Add new account
           </NavLink>
         </Menu.Item>
@@ -254,7 +254,7 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
     );
   }
 
-  renderRenameModal() {
+  renderRenameModal () {
     const { renameModalOpen, newName } = this.state;
 
     return (
@@ -281,7 +281,7 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
     );
   }
 
-  renderBackupConfirmationModal() {
+  renderBackupConfirmationModal () {
     const { backupModalOpen, password } = this.state;
 
     return (
@@ -308,7 +308,7 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
     );
   }
 
-  renderForgetConfirmationModal() {
+  renderForgetConfirmationModal () {
     const { forgetModalOpen } = this.state;
 
     return (

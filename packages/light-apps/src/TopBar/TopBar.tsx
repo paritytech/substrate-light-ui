@@ -34,15 +34,15 @@ export class TopBar extends React.PureComponent<{}, State> {
 
   chainHeadSub?: Subscription;
 
-  componentDidMount() {
+  componentDidMount () {
     this.subscribeChainHead();
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     this.closeAllSubscriptions();
   }
 
-  closeAllSubscriptions() {
+  closeAllSubscriptions () {
     if (this.chainHeadSub) {
       this.chainHeadSub.unsubscribe();
       this.chainHeadSub = undefined;
@@ -56,7 +56,7 @@ export class TopBar extends React.PureComponent<{}, State> {
       .subscribe((header) => this.setState({ blockNumber: header.blockNumber }));
   }
 
-  render() {
+  render () {
     const { system: { chain, health, name, version } } = this.context;
     const { blockNumber } = this.state;
 
@@ -64,9 +64,9 @@ export class TopBar extends React.PureComponent<{}, State> {
 
     return (
       <header>
-        <StackedHorizontal justifyContent="space-between" alignItems="flex-end">
+        <StackedHorizontal justifyContent='space-between' alignItems='flex-end'>
           <div>
-            <StackedHorizontal alignItems="flex-end">
+            <StackedHorizontal alignItems='flex-end'>
               <div>
                 <NavLink to='/'>
                   <img

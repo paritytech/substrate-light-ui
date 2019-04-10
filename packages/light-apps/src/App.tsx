@@ -14,7 +14,7 @@ import { Content } from './Content';
 import { TopBar } from './TopBar';
 
 export class App extends React.PureComponent {
-  render() {
+  render () {
     return (
       <ContextGate>
         <ThemeProvider theme={substrateLightTheme}>
