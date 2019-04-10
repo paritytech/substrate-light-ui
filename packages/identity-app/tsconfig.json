@@ -4,5 +4,5 @@
     "outDir": "./build"
   },
   "extends": "../../tsconfig",
-  "include": ["./src"]
+  "include": ["./src", "../light-apps/src/SavedAddresses.tsx"]
 }

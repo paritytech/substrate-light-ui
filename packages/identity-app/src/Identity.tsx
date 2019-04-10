@@ -7,9 +7,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import { SavedAccounts } from './SavedAccounts';
-import { SavedAddresses } from './SavedAddresses';
 import { ManageAccounts } from './ManageAccounts';
-import { ManageAddresses } from './ManageAddresses';
 
 export class Identity extends React.PureComponent {
   render () {
@@ -18,13 +16,11 @@ export class Identity extends React.PureComponent {
         <Grid.Row>
           <Grid.Column width={9}>
             <Switch>
-              <Route path='/identity/:currentAccount/addresses' component={ManageAddresses} />
               <Route path='/identity/:currentAccount' component={ManageAccounts} />
             </Switch>
           </Grid.Column>
           <Grid.Column width={7}>
             <Switch>
-              <Route path='/identity/:currentAccount/addresses' component={SavedAddresses} />
               <Route path='/identity/:currentAccount' component={SavedAccounts} />
             </Switch>
           </Grid.Column>

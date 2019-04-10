@@ -11,7 +11,7 @@ import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Observable, Subscription } from 'rxjs';
 
-import { BlockCounter, InputAddress, NodeStatus } from './IdentityHeader.styles';
+import { InputAddress } from './IdentityHeader.styles';
 
 // TODO: Add Governance Once That's in
 const APP_OPTIONS = [
@@ -50,11 +50,11 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
 
   chainHeadSub?: Subscription;
 
-  componentDidMount () {
+  componentDidMount() {
     this.subscribeChainHead();
   }
 
-  componentDidUpdate (prevProps: Props) {
+  componentDidUpdate(prevProps: Props) {
     if (prevProps.location.pathname.split('/')[2]
       !== this.props.location.pathname.split('/')[2]) {
       this.closeAllSubscriptions();
@@ -62,7 +62,7 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
     }
   }
 
-  closeAllSubscriptions () {
+  closeAllSubscriptions() {
     if (this.chainHeadSub) {
       this.chainHeadSub.unsubscribe();
       this.chainHeadSub = undefined;
@@ -194,26 +194,12 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
       .subscribe((header) => this.setState({ blockNumber: header.blockNumber }));
   }
 
-  render () {
-    const { system: { chain, health, name, version } } = this.context;
-    const { blockNumber } = this.state;
-
+  render() {
     const address = this.getAddress();
     const currentLocation = this.getCurrentLocation();
 
-    const isSyncing = health.isSyncing;
-
     return (
       <Menu>
-        <Menu.Item>
-          <Stacked>
-            <NodeStatus isSyncing={isSyncing} />
-            <FadedText> {name} {version} </FadedText>
-          </Stacked>
-        </Menu.Item>
-        <Menu.Item>
-          <BlockCounter blockNumber={blockNumber} chainName={chain} />
-        </Menu.Item>
         <Menu.Item>
           <InputAddress
             label={null}
@@ -247,7 +233,7 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
     );
   }
 
-  renderBackupConfirmationModal () {
+  renderBackupConfirmationModal() {
     const { backupModalOpen, password } = this.state;
 
     return (
@@ -274,7 +260,7 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
     );
   }
 
-  renderForgetConfirmationModal () {
+  renderForgetConfirmationModal() {
     const { forgetModalOpen } = this.state;
 
     return (
