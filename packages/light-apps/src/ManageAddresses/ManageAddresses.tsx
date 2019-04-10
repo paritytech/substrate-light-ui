@@ -3,6 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
+import { Container } from '@substrate/ui-components';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 
 import { Add } from './Add';
@@ -14,13 +15,13 @@ interface Props extends RouteComponentProps<{}> { }
 export class ManageAddresses extends React.PureComponent<Props> {
   render () {
     return (
-      <React.Fragment>
+      <Container>
         <Switch>
           <Route path='/addresses/:address' component={Edit} />
           <Route component={Add} />
         </Switch>
         <SavedAddresses />
-      </React.Fragment>
+      </Container>
     );
   }
 }

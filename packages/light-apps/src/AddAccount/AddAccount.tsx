@@ -10,6 +10,7 @@ import { RouteComponentProps, Link, Switch, Route, Redirect } from 'react-router
 import { CreateNewAccountScreen } from '../Onboarding';
 import { ImportWithJson } from '../Onboarding/ImportWithJson';
 import { ImportWithPhrase } from '../Onboarding/ImportWithPhrase';
+import { Container } from 'semantic-ui-react';
 
 interface Props extends RouteComponentProps { }
 
@@ -32,34 +33,32 @@ export class AddAccount extends React.PureComponent<Props, State> {
 
   render() {
     return (
-      <React.Fragment>
-
-      <Menu>
-        <Link to="/accounts/add/generate">
-          <Menu.Item>
-            Generate new account
+      <Container>
+        <Menu>
+          <Link to="/accounts/add/generate">
+            <Menu.Item>
+              Generate new account
           </Menu.Item>
-        </Link>
-        <Link to="/accounts/add/json">
-          <Menu.Item>
-            Import from JSON keyfile
+          </Link>
+          <Link to="/accounts/add/json">
+            <Menu.Item>
+              Import from JSON keyfile
         </Menu.Item>
-        </Link>
-        <Link to="/accounts/add/phrase">
-          <Menu.Item>
-            Import from passphrase
+          </Link>
+          <Link to="/accounts/add/phrase">
+            <Menu.Item>
+              Import from passphrase
         </Menu.Item>
-        </Link>
-      </Menu>
+          </Link>
+        </Menu>
 
-      <Switch>
-        <Route path='/accounts/add/generate' component={CreateNewAccountScreen} />
-        <Route path='/accounts/add/json' component={ImportWithJson} />
-        <Route path='/accounts/add/phrase' component={ImportWithPhrase} />
-        <Redirect to='/accounts/add/generate' />
-      </Switch>
-
-      </React.Fragment>
+        <Switch>
+          <Route path='/accounts/add/generate' component={CreateNewAccountScreen} />
+          <Route path='/accounts/add/json' component={ImportWithJson} />
+          <Route path='/accounts/add/phrase' component={ImportWithPhrase} />
+          <Redirect to='/accounts/add/generate' />
+        </Switch>
+      </Container>
     );
   }
 }
