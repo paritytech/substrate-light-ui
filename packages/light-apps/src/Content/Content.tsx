@@ -10,10 +10,10 @@ import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { map } from 'rxjs/operators';
 
-import { IdentityHeader } from '../IdentityHeader';
-import { Onboarding } from '../Onboarding';
-import { ManageAddresses } from '../ManageAddresses';
 import { AddAccount } from '../AddAccount';
+import { IdentityHeader } from '../IdentityHeader';
+import { ManageAddresses } from '../ManageAddresses';
+import { Onboarding } from '../Onboarding';
 
 export class Content extends React.PureComponent {
   render () {

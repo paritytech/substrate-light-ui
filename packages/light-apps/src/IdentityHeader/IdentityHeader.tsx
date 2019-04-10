@@ -19,11 +19,11 @@ type State = {
   renameModalOpen: boolean,
   backupModalOpen: boolean,
   forgetModalOpen: boolean,
-  error?: string,
-  success?: string,
-  password: string,
   name: string
   newName: string
+  error?: string,
+  success?: string,
+  password: string
 };
 
 export class IdentityHeader extends React.PureComponent<Props, State> {
@@ -35,19 +35,19 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
     renameModalOpen: false,
     backupModalOpen: false,
     forgetModalOpen: false,
-    password: '',
     name: '',
     newName: '',
+    password: ''
   };
 
   chainHeadSub?: Subscription;
 
   componentDidMount() {
+    const { keyring } = this.context;
+
     this.subscribeChainHead();
 
-    const { keyring } = this.context;
     const address = this.getAddress();
-
     const name = keyring.getPair(address).getMeta().name;
 
     this.setState({
@@ -104,6 +104,23 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
     }
   }
 
+  forgetCurrentAccount = () => {
+    const { keyring } = this.context;
+    const { history } = this.props;
+    const address = this.getAddress();
+
+    try {
+      // forget it from keyring
+      keyring.forgetAccount(address);
+
+      this.closeForgetModal();
+
+      history.push('/identity');
+    } catch (e) {
+      this.onError(e.message);
+    }
+  }
+
   closeRenameModal = () => {
     this.setState({
       renameModalOpen: false,
@@ -120,23 +137,6 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
 
   closeForgetModal = () => {
     this.setState({ forgetModalOpen: false });
-  }
-
-  forgetCurrentAccount = () => {
-    const { keyring } = this.context;
-    const { history } = this.props;
-    const address = this.getAddress();
-
-    try {
-      // forget it from keyring
-      keyring.forgetAccount(address);
-
-      this.closeForgetModal();
-
-      history.push('/identity');
-    } catch (e) {
-      this.onError(e.message);
-    }
   }
 
   getAddress = () => {
