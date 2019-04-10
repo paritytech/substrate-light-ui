@@ -3,7 +3,6 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import accounts from '@polkadot/ui-keyring/observable/accounts';
-import { Identity } from '@substrate/identity-app';
 import { Transfer } from '@substrate/transfer-app';
 import { Subscribe } from '@substrate/ui-common';
 import { Container } from '@substrate/ui-components';
@@ -14,6 +13,7 @@ import { map } from 'rxjs/operators';
 import { IdentityHeader } from '../IdentityHeader';
 import { Onboarding } from '../Onboarding';
 import { ManageAddresses } from '../ManageAddresses';
+import { AddAccount } from '../AddAccount';
 
 export class Content extends React.PureComponent {
   render () {
@@ -28,11 +28,10 @@ export class Content extends React.PureComponent {
                   <Route path='/identity' component={IdentityHeader} />
                   <Route path='/transfer' component={IdentityHeader} />
                   <Switch>
-                    <Redirect exact from='/' to={`/identity/${defaultAccount.json.address}`} />
-                    <Redirect exact from='/identity' to={`/identity/${defaultAccount.json.address}`} />
+                    <Redirect exact from='/' to={`/transfer/${defaultAccount.json.address}`} />
                     <Redirect exact from='/transfer' to={`/transfer/${defaultAccount.json.address}`} />
                     <Route path='/addresses' component={ManageAddresses} />
-                    <Route path='/identity/:currentAccount' component={Identity} />
+                    <Route path='/accounts/add' component={AddAccount} />
                     <Route path='/transfer/:currentAccount' component={Transfer} />
                     <Redirect to='/' />
                   </Switch>

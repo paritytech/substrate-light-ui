@@ -4,27 +4,13 @@
 
 import FileSaver from 'file-saver';
 import { BlockNumber, Header } from '@polkadot/types';
-import { stringUpperFirst } from '@polkadot/util';
 import { AppContext } from '@substrate/ui-common';
-import { Balance, Dropdown, DropdownProps, FadedText, Icon, Input, Margin, Menu, Modal, Stacked, StackedHorizontal, StyledLinkButton, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
+import { Balance, Dropdown, FadedText, Icon, Input, Margin, Menu, Modal, Stacked, StackedHorizontal, StyledLinkButton, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
 import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, Link } from 'react-router-dom';
 import { Observable, Subscription } from 'rxjs';
 
 import { InputAddress } from './IdentityHeader.styles';
-
-// TODO: Add Governance Once That's in
-const APP_OPTIONS = [
-  {
-    key: 'Identity',
-    text: 'Identity',
-    value: 'Identity'
-  },
-  {
-    key: 'Transfer',
-    text: 'Transfer',
-    value: 'Transfer'
-  }];
 
 interface Props extends RouteComponentProps { }
 
@@ -180,13 +166,6 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
     history.push(`/${currentLocation}/${account}`);
   }
 
-  handleToggleApp = (_event: React.SyntheticEvent<HTMLElement, Event>, { value }: DropdownProps) => {
-    const { history } = this.props;
-    const address = this.getAddress();
-
-    history.push(`/${value}/${address}`);
-  }
-
   onChangeName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ newName: value });
   }
@@ -242,7 +221,6 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
 
   render() {
     const address = this.getAddress();
-    const currentLocation = this.getCurrentLocation();
 
     return (
       <Menu>
@@ -254,21 +232,17 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
             value={address}
             withLabel={false}
           />
+          <Link to="/accounts/add">
+            Add new account
+          </Link>
         </Menu.Item>
         <Menu.Item>
           <Balance address={address} fontSize='medium' />
         </Menu.Item>
         <Dropdown
-          item
-          onChange={this.handleToggleApp}
-          options={APP_OPTIONS}
-          text={stringUpperFirst(currentLocation)}
-          value={stringUpperFirst(currentLocation)}
-        />
-        <Dropdown
           icon='setting'
           item
-          text='Settings'
+          text='Manage account'
         >
           <Dropdown.Menu>
             {this.renderRenameModal()}

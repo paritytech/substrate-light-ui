@@ -8,7 +8,6 @@ import React from 'react';
 import { Link, Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 
 import { Create } from './Create';
-import { Edit } from './Edit';
 import { Restore } from './Restore';
 import { MatchParams } from '../types';
 
@@ -22,8 +21,7 @@ export class ManageAccounts extends React.PureComponent<Props> {
         <Switch>
           <Route path='/identity/:currentAccount/create' component={Create} />
           <Route path='/identity/:currentAccount/restore' component={Restore} />
-          <Route path='/identity/:currentAccount/edit' component={Edit} />
-          <Redirect to='/identity/:currentAccount/edit' />
+          <Redirect to='/identity/:currentAccount/create' />
         </Switch>
       </React.Fragment>
     );
@@ -34,12 +32,8 @@ export class ManageAccounts extends React.PureComponent<Props> {
 
     return (
       <Menu>
-        <Menu.Item as={Link} to={`/identity/${currentAccount}/addresses`}>
-          Manage Addresses
-        </Menu.Item>
         <Dropdown item text={stringUpperFirst(pathname.split('/').slice(-1)[0])}>
           <Dropdown.Menu>
-            <Dropdown.Item as={Link} to={`/identity/${currentAccount}`}>Edit</Dropdown.Item>
             <Dropdown.Item as={Link} to={`/identity/${currentAccount}/create`}>Create</Dropdown.Item>
             <Dropdown.Item as={Link} to={`/identity/${currentAccount}/restore`}>Restore</Dropdown.Item>
           </Dropdown.Menu>

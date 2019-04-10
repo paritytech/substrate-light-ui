@@ -154,6 +154,7 @@ export class SendBalance extends React.PureComponent<Props, State> {
           <LeftDiv>
             <SubHeader textAlign='left'>Sender Account:</SubHeader>
             <InputAddress
+              disabled
               onChange={this.handleChangeCurrentAccount}
               type='account'
               value={currentAccount}

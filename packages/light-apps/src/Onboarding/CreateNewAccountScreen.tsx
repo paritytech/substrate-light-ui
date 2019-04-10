@@ -131,7 +131,7 @@ export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
 
     return (
       <React.Fragment>
-        <Modal.Header> Create New Account </Modal.Header>
+        <Modal.Header> Generate New Account </Modal.Header>
         <Modal.Content>
           {
             step === 'create'
@@ -173,11 +173,7 @@ export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
     return (
       <React.Fragment>
         <Modal.Actions>
-          <Stacked>
             <NavButton onClick={this.toggleStep}> Next </NavButton>
-            <Modal.FadedText>or</Modal.FadedText>
-            <NavLink to='/import/withJson'> Import an existing account </NavLink>
-          </Stacked>
         </Modal.Actions>
       </React.Fragment>
     );
