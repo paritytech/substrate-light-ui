@@ -6,7 +6,7 @@ import { Grid } from '@substrate/ui-components';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import { SavedAccounts } from './SavedAccounts';
+import { SavedAddresses } from './SavedAddresses';
 import { ManageAccounts } from './ManageAccounts';
 
 export class Identity extends React.PureComponent {
@@ -21,7 +21,7 @@ export class Identity extends React.PureComponent {
           </Grid.Column>
           <Grid.Column width={7}>
             <Switch>
-              <Route path='/identity/:currentAccount' component={SavedAccounts} />
+              <Route path='/identity/:currentAccount/addresses' component={SavedAddresses} />
             </Switch>
           </Grid.Column>
         </Grid.Row>

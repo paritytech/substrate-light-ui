@@ -30,28 +30,45 @@ interface Props extends RouteComponentProps { }
 
 type State = {
   blockNumber?: BlockNumber,
+  renameModalOpen: boolean,
   backupModalOpen: boolean,
   forgetModalOpen: boolean,
   error?: string,
   success?: string,
-  password: string
+  password: string,
+  name: string
+  newName: string
 };
 
+// TODO probably move this to the identity-app package
 export class IdentityHeader extends React.PureComponent<Props, State> {
   static contextType = AppContext;
 
   context!: React.ContextType<typeof AppContext>; // http://bit.ly/typescript-and-react-context
 
   state: State = {
+    renameModalOpen: false,
     backupModalOpen: false,
     forgetModalOpen: false,
-    password: ''
+    password: '',
+    name: '',
+    newName: '',
   };
 
   chainHeadSub?: Subscription;
 
   componentDidMount() {
     this.subscribeChainHead();
+
+    const { keyring } = this.context;
+    const address = this.getAddress();
+
+    const name = keyring.getPair(address).getMeta().name;
+
+    this.setState({
+      name,
+      newName: name
+    });
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -67,6 +84,19 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
       this.chainHeadSub.unsubscribe();
       this.chainHeadSub = undefined;
     }
+  }
+
+  renameCurrentAccount = () => {
+    const { keyring } = this.context;
+    const { newName } = this.state;
+    const address = this.getAddress();
+
+    keyring.saveAccountMeta(keyring.getPair(address), { name: newName });
+
+    this.setState({name: newName}, () => {
+      this.closeRenameModal();
+      this.onSuccess('Successfully renamed account!');
+    });
   }
 
   backupCurrentAccount = () => {
@@ -87,6 +117,13 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
       this.closeBackupModal();
       this.onError(e.message);
     }
+  }
+
+  closeRenameModal = () => {
+    this.setState({
+      renameModalOpen: false,
+      newName: this.state.name
+    });
   }
 
   closeBackupModal = () => {
@@ -150,6 +187,10 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
     history.push(`/${value}/${address}`);
   }
 
+  onChangeName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ newName: value });
+  }
+
   onChangePassword = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ password: value });
   }
@@ -172,6 +213,10 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
     });
   }
 
+  openRenameModal = () => {
+    this.setState({ renameModalOpen: true });
+  }
+
   openBackupModal = () => {
     this.setState({ backupModalOpen: true });
   }
@@ -184,6 +229,7 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
      to have it all in the same place. Also, it is down here as openBackupModal and openForgetModal need
      to be initialized first else tsc will complain.
    */
+  renameTrigger = <Dropdown.Item closeOnFocus icon='edit' onClick={this.openRenameModal} text='Rename Account' />;
   backupTrigger = <Dropdown.Item closeOnFocus icon='arrow alternate circle down' onClick={this.openBackupModal} text='Backup Account' />;
   forgetTrigger = <Dropdown.Item closeOnFocus icon='trash' onClick={this.openForgetModal} text='Forget Account' />;
 
@@ -225,11 +271,39 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
           text='Settings'
         >
           <Dropdown.Menu>
+            {this.renderRenameModal()}
             {this.renderBackupConfirmationModal()}
             {this.renderForgetConfirmationModal()}
           </Dropdown.Menu>
         </Dropdown>
       </Menu>
+    );
+  }
+
+  renderRenameModal() {
+    const { renameModalOpen, newName } = this.state;
+
+    return (
+      <Modal closeOnDimmerClick closeOnEscape open={renameModalOpen} trigger={this.renameTrigger}>
+        <WithSpaceAround>
+          <Stacked>
+            <Modal.SubHeader>Rename account</Modal.SubHeader>
+            <FadedText>Please enter the new name of the account.</FadedText>
+            <Modal.Actions>
+              <Stacked>
+                <FadedText>Account name</FadedText>
+                <Input onChange={this.onChangeName} type='text' value={newName} />
+                <StackedHorizontal>
+                  <WithSpaceBetween>
+                    <StyledLinkButton onClick={this.closeRenameModal}><Icon name='remove' color='red' /> <FadedText>Cancel</FadedText></StyledLinkButton>
+                    <StyledLinkButton onClick={this.renameCurrentAccount}><Icon name='checkmark' color='green' /> <FadedText>Rename</FadedText></StyledLinkButton>
+                  </WithSpaceBetween>
+                </StackedHorizontal>
+              </Stacked>
+            </Modal.Actions>
+          </Stacked>
+        </WithSpaceAround>
+      </Modal>
     );
   }
 
