@@ -131,7 +131,7 @@ export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
 
     return (
       <React.Fragment>
-        <Modal.Header> Generate New Account </Modal.Header>
+        <Modal.Header> Create New Account </Modal.Header>
         <Modal.Content>
           {
             step === 'create'

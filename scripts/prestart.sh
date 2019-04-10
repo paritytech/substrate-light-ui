@@ -15,7 +15,6 @@ PROJECT_ROOT=`git rev-parse --show-toplevel`
 SRCS=(
 	"packages/ui-common/"
   "packages/ui-components/"
-	"packages/identity-app/"
 	"packages/transfer-app/"
 )
 

@@ -7,9 +7,9 @@ import { AppContext } from '@substrate/ui-common';
 import { Menu } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps, Link, Switch, Route, Redirect } from 'react-router-dom';
-import { CreateNewAccountScreen } from '../Onboarding';
-import { ImportWithJson } from '../Onboarding/ImportWithJson';
-import { ImportWithPhrase } from '../Onboarding/ImportWithPhrase';
+import { Create } from './Create';
+import { ImportWithJson } from './ImportWithJson';
+import { ImportWithPhrase } from './ImportWithPhrase';
 import { Container } from 'semantic-ui-react';
 
 interface Props extends RouteComponentProps { }
@@ -53,7 +53,7 @@ export class AddAccount extends React.PureComponent<Props, State> {
         </Menu>
 
         <Switch>
-          <Route path='/accounts/add/generate' component={CreateNewAccountScreen} />
+          <Route path='/accounts/add/generate' component={Create} />
           <Route path='/accounts/add/json' component={ImportWithJson} />
           <Route path='/accounts/add/phrase' component={ImportWithPhrase} />
           <Redirect to='/accounts/add/generate' />

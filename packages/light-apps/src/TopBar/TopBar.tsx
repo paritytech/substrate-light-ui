@@ -4,13 +4,13 @@
 
 import { BlockNumber, Header } from '@polkadot/types';
 import { AppContext } from '@substrate/ui-common';
-import { FadedText, NavLink, StackedHorizontal } from '@substrate/ui-components';
+import { FadedText, NavLink, StackedHorizontal, Margin } from '@substrate/ui-components';
 import React from 'react';
 import { Observable, Subscription } from 'rxjs';
 
 import { BlockCounter, NodeStatus } from './TopBar.styles';
 import substrateLogo from '@polkadot/ui-assets/parity-substrate.svg';
-import { Link } from 'react-router-dom';
+import { Link, Route, Switch } from 'react-router-dom';
 
 type State = {
   blockNumber?: BlockNumber,
@@ -64,23 +64,37 @@ export class TopBar extends React.PureComponent<{}, State> {
 
     return (
       <header>
-        <StackedHorizontal justifyContent="flex-start">
+        <StackedHorizontal justifyContent="space-between" alignItems="flex-end">
           <div>
-            <NavLink to='/'>
-              <img
-                src={substrateLogo}
-                width={150}
-              />
-            </NavLink>
-            <FadedText> {name} {version} </FadedText>
+            <StackedHorizontal alignItems="flex-end">
+              <div>
+                <NavLink to='/'>
+                  <img
+                    src={substrateLogo}
+                    width={150}
+                  />
+                </NavLink>
+                <FadedText> {name} {version} </FadedText>
+              </div>
+              <Margin left='medium' />
+              <div>
+                <NodeStatus isSyncing={isSyncing} />
+                <BlockCounter blockNumber={blockNumber} chainName={chain} />
+              </div>
+            </StackedHorizontal>
           </div>
-          <div>
-            <NodeStatus isSyncing={isSyncing} />
-            <BlockCounter blockNumber={blockNumber} chainName={chain} />
-          </div>
-          <Link to={`/addresses`}>
-            Manage address book
-          </Link>
+          <Switch>
+            <Route path='/addresses'>
+              <Link to={`/`}>
+                Back
+              </Link>
+            </Route>
+            <Route>
+              <Link to={`/addresses`}>
+                Manage address book
+              </Link>
+            </Route>
+          </Switch>
         </StackedHorizontal>
       </header>
     );

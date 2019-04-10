@@ -26,7 +26,6 @@ type State = {
   newName: string
 };
 
-// TODO probably move this to the identity-app package
 export class IdentityHeader extends React.PureComponent<Props, State> {
   static contextType = AppContext;
 
