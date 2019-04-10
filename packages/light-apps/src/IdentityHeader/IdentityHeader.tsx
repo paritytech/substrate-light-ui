@@ -5,9 +5,9 @@
 import FileSaver from 'file-saver';
 import { BlockNumber, Header } from '@polkadot/types';
 import { AppContext } from '@substrate/ui-common';
-import { Balance, Dropdown, FadedText, Icon, Input, Margin, Menu, Modal, Stacked, StackedHorizontal, StyledLinkButton, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
+import { Balance, Dropdown, FadedText, Icon, Input, Margin, Menu, Modal, NavLink, Stacked, StackedHorizontal, StyledLinkButton, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
 import React from 'react';
-import { RouteComponentProps, Link } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 import { Observable, Subscription } from 'rxjs';
 
 import { InputAddress } from './IdentityHeader.styles';
@@ -231,9 +231,10 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
             value={address}
             withLabel={false}
           />
-          <Link to="/accounts/add">
+          <Margin left="medium" />
+          <NavLink to="/accounts/add">
             Add new account
-          </Link>
+          </NavLink>
         </Menu.Item>
         <Menu.Item>
           <Balance address={address} fontSize='medium' />
@@ -241,7 +242,7 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
         <Dropdown
           icon='setting'
           item
-          text='Manage account'
+          text='Manage account &nbsp;' /* TODO add margin to the icon instead */
         >
           <Dropdown.Menu>
             {this.renderRenameModal()}

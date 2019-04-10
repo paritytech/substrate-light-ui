@@ -37,18 +37,18 @@ export class AddAccount extends React.PureComponent<Props, State> {
         <Menu>
           <Link to="/accounts/add/generate">
             <Menu.Item>
-              Generate new account
-          </Menu.Item>
+                Generate new account
+            </Menu.Item>
           </Link>
           <Link to="/accounts/add/json">
             <Menu.Item>
               Import from JSON keyfile
-        </Menu.Item>
+            </Menu.Item>
           </Link>
           <Link to="/accounts/add/phrase">
             <Menu.Item>
               Import from passphrase
-        </Menu.Item>
+            </Menu.Item>
           </Link>
         </Menu>
 
