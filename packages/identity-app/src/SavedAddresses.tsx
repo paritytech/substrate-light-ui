@@ -2,11 +2,10 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Balance } from '@polkadot/types';
-import { AddressSummary, BalanceDisplay, Margin, Stacked, StackedHorizontal, WalletCard, WithSpace } from '@substrate/ui-components';
+import { AddressSummary, Margin, Stacked, StackedHorizontal, WalletCard, WithSpace } from '@substrate/ui-components';
 import addressObservable from '@polkadot/ui-keyring/observable/addresses';
 import { SingleAddress, SubjectInfo } from '@polkadot/ui-keyring/observable/types';
-import { AppContext, Subscribe } from '@substrate/ui-common';
+import { Subscribe } from '@substrate/ui-common';
 import { map } from 'rxjs/operators';
 import React from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
@@ -16,10 +15,6 @@ import { MatchParams } from './types';
 interface Props extends RouteComponentProps<MatchParams> { }
 
 export class SavedAddresses extends React.PureComponent<Props> {
-  static contextType = AppContext;
-
-  context!: React.ContextType<typeof AppContext>; // http://bit.ly/typescript-and-react-context
-
   render () {
     return (
       <WalletCard
@@ -37,7 +32,6 @@ export class SavedAddresses extends React.PureComponent<Props> {
   }
 
   renderAllAddressesFromKeyring () {
-    const { api } = this.context;
     const { match: { params: { currentAccount } } } = this.props;
 
     return (
@@ -58,22 +52,11 @@ export class SavedAddresses extends React.PureComponent<Props> {
                         size='small'
                       />
                     </Link>
-                    <Subscribe>
-                      {
-                        // FIXME using any because freeBalance gives a Codec here, not a Balance
-                        // Wait for @polkadot/api to have TS support for all query.*
-                        api.query.balances.freeBalance(address.json.address).pipe(map(this.renderBalance as any))
-                      }
-                    </Subscribe>
                   </StackedHorizontal>
                 </React.Fragment>
               )
           ))}
       </Subscribe>
     );
-  }
-
-  renderBalance = (balance: Balance) => {
-    return <BalanceDisplay balance={balance} />;
   }
 }

@@ -3,10 +3,10 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import FileSaver from 'file-saver';
-import { Balance, BlockNumber, Header } from '@polkadot/types';
+import { BlockNumber, Header } from '@polkadot/types';
 import { stringUpperFirst } from '@polkadot/util';
 import { AppContext } from '@substrate/ui-common';
-import { BalanceDisplay, Dropdown, DropdownProps, FadedText, Icon, Input, Margin, Menu, Modal, Stacked, StackedHorizontal, StyledLinkButton, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
+import { Balance, Dropdown, DropdownProps, FadedText, Icon, Input, Margin, Menu, Modal, Stacked, StackedHorizontal, StyledLinkButton, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Observable, Subscription } from 'rxjs';
@@ -29,7 +29,6 @@ const APP_OPTIONS = [
 interface Props extends RouteComponentProps { }
 
 type State = {
-  balance?: Balance,
   blockNumber?: BlockNumber,
   backupModalOpen: boolean,
   forgetModalOpen: boolean,
@@ -49,29 +48,21 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
     password: ''
   };
 
-  balanceSub?: Subscription;
   chainHeadSub?: Subscription;
 
   componentDidMount () {
-    this.subscribeBalance();
     this.subscribeChainHead();
   }
 
   componentDidUpdate (prevProps: Props) {
     if (prevProps.location.pathname.split('/')[2]
-        !== this.props.location.pathname.split('/')[2]) {
+      !== this.props.location.pathname.split('/')[2]) {
       this.closeAllSubscriptions();
-      this.subscribeBalance();
       this.subscribeChainHead();
     }
   }
 
   closeAllSubscriptions () {
-    if (this.balanceSub) {
-      this.balanceSub.unsubscribe();
-      this.balanceSub = undefined;
-    }
-
     if (this.chainHeadSub) {
       this.chainHeadSub.unsubscribe();
       this.chainHeadSub = undefined;
@@ -152,7 +143,7 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
     history.push(`/${currentLocation}/${account}`);
   }
 
-  handleToggleApp = (event: React.SyntheticEvent<HTMLElement, Event>, { value }: DropdownProps) => {
+  handleToggleApp = (_event: React.SyntheticEvent<HTMLElement, Event>, { value }: DropdownProps) => {
     const { history } = this.props;
     const address = this.getAddress();
 
@@ -196,17 +187,6 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
   backupTrigger = <Dropdown.Item closeOnFocus icon='arrow alternate circle down' onClick={this.openBackupModal} text='Backup Account' />;
   forgetTrigger = <Dropdown.Item closeOnFocus icon='trash' onClick={this.openForgetModal} text='Forget Account' />;
 
-  subscribeBalance = () => {
-    const { api } = this.context;
-    const currentAccount = this.getAddress();
-
-    // Subscribe to sender's balance
-    // FIXME using any because freeBalance gives a Codec here, not a Balance
-    // Wait for @polkadot/api to have TS support for all query.*
-    this.balanceSub = (api.query.balances.freeBalance(currentAccount) as Observable<Balance>)
-      .subscribe((balance) => this.setState({ balance }));
-  }
-
   subscribeChainHead = () => {
     const { api } = this.context;
 
@@ -216,7 +196,7 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
 
   render () {
     const { system: { chain, health, name, version } } = this.context;
-    const { balance, blockNumber } = this.state;
+    const { blockNumber } = this.state;
 
     const address = this.getAddress();
     const currentLocation = this.getCurrentLocation();
@@ -228,7 +208,7 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
         <Menu.Item>
           <Stacked>
             <NodeStatus isSyncing={isSyncing} />
-            <FadedText> { name } {version} </FadedText>
+            <FadedText> {name} {version} </FadedText>
           </Stacked>
         </Menu.Item>
         <Menu.Item>
@@ -238,13 +218,13 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
           <InputAddress
             label={null}
             onChange={this.handleChangeCurrentAccount}
-            type='all'
+            type='account'
             value={address}
             withLabel={false}
           />
         </Menu.Item>
         <Menu.Item>
-          {this.renderBalance(balance)}
+          <Balance address={address} fontSize='medium' />
         </Menu.Item>
         <Dropdown
           item
@@ -252,23 +232,19 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
           options={APP_OPTIONS}
           text={stringUpperFirst(currentLocation)}
           value={stringUpperFirst(currentLocation)}
-          />
+        />
         <Dropdown
           icon='setting'
           item
           text='Settings'
-          >
+        >
           <Dropdown.Menu>
             {this.renderBackupConfirmationModal()}
             {this.renderForgetConfirmationModal()}
           </Dropdown.Menu>
         </Dropdown>
-     </Menu>
+      </Menu>
     );
-  }
-
-  renderBalance (balance?: Balance) {
-    return balance && <BalanceDisplay balance={balance} fontSize={'14px'} />;
   }
 
   renderBackupConfirmationModal () {

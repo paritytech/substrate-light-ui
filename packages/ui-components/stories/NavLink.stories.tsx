@@ -5,10 +5,12 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import { text, withKnobs } from '@storybook/addon-knobs';
+import { select, text, withKnobs } from '@storybook/addon-knobs';
 
 import { withMemoryRouter, withTheme } from './customDecorators';
+import { FONT_SIZES } from '../src/constants';
 import { NavLink } from '../src/NavLink';
+import { FontSize } from '../src/types';
 
 storiesOf('NavLink', module)
   .addDecorator(withKnobs)
@@ -26,7 +28,7 @@ storiesOf('NavLink', module)
   .add('with font props', () => (
     <NavLink
       onClick={action('clicked')}
-      fontSize={text('font size', '17px')}
+      fontSize={select('font size', FONT_SIZES, 'medium') as FontSize}
       fontWeight={text('font weight', '500')}
       to={text('to', '/there')}>
       {text('child', 'Link')}

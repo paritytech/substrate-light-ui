@@ -21,8 +21,8 @@ export class WalletCard extends React.PureComponent<Props> {
       <Card height={height} raised overflow={overflow}>
         <WithSpaceAround>
           <Stacked>
-            <Header margin='0.2rem 0'> {header} </Header>
-            <SubHeader margin='0rem auto'> {subheader} </SubHeader>
+            <Header margin='large'> {header} </Header>
+            <SubHeader margin='large'> {subheader} </SubHeader>
             <Stacked>
               {children}
             </Stacked>
