@@ -18,6 +18,7 @@ interface Props {
   amountAsString?: string;
   currentAccount: string;
   extrinsic?: IExtrinsic;
+  onValidExtrinsic?: (extrinsic: IExtrinsic) => void;
   recipientAddress?: string;
 }
 
@@ -42,9 +43,8 @@ const LENGTH_SIGNATURE = 64;
 const LENGTH_ERA = 1;
 const SIGNATURE_SIZE = LENGTH_PUBLICKEY + LENGTH_SIGNATURE + LENGTH_ERA;
 
-export class Validation extends React.Component<Props, State> {
+export class Checks extends React.Component<Props, State> {
   static contextType = AppContext;
-
   context!: React.ContextType<typeof AppContext>; // http://bit.ly/typescript-and-react-context
 
   state: State = {};
@@ -89,8 +89,8 @@ export class Validation extends React.Component<Props, State> {
       .add(fees.transactionByteFee.muln(txLength));
     const allTotal = amount.add(allFees);
 
-    const hasAvailable = votingBalance.freeBalance.gte(allFees);
-    const isRemovable = votingBalance.votingBalance.sub(allFees).lte(fees.existentialDeposit);
+    const hasAvailable = votingBalance.freeBalance.gte(allTotal);
+    const isRemovable = votingBalance.votingBalance.sub(allTotal).lte(fees.existentialDeposit);
     const isReserved = votingBalance.freeBalance.isZero() && votingBalance.reservedBalance.gtn(0);
     const overLimit = txLength >= MAX_SIZE_BYTES;
 
@@ -179,14 +179,7 @@ export class Validation extends React.Component<Props, State> {
 
     const extrinsic = api.tx.balances.transfer(recipientAddress, amount);
 
-    const {
-      allFees,
-      allTotal,
-      hasAvailable,
-      isRemovable,
-      isReserved,
-      overLimit
-    } = this.calculateAllFees(
+    const { hasAvailable, overLimit } = this.calculateAllFees(
       amount,
       extrinsic,
       fees,
@@ -203,7 +196,6 @@ export class Validation extends React.Component<Props, State> {
     }
 
     return {};
-
   }
 
   render () {
