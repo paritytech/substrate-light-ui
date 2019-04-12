@@ -47,7 +47,7 @@ export class AddAccount extends React.PureComponent<Props, State> {
           </Link>
           <Link to='/accounts/add/phrase'>
             <Menu.Item>
-              Import from passphrase
+              Import from mnemonic phrase
             </Menu.Item>
           </Link>
         </Menu>

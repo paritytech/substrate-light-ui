@@ -143,14 +143,6 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
     return this.props.location.pathname.split('/')[2];
   }
 
-  getCurrentLocation = () => {
-    const { location } = this.props;
-
-    const currentLocation = location.pathname.split('/')[1].toLowerCase();
-
-    return currentLocation;
-  }
-
   getName = () => {
     const { keyring } = this.context;
     const address = this.getAddress();
@@ -160,9 +152,8 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
 
   handleChangeCurrentAccount = (account: string) => {
     const { history } = this.props;
-    const currentLocation = this.getCurrentLocation();
 
-    history.push(`/${currentLocation}/${account}`);
+    history.push(`/transfer/${account}`);
   }
 
   onChangeName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {

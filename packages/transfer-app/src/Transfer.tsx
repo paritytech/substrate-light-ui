@@ -4,7 +4,7 @@
 
 import { Container, Header } from '@substrate/ui-components';
 import React from 'react';
-import { Route, RouteComponentProps, Switch } from 'react-router-dom';
+import { Route, RouteComponentProps, Switch, Redirect } from 'react-router-dom';
 
 import { SendBalance } from './SendBalance';
 import { SentBalance } from './SentBalance';
@@ -23,6 +23,9 @@ export class Transfer extends React.PureComponent<Props> {
 
         <Switch>
           <Route component={SentBalance} path='/transfer/:currentAccount/sent'></Route>
+          <Route exact path="/transfer/:currentAccount/" render={({match: {params: {currentAccount}}}) => (
+              <Redirect to={`/transfer/${currentAccount}/${currentAccount}`} />
+          )} />
           <Route component={SendBalance} path='/transfer/:currentAccount/:recipientAddress'></Route>
           <Route component={SendBalance}></Route>
         </Switch>
