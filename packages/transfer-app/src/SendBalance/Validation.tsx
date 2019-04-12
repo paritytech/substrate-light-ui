@@ -23,9 +23,10 @@ interface Props {
 }
 
 interface State {
-  fees?: DerivedFees;
-  votingBalance?: DerivedBalances;
   accountNonce?: Index;
+  currentBalance?: DerivedBalances;
+  fees?: DerivedFees;
+  recipientBalance?: DerivedBalances;
 }
 
 interface Calculated {
@@ -43,7 +44,7 @@ const LENGTH_SIGNATURE = 64;
 const LENGTH_ERA = 1;
 const SIGNATURE_SIZE = LENGTH_PUBLICKEY + LENGTH_SIGNATURE + LENGTH_ERA;
 
-export class Checks extends React.Component<Props, State> {
+export class Validation extends React.Component<Props, State> {
   static contextType = AppContext;
   context!: React.ContextType<typeof AppContext>; // http://bit.ly/typescript-and-react-context
 
@@ -52,13 +53,23 @@ export class Checks extends React.Component<Props, State> {
   subscription?: Subscription;
 
   componentDidMount () {
-    this.subscribeFees(this.props.currentAccount);
+    if (!this.props.recipientAddress) {
+      return;
+    }
+    this.subscribeFees(this.props.currentAccount, this.props.recipientAddress);
   }
 
   componentDidUpdate (prevProps: Props) {
-    if (prevProps.currentAccount !== this.props.currentAccount) {
+    if (!this.props.recipientAddress) {
+      return;
+    }
+
+    if (
+      prevProps.currentAccount !== this.props.currentAccount ||
+      prevProps.recipientAddress !== this.props.recipientAddress
+    ) {
       this.closeSubscription();
-      this.subscribeFees(this.props.currentAccount);
+      this.subscribeFees(this.props.currentAccount, this.props.recipientAddress);
     }
   }
 
@@ -80,7 +91,7 @@ export class Checks extends React.Component<Props, State> {
     amount: Balance,
     extrinsic: IExtrinsic,
     fees: DerivedFees,
-    votingBalance: DerivedBalances,
+    currentBalance: DerivedBalances,
     accountNonce: Index
   ): Calculated => {
 
@@ -89,9 +100,9 @@ export class Checks extends React.Component<Props, State> {
       .add(fees.transactionByteFee.muln(txLength));
     const allTotal = amount.add(allFees);
 
-    const hasAvailable = votingBalance.freeBalance.gte(allTotal);
-    const isRemovable = votingBalance.votingBalance.sub(allTotal).lte(fees.existentialDeposit);
-    const isReserved = votingBalance.freeBalance.isZero() && votingBalance.reservedBalance.gtn(0);
+    const hasAvailable = currentBalance.freeBalance.gte(allTotal);
+    const isRemovable = currentBalance.votingBalance.sub(allTotal).lte(fees.existentialDeposit);
+    const isReserved = currentBalance.freeBalance.isZero() && currentBalance.reservedBalance.gtn(0);
     const overLimit = txLength >= MAX_SIZE_BYTES;
 
     return {
@@ -104,21 +115,23 @@ export class Checks extends React.Component<Props, State> {
     };
   }
 
-  subscribeFees (currentAccount: string) {
+  subscribeFees (currentAccount: string, recipientAddress: string) {
     const { api } = this.context;
 
     // Subscribe to sender's balances, nonce and some fees
     zip(
       api.derive.balances.fees() as unknown as Observable<DerivedFees>,
       api.derive.balances.votingBalance(currentAccount) as unknown as Observable<DerivedBalances>,
+      api.derive.balances.votingBalance(recipientAddress) as unknown as Observable<DerivedBalances>,
       api.query.system.accountNonce(currentAccount) as unknown as Observable<Index>
     )
       .pipe(
         take(1)
       )
-      .subscribe(([fees, votingBalance, accountNonce]) => this.setState({
+      .subscribe(([fees, currentBalance, recipientBalance, accountNonce]) => this.setState({
         fees,
-        votingBalance,
+        currentBalance,
+        recipientBalance,
         accountNonce
       }));
   }
@@ -145,7 +158,7 @@ export class Checks extends React.Component<Props, State> {
   validate () {
     const { api } = this.context;
     const { amountAsString, currentAccount, recipientAddress } = this.props;
-    const { accountNonce, fees, votingBalance } = this.state;
+    const { accountNonce, currentBalance, fees } = this.state;
 
     const prevalidateErrors = this.prevalidate(currentAccount, recipientAddress, amountAsString);
 
@@ -173,8 +186,8 @@ export class Checks extends React.Component<Props, State> {
       return { fees: 'Please wait while we fetch transfer fees.' };
     }
 
-    if (!votingBalance) {
-      return { votingBalance: 'Please wait while we fetch your voting balance.' };
+    if (!currentBalance) {
+      return { currentBalance: 'Please wait while we fetch your voting balance.' };
     }
 
     const extrinsic = api.tx.balances.transfer(recipientAddress, amount);
@@ -183,7 +196,7 @@ export class Checks extends React.Component<Props, State> {
       amount,
       extrinsic,
       fees,
-      votingBalance,
+      currentBalance,
       accountNonce
     );
 

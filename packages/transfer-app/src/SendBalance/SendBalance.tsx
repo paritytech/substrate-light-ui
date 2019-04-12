@@ -4,7 +4,6 @@
 
 import { Balance as BalanceType } from '@polkadot/types';
 import { IExtrinsic } from '@polkadot/types/types';
-import { isFunction } from '@polkadot/util';
 import { AppContext } from '@substrate/ui-common';
 import { Balance, Form, Input, NavButton, StackedHorizontal, SubHeader } from '@substrate/ui-components';
 import React from 'react';
@@ -12,7 +11,7 @@ import { RouteComponentProps } from 'react-router-dom';
 
 import { CenterDiv, InputAddress, LeftDiv, RightDiv } from '../Transfer.styles';
 import { MatchParams } from '../types';
-import { Checks } from './Checks';
+import { Validation } from './Validation';
 
 interface SendMatchParams extends MatchParams {
   recipientAddress?: string;
@@ -132,7 +131,7 @@ export class SendBalance extends React.PureComponent<Props, State> {
         <StackedHorizontal>
           <LeftDiv />
           <CenterDiv>
-            <Checks
+            <Validation
               amountAsString={amountAsString}
               currentAccount={currentAccount}
               extrinsic={extrinsic}
