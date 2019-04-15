@@ -2,15 +2,19 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Balance as BalanceType } from '@polkadot/types';
-import { IExtrinsic } from '@polkadot/types/types';
+import { DerivedBalances, DerivedFees } from '@polkadot/api-derive/types';
+import { Index } from '@polkadot/types';
 import { AppContext } from '@substrate/ui-common';
 import { Balance, Form, Input, NavButton, StackedHorizontal, SubHeader } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
+import { Observable, Subscription, zip } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 import { CenterDiv, InputAddress, LeftDiv, RightDiv } from '../Transfer.styles';
+import { SubResults } from './types';
 import { MatchParams } from '../types';
+import { validate } from './validate';
 import { Validation } from './Validation';
 
 interface SendMatchParams extends MatchParams {
@@ -19,11 +23,8 @@ interface SendMatchParams extends MatchParams {
 
 interface Props extends RouteComponentProps<SendMatchParams> { }
 
-interface State {
+interface State extends Partial<SubResults> {
   amountAsString: string;
-  balance?: BalanceType; // The balance of the sender
-  extrinsic?: IExtrinsic;
-  isValid: boolean; // Is form valid?
 }
 
 export class SendBalance extends React.PureComponent<Props, State> {
@@ -32,20 +33,67 @@ export class SendBalance extends React.PureComponent<Props, State> {
   context!: React.ContextType<typeof AppContext>; // http://bit.ly/typescript-and-react-context
 
   state: State = {
-    amountAsString: '',
-    isValid: false
+    amountAsString: ''
   };
 
-  getExtrinsic (recipientAddress: string, amount: BalanceType) {
+  subscription?: Subscription;
+
+  componentDidMount () {
+    if (!this.props.match.params.recipientAddress) {
+      return;
+    }
+    this.subscribeFees(this.props.match.params.currentAccount, this.props.match.params.recipientAddress);
+  }
+
+  componentDidUpdate (prevProps: Props) {
+    if (!this.props.match.params.recipientAddress) {
+      return;
+    }
+
+    if (
+      prevProps.match.params.currentAccount !== this.props.match.params.currentAccount ||
+      prevProps.match.params.recipientAddress !== this.props.match.params.recipientAddress
+    ) {
+      this.closeSubscription();
+      this.subscribeFees(this.props.match.params.currentAccount, this.props.match.params.recipientAddress);
+    }
+  }
+
+  componentWillUnmount () {
+    this.closeSubscription();
+  }
+
+  closeSubscription () {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+      this.subscription = undefined;
+    }
+  }
+
+  subscribeFees (currentAccount: string, recipientAddress: string) {
     const { api } = this.context;
 
-    return api.tx.balances.transfer(recipientAddress, amount);
+    // Subscribe to sender's & receivers's balances, nonce and some fees
+    this.subscription = zip(
+      api.derive.balances.fees() as unknown as Observable<DerivedFees>,
+      api.derive.balances.votingBalance(currentAccount) as unknown as Observable<DerivedBalances>,
+      api.derive.balances.votingBalance(recipientAddress) as unknown as Observable<DerivedBalances>,
+      api.query.system.accountNonce(currentAccount) as unknown as Observable<Index>
+    )
+      .pipe(
+        take(1)
+      )
+      .subscribe(([fees, currentBalance, recipientBalance, accountNonce]) => this.setState({
+        fees,
+        currentBalance,
+        recipientBalance,
+        accountNonce
+      }));
   }
 
   handleChangeAmount = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
-      amountAsString: value,
-      extrinsic: undefined
+      amountAsString: value
     });
   }
 
@@ -58,34 +106,29 @@ export class SendBalance extends React.PureComponent<Props, State> {
   handleChangeRecipientAddress = (recipientAddress: string) => {
     const { history, match: { params: { currentAccount } } } = this.props;
 
-    this.setState({
-      extrinsic: undefined
-    });
-
     history.push(`/transfer/${currentAccount}/${recipientAddress}`);
   }
 
   handleSubmit = () => {
+    const { api } = this.context;
     const { history, match: { params: { currentAccount, recipientAddress } } } = this.props;
-    const { amountAsString, isValid } = this.state;
 
-    if (!isValid) {
-      // Do nothing if form is not valid
-      return;
-    }
+    const values = validate({ ...this.state, currentAccount, recipientAddress }, api);
 
-    const amount = new BalanceType(amountAsString);
-
-    // If everything is correct, then go to sent
-    history.push(`/transfer/${currentAccount}/sent`, {
-      amount,
-      recipientAddress
-    });
+    values.fold(
+      () => {/* Do nothing if error */ },
+      (allExtrinsicData) => {
+        // If everything is correct, then go to sent
+        history.push(`/transfer/${currentAccount}/sent`, allExtrinsicData);
+      });
   }
 
   render () {
+    const { api } = this.context;
     const { match: { params: { currentAccount, recipientAddress } } } = this.props;
-    const { amountAsString, isValid } = this.state;
+    const { amountAsString } = this.state;
+
+    const values = validate({ ...this.state, currentAccount, recipientAddress }, api);
 
     return (
       <Form onSubmit={this.handleSubmit}>
@@ -131,15 +174,10 @@ export class SendBalance extends React.PureComponent<Props, State> {
         <StackedHorizontal>
           <LeftDiv />
           <CenterDiv>
-            <Validation
-              amountAsString={amountAsString}
-              currentAccount={currentAccount}
-              onValidExtrinsic={console.log}
-              recipientAddress={recipientAddress}
-            />
+            <Validation values={values} />
           </CenterDiv>
           <RightDiv>
-            <NavButton disabled={isValid}>Submit</NavButton>
+            <NavButton disabled={values.isLeft()}>Submit</NavButton>
           </RightDiv>
         </StackedHorizontal>
       </Form>
