@@ -18,7 +18,7 @@ export interface DynamicSizeTextProps {
 }
 
 export interface FlexItemProps {
-  flex: number;
+  flex?: number;
 }
 
 export interface StackProps {
