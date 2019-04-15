@@ -85,7 +85,7 @@ export class SendBalance extends React.PureComponent<Props, State> {
 
   render () {
     const { match: { params: { currentAccount, recipientAddress } } } = this.props;
-    const { amountAsString, extrinsic, isValid } = this.state;
+    const { amountAsString, isValid } = this.state;
 
     return (
       <Form onSubmit={this.handleSubmit}>
@@ -134,7 +134,6 @@ export class SendBalance extends React.PureComponent<Props, State> {
             <Validation
               amountAsString={amountAsString}
               currentAccount={currentAccount}
-              extrinsic={extrinsic}
               onValidExtrinsic={console.log}
               recipientAddress={recipientAddress}
             />
