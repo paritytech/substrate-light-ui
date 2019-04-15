@@ -63,7 +63,7 @@ export class TopBar extends React.PureComponent<{}, State> {
     const isSyncing = health.isSyncing;
 
     return (
-      <header>
+      <React.Fragment>
         <Margin top='big' />
         <StackedHorizontal justifyContent='space-between' alignItems='flex-end'>
           <Switch>
@@ -72,15 +72,17 @@ export class TopBar extends React.PureComponent<{}, State> {
             </Route>
           </Switch>
           <FlexItem>
-            <NavLink to='/'> <img src={substrateLogo} width={150} /> </NavLink>
+            <NodeStatus isSyncing={isSyncing} />
             <FadedText> {name} {version} </FadedText>
           </FlexItem>
           <FlexItem>
-            <NodeStatus isSyncing={isSyncing} />
+            <NavLink to='/'> <img src={substrateLogo} width={150} /> </NavLink>
+          </FlexItem>
+          <FlexItem>
             <BlockCounter blockNumber={blockNumber} chainName={chain} />
           </FlexItem>
         </StackedHorizontal>
-      </header>
+      </React.Fragment>
     );
   }
 }

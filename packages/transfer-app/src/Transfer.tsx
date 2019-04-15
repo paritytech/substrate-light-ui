@@ -7,7 +7,7 @@ import addressObservable from '@polkadot/ui-keyring/observable/addresses';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Subscribe } from '@substrate/ui-common';
-import { Container, Header } from '@substrate/ui-components';
+import { Header, WalletCard } from '@substrate/ui-components';
 import React from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 
@@ -23,9 +23,7 @@ interface Props extends RouteComponentProps<MatchParams> { }
 export class Transfer extends React.PureComponent<Props> {
   render () {
     return (
-      <Container>
-        <Header>Transfer Balance</Header>
-
+      <WalletCard header='Transfer Balance' height='100%'>
         <Switch>
           <Route component={SentBalance} path='/transfer/:currentAccount/sent'></Route>
           <Route exact path='/transfer/:currentAccount/' render={({ match: { params: { currentAccount } } }) => (
@@ -49,7 +47,7 @@ export class Transfer extends React.PureComponent<Props> {
           <Route component={SendBalance} path='/transfer/:currentAccount/:recipientAddress'></Route>
           <Route component={SendBalance}></Route>
         </Switch>
-      </Container>
+      </WalletCard>
     );
   }
 }

@@ -4,7 +4,7 @@
 
 import { Balance as BalanceType } from '@polkadot/types';
 import { AppContext } from '@substrate/ui-common';
-import { Balance, ErrorText, Form, Input, NavButton, StackedHorizontal, SubHeader } from '@substrate/ui-components';
+import { Balance, ErrorText, Form, Input, Margin, NavButton, StackedHorizontal, SubHeader } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Observable, Subscription } from 'rxjs';
@@ -174,6 +174,8 @@ export class SendBalance extends React.PureComponent<Props, State> {
               type='number'
               value={amount}
             />
+            <Margin top='huge' />
+            <NavButton disabled={!!error}>Submit</NavButton>
           </CenterDiv>
 
           <RightDiv>
@@ -193,9 +195,7 @@ export class SendBalance extends React.PureComponent<Props, State> {
         <StackedHorizontal>
           <LeftDiv />
           <CenterDiv>{this.renderError()}</CenterDiv>
-          <RightDiv>
-            <NavButton disabled={!!error}>Submit</NavButton>
-          </RightDiv>
+          <RightDiv />
         </StackedHorizontal>
       </Form>
     );

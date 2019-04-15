@@ -17,7 +17,7 @@ export class SavedAddresses extends React.PureComponent<{}> {
         header='Saved Addresses'
         height='100%'
         overflow='scroll'
-        subheader='select saved addresses to edit meta.'>
+        subheader='Select saved addresses to edit metadata.'>
         <Stacked>
           <WithSpace>
             {this.renderAllAddressesFromKeyring()}
@@ -33,7 +33,7 @@ export class SavedAddresses extends React.PureComponent<{}> {
         {addressObservable.subject.pipe(
           map((allAddresses: SubjectInfo) =>
             !Object.keys(allAddresses).length
-              ? <p> Emptiness </p>
+              ? <p> It looks like you haven't saved any addresses yet. </p>
               : Object.values(allAddresses).map((address: SingleAddress) =>
                 <React.Fragment key={`__locked_${address.json.address}`}>
                   <Margin top />
