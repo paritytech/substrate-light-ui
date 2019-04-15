@@ -16,8 +16,9 @@ export class Loading extends React.PureComponent<Props> {
     return (
       <React.Fragment>
         <Dimmer active={active}>
-          <Loader />
+          <Loader>
           {children}
+          </Loader>
         </Dimmer>
       </React.Fragment>
     );

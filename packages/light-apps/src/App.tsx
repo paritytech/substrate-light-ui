@@ -27,7 +27,9 @@ export class App extends React.PureComponent {
                       <TopBar />
                       <Content />
                     </React.Fragment>
-                  : <Loading active />}
+                  : <Loading active>
+                      Connecting to the node...
+                    </Loading>}
               </AppContext.Consumer>
               <Alerts />
             </React.Fragment>
