@@ -64,6 +64,10 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
     }
   }
 
+  componentWillUnmount () {
+    this.closeAllSubscriptions();
+  }
+
   closeAllSubscriptions () {
     if (this.chainHeadSub) {
       this.chainHeadSub.unsubscribe();
@@ -224,7 +228,7 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
           />
           <Margin left='medium' />
           <NavLink to='/accounts/add'>
-            Add new account
+            <Icon name='plus' />
           </NavLink>
         </Menu.Item>
         <Menu.Item>

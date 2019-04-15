@@ -6,7 +6,7 @@ import React from 'react';
 import Dropzone from 'react-dropzone';
 import styled from 'styled-components';
 
-import { ErrorText, FadedText, FileInputArea } from './Shared.styles';
+import { ErrorText, FadedText } from './Shared.styles';
 
 type State = {
   error?: string,
@@ -33,9 +33,9 @@ const defaultAccept = ['application/json, text/plain'].join(',');
 const FileInputArea = styled.div`
   background-color: ${props => props.theme.white};
   box-shadow: 0 2px 4px 0 ${props => props.theme.black}, 0.5);
-  height: ${props => props.height || '100%'};
+  height: '100%';
   text-align: center;
-  width: ${props => props.width || '50%'};
+  width: '50%';
 `;
 
 // FIXME: this component is reused here and in @polkadot/apps - should be moved to @polkadot/ui
@@ -52,7 +52,7 @@ export class InputFile extends React.PureComponent<Props, State> {
     const { accept, placeholder } = this.props;
 
     return (
-      <FileInputArea height='10rem'>
+      <FileInputArea>
         <Dropzone
           accept={accept}
           multiple={false}

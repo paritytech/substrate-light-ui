@@ -177,7 +177,10 @@ export class SendBalance extends React.PureComponent<Props, State> {
           </CenterDiv>
 
           <RightDiv>
-            <SubHeader textAlign='left'>Recipient Address:</SubHeader>
+            <StackedHorizontal>
+              <SubHeader textAlign='left'>Recipient Address:</SubHeader>
+              <Balance address={recipientAddress} fontSize='medium' fontWeight='lightest' />
+            </StackedHorizontal>
             <InputAddress
               label={null}
               onChange={this.handleChangeRecipientAddress}
@@ -185,7 +188,6 @@ export class SendBalance extends React.PureComponent<Props, State> {
               value={recipientAddress}
               withLabel={false}
             />
-            <Balance address={recipientAddress} />
           </RightDiv>
         </StackedHorizontal>
         <StackedHorizontal>

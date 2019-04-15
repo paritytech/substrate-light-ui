@@ -17,6 +17,10 @@ export interface DynamicSizeTextProps {
   fontSize?: FontSize;
 }
 
+export interface FlexItemProps {
+  flex: number;
+}
+
 export interface StackProps {
   alignItems?: string; // FIXME Use union of possible string
   justifyContent?: string; // FIXME Use union of possible string

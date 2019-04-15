@@ -64,8 +64,8 @@ export class TopBar extends React.PureComponent<{}, State> {
 
     return (
       <header>
-        <Margin top='medium' />
-        <StackedHorizontal justifyContent='space-around' alignItems='flex-end'>
+        <Margin top='big' />
+        <StackedHorizontal justifyContent='space-between' alignItems='flex-end'>
           <Switch>
             <Route path={['/addresses','/accounts/add']}>
               <Link to={`/`}> Back </Link>

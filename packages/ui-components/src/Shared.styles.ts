@@ -9,7 +9,7 @@ import SUIDropdown from 'semantic-ui-react/dist/commonjs/modules/Dropdown';
 import SUIInput from 'semantic-ui-react/dist/commonjs/elements/Input';
 
 import { FONT_SIZES, MARGIN_SIZES } from './constants';
-import { HeaderProps, DynamicSizeTextProps, StackProps, StyledNavLinkProps, SubHeaderProps, WithSpaceAroundProps } from './StyleProps';
+import { HeaderProps, FlexItemProps, DynamicSizeTextProps, StackProps, StyledNavLinkProps, SubHeaderProps, WithSpaceAroundProps } from './StyleProps';
 
 // FIXME: customize as needed
 export const Dropdown = styled<any>(SUIDropdown)`
@@ -30,7 +30,7 @@ export const FadedText = styled.p`
   text-align: center;
 `;
 
-export const FlexItem = styled.div`
+export const FlexItem = styled.div<FlexItemProps>`
   flex: ${props => props.flex || 1};
 `;
 
@@ -75,7 +75,7 @@ export const Header = styled.h2<HeaderProps>`
 
 export const DynamicSizeText = styled.p<DynamicSizeTextProps>`
   font-size: ${props => FONT_SIZES[props.fontSize || 'medium']};
-  font-weight: ${props => props.fontWeight || '500'};
+  font-weight: ${props => props.fontWeight || 'light'};
   margin: 0 0;
   text-align: center;
 `;
