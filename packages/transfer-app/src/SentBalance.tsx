@@ -174,8 +174,8 @@ export class SentBalance extends React.PureComponent<Props, State> {
         <p>From: {currentAccount}</p>
         <p>To: {recipientAddress}</p>
         <p>Amount: {amount!.toString()} units</p>
-        <p>Fees: {allFees.toString()}</p>
-        <p>Total amount (amount + fees): {allTotal.toString()}</p>
+        <p>Fees: {allFees.toString()} units</p>
+        <p>Total amount (amount + fees): {allTotal.toString()} units</p>
       </Segment>
     );
   }
