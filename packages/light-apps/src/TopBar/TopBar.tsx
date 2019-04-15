@@ -4,7 +4,7 @@
 
 import { BlockNumber, Header } from '@polkadot/types';
 import { AppContext } from '@substrate/ui-common';
-import { FadedText, NavLink, StackedHorizontal, Margin } from '@substrate/ui-components';
+import { FadedText, FlexItem, Margin, NavLink, Stacked, StackedHorizontal } from '@substrate/ui-components';
 import React from 'react';
 import { Observable, Subscription } from 'rxjs';
 
@@ -65,37 +65,18 @@ export class TopBar extends React.PureComponent<{}, State> {
     return (
       <header>
         <Margin top='medium' />
-        <StackedHorizontal justifyContent='space-between' alignItems='flex-end'>
-          <div>
-            <StackedHorizontal alignItems='flex-end'>
-              <div>
-                <NavLink to='/'>
-                  <img
-                    src={substrateLogo}
-                    width={150}
-                  />
-                </NavLink>
-                <FadedText> {name} {version} </FadedText>
-              </div>
-              <Margin left='medium' />
-              <div>
-                <NodeStatus isSyncing={isSyncing} />
-                <BlockCounter blockNumber={blockNumber} chainName={chain} />
-              </div>
-            </StackedHorizontal>
-          </div>
+        <StackedHorizontal justifyContent='space-around' alignItems='flex-end'>
           <Switch>
             <Route path={['/addresses','/accounts/add']}>
-              <Link to={`/`}>
-                Back
-              </Link>
-            </Route>
-            <Route>
-              <Link to={`/addresses`}>
-                Manage address book
-              </Link>
+              <Link to={`/`}> Back </Link>
             </Route>
           </Switch>
+          <FlexItem> <FadedText> {name} {version} </FadedText> </FlexItem>
+          <FlexItem> <NavLink to='/'> <img src={substrateLogo} width={150} /> </NavLink> </FlexItem>
+          <Stacked>
+            <NodeStatus isSyncing={isSyncing} />
+            <BlockCounter blockNumber={blockNumber} chainName={chain} />
+          </Stacked>
         </StackedHorizontal>
       </header>
     );

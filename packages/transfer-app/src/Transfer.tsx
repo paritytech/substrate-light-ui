@@ -23,7 +23,7 @@ export class Transfer extends React.PureComponent<Props> {
 
         <Switch>
           <Route component={SentBalance} path='/transfer/:currentAccount/sent'></Route>
-          <Route exact path="/transfer/:currentAccount/" render={({match: {params: {currentAccount}}}) => (
+          <Route exact path='/transfer/:currentAccount/' render={({ match: { params: { currentAccount } } }) => (
               <Redirect to={`/transfer/${currentAccount}/${currentAccount}`} />
           )} />
           <Route component={SendBalance} path='/transfer/:currentAccount/:recipientAddress'></Route>

@@ -4,6 +4,7 @@
 
 import React from 'react';
 import Dropzone from 'react-dropzone';
+import styled from 'styled-components';
 
 import { ErrorText, FadedText, FileInputArea } from './Shared.styles';
 
@@ -29,6 +30,14 @@ type LoadEvent = {
 
 const defaultAccept = ['application/json, text/plain'].join(',');
 
+const FileInputArea = styled.div`
+  background-color: ${props => props.theme.white};
+  box-shadow: 0 2px 4px 0 ${props => props.theme.black}, 0.5);
+  height: ${props => props.height || '100%'};
+  text-align: center;
+  width: ${props => props.width || '50%'};
+`;
+
 // FIXME: this component is reused here and in @polkadot/apps - should be moved to @polkadot/ui
 export class InputFile extends React.PureComponent<Props, State> {
   static defaultProps: Props = {
@@ -43,24 +52,26 @@ export class InputFile extends React.PureComponent<Props, State> {
     const { accept, placeholder } = this.props;
 
     return (
-      <Dropzone
-        accept={accept}
-        multiple={false}
-        onDrop={this.onDrop}>
-        {({ getRootProps, getInputProps, isDragActive }) => {
-          return (
-            <FileInputArea {...getRootProps()}>
-              <input {...getInputProps()} />
-              {
-                !file
-                  ? <FadedText>{placeholder}</FadedText>
-                  : <FadedText>{file.name}</FadedText>
-              }
-              <ErrorText> {error} </ErrorText>
-            </FileInputArea>
-          );
-        }}
-      </Dropzone>
+      <FileInputArea height='10rem'>
+        <Dropzone
+          accept={accept}
+          multiple={false}
+          onDrop={this.onDrop}>
+          {({ getRootProps, getInputProps, isDragActive }) => {
+            return (
+              <div {...getRootProps()}>
+                <input {...getInputProps()} />
+                {
+                  !file
+                    ? <FadedText>{placeholder}</FadedText>
+                    : <FadedText>{file.name}</FadedText>
+                }
+                <ErrorText> {error} </ErrorText>
+              </div>
+            );
+          }}
+        </Dropzone>
+      </FileInputArea>
     );
   }
 

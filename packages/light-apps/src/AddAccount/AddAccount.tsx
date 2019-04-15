@@ -4,7 +4,7 @@
 
 import { BlockNumber } from '@polkadot/types';
 import { AppContext } from '@substrate/ui-common';
-import { Menu } from '@substrate/ui-components';
+import { Menu, WalletCard } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps, Link, Switch, Route, Redirect } from 'react-router-dom';
 import { Create } from './Create';
@@ -52,12 +52,14 @@ export class AddAccount extends React.PureComponent<Props, State> {
           </Link>
         </Menu>
 
-        <Switch>
-          <Route path='/accounts/add/generate' component={Create} />
-          <Route path='/accounts/add/json' component={ImportWithJson} />
-          <Route path='/accounts/add/phrase' component={ImportWithPhrase} />
-          <Redirect to='/accounts/add/generate' />
-        </Switch>
+        <WalletCard header='Add an Account' height='100%'>
+          <Switch>
+            <Route path='/accounts/add/generate' component={Create} />
+            <Route path='/accounts/add/json' component={ImportWithJson} />
+            <Route path='/accounts/add/phrase' component={ImportWithPhrase} />
+            <Redirect to='/accounts/add/generate' />
+          </Switch>
+        </WalletCard>
       </Container>
     );
   }

@@ -4,7 +4,7 @@
 
 import { u8aToString } from '@polkadot/util';
 import { AppContext } from '@substrate/ui-common';
-import { Card, Input, InputFile, NavButton, Stacked, SubHeader } from '@substrate/ui-components';
+import { Input, InputFile, NavButton, Stacked, SubHeader } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
@@ -64,21 +64,19 @@ export class ImportWithJson extends React.PureComponent<Props, State> {
     const { step } = this.state;
 
     return (
-      <Card>
-        <Stacked>
-          <SubHeader> Restore Account from JSON Backup File </SubHeader>
-          {
-            step === 'upload'
-              ? <InputFile onChange={this.handleFileUploaded} />
-              : (
-                <React.Fragment>
-                  <Input onChange={this.handlePasswordChange} type='password' />
-                  <NavButton onClick={this.handleRestoreWithJson} value='Restore' />
-                </React.Fragment>
-              )
-          }
-        </Stacked>
-      </Card>
+      <Stacked>
+        <SubHeader> Restore Account from JSON Backup File </SubHeader>
+        {
+          step === 'upload'
+            ? <InputFile onChange={this.handleFileUploaded} />
+            : (
+              <React.Fragment>
+                <Input onChange={this.handlePasswordChange} type='password' />
+                <NavButton onClick={this.handleRestoreWithJson} value='Restore' />
+              </React.Fragment>
+            )
+        }
+      </Stacked>
     );
   }
 }

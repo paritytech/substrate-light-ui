@@ -15,7 +15,10 @@ import { HeaderProps, DynamicSizeTextProps, StackProps, StyledNavLinkProps, SubH
 export const Dropdown = styled<any>(SUIDropdown)`
   color: ${props => props.theme.black};
 `;
-export const Input = styled<any>(SUIInput)``;
+
+export const Input = styled<any>(SUIInput)`
+  width: ${props => props.width || '100%'}
+`;
 
 export const Container = styled(SUIContainer)`
   padding: ${MARGIN_SIZES.large};
@@ -25,6 +28,10 @@ export const FadedText = styled.p`
   color: ${props => props.theme.black};
   opacity: 0.5;
   text-align: center;
+`;
+
+export const FlexItem = styled.div`
+  flex: ${props => props.flex || 1};
 `;
 
 export const ErrorText = styled.p`
@@ -71,14 +78,6 @@ export const DynamicSizeText = styled.p<DynamicSizeTextProps>`
   font-weight: ${props => props.fontWeight || '500'};
   margin: 0 0;
   text-align: center;
-`;
-
-export const FileInputArea = styled.div`
-  background-color: ${props => props.theme.white};
-  box-shadow: 0 2px 4px 0 ${props => props.theme.black}, 0.5);
-  height: 109px;
-  text-align: center;
-  width: 363px;
 `;
 
 export const RefreshButton = styled.button`
