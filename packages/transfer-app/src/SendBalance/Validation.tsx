@@ -9,9 +9,10 @@ import { IExtrinsic } from '@polkadot/types/types';
 import { MAX_SIZE_BYTES, MAX_SIZE_MB } from '@polkadot/ui-signer/Checks/constants';
 import { compactToU8a, isFunction } from '@polkadot/util';
 import { AppContext } from '@substrate/ui-common';
-import { ErrorText, Stacked, SubHeader } from '@substrate/ui-components';
+import { ErrorText, List, Stacked, SubHeader } from '@substrate/ui-components';
 import BN from 'bn.js';
 import { Either, left, right } from 'fp-ts/lib/Either';
+import { fromEither, none, some } from 'fp-ts/lib/Option';
 import React from 'react';
 import { Observable, Subscription, zip } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -36,14 +37,14 @@ interface SubResults {
 }
 
 /**
- * Amount as Balance and Extrinsic
+ * Amount as Balance
  */
 interface WithAmount {
   amount: Balance;
 }
 
 /**
- * Amount as Balance and Extrinsic
+ * Extrinsic
  */
 interface WithExtrinsic {
   extrinsic: IExtrinsic;
@@ -61,6 +62,8 @@ interface WithDerived {
   allFees: BN;
   allTotal: BN;
   hasAvailable: boolean;
+  isCreation: boolean;
+  isNoEffect: boolean;
   isRemovable: boolean;
   isReserved: boolean;
   overLimit: boolean;
@@ -68,9 +71,11 @@ interface WithDerived {
 
 type Errors = Partial<Record<keyof (SubResults & UserInputs & WithAmountExtrinsic), string>>;
 
+type WithEverything = SubResults & UserInputs & WithAmountExtrinsic & WithDerived;
+
 interface Props extends Partial<UserInputs> {
   currentAccount: string; // This one will be always set, overriding the partial
-  onValidExtrinsic?: (values: SubResults & UserInputs & WithAmountExtrinsic & WithDerived) => void;
+  onValidExtrinsic?: (values: WithEverything) => void;
 }
 
 interface State extends Partial<SubResults> { }
@@ -148,8 +153,8 @@ export class Validation extends React.Component<Props, State> {
   validate (
     values: Partial<UserInputs & SubResults>,
     api: ApiRx,
-    onValidExtrinsic?: (extrinsic: SubResults & UserInputs & WithAmountExtrinsic & WithDerived) => void
-  ): Either<Errors, SubResults & UserInputs & WithAmountExtrinsic & WithDerived> {
+    onValidExtrinsic?: (extrinsic: WithEverything) => void
+  ): Either<Errors, WithEverything> {
 
     return this
       .validateUserInputs(values)
@@ -158,6 +163,7 @@ export class Validation extends React.Component<Props, State> {
       .chain(this.withExtrinsic(api))
       .chain(this.validateDerived)
       .map((values) => {
+        // Side-effect: call callback if available
         isFunction(onValidExtrinsic) && onValidExtrinsic(values);
         return values;
       });
@@ -185,12 +191,16 @@ export class Validation extends React.Component<Props, State> {
    * Make sure derived validations (fees, minimal amount) are correct.
    * @see https://github.com/polkadot-js/apps/blob/master/packages/ui-signer/src/Checks/index.tsx#L63-L111
    */
-  validateDerived = (values: SubResults & UserInputs & WithAmountExtrinsic): Either<Errors, SubResults & UserInputs & WithAmountExtrinsic & WithDerived> => {
-    const { accountNonce, amount, currentBalance, extrinsic, fees } = values;
+  validateDerived = (values: SubResults & UserInputs & WithAmountExtrinsic): Either<Errors, WithEverything> => {
+    const { accountNonce, amount, currentBalance, extrinsic, fees, recipientBalance } = values;
 
     const txLength = SIGNATURE_SIZE + compactToU8a(accountNonce).length + extrinsic.encodedLength;
     const allFees = fees.transactionBaseFee.add(fees.transactionByteFee.muln(txLength));
-    const allTotal = amount.add(allFees);
+
+    const isCreation = recipientBalance.votingBalance.isZero() && fees.creationFee.gtn(0);
+    const isNoEffect = amount.add(recipientBalance.votingBalance).lte(fees.existentialDeposit);
+
+    const allTotal = amount.add(allFees).add(isCreation ? fees.creationFee : new BN(0));
 
     const hasAvailable = currentBalance.freeBalance.gte(allTotal);
     const isRemovable = currentBalance.votingBalance.sub(allTotal).lte(fees.existentialDeposit);
@@ -198,10 +208,10 @@ export class Validation extends React.Component<Props, State> {
     const overLimit = txLength >= MAX_SIZE_BYTES;
 
     if (!hasAvailable) {
-      return left({ amount: 'The selected account does not have the required balance available for this transaction' });
+      return left({ amount: 'The selected account does not have the required balance available for this transaction.' });
     }
     if (overLimit) {
-      return left({ amount: `This transaction will be rejected by the node as it is greater than the maximum size of ${MAX_SIZE_MB}MB` });
+      return left({ amount: `This transaction will be rejected by the node as it is greater than the maximum size of ${MAX_SIZE_MB}MB.` });
     }
 
     return right({
@@ -209,6 +219,8 @@ export class Validation extends React.Component<Props, State> {
       allFees,
       allTotal,
       hasAvailable,
+      isCreation,
+      isNoEffect,
       isRemovable,
       isReserved,
       overLimit
@@ -249,8 +261,8 @@ export class Validation extends React.Component<Props, State> {
     if (!currentAccount) {
       return left({ currentAccount: 'Please enter a sender account.' });
     }
-    if (!currentAccount) {
-      return left({ currentAccount: 'Please enter a recipient address.' });
+    if (!recipientAddress) {
+      return left({ recipientAddress: 'Please enter a recipient address.' });
     }
     if (currentAccount === recipientAddress) {
       return left({ currentAccount: 'You cannot send balance to yourself.' });
@@ -261,6 +273,35 @@ export class Validation extends React.Component<Props, State> {
     }
 
     return right({ amountAsString, currentAccount, recipientAddress, ...rest } as Partial<SubResults> & UserInputs);
+  }
+
+  /**
+   * Show some warnings, that are not blocking the transaction, but may have
+   * undesirable effects for the user.
+   * @see https://github.com/polkadot-js/apps/blob/master/packages/ui-signer/src/Checks/index.tsx#L158-L168
+   */
+  warnings (values: WithEverything) {
+    const { fees, hasAvailable, isCreation, isNoEffect, isRemovable, isReserved } = values;
+
+    const warnings = [];
+
+    if (isRemovable && hasAvailable) {
+      warnings.push('Submitting this transaction will drop the account balance to below the existential amount, which can result in the account being removed from the chain state associated funds burned.');
+    }
+
+    if (isNoEffect) {
+      warnings.push('The final recipient balance is less than the existential amount and will not be reflected.');
+    }
+
+    if (isCreation) {
+      warnings.push(`A fee of ${fees.creationFee} will be deducted from the sender since the destination account does not exist.`);
+    }
+
+    if (isReserved) {
+      warnings.push('This account does have a reserved/locked balance, not taken into account');
+    }
+
+    return warnings.length > 0 ? some(warnings) : none;
   }
 
   /**
@@ -275,20 +316,6 @@ export class Validation extends React.Component<Props, State> {
     };
   }
 
-  warnings (values: SubResults & UserInputs & WithAmountExtrinsic) {
-    const { accountNonce, amount, currentBalance, fees, recipientBalance } = values;
-
-    // Make sure we have sub results already
-    const subResultsErrors = this.validateSubResults({ accountNonce, currentBalance, fees, recipientBalance });
-    if (Object.keys(subResultsErrors).length > 0) {
-      return {};
-    }
-
-    // Adding !s here because we already checked the values are defined just before
-    const isCreation = recipientBalance!.votingBalance.isZero() && fees!.creationFee.gtn(0);
-    const isNoEffect = amount.add(recipientBalance!.votingBalance).lte(fees!.existentialDeposit);
-  }
-
   render () {
     const { api } = this.context;
     const { onValidExtrinsic } = this.props;
@@ -299,14 +326,17 @@ export class Validation extends React.Component<Props, State> {
       onValidExtrinsic
     );
 
+    const warnings = fromEither(validations).chain(this.warnings);
+
     return (
       <Stacked>
         {validations.fold(this.renderErrors, this.renderNull)}
+        {warnings.fold(null, this.renderWarnings)}
       </Stacked>
     );
   }
 
-  renderErrors = (errors: Errors) => {
+  renderErrors (errors: Errors) {
     // For now we assume there's only one error, and show it. It should be
     // relatively easy to extend to show multiple errors.
     const error = Object.values(errors)[0];
@@ -321,5 +351,18 @@ export class Validation extends React.Component<Props, State> {
     );
   }
 
-  renderNull = () => null;
+  renderNull () {
+    return null;
+  }
+
+  renderWarnings (warnings: string[]) {
+    return (
+      <React.Fragment>
+        <SubHeader>Warnings</SubHeader>
+        <List>
+          {warnings.map((warning) => <List.Item key={warning}>{warning}</List.Item>)}
+        </List>
+      </React.Fragment>
+    );
+  }
 }
