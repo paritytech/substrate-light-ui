@@ -7,20 +7,16 @@ import IdentityIcon from '@polkadot/ui-identicon';
 import { Balance } from '@polkadot/types';
 import { logger } from '@polkadot/util';
 import { AppContext } from '@substrate/ui-common';
-import { Icon, Margin, Message, NavButton,NavLink, Segment, Stacked, StackedHorizontal, SubHeader } from '@substrate/ui-components';
+import { Icon, Margin, Message, NavButton, NavLink, Segment, Stacked, StackedHorizontal, SubHeader } from '@substrate/ui-components';
 import { Subscription } from 'rxjs';
 import React from 'react';
 import { RouteComponentProps, Redirect } from 'react-router-dom';
 
 import { CenterDiv, LeftDiv, RightDiv } from './Transfer.styles';
 import { MatchParams } from './types';
+import { AllExtrinsicData } from './SendBalance/types';
 
-interface SentState {
-  amount?: Balance;
-  recipientAddress?: string;
-}
-
-interface Props extends RouteComponentProps<MatchParams, {}, SentState> { }
+interface Props extends RouteComponentProps<MatchParams, {}, Partial<AllExtrinsicData> | undefined> { }
 
 interface State {
   showDetails: boolean;
@@ -44,16 +40,16 @@ export class SentBalance extends React.PureComponent<Props, State> {
     // FIXME Instead of sending here, we should implement a simple tx queue
     // in React Context, so that if the user navigates away and back to this
     // page, his transaction status is still here.
-    const { alertStore, api, keyring } = this.context;
+    const { alertStore, keyring } = this.context;
     const { location, match: { params: { currentAccount } } } = this.props;
 
-    if (!location.state || !(location.state.amount instanceof Balance) || !location.state.recipientAddress) {
+    if (!this.checkLocationState(location.state)) {
       // This happens when we refresh the page while a tx is sending. In this
       // case, we just redirect to the send tx page.
       return;
     }
 
-    const { amount, recipientAddress } = location.state;
+    const { amount, extrinsic, recipientAddress } = location.state;
     const senderPair = keyring.getPair(currentAccount);
 
     l.log('Sending tx from', currentAccount, 'to', recipientAddress, 'of amount', amount);
@@ -61,10 +57,8 @@ export class SentBalance extends React.PureComponent<Props, State> {
     // Send the tx
     // TODO Use React context to save it if we come back later.
     // retrieve nonce for the account
-    this.subscription = api.tx.balances
-      // create transfer
-      .transfer(recipientAddress, amount)
-      // send the transaction
+    this.subscription = extrinsic
+      // send the extrinsic
       .signAndSend(senderPair)
       .subscribe(
         (txResult: SubmittableResult) => {
@@ -83,16 +77,33 @@ export class SentBalance extends React.PureComponent<Props, State> {
             this.closeSubscription();
           }
         },
-        (error) => {
+        (error: Error) => {
           alertStore.enqueue({
             content: <Message.Content>
               <Message.Header>Error!</Message.Header>
-              <Message.Content>{JSON.stringify(error)}</Message.Content>
+              <Message.Content>{error.message}</Message.Content>
             </Message.Content>,
             type: 'error'
           });
         }
       );
+  }
+
+  /**
+   * We use `history.push(pathname, state)`, we make sure here that `state` is
+   * well defined in that case.
+   */
+  checkLocationState (locationState: Partial<AllExtrinsicData> | undefined): locationState is AllExtrinsicData {
+    if (
+      !locationState ||
+      !(locationState.amount instanceof Balance) ||
+      !locationState.recipientAddress ||
+      !locationState.extrinsic
+    ) {
+      return false;
+    }
+
+    return true;
   }
 
   closeSubscription () {
@@ -115,7 +126,7 @@ export class SentBalance extends React.PureComponent<Props, State> {
   render () {
     const { location, match: { params: { currentAccount } } } = this.props;
 
-    if (!location.state || !(location.state.amount instanceof Balance) || !location.state.recipientAddress) {
+    if (!this.checkLocationState(location.state)) {
       l.warn(`Refreshed on ${location.pathname} with no location state, redirecting to send balance.`);
       // This happens when we refresh the page while a tx is sending. In this
       // case, we just redirect to the send tx page.
@@ -150,22 +161,32 @@ export class SentBalance extends React.PureComponent<Props, State> {
   }
 
   renderDetails () {
-    const { location: { state }, match: { params: { currentAccount } } } = this.props;
-    const { amount, recipientAddress } = state;
+    const { location, match: { params: { currentAccount } } } = this.props;
+
+    if (!this.checkLocationState(location.state)) {
+      return null;
+    }
+
+    const { allFees, allTotal, amount, recipientAddress } = location.state;
 
     return (
       <Segment placeholder>
         <p>From: {currentAccount}</p>
         <p>To: {recipientAddress}</p>
         <p>Amount: {amount!.toString()} units</p>
-        <p>Fees: [TODO]</p>
-        <p>Total amount (amount + fees): [TODO]</p>
+        <p>Fees: {allFees.toString()}</p>
+        <p>Total amount (amount + fees): {allTotal.toString()}</p>
       </Segment>
     );
   }
 
   renderSummary () {
     const { location, match: { params: { currentAccount } } } = this.props;
+
+    if (!this.checkLocationState(location.state)) {
+      return null;
+    }
+
     const { amount, recipientAddress } = location.state;
 
     return (
