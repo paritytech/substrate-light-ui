@@ -4,7 +4,7 @@
 
 import { BlockNumber, Header } from '@polkadot/types';
 import { AppContext } from '@substrate/ui-common';
-import { FadedText, FlexItem, Margin, NavLink, Stacked, StackedHorizontal } from '@substrate/ui-components';
+import { FadedText, FlexItem, Margin, NavLink, StackedHorizontal } from '@substrate/ui-components';
 import React from 'react';
 import { Observable, Subscription } from 'rxjs';
 
@@ -71,12 +71,14 @@ export class TopBar extends React.PureComponent<{}, State> {
               <Link to={`/`}> Back </Link>
             </Route>
           </Switch>
-          <FlexItem> <FadedText> {name} {version} </FadedText> </FlexItem>
-          <FlexItem> <NavLink to='/'> <img src={substrateLogo} width={150} /> </NavLink> </FlexItem>
-          <Stacked>
+          <FlexItem>
+            <NavLink to='/'> <img src={substrateLogo} width={150} /> </NavLink>
+            <FadedText> {name} {version} </FadedText>
+          </FlexItem>
+          <FlexItem>
             <NodeStatus isSyncing={isSyncing} />
             <BlockCounter blockNumber={blockNumber} chainName={chain} />
-          </Stacked>
+          </FlexItem>
         </StackedHorizontal>
       </header>
     );

@@ -237,7 +237,8 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
         <Dropdown
           icon='setting'
           item
-          text='Manage account &nbsp;' /* TODO add margin to the icon instead */
+          pointing
+          text='Manage Account &nbsp;' /* TODO add margin to the icon instead */
         >
           <Dropdown.Menu>
             {this.renderRenameModal()}
@@ -245,6 +246,7 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
             {this.renderForgetConfirmationModal()}
           </Dropdown.Menu>
         </Dropdown>
+        <Menu.Item> <NavLink to='/addresses/'> Manage Addresses </NavLink> </Menu.Item>
       </Menu>
     );
   }
