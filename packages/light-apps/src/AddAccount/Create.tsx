@@ -4,7 +4,7 @@
 
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
 import { AppContext } from '@substrate/ui-common';
-import { AddressSummary, ErrorText, FadedText, Input, Margin, MnemonicSegment, NavButton, Stacked, StyledLinkButton, SubHeader, WithSpaceAround } from '@substrate/ui-components';
+import { AddressSummary, ErrorText, FadedText, Input, Margin, MnemonicSegment, NavButton, Stacked, StyledLinkButton, SubHeader, WideDiv, WithSpaceAround } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -195,11 +195,14 @@ export class Create extends React.PureComponent<Props, State> {
           <MnemonicSegment onClick={this.newMnemonic} mnemonic={mnemonic} />
           <Margin top />
           <FadedText> Rewrite Mnemonic Below </FadedText>
-          <Input
-            autoFocus
-            onChange={this.onChangeRewritePhrase}
-            type='text'
-            value={rewritePhrase} />
+          <WideDiv>
+            <Input
+              autoFocus
+              fluid
+              onChange={this.onChangeRewritePhrase}
+              type='text'
+              value={rewritePhrase} />
+          </WideDiv>
           <WithSpaceAround>
             <Stacked>
               <StyledLinkButton onClick={this.toggleStep}> Back </StyledLinkButton>
@@ -218,13 +221,16 @@ export class Create extends React.PureComponent<Props, State> {
     return (
       <Stacked>
         <SubHeader> Give it a name </SubHeader>
-        <Input
-          autoFocus
-          min={1}
-          onChange={this.onChangeName}
-          type='text'
-          value={name}
-        />
+        <WideDiv>
+          <Input
+            autoFocus
+            fluid
+            min={1}
+            onChange={this.onChangeName}
+            type='text'
+            value={name}
+          />
+        </WideDiv>
       </Stacked>
     );
   }
@@ -235,12 +241,15 @@ export class Create extends React.PureComponent<Props, State> {
     return (
       <Stacked>
         <SubHeader> Encrypt it with a passphrase </SubHeader>
-        <Input
-          min={8}
-          onChange={this.onChangePassword}
-          type='password'
-          value={password}
-        />
+        <WideDiv>
+          <Input
+            fluid
+            min={8}
+            onChange={this.onChangePassword}
+            type='password'
+            value={password}
+          />
+        </WideDiv>
       </Stacked>
     );
   }

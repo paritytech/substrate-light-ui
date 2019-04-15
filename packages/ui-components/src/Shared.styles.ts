@@ -167,3 +167,8 @@ export const SubHeader = styled.h3<SubHeaderProps>`
 export const InlineSubHeader = styled(SubHeader)`
   display: inline;
 `;
+
+export const WideDiv = styled.div`
+  padding: 1rem;
+  width: 30rem;
+`;

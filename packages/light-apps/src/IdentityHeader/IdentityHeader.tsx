@@ -227,29 +227,30 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
             withLabel={false}
           />
           <Margin left='medium' />
+          <Balance address={address} fontSize='medium' />
+          <Margin left='medium' />
           <NavLink to='/accounts/add'>
             <Icon name='plus' />
           </NavLink>
         </Menu.Item>
-        <Menu.Item>
-          <Balance address={address} fontSize='medium' />
-        </Menu.Item>
-        <Dropdown
-          icon='setting'
-          item
-          pointing
-          text='Manage Account &nbsp;' /* TODO add margin to the icon instead */
-        >
-          <Dropdown.Menu>
-            {this.renderRenameModal()}
-            {this.renderBackupConfirmationModal()}
-            {this.renderForgetConfirmationModal()}
-          </Dropdown.Menu>
-        </Dropdown>
-        <Menu.Item>
-          <NavLink to='/addresses'> Manage Addresses </NavLink>
-          <Icon name='address book' />
-        </Menu.Item>
+        <Menu.Menu position='right'>
+          <Dropdown
+            icon='setting'
+            item
+            pointing
+            text='Manage Account &nbsp;' /* TODO add margin to the icon instead */
+          >
+            <Dropdown.Menu>
+              {this.renderRenameModal()}
+              {this.renderBackupConfirmationModal()}
+              {this.renderForgetConfirmationModal()}
+            </Dropdown.Menu>
+          </Dropdown>
+          <Menu.Item>
+            <NavLink to='/addresses'> Manage Addresses </NavLink>
+            <Icon name='address book' />
+          </Menu.Item>
+        </Menu.Menu>
       </Menu>
     );
   }
