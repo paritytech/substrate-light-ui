@@ -23,8 +23,7 @@ export class Subscribe extends React.Component<{}, State> {
 
   subscription = Subscription.EMPTY;
 
-  setupSubscription () {
-    const { children } = this.props;
+  setupSubscription (children: any) {
     if (children) {
       // Observables may be scheduled async or sync, so this subscribe callback
       // might immediately run or it it might not.
@@ -41,13 +40,13 @@ export class Subscribe extends React.Component<{}, State> {
   }
 
   componentDidMount () {
-    this.setupSubscription();
+    this.setupSubscription(this.props.children);
   }
 
   componentWillReceiveProps (nextProps: any) {
     if (nextProps.children !== this.props.children) {
       this.teardownSubscription();
-      this.setupSubscription();
+      this.setupSubscription(nextProps.children);
     }
   }
 

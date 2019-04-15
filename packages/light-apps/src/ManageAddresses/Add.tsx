@@ -6,24 +6,18 @@ import { Margin, WalletCard } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { MatchParams as BaseMatchParams } from '../types';
 import { SaveAddress } from './SaveAddress';
 
-interface MatchParams extends BaseMatchParams {
-  address: string;
-}
+interface Props extends RouteComponentProps<{}> { }
 
-interface Props extends RouteComponentProps<MatchParams> { }
-
-export class Edit extends React.PureComponent<Props> {
+export class Add extends React.PureComponent<Props> {
   render () {
-    const { match: { params: { address } } } = this.props;
     return (
       <WalletCard
-        header='Edit Address'
+        header='Add Address'
         subheader='Inspect the status of any identity and name it for later use' >
         <Margin top />
-        <SaveAddress addressDisabled defaultAddress={address} />
+        <SaveAddress />
       </WalletCard>
     );
   }
