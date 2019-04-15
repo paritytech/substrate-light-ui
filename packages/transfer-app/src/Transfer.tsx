@@ -33,16 +33,17 @@ export class Transfer extends React.PureComponent<Props> {
               {
                 combineLatest(
                   accounts.subject,
-                  addressObservable.subject)
-                .pipe(
-                  map(([accounts, addresses]) => [
-                    ...Object.values(accounts).map(account => account.json.address),
-                    ...Object.values(addresses).map(address => address.json.address)]),
-                  map(addresses => addresses.filter(address => address !== currentAccount)),
-                  map(([firstDifferentAddress, ...rest]) => {
-                    return <Redirect to={`/transfer/${currentAccount}/${firstDifferentAddress || currentAccount}`} />;
-                  })
+                  addressObservable.subject
                 )
+                  .pipe(
+                    map(([accounts, addresses]) => [
+                      ...Object.values(accounts).map(account => account.json.address),
+                      ...Object.values(addresses).map(address => address.json.address)]),
+                    map(addresses => addresses.filter(address => address !== currentAccount)),
+                    map(([firstDifferentAddress, ...rest]) => {
+                      return <Redirect to={`/transfer/${currentAccount}/${firstDifferentAddress || currentAccount}`} />;
+                    })
+                  )
               }
             </Subscribe>
           )} />

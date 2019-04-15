@@ -173,7 +173,7 @@ export class SentBalance extends React.PureComponent<Props, State> {
       <Segment placeholder>
         <p>From: {currentAccount}</p>
         <p>To: {recipientAddress}</p>
-        <p>Amount: {amount!.toString()} units</p>
+        <p>Amount: {amount.toString()} units</p>
         <p>Fees: {allFees.toString()} units</p>
         <p>Total amount (amount + fees): {allTotal.toString()} units</p>
       </Segment>
@@ -194,7 +194,7 @@ export class SentBalance extends React.PureComponent<Props, State> {
         <Margin as='span' left='small' right='small' top='small'>
           <IdentityIcon theme='substrate' size={16} value={currentAccount} />
         </Margin>
-        sent {amount!.toString()} units to
+        sent {amount.toString()} units to
         <Margin as='span' left='small' right='small' top='small'>
           <IdentityIcon theme='substrate' size={16} value={recipientAddress} />
         </Margin>
