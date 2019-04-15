@@ -19,8 +19,8 @@ type State = {
   renameModalOpen: boolean,
   backupModalOpen: boolean,
   forgetModalOpen: boolean,
-  name: string
-  newName: string
+  name: string,
+  newName: string,
   error?: string,
   success?: string,
   password: string
@@ -32,9 +32,9 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
   context!: React.ContextType<typeof AppContext>; // http://bit.ly/typescript-and-react-context
 
   state: State = {
-    renameModalOpen: false,
     backupModalOpen: false,
     forgetModalOpen: false,
+    renameModalOpen: false,
     name: '',
     newName: '',
     password: ''
@@ -125,13 +125,6 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
     }
   }
 
-  closeRenameModal = () => {
-    this.setState({
-      renameModalOpen: false,
-      newName: this.state.name
-    });
-  }
-
   closeBackupModal = () => {
     this.setState({
       backupModalOpen: false,
@@ -141,6 +134,13 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
 
   closeForgetModal = () => {
     this.setState({ forgetModalOpen: false });
+  }
+
+  closeRenameModal = () => {
+    this.setState({
+      renameModalOpen: false,
+      newName: this.state.name
+    });
   }
 
   getAddress = () => {
@@ -246,7 +246,10 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
             {this.renderForgetConfirmationModal()}
           </Dropdown.Menu>
         </Dropdown>
-        <Menu.Item> <NavLink to='/addresses/'> Manage Addresses </NavLink> </Menu.Item>
+        <Menu.Item>
+          <NavLink to='/addresses'> Manage Addresses </NavLink>
+          <Icon name='address book' />
+        </Menu.Item>
       </Menu>
     );
   }

@@ -10,14 +10,14 @@ import { map } from 'rxjs/operators';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export class SavedAddresses extends React.PureComponent<{}> {
+export class SavedAddresses extends React.PureComponent<{ }> {
   render () {
     return (
       <WalletCard
         header='Saved Addresses'
         height='100%'
         overflow='scroll'
-        subheader='Select saved addresses to edit metadata.'>
+        subheader='Select an address to edit its metadata.'>
         <Stacked>
           <WithSpace>
             {this.renderAllAddressesFromKeyring()}

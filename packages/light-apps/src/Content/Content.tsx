@@ -25,7 +25,7 @@ export class Content extends React.PureComponent {
             map(([defaultAccount]) => defaultAccount
               ? (
                 <React.Fragment>
-                  <Route path={['/identity', '/transfer', '/addresses']} component={IdentityHeader} />
+                  <Route path={['/identity', '/transfer']} component={IdentityHeader} />
                   <Switch>
                     <Redirect exact from='/' to={`/transfer/${defaultAccount.json.address}`} />
                     <Redirect exact from='/transfer' to={`/transfer/${defaultAccount.json.address}`} />
