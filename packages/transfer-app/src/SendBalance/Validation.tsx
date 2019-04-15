@@ -11,7 +11,7 @@ import { compactToU8a, isFunction } from '@polkadot/util';
 import { AppContext } from '@substrate/ui-common';
 import { ErrorText, Stacked, SubHeader } from '@substrate/ui-components';
 import BN from 'bn.js';
-import { Either } from 'fp-ts/lib/Either';
+import { Either, left, right } from 'fp-ts/lib/Either';
 import React from 'react';
 import { Observable, Subscription, zip } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -19,10 +19,10 @@ import { take } from 'rxjs/operators';
 /**
  * Form fields inputted by the user
  */
-interface FormFields {
-  amountAsString?: string;
+interface UserInputs {
+  amountAsString: string;
   currentAccount: string;
-  recipientAddress?: string;
+  recipientAddress: string;
 }
 
 /**
@@ -38,15 +38,26 @@ interface SubResults {
 /**
  * Amount as Balance and Extrinsic
  */
-interface AmountExtrinsic {
+interface WithAmount {
   amount: Balance;
+}
+
+/**
+ * Amount as Balance and Extrinsic
+ */
+interface WithExtrinsic {
   extrinsic: IExtrinsic;
 }
 
 /**
- * Derived fees and flags from subscription results
+ * Amount as Balance and Extrinsic
  */
-interface Calculated {
+type WithAmountExtrinsic = WithAmount & WithExtrinsic;
+
+/**
+ * Derived fees and flags from subscription results and user inputs
+ */
+interface WithDerived {
   allFees: BN;
   allTotal: BN;
   hasAvailable: boolean;
@@ -55,8 +66,11 @@ interface Calculated {
   overLimit: boolean;
 }
 
-interface Props extends FormFields {
-  onValidExtrinsic?: (extrinsic: IExtrinsic) => void;
+type Errors = Partial<Record<keyof (SubResults & UserInputs & WithAmountExtrinsic), string>>;
+
+interface Props extends Partial<UserInputs> {
+  currentAccount: string; // This one will be always set, overriding the partial
+  onValidExtrinsic?: (values: SubResults & UserInputs & WithAmountExtrinsic & WithDerived) => void;
 }
 
 interface State extends Partial<SubResults> { }
@@ -106,36 +120,6 @@ export class Validation extends React.Component<Props, State> {
     }
   }
 
-  /**
-   * @see https://github.com/polkadot-js/apps/blob/master/packages/ui-signer/src/Checks/index.tsx#L63-L111
-   */
-  calculateFees = (values: AmountExtrinsic & FormFields & SubResults): Calculated => {
-    const { accountNonce, amount, currentBalance, extrinsic, fees } = values;
-
-    const txLength = SIGNATURE_SIZE + compactToU8a(accountNonce).length + extrinsic.encodedLength;
-    const allFees = fees.transactionBaseFee
-      .add(fees.transactionByteFee.muln(txLength));
-    const allTotal = amount.add(allFees);
-
-    const hasAvailable = currentBalance.freeBalance.gte(allTotal);
-    const isRemovable = currentBalance.votingBalance.sub(allTotal).lte(fees.existentialDeposit);
-    const isReserved = currentBalance.freeBalance.isZero() && currentBalance.reservedBalance.gtn(0);
-    const overLimit = txLength >= MAX_SIZE_BYTES;
-
-    return {
-      allFees,
-      allTotal,
-      hasAvailable,
-      isRemovable,
-      isReserved,
-      overLimit
-    };
-  }
-
-  getAmountFromString (amountAsString: string) {
-    return new Balance(amountAsString);
-  }
-
   subscribeFees (currentAccount: string, recipientAddress: string) {
     const { api } = this.context;
 
@@ -158,105 +142,140 @@ export class Validation extends React.Component<Props, State> {
   }
 
   /**
-   * The order of validation is:
-   * - validate user inputs
-   * - create an `amount` BN, validate it
-   * - validate that the subscription results are here
-   * - create an extrinsic
-   * - calculate derived stuff
-   * - validate derived
+   * Validate everything. The order of validation should be easily readable
+   * from the `.chain()` syntax.
    */
-  validate (values: FormFields & State, api: ApiRx, onValidExtrinsic?: (extrinsic: IExtrinsic) => void) {
-    const { accountNonce, amountAsString, currentAccount, currentBalance, fees, recipientAddress, recipientBalance } = values;
+  validate (
+    values: Partial<UserInputs & SubResults>,
+    api: ApiRx,
+    onValidExtrinsic?: (extrinsic: SubResults & UserInputs & WithAmountExtrinsic & WithDerived) => void
+  ): Either<Errors, SubResults & UserInputs & WithAmountExtrinsic & WithDerived> {
 
-    const userInputErrors = this.validateUserInputs({ amountAsString, currentAccount, recipientAddress });
-    if (Object.keys(userInputErrors).length > 0) {
-      return userInputErrors;
-    }
+    return this
+      .validateUserInputs(values)
+      .chain(this.validateSubResults)
+      .chain(this.validateAmount)
+      .chain(this.withExtrinsic(api))
+      .chain(this.validateDerived)
+      .map((values) => {
+        isFunction(onValidExtrinsic) && onValidExtrinsic(values);
+        return values;
+      });
+  }
 
-    const amount = this.getAmountFromString(amountAsString);
+  /**
+   * Make sure the amount (as a BN) is correct.
+   */
+  validateAmount (values: SubResults & UserInputs): Either<Errors, SubResults & UserInputs & WithAmount> {
+    const { amountAsString, ...rest } = values;
+    const amount = new Balance(amountAsString);
 
     if (amount.isNeg()) {
-      return { amount: 'Please enter a positive amount to transfer.' };
+      return left({ amount: 'Please enter a positive amount to transfer.' });
     }
 
     if (amount.isZero()) {
-      return { amount: 'Please make sure you are sending more than 0 balance.' };
+      return left({ amount: 'Please make sure you are sending more than 0 balance.' });
     }
 
-    const subResultsErrors = this.validateSubResults({ accountNonce, currentBalance, fees, recipientBalance });
-    if (Object.keys(subResultsErrors).length > 0) {
-      return subResultsErrors;
-    }
-
-    const extrinsic = api.tx.balances.transfer(recipientAddress, amount);
-
-    const { hasAvailable, overLimit } = this.calculateFees({
-      ...(values as FormFields & SubResults),
-      amount,
-      extrinsic
-    });
-
-    // See https://github.com/polkadot-js/apps/blob/master/packages/ui-signer/src/Checks/index.tsx
-    if (!hasAvailable) {
-      return { amount: 'The selected account does not have the required balance available for this transaction' };
-    }
-    if (overLimit) {
-      return { amount: `This transaction will be rejected by the node as it is greater than the maximum size of ${MAX_SIZE_MB}MB` };
-    }
-
-    // We now have a valid extrinsic, call callback
-    if (isFunction(onValidExtrinsic)) {
-      onValidExtrinsic(extrinsic);
-    }
-
-    return {};
+    return right({ amount, ...rest } as SubResults & UserInputs & WithAmount);
   }
 
-  validateSubResults (values: State) {
-    const { accountNonce, currentBalance, fees, recipientBalance } = values;
+  /**
+   * Make sure derived validations (fees, minimal amount) are correct.
+   * @see https://github.com/polkadot-js/apps/blob/master/packages/ui-signer/src/Checks/index.tsx#L63-L111
+   */
+  validateDerived = (values: SubResults & UserInputs & WithAmountExtrinsic): Either<Errors, SubResults & UserInputs & WithAmountExtrinsic & WithDerived> => {
+    const { accountNonce, amount, currentBalance, extrinsic, fees } = values;
 
-    // Make sure the subscription results are here
+    const txLength = SIGNATURE_SIZE + compactToU8a(accountNonce).length + extrinsic.encodedLength;
+    const allFees = fees.transactionBaseFee.add(fees.transactionByteFee.muln(txLength));
+    const allTotal = amount.add(allFees);
+
+    const hasAvailable = currentBalance.freeBalance.gte(allTotal);
+    const isRemovable = currentBalance.votingBalance.sub(allTotal).lte(fees.existentialDeposit);
+    const isReserved = currentBalance.freeBalance.isZero() && currentBalance.reservedBalance.gtn(0);
+    const overLimit = txLength >= MAX_SIZE_BYTES;
+
+    if (!hasAvailable) {
+      return left({ amount: 'The selected account does not have the required balance available for this transaction' });
+    }
+    if (overLimit) {
+      return left({ amount: `This transaction will be rejected by the node as it is greater than the maximum size of ${MAX_SIZE_MB}MB` });
+    }
+
+    return right({
+      ...values,
+      allFees,
+      allTotal,
+      hasAvailable,
+      isRemovable,
+      isReserved,
+      overLimit
+    });
+  }
+
+  /**
+   * Make sure the subscription results are here.
+   */
+  validateSubResults (values: Partial<SubResults & UserInputs>): Either<Errors, SubResults & UserInputs> {
+    const { accountNonce, currentBalance, fees, recipientBalance, ...rest } = values;
+
     if (!accountNonce) {
-      return { accountNonce: 'Please wait while we fetch your account nonce.' };
+      return left({ accountNonce: 'Please wait while we fetch your account nonce.' });
     }
 
     if (!fees) {
-      return { fees: 'Please wait while we fetch transfer fees.' };
+      return left({ fees: 'Please wait while we fetch transfer fees.' });
     }
 
     if (!currentBalance) {
-      return { currentBalance: 'Please wait while we fetch your voting balance.' };
+      return left({ currentBalance: 'Please wait while we fetch your voting balance.' });
     }
 
     if (!recipientBalance) {
-      return { recipientBalance: "Please wait while we fetch the recipient's balance." };
+      return left({ recipientBalance: "Please wait while we fetch the recipient's balance." });
     }
 
-    return {};
+    return right({ accountNonce, currentBalance, fees, recipientBalance, ...rest } as SubResults & UserInputs);
   }
 
-  validateUserInputs (values: FormFields) {
-    const { amountAsString, currentAccount, recipientAddress } = values;
+  /**
+   * Make sure everything the user inputted is correct.
+   */
+  validateUserInputs (values: Partial<SubResults & UserInputs>): Either<Errors, Partial<SubResults> & UserInputs> {
+    const { amountAsString, currentAccount, recipientAddress, ...rest } = values;
 
     if (!currentAccount) {
-      return { currentAccount: 'Please enter a sender account.' };
+      return left({ currentAccount: 'Please enter a sender account.' });
     }
     if (!currentAccount) {
-      return { currentAccount: 'Please enter a recipient address.' };
+      return left({ currentAccount: 'Please enter a recipient address.' });
     }
     if (currentAccount === recipientAddress) {
-      return { currentAccount: 'You cannot send balance to yourself.' };
+      return left({ currentAccount: 'You cannot send balance to yourself.' });
     }
 
     if (!amountAsString) {
-      return { amount: 'Please enter an amount' };
+      return left({ amount: 'Please enter an amount' });
     }
 
-    return {};
+    return right({ amountAsString, currentAccount, recipientAddress, ...rest } as Partial<SubResults> & UserInputs);
   }
 
-  warnings (values: AmountExtrinsic & FormFields & State) {
+  /**
+   * Add the extrinsic object, no validation done here
+   */
+  withExtrinsic (api: ApiRx) {
+    return function (values: SubResults & UserInputs & WithAmount): Either<Errors, SubResults & UserInputs & WithAmountExtrinsic> {
+      const { amount, recipientAddress } = values;
+      const extrinsic = api.tx.balances.transfer(recipientAddress, amount);
+
+      return right({ ...values, extrinsic } as SubResults & UserInputs & WithAmountExtrinsic);
+    };
+  }
+
+  warnings (values: SubResults & UserInputs & WithAmountExtrinsic) {
     const { accountNonce, amount, currentBalance, fees, recipientBalance } = values;
 
     // Make sure we have sub results already
@@ -272,27 +291,35 @@ export class Validation extends React.Component<Props, State> {
 
   render () {
     const { api } = this.context;
+    const { onValidExtrinsic } = this.props;
 
-    // For now we assume there'll just be 1 error. We could in the future show
-    // multiple errors at the same time.
-    const error = Object.values(this.validate({
-      ...this.props,
-      ...this.state
-    }, api))[0];
-
-    // FIXME we're calling some functions twice ()
-
-    if (!error) {
-      return null;
-    }
+    const validations = this.validate(
+      { ...this.props, ...this.state },
+      api,
+      onValidExtrinsic
+    );
 
     return (
       <Stacked>
+        {validations.fold(this.renderErrors, this.renderNull)}
+      </Stacked>
+    );
+  }
+
+  renderErrors = (errors: Errors) => {
+    // For now we assume there's only one error, and show it. It should be
+    // relatively easy to extend to show multiple errors.
+    const error = Object.values(errors)[0];
+
+    return (
+      <React.Fragment>
         <SubHeader>Errors</SubHeader>
         <ErrorText>
           {error}
         </ErrorText>
-      </Stacked>
+      </React.Fragment>
     );
   }
+
+  renderNull = () => null;
 }
