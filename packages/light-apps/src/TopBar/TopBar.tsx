@@ -64,6 +64,7 @@ export class TopBar extends React.PureComponent<{}, State> {
 
     return (
       <header>
+<<<<<<< HEAD
         <Margin top='big' />
         <StackedHorizontal justifyContent='space-between' alignItems='flex-end'>
           <Switch>
@@ -77,6 +78,40 @@ export class TopBar extends React.PureComponent<{}, State> {
             <NodeStatus isSyncing={isSyncing} />
             <BlockCounter blockNumber={blockNumber} chainName={chain} />
           </Stacked>
+=======
+        <Margin top='medium' />
+        <StackedHorizontal justifyContent='space-between' alignItems='flex-end'>
+          <div>
+            <StackedHorizontal alignItems='flex-end'>
+              <div>
+                <NavLink to='/'>
+                  <img
+                    src={substrateLogo}
+                    width={150}
+                  />
+                </NavLink>
+                <FadedText> {name} {version} </FadedText>
+              </div>
+              <Margin left='medium' />
+              <div>
+                <NodeStatus isSyncing={isSyncing} />
+                <BlockCounter blockNumber={blockNumber} chainName={chain} />
+              </div>
+            </StackedHorizontal>
+          </div>
+          <Switch>
+            <Route path={['/addresses','/accounts/add']}>
+              <Link to={`/`}>
+                Back
+              </Link>
+            </Route>
+            <Route>
+              <Link to={`/addresses`}>
+                Manage address book
+              </Link>
+            </Route>
+          </Switch>
+>>>>>>> 7f1650e1585b7f2a51dd8eb8fb0dbde23b1b093a
         </StackedHorizontal>
       </header>
     );

@@ -202,9 +202,9 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
      to have it all in the same place. Also, it is down here as openBackupModal and openForgetModal need
      to be initialized first else tsc will complain.
    */
-  renameTrigger = <Dropdown.Item closeOnFocus icon='edit' onClick={this.openRenameModal} text='Rename Account' />;
-  backupTrigger = <Dropdown.Item closeOnFocus icon='arrow alternate circle down' onClick={this.openBackupModal} text='Backup Account' />;
-  forgetTrigger = <Dropdown.Item closeOnFocus icon='trash' onClick={this.openForgetModal} text='Forget Account' />;
+  renameTrigger = <Dropdown.Item icon='edit' onClick={this.openRenameModal} text='Rename Account' />;
+  backupTrigger = <Dropdown.Item icon='arrow alternate circle down' onClick={this.openBackupModal} text='Backup Account' />;
+  forgetTrigger = <Dropdown.Item icon='trash' onClick={this.openForgetModal} text='Forget Account' />;
 
   subscribeChainHead = () => {
     const { api } = this.context;
