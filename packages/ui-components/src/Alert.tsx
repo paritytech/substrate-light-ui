@@ -5,6 +5,7 @@
 import { Message as SUIMessage, MessageProps as AlertProps } from 'semantic-ui-react';
 import styled from 'styled-components';
 
+// FIXME Put correct colors for `colors.{error,info,warning}`
 const colors = {
   error: (props: any) => [props.theme.redOrange, props.theme.coral],
   info: (props: any) => [props.theme.robinEggBlue, props.theme.neonBlue],
@@ -15,7 +16,7 @@ const colors = {
 type AlertType = keyof typeof colors;
 
 /**
- * CSS Gradients have 2 colors, get the color at index `index`.
+ * Alert Bar CSS Gradients have 2 colors, get the color at index `index`.
  * @param index - The index of the gradient color.
  */
 function gradientColor (index: 0 | 1) {
@@ -36,7 +37,7 @@ export const Alert = styled<any>(SUIMessage)`
     background-image: linear-gradient(
       107deg,
       ${gradientColor(0)},
-      ${gradientColor(1)},
+      ${gradientColor(1)} 71%
     );
     box-shadow: none;
     color: ${props => props.theme.white};

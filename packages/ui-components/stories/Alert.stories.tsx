@@ -28,7 +28,9 @@ storiesOf('Alerts', module)
       info={true}
       success={false}
       warning={false}
-    />
+    >
+    For your information: this is an information
+  </Alert>
   ))
   .add('Success', () => (
     <Alert
@@ -36,7 +38,9 @@ storiesOf('Alerts', module)
       info={false}
       success={true}
       warning={false}
-    />
+    >
+    Such success!
+    </Alert>
   ))
   .add('Warning', () => (
     <Alert
@@ -44,5 +48,7 @@ storiesOf('Alerts', module)
       info={false}
       success={false}
       warning={true}
-    />
+    >
+    I'm warning you, don't do it.
+    </Alert>
   ));
