@@ -1,8 +1,7 @@
 // Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
-
-import { u8aToString } from '@polkadot/util';
+import { AppContext } from '@substrate/ui-common';
 import { InputFile, Modal, NavLink, Stacked } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -10,12 +9,26 @@ import { RouteComponentProps } from 'react-router-dom';
 interface Props extends RouteComponentProps { }
 
 export class ImportWithJson extends React.PureComponent<Props> {
-  handleFileUploaded = async (file: Uint8Array) => {
+  static contextType = AppContext;
+
+  context!: React.ContextType<typeof AppContext>;
+
+  handleFileUploaded = async (file: string | null) => {
     const { history } = this.props;
+    const { alertStore } = this.context;
 
-    const jsonString = u8aToString(file);
+    try {
+      if (!file) {
+        throw new Error('File was empty. Make sure you uploaded the correct file and try again.');
+      }
 
-    history.push('/save/withJson/', { jsonString });
+      history.push('/save/withJson/', { jsonString: file });
+    } catch (e) {
+      alertStore.enqueue({
+        content: e.message,
+        type: 'error'
+      });
+    }
   }
 
   render () {

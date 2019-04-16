@@ -145,9 +145,6 @@ export class SendBalance extends React.PureComponent<Props, State> {
     const { match: { params: { currentAccount, recipientAddress } } } = this.props;
     const { amount, error } = this.state;
 
-    // const isAddressValid = !!recipientAddress && this.isValidAddress(recipientAddress);
-    // const recipientName = isAddressValid ? keyring.getAccount(recipientAddress).getMeta().name : '';
-
     return (
       <Form onSubmit={this.handleSubmit}>
         <StackedHorizontal alignItems='flex-start'>
