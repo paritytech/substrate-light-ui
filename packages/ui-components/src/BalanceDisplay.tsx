@@ -5,12 +5,13 @@
 import { Balance } from '@polkadot/types';
 import React from 'react';
 
-import { FontSize } from './types';
+import { FontSize, FontWeight } from './types';
 import { DynamicSizeText } from './Shared.styles';
 
 export type BalanceDisplayProps = {
   balance?: Balance,
   fontSize?: FontSize,
+  fontWeight?: FontWeight,
   tokenSymbol?: string
 };
 
@@ -25,10 +26,10 @@ export class BalanceDisplay extends React.PureComponent<BalanceDisplayProps> {
   };
 
   render () {
-    const { balance, fontSize, tokenSymbol } = this.props;
+    const { balance, fontSize, fontWeight, tokenSymbol } = this.props;
 
     return (
-      <DynamicSizeText fontSize={fontSize}>
+      <DynamicSizeText fontSize={fontSize} fontWeight={fontWeight} >
         Balance: {(balance!.toString(10))} {tokenSymbol}
       </DynamicSizeText>
     );

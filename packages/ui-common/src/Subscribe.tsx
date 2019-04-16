@@ -23,6 +23,21 @@ export class Subscribe extends React.Component<{}, State> {
 
   subscription = Subscription.EMPTY;
 
+  componentDidMount () {
+    this.setupSubscription(this.props.children);
+  }
+
+  componentWillReceiveProps (nextProps: any) {
+    if (nextProps.children !== this.props.children) {
+      this.teardownSubscription();
+      this.setupSubscription(nextProps.children);
+    }
+  }
+
+  componentWillUnmount () {
+    this.teardownSubscription();
+  }
+
   setupSubscription (children: any) {
     if (children) {
       // Observables may be scheduled async or sync, so this subscribe callback
@@ -37,21 +52,6 @@ export class Subscribe extends React.Component<{}, State> {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
-  }
-
-  componentDidMount () {
-    this.setupSubscription(this.props.children);
-  }
-
-  componentWillReceiveProps (nextProps: any) {
-    if (nextProps.children !== this.props.children) {
-      this.teardownSubscription();
-      this.setupSubscription(nextProps.children);
-    }
-  }
-
-  componentWillUnmount () {
-    this.teardownSubscription();
   }
 
   render () {

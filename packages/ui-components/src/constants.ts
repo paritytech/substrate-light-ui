@@ -12,6 +12,16 @@ export const FONT_SIZES = {
   big: '2rem'
 };
 
+export const FONT_WEIGHTS = {
+  lightest: 100,
+  extraLight: 200,
+  light: 300,
+  regular: 400,
+  bold: 500,
+  extraBold: 600,
+  boldest: 700
+};
+
 /**
  * Mapping between margin/padding sizes and their CSS values.
  */

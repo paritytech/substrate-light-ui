@@ -2,15 +2,12 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { u8aToString } from '@polkadot/util';
 import { AppContext } from '@substrate/ui-common';
-import { Card, Input, InputFile, NavButton, Stacked, SubHeader } from '@substrate/ui-components';
+import { Input, InputFile, Margin, NavButton, Stacked, SubHeader, WrapperDiv } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-interface Props extends RouteComponentProps {
-  onError: (message: string) => void;
-}
+interface Props extends RouteComponentProps { }
 
 type State = {
   jsonString: string,
@@ -29,13 +26,22 @@ export class ImportWithJson extends React.PureComponent<Props, State> {
     step: 'upload'
   };
 
-  handleFileUploaded = async (file: Uint8Array) => {
-    const jsonString = u8aToString(file);
+  handleFileUploaded = async (file: string | null) => {
+    try {
+      if (!file) {
+        throw new Error('File was empty. Make sure you uploaded the correct file and try again.');
+      }
 
-    this.setState({
-      jsonString,
-      step: 'password'
-    });
+      this.setState({
+        jsonString: file,
+        step: 'password'
+      });
+    } catch (e) {
+      this.context.alertStore.enqueue({
+        content: e.message,
+        type: 'error'
+      });
+    }
   }
 
   handlePasswordChange = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,9 +51,9 @@ export class ImportWithJson extends React.PureComponent<Props, State> {
   }
 
   handleRestoreWithJson = () => {
-    const { keyring } = this.context;
+    const { alertStore, keyring } = this.context;
     const { jsonString, password } = this.state;
-    const { history, onError } = this.props;
+    const { history } = this.props;
 
     try {
       const json = JSON.parse(jsonString);
@@ -56,7 +62,10 @@ export class ImportWithJson extends React.PureComponent<Props, State> {
 
       history.push(`/identity/${pair.address()}`);
     } catch (e) {
-      onError(e.message);
+      alertStore.enqueue({
+        content: e.message,
+        type: 'error'
+      });
     }
   }
 
@@ -64,21 +73,26 @@ export class ImportWithJson extends React.PureComponent<Props, State> {
     const { step } = this.state;
 
     return (
-      <Card>
-        <Stacked>
-          <SubHeader> Restore Account from JSON Backup File </SubHeader>
-          {
-            step === 'upload'
-              ? <InputFile onChange={this.handleFileUploaded} />
-              : (
-                <React.Fragment>
-                  <Input onChange={this.handlePasswordChange} type='password' />
-                  <NavButton onClick={this.handleRestoreWithJson} value='Restore' />
-                </React.Fragment>
-              )
-          }
-        </Stacked>
-      </Card>
+      <Stacked>
+        <SubHeader> Restore Account from JSON Backup File </SubHeader>
+        {
+          step === 'upload'
+            ? <InputFile onChange={this.handleFileUploaded} />
+            : (
+              <React.Fragment>
+                <WrapperDiv>
+                  <Input
+                    fluid
+                    label='Password'
+                    onChange={this.handlePasswordChange}
+                    type='password' />
+                </WrapperDiv>
+                <Margin top />
+                <NavButton onClick={this.handleRestoreWithJson} value='Restore' />
+              </React.Fragment>
+            )
+        }
+      </Stacked>
     );
   }
 }

@@ -6,6 +6,7 @@ import IdentityIcon from '@polkadot/ui-identicon';
 import React from 'react';
 
 import { Balance } from '../Balance';
+import { Margin } from '../../Margin';
 import { DynamicSizeText, Stacked, StackedHorizontal } from '../../Shared.styles';
 import { OrientationType, SizeType } from './types';
 import { FontSize } from '../../types';
@@ -32,13 +33,13 @@ export class AddressSummary extends React.PureComponent<Props> {
 
     switch (size) {
       case 'tiny':
-        styles = { identiconSize: 16, fontSize: 'medium' };
+        styles = { identiconSize: 16, fontSize: 'small' };
         break;
       case 'small':
-        styles = { identiconSize: 32, fontSize: 'large' };
+        styles = { identiconSize: 32, fontSize: 'medium' };
         break;
       case 'medium':
-        styles = { identiconSize: 64, fontSize: 'big' };
+        styles = { identiconSize: 64, fontSize: 'large' };
         break;
       case 'large':
         styles = { identiconSize: 128, fontSize: 'big' };
@@ -51,15 +52,18 @@ export class AddressSummary extends React.PureComponent<Props> {
         <Stacked>
           <IdentityIcon value={address as string || PLACEHOLDER_ADDRESS} theme={'substrate'} size={styles.identiconSize} />
           <DynamicSizeText fontSize={styles.fontSize}> {name || PLACEHOLDER_NAME} </DynamicSizeText>
-          <Balance address={address} />
+          <Balance address={address} fontSize={styles.fontSize} />
         </Stacked>
       );
     } else {
       return (
         <StackedHorizontal justifyContent='space-around'>
           <IdentityIcon value={address as string || PLACEHOLDER_ADDRESS} theme={'substrate'} size={styles.identiconSize} />
-          <DynamicSizeText fontSize={styles.fontSize}> {name || PLACEHOLDER_NAME} </DynamicSizeText>
-          <Balance address={address} />
+          <Margin left />
+          <Stacked>
+            <DynamicSizeText fontSize={styles.fontSize}> {name || PLACEHOLDER_NAME} </DynamicSizeText>
+            <Balance address={address} fontSize={styles.fontSize} />
+          </Stacked>
         </StackedHorizontal>
       );
     }

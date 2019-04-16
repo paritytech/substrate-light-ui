@@ -5,7 +5,7 @@
 import { DerivedBalances, DerivedFees } from '@polkadot/api-derive/types';
 import { Index } from '@polkadot/types';
 import { AppContext } from '@substrate/ui-common';
-import { Balance, Form, Input, NavButton, StackedHorizontal, SubHeader } from '@substrate/ui-components';
+import { Balance, Form, Input, Margin, NavButton, StackedHorizontal, SubHeader } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Observable, Subscription, zip } from 'rxjs';
@@ -157,10 +157,15 @@ export class SendBalance extends React.PureComponent<Props, State> {
               type='number'
               value={amountAsString}
             />
+            <Margin top='huge' />
+            <NavButton disabled={values.isLeft()}>Submit</NavButton>
           </CenterDiv>
 
           <RightDiv>
-            <SubHeader textAlign='left'>Recipient Address:</SubHeader>
+            <StackedHorizontal>
+              <SubHeader textAlign='left'>Recipient Address:</SubHeader>
+              <Balance address={recipientAddress} fontSize='medium' fontWeight='lightest' />
+            </StackedHorizontal>
             <InputAddress
               label={null}
               onChange={this.handleChangeRecipientAddress}
@@ -168,17 +173,17 @@ export class SendBalance extends React.PureComponent<Props, State> {
               value={recipientAddress}
               withLabel={false}
             />
-            <Balance address={recipientAddress} />
           </RightDiv>
         </StackedHorizontal>
+
         <StackedHorizontal>
-          <LeftDiv />
-          <CenterDiv>
+          <LeftDiv>
             <Validation values={values} />
-          </CenterDiv>
-          <RightDiv>
+          </LeftDiv>
+          <CenterDiv>
             <NavButton disabled={values.isLeft()}>Submit</NavButton>
-          </RightDiv>
+          </CenterDiv>
+          <RightDiv />
         </StackedHorizontal>
       </Form>
     );
