@@ -4,7 +4,6 @@
 
 import { SubmittableResult } from '@polkadot/api/SubmittableExtrinsic';
 import IdentityIcon from '@polkadot/ui-identicon';
-import { Balance } from '@polkadot/types';
 import { logger } from '@polkadot/util';
 import { AppContext } from '@substrate/ui-common';
 import { Icon, Margin, Message, NavButton, NavLink, Segment, Stacked, StackedHorizontal, SubHeader } from '@substrate/ui-components';
@@ -96,7 +95,7 @@ export class SentBalance extends React.PureComponent<Props, State> {
   checkLocationState (locationState: Partial<AllExtrinsicData> | undefined): locationState is AllExtrinsicData {
     if (
       !locationState ||
-      !(locationState.amount instanceof Balance) ||
+      !locationState.amount ||
       !locationState.recipientAddress ||
       !locationState.extrinsic
     ) {
