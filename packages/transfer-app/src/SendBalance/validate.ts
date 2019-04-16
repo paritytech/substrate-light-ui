@@ -146,7 +146,7 @@ export function validateWarnings (values: AllExtrinsicData) {
   const warnings = [];
 
   if (isRemovable && hasAvailable) {
-    warnings.push('Submitting this transaction will drop the account balance to below the existential amount, which can result in the account being removed from the chain state associated funds burned.');
+    warnings.push('Submitting this transaction will drop the account balance to below the existential amount, which can result in the account being removed from the chain state and associated funds burned.');
   }
 
   if (isNoEffect) {
