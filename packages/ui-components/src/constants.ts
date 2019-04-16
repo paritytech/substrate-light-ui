@@ -32,7 +32,3 @@ export const MARGIN_SIZES = {
   big: '2rem',
   huge: '3.5rem'
 };
-
-export const WRAPPER_SIZES = {
-  small: '10rem';
-};
