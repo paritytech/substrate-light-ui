@@ -134,7 +134,10 @@ export class SendBalance extends React.PureComponent<Props, State> {
       <Form onSubmit={this.handleSubmit}>
         <StackedHorizontal alignItems='flex-start'>
           <LeftDiv>
-            <SubHeader textAlign='left'>Sender Account:</SubHeader>
+            <StackedHorizontal>
+              <SubHeader textAlign='left'>Sender Account:</SubHeader>
+              <Balance address={recipientAddress} fontSize='medium' fontWeight='lightest' />
+            </StackedHorizontal>
             <InputAddress
               isDisabled
               onChange={this.handleChangeCurrentAccount}
@@ -142,7 +145,6 @@ export class SendBalance extends React.PureComponent<Props, State> {
               value={currentAccount}
               withLabel={false}
             />
-            <Balance address={currentAccount} />
           </LeftDiv>
 
           <CenterDiv>
@@ -157,8 +159,6 @@ export class SendBalance extends React.PureComponent<Props, State> {
               type='number'
               value={amountAsString}
             />
-            <Margin top='huge' />
-            <NavButton disabled={values.isLeft()}>Submit</NavButton>
           </CenterDiv>
 
           <RightDiv>
@@ -175,6 +175,8 @@ export class SendBalance extends React.PureComponent<Props, State> {
             />
           </RightDiv>
         </StackedHorizontal>
+
+        <Margin top='huge' />
 
         <StackedHorizontal>
           <LeftDiv>
