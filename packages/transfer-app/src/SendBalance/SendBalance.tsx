@@ -134,10 +134,7 @@ export class SendBalance extends React.PureComponent<Props, State> {
       <Form onSubmit={this.handleSubmit}>
         <StackedHorizontal alignItems='flex-start'>
           <LeftDiv>
-            <StackedHorizontal>
-              <SubHeader textAlign='left'>Sender Account:</SubHeader>
-              <Balance address={recipientAddress} fontSize='medium' fontWeight='lightest' />
-            </StackedHorizontal>
+            <SubHeader textAlign='left'>Sender Account:</SubHeader>
             <InputAddress
               isDisabled
               onChange={this.handleChangeCurrentAccount}
