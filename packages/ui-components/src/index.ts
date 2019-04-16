@@ -6,7 +6,7 @@
 export {
   Dropdown, DropdownProps,
   Form, FormProps,
-  InputProps,
+  List, ListProps,
   Menu, MenuProps,
   Message, MessageProps,
   Segment, SegmentProps,

@@ -2,15 +2,20 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Balance as BalanceType } from '@polkadot/types';
+import { DerivedBalances, DerivedFees } from '@polkadot/api-derive/types';
+import { Index } from '@polkadot/types';
 import { AppContext } from '@substrate/ui-common';
-import { Balance, ErrorText, Form, Input, Margin, NavButton, StackedHorizontal, SubHeader } from '@substrate/ui-components';
+import { Balance, Form, Input, Margin, NavButton, StackedHorizontal, SubHeader } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, zip } from 'rxjs';
+import { take } from 'rxjs/operators';
 
-import { MatchParams } from './types';
-import { CenterDiv, InputAddress, LeftDiv, RightDiv } from './Transfer.styles';
+import { CenterDiv, InputAddress, LeftDiv, RightDiv } from '../Transfer.styles';
+import { SubResults } from './types';
+import { MatchParams } from '../types';
+import { validate } from './validate';
+import { Validation } from './Validation';
 
 interface SendMatchParams extends MatchParams {
   recipientAddress?: string;
@@ -18,10 +23,8 @@ interface SendMatchParams extends MatchParams {
 
 interface Props extends RouteComponentProps<SendMatchParams> { }
 
-interface State {
-  amount: string;
-  balance?: BalanceType; // The balance of the sender
-  error?: string;
+interface State extends Partial<SubResults> {
+  amountAsString: string;
 }
 
 export class SendBalance extends React.PureComponent<Props, State> {
@@ -30,19 +33,29 @@ export class SendBalance extends React.PureComponent<Props, State> {
   context!: React.ContextType<typeof AppContext>; // http://bit.ly/typescript-and-react-context
 
   state: State = {
-    amount: ''
+    amountAsString: ''
   };
 
   subscription?: Subscription;
 
   componentDidMount () {
-    this.subscribeBalance();
+    if (!this.props.match.params.recipientAddress) {
+      return;
+    }
+    this.subscribeFees(this.props.match.params.currentAccount, this.props.match.params.recipientAddress);
   }
 
   componentDidUpdate (prevProps: Props) {
-    if (prevProps.match.params.currentAccount !== this.props.match.params.currentAccount) {
+    if (!this.props.match.params.recipientAddress) {
+      return;
+    }
+
+    if (
+      prevProps.match.params.currentAccount !== this.props.match.params.currentAccount ||
+      prevProps.match.params.recipientAddress !== this.props.match.params.recipientAddress
+    ) {
       this.closeSubscription();
-      this.subscribeBalance();
+      this.subscribeFees(this.props.match.params.currentAccount, this.props.match.params.recipientAddress);
     }
   }
 
@@ -57,19 +70,35 @@ export class SendBalance extends React.PureComponent<Props, State> {
     }
   }
 
+  subscribeFees (currentAccount: string, recipientAddress: string) {
+    const { api } = this.context;
+
+    // Subscribe to sender's & receivers's balances, nonce and some fees
+    this.subscription = zip(
+      api.derive.balances.fees() as unknown as Observable<DerivedFees>,
+      api.derive.balances.votingBalance(currentAccount) as unknown as Observable<DerivedBalances>,
+      api.derive.balances.votingBalance(recipientAddress) as unknown as Observable<DerivedBalances>,
+      api.query.system.accountNonce(currentAccount) as unknown as Observable<Index>
+    )
+      .pipe(
+        take(1)
+      )
+      .subscribe(([fees, currentBalance, recipientBalance, accountNonce]) => this.setState({
+        fees,
+        currentBalance,
+        recipientBalance,
+        accountNonce
+      }));
+  }
+
   handleChangeAmount = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
-      amount: value,
-      error: undefined
+      amountAsString: value
     });
   }
 
   handleChangeCurrentAccount = (account: string) => {
     const { history, match: { params: { recipientAddress } } } = this.props;
-
-    this.setState({
-      error: undefined
-    });
 
     history.push(`/transfer/${account}/${recipientAddress}`);
   }
@@ -77,73 +106,29 @@ export class SendBalance extends React.PureComponent<Props, State> {
   handleChangeRecipientAddress = (recipientAddress: string) => {
     const { history, match: { params: { currentAccount } } } = this.props;
 
-    this.setState({
-      error: undefined
-    });
-
     history.push(`/transfer/${currentAccount}/${recipientAddress}`);
   }
 
-  handleError = (error: string) => {
-    this.setState({ error });
-  }
-
   handleSubmit = () => {
-    const { history, match: { params: { currentAccount, recipientAddress } } } = this.props;
-    const { amount, balance } = this.state;
-
-    // Do validation on account/address
-    if (currentAccount === recipientAddress) {
-      this.handleError('You cannot send balance to yourself.');
-      return;
-    }
-
-    // Do validation on amount
-    const amountBn = new BalanceType(amount);
-
-    if (!balance) {
-      // FIXME Improve UX here
-      this.handleError("Please try again in a few seconds as we're fetching your balance.");
-      return;
-    }
-
-    if (amountBn.isNeg()) {
-      this.handleError('Please enter a positive amount to transfer.');
-      return;
-    }
-
-    if (amountBn.isZero()) {
-      this.handleError('Please make sure you are sending more than 0 balance.');
-      return;
-    }
-
-    if (amountBn.gt(balance)) {
-      // FIXME Substract fees
-      this.handleError('You do not have enough balance to make this transfer.');
-      return;
-    }
-
-    // If everything is correct, then go to sent
-    history.push(`/transfer/${currentAccount}/sent`, {
-      amount: amountBn,
-      recipientAddress
-    });
-  }
-
-  subscribeBalance = () => {
     const { api } = this.context;
-    const { match: { params: { currentAccount } } } = this.props;
+    const { history, match: { params: { currentAccount, recipientAddress } } } = this.props;
 
-    // Subscribe to sender's balance
-    // FIXME using any because freeBalance gives a Codec here, not a Balance
-    // Wait for @polkadot/api to have TS support for all query.*
-    this.subscription = (api.query.balances.freeBalance(currentAccount) as Observable<BalanceType>)
-      .subscribe((balance) => this.setState({ balance }));
+    const values = validate({ ...this.state, currentAccount, recipientAddress }, api);
+
+    values.fold(
+      () => {/* Do nothing if error */ },
+      (allExtrinsicData) => {
+        // If everything is correct, then go to sent
+        history.push(`/transfer/${currentAccount}/sent`, allExtrinsicData);
+      });
   }
 
   render () {
+    const { api } = this.context;
     const { match: { params: { currentAccount, recipientAddress } } } = this.props;
-    const { amount, error } = this.state;
+    const { amountAsString } = this.state;
+
+    const values = validate({ ...this.state, currentAccount, recipientAddress }, api);
 
     return (
       <Form onSubmit={this.handleSubmit}>
@@ -169,10 +154,8 @@ export class SendBalance extends React.PureComponent<Props, State> {
               onChange={this.handleChangeAmount}
               placeholder='e.g. 1.00'
               type='number'
-              value={amount}
+              value={amountAsString}
             />
-            <Margin top='huge' />
-            <NavButton disabled={!!error}>Submit</NavButton>
           </CenterDiv>
 
           <RightDiv>
@@ -189,22 +172,19 @@ export class SendBalance extends React.PureComponent<Props, State> {
             />
           </RightDiv>
         </StackedHorizontal>
+
+        <Margin top='huge' />
+
         <StackedHorizontal>
-          <LeftDiv />
-          <CenterDiv>{this.renderError()}</CenterDiv>
+          <LeftDiv>
+            <Validation values={values} />
+          </LeftDiv>
+          <CenterDiv>
+            <NavButton disabled={values.isLeft()}>Submit</NavButton>
+          </CenterDiv>
           <RightDiv />
         </StackedHorizontal>
       </Form>
-    );
-  }
-
-  renderError () {
-    const { error } = this.state;
-
-    return error && (
-      <ErrorText>
-        {error}
-      </ErrorText>
     );
   }
 }
