@@ -10,14 +10,14 @@ import { map } from 'rxjs/operators';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export class SavedAddresses extends React.PureComponent<{}> {
+export class SavedAddresses extends React.PureComponent<{ }> {
   render () {
     return (
       <WalletCard
         header='Saved Addresses'
         height='100%'
         overflow='scroll'
-        subheader='select saved addresses to edit meta.'>
+        subheader='Select an address to edit its metadata.'>
         <Stacked>
           <WithSpace>
             {this.renderAllAddressesFromKeyring()}
@@ -33,7 +33,7 @@ export class SavedAddresses extends React.PureComponent<{}> {
         {addressObservable.subject.pipe(
           map((allAddresses: SubjectInfo) =>
             !Object.keys(allAddresses).length
-              ? <p> Emptiness </p>
+              ? <p> It looks like you haven't saved any addresses yet. </p>
               : Object.values(allAddresses).map((address: SingleAddress) =>
                 <React.Fragment key={`__locked_${address.json.address}`}>
                   <Margin top />

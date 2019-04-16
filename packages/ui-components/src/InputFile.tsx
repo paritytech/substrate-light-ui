@@ -2,101 +2,72 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import React from 'react';
-import Dropzone from 'react-dropzone';
-
-import { ErrorText, FadedText, FileInputArea } from './Shared.styles';
-
-type State = {
-  error?: string,
-  file?: {
-    name: string,
-    size: number
-  }
-};
+import React, { useCallback } from 'react';
+import { useDropzone } from 'react-dropzone';
+import styled from 'styled-components';
 
 type Props = {
-  accept?: string,
-  onChange?: (data: Uint8Array) => void,
-  placeholder?: string
-};
-
-type LoadEvent = {
-  target: {
-    result: ArrayBuffer
-  }
+  onChange?: (data: string | null) => void
 };
 
 const defaultAccept = ['application/json, text/plain'].join(',');
 
-// FIXME: this component is reused here and in @polkadot/apps - should be moved to @polkadot/ui
-export class InputFile extends React.PureComponent<Props, State> {
-  static defaultProps: Props = {
-    accept: defaultAccept,
-    placeholder: 'Drop file here...'
-  };
-
-  state: State = {};
-
-  render () {
-    const { error, file } = this.state;
-    const { accept, placeholder } = this.props;
-
-    return (
-      <Dropzone
-        accept={accept}
-        multiple={false}
-        onDrop={this.onDrop}>
-        {({ getRootProps, getInputProps, isDragActive }) => {
-          return (
-            <FileInputArea {...getRootProps()}>
-              <input {...getInputProps()} />
-              {
-                !file
-                  ? <FadedText>{placeholder}</FadedText>
-                  : <FadedText>{file.name}</FadedText>
-              }
-              <ErrorText> {error} </ErrorText>
-            </FileInputArea>
-          );
-        }}
-      </Dropzone>
-    );
+const getColor = (props: any) => {
+  if (props.isDragAccept) {
+    return '#00e676';
   }
-
-  onDrop = (files: Array<File>) => {
-    const { onChange } = this.props;
-
-    files.forEach((file) => {
-      const reader = new FileReader();
-
-      reader.onabort = () => {
-        // ignore
-      };
-
-      reader.onerror = () => {
-        this.onError();
-      };
-
-      // @ts-ignore
-      reader.onload = ({ target: { result } }: LoadEvent) => {
-        const data = new Uint8Array(result);
-
-        onChange && onChange(data);
-
-        this.setState({
-          file: {
-            name: file.name,
-            size: data.length
-          }
-        });
-      };
-
-      reader.readAsArrayBuffer(file);
-    });
+  if (props.isDragReject) {
+    return '#ff1744';
   }
-
-  onError = () => {
-    this.setState({ error: 'There was an issue with uploading this file. Please check it and try again.' });
+  if (props.isDragActive) {
+    return '#2196f3';
   }
+  return '#eeeeee';
+};
+
+const Container = styled.div`
+  align-items: center;
+  border-width: 2px;
+  border-radius: 2px;
+  border-color: ${props => getColor(props)};
+  border-style: dashed;
+  background-color: #fafafa;
+  color: #bdbdbd;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  outline: none;
+  padding: 100px;
+  transition: border .24s ease-in-out;
+`;
+
+export function InputFile (props: Props) {
+  const onDrop = useCallback((acceptedFiles: Array<File>) => {
+    const reader = new FileReader();
+
+    reader.onabort = () => console.log('file reading was aborted');
+    reader.onerror = () => console.log('file reading has failed');
+    reader.onload = () => {
+      props.onChange && props.onChange(reader.result as string);
+    };
+
+    acceptedFiles.forEach(file => reader.readAsBinaryString(file));
+  }, []);
+
+  const {
+    getRootProps,
+    getInputProps,
+    isDragActive,
+    isDragAccept,
+    isDragReject
+  } = useDropzone({ accept: defaultAccept, onDrop });
+
+  return (
+    <div className='container'>
+      <Container {...getRootProps({ isDragActive, isDragAccept, isDragReject })}>
+        <input {...getInputProps()} />
+        <p>Drag 'n' drop some files here, or click to select files</p>
+      </Container>
+    </div>
+  );
 }

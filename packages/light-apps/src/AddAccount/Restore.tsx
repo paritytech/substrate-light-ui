@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { ErrorText, Menu } from '@substrate/ui-components';
+import { Menu } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
@@ -12,21 +12,13 @@ import { ImportWithPhrase } from './ImportWithPhrase';
 interface Props extends RouteComponentProps { }
 
 type State = {
-  error: string,
   screen: 'JSON' | 'Phrase'
 };
 
 export class Restore extends React.PureComponent<Props> {
   state: State = {
-    error: '',
     screen: 'JSON'
   };
-
-  onError = (value: string | null) => {
-    this.setState({
-      error: value
-    });
-  }
 
   toJsonScreen = () => {
     this.setState({
@@ -51,21 +43,10 @@ export class Restore extends React.PureComponent<Props> {
         </Menu>
         {
           screen === 'JSON'
-            ? <ImportWithJson onError={this.onError} {...this.props} />
+            ? <ImportWithJson {...this.props} />
             : <ImportWithPhrase {...this.props} />
         }
-        { this.renderError() }
       </React.Fragment>
-    );
-  }
-
-  renderError () {
-    const { error } = this.state;
-
-    return (
-      <ErrorText>
-        {error}
-      </ErrorText>
     );
   }
 }

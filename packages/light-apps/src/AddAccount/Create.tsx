@@ -4,7 +4,7 @@
 
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
 import { AppContext } from '@substrate/ui-common';
-import { AddressSummary, ErrorText, FadedText, Input, Margin, MnemonicSegment, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SubHeader, WithSpaceAround } from '@substrate/ui-components';
+import { AddressSummary, ErrorText, FadedText, Input, Margin, MnemonicSegment, NavButton, Stacked, StyledLinkButton, SubHeader, WrapperDiv, WithSpaceAround } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -143,6 +143,7 @@ export class Create extends React.PureComponent<Props, State> {
     return (
       <Stacked>
         <AddressSummary address={address} name={name} />
+        <Margin top />
         {
           step === 'create'
             ? this.renderCreateStep()
@@ -161,12 +162,12 @@ export class Create extends React.PureComponent<Props, State> {
         <Stacked>
           <SubHeader> Create from the following mnemonic phrase </SubHeader>
           <MnemonicSegment onClick={this.newMnemonic} mnemonic={mnemonic} />
-          <WithSpaceAround>
-            <StackedHorizontal>
-              {this.renderSetName()}
-              {this.renderSetPassword()}
-            </StackedHorizontal>
-          </WithSpaceAround>
+          <Margin top />
+          <Stacked>
+            {this.renderSetName()}
+            <Margin top />
+            {this.renderSetPassword()}
+          </Stacked>
           <NavButton onClick={this.toggleStep}> Next </NavButton>
         </Stacked>
       </React.Fragment>
@@ -194,16 +195,20 @@ export class Create extends React.PureComponent<Props, State> {
           <MnemonicSegment onClick={this.newMnemonic} mnemonic={mnemonic} />
           <Margin top />
           <FadedText> Rewrite Mnemonic Below </FadedText>
-          <Input
-            autoFocus
-            onChange={this.onChangeRewritePhrase}
-            type='text'
-            value={rewritePhrase} />
+          <WrapperDiv>
+            <Input
+              autoFocus
+              fluid
+              onChange={this.onChangeRewritePhrase}
+              type='text'
+              value={rewritePhrase} />
+          </WrapperDiv>
           <WithSpaceAround>
-            <StackedHorizontal>
+            <Stacked>
               <StyledLinkButton onClick={this.toggleStep}> Back </StyledLinkButton>
+              <Margin top />
               <NavButton onClick={this.createNewAccount}> Save </NavButton>
-            </StackedHorizontal>
+            </Stacked>
           </WithSpaceAround>
         </Stacked>
       </React.Fragment>
@@ -216,13 +221,16 @@ export class Create extends React.PureComponent<Props, State> {
     return (
       <Stacked>
         <SubHeader> Give it a name </SubHeader>
-        <Input
-          autoFocus
-          min={1}
-          onChange={this.onChangeName}
-          type='text'
-          value={name}
-        />
+        <WrapperDiv>
+          <Input
+            autoFocus
+            fluid
+            min={1}
+            onChange={this.onChangeName}
+            type='text'
+            value={name}
+          />
+        </WrapperDiv>
       </Stacked>
     );
   }
@@ -233,12 +241,15 @@ export class Create extends React.PureComponent<Props, State> {
     return (
       <Stacked>
         <SubHeader> Encrypt it with a passphrase </SubHeader>
-        <Input
-          min={8}
-          onChange={this.onChangePassword}
-          type='password'
-          value={password}
-        />
+        <WrapperDiv>
+          <Input
+            fluid
+            min={8}
+            onChange={this.onChangePassword}
+            type='password'
+            value={password}
+          />
+        </WrapperDiv>
       </Stacked>
     );
   }

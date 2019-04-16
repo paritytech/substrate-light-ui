@@ -4,7 +4,7 @@
 
 import { Balance as BalanceType } from '@polkadot/types';
 import { AppContext } from '@substrate/ui-common';
-import { Balance, ErrorText, Form, Input, NavButton, StackedHorizontal, SubHeader } from '@substrate/ui-components';
+import { Balance, ErrorText, Form, Input, Margin, NavButton, StackedHorizontal, SubHeader } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Observable, Subscription } from 'rxjs';
@@ -145,9 +145,6 @@ export class SendBalance extends React.PureComponent<Props, State> {
     const { match: { params: { currentAccount, recipientAddress } } } = this.props;
     const { amount, error } = this.state;
 
-    // const isAddressValid = !!recipientAddress && this.isValidAddress(recipientAddress);
-    // const recipientName = isAddressValid ? keyring.getAccount(recipientAddress).getMeta().name : '';
-
     return (
       <Form onSubmit={this.handleSubmit}>
         <StackedHorizontal alignItems='flex-start'>
@@ -174,10 +171,15 @@ export class SendBalance extends React.PureComponent<Props, State> {
               type='number'
               value={amount}
             />
+            <Margin top='huge' />
+            <NavButton disabled={!!error}>Submit</NavButton>
           </CenterDiv>
 
           <RightDiv>
-            <SubHeader textAlign='left'>Recipient Address:</SubHeader>
+            <StackedHorizontal>
+              <SubHeader textAlign='left'>Recipient Address:</SubHeader>
+              <Balance address={recipientAddress} fontSize='medium' fontWeight='lightest' />
+            </StackedHorizontal>
             <InputAddress
               label={null}
               onChange={this.handleChangeRecipientAddress}
@@ -185,15 +187,12 @@ export class SendBalance extends React.PureComponent<Props, State> {
               value={recipientAddress}
               withLabel={false}
             />
-            <Balance address={recipientAddress} />
           </RightDiv>
         </StackedHorizontal>
         <StackedHorizontal>
           <LeftDiv />
           <CenterDiv>{this.renderError()}</CenterDiv>
-          <RightDiv>
-            <NavButton disabled={!!error}>Submit</NavButton>
-          </RightDiv>
+          <RightDiv />
         </StackedHorizontal>
       </Form>
     );

@@ -19,8 +19,8 @@ type State = {
   renameModalOpen: boolean,
   backupModalOpen: boolean,
   forgetModalOpen: boolean,
-  name: string
-  newName: string
+  name: string,
+  newName: string,
   error?: string,
   success?: string,
   password: string
@@ -32,9 +32,9 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
   context!: React.ContextType<typeof AppContext>; // http://bit.ly/typescript-and-react-context
 
   state: State = {
-    renameModalOpen: false,
     backupModalOpen: false,
     forgetModalOpen: false,
+    renameModalOpen: false,
     name: '',
     newName: '',
     password: ''
@@ -62,6 +62,10 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
       this.closeAllSubscriptions();
       this.subscribeChainHead();
     }
+  }
+
+  componentWillUnmount () {
+    this.closeAllSubscriptions();
   }
 
   closeAllSubscriptions () {
@@ -121,13 +125,6 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
     }
   }
 
-  closeRenameModal = () => {
-    this.setState({
-      renameModalOpen: false,
-      newName: this.state.name
-    });
-  }
-
   closeBackupModal = () => {
     this.setState({
       backupModalOpen: false,
@@ -137,6 +134,13 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
 
   closeForgetModal = () => {
     this.setState({ forgetModalOpen: false });
+  }
+
+  closeRenameModal = () => {
+    this.setState({
+      renameModalOpen: false,
+      newName: this.state.name
+    });
   }
 
   getAddress = () => {
@@ -223,24 +227,30 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
             withLabel={false}
           />
           <Margin left='medium' />
+          <Balance address={address} fontSize='medium' />
+          <Margin left='medium' />
           <NavLink to='/accounts/add'>
-            Add new account
+            <Icon name='plus' />
           </NavLink>
         </Menu.Item>
-        <Menu.Item>
-          <Balance address={address} fontSize='medium' />
-        </Menu.Item>
-        <Dropdown
-          icon='setting'
-          item
-          text='Manage account &nbsp;' /* TODO add margin to the icon instead */
-        >
-          <Dropdown.Menu>
-            {this.renderRenameModal()}
-            {this.renderBackupConfirmationModal()}
-            {this.renderForgetConfirmationModal()}
-          </Dropdown.Menu>
-        </Dropdown>
+        <Menu.Menu position='right'>
+          <Dropdown
+            icon='setting'
+            item
+            pointing
+            text='Manage Account &nbsp;' /* TODO add margin to the icon instead */
+          >
+            <Dropdown.Menu>
+              {this.renderRenameModal()}
+              {this.renderBackupConfirmationModal()}
+              {this.renderForgetConfirmationModal()}
+            </Dropdown.Menu>
+          </Dropdown>
+          <Menu.Item>
+            <NavLink to='/addresses'> Manage Addresses </NavLink>
+            <Icon name='address book' />
+          </Menu.Item>
+        </Menu.Menu>
       </Menu>
     );
   }
