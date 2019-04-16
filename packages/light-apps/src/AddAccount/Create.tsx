@@ -4,7 +4,7 @@
 
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
 import { AppContext } from '@substrate/ui-common';
-import { AddressSummary, ErrorText, FadedText, Input, Margin, MnemonicSegment, NavButton, Stacked, StyledLinkButton, SubHeader, WideDiv, WithSpaceAround } from '@substrate/ui-components';
+import { AddressSummary, ErrorText, FadedText, Input, Margin, MnemonicSegment, NavButton, Stacked, StyledLinkButton, SubHeader, WrapperDiv, WithSpaceAround } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -195,14 +195,14 @@ export class Create extends React.PureComponent<Props, State> {
           <MnemonicSegment onClick={this.newMnemonic} mnemonic={mnemonic} />
           <Margin top />
           <FadedText> Rewrite Mnemonic Below </FadedText>
-          <WideDiv>
+          <WrapperDiv>
             <Input
               autoFocus
               fluid
               onChange={this.onChangeRewritePhrase}
               type='text'
               value={rewritePhrase} />
-          </WideDiv>
+          </WrapperDiv>
           <WithSpaceAround>
             <Stacked>
               <StyledLinkButton onClick={this.toggleStep}> Back </StyledLinkButton>
@@ -221,7 +221,7 @@ export class Create extends React.PureComponent<Props, State> {
     return (
       <Stacked>
         <SubHeader> Give it a name </SubHeader>
-        <WideDiv>
+        <WrapperDiv>
           <Input
             autoFocus
             fluid
@@ -230,7 +230,7 @@ export class Create extends React.PureComponent<Props, State> {
             type='text'
             value={name}
           />
-        </WideDiv>
+        </WrapperDiv>
       </Stacked>
     );
   }
@@ -241,7 +241,7 @@ export class Create extends React.PureComponent<Props, State> {
     return (
       <Stacked>
         <SubHeader> Encrypt it with a passphrase </SubHeader>
-        <WideDiv>
+        <WrapperDiv>
           <Input
             fluid
             min={8}
@@ -249,7 +249,7 @@ export class Create extends React.PureComponent<Props, State> {
             type='password'
             value={password}
           />
-        </WideDiv>
+        </WrapperDiv>
       </Stacked>
     );
   }

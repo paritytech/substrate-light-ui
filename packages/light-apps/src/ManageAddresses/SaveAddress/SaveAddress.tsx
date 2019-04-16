@@ -4,7 +4,7 @@
 
 import { isFunction } from '@polkadot/util';
 import { AppContext } from '@substrate/ui-common';
-import { ErrorText, Form, Input, Margin, NavButton, Stacked, SuccessText, WideDiv } from '@substrate/ui-components';
+import { ErrorText, Form, Input, Margin, NavButton, Stacked, SuccessText, WrapperDiv } from '@substrate/ui-components';
 import React from 'react';
 
 interface Props {
@@ -113,7 +113,7 @@ export class SaveAddress extends React.PureComponent<Props, State> {
     return (
       <Form onSubmit={this.handleSubmit}>
         <Stacked>
-          <WideDiv>
+          <WrapperDiv>
             <Input
               disabled={addressDisabled}
               fluid
@@ -136,7 +136,7 @@ export class SaveAddress extends React.PureComponent<Props, State> {
             <NavButton type='submit' value='Save Address' />
             {this.renderError()}
             {this.renderSuccess()}
-          </WideDiv>
+          </WrapperDiv>
         </Stacked>
       </Form>
     );

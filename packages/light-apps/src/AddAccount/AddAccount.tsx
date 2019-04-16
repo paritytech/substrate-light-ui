@@ -13,29 +13,15 @@ import { Container } from 'semantic-ui-react';
 
 interface Props extends RouteComponentProps { }
 
-type State = {
-  activeTab: string
-};
-
-export class AddAccount extends React.PureComponent<Props, State> {
+export class AddAccount extends React.PureComponent<Props> {
   static contextType = AppContext;
-
-  state: State = {
-    activeTab: 'generate'
-  };
 
   context!: React.ContextType<typeof AppContext>; // http://bit.ly/typescript-and-react-context
 
-  componentWillReceiveProps (nextProps: any) {
-    if (nextProps.location !== this.props.location) {
-      this.setState({
-        activeTab: nextProps.location.pathname.split('/')[3]
-      });
-    }
-  }
+  getActiveTab = () => this.props.location.pathname.split('/')[3];
 
   render () {
-    const { activeTab } = this.state;
+    const activeTab = this.getActiveTab();
 
     return (
       <Container>

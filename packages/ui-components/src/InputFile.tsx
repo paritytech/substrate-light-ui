@@ -37,7 +37,7 @@ const Container = styled.div`
   flex: 1;
   flex-direction: column;
   outline: none;
-  padding: 20px;
+  padding: 100px;
   transition: border .24s ease-in-out;
 `;
 

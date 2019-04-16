@@ -43,3 +43,9 @@ export interface WithSpaceAroundProps {
   margin?: MarginSize;
   padding?: MarginSize;
 }
+
+export interface WrapperDivProps {
+  padding?: string;
+  width?: string;
+  height?: string;
+}

@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { AppContext } from '@substrate/ui-common';
-import { Input, InputFile, Margin, NavButton, Stacked, SubHeader, WideDiv } from '@substrate/ui-components';
+import { Input, InputFile, Margin, NavButton, Stacked, SubHeader, WrapperDiv } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
@@ -80,13 +80,13 @@ export class ImportWithJson extends React.PureComponent<Props, State> {
             ? <InputFile onChange={this.handleFileUploaded} />
             : (
               <React.Fragment>
-                <WideDiv>
+                <WrapperDiv>
                   <Input
                     fluid
                     label='Password'
                     onChange={this.handlePasswordChange}
                     type='password' />
-                </WideDiv>
+                </WrapperDiv>
                 <Margin top />
                 <NavButton onClick={this.handleRestoreWithJson} value='Restore' />
               </React.Fragment>

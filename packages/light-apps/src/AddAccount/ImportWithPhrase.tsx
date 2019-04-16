@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { AppContext } from '@substrate/ui-common';
-import { ErrorText, Input, Margin, Modal, NavButton, Stacked, WideDiv } from '@substrate/ui-components';
+import { ErrorText, Input, Margin, Modal, NavButton, Stacked, WrapperDiv } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
@@ -81,7 +81,7 @@ export class ImportWithPhrase extends React.PureComponent<Props> {
     return (
       <Stacked justifyContent='space-between'>
         <Modal.SubHeader> Import Account from Mnemonic Recovery Phrase </Modal.SubHeader>
-        <WideDiv>
+        <WrapperDiv width='40rem'>
           <Input
             fluid
             label='Phrase'
@@ -102,7 +102,7 @@ export class ImportWithPhrase extends React.PureComponent<Props> {
             onChange={this.onChangePassword}
             type='password'
             value={password} />
-        </WideDiv>
+        </WrapperDiv>
         <Margin top />
         <NavButton onClick={this.handleUnlockWithPhrase} value='Restore' />
         {this.renderError()}
