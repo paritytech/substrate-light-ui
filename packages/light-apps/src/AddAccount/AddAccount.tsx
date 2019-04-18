@@ -2,28 +2,33 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AppContext } from '@substrate/ui-common';
-import { Menu, WalletCard } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps, Link, Switch, Route, Redirect } from 'react-router-dom';
+import { Container } from 'semantic-ui-react';
+import { AppContext } from '@substrate/ui-common';
+import { Menu, WalletCard } from '@substrate/ui-components';
+
 import { Create } from './Create';
 import { ImportWithJson } from './ImportWithJson';
 import { ImportWithPhrase } from './ImportWithPhrase';
-import { Container } from 'semantic-ui-react';
 
-interface Props extends RouteComponentProps { }
+interface MatchParams {
+  currentAccount: string;
+}
+
+interface Props extends RouteComponentProps<MatchParams> { }
 
 export class AddAccount extends React.PureComponent<Props> {
   static contextType = AppContext;
 
   context!: React.ContextType<typeof AppContext>; // http://bit.ly/typescript-and-react-context
 
-  getCurrentAccount = () => this.props.location.pathname.split('/')[2];
   getActiveTab = () => this.props.location.pathname.split('/')[4];
 
   render () {
+    const { match: { params: { currentAccount } } } = this.props;
+
     const activeTab = this.getActiveTab();
-    const currentAccount = this.getCurrentAccount();
 
     return (
       <Container>

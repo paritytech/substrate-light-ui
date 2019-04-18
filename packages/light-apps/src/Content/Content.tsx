@@ -3,12 +3,12 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import accounts from '@polkadot/ui-keyring/observable/accounts';
-import { Transfer } from '@substrate/transfer-app';
-import { Subscribe } from '@substrate/ui-common';
-import { Container } from '@substrate/ui-components';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { map } from 'rxjs/operators';
+import { Transfer } from '@substrate/transfer-app';
+import { Subscribe } from '@substrate/ui-common';
+import { Container } from '@substrate/ui-components';
 
 import { AddAccount } from '../AddAccount';
 import { IdentityHeader } from '../IdentityHeader';

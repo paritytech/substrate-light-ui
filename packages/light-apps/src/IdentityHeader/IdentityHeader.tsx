@@ -4,11 +4,11 @@
 
 import FileSaver from 'file-saver';
 import { BlockNumber, Header } from '@polkadot/types';
-import { AppContext } from '@substrate/ui-common';
-import { Balance, Dropdown, FadedText, Icon, Input, Margin, Menu, Modal, NavLink, Stacked, StackedHorizontal, StyledLinkButton, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Observable, Subscription } from 'rxjs';
+import { AppContext } from '@substrate/ui-common';
+import { Balance, Dropdown, FadedText, Icon, Input, Margin, Menu, Modal, NavLink, Stacked, StackedHorizontal, StyledLinkButton, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
 
 import { InputAddress } from './IdentityHeader.styles';
 

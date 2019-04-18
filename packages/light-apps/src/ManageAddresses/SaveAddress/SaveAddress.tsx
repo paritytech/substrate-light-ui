@@ -3,9 +3,9 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { isFunction } from '@polkadot/util';
+import React from 'react';
 import { AppContext } from '@substrate/ui-common';
 import { ErrorText, Form, Input, Margin, NavButton, Stacked, SuccessText, WrapperDiv } from '@substrate/ui-components';
-import React from 'react';
 
 interface Props {
   addressDisabled?: boolean;

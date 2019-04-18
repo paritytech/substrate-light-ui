@@ -3,10 +3,10 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { BlockNumber, Header } from '@polkadot/types';
-import { AppContext } from '@substrate/ui-common';
-import { FadedText, FlexItem, Margin, NavLink, StackedHorizontal } from '@substrate/ui-components';
 import React from 'react';
 import { Observable, Subscription } from 'rxjs';
+import { AppContext } from '@substrate/ui-common';
+import { FadedText, FlexItem, Margin, NavLink, StackedHorizontal } from '@substrate/ui-components';
 
 import { BlockCounter, NodeStatus } from './TopBar.styles';
 import substrateLogo from '@polkadot/ui-assets/parity-substrate.svg';
