@@ -117,5 +117,29 @@ Inspired by: https://github.com/paritytech/fether/pull/451
     webRequestBlocking: no
   ```
 5. Do Not Disable WebSecurity (default) - self explanatory
-6. Define a Content Security Policy
-  * 
+6. Define a Content Security Policy - not relevant (yet) as we're not loading any external web pages
+7. Do Not Set allowRunningInsecureContent to true (default) - self explanatory
+8. Do Not Enable Experimental Features (default) - self explanatory
+9. Do Not Use enableBlinkFeatures (default) - self explanatory
+10. Do Not Use allowpopups (default) - self explanatory
+11. Verify WebView Options Before Creation:
+  * A WebView created in the renderer process will always create its own renderer process using its own `webPreferences`.
+  ```
+    app.on('web-contents-created', (event, contents) => {
+      contents.on('will-attach-webview', (event, webPreferences, params) => {
+        // Strip away preload scripts if unused or verify their location is legitimate
+        delete webPreferences.preload
+        delete webPreferences.preloadURL
+
+        // Disable Node.js integration
+        webPreferences.nodeIntegration = false
+
+        // Verify URL being loaded
+        if (!params.src.startsWith('https://example.com/')) {
+          event.preventDefault()
+        }
+      })
+    })
+  ```
+  **N.B. SLUI: we don't load any webpages, and if we do in the future it'll be in a browser so this is not a concern.**
+12. 
