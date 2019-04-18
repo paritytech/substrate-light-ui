@@ -52,7 +52,6 @@ Inspired by: https://github.com/paritytech/fether/pull/451
     notifications: Yes - extend from Alerts.
   ```
 
-
   * Electron implements the same types of permissions as Chromium as listed below:
   ```
     activeTab: we don't use tabs
@@ -117,4 +116,6 @@ Inspired by: https://github.com/paritytech/fether/pull/451
     webRequest: no
     webRequestBlocking: no
   ```
-5.
+5. Do Not Disable WebSecurity (default) - self explanatory
+6. Define a Content Security Policy
+  * 
