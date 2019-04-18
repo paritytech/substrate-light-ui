@@ -142,4 +142,41 @@ Inspired by: https://github.com/paritytech/fether/pull/451
     })
   ```
   **N.B. SLUI: we don't load any webpages, and if we do in the future it'll be in a browser so this is not a concern.**
-12. 
+12. Disable or limit navigation
+```
+  const URL = require('url').URL
+
+  app.on('web-contents-created', (event, contents) => {
+    contents.on('will-navigate', (event, navigationUrl) => {
+      const parsedUrl = new URL(navigationUrl)
+
+      if (parsedUrl.origin !== 'https://example.com') {
+        event.preventDefault()
+      }
+    })
+  })
+```
+**N.B. SLUI: While not used yet, we may in the future want to navigate to the api docs page, or the forum, or other substrate related sites.**
+
+13. Disable or limit creation of new windows
+```
+const { shell } = require('electron')
+
+app.on('web-contents-created', (event, contents) => {
+  contents.on('new-window', (event, navigationUrl) => {
+    // if somehow there is a new-window event, block it.
+    event.preventDefault()
+  })
+})
+```
+**N.B. SLUI: we just need the one BrowserWindow**
+14. Do not use openExternal with untrusted content
+15. Disable the remote module: the `remote` module would allow the renderer process to access APIs normally only available in the main process.
+```
+  const mainWindow = new BrowserWindow({
+    webPreferences: {
+      enableRemoteModule: false
+    }
+  })
+```
+16. Filter the remote module: relevant only if we cannot disable remote module.
