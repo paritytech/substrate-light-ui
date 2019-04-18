@@ -60,7 +60,7 @@ export class ImportWithJson extends React.PureComponent<Props, State> {
 
       let pair = keyring.restoreAccount(json, password);
 
-      history.push(`/identity/${pair.address()}`);
+      history.push(`/transfer/${pair.address()}`);
     } catch (e) {
       alertStore.enqueue({
         content: e.message,

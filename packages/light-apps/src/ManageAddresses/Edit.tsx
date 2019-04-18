@@ -9,20 +9,21 @@ import { RouteComponentProps } from 'react-router-dom';
 import { SaveAddress } from './SaveAddress';
 
 interface MatchParams {
-  address: string;
+  currentAccount: string;
+  editAddress: string;
 }
 
 interface Props extends RouteComponentProps<MatchParams> { }
 
 export class Edit extends React.PureComponent<Props> {
   render () {
-    const { match: { params: { address } } } = this.props;
+    const { match: { params: { editAddress } } } = this.props;
     return (
       <WalletCard
         header='Edit Address'
         subheader='Inspect the status of any identity and name it for later use' >
         <Margin top />
-        <SaveAddress addressDisabled defaultAddress={address} />
+        <SaveAddress addressDisabled defaultAddress={editAddress} />
       </WalletCard>
     );
   }

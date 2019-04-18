@@ -58,7 +58,7 @@ export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
 
       FileSaver.saveAs(blob, `${address}.json`);
 
-      history.push(`/identity/${address}`);
+      history.push(`/transfer/${address}`);
     } else {
       this.onError('Please make sure all the fields are set');
     }

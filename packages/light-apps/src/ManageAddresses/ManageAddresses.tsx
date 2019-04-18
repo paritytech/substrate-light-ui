@@ -21,7 +21,7 @@ export class ManageAddresses extends React.PureComponent<Props> {
           <Grid.Row>
             <Grid.Column width={9}>
               <Switch>
-                <Route path='/addresses/:address' component={Edit} />
+                <Route path='/addresses/:currentAccount/:editAddress' component={Edit} />
                 <Route component={Add} />
               </Switch>
             </Grid.Column>

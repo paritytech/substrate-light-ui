@@ -78,7 +78,7 @@ export class SaveScreen extends React.PureComponent<Props, State> {
         pair = keyring.createAccountMnemonic(recoveryPhrase, password, { name });
       }
 
-      history.push(`/identity/${pair.address()}`);
+      history.push(`/transfer/${pair.address()}`);
     } catch (e) {
       this.onError(e.message);
     }

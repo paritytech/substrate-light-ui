@@ -66,7 +66,7 @@ export class Create extends React.PureComponent<Props, State> {
 
       FileSaver.saveAs(blob, `${address}.json`);
 
-      history.push(`/identity/${address}`);
+      history.push(`/transfer/${address}`);
 
       this.clearFields();
     } else {
