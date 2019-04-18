@@ -26,7 +26,7 @@ export class ManageAddresses extends React.PureComponent<Props> {
               </Switch>
             </Grid.Column>
             <Grid.Column width={7}>
-              <SavedAddresses />
+              <Route path='/addresses/:currentAccount' component={SavedAddresses} />
             </Grid.Column>
           </Grid.Row>
         </Grid>

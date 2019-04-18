@@ -8,9 +8,15 @@ import { SingleAddress, SubjectInfo } from '@polkadot/ui-keyring/observable/type
 import { Subscribe } from '@substrate/ui-common';
 import { map } from 'rxjs/operators';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 
-export class SavedAddresses extends React.PureComponent<{ }> {
+interface MatchParams {
+  currentAccount: string;
+}
+
+interface Props extends RouteComponentProps<MatchParams> { }
+
+export class SavedAddresses extends React.PureComponent<Props> {
   render () {
     return (
       <WalletCard
@@ -28,6 +34,8 @@ export class SavedAddresses extends React.PureComponent<{ }> {
   }
 
   renderAllAddressesFromKeyring () {
+    const { match: { params: { currentAccount } } } = this.props;
+
     return (
       <Subscribe>
         {addressObservable.subject.pipe(
@@ -38,7 +46,7 @@ export class SavedAddresses extends React.PureComponent<{ }> {
                 <React.Fragment key={`__locked_${address.json.address}`}>
                   <Margin top />
                   <StackedHorizontal>
-                    <Link to={`/addresses/${address.json.address}`}>
+                    <Link to={`/addresses/${currentAccount}/${address.json.address}`}>
                       <AddressSummary
                         address={address.json.address}
                         name={address.json.meta.name}
