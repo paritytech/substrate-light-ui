@@ -2507,14 +2507,14 @@
     uuid "^3.3.2"
 
 "@storybook/addon-knobs@^4.1.13":
-  version "4.1.16"
-  resolved "https://registry.yarnpkg.com/@storybook/addon-knobs/-/addon-knobs-4.1.16.tgz#9308169ff6b03562c7e7a836244a8c826c9abc05"
-  integrity sha512-3sMFOrRKTvjoBdFT6UEEsd4gGvItuopUWwNHoaSBTCGzIX2+YDs2vvsVXdhB80IYtkiiCKVTl2micNWep+fQ9A==
+  version "4.1.18"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-knobs/-/addon-knobs-4.1.18.tgz#ec26d815211671c6f2aa5bfaafa8d21c4fb2a307"
+  integrity sha512-+R+WjZCkQDRv0UwU0Rrrz2EmOG2Y65jrf4S8Itklj6ASlDFt8YVRw7TzHbk7C8H0slQmu8xu0jQdNdEUu48pFg==
   dependencies:
     "@emotion/styled" "^0.10.6"
-    "@storybook/addons" "4.1.16"
-    "@storybook/components" "4.1.16"
-    "@storybook/core-events" "4.1.16"
+    "@storybook/addons" "4.1.18"
+    "@storybook/components" "4.1.18"
+    "@storybook/core-events" "4.1.18"
     copy-to-clipboard "^3.0.8"
     core-js "^2.5.7"
     escape-html "^1.0.3"
