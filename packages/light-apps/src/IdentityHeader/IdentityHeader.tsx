@@ -8,7 +8,7 @@ import React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { Observable, Subscription } from 'rxjs';
 import { AppContext } from '@substrate/ui-common';
-import { Balance, Dropdown, FadedText, Icon, Input, Margin, Menu, Modal, NavLink, Stacked, StackedHorizontal, StyledLinkButton, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
+import { Balance, Dropdown, FadedText, Icon, Input, Margin, Menu, Modal, NavLink, Stacked, StackedHorizontal, StyledLinkButton, SubHeader, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
 
 import { InputAddress } from './IdentityHeader.styles';
 
@@ -306,26 +306,35 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
             </Menu.Item>
           </Route>
         </Switch>
-        <Menu.Item>
-          <InputAddress
-            label={null}
-            onChange={this.handleChangeCurrentAccount}
-            type='account'
-            value={address}
-            withLabel={false}
-          />
-          <Margin left='medium' />
-          <Balance address={address} fontSize='medium' />
-          <Margin left='medium' />
-
-          <Switch>
-            <Route path='/transfer'>
+        <Switch>
+          <Route path={['/accounts', '/transfer']}>
+            <Menu.Item>
+              <InputAddress
+                label={null}
+                onChange={this.handleChangeCurrentAccount}
+                type='account'
+                value={address}
+                withLabel={false}
+              />
+              <Margin left='medium' />
+              <Balance address={address} fontSize='medium' />
+              <Margin left='medium' />
+            </Menu.Item>
+          </Route>
+          <Route path='/addresses'>
+            <Menu.Item><FadedText>Manage Address Book</FadedText></Menu.Item>
+            <Menu.Item><SubHeader>Inspect the status of any identity and name it for later use</SubHeader></Menu.Item>
+          </Route>
+        </Switch>
+        <Switch>
+          <Route path='/transfer'>
+            <Menu.Item>
               <NavLink to={`/accounts/${address}/add`}>
                 Add an Account <Icon name='plus' />
               </NavLink>
-            </Route>
-          </Switch>
-        </Menu.Item>
+            </Menu.Item>
+          </Route>
+        </Switch>
       </Menu>
     )
   }

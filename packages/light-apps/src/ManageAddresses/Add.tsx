@@ -14,7 +14,7 @@ export class Add extends React.PureComponent<Props> {
   render () {
     return (
       <Stacked>
-        <SubHeader> Inspect the status of any identity and name it for later use </SubHeader>
+        <SubHeader> Enter an Address And Save it with A Name for Later Use. </SubHeader>
         <Margin top />
         <SaveAddress />
       </Stacked>

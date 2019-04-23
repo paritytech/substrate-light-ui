@@ -120,6 +120,7 @@ export class SaveAddress extends React.PureComponent<Props, State> {
               label='Address'
               onChange={this.handleInputAddress}
               required
+              placeholder='e.g. 5ErZS1o.....'
               type='text'
               value={address}
             />
