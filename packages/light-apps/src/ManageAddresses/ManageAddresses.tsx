@@ -4,33 +4,33 @@
 
 import React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
-import { Grid } from 'semantic-ui-react';
-import { Container } from '@substrate/ui-components';
 
 import { Add } from './Add';
 import { Edit } from './Edit';
 import { SavedAddresses } from '../SavedAddresses';
+import { FlexItem, Margin, StackedHorizontal, WalletCard } from '@substrate/ui-components';
 
 interface Props extends RouteComponentProps<{}> { }
 
 export class ManageAddresses extends React.PureComponent<Props> {
   render () {
     return (
-      <Container>
-        <Grid>
-          <Grid.Row>
-            <Grid.Column width={9}>
-              <Switch>
-                <Route path='/addresses/:currentAccount/:editAddress' component={Edit} />
-                <Route component={Add} />
-              </Switch>
-            </Grid.Column>
-            <Grid.Column width={7}>
-              <Route path='/addresses/:currentAccount' component={SavedAddresses} />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </Container>
+      <WalletCard
+        header='Address Book'
+        height='100%'>
+        <StackedHorizontal justifyContent='stretch' alignItems='stretch'>
+          <FlexItem>
+            <Switch>
+              <Route path='/addresses/:currentAccount/:editAddress' component={Edit} />
+              <Route component={Add} />
+            </Switch>
+          </FlexItem>
+          <Margin left />
+          <FlexItem>
+            <Route path='/addresses/:currentAccount' component={SavedAddresses} />
+          </FlexItem>
+        </StackedHorizontal>
+      </WalletCard>
     );
   }
 }

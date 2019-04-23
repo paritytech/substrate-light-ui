@@ -8,7 +8,6 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { map } from 'rxjs/operators';
 import { Transfer } from '@substrate/transfer-app';
 import { Subscribe } from '@substrate/ui-common';
-import { Container } from '@substrate/ui-components';
 
 import { AddAccount } from '../AddAccount';
 import { IdentityHeader } from '../IdentityHeader';
@@ -18,7 +17,7 @@ import { Onboarding } from '../Onboarding';
 export class Content extends React.PureComponent {
   render () {
     return (
-      <Container fluid>
+      <React.Fragment>
         <Subscribe>
           {accounts.subject.pipe(
             map(Object.values),
@@ -40,7 +39,7 @@ export class Content extends React.PureComponent {
             )
           )}
         </Subscribe>
-      </Container>
+      </React.Fragment>
     );
   }
 }

@@ -5,7 +5,7 @@
 import FileSaver from 'file-saver';
 import { BlockNumber, Header } from '@polkadot/types';
 import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { Observable, Subscription } from 'rxjs';
 import { AppContext } from '@substrate/ui-common';
 import { Balance, Dropdown, FadedText, Icon, Input, Margin, Menu, Modal, NavLink, Stacked, StackedHorizontal, StyledLinkButton, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
@@ -208,44 +208,11 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const address = this.getAddress();
-
     return (
-      <Menu>
-        <Menu.Item>
-          <InputAddress
-            label={null}
-            onChange={this.handleChangeCurrentAccount}
-            type='account'
-            value={address}
-            withLabel={false}
-          />
-          <Margin left='medium' />
-          <Balance address={address} fontSize='medium' />
-          <Margin left='medium' />
-          <NavLink to={`/accounts/${address}/add`}>
-            <Icon name='plus' />
-          </NavLink>
-        </Menu.Item>
-        <Menu.Menu position='right'>
-          <Dropdown
-            icon='setting'
-            item
-            pointing
-            text='Manage Account &nbsp;' /* TODO add margin to the icon instead */
-          >
-            <Dropdown.Menu>
-              {this.renderRenameModal()}
-              {this.renderBackupConfirmationModal()}
-              {this.renderForgetConfirmationModal()}
-            </Dropdown.Menu>
-          </Dropdown>
-          <Menu.Item>
-            <NavLink to={`/addresses/${address}`}> Manage Addresses </NavLink>
-            <Icon name='address book' />
-          </Menu.Item>
-        </Menu.Menu>
-      </Menu>
+      <React.Fragment>
+        {this.renderSecondaryMenu()}
+        {this.renderPrimaryMenu()}
+      </React.Fragment>
     );
   }
 
@@ -324,5 +291,71 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
         </WithSpaceAround>
       </Modal>
     );
+  }
+
+  renderPrimaryMenu () {
+    const address = this.getAddress();
+
+    return (
+      <Menu stackable>
+        <Switch>
+          <Route path={['/addresses', '/accounts']}>
+            <Menu.Item>
+              <Margin top='tiny' />
+              <NavLink to={`/`}> <Icon name='arrow left' /> </NavLink>
+            </Menu.Item>
+          </Route>
+        </Switch>
+        <Menu.Item>
+          <InputAddress
+            label={null}
+            onChange={this.handleChangeCurrentAccount}
+            type='account'
+            value={address}
+            withLabel={false}
+          />
+          <Margin left='medium' />
+          <Balance address={address} fontSize='medium' />
+          <Margin left='medium' />
+
+          <Switch>
+            <Route path='/transfer'>
+              <NavLink to={`/accounts/${address}/add`}>
+                Add an Account <Icon name='plus' />
+              </NavLink>
+            </Route>
+          </Switch>
+        </Menu.Item>
+      </Menu>
+    )
+  }
+
+  renderSecondaryMenu () {
+    const address = this.getAddress();
+
+    return (
+      <StackedHorizontal justifyContent='start' alignItems='center'>
+        <Menu stackable secondary>
+          <Dropdown
+            icon='setting'
+            position='left'
+            item
+            pointing
+            text='Manage Account &nbsp;' /* TODO add margin to the icon instead */
+          >
+            <Dropdown.Menu>
+              {this.renderRenameModal()}
+              {this.renderBackupConfirmationModal()}
+              {this.renderForgetConfirmationModal()}
+            </Dropdown.Menu>
+          </Dropdown>
+          <Menu.Item>
+            <NavLink to={`/addresses/${address}`}> Manage Address Book </NavLink>
+            <Margin left='tiny' />
+            <Icon color='black' name='address book' />
+          </Menu.Item>
+        </Menu>
+      </StackedHorizontal>
+    )
   }
 }

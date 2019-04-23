@@ -30,8 +30,7 @@ export class Transfer extends React.PureComponent<Props> {
             <Subscribe>
               {
                 combineLatest(
-                  accounts.subject,
-                  addressObservable.subject
+                  [accounts.subject, addressObservable.subject]
                 )
                   .pipe(
                     map(([accounts, addresses]) => [

@@ -6,7 +6,7 @@ import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css';
 import { AppContext, ContextGate } from '@substrate/ui-common';
-import { GlobalStyle, Loading, substrateLightTheme } from '@substrate/ui-components';
+import { Container, GlobalStyle, Loading, substrateLightTheme } from '@substrate/ui-components';
 import { ThemeProvider } from 'styled-components';
 
 import { Alerts } from './Alerts';
@@ -19,7 +19,7 @@ export class App extends React.PureComponent {
       <ContextGate>
         <ThemeProvider theme={substrateLightTheme}>
           <BrowserRouter>
-            <React.Fragment>
+            <Container>
               <GlobalStyle />
               <AppContext.Consumer>
                 {({ isReady }) => isReady
@@ -32,7 +32,7 @@ export class App extends React.PureComponent {
                     </Loading>}
               </AppContext.Consumer>
               <Alerts />
-            </React.Fragment>
+            </Container>
           </BrowserRouter >
         </ThemeProvider>
       </ContextGate>

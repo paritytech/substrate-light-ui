@@ -4,7 +4,7 @@
 
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { Margin, WalletCard } from '@substrate/ui-components';
+import { Margin, Stacked, SubHeader } from '@substrate/ui-components';
 
 import { SaveAddress } from './SaveAddress';
 
@@ -13,12 +13,11 @@ interface Props extends RouteComponentProps<{}> { }
 export class Add extends React.PureComponent<Props> {
   render () {
     return (
-      <WalletCard
-        header='Add Address'
-        subheader='Inspect the status of any identity and name it for later use' >
+      <Stacked>
+        <SubHeader> Inspect the status of any identity and name it for later use </SubHeader>
         <Margin top />
         <SaveAddress />
-      </WalletCard>
+      </Stacked>
     );
   }
 }

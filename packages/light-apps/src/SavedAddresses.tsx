@@ -8,7 +8,7 @@ import { Subscribe } from '@substrate/ui-common';
 import { map } from 'rxjs/operators';
 import React from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { AddressSummary, Margin, Stacked, StackedHorizontal, WalletCard, WithSpace } from '@substrate/ui-components';
+import { AddressSummary, Margin, Stacked, StackedHorizontal, SubHeader, WithSpace } from '@substrate/ui-components';
 
 interface MatchParams {
   currentAccount: string;
@@ -19,17 +19,12 @@ interface Props extends RouteComponentProps<MatchParams> { }
 export class SavedAddresses extends React.PureComponent<Props> {
   render () {
     return (
-      <WalletCard
-        header='Saved Addresses'
-        height='100%'
-        overflow='scroll'
-        subheader='Select an address to edit its metadata.'>
-        <Stacked>
-          <WithSpace>
-            {this.renderAllAddressesFromKeyring()}
-          </WithSpace>
-        </Stacked>
-      </WalletCard>
+      <Stacked>
+        <SubHeader> Select an address to edit its metadata. </SubHeader>
+        <WithSpace>
+          {this.renderAllAddressesFromKeyring()}
+        </WithSpace>
+      </Stacked>
     );
   }
 
