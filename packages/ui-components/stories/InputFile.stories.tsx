@@ -5,12 +5,10 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import { select, text, withKnobs } from '@storybook/addon-knobs';
+import { withKnobs } from '@storybook/addon-knobs';
 
 import { withTheme } from './customDecorators';
 import { InputFile } from '../src';
-
-const fileTypes = ['text/plain', 'application/json', '.csv', '.pdf'];
 
 storiesOf('Input File', module)
   .addDecorator(withKnobs)
@@ -20,7 +18,5 @@ storiesOf('Input File', module)
   ))
   .add('with props', () => (
     <InputFile
-      accept={select('accept', fileTypes, 'text/plain')}
-      onChange={action('file dropped')}
-      placeholder={text('placeholder', 'Drop something here...')}/>
-  ));
+      onChange={action('file dropped')} />
+    ));

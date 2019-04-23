@@ -26,12 +26,17 @@ export const GlobalStyle = createGlobalStyle`
 export const substrateLightTheme = {
   black: '#222',
   grey: '#888',
+  redOrange: '#ff3400',
+  coral: '#ff5d3e',
+  tangerine: '#f68a04',
+  orangeYellow: '#ffae00',
   purple: '#8479f3',
   darkBlue: '#5c53fc',
   lightBlue2: '#51a0ec',
   lightBlue1: '#53a0fd',
+  neonBlue: '#0ed2f7',
+  robinEggBlue: '#86fff9',
   eggShell: '#f2f2f2',
-  babyBlueLight: '#fdfefe',
   white: '#ffffff'
 };
 

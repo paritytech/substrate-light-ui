@@ -9,13 +9,16 @@ import SUIDropdown from 'semantic-ui-react/dist/commonjs/modules/Dropdown';
 import SUIInput from 'semantic-ui-react/dist/commonjs/elements/Input';
 
 import { FONT_SIZES, MARGIN_SIZES } from './constants';
-import { HeaderProps, DynamicSizeTextProps, StackProps, StyledNavLinkProps, SubHeaderProps, WithSpaceAroundProps } from './StyleProps';
+import { DynamicSizeTextProps, HeaderProps, FlexItemProps, StackProps, StyledNavLinkProps, SubHeaderProps, WithSpaceAroundProps, WrapperDivProps } from './StyleProps';
 
 // FIXME: customize as needed
 export const Dropdown = styled<any>(SUIDropdown)`
   color: ${props => props.theme.black};
 `;
-export const Input = styled<any>(SUIInput)``;
+
+export const Input = styled<any>(SUIInput)`
+  width: ${props => props.width || '100%'}
+`;
 
 export const Container = styled(SUIContainer)`
   padding: ${MARGIN_SIZES.large};
@@ -25,6 +28,10 @@ export const FadedText = styled.p`
   color: ${props => props.theme.black};
   opacity: 0.5;
   text-align: center;
+`;
+
+export const FlexItem = styled.div<FlexItemProps>`
+  flex: ${props => props.flex || 1};
 `;
 
 export const ErrorText = styled.p`
@@ -68,17 +75,9 @@ export const Header = styled.h2<HeaderProps>`
 
 export const DynamicSizeText = styled.p<DynamicSizeTextProps>`
   font-size: ${props => FONT_SIZES[props.fontSize || 'medium']};
-  font-weight: ${props => props.fontWeight || '500'};
+  font-weight: ${props => props.fontWeight || 'light'};
   margin: 0 0;
   text-align: center;
-`;
-
-export const FileInputArea = styled.div`
-  background-color: ${props => props.theme.white};
-  box-shadow: 0 2px 4px 0 ${props => props.theme.black}, 0.5);
-  height: 109px;
-  text-align: center;
-  width: 363px;
 `;
 
 export const RefreshButton = styled.button`
@@ -167,4 +166,10 @@ export const SubHeader = styled.h3<SubHeaderProps>`
 
 export const InlineSubHeader = styled(SubHeader)`
   display: inline;
+`;
+
+export const WrapperDiv = styled.div<WrapperDivProps>`
+  padding: ${props => props.padding || '1rem'};
+  width: ${props => props.width || '30rem'};
+  height: ${props => props.height || '100%'};
 `;
