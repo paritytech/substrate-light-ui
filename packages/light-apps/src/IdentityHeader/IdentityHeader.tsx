@@ -210,6 +210,7 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
   render () {
     return (
       <React.Fragment>
+        <Margin top='large' />
         {this.renderSecondaryMenu()}
         {this.renderPrimaryMenu()}
       </React.Fragment>
@@ -342,8 +343,12 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
   renderSecondaryMenu () {
     const address = this.getAddress();
 
+    const navToManageAddressBook = () => {
+      this.props.history.push(`/addresses/${address}`);
+    };
+
     return (
-      <StackedHorizontal justifyContent='start' alignItems='center'>
+      <StackedHorizontal justifyContent='start' alignItems='flex-start'>
         <Menu stackable secondary>
           <Dropdown
             icon='setting'
@@ -358,9 +363,9 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
               {this.renderForgetConfirmationModal()}
             </Dropdown.Menu>
           </Dropdown>
-          <Menu.Item>
-            <NavLink to={`/addresses/${address}`}> Manage Address Book </NavLink>
-            <Margin left='tiny' />
+          <Menu.Item onClick={navToManageAddressBook}>
+            Manage Address Book
+            <Margin left='small' />
             <Icon color='black' name='address book' />
           </Menu.Item>
         </Menu>
