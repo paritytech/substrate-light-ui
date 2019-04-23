@@ -13,7 +13,7 @@ const { app, BrowserWindow } = electron;
 let mainWindow: Electron.BrowserWindow | undefined;
 
 // https://electronjs.org/docs/tutorial/security#electron-security-warnings
-process.env.ELECTRON_ENABLE_SECURITY_WARNINGS = true;
+process.env.ELECTRON_ENABLE_SECURITY_WARNINGS = 'true';
 
 function createWindow () {
   mainWindow = new BrowserWindow({
