@@ -337,7 +337,7 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
           </Route>
         </Switch>
       </Menu>
-    )
+    );
   }
 
   renderSecondaryMenu () {
@@ -370,6 +370,6 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
           </Menu.Item>
         </Menu>
       </StackedHorizontal>
-    )
+    );
   }
 }
