@@ -2527,13 +2527,13 @@
     util-deprecate "^1.0.2"
 
 "@storybook/addon-links@^4.1.13":
-  version "4.1.16"
-  resolved "https://registry.yarnpkg.com/@storybook/addon-links/-/addon-links-4.1.16.tgz#968d98d062e09ea535ac03a87840c8f84418885d"
-  integrity sha512-quapvYYQbKelFLZonN/gzzdz1F5ywtSw8lxq34uZYbVm/Mi4CunbPV96qiDYN5OAyDHeYqKmUrwBPmFx7faEcQ==
+  version "4.1.18"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-links/-/addon-links-4.1.18.tgz#ad534625baa74c3a5ed97cb430f811a78dfe0f4e"
+  integrity sha512-qWmYl5nJKw8ozH3QdWIZ33MCmiKRBdeSMaY4Pi8v8mzEjTZKxznIFBYpY46uRwE0Rz4dA7/1486zI1r2uju0Xw==
   dependencies:
-    "@storybook/addons" "4.1.16"
-    "@storybook/components" "4.1.16"
-    "@storybook/core-events" "4.1.16"
+    "@storybook/addons" "4.1.18"
+    "@storybook/components" "4.1.18"
+    "@storybook/core-events" "4.1.18"
     core-js "^2.5.7"
     global "^4.3.2"
     prop-types "^15.6.2"
