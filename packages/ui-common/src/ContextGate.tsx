@@ -92,7 +92,6 @@ export class ContextGate extends React.PureComponent<{}, State> {
         switchMap(_ =>
           // Get info about the current chain
           // FIXME Correct types should come from @polkadot/api to avoid type assertion
-          // FIXME combineLatest deprecated: Pass arguments in a single array instead `combineLatest([a, b, c])`
           combineLatest([
             this.api.rpc.system.chain() as Observable<Text>,
             this.api.rpc.system.health() as Observable<Health>,
