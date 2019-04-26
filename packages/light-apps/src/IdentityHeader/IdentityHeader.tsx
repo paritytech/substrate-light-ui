@@ -4,13 +4,17 @@
 
 import FileSaver from 'file-saver';
 import { AppContext, AlertsContext } from '@substrate/ui-common';
-import { Balance, Dropdown, FadedText, Icon, Input, Margin, Menu, Modal, NavLink, Stacked, StackedHorizontal, StyledLinkButton, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
+import { Balance, Dropdown, FadedText, Icon, Input, Margin, Menu, Modal, NavLink, Stacked, StackedHorizontal, StyledLinkButton, WithSpaceAround, WithSpaceBetween, SubHeader } from '@substrate/ui-components';
 import React, { useContext, useState } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 
 import { InputAddress } from './IdentityHeader.styles';
 
-interface Props extends RouteComponentProps { }
+interface MatchParams {
+  currentAccount: string;
+}
+
+interface Props extends RouteComponentProps<MatchParams> { }
 
 export function IdentityHeader (props: Props) {
   const { history } = props;
@@ -46,6 +50,30 @@ export function IdentityHeader (props: Props) {
   const [inputName, setInputName] = useState(name);
   const onChangeInputName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) =>
     setInputName(value);
+  const renderRenameModal = () => {
+    return (
+      <Modal closeOnDimmerClick closeOnEscape open={renameModalOpen} trigger={<Dropdown.Item icon='edit' onClick={openRenameModal} text='Rename Account'/>}>
+        <WithSpaceAround>
+          <Stacked>
+            <Modal.SubHeader>Rename account</Modal.SubHeader>
+            <FadedText>Please enter the new name of the account.</FadedText>
+            <Modal.Actions>
+              <Stacked>
+                <FadedText>Account name</FadedText>
+                <Input onChange={onChangeInputName} type='text' value={inputName} />
+                <StackedHorizontal>
+                  <WithSpaceBetween>
+                    <StyledLinkButton onClick={closeRenameModal}><Icon name='remove' color='red' /> <FadedText>Cancel</FadedText></StyledLinkButton>
+                    <StyledLinkButton onClick={renameCurrentAccount}><Icon name='checkmark' color='green' /> <FadedText>Rename</FadedText></StyledLinkButton>
+                  </WithSpaceBetween>
+                </StackedHorizontal>
+              </Stacked>
+            </Modal.Actions>
+          </Stacked>
+        </WithSpaceAround>
+      </Modal>
+    );
+  };
   const renameCurrentAccount = () => {
     keyring.saveAccountMeta(keyring.getPair(address), { name: inputName });
 
@@ -61,6 +89,28 @@ export function IdentityHeader (props: Props) {
   const [inputPassword, setInputPassword] = useState('');
   const onChangeInputPassword = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) =>
     setInputPassword(value);
+  const renderBackupConfirmationModal = () => {
+    return (
+      <Modal closeOnDimmerClick closeOnEscape open={backupModalOpen} trigger={<Dropdown.Item icon='arrow alternate circle down' onClick={openBackupModal} text='Backup Account' />}>
+        <WithSpaceAround>
+          <Modal.SubHeader> Please Confirm You Want to Backup this Account </Modal.SubHeader>
+          <FadedText>By pressing confirm you will be downloading a JSON keyfile that can later be used to unlock your account. </FadedText>
+          <Modal.Actions>
+            <Stacked>
+              <FadedText> Please encrypt your account first with the account's password. </FadedText>
+              <Input onChange={onChangeInputPassword} type='password' value={inputPassword} />
+              <StackedHorizontal>
+                <WithSpaceBetween>
+                  <StyledLinkButton onClick={closeBackupModal}><Icon name='remove' color='red' /> <FadedText>Cancel</FadedText></StyledLinkButton>
+                  <StyledLinkButton onClick={backupCurrentAccount}><Icon name='checkmark' color='green' /> <FadedText>Confirm Backup</FadedText></StyledLinkButton>
+                </WithSpaceBetween>
+              </StackedHorizontal>
+            </Stacked>
+          </Modal.Actions>
+        </WithSpaceAround>
+      </Modal>
+    );
+  };
   const backupCurrentAccount = () => {
     try {
       const pair = keyring.getPair(address);
@@ -81,6 +131,27 @@ export function IdentityHeader (props: Props) {
   const [forgetModalOpen, setForgetModalOpen] = useState(false);
   const openForgetModal = () => setForgetModalOpen(true);
   const closeForgetModal = () => setForgetModalOpen(false);
+  const renderForgetConfirmationModal = () => {
+
+    return (
+      <Modal closeOnDimmerClick={true} closeOnEscape={true} open={forgetModalOpen} trigger={<Dropdown.Item icon='trash' onClick={openForgetModal} text='Forget Account'/>}>
+        <WithSpaceAround>
+          <Stacked>
+            <Modal.SubHeader> Please Confirm You Want to Forget this Account </Modal.SubHeader>
+            <b>By pressing confirm, you will be removing this account from your Saved Accounts. </b>
+            <Margin top />
+            <FadedText> You can restore this later from your mnemonic phrase or json backup file. </FadedText>
+            <Modal.Actions>
+              <StackedHorizontal>
+                <StyledLinkButton onClick={closeForgetModal}><Icon name='remove' color='red' /> <FadedText> Cancel </FadedText> </StyledLinkButton>
+                <StyledLinkButton onClick={forgetCurrentAccount}><Icon name='checkmark' color='green' /> <FadedText> Confirm Forget </FadedText> </StyledLinkButton>
+              </StackedHorizontal>
+            </Modal.Actions>
+          </Stacked>
+        </WithSpaceAround>
+      </Modal>
+    );
+  };
   const forgetCurrentAccount = () => {
     try {
       // forget it from keyring
@@ -88,94 +159,98 @@ export function IdentityHeader (props: Props) {
 
       closeForgetModal();
 
-      history.push('/identity');
+      history.push('/transfer');
     } catch (e) {
       notifyError(e.message);
     }
   };
 
-  return (
-    <Menu>
-      <Menu.Item>
-        <InputAddress
-          label={null}
-          onChange={changeCurrentAccount}
-          type='account'
-          value={address}
-          withLabel={false}
-        />
-        <Margin left='medium' />
-        <NavLink to='/accounts/add'>
-          Add new account
-          </NavLink>
-      </Menu.Item>
-      <Menu.Item>
-        <Balance address={address} fontSize='medium' />
-      </Menu.Item>
-      <Dropdown
-        icon='setting'
-        item
-        text='Manage account &nbsp;' /* TODO add margin to the icon instead */
-      >
-        <Dropdown.Menu>
-          <Modal closeOnDimmerClick closeOnEscape open={renameModalOpen} trigger={<Dropdown.Item icon='edit' onClick={openRenameModal} text='Rename Account' />}>
-            <WithSpaceAround>
-              <Stacked>
-                <Modal.SubHeader>Rename account</Modal.SubHeader>
-                <FadedText>Please enter the new name of the account.</FadedText>
-                <Modal.Actions>
-                  <Stacked>
-                    <FadedText>Account name</FadedText>
-                    <Input onChange={onChangeInputName} type='text' value={inputName} />
-                    <StackedHorizontal>
-                      <WithSpaceBetween>
-                        <StyledLinkButton onClick={closeRenameModal}><Icon name='remove' color='red' /> <FadedText>Cancel</FadedText></StyledLinkButton>
-                        <StyledLinkButton onClick={renameCurrentAccount}><Icon name='checkmark' color='green' /> <FadedText>Rename</FadedText></StyledLinkButton>
-                      </WithSpaceBetween>
-                    </StackedHorizontal>
-                  </Stacked>
-                </Modal.Actions>
+  const renderPrimaryMenu = () => {
+    return (
+      <Menu stackable>
+        <Switch>
+          <Route path={['/transfer']}>
+            <Menu.Item>
+              <Stacked alignItems='flex-end'>
+                <InputAddress
+                  label={null}
+                  onChange={changeCurrentAccount}
+                  type='account'
+                  value={address}
+                  withLabel={false}
+                />
+                <Margin top='small' />
+                <Balance address={address} fontSize='medium' />
               </Stacked>
-            </WithSpaceAround>
-          </Modal>
-          <Modal closeOnDimmerClick closeOnEscape open={backupModalOpen} trigger={<Dropdown.Item icon='arrow alternate circle down' onClick={openBackupModal} text='Backup Account' />}>
-            <WithSpaceAround>
-              <Stacked>
-                <Modal.SubHeader> Please Confirm You Want to Backup this Account </Modal.SubHeader>
-                <FadedText>By pressing confirm you will be downloading a JSON keyfile that can later be used to unlock your account. </FadedText>
-                <Modal.Actions>
-                  <Stacked>
-                    <FadedText> Please encrypt your account first with the account's password. </FadedText>
-                    <Input onChange={onChangeInputPassword} type='password' value={inputPassword} />
-                    <StackedHorizontal>
-                      <WithSpaceBetween>
-                        <StyledLinkButton onClick={closeBackupModal}><Icon name='remove' color='red' /> <FadedText>Cancel</FadedText></StyledLinkButton>
-                        <StyledLinkButton onClick={backupCurrentAccount}><Icon name='checkmark' color='green' /> <FadedText>Confirm Backup</FadedText></StyledLinkButton>
-                      </WithSpaceBetween>
-                    </StackedHorizontal>
-                  </Stacked>
-                </Modal.Actions>
-              </Stacked>
-            </WithSpaceAround>
-          </Modal>
-          <Modal closeOnDimmerClick={true} closeOnEscape={true} open={forgetModalOpen} trigger={<Dropdown.Item icon='trash' onClick={openForgetModal} text='Forget Account' />}>
-            <WithSpaceAround>
-              <Stacked>
-                <Modal.SubHeader> Please Confirm You Want to Forget this Account </Modal.SubHeader>
-                <b>By pressing confirm, you will be removing this account from your Saved Accounts. </b>
-                <Margin top />
-                <FadedText> You can restore this later from your mnemonic phrase or json backup file. </FadedText>
-                <Modal.Actions>
-                  <StackedHorizontal>
-                    <StyledLinkButton onClick={closeForgetModal}><Icon name='remove' color='red' /> <FadedText> Cancel </FadedText> </StyledLinkButton>
-                    <StyledLinkButton onClick={forgetCurrentAccount}><Icon name='checkmark' color='green' /> <FadedText> Confirm Forget </FadedText> </StyledLinkButton>
-                  </StackedHorizontal>
-                </Modal.Actions>
-              </Stacked>
-            </WithSpaceAround>
-          </Modal>
-        </Dropdown.Menu>
-      </Dropdown>
-    </Menu>
+            </Menu.Item>
+            <Menu.Item>
+              <NavLink to={`/accounts/${address}/add`}>
+                Add an Account <Icon name='plus' />
+              </NavLink>
+            </Menu.Item>
+            <Menu.Menu position='right'>
+              <Dropdown
+                icon='setting'
+                position='right'
+                item
+                pointing
+                text='Manage Account &nbsp;' /* TODO add margin to the icon instead */
+              >
+                <Dropdown.Menu>
+                  {renderRenameModal()}
+                  {renderBackupConfirmationModal()}
+                  {renderForgetConfirmationModal()}
+                </Dropdown.Menu>
+              </Dropdown>
+            </Menu.Menu>
+          </Route>
+          <Route path='/addresses'>
+            <Menu.Item><FadedText>Manage Address Book</FadedText></Menu.Item>
+            <Menu.Item><SubHeader>Inspect the status of any identity and name it for later use</SubHeader></Menu.Item>
+          </Route>
+          <Route path='/accounts'>
+            <Menu.Item><FadedText>Add Account</FadedText></Menu.Item>
+            <Menu.Item><SubHeader>Create a new account from a generated mnemonic seed, or import via your JSON backup file/mnemonic phrase. </SubHeader></Menu.Item>
+          </Route>
+        </Switch>
+      </Menu>
+    );
+  };
+
+  const renderSecondaryMenu = () => {
+    const navToManageAddressBook = () => {
+      history.push(`/addresses/${address}`);
+    };
+
+    const navToTransfer = () => {
+      history.push(`/transfer/${address}`);
+    };
+
+    return (
+      <StackedHorizontal justifyContent='start' alignItems='flex-start'>
+        <Menu stackable secondary>
+          <Menu.Item onClick={navToTransfer}>
+            Transfer Balance
+            <Margin left='small' />
+            <Icon color='black' name='arrow right' />
+          </Menu.Item>
+          <Menu.Item onClick={navToManageAddressBook}>
+            Manage Address Book
+            <Margin left='small' />
+            <Icon color='black' name='address book' />
+          </Menu.Item>
+        </Menu>
+      </StackedHorizontal>
+    );
+  };
+
+  const renderHeader = () => (
+    <React.Fragment>
+      <Margin top='big' />
+      {renderSecondaryMenu()}
+      {renderPrimaryMenu()}
+    </React.Fragment>
   );
+
+  return renderHeader();
 }

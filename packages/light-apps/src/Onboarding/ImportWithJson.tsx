@@ -5,8 +5,6 @@ import { AlertsContext } from '@substrate/ui-common';
 import { InputFile, Modal, NavLink, Stacked } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { AppContext } from '@substrate/ui-common';
-import { InputFile, Modal, NavLink, Stacked } from '@substrate/ui-components';
 
 interface Props extends RouteComponentProps { }
 

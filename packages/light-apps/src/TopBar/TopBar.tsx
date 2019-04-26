@@ -4,7 +4,7 @@
 
 import { Header } from '@polkadot/types';
 import { AppContext } from '@substrate/ui-common';
-import { FadedText, NavLink, StackedHorizontal, Margin } from '@substrate/ui-components';
+import { FadedText, FlexItem, NavLink, StackedHorizontal, Margin } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';
 import { Observable } from 'rxjs';
 
@@ -29,18 +29,18 @@ export function TopBar (props: Props) {
   return (
     <header>
         <Margin top='big' />
-          <FlexItem>
-            <NodeStatus isSyncing={isSyncing} />
-        <StackedHorizontal justifyContent='space-between' alignItems='flex-end'>
-          </FlexItem>
-            <FadedText> {name} {version} </FadedText>
-          <FlexItem>
-          </FlexItem>
-            <NavLink to='/'> <img src={substrateLogo} width={150} /> </NavLink>
-            <BlockCounter blockNumber={blockNumber} chainName={chain} />
-          <FlexItem>
-          </FlexItem>
-        </StackedHorizontal>
+          <StackedHorizontal justifyContent='space-between' alignItems='flex-end'>
+            <FlexItem>
+              <NodeStatus isSyncing={isSyncing} />
+            </FlexItem>
+            <FlexItem>
+              <NavLink to='/'> <img src={substrateLogo} width={150} /> </NavLink>
+              <FadedText> {name} {version} </FadedText>
+            </FlexItem>
+            <FlexItem>
+              <BlockCounter blockNumber={blockNumber} chainName={chain} />
+            </FlexItem>
+          </StackedHorizontal>
       </header>
   );
 }

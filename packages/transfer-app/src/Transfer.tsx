@@ -7,7 +7,7 @@ import addressObservable from '@polkadot/ui-keyring/observable/addresses';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Subscribe, TxQueueContext } from '@substrate/ui-common';
-import { Container, Header } from '@substrate/ui-components';
+import { WalletCard } from '@substrate/ui-components';
 import React, { useContext } from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 
