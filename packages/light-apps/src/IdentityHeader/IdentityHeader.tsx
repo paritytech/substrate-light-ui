@@ -314,6 +314,26 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
                 <Balance address={address} fontSize='medium' />
               </Stacked>
             </Menu.Item>
+            <Menu.Item>
+              <NavLink to={`/accounts/${address}/add`}>
+                Add an Account <Icon name='plus' />
+              </NavLink>
+            </Menu.Item>
+            <Menu.Menu position='right'>
+              <Dropdown
+                icon='setting'
+                position='right'
+                item
+                pointing
+                text='Manage Account &nbsp;' /* TODO add margin to the icon instead */
+              >
+                <Dropdown.Menu>
+                  {this.renderRenameModal()}
+                  {this.renderBackupConfirmationModal()}
+                  {this.renderForgetConfirmationModal()}
+                </Dropdown.Menu>
+              </Dropdown>
+            </Menu.Menu>
           </Route>
           <Route path='/addresses'>
             <Menu.Item><FadedText>Manage Address Book</FadedText></Menu.Item>
@@ -324,30 +344,6 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
             <Menu.Item><SubHeader>Create a new account from a generated mnemonic seed, or import via your JSON backup file/mnemonic phrase. </SubHeader></Menu.Item>
           </Route>
         </Switch>
-        <Switch>
-          <Route path='/transfer'>
-            <Menu.Item>
-              <NavLink to={`/accounts/${address}/add`}>
-                Add an Account <Icon name='plus' />
-              </NavLink>
-            </Menu.Item>
-          </Route>
-        </Switch>
-        <Menu.Menu position='right'>
-          <Dropdown
-            icon='setting'
-            position='right'
-            item
-            pointing
-            text='Manage Account &nbsp;' /* TODO add margin to the icon instead */
-          >
-            <Dropdown.Menu>
-              {this.renderRenameModal()}
-              {this.renderBackupConfirmationModal()}
-              {this.renderForgetConfirmationModal()}
-            </Dropdown.Menu>
-          </Dropdown>
-        </Menu.Menu>
       </Menu>
     );
   }
