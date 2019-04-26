@@ -10,7 +10,6 @@ import { Observable } from 'rxjs';
 
 import { BlockCounter, NodeStatus } from './TopBar.styles';
 import substrateLogo from '@polkadot/ui-assets/parity-substrate.svg';
-import { Link, Route, Switch } from 'react-router-dom';
 
 interface Props {}
 
@@ -29,39 +28,19 @@ export function TopBar (props: Props) {
 
   return (
     <header>
-      <Margin top='medium' />
-      <StackedHorizontal justifyContent='space-between' alignItems='flex-end'>
-        <div>
-          <StackedHorizontal alignItems='flex-end'>
-            <div>
-              <NavLink to='/'>
-                <img
-                  src={substrateLogo}
-                  width={150}
-                />
-              </NavLink>
-              <FadedText> {name} {version} </FadedText>
-            </div>
-            <Margin left='medium' />
-            <div>
-              <NodeStatus isSyncing={isSyncing} />
-              <BlockCounter blockNumber={blockNumber} chainName={chain} />
-            </div>
-          </StackedHorizontal>
-        </div>
-        <Switch>
-          <Route path={['/addresses', '/accounts/add']}>
-            <Link to={`/`}>
-              Back
-              </Link>
-          </Route>
-          <Route>
-            <Link to={`/addresses`}>
-              Manage address book
-              </Link>
-          </Route>
-        </Switch>
-      </StackedHorizontal>
-    </header>
+        <Margin top='big' />
+          <FlexItem>
+            <NodeStatus isSyncing={isSyncing} />
+        <StackedHorizontal justifyContent='space-between' alignItems='flex-end'>
+          </FlexItem>
+            <FadedText> {name} {version} </FadedText>
+          <FlexItem>
+          </FlexItem>
+            <NavLink to='/'> <img src={substrateLogo} width={150} /> </NavLink>
+            <BlockCounter blockNumber={blockNumber} chainName={chain} />
+          <FlexItem>
+          </FlexItem>
+        </StackedHorizontal>
+      </header>
   );
 }

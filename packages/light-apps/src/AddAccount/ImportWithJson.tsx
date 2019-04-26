@@ -6,6 +6,8 @@ import { AppContext, AlertsContext } from '@substrate/ui-common';
 import { Input, InputFile, Margin, NavButton, Stacked, SubHeader, WrapperDiv } from '@substrate/ui-components';
 import React, { useState, useContext } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
+import { AppContext } from '@substrate/ui-common';
+import { Input, InputFile, Margin, NavButton, Stacked, SubHeader, WrapperDiv } from '@substrate/ui-components';
 
 type Step = 'upload' | 'password';
 
@@ -48,7 +50,7 @@ export function ImportWithJson (props: Props) {
 
       let pair = keyring.restoreAccount(json, inputPassword);
 
-      history.push(`/identity/${pair.address()}`);
+      history.push(`/transfer/${pair.address()}`);
     } catch (e) {
       enqueue({
         content: e.message,

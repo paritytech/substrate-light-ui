@@ -25,9 +25,7 @@ export function Transfer (props: Props) {
   const { txQueue } = useContext(TxQueueContext);
 
   return (
-    <Container>
-      <Header>Transfer Balance</Header>
-
+    <WalletCard header='Transfer Balance' height='100%'>
       <Switch>
         <Route exact path='/transfer/:currentAccount/' render={({ match: { params: { currentAccount } } }) => (
           <Subscribe>
@@ -53,6 +51,6 @@ export function Transfer (props: Props) {
           : <Route path='/transfer/:currentAccount/:recipientAddress' component={SendBalance} />
         }
       </Switch>
-    </Container>
+    </WalletCard>
   );
 }
