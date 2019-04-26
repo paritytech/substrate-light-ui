@@ -30,10 +30,10 @@ export function Transfer (props: Props) {
         <Route exact path='/transfer/:currentAccount/' render={({ match: { params: { currentAccount } } }) => (
           <Subscribe>
             {
-              combineLatest(
+              combineLatest([
                 accounts.subject,
                 addressObservable.subject
-              )
+              ])
                 .pipe(
                   map(([accounts, addresses]) => [
                     ...Object.values(accounts).map(account => account.json.address),

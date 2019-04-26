@@ -34,7 +34,7 @@ export function TopBar (props: Props) {
               <NodeStatus isSyncing={isSyncing} />
             </FlexItem>
             <FlexItem>
-              <NavLink to='/'> <img src={substrateLogo} width={150} /> </NavLink>
+              <NavLink to='/'> <img alt='Parity Substrate Logo' src={substrateLogo} width={150} /> </NavLink>
               <FadedText> {name} {version} </FadedText>
             </FlexItem>
             <FlexItem>
