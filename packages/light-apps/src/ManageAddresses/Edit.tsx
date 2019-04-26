@@ -2,28 +2,29 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Margin, WalletCard } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
+import { Margin, NavLink, Stacked, SubHeader } from '@substrate/ui-components';
 
 import { SaveAddress } from './SaveAddress';
 
 interface MatchParams {
-  address: string;
+  currentAccount: string;
+  editAddress: string;
 }
 
 interface Props extends RouteComponentProps<MatchParams> { }
 
 export class Edit extends React.PureComponent<Props> {
   render () {
-    const { match: { params: { address } } } = this.props;
+    const { match: { params: { currentAccount, editAddress } } } = this.props;
     return (
-      <WalletCard
-        header='Edit Address'
-        subheader='Inspect the status of any identity and name it for later use' >
+      <Stacked>
+        <SubHeader> Rename this address in your address book. </SubHeader>
         <Margin top />
-        <SaveAddress addressDisabled defaultAddress={address} />
-      </WalletCard>
+        <NavLink to={`/addresses/${currentAccount}`}> Add a New Address </NavLink>
+        <SaveAddress addressDisabled defaultAddress={editAddress} />
+      </Stacked>
     );
   }
 }

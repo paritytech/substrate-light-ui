@@ -3,14 +3,13 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { BlockNumber, Header } from '@polkadot/types';
-import { AppContext } from '@substrate/ui-common';
-import { FadedText, FlexItem, Margin, NavLink, StackedHorizontal } from '@substrate/ui-components';
 import React from 'react';
 import { Observable, Subscription } from 'rxjs';
+import { AppContext } from '@substrate/ui-common';
+import { FadedText, FlexItem, Margin, NavLink, StackedHorizontal } from '@substrate/ui-components';
 
 import { BlockCounter, NodeStatus } from './TopBar.styles';
 import substrateLogo from '@polkadot/ui-assets/parity-substrate.svg';
-import { Link, Route, Switch } from 'react-router-dom';
 
 type State = {
   blockNumber?: BlockNumber,
@@ -66,11 +65,6 @@ export class TopBar extends React.PureComponent<{}, State> {
       <header>
         <Margin top='big' />
         <StackedHorizontal justifyContent='space-between' alignItems='flex-end'>
-          <Switch>
-            <Route path={['/addresses','/accounts/add']}>
-              <Link to={`/`}> Back </Link>
-            </Route>
-          </Switch>
           <FlexItem>
             <NodeStatus isSyncing={isSyncing} />
             <FadedText> {name} {version} </FadedText>

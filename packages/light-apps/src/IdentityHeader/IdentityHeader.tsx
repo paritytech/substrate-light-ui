@@ -4,22 +4,25 @@
 
 import FileSaver from 'file-saver';
 import { BlockNumber, Header } from '@polkadot/types';
-import { AppContext } from '@substrate/ui-common';
-import { Balance, Dropdown, FadedText, Icon, Input, Margin, Menu, Modal, NavLink, Stacked, StackedHorizontal, StyledLinkButton, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
 import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { Observable, Subscription } from 'rxjs';
+import { AppContext } from '@substrate/ui-common';
+import { Balance, Dropdown, FadedText, Icon, Input, Margin, Menu, Modal, NavLink, Stacked, StackedHorizontal, StyledLinkButton, SubHeader, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
 
 import { InputAddress } from './IdentityHeader.styles';
 
-interface Props extends RouteComponentProps { }
+interface MatchParams {
+  currentAccount: string;
+}
+
+interface Props extends RouteComponentProps<MatchParams> { }
 
 type State = {
   blockNumber?: BlockNumber,
   renameModalOpen: boolean,
   backupModalOpen: boolean,
   forgetModalOpen: boolean,
-  name: string,
   newName: string,
   error?: string,
   success?: string,
@@ -35,7 +38,6 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
     backupModalOpen: false,
     forgetModalOpen: false,
     renameModalOpen: false,
-    name: '',
     newName: '',
     password: ''
   };
@@ -43,17 +45,7 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
   chainHeadSub?: Subscription;
 
   componentDidMount () {
-    const { keyring } = this.context;
-
     this.subscribeChainHead();
-
-    const address = this.getAddress();
-    const name = keyring.getPair(address).getMeta().name;
-
-    this.setState({
-      name,
-      newName: name
-    });
   }
 
   componentDidUpdate (prevProps: Props) {
@@ -73,19 +65,6 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
       this.chainHeadSub.unsubscribe();
       this.chainHeadSub = undefined;
     }
-  }
-
-  renameCurrentAccount = () => {
-    const { keyring } = this.context;
-    const { newName } = this.state;
-    const address = this.getAddress();
-
-    keyring.saveAccountMeta(keyring.getPair(address), { name: newName });
-
-    this.setState({ name: newName }, () => {
-      this.closeRenameModal();
-      this.onSuccess('Successfully renamed account!');
-    });
   }
 
   backupCurrentAccount = () => {
@@ -108,23 +87,6 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
     }
   }
 
-  forgetCurrentAccount = () => {
-    const { keyring } = this.context;
-    const { history } = this.props;
-    const address = this.getAddress();
-
-    try {
-      // forget it from keyring
-      keyring.forgetAccount(address);
-
-      this.closeForgetModal();
-
-      history.push('/identity');
-    } catch (e) {
-      this.onError(e.message);
-    }
-  }
-
   closeBackupModal = () => {
     this.setState({
       backupModalOpen: false,
@@ -138,13 +100,31 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
 
   closeRenameModal = () => {
     this.setState({
-      renameModalOpen: false,
-      newName: this.state.name
+      renameModalOpen: false
     });
   }
 
+  forgetCurrentAccount = () => {
+    const { keyring } = this.context;
+    const { history } = this.props;
+    const address = this.getAddress();
+
+    try {
+      // forget it from keyring
+      keyring.forgetAccount(address);
+
+      this.closeForgetModal();
+
+      history.push('/transfer');
+    } catch (e) {
+      this.onError(e.message);
+    }
+  }
+
   getAddress = () => {
-    return this.props.location.pathname.split('/')[2];
+    const { match: { params: { currentAccount } } } = this.props;
+
+    return currentAccount;
   }
 
   getName = () => {
@@ -198,6 +178,20 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
     this.setState({ forgetModalOpen: true });
   }
 
+  renameCurrentAccount = () => {
+    const { keyring } = this.context;
+    const { newName } = this.state;
+    const address = this.getAddress();
+
+    try {
+      keyring.saveAccountMeta(keyring.getPair(address), { name: newName });
+
+      this.closeRenameModal();
+      this.onSuccess('Successfully renamed account!');
+    } catch (e) {
+      this.onError(e.message);
+    }
+  }
   /* Note: this violates the "order functions alphabetically" rule of thumb, but makes it more readable
      to have it all in the same place. Also, it is down here as openBackupModal and openForgetModal need
      to be initialized first else tsc will complain.
@@ -214,71 +208,12 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const address = this.getAddress();
-
     return (
-      <Menu>
-        <Menu.Item>
-          <InputAddress
-            label={null}
-            onChange={this.handleChangeCurrentAccount}
-            type='account'
-            value={address}
-            withLabel={false}
-          />
-          <Margin left='medium' />
-          <Balance address={address} fontSize='medium' />
-          <Margin left='medium' />
-          <NavLink to='/accounts/add'>
-            <Icon name='plus' />
-          </NavLink>
-        </Menu.Item>
-        <Menu.Menu position='right'>
-          <Dropdown
-            icon='setting'
-            item
-            pointing
-            text='Manage Account &nbsp;' /* TODO add margin to the icon instead */
-          >
-            <Dropdown.Menu>
-              {this.renderRenameModal()}
-              {this.renderBackupConfirmationModal()}
-              {this.renderForgetConfirmationModal()}
-            </Dropdown.Menu>
-          </Dropdown>
-          <Menu.Item>
-            <NavLink to='/addresses'> Manage Addresses </NavLink>
-            <Icon name='address book' />
-          </Menu.Item>
-        </Menu.Menu>
-      </Menu>
-    );
-  }
-
-  renderRenameModal () {
-    const { renameModalOpen, newName } = this.state;
-
-    return (
-      <Modal closeOnDimmerClick closeOnEscape open={renameModalOpen} trigger={this.renameTrigger}>
-        <WithSpaceAround>
-          <Stacked>
-            <Modal.SubHeader>Rename account</Modal.SubHeader>
-            <FadedText>Please enter the new name of the account.</FadedText>
-            <Modal.Actions>
-              <Stacked>
-                <FadedText>Account name</FadedText>
-                <Input onChange={this.onChangeName} type='text' value={newName} />
-                <StackedHorizontal>
-                  <WithSpaceBetween>
-                    <StyledLinkButton onClick={this.closeRenameModal}><Icon name='remove' color='red' /> <FadedText>Cancel</FadedText></StyledLinkButton>
-                    <StyledLinkButton onClick={this.renameCurrentAccount}><Icon name='checkmark' color='green' /> <FadedText>Rename</FadedText></StyledLinkButton>
-                  </WithSpaceBetween>
-                </StackedHorizontal>
-              </Stacked>
-            </Modal.Actions>
-          </Stacked>
-        </WithSpaceAround>
-      </Modal>
+      <React.Fragment>
+        <Margin top='large' />
+        {this.renderSecondaryMenu()}
+        {this.renderPrimaryMenu()}
+      </React.Fragment>
     );
   }
 
@@ -329,6 +264,117 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
           </Stacked>
         </WithSpaceAround>
       </Modal>
+    );
+  }
+
+  renderRenameModal () {
+    const { renameModalOpen, newName } = this.state;
+
+    return (
+      <Modal closeOnDimmerClick closeOnEscape open={renameModalOpen} trigger={this.renameTrigger}>
+        <WithSpaceAround>
+          <Stacked>
+            <Modal.SubHeader>Rename account</Modal.SubHeader>
+            <FadedText>Please enter the new name of the account.</FadedText>
+            <Modal.Actions>
+              <Stacked>
+                <FadedText>Account name</FadedText>
+                <Input onChange={this.onChangeName} type='text' value={newName} />
+                <StackedHorizontal>
+                  <WithSpaceBetween>
+                    <StyledLinkButton onClick={this.closeRenameModal}><Icon name='remove' color='red' /> <FadedText>Cancel</FadedText></StyledLinkButton>
+                    <StyledLinkButton onClick={this.renameCurrentAccount}><Icon name='checkmark' color='green' /> <FadedText>Rename</FadedText></StyledLinkButton>
+                  </WithSpaceBetween>
+                </StackedHorizontal>
+              </Stacked>
+            </Modal.Actions>
+          </Stacked>
+        </WithSpaceAround>
+      </Modal>
+    );
+  }
+
+  renderPrimaryMenu () {
+    const address = this.getAddress();
+
+    return (
+      <Menu stackable>
+        <Switch>
+          <Route path={['/transfer']}>
+            <Menu.Item>
+              <Stacked alignItems='flex-end'>
+                <InputAddress
+                  label={null}
+                  onChange={this.handleChangeCurrentAccount}
+                  type='account'
+                  value={address}
+                  withLabel={false}
+                />
+                <Margin top='small' />
+                <Balance address={address} fontSize='medium' />
+              </Stacked>
+            </Menu.Item>
+            <Menu.Item>
+              <NavLink to={`/accounts/${address}/add`}>
+                Add an Account <Icon name='plus' />
+              </NavLink>
+            </Menu.Item>
+            <Menu.Menu position='right'>
+              <Dropdown
+                icon='setting'
+                position='right'
+                item
+                pointing
+                text='Manage Account &nbsp;' /* TODO add margin to the icon instead */
+              >
+                <Dropdown.Menu>
+                  {this.renderRenameModal()}
+                  {this.renderBackupConfirmationModal()}
+                  {this.renderForgetConfirmationModal()}
+                </Dropdown.Menu>
+              </Dropdown>
+            </Menu.Menu>
+          </Route>
+          <Route path='/addresses'>
+            <Menu.Item><FadedText>Manage Address Book</FadedText></Menu.Item>
+            <Menu.Item><SubHeader>Inspect the status of any identity and name it for later use</SubHeader></Menu.Item>
+          </Route>
+          <Route path='/accounts'>
+            <Menu.Item><FadedText>Add Account</FadedText></Menu.Item>
+            <Menu.Item><SubHeader>Create a new account from a generated mnemonic seed, or import via your JSON backup file/mnemonic phrase. </SubHeader></Menu.Item>
+          </Route>
+        </Switch>
+      </Menu>
+    );
+  }
+
+  renderSecondaryMenu () {
+    const { history } = this.props;
+    const address = this.getAddress();
+
+    const navToManageAddressBook = () => {
+      history.push(`/addresses/${address}`);
+    };
+
+    const navToTransfer = () => {
+      history.push(`/transfer/${address}`);
+    };
+
+    return (
+      <StackedHorizontal justifyContent='start' alignItems='flex-start'>
+        <Menu stackable secondary>
+          <Menu.Item onClick={navToTransfer}>
+            Transfer Balance
+            <Margin left='small' />
+            <Icon color='black' name='arrow right' />
+          </Menu.Item>
+          <Menu.Item onClick={navToManageAddressBook}>
+            Manage Address Book
+            <Margin left='small' />
+            <Icon color='black' name='address book' />
+          </Menu.Item>
+        </Menu>
+      </StackedHorizontal>
     );
   }
 }

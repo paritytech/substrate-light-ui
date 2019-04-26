@@ -92,13 +92,13 @@ export class ContextGate extends React.PureComponent<{}, State> {
         switchMap(_ =>
           // Get info about the current chain
           // FIXME Correct types should come from @polkadot/api to avoid type assertion
-          combineLatest(
-            (this.api.rpc.system.chain() as Observable<Text>),
-            (this.api.rpc.system.health() as Observable<Health>),
-            (this.api.rpc.system.name() as Observable<Text>),
-            (this.api.rpc.system.properties() as Observable<ChainProperties>),
-            (this.api.rpc.system.version() as Observable<Text>)
-          )
+          combineLatest([
+            this.api.rpc.system.chain() as Observable<Text>,
+            this.api.rpc.system.health() as Observable<Health>,
+            this.api.rpc.system.name() as Observable<Text>,
+            this.api.rpc.system.properties() as Observable<ChainProperties>,
+            this.api.rpc.system.version() as Observable<Text>
+          ])
         )
       )
       .subscribe(([chain, health, name, properties, version]) => {

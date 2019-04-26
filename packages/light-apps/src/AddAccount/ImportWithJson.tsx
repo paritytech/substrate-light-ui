@@ -2,10 +2,10 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AppContext } from '@substrate/ui-common';
-import { Input, InputFile, Margin, NavButton, Stacked, SubHeader, WrapperDiv } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
+import { AppContext } from '@substrate/ui-common';
+import { Input, InputFile, Margin, NavButton, Stacked, SubHeader, WrapperDiv } from '@substrate/ui-components';
 
 interface Props extends RouteComponentProps { }
 
@@ -60,7 +60,7 @@ export class ImportWithJson extends React.PureComponent<Props, State> {
 
       let pair = keyring.restoreAccount(json, password);
 
-      history.push(`/identity/${pair.address()}`);
+      history.push(`/transfer/${pair.address()}`);
     } catch (e) {
       alertStore.enqueue({
         content: e.message,
