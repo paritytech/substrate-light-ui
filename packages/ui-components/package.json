@@ -25,7 +25,7 @@
   },
   "peerDependencies": {
     "@substrate/ui-common": "^0.1.0",
-    "react": "^16.6.3"
+    "react": "^16.8"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^4.1.13",

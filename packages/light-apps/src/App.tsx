@@ -12,6 +12,7 @@ import { ThemeProvider } from 'styled-components';
 import { Alerts } from './Alerts';
 import { Content } from './Content';
 import { TopBar } from './TopBar';
+import { TxQueueNotifier } from './TxQueueNotifier';
 
 export class App extends React.PureComponent {
   render () {
@@ -31,6 +32,7 @@ export class App extends React.PureComponent {
                       Connecting to the node...
                     </Loading>}
               </AppContext.Consumer>
+              <TxQueueNotifier />
               <Alerts />
             </React.Fragment>
           </BrowserRouter >

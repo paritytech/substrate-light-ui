@@ -2,97 +2,81 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AppContext } from '@substrate/ui-common';
+import { AppContext, AlertsContext } from '@substrate/ui-common';
 import { Input, InputFile, Margin, NavButton, Stacked, SubHeader, WrapperDiv } from '@substrate/ui-components';
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
+
+type Step = 'upload' | 'password';
 
 interface Props extends RouteComponentProps { }
 
-type State = {
-  jsonString: string,
-  password: string,
-  step: 'upload' | 'password'
-};
+export function ImportWithJson (props: Props) {
+  const { history } = props;
 
-export class ImportWithJson extends React.PureComponent<Props, State> {
-  static contextType = AppContext;
+  const { enqueue } = useContext(AlertsContext);
+  const { keyring } = useContext(AppContext);
 
-  context!: React.ContextType<typeof AppContext>;
+  const [step, setStep]: [Step, (step: Step) => void] = useState('upload' as Step);
+  const [inputPassword, setInputPassword] = useState('');
+  const [jsonString, setJsonString] = useState('');
 
-  state: State = {
-    jsonString: '',
-    password: '',
-    step: 'upload'
-  };
-
-  handleFileUploaded = async (file: string | null) => {
+  const handleFileUploaded = async (file: string | null) => {
     try {
       if (!file) {
         throw new Error('File was empty. Make sure you uploaded the correct file and try again.');
       }
 
-      this.setState({
-        jsonString: file,
-        step: 'password'
-      });
+      setJsonString(file);
+      setStep('password');
     } catch (e) {
-      this.context.alertStore.enqueue({
+      enqueue({
         content: e.message,
         type: 'error'
       });
     }
-  }
+  };
 
-  handlePasswordChange = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      password: value
-    });
-  }
+  const handlePasswordChange = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    setInputPassword(value);
+  };
 
-  handleRestoreWithJson = () => {
-    const { alertStore, keyring } = this.context;
-    const { jsonString, password } = this.state;
-    const { history } = this.props;
+  const handleRestoreWithJson = () => {
 
     try {
       const json = JSON.parse(jsonString);
 
-      let pair = keyring.restoreAccount(json, password);
+      let pair = keyring.restoreAccount(json, inputPassword);
 
       history.push(`/identity/${pair.address()}`);
     } catch (e) {
-      alertStore.enqueue({
+      enqueue({
         content: e.message,
         type: 'error'
       });
     }
-  }
+  };
 
-  render () {
-    const { step } = this.state;
-
-    return (
-      <Stacked>
-        <SubHeader> Restore Account from JSON Backup File </SubHeader>
-        {
-          step === 'upload'
-            ? <InputFile onChange={this.handleFileUploaded} />
-            : (
-              <React.Fragment>
-                <WrapperDiv>
-                  <Input
-                    fluid
-                    label='Password'
-                    onChange={this.handlePasswordChange}
-                    type='password' />
-                </WrapperDiv>
-                <Margin top />
-                <NavButton onClick={this.handleRestoreWithJson} value='Restore' />
-              </React.Fragment>
-            )
-        }
-      </Stacked>
-    );
-  }
+  return (
+    <Stacked>
+      <SubHeader> Restore Account from JSON Backup File </SubHeader>
+      {
+        step === 'upload'
+          ? <InputFile onChange={handleFileUploaded} />
+          : (
+            <React.Fragment>
+              <WrapperDiv>
+                <Input
+                  fluid
+                  label='Password'
+                  onChange={handlePasswordChange}
+                  type='password' />
+              </WrapperDiv>
+              <Margin top />
+              <NavButton onClick={handleRestoreWithJson} value='Restore' />
+            </React.Fragment>
+          )
+      }
+    </Stacked>
+  );
 }

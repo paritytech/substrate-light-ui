@@ -10,13 +10,13 @@ import React from 'react';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
 
-import { Alert, AlertStore, AlertWithoutId, dequeue, enqueue } from './alerts';
 import { AppContext, System } from './AppContext';
 import { isTestChain } from './util';
+import { AlertsContextProvider } from './AlertsContext';
+import { TxQueueContextProvider } from './TxQueueContext';
 
 // Holds the state for all the contexts
 interface State {
-  alertStore: AlertStore;
   isReady: boolean;
   system: System;
 }
@@ -58,16 +58,9 @@ const l = logger('ui-common');
 // FIXME we could probably split this out into small modular contexts once we
 // use https://reactjs.org/docs/hooks-reference.html#usecontext
 export class ContextGate extends React.PureComponent<{}, State> {
-  /**
-   * Hold an internal counter of alerts, see:
-   * https://github.com/paritytech/substrate-light-ui/pull/253#discussion_r272556331
-   */
-  alertStoreCount = 0;
-
   api = new ApiRx();
 
   state: State = {
-    alertStore: this.alertStoreCreate([]),
     ...DISCONNECTED_STATE_PROPERTIES
   };
 
@@ -134,45 +127,21 @@ export class ContextGate extends React.PureComponent<{}, State> {
       });
   }
 
-  alertStoreCreate (alerts: Alert[]): AlertStore {
-    return {
-      alerts,
-      dequeue: () => this.alertStoreDequeue(),
-      enqueue: (newItem: Alert) => this.alertStoreEnqueue(newItem)
-    };
-  }
-
-  alertStoreDequeue = () => {
-    this.setState((state) => ({
-      ...state,
-      alertStore: this.alertStoreCreate(dequeue(state.alertStore.alerts))
-    }));
-  }
-
-  alertStoreEnqueue = (newItem: AlertWithoutId) => {
-    ++this.alertStoreCount;
-
-    this.setState((state) => ({
-      ...state,
-      alertStore: this.alertStoreCreate(enqueue(state.alertStore.alerts, {
-        ...newItem,
-        id: this.alertStoreCount
-      }))
-    }));
-  }
-
   render () {
     const { children } = this.props;
-    const { alertStore, isReady, system } = this.state;
+    const { isReady, system } = this.state;
 
-    return <AppContext.Provider value={{
-      alertStore,
-      api: this.api,
-      isReady,
-      keyring,
-      system
-    }}>
-      {children}
-    </AppContext.Provider>;
+    return <AlertsContextProvider>
+      <TxQueueContextProvider>
+      <AppContext.Provider value={{
+        api: this.api,
+        isReady,
+        keyring,
+        system
+      }}>
+        {children}
+      </AppContext.Provider>
+      </TxQueueContextProvider>
+    </AlertsContextProvider>;
   }
 }
