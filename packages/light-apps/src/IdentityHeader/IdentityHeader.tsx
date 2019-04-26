@@ -300,31 +300,28 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
     return (
       <Menu stackable>
         <Switch>
-          <Route path={['/addresses', '/accounts']}>
+          <Route path={['/transfer']}>
             <Menu.Item>
-              <Margin top='tiny' />
-              <NavLink to={`/`}> <Icon name='arrow left' /> </NavLink>
-            </Menu.Item>
-          </Route>
-        </Switch>
-        <Switch>
-          <Route path={['/accounts', '/transfer']}>
-            <Menu.Item>
-              <InputAddress
-                label={null}
-                onChange={this.handleChangeCurrentAccount}
-                type='account'
-                value={address}
-                withLabel={false}
-              />
-              <Margin left='medium' />
-              <Balance address={address} fontSize='medium' />
-              <Margin left='medium' />
+              <Stacked alignItems='flex-end'>
+                <InputAddress
+                  label={null}
+                  onChange={this.handleChangeCurrentAccount}
+                  type='account'
+                  value={address}
+                  withLabel={false}
+                />
+                <Margin top='small' />
+                <Balance address={address} fontSize='medium' />
+              </Stacked>
             </Menu.Item>
           </Route>
           <Route path='/addresses'>
             <Menu.Item><FadedText>Manage Address Book</FadedText></Menu.Item>
             <Menu.Item><SubHeader>Inspect the status of any identity and name it for later use</SubHeader></Menu.Item>
+          </Route>
+          <Route path='/accounts'>
+            <Menu.Item><FadedText>Add Account</FadedText></Menu.Item>
+            <Menu.Item><SubHeader>Create a new account from a generated mnemonic seed, or import via your JSON backup file/mnemonic phrase. </SubHeader></Menu.Item>
           </Route>
         </Switch>
         <Switch>
@@ -336,23 +333,10 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
             </Menu.Item>
           </Route>
         </Switch>
-      </Menu>
-    )
-  }
-
-  renderSecondaryMenu () {
-    const address = this.getAddress();
-
-    const navToManageAddressBook = () => {
-      this.props.history.push(`/addresses/${address}`);
-    };
-
-    return (
-      <StackedHorizontal justifyContent='start' alignItems='flex-start'>
-        <Menu stackable secondary>
+        <Menu.Menu position='right'>
           <Dropdown
             icon='setting'
-            position='left'
+            position='right'
             item
             pointing
             text='Manage Account &nbsp;' /* TODO add margin to the icon instead */
@@ -363,6 +347,31 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
               {this.renderForgetConfirmationModal()}
             </Dropdown.Menu>
           </Dropdown>
+        </Menu.Menu>
+      </Menu>
+    );
+  }
+
+  renderSecondaryMenu () {
+    const { history } = this.props;
+    const address = this.getAddress();
+
+    const navToManageAddressBook = () => {
+      history.push(`/addresses/${address}`);
+    };
+
+    const navToTransfer = () => {
+      history.push(`/transfer/${address}`);
+    };
+
+    return (
+      <StackedHorizontal justifyContent='start' alignItems='flex-start'>
+        <Menu stackable secondary>
+          <Menu.Item onClick={navToTransfer}>
+            Transfer Balance
+            <Margin left='small' />
+            <Icon color='black' name='arrow right' />
+          </Menu.Item>
           <Menu.Item onClick={navToManageAddressBook}>
             Manage Address Book
             <Margin left='small' />
@@ -370,6 +379,6 @@ export class IdentityHeader extends React.PureComponent<Props, State> {
           </Menu.Item>
         </Menu>
       </StackedHorizontal>
-    )
+    );
   }
 }
