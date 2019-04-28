@@ -37,16 +37,16 @@ interface Props {
   children: any;
 }
 
+const successObservable = new Subject();
+const errorObservable = new Subject();
+
 export const TxQueueContext = createContext({
   txQueue: [] as PendingTransaction[],
   submit: (params: SubmitParams) => { console.error('TxQueueContext called without Provider.'); },
   clear: () => { console.error('TxQueueContext called without Provider.'); },
-  successObservable: new Subject(),
-  errorObservable: new Subject()
+  successObservable,
+  errorObservable
 });
-
-const successObservable = new Subject();
-const errorObservable = new Subject();
 
 export function TxQueueContextProvider (props: Props) {
 
