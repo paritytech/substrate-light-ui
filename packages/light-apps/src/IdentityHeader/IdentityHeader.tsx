@@ -187,7 +187,7 @@ export function IdentityHeader (props: Props) {
                 Add an Account <Icon name='plus' />
               </NavLink>
             </Menu.Item>
-            <Menu.Menu position='right'>
+            <Menu.Menu fitted position='right'>
               <Dropdown
                 icon='setting'
                 position='right'
