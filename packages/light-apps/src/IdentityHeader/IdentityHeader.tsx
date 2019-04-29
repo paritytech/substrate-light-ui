@@ -4,7 +4,7 @@
 
 import FileSaver from 'file-saver';
 import { AppContext, AlertsContext } from '@substrate/ui-common';
-import { Balance, Dropdown, FadedText, Icon, Input, Margin, Menu, Modal, NavLink, Stacked, StackedHorizontal, StyledLinkButton, WithSpaceAround, WithSpaceBetween, SubHeader } from '@substrate/ui-components';
+import { Balance, CopyButton, Dropdown, FadedText, Icon, Input, Margin, Menu, Modal, NavLink, Stacked, StackedHorizontal, StyledLinkButton, WithSpaceAround, WithSpaceBetween, SubHeader } from '@substrate/ui-components';
 import React, { useContext, useState } from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 
@@ -132,7 +132,6 @@ export function IdentityHeader (props: Props) {
   const openForgetModal = () => setForgetModalOpen(true);
   const closeForgetModal = () => setForgetModalOpen(false);
   const renderForgetConfirmationModal = () => {
-
     return (
       <Modal closeOnDimmerClick={true} closeOnEscape={true} open={forgetModalOpen} trigger={<Dropdown.Item icon='trash' onClick={openForgetModal} text='Forget Account'/>}>
         <WithSpaceAround>
@@ -170,8 +169,8 @@ export function IdentityHeader (props: Props) {
       <Menu stackable>
         <Switch>
           <Route path={['/transfer']}>
-            <Menu.Item>
-              <Stacked alignItems='flex-end'>
+            <Menu.Item fitted>
+              <StackedHorizontal>
                 <InputAddress
                   label={null}
                   onChange={changeCurrentAccount}
@@ -179,16 +178,16 @@ export function IdentityHeader (props: Props) {
                   value={address}
                   withLabel={false}
                 />
-                <Margin top='small' />
-                <Balance address={address} fontSize='medium' />
-              </Stacked>
+                <CopyButton value={address} />
+              </StackedHorizontal>
             </Menu.Item>
+            <Menu.Item><Balance address={address} fontSize='medium' /></Menu.Item>
             <Menu.Item>
               <NavLink to={`/accounts/${address}/add`}>
                 Add an Account <Icon name='plus' />
               </NavLink>
             </Menu.Item>
-            <Menu.Menu position='right'>
+            <Menu.Menu fitted position='right'>
               <Dropdown
                 icon='setting'
                 position='right'
