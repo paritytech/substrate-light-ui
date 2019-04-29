@@ -36,7 +36,6 @@ export function IdentityHeader (props: Props) {
 
   const address = props.location.pathname.split('/')[2];
   const [name, setName] = useState(address && keyring.getPair(address).getMeta().name);
-  const [settings, setSettings] = useState(uiSettings.get());
 
   // Alert helpers
   const notifyError = (value: any) => {
@@ -241,9 +240,13 @@ export function IdentityHeader (props: Props) {
   const onSelectNode = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
     const url = data.value! as string;
     if (isValidUrl(url)) {
-      setSettings({ ...uiSettings, apiUrl: url });
+      const settings = Object.assign(uiSettings.get(), {
+        apiUrl: url
+      });
       uiSettings.set(settings);
       setUrl(url);
+
+      window.location.reload();
     } else {
       enqueue({
         content: 'The Websocket endpoint you selected is invalid.',

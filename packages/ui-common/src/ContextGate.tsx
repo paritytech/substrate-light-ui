@@ -137,8 +137,6 @@ export class ContextGate extends React.PureComponent<{}, State> {
 
     l.log('setting rpc endpoint to: ', url);
     l.log('new rpc provider is: ', provider);
-
-    window.location.reload();
   }
 
   render () {
@@ -153,7 +151,8 @@ export class ContextGate extends React.PureComponent<{}, State> {
             isReady,
             keyring,
             setUrl: this.setUrl,
-            system
+            system,
+            url
           }}>
             {children}
           </AppContext.Provider>
