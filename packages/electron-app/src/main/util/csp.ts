@@ -22,7 +22,7 @@ const CSP_CONFIG = {
   // Disallow everything as fallback by default for all CSP fetch directives.
   defaultSrc: "default-src 'none';",
   // Disallow fonts.
-  fontSrc: "font-src 'none';", // Additionally used in Parity-JS Shell `'self' data: https:`
+  fontSrc: "font-src 'self';", // Additionally used in Parity-JS Shell `'self' data: https:`
   // Disallow submitting any forms
   formAction: "form-action 'none';",
   // Disallow framing.

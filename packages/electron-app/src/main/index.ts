@@ -58,8 +58,7 @@ function createWindow () {
   }
 
   // Content Security Policy (CSP)
-  // @ts-ignore session object will always be defined
-  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+  session.defaultSession!.webRequest.onHeadersReceived((details, callback) => {
     pino.debug(
       `Configuring Content-Security-Policy for environment ${
       IS_PROD ? 'production' : 'development'
@@ -89,16 +88,12 @@ app.on('activate', function () {
   }
 });
 
-app.on('web-contents-created', (event, contents) => {
-  contents.on('will-attach-webview', (event, webPreferences, params) => {
-    // Strip away preload scripts if unused or verify their location is legitimate
-    delete webPreferences.preload;
-    delete webPreferences.preloadURL;
-
-    // Disable Node.js integration
-    webPreferences.nodeIntegration = false;
-  });
-});
+// Uncomment this block if ever we decide to use a webview in the app.
+// app.on('web-contents-created', (event, contents) => {
+//   contents.on('will-attach-webview', (event, webPreferences, params) => {
+//     event.preventDefault();
+//   });
+// });
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
