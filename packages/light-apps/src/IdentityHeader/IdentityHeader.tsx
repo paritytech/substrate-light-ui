@@ -236,12 +236,12 @@ export function IdentityHeader (props: Props) {
       // check that it starts with a valid ws identifier
       (apiUrl.startsWith('ws://') || apiUrl.startsWith('wss://'))
     );
-  }
+  };
 
   const onSelectNode = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
     const url = data.value! as string;
     if (isValidUrl(url)) {
-      setSettings({...uiSettings, apiUrl: url });
+      setSettings({ ...uiSettings, apiUrl: url });
       uiSettings.set(settings);
       setUrl(url);
     } else {
