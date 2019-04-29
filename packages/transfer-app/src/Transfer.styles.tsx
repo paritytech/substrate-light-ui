@@ -7,12 +7,12 @@ import styled from 'styled-components';
 
 export const CenterDiv = styled.div`
   padding: 1rem;
-  width: 30rem;
+  width: 27rem;
 `;
 
 export const LeftDiv = styled.div`
   padding: 1rem;
-  width: 27rem;
+  width: 23rem;
 `;
 
 export const RightDiv = LeftDiv;

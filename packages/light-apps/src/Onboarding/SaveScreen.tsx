@@ -2,10 +2,10 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AppContext } from '@substrate/ui-common';
-import { AddressSummary, ErrorText, Input, Modal, NavButton, NavLink, Stacked } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
+import { AppContext } from '@substrate/ui-common';
+import { AddressSummary, ErrorText, Input, Modal, NavButton, NavLink, Stacked } from '@substrate/ui-components';
 
 interface MatchParams {
   importMethod: string;
@@ -78,7 +78,7 @@ export class SaveScreen extends React.PureComponent<Props, State> {
         pair = keyring.createAccountMnemonic(recoveryPhrase, password, { name });
       }
 
-      history.push(`/identity/${pair.address()}`);
+      history.push(`/transfer/${pair.address()}`);
     } catch (e) {
       this.onError(e.message);
     }
