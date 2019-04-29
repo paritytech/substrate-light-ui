@@ -7,6 +7,7 @@ import CopyToClipboard from 'react-copy-to-clipboard';
 import styled from 'styled-components';
 
 import { Icon } from './Icon';
+import { Stacked } from './Shared.styles';
 
 type Props = {
   value?: string
@@ -45,8 +46,10 @@ export class CopyButton extends React.PureComponent<Props, State> {
     return (
       <CopyToClipboard text={value || ''} onCopy={this.handleCopied}>
         <StyledCopyButton>
-          <Icon name={copied ? 'check' : 'copy'} />
-          {copied && <small> Copied! </small>}
+          <Stacked>
+            <Icon name={copied ? 'check' : 'copy'} />
+            {copied && <small> Copied! </small>}
+          </Stacked>
         </StyledCopyButton>
       </CopyToClipboard>
     );

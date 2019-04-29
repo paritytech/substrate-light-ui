@@ -8,7 +8,7 @@ import { Subscribe } from '@substrate/ui-common';
 import { map } from 'rxjs/operators';
 import React from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { AddressSummary, Margin, Stacked, StackedHorizontal, SubHeader, WithSpace } from '@substrate/ui-components';
+import { AddressSummary, CopyButton, Margin, Stacked, StackedHorizontal, SubHeader, WithSpace } from '@substrate/ui-components';
 
 interface MatchParams {
   currentAccount: string;
@@ -49,6 +49,8 @@ export class SavedAddresses extends React.PureComponent<Props> {
                         size='small'
                       />
                     </Link>
+                    <Margin left />
+                    <CopyButton value={address.json.address} />
                   </StackedHorizontal>
                 </React.Fragment>
               )
