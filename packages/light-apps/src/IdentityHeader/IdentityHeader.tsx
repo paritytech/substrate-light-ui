@@ -4,17 +4,30 @@
 
 import FileSaver from 'file-saver';
 import { AppContext, AlertsContext } from '@substrate/ui-common';
-import { Balance, CopyButton, Dropdown, FadedText, Icon, Input, Margin, Menu, Modal, NavLink, Stacked, StackedHorizontal, StyledLinkButton, WithSpaceAround, WithSpaceBetween, SubHeader } from '@substrate/ui-components';
+import uiSettings from '@polkadot/ui-settings';
+import { Balance, CopyButton, Dropdown, DropdownProps, FadedText, Icon, Input, Margin, Menu, Modal, NavLink, Stacked, StackedHorizontal, StyledLinkButton, WithSpaceAround, WithSpaceBetween, SubHeader } from '@substrate/ui-components';
 import React, { useContext, useState } from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 
 import { InputAddress } from './IdentityHeader.styles';
+
+const KEY_PREFIX = '__dropdown_option_';
 
 interface MatchParams {
   currentAccount: string;
 }
 
 interface Props extends RouteComponentProps<MatchParams> { }
+
+const nodeOptions: Array<any> = [];
+
+uiSettings.availableNodes.forEach(availNode => {
+  nodeOptions.push({
+    key: `${KEY_PREFIX}${nodeOptions.length}`,
+    value: availNode.value,
+    text: availNode.text
+  });
+});
 
 export function IdentityHeader (props: Props) {
   const { history } = props;
@@ -168,7 +181,7 @@ export function IdentityHeader (props: Props) {
     return (
       <Menu stackable>
         <Switch>
-          <Route path={['/transfer']}>
+          <Route path={['/settings', '/transfer']}>
             <Menu.Item fitted>
               <StackedHorizontal>
                 <InputAddress
@@ -187,7 +200,7 @@ export function IdentityHeader (props: Props) {
                 Add an Account <Icon name='plus' />
               </NavLink>
             </Menu.Item>
-            <Menu.Menu fitted position='right'>
+            <Menu.Menu position='right'>
               <Dropdown
                 icon='setting'
                 position='right'
@@ -216,6 +229,13 @@ export function IdentityHeader (props: Props) {
     );
   };
 
+  const onSelectNode = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
+    // do stuff
+    console.log('selected: ', data.value);
+
+
+  };
+
   const renderSecondaryMenu = () => {
     const navToManageAddressBook = () => {
       history.push(`/addresses/${address}`);
@@ -238,11 +258,7 @@ export function IdentityHeader (props: Props) {
             <Margin left='small' />
             <Icon color='black' name='address book' />
           </Menu.Item>
-          <Menu.Item>
-            Settings
-            <Margin left='small' />
-            <Icon color='black' name='setting' />
-          </Menu.Item>
+          <Dropdown icon='setting' item onChange={onSelectNode} options={nodeOptions} position='right' pointing selection text='Select a Node' />
         </Menu>
       </StackedHorizontal>
     );

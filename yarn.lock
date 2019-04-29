@@ -2283,6 +2283,16 @@
     "@babel/runtime" "^7.4.3"
     rxjs-compat "^6.3.2"
 
+"@polkadot/ui-settings@^0.37.1":
+  version "0.37.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-0.37.1.tgz#67afb143473a5055a393b2b9a33e969bd55e4953"
+  integrity sha512-ZXUquC7skSAtOJHcMnfUqshmidjFxLbl5zIX9XjHaMlB3H+TTAWI+JI45H6N+U2U8qsUBIzDYyjKgXiQfQXbMw==
+  dependencies:
+    "@babel/runtime" "^7.4.3"
+    "@polkadot/util" "^0.76.1"
+    "@types/store" "^2.0.1"
+    store "^2.0.12"
+
 "@polkadot/ui-settings@^0.38.0-beta.2", "@polkadot/ui-settings@^0.38.0-beta.3":
   version "0.38.0-beta.3"
   resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-0.38.0-beta.3.tgz#6d747e2ebad595d9e39eadb364b451e1020a0138"
@@ -3212,11 +3222,6 @@
   dependencies:
     "@types/styled-components" "*"
     csstype "^2.2.0"
-
-"@types/tapable@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@types/tapable/-/tapable-1.0.2.tgz#e13182e1b69871a422d7863e11a4a6f5b814a4bd"
-  integrity sha512-42zEJkBpNfMEAvWR5WlwtTH22oDzcMjFsL9gDGExwF8X8WvAiw7Vwop7hPw03QT8TKfec83LwbHj6SvpqM4ELQ==
 
 "@types/unist@*", "@types/unist@^2.0.0", "@types/unist@^2.0.2":
   version "2.0.3"
@@ -9276,10 +9281,10 @@ html-to-react@^1.3.4:
     lodash.camelcase "^4.3.0"
     ramda "^0.26"
 
-html-webpack-plugin@4.0.0-alpha.2:
-  version "4.0.0-alpha.2"
-  resolved "https://registry.yarnpkg.com/html-webpack-plugin/-/html-webpack-plugin-4.0.0-alpha.2.tgz#7745967e389a57a098e26963f328ebe4c19b598d"
-  integrity sha512-tyvhjVpuGqD7QYHi1l1drMQTg5i+qRxpQEGbdnYFREgOKy7aFDf/ocQ/V1fuEDlQx7jV2zMap3Hj2nE9i5eGXw==
+html-webpack-plugin@4.0.0-beta.5, html-webpack-plugin@^4.0.0-beta.2:
+  version "4.0.0-beta.5"
+  resolved "https://registry.yarnpkg.com/html-webpack-plugin/-/html-webpack-plugin-4.0.0-beta.5.tgz#2c53083c1151bfec20479b1f8aaf0039e77b5513"
+  integrity sha512-y5l4lGxOW3pz3xBTFdfB9rnnrWRPVxlAhX6nrBYIcW+2k2zC3mSp/3DxlWVCMBfnO6UAnoF8OcFn0IMy6kaKAQ==
   dependencies:
     html-minifier "^3.5.20"
     loader-utils "^1.1.0"
