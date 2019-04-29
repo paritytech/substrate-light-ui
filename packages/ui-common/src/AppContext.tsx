@@ -7,8 +7,6 @@ import { ChainProperties, Health } from '@polkadot/types';
 import keyring from '@polkadot/ui-keyring';
 import React from 'react';
 
-import { AlertStore } from './alerts';
-
 export interface System {
   chain: string;
   health: Health;
@@ -18,7 +16,6 @@ export interface System {
 }
 
 export interface AppContextType {
-  alertStore: AlertStore; // UI alerts
   api: ApiRx; // From @polkadot/api
   isReady: boolean; // Are api and keyring loaded?
   keyring: typeof keyring; // From @polkadot/ui-keyring

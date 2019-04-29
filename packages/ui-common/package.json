@@ -13,10 +13,9 @@
     "test": "echo skipped"
   },
   "dependencies": {
-    "@polkadot/api": "^0.76.1",
-    "@polkadot/ui-keyring": "^0.37.1"
+    "@polkadot/api": "^0.77.1"
   },
   "peerDependencies": {
-    "react": "^16.6.3"
+    "react": "^16.8"
   }
 }
