@@ -130,13 +130,15 @@ export class ContextGate extends React.PureComponent<{}, State> {
       });
   }
 
-  // set a new WS endpoint and re-mount the app.
+  // set a new WS endpoint and reload the app.
   setUrl = (url: string) => {
     const provider = new WsProvider(url);
     this.api = new ApiRx(provider);
-    
-    console.log('setting to: ', url);
-    console.log('new provider: ', provider);
+
+    l.log('setting rpc endpoint to: ', url);
+    l.log('new rpc provider is: ', provider);
+
+    window.location.reload();
   }
 
   render () {

@@ -36,6 +36,7 @@ export function IdentityHeader (props: Props) {
 
   const address = props.location.pathname.split('/')[2];
   const [name, setName] = useState(address && keyring.getPair(address).getMeta().name);
+  const [settings, setSettings] = useState(uiSettings.get());
 
   // Alert helpers
   const notifyError = (value: any) => {
@@ -229,8 +230,26 @@ export function IdentityHeader (props: Props) {
     );
   };
 
+  const isValidUrl = (apiUrl: string): boolean => {
+    return (
+      (apiUrl.length > 5) &&
+      // check that it starts with a valid ws identifier
+      (apiUrl.startsWith('ws://') || apiUrl.startsWith('wss://'))
+    );
+  }
+
   const onSelectNode = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
-    setUrl(data.value! as string);
+    const url = data.value! as string;
+    if (isValidUrl(url)) {
+      setSettings({...uiSettings, apiUrl: url });
+      uiSettings.set(settings);
+      setUrl(url);
+    } else {
+      enqueue({
+        content: 'The Websocket endpoint you selected is invalid.',
+        type: 'error'
+      });
+    }
   };
 
   const renderSecondaryMenu = () => {
