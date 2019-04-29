@@ -31,7 +31,7 @@ uiSettings.availableNodes.forEach(availNode => {
 
 export function IdentityHeader (props: Props) {
   const { history } = props;
-  const { keyring } = useContext(AppContext);
+  const { keyring, setUrl } = useContext(AppContext);
   const { enqueue } = useContext(AlertsContext);
 
   const address = props.location.pathname.split('/')[2];
@@ -230,10 +230,8 @@ export function IdentityHeader (props: Props) {
   };
 
   const onSelectNode = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
-    // do stuff
-    console.log('selected: ', data.value);
-
-
+    // @ts-ignore value is always defined
+    setUrl(data.value as string);
   };
 
   const renderSecondaryMenu = () => {

@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import ApiRx from '@polkadot/api/rx';
+import { ApiRx, WsProvider } from '@polkadot/api';
 import { ChainProperties, Health, Text } from '@polkadot/types';
 import keyring from '@polkadot/ui-keyring';
 import { logger } from '@polkadot/util';
@@ -58,7 +58,7 @@ const l = logger('ui-common');
 // FIXME we could probably split this out into small modular contexts once we
 // use https://reactjs.org/docs/hooks-reference.html#usecontext
 export class ContextGate extends React.PureComponent<{}, State> {
-  api = new ApiRx();
+  api = new ApiRx(new WsProvider(process.env.WS_PROVIDER) || undefined);
 
   state: State = {
     ...DISCONNECTED_STATE_PROPERTIES
@@ -127,21 +127,33 @@ export class ContextGate extends React.PureComponent<{}, State> {
       });
   }
 
+  // set a new WS endpoint and re-mount the app.
+  setUrl = (url: string) => {
+    const provider = new WsProvider(url);
+    this.api = new ApiRx(provider);
+    
+    console.log('setting to: ', url);
+    console.log('new provider: ', provider);
+  }
+
   render () {
     const { children } = this.props;
     const { isReady, system } = this.state;
 
-    return <AlertsContextProvider>
-      <TxQueueContextProvider>
-      <AppContext.Provider value={{
-        api: this.api,
-        isReady,
-        keyring,
-        system
-      }}>
-        {children}
-      </AppContext.Provider>
-      </TxQueueContextProvider>
-    </AlertsContextProvider>;
+    return (
+      <AlertsContextProvider>
+        <TxQueueContextProvider>
+          <AppContext.Provider value={{
+            api: this.api,
+            isReady,
+            keyring,
+            setUrl: this.setUrl,
+            system
+          }}>
+            {children}
+          </AppContext.Provider>
+        </TxQueueContextProvider>
+      </AlertsContextProvider>
+    );
   }
 }
