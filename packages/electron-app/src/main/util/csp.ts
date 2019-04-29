@@ -36,10 +36,8 @@ const CSP_CONFIG = {
   mediaSrc: "media-src 'none';",
   // Disallow fonts and `<webview>` objects
   objectSrc: "object-src 'none';",
-  scriptSrc: !IS_PROD
-    ? // Only allow `http:` and `unsafe-eval` in dev mode (required by create-react-app)
-    "script-src 'self' 'unsafe-inline' http: 'unsafe-eval';"
-    : "script-src 'self' 'unsafe-inline';",
+  // Disallow unknown scripts
+  scriptSrc: "script-src 'self' 'unsafe-inline';",
   // Disallow stylesheets, we allow https because we are loading from Google Fonts (FIXME don't load from google)
   styleSrc: "style-src 'self' 'unsafe-inline' https:;",
   // Disallow workers, allow `blob:` for camera access if needed
