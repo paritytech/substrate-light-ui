@@ -239,6 +239,11 @@ export function IdentityHeader (props: Props) {
             <Margin left='small' />
             <Icon color='black' name='address book' />
           </Menu.Item>
+          <Menu.Item>
+            Settings
+            <Margin left='small' />
+            <Icon color='black' name='setting' />
+          </Menu.Item>
         </Menu>
       </StackedHorizontal>
     );
