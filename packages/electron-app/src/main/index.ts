@@ -8,7 +8,7 @@ import Pino from 'pino';
 import path from 'path';
 import url from 'url';
 
-import { CSP, IS_PROD, staticPath } from './util';
+import { CSP, staticPath } from './util';
 
 const { app, BrowserWindow, session } = electron;
 const pino = Pino();
@@ -59,10 +59,11 @@ function createWindow () {
 
   // Content Security Policy (CSP)
   session.defaultSession!.webRequest.onHeadersReceived((details, callback) => {
+    // Note: `onHeadersReceived` will not be called in prod, because we use the
+    // file:// protocol: https://electronjs.org/docs/tutorial/security#csp-meta-tag
+    // Instead, the CSP are the ones in the meta tag inside index.html
     pino.debug(
-      `Configuring Content-Security-Policy for environment ${
-      IS_PROD ? 'production' : 'development'
-      }`
+      'Configuring Content-Security-Policy for environment development'
     );
 
     callback({
