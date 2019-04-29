@@ -4,12 +4,14 @@
 
 import electron from 'electron';
 import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
+import Pino from 'pino';
 import path from 'path';
 import url from 'url';
 
-import { staticPath } from './util/staticPath';
+import { CSP, IS_PROD, staticPath } from './util';
 
-const { app, BrowserWindow } = electron;
+const { app, BrowserWindow, session } = electron;
+const pino = Pino();
 let mainWindow: Electron.BrowserWindow | undefined;
 
 // https://electronjs.org/docs/tutorial/security#electron-security-warnings
@@ -22,21 +24,21 @@ function createWindow () {
     width: 1440,
     webPreferences: {
       allowRunningInsecureContent: false,
+      contextIsolation: true, // prevent context sharing between renderer<->main processes
       devTools: true,
       enableBlinkFeatures: '', // https://electronjs.org/docs/tutorial/security#9-do-not-use-enableblinkfeatures
       enableRemoteModule: false,
       experimentalFeatures: false, // Do not set to true
-      contextIsolation: true, // prevent context sharing between renderer<->main processes
       navigateOnDragDrop: false,
       nativeWindowOpen: true,
       nodeIntegration: false, // https://electronjs.org/docs/tutorial/security#2-disable-nodejs-integration-for-remote-content
       nodeIntegrationInWorker: false, // https://electronjs.org/docs/tutorial/security#2-disable-nodejs-integration-for-remote-content
       plugins: false,
       sandbox: true, // isolate all BrowserWindow instance environments
-      webSecurity: true, // https://electronjs.org/docs/tutorial/security#5-do-not-disable-websecurity
-      webviewTag: false, // Associated with `will-attach-webview`
       safeDialogs: true,
-      safeDialogsMessage: 'Electron consecutive dialog protection was triggered'
+      safeDialogsMessage: 'Electron consecutive dialog protection was triggered',
+      webSecurity: true, // https://electronjs.org/docs/tutorial/security#5-do-not-disable-websecurity
+      webviewTag: false // Associated with `will-attach-webview`
     }
   });
 
@@ -54,6 +56,23 @@ function createWindow () {
       .then((name: string) => console.log(`Added Extension:  ${name}`))
       .catch((err: string) => console.log('An error occurred: ', err));
   }
+
+  // Content Security Policy (CSP)
+  // @ts-ignore session object will always be defined
+  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+    pino.debug(
+      `Configuring Content-Security-Policy for environment ${
+      IS_PROD ? 'production' : 'development'
+      }`
+    );
+
+    callback({
+      responseHeaders: {
+        ...details.responseHeaders,
+        'Content-Security-Policy': [CSP]
+      }
+    });
+  });
 
   mainWindow.on('closed', () => {
     mainWindow = undefined;
