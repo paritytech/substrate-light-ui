@@ -230,8 +230,7 @@ export function IdentityHeader (props: Props) {
   };
 
   const onSelectNode = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
-    // @ts-ignore value is always defined
-    setUrl(data.value as string);
+    setUrl(data.value! as string);
   };
 
   const renderSecondaryMenu = () => {
