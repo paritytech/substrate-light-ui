@@ -43,7 +43,7 @@ const DISCONNECTED_STATE_PROPERTIES = {
   }
 };
 
-const url = process.env.WS_URL || settings.apiUrl || undefined;
+const wsUrl = settings.apiUrl || undefined;
 
 const INIT_ERROR = new Error('Please wait for `isReady` before fetching this property');
 
@@ -61,7 +61,7 @@ const l = logger('ui-common');
 // FIXME we could probably split this out into small modular contexts once we
 // use https://reactjs.org/docs/hooks-reference.html#usecontext
 export class ContextGate extends React.PureComponent<{}, State> {
-  api = new ApiRx(url ? new WsProvider(url) : undefined);
+  api = new ApiRx(wsUrl ? new WsProvider(wsUrl) : undefined);
 
   state: State = {
     ...DISCONNECTED_STATE_PROPERTIES
@@ -114,6 +114,7 @@ export class ContextGate extends React.PureComponent<{}, State> {
           return;
         }
 
+        l.log(`Api connected to ${wsUrl}`);
         l.log(`Api ready, connected to chain "${chain}" with properties ${JSON.stringify(properties)}`);
 
         this.setState(state => ({
@@ -130,15 +131,6 @@ export class ContextGate extends React.PureComponent<{}, State> {
       });
   }
 
-  // set a new WS endpoint and reload the app.
-  setUrl = (url: string) => {
-    const provider = new WsProvider(url);
-    this.api = new ApiRx(provider);
-
-    l.log('setting rpc endpoint to: ', url);
-    l.log('new rpc provider is: ', provider);
-  }
-
   render () {
     const { children } = this.props;
     const { isReady, system } = this.state;
@@ -150,9 +142,7 @@ export class ContextGate extends React.PureComponent<{}, State> {
             api: this.api,
             isReady,
             keyring,
-            setUrl: this.setUrl,
-            system,
-            url
+            system
           }}>
             {children}
           </AppContext.Provider>

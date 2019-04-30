@@ -1,11 +1,10 @@
 // Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
-
-import FileSaver from 'file-saver';
-import { AppContext, AlertsContext } from '@substrate/ui-common';
 import uiSettings from '@polkadot/ui-settings';
+import { AppContext, AlertsContext } from '@substrate/ui-common';
 import { Balance, CopyButton, Dropdown, DropdownProps, FadedText, Icon, Input, Margin, Menu, Modal, NavLink, Stacked, StackedHorizontal, StyledLinkButton, WithSpaceAround, WithSpaceBetween, SubHeader } from '@substrate/ui-components';
+import FileSaver from 'file-saver';
 import React, { useContext, useState } from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 
@@ -23,15 +22,23 @@ const nodeOptions: Array<any> = [];
 
 uiSettings.availableNodes.forEach(availNode => {
   nodeOptions.push({
-    key: `${KEY_PREFIX}${nodeOptions.length}`,
+    key: `${KEY_PREFIX}${availNode.value}`,
     value: availNode.value,
     text: availNode.text
   });
 });
 
+const isValidUrl = (apiUrl: string): boolean => {
+  return (
+    (apiUrl.length > 5) &&
+    // check that it starts with a valid ws identifier
+    (apiUrl.startsWith('ws://') || apiUrl.startsWith('wss://'))
+  );
+};
+
 export function IdentityHeader (props: Props) {
   const { history } = props;
-  const { keyring, setUrl } = useContext(AppContext);
+  const { keyring } = useContext(AppContext);
   const { enqueue } = useContext(AlertsContext);
 
   const address = props.location.pathname.split('/')[2];
@@ -181,7 +188,7 @@ export function IdentityHeader (props: Props) {
     return (
       <Menu stackable>
         <Switch>
-          <Route path={['/settings', '/transfer']}>
+          <Route path={['/transfer']}>
             <Menu.Item fitted>
               <StackedHorizontal>
                 <InputAddress
@@ -229,22 +236,10 @@ export function IdentityHeader (props: Props) {
     );
   };
 
-  const isValidUrl = (apiUrl: string): boolean => {
-    return (
-      (apiUrl.length > 5) &&
-      // check that it starts with a valid ws identifier
-      (apiUrl.startsWith('ws://') || apiUrl.startsWith('wss://'))
-    );
-  };
-
   const onSelectNode = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
-    const url = data.value! as string;
-    if (isValidUrl(url)) {
-      const settings = Object.assign(uiSettings.get(), {
-        apiUrl: url
-      });
-      uiSettings.set(settings);
-      setUrl(url);
+    const wsUrl = data.value as string;
+    if (isValidUrl(wsUrl)) {
+      uiSettings.set({ apiUrl: wsUrl });
 
       window.location.reload();
     } else {

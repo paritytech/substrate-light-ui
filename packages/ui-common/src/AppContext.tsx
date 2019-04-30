@@ -19,9 +19,7 @@ export interface AppContextType {
   api: ApiRx; // From @polkadot/api
   isReady: boolean; // Are api and keyring loaded?
   keyring: typeof keyring; // From @polkadot/ui-keyring
-  setUrl: (url: string) => void;
   system: System; // Information about the chain
-  url?: string;
 }
 
 export const AppContext: React.Context<AppContextType> = React.createContext({} as AppContextType);

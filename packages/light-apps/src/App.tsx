@@ -23,13 +23,13 @@ export class App extends React.PureComponent {
             <Container>
               <GlobalStyle />
               <AppContext.Consumer>
-                {({ isReady, url }) => isReady
+                {({ isReady }) => isReady
                   ? <React.Fragment>
                       <TopBar />
                       <Content />
                     </React.Fragment>
                   : <Loading active>
-                      Connecting to the node at {url}...
+                      Connecting to the node...
                     </Loading>}
               </AppContext.Consumer>
               <TxQueueNotifier />
