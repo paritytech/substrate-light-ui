@@ -3,12 +3,13 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import FileSaver from 'file-saver';
-import { AppContext, AlertsContext } from '@substrate/ui-common';
+import { AppContext } from '@substrate/ui-common';
 import { Balance, CopyButton, Dropdown, FadedText, Icon, Margin, Menu, NavLink, StackedHorizontal, SubHeader } from '@substrate/ui-components';
 import React, { useContext, useState } from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 
 import { InputAddress } from './IdentityHeader.styles';
+import { notifyError, notifySuccess } from './alerts';
 import { renderBackupConfirmationModal, renderForgetConfirmationModal, renderRenameModal } from './components';
 
 interface MatchParams {
@@ -20,24 +21,9 @@ interface Props extends RouteComponentProps<MatchParams> { }
 export function IdentityHeader (props: Props) {
   const { history } = props;
   const { keyring } = useContext(AppContext);
-  const { enqueue } = useContext(AlertsContext);
 
   const address = props.location.pathname.split('/')[2];
   const [name, setName] = useState(address && keyring.getPair(address).getMeta().name);
-
-  // Alert helpers
-  const notifyError = (value: any) => {
-    enqueue({
-      content: value,
-      type: 'success'
-    });
-  };
-  const notifySuccess = (value: any) => {
-    enqueue({
-      content: value,
-      type: 'error'
-    });
-  };
 
   // Change account
   const changeCurrentAccount = (account: string) => {
