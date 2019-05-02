@@ -2,6 +2,7 @@ build/
 dist/
 coverage/
 node_modules/
+scripts/getSubstrate.sh
 tmp/
 .DS_Store
 .env.local

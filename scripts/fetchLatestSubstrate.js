@@ -1,19 +1,43 @@
 // curl https://getsubstrate.io -sSf | bash
 
-const { existsSync, writeFileSync } = require('fs');
+const { chmod, copyFile, existsSync, writeFileSync } = require('fs');
 const fetch = require('node-fetch');
 const path = require('path');
+const os = require('os');
 const { promisify } = require('util');
 const semver = require('semver');
 
 const {
     substrate: { version: versionRequirement }
 } = require('../packages/electron-app/package.json');
+const HOME_DIR = os.homedir();
+const ENDPOINT = 'https://getsubstrate.io';
 
 const exec = promisify(require('child_process').exec);
+const fsChmod = promisify(chmod);
+const fsCopyFile = promisify(copyFile);
 var spawn = require('child_process').spawn;
 
-const ENDPOINT = 'https://getsubstrate.io';
+function getOs() {
+    if (process.argv.includes('--win')) {
+        return 'windows';
+    }
+    if (process.argv.includes('--mac')) {
+        return 'darwin';
+    }
+    if (process.argv.includes('--linux')) {
+        return 'linux';
+    }
+
+    switch (process.platform) {
+        case 'win32':
+            return 'windows';
+        case 'darwin':
+            return 'darwin';
+        default:
+            return 'linux';
+    }
+}
 
 const STATIC_DIRECTORY = path.join(
     '..',
@@ -27,10 +51,14 @@ const foundPath = [
     path.join(STATIC_DIRECTORY, 'substrate.exe')
 ].find(existsSync);
 
+let PATH_TO_SUBSTRATE = `${HOME_DIR}/.cargo/bin/substrate`;
+
 if (foundPath) {
     // Bundled Parity Substrate was found, we check if the version matches the minimum requirements
     getBinaryVersion(foundPath)
         .then(version => {
+            console.log('Substrate version ');
+
             if (!version) {
                 console.log("Couldn't get bundled Parity Substrate version.");
                 return downloadSubstrate();
@@ -49,8 +77,6 @@ if (foundPath) {
                     version,
                     versionRequirement
                 );
-                // FIXME: change to runSubstrateLight once that's functioning
-                runSubstrateDev();
             }
         })
         .catch(e => {
@@ -59,8 +85,7 @@ if (foundPath) {
         });
 } else {
     // Bundled Parity wasn't found, we download the latest version
-    // downloadSubstrate();
-    runSubstrateDev();
+    downloadSubstrate();
 }
 
 // Essentially runs this: https://github.com/paritytech/substrate#on-mac-and-ubuntu step by step.
@@ -71,13 +96,17 @@ function downloadSubstrate() {
         .then(script => {
             writeFileSync('./scripts/getSubstrate.sh', script);
             // spawn a child process to run the script
-            const getSubstrate = spawn('sh', ['getSubstrate.sh'], {
+            const getSubstrate = spawn('sh', ['getSubstrate.sh', '--', '--fast'], {
                 cwd: './scripts'
             });
             // handle events as they come up
             getSubstrate.stdout.on('data', data => console.log(data.toString()))
             getSubstrate.stderr.on('data', error => console.log(error.toString()))
             getSubstrate.on('exit', code => (console.log('process exited with code -> ', code.toString())))
+
+            return fsCopyFile(PATH_TO_SUBSTRATE, STATIC_DIRECTORY)
+                .then(() => fsChmod(STATIC_DIRECTORY, 0o755))
+                .then(() => STATIC_DIRECTORY);
         })
         .catch(e => console.log('error happened =>', e))
 }
@@ -92,25 +121,4 @@ function getBinaryVersion(binaryPath) {
             console.error(e);
             process.exit(1);
         });
-}
-
-// TEMPORARY: change to runSubstrateLight once the light client is available.
-function runSubstrateDev() {
-    const substrate = spawn('substrate', ['--dev']);
-
-    substrate.stdout.on('data', data => console.log('got data =>', data.toString()));
-    substrate.stderr.on('data', error => {
-        console.log('Got error => ', error.toString());
-    });
-    substrate.on('exit', code => {
-        console.log('substrate process exited with code -> ', code.toString());
-        purgeDevChain();
-    });
-}
-
-function purgeDevChain() {
-    const purge = spawn('substrate', ['purge-chain', '--dev']);
-    // it prompts y/n here so it hangs until there's user input.
-    purge.stdout.on('data', data => console.log('purgin chain ->>> ', data.toString()));
-    purge.stderr.on('data', error => console.error('purge chain -error => ', stderr.toString()));
 }

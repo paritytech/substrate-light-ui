@@ -10,6 +10,8 @@ before_install:
   - export PATH=$HOME/.yarn/bin:$PATH
 install:
   - yarn install
+after_install:
+  - yarn fetch-substrate
 script:
   - yarn build
   - yarn lint
