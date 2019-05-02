@@ -58,7 +58,6 @@ if (foundPath) {
                 return downloadSubstrate();
             }
 
-            // FIXME: get version requirement
             if (!semver.satisfies(version, versionRequirement)) {
                 console.log(
                     'Bundled Parity Substrate %s is older than required version %s',
