@@ -36,6 +36,10 @@ const isValidUrl = (apiUrl: string): boolean => {
   );
 };
 
+const urlChanged = (selectedUrl: string): boolean => {
+  return uiSettings.get().apiUrl !== selectedUrl;
+};
+
 export function IdentityHeader (props: Props) {
   const { history } = props;
   const { keyring } = useContext(AppContext);
@@ -238,7 +242,8 @@ export function IdentityHeader (props: Props) {
 
   const onSelectNode = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
     const wsUrl = data.value as string;
-    if (isValidUrl(wsUrl)) {
+
+    if (isValidUrl(wsUrl) && urlChanged(wsUrl)) {
       uiSettings.set({ apiUrl: wsUrl });
 
       window.location.reload();
