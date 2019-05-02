@@ -1,6 +1,6 @@
 // curl https://getsubstrate.io -sSf | bash
 
-const { chmod, existsSync, writeFile, writeFileSync } = require('fs');
+const { existsSync, writeFileSync } = require('fs');
 const fetch = require('node-fetch');
 const path = require('path');
 const { promisify } = require('util');
