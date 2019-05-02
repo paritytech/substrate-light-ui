@@ -37,5 +37,14 @@
   },
   "devDependencies": {
     "@polkadot/dev": "^0.25.13"
+  },
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "download": "^7.1.0",
+    "fs": "^0.0.1-security",
+    "node-fetch": "^2.5.0",
+    "path": "^0.12.7",
+    "semver": "^6.0.0",
+    "util": "^0.12.0"
   }
 }
