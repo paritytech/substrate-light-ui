@@ -13,28 +13,28 @@ const {
 const exec = promisify(require('child_process').exec);
 var spawn = require('child_process').spawn;
 
-function getOs() {
-    if (process.argv.includes('--win')) {
-        return 'windows';
-    }
-    if (process.argv.includes('--mac')) {
-        return 'darwin';
-    }
-    if (process.argv.includes('--linux')) {
-        return 'linux';
-    }
+// function getOs() {
+//     if (process.argv.includes('--win')) {
+//         return 'windows';
+//     }
+//     if (process.argv.includes('--mac')) {
+//         return 'darwin';
+//     }
+//     if (process.argv.includes('--linux')) {
+//         return 'linux';
+//     }
 
-    switch (process.platform) {
-        case 'win32':
-            return 'windows';
-        case 'darwin':
-            return 'darwin';
-        default:
-            return 'linux';
-    }
-}
+//     switch (process.platform) {
+//         case 'win32':
+//             return 'windows';
+//         case 'darwin':
+//             return 'darwin';
+//         default:
+//             return 'linux';
+//     }
+// }
 
-const userOs = getOs();
+// const userOs = getOs();
 const ENDPOINT = 'https://getsubstrate.io';
 
 const STATIC_DIRECTORY = path.join(
@@ -53,25 +53,27 @@ if (foundPath) {
     // Bundled Parity Substrate was found, we check if the version matches the minimum requirements
     getBinaryVersion(foundPath)
         .then(version => {
-            if (!version) {
-                console.log("Couldn't get bundled Parity Substrate version.");
-                return downloadSubstrate();
-            }
+            // if (!version) {
+            //     console.log("Couldn't get bundled Parity Substrate version.");
+            //     return downloadSubstrate();
+            // }
 
-            if (!semver.satisfies(version, versionRequirement)) {
-                console.log(
-                    'Bundled Parity Substrate %s is older than required version %s',
-                    version,
-                    versionRequirement
-                );
-                return downloadSubstrate();
-            } else {
+            // if (!semver.satisfies(version, versionRequirement)) {
+            //     console.log(
+            //         'Bundled Parity Substrate %s is older than required version %s',
+            //         version,
+            //         versionRequirement
+            //     );
+            //     return downloadSubstrate();
+            // } else {
                 console.log(
                     'Bundled Parity Substrate %s matches required version %s',
                     version,
                     versionRequirement
                 );
-            }
+                // FIXME: change to runSubstrateLight once that's functioning
+                runSubstrateDev();
+            // }
         })
         .catch(e => {
             console.error(e);
@@ -79,7 +81,8 @@ if (foundPath) {
         });
 } else {
     // Bundled Parity wasn't found, we download the latest version
-    downloadSubstrate();
+    // downloadSubstrate();
+    runSubstrateDev();
 }
 
 // Essentially runs this: https://github.com/paritytech/substrate#on-mac-and-ubuntu step by step.
@@ -88,7 +91,6 @@ function downloadSubstrate() {
     fetch(ENDPOINT)
         .then(r => r.text())
         .then(script => {
-            // write the script to the same directory
             writeFileSync('./scripts/getSubstrate.sh', script);
             // spawn a child process to run the script
             const getSubstrate = spawn('sh', ['getSubstrate.sh'], {
@@ -96,7 +98,7 @@ function downloadSubstrate() {
             });
             // handle events as they come up
             getSubstrate.stdout.on('data', data => console.log(data.toString()))
-            getSubstrate.stderr.on('error', error => console.log(error.toString()))
+            getSubstrate.stderr.on('data', error => console.log(error.toString()))
             getSubstrate.on('exit', code => (console.log('process exited with code -> ', code.toString())))
         })
         .catch(e => console.log('error happened =>', e))
@@ -113,3 +115,28 @@ function getBinaryVersion(binaryPath) {
             process.exit(1);
         });
 }
+
+// TEMPORARY: change to runSubstrateLight once the light client is available.
+function runSubstrateDev() {
+    const substrate = spawn('substrate', ['--dev']);
+
+    substrate.stdout.on('data', data => console.log('got data =>', data.toString()));
+    substrate.stderr.on('data', error => { 
+        console.log('Got error => ', error.toString());
+        purgeDevChain();
+        process.exit(1);
+    });
+    substrate.on('exit', code => (console.log('process exited with code -> ', code.toString())))
+}
+
+function purgeDevChain() {
+    console.log('purging dev chain ...');
+    exec('substrate --purge-chain --dev')
+        .then(({ stderr, stdout }) => {
+            if (stderr) throw new Error(stderr);
+            console.log(stdout.toString())
+            return;
+        })
+}
+
+runSubstrateDev();
