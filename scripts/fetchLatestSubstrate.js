@@ -72,10 +72,9 @@ function downloadSubstrate() {
                 cwd: './scripts'
             });
             // handle events as they come up
-            getSubstrate
-                .on('data', (data) => (console.log('got data ->', data)))
-                .on('error', (error) => (console.log('got error => ', error)))
-                .on('exit', (code) => (console.log('code exited -> ', code.toString()))
+            getSubstrate.stdout.on('data', data => console.log(data.toString()))
+            getSubstrate.stderr.on('error', error => console.log(error.toString()))
+            getSubstrate.on('exit', code => (console.log('process exited with code -> ', code.toString())))
         })
         .catch(e => console.log('error happened =>', e))
 }
