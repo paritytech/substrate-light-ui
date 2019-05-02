@@ -1,6 +1,6 @@
 // curl https://getsubstrate.io -sSf | bash
 
-const { chmod, existsSync, writeFile } = require('fs');
+const { chmod, existsSync, writeFile, writeFileSync } = require('fs');
 const crypto = require('crypto');
 const download = require('download');
 const fetch = require('node-fetch');
@@ -62,89 +62,23 @@ downloadSubstrate();
 // Essentially runs this: https://github.com/paritytech/substrate#on-mac-and-ubuntu step by step.
 // Only for OSX and Linux
 function downloadSubstrate() {
-    const curl = spawn('curl https://getsubstrate.io', ['-sSf']);
-
-    curl
-        .on('data', (data) => {
-            console.log(data);
+    fetch('https://getsubstrate.io')
+        .then(r => r.text())
+        .then(script => {
+            // write the script to the same directory
+            writeFileSync('./scripts/getSubstrate.sh', script);
+            // spawn a child process to run the script
+            const getSubstrate = spawn('sh', ['getSubstrate.sh'], {
+                cwd: './scripts'
+            });
+            // handle events as they come up
+            getSubstrate
+                .on('data', (data) => (console.log('got data ->', data)))
+                .on('error', (error) => (console.log('got error => ', error)))
+                .on('exit', (code) => (console.log('code exited -> ', code.toString()))
         })
-        .on('exit', (code) => {
-            console.log('child process exited with code ' + code.toString());
-        })
-        .on('error', (error) => {
-            console.log('Error: ' + error);
-        })
+        .catch(e => console.log('error happened =>', e))
 }
-
-
-// function downloadSubstrate() {
-//     return (
-//         // First grab rust and update to nightly
-//         exec()
-//             // exec the rustup scripts
-//             .then(() => {
-//                 console.log('Running rustup update nightly...');
-//                 exec('rustup update nightly');
-//             })
-//             .then(() => {
-//                 console.log('Running rustup target add wasm...');
-//                 exec('rustup target add wasm32-unknown-unknown --toolchain nightly');
-//             })
-//             .then(() => {
-//                 console.log('Running rustup update stable...');
-//                 exec('rustup update stable')
-//             })
-//             .then(() => {
-//                 console.log('Running cargo install wasm-gc...');
-//                 exec('cargo install --git https://github.com/alexcrichton/wasm-gc')
-//             }).then(() => {
-//                 if (userOs === 'darwin') {
-//                     // For OSX, Homebrew the remaining dependencies
-//                     exec('brew install cmake pkg-config openssl git llvm')
-//                 } else {
-//                     // For Linux, apt-get
-//                     exec('sudo apt install cmake pkg-config libssl-dev git clang libclang-dev')
-//                 }
-//             }).then(() => {
-//                 // Then grab Substrate source code and build it
-//                 console.log(
-//                     'Downloading Parity Substrate %s... (%s)',
-//                     version,
-//                     downloadUrl
-//                 );
-//             })
-//             .catch(err => console.log('Something went wrong', err))
-//         );
-//     }
-    //             return download(downloadUrl).then(data => {
-    //                 const actualChecksum = crypto
-    //                     .createHash('sha256')
-    //                     .update(data)
-    //                     .digest('hex');
-
-    //                 if (expectedChecksum !== actualChecksum) {
-    //                     throw new Error(
-    //                         `Parity Substrate checksum mismatch: expecting ${expectedChecksum}, got ${actualChecksum}.`
-    //                     );
-    //                 }
-
-    //                 // Write to file and set a+x permissions
-    //                 const destinationPath = path.join(STATIC_DIRECTORY, name);
-
-    //                 return fsWriteFile(destinationPath, data)
-    //                     .then(() => fsChmod(destinationPath, 0o755)) // https://nodejs.org/api/fs.html#fs_fs_chmod_path_mode_callback
-    //                     .then(() => destinationPath);
-    //             });
-    //         })
-    //         .then(getBinaryVersion)
-    //         .then(bundledVersion =>
-    //             console.log(
-    //                 `Success: bundled Parity Substrate ${bundledVersion ||
-    //                 "(couldn't get version)"}`
-    //             )
-    //         )
-    // );
-// }
 
 function getBinaryVersion(binaryPath) {
     return exec(`${binaryPath} --version`)
