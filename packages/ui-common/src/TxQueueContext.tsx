@@ -3,7 +3,6 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { SubmittableExtrinsic, SubmittableResult } from '@polkadot/api/SubmittableExtrinsic';
-import { KeyringPair } from '@polkadot/keyring/types';
 import { RxResult } from '@polkadot/api/rx/types';
 import BN from 'bn.js';
 import { Balance } from '@polkadot/types';
@@ -30,7 +29,7 @@ export interface SubmitParams {
   allTotal: BN;
   extrinsic: SubmittableExtrinsic<RxResult, RxResult>;
   recipientAddress: string;
-  senderPair: KeyringPair;
+  senderAddress: string;
 }
 
 interface Props {
@@ -68,13 +67,13 @@ export function TxQueueContextProvider (props: Props) {
   const [txCounter, setTxCounter] = useState(0);
 
   const submit = (params: SubmitParams) => {
-    const { extrinsic, senderPair, allFees, allTotal, amount, recipientAddress } = params;
+    const { extrinsic, senderAddress, allFees, allTotal, amount, recipientAddress } = params;
 
     const transactionId = txCounter;
     setTxCounter(txCounter + 1);
 
     const subscription = extrinsic
-      .signAndSend(senderPair) // send the extrinsic
+      .signAndSend(senderAddress) // send the extrinsic
       .subscribe(
         (txResult: SubmittableResult) => {
           const { status: { isFinalized, isDropped, isUsurped } } = txResult;
@@ -84,7 +83,7 @@ export function TxQueueContextProvider (props: Props) {
           });
 
           if (isFinalized) {
-            successObservable.next({ amount, recipientAddress, senderAddress: senderPair.address() });
+            successObservable.next({ amount, recipientAddress, senderAddress });
           }
 
           if (isFinalized || isDropped || isUsurped) {
@@ -119,6 +118,6 @@ export function TxQueueContextProvider (props: Props) {
   };
 
   return <TxQueueContext.Provider value={{ txQueue, submit, clear, successObservable, errorObservable }}>
-      {props.children}
-    </TxQueueContext.Provider>;
+    {props.children}
+  </TxQueueContext.Provider>;
 }

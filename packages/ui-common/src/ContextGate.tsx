@@ -10,6 +10,7 @@ import React from 'react';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
 
+import { ApiSigner } from './ApiSigner';
 import { AppContext, System } from './AppContext';
 import { isTestChain } from './util';
 import { AlertsContextProvider } from './AlertsContext';
@@ -58,7 +59,7 @@ const l = logger('ui-common');
 // FIXME we could probably split this out into small modular contexts once we
 // use https://reactjs.org/docs/hooks-reference.html#usecontext
 export class ContextGate extends React.PureComponent<{}, State> {
-  api = new ApiRx();
+  api = new ApiRx({ signer: new ApiSigner() });
 
   state: State = {
     ...DISCONNECTED_STATE_PROPERTIES
@@ -133,14 +134,14 @@ export class ContextGate extends React.PureComponent<{}, State> {
 
     return <AlertsContextProvider>
       <TxQueueContextProvider>
-      <AppContext.Provider value={{
-        api: this.api,
-        isReady,
-        keyring,
-        system
-      }}>
-        {children}
-      </AppContext.Provider>
+        <AppContext.Provider value={{
+          api: this.api,
+          isReady,
+          keyring,
+          system
+        }}>
+          {children}
+        </AppContext.Provider>
       </TxQueueContextProvider>
     </AlertsContextProvider>;
   }

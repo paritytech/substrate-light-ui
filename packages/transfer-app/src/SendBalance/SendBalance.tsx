@@ -26,7 +26,7 @@ interface Props extends RouteComponentProps<SendMatchParams> { }
 const l = logger('transfer-app');
 
 export function SendBalance (props: Props) {
-  const { api, keyring } = useContext(AppContext);
+  const { api } = useContext(AppContext);
   const { submit } = useContext(TxQueueContext);
 
   const { history, match: { params: { currentAccount, recipientAddress } } } = props;
@@ -83,12 +83,11 @@ export function SendBalance (props: Props) {
       (allExtrinsicData) => {
         // If everything is correct, then submit the extrinsic
 
-        const { extrinsic, amount, allFees, allTotal } = allExtrinsicData;
+        const { extrinsic, amount, allFees, allTotal, recipientAddress: rcptAddress } = allExtrinsicData;
 
         l.log('Sending tx from', currentAccount, 'to', recipientAddress, 'of amount', amount);
 
-        const senderPair = keyring.getPair(currentAccount);
-        submit({ extrinsic, amount, allFees, allTotal, senderPair, recipientAddress: recipientAddress as any });
+        submit({ extrinsic, amount, allFees, allTotal, senderAddress: currentAccount, recipientAddress: rcptAddress });
       });
   };
 
