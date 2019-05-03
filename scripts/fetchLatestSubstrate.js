@@ -18,27 +18,6 @@ const fsChmod = promisify(chmod);
 const fsCopyFile = promisify(copyFile);
 var spawn = require('child_process').spawn;
 
-function getOs() {
-    if (process.argv.includes('--win')) {
-        return 'windows';
-    }
-    if (process.argv.includes('--mac')) {
-        return 'darwin';
-    }
-    if (process.argv.includes('--linux')) {
-        return 'linux';
-    }
-
-    switch (process.platform) {
-        case 'win32':
-            return 'windows';
-        case 'darwin':
-            return 'darwin';
-        default:
-            return 'linux';
-    }
-}
-
 const STATIC_DIRECTORY = path.join(
     '..',
     'packages',
@@ -57,7 +36,7 @@ if (foundPath) {
     // Bundled Parity Substrate was found, we check if the version matches the minimum requirements
     getBinaryVersion(foundPath)
         .then(version => {
-            console.log('Substrate version ');
+            console.log('Substrate version -> ', version);
 
             if (!version) {
                 console.log("Couldn't get bundled Parity Substrate version.");
@@ -85,6 +64,9 @@ if (foundPath) {
         });
 } else {
     // Bundled Parity wasn't found, we download the latest version
+    getBinaryVersion(PATH_TO_SUBSTRATE)
+        .then(version => console.log(version))
+        .catch(err => console.log(err));
     downloadSubstrate();
 }
 
@@ -104,9 +86,11 @@ function downloadSubstrate() {
             getSubstrate.stderr.on('data', error => console.log(error.toString()))
             getSubstrate.on('exit', code => (console.log('process exited with code -> ', code.toString())))
 
-            return fsCopyFile(PATH_TO_SUBSTRATE, STATIC_DIRECTORY)
-                .then(() => fsChmod(STATIC_DIRECTORY, 0o755))
-                .then(() => STATIC_DIRECTORY);
+            const destinationPath = path.join(STATIC_DIRECTORY, 'substrate');
+
+            return fsCopyFile(PATH_TO_SUBSTRATE, destinationPath)
+                .then(() => fsChmod(destinationPath, 0o755))
+                .then(() => destinationPath);
         })
         .catch(e => console.log('error happened =>', e))
 }
@@ -115,10 +99,10 @@ function getBinaryVersion(binaryPath) {
     return exec(`${binaryPath} --version`)
         .then(({ stdout, stderr }) => {
             if (stderr) throw new Error(stderr);
-            return stdout.match(/v\d+\.\d+\.\d+/)[0];
+            return stdout.match(/\d+\.\d+\.\d+/)[0];
         })
         .catch(error => {
-            console.error(e);
+            console.error(error);
             process.exit(1);
         });
 }

@@ -4,4 +4,5 @@
 
 export * from './constants';
 export * from './csp';
+export * from './isSubstrateRunning';
 export * from './staticPath';

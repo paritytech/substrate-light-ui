@@ -79,7 +79,7 @@ function createWindow () {
   });
 }
 
-app.on('ready', createWindow);
+app.once('ready', createWindow);
 
 app.on('activate', function () {
   // On OS X it's common to re-create a window in the app when the
@@ -104,32 +104,3 @@ app.on('window-all-closed', function () {
     app.quit();
   }
 });
-
-
-
-
-
-// TEMPORARY: change to runSubstrateLight once the light client is available.
-// function runSubstrateDev() {
-//   const substrate = spawn('substrate', ['--dev']);
-
-//   substrate.stdout.on('data', data => console.log('stdout => ', data.toString()));
-//   substrate.stderr.on('data', error => {
-//     console.log('stderr => ', error.toString());
-//   });
-//   substrate.on('exit', code => {
-//     console.log('substrate process exited with code -> ', code.toString());
-//     purgeDevChain();
-//   });
-// }
-
-// function purgeDevChain() {
-//   const purge = spawn('substrate', ['purge-chain', '--dev']);
-//   // it prompts y/n here so it hangs until there's user input.
-//   purge.stdout.on('data', data => {
-//     purge.stdin.write('y');
-//     console.log('purging chain ->>> ', data.toString());
-//     runSubstrateDev();
-//   });
-//   purge.stderr.on('data', error => console.error('purge chain -error => ', stderr.toString()));
-// }
