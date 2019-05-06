@@ -20,12 +20,11 @@ export const runSubstrateDev = () => {
 };
 
 export const purgeDevChain = () => {
-  const purge = spawn(`${staticPath}/substrate/target/release/substrate`, ['purge-chain', '--dev']); // FIXME: --light
+  // n.b. -y flag is used to skip interactive prompt.
+  const purge = spawn(`${staticPath}/substrate/target/release/substrate`, ['purge-chain', '--dev', '-y']); // FIXME: --light
   purge.stdout.once('data', data => {
-    // it prompts y/n here once so it hangs until there's user input.
-    purge.stdin.write('y');
-    console.log('purging chain ->>> ', data.toString());
+    console.log('Purging chain => ', data.toString());
     runSubstrateDev();
   });
-  purge.stderr.on('data', stderr => console.error('purge chain -error => ', stderr.toString()));
+  purge.stderr.on('data', stderr => console.error('Error while purging chain => ', stderr.toString()));
 };

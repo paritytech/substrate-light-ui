@@ -17,7 +17,7 @@ interface IsSubstrateRunningOptions {
 
 /**
  * Detect if another instance of parity is already running or not. To achieve
- * that, we just ping on the common hosts.
+ * that, we just ping 127.0.0.1:9944.
  */
 export async function isSubstrateRunning(
     options: IsSubstrateRunningOptions = {
