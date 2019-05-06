@@ -1,9 +1,10 @@
 // curl https://getsubstrate.io -sSf | bash
 
-const { chmod, copyFile, existsSync, writeFileSync } = require('fs');
+const { chmod, existsSync, writeFileSync } = require('fs');
+const ncp = require('ncp');
 const fetch = require('node-fetch');
-const path = require('path');
 const os = require('os');
+const path = require('path');
 const { promisify } = require('util');
 const semver = require('semver');
 
@@ -15,7 +16,7 @@ const ENDPOINT = 'https://getsubstrate.io';
 
 const exec = promisify(require('child_process').exec);
 const fsChmod = promisify(chmod);
-const fsCopyFile = promisify(copyFile);
+const pncp = promisify(ncp);
 var spawn = require('child_process').spawn;
 
 const STATIC_DIRECTORY = path.join(
@@ -26,7 +27,6 @@ const STATIC_DIRECTORY = path.join(
 );
 
 const BUNDLED_PATH = path.join(STATIC_DIRECTORY, '/substrate/target/release/substrate');
-
 let PATH_TO_SUBSTRATE = `${HOME_DIR}/.cargo/bin/substrate`;
 
 if (existsSync(BUNDLED_PATH)) {
@@ -61,9 +61,6 @@ if (existsSync(BUNDLED_PATH)) {
         });
 } else {
     // Bundled Parity wasn't found, we download the latest version
-    getBinaryVersion(PATH_TO_SUBSTRATE)
-        .then(version => console.log(version))
-        .catch(err => console.log(err));
     downloadSubstrate();
 }
 
@@ -75,13 +72,11 @@ function downloadSubstrate() {
         .then(script => {
             writeFileSync('./getSubstrate.sh', script);
             // spawn a child process to run the script
-            const getSubstrate = spawn('sh', ['getSubstrate.sh', '--', '--fast'], {
-                cwd: './scripts'
-            });
+            const getSubstrate = spawn('sh', ['./getSubstrate.sh']);
             // handle events as they come up
             getSubstrate.stdout.on('data', data => console.log(data.toString()));
             getSubstrate.stderr.on('data', error => console.log(error.toString()));
-            getSubstrate.on('error', code => console.log('get substrate script ended with code => ', code.toString()));
+            getSubstrate.on('error', error => (console.log('script error with code => ', error.toString())));
             getSubstrate.on('exit', code => (console.log('process exited with code => ', code.toString())));
 
             // after the download completess
@@ -91,12 +86,13 @@ function downloadSubstrate() {
 
                 const destinationPath = path.join(STATIC_DIRECTORY, 'substrate');
 
-                return fsCopyFile(PATH_TO_SUBSTRATE, destinationPath)
+                // copy the entire directory
+                return pncp(PATH_TO_SUBSTRATE, destinationPath)
                     .then(() => fsChmod(destinationPath, 0o755))
                     .then(() => destinationPath);
             });
         })
-        .catch(e => console.log('Fatal error wit getSubstrate script =>', e))
+        .catch(e => console.log('Fatal error with getSubstrate script =>', e))
 }
 
 function getBinaryVersion(binaryPath) {
