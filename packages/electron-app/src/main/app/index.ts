@@ -11,15 +11,18 @@ import {
     setupParitySubstrate
 } from './methods';
 
-let hasCalledInitFetherApp = false;
+let hasCalledInitSluiApp = false;
 
 class SluiApp extends EventEmitter {
   app: any;
 
-  constructor(electronApp: any) {
+  constructor (electronApp: any) {
     super();
 
-    if (hasCalledInitFetherApp) {
+    // https://electronjs.org/docs/tutorial/security#electron-security-warnings
+    process.env.ELECTRON_ENABLE_SECURITY_WARNINGS = 'true';
+
+    if (hasCalledInitSluiApp) {
       this.emit(
             'error',
             new Error('Unable to initialise SLUI more than once')

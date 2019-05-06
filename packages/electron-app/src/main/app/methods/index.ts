@@ -1,6 +1,12 @@
 // Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
-export * from './createWindow';
-export * from './setupAppListeners';
-export * from './setupParitySubstrate';
+import createWindow from './createWindow';
+import setupAppListeners from './setupAppListeners';
+import setupParitySubstrate from './setupParitySubstrate';
+
+export {
+    createWindow,
+    setupAppListeners,
+    setupParitySubstrate
+}
