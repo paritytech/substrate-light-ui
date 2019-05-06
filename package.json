@@ -27,6 +27,7 @@
     "fetch-substrate": "cd ./scripts && node fetchLatestSubstrate.js",
     "lint": "tsc --noEmit && tslint --project .",
     "package": "cd packages/electron-app && yarn package",
+    "postinstall": "yarn fetch-substrate",
     "prebuild": "yarn clean",
     "preelectron": "yarn build",
     "prepackage": "yarn build",

@@ -31,7 +31,7 @@ class ParitySubstrate {
       }
 
       // Parity Substrate isn't running: run the bundled binary
-      this.run();
+      await this.run();
       pino.info('Running Parity Substrate');
       resolve(true);
     })
@@ -46,7 +46,7 @@ class ParitySubstrate {
     return isSubstrateRunning();
   }
 
-  run = () => {
+  run = async () => {
     return runSubstrateDev();
   }
 }

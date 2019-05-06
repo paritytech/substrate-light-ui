@@ -25,16 +25,13 @@ const STATIC_DIRECTORY = path.join(
     'static'
 );
 
-const foundPath = [
-    path.join(STATIC_DIRECTORY, 'substrate'),
-    path.join(STATIC_DIRECTORY, 'substrate.exe')
-].find(existsSync);
+const BUNDLED_PATH = path.join(STATIC_DIRECTORY, '/substrate/target/release/substrate');
 
 let PATH_TO_SUBSTRATE = `${HOME_DIR}/.cargo/bin/substrate`;
 
-if (foundPath) {
+if (existsSync(BUNDLED_PATH)) {
     // Bundled Parity Substrate was found, we check if the version matches the minimum requirements
-    getBinaryVersion(foundPath)
+    getBinaryVersion(BUNDLED_PATH)
         .then(version => {
             console.log('Substrate version -> ', version);
 
@@ -76,15 +73,16 @@ function downloadSubstrate() {
     fetch(ENDPOINT)
         .then(r => r.text())
         .then(script => {
-            writeFileSync('./scripts/getSubstrate.sh', script);
+            writeFileSync('./getSubstrate.sh', script);
             // spawn a child process to run the script
             const getSubstrate = spawn('sh', ['getSubstrate.sh', '--', '--fast'], {
                 cwd: './scripts'
             });
             // handle events as they come up
-            getSubstrate.stdout.on('data', data => console.log(data.toString()))
-            getSubstrate.stderr.on('data', error => console.log(error.toString()))
-            getSubstrate.on('exit', code => (console.log('process exited with code -> ', code.toString())))
+            getSubstrate.stdout.on('data', data => console.log(data.toString()));
+            getSubstrate.stderr.on('data', error => console.log(error.toString()));
+            getSubstrate.on('error', code => console.log('get substrate script ended with code => ', code.toString()));
+            getSubstrate.on('exit', code => (console.log('process exited with code => ', code.toString())));
 
             // after the download completess
             getSubstrate.on('close', code => {
@@ -98,7 +96,7 @@ function downloadSubstrate() {
                     .then(() => destinationPath);
             });
         })
-        .catch(e => console.log('error happened =>', e))
+        .catch(e => console.log('Fatal error wit getSubstrate script =>', e))
 }
 
 function getBinaryVersion(binaryPath) {

@@ -3,10 +3,18 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import electron from 'electron';
+import Pino from 'pino';
 
 import SluiApp from './app';
 
 const { app } = electron;
+const pino = new Pino();
+
+pino.info('Platform detected: ', process.platform);
+pino.info('Process type: ', process.type);
+pino.info('Process ID: ', process.pid);
+pino.info('Process args: ', process.argv);
+pino.info('Electron version: ', process.versions['electron']);
 
 app.once('ready', () => {
   let sluiApp = new SluiApp(app);
