@@ -20,8 +20,8 @@ export const runSubstrateDev = () => {
 
 export const purgeDevChain = () => {
   const purge = spawn('substrate', ['purge-chain', '--dev']);
-  // it prompts y/n here so it hangs until there's user input.
-  purge.stdout.on('data', data => {
+  purge.stdout.once('data', data => {
+    // it prompts y/n here once so it hangs until there's user input.
     purge.stdin.write('y');
     console.log('purging chain ->>> ', data.toString());
     runSubstrateDev();

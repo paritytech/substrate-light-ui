@@ -11,7 +11,7 @@ const pino = Pino();
 let hasCalledInitParitySubstrate = false;
 
 class ParitySubstrate {
-  constructor(sluiWindow: BrowserWindow) {
+  constructor (sluiWindow: BrowserWindow) {
     if (hasCalledInitParitySubstrate) {
       throw new Error('Unable to initialise Parity Substrate more than once');
     }
@@ -22,7 +22,7 @@ class ParitySubstrate {
     *   Substrate from the static path / download and copy Parity Substrate to static path.
     */
 
-    // Run the bundled Parity Ethereum if needed and wanted
+    // Run the bundled Parity Substrate if needed and wanted
     // @ts-ignore
     return new Promise(async (resolve, reject) => {
       if (await this.isRunning()) {
@@ -30,14 +30,14 @@ class ParitySubstrate {
         return;
       }
 
-      // Parity Ethereum isn't running: run the bundled binary
+      // Parity Substrate isn't running: run the bundled binary
       this.run();
-      pino.info('Running Parity Ethereum');
+      pino.info('Running Parity Substrate');
       resolve(true);
     })
     .then(isRunning => {
       // Notify the renderers
-      sluiWindow.webContents.send('parity-running', isRunning);
+      sluiWindow.webContents.send('substrate-running', isRunning);
       global.isSubstrateRunning = isRunning; // Send this variable to renderers via IPC
     });
   }

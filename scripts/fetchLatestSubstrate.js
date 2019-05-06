@@ -86,11 +86,17 @@ function downloadSubstrate() {
             getSubstrate.stderr.on('data', error => console.log(error.toString()))
             getSubstrate.on('exit', code => (console.log('process exited with code -> ', code.toString())))
 
-            const destinationPath = path.join(STATIC_DIRECTORY, 'substrate');
+            // after the download completess
+            getSubstrate.on('close', code => {
+                // FIXME control flow depending on code
+                console.log(`process ended with code: ${code}`);
 
-            return fsCopyFile(PATH_TO_SUBSTRATE, destinationPath)
-                .then(() => fsChmod(destinationPath, 0o755))
-                .then(() => destinationPath);
+                const destinationPath = path.join(STATIC_DIRECTORY, 'substrate');
+
+                return fsCopyFile(PATH_TO_SUBSTRATE, destinationPath)
+                    .then(() => fsChmod(destinationPath, 0o755))
+                    .then(() => destinationPath);
+            });
         })
         .catch(e => console.log('error happened =>', e))
 }
