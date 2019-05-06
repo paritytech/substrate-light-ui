@@ -9,4 +9,4 @@ export {
     createWindow,
     setupAppListeners,
     setupParitySubstrate
-}
+};

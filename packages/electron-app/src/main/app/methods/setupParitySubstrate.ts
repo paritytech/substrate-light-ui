@@ -4,7 +4,7 @@
 
 import ParitySubstrate from '../paritySubstrate';
 
-function setupParitySubstrate(sluiApp: any) {
+function setupParitySubstrate (sluiApp: any) {
   // Run Parity Substrate if not running and requested
   return new ParitySubstrate(sluiApp.win);
 }

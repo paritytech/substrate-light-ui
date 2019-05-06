@@ -12,7 +12,7 @@ const { BrowserWindow, session } = electron;
 import { CSP, staticPath } from '../../util';
 const pino = Pino();
 
-function createWindow(sluiApp: any) {
+function createWindow (sluiApp: any) {
   sluiApp.emit('create-window');
 
   sluiApp.win = new BrowserWindow({
