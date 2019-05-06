@@ -3,10 +3,11 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { spawn } from 'child_process';
+import { staticPath } from '.';
 
 // TEMPORARY: change to runSubstrateLight once the light client is available.
 export const runSubstrateDev = () => {
-  const substrate = spawn('substrate', ['--dev']); // FIXME: --light
+  const substrate = spawn(`${staticPath}/substrate/target/release/substrate`, ['--dev']); // FIXME: --light
 
   substrate.stdout.on('data', data => console.log('stdout => ', data.toString()));
   substrate.stderr.on('data', error => {
@@ -19,7 +20,7 @@ export const runSubstrateDev = () => {
 };
 
 export const purgeDevChain = () => {
-  const purge = spawn('substrate', ['purge-chain', '--dev']); // FIXME: --light
+  const purge = spawn(`${staticPath}/substrate/target/release/substrate`, ['purge-chain', '--dev']); // FIXME: --light
   purge.stdout.once('data', data => {
     // it prompts y/n here once so it hangs until there's user input.
     purge.stdin.write('y');

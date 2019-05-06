@@ -13,8 +13,6 @@ import { CSP, staticPath } from '../../util';
 const pino = Pino();
 
 function createWindow(sluiApp: any) {
-  let mainWindow: Electron.BrowserWindow | undefined;
-
   sluiApp.emit('create-window');
 
   sluiApp.win = new BrowserWindow({
@@ -74,7 +72,7 @@ function createWindow(sluiApp: any) {
   });
 
   sluiApp.win.on('closed', () => {
-    mainWindow = undefined;
+    sluiApp = undefined;
   });
 
   sluiApp.emit('create-app');
