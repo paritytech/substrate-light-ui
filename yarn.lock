@@ -2283,6 +2283,16 @@
     "@babel/runtime" "^7.4.3"
     rxjs-compat "^6.3.2"
 
+"@polkadot/ui-settings@^0.37.1":
+  version "0.37.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-0.37.1.tgz#67afb143473a5055a393b2b9a33e969bd55e4953"
+  integrity sha512-ZXUquC7skSAtOJHcMnfUqshmidjFxLbl5zIX9XjHaMlB3H+TTAWI+JI45H6N+U2U8qsUBIzDYyjKgXiQfQXbMw==
+  dependencies:
+    "@babel/runtime" "^7.4.3"
+    "@polkadot/util" "^0.76.1"
+    "@types/store" "^2.0.1"
+    store "^2.0.12"
+
 "@polkadot/ui-settings@^0.38.0-beta.2", "@polkadot/ui-settings@^0.38.0-beta.3":
   version "0.38.0-beta.3"
   resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-0.38.0-beta.3.tgz#6d747e2ebad595d9e39eadb364b451e1020a0138"
@@ -8488,9 +8498,9 @@ forwarded@~0.1.2:
   integrity sha1-mMI9qxF1ZXuMBXPozszZGw/xjIQ=
 
 fp-ts@^1.16.1:
-  version "1.17.1"
-  resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-1.17.1.tgz#8ee8f4aa7107654b837f99f6aef915e655b1ce5e"
-  integrity sha512-B/pJfKxcPbDLzD4FJIQQeDtgPkYpihtS14/pbJJf5FwZ8FX4g3lXVraN4De7PSYOeV7RX/1dpc+Ri7F9N9fYtQ==
+  version "1.17.3"
+  resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-1.17.3.tgz#5064afc4bee8ddcaea567479bfc62d527e015825"
+  integrity sha512-r4gHfAWaRrYPsmdzRl1U9CkpbdOi8fPg5F5KiazAadENz5DKdWEaCDPl2Tf92fvkZGD/ekZ3EHu3gtXIVcsXtA==
 
 fragment-cache@^0.2.1:
   version "0.2.1"
