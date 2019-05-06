@@ -6,7 +6,7 @@ import { spawn } from 'child_process';
 
 // TEMPORARY: change to runSubstrateLight once the light client is available.
 export const runSubstrateDev = () => {
-  const substrate = spawn('substrate', ['--dev']);
+  const substrate = spawn('substrate', ['--dev']); // FIXME: --light
 
   substrate.stdout.on('data', data => console.log('stdout => ', data.toString()));
   substrate.stderr.on('data', error => {
@@ -19,7 +19,7 @@ export const runSubstrateDev = () => {
 };
 
 export const purgeDevChain = () => {
-  const purge = spawn('substrate', ['purge-chain', '--dev']);
+  const purge = spawn('substrate', ['purge-chain', '--dev']); // FIXME: --light
   purge.stdout.once('data', data => {
     // it prompts y/n here once so it hangs until there's user input.
     purge.stdin.write('y');

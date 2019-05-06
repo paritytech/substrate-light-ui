@@ -4,8 +4,8 @@
 import { BrowserWindow } from 'electron';
 import Pino from 'pino';
 
-import { isSubstrateRunning } from '../util';
-import { runSubstrateDev } from '../util/substrateProcess';
+import { isSubstrateRunning } from '../../util';
+import { runSubstrateDev } from '../../util/substrateProcess';
 
 const pino = Pino();
 let hasCalledInitParitySubstrate = false;

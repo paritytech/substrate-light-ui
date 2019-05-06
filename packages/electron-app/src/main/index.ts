@@ -9,6 +9,7 @@ import path from 'path';
 import url from 'url';
 
 import { CSP, staticPath } from './util';
+import SluiApp from './app';
 
 const { app, BrowserWindow, session } = electron;
 const pino = Pino();
@@ -16,6 +17,14 @@ let mainWindow: Electron.BrowserWindow | undefined;
 
 // https://electronjs.org/docs/tutorial/security#electron-security-warnings
 process.env.ELECTRON_ENABLE_SECURITY_WARNINGS = 'true';
+
+let sluiApp;
+
+app.once('ready', () => {
+  sluiApp = new SluiApp(app, options);
+
+  return sluiApp;
+});
 
 function createWindow () {
   mainWindow = new BrowserWindow({
@@ -78,8 +87,6 @@ function createWindow () {
     mainWindow = undefined;
   });
 }
-
-app.once('ready', createWindow);
 
 app.on('activate', function () {
   // On OS X it's common to re-create a window in the app when the
