@@ -9,7 +9,7 @@ export class ApiSigner implements Signer {
   private txCount = 0;
 
   async sign (extrinsic: IExtrinsic, address: string) {
-    console.log(extrinsic, address);
+    console.log('SIGN', extrinsic, address);
     return ++this.txCount;
   }
 }

@@ -2,92 +2,150 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { SubmittableExtrinsic, SubmittableResult } from '@polkadot/api/SubmittableExtrinsic';
 import { RxResult } from '@polkadot/api/rx/types';
-import BN from 'bn.js';
+import { SubmittableExtrinsic, SubmittableResult } from '@polkadot/api/SubmittableExtrinsic';
+import { KeyringPair } from '@polkadot/keyring/types';
 import { Balance } from '@polkadot/types';
+import BN from 'bn.js';
 import React, { createContext, useState } from 'react';
 import { Subject } from 'rxjs';
 
-export interface PendingTransaction { // an item from the TxQueue
+import { logger } from '@polkadot/util';
+
+const l = logger('tx-queue');
+
+const INIT_ERROR = new Error('TxQueueContext called without Provider.');
+
+type Extrinsic = SubmittableExtrinsic<RxResult, RxResult>;
+
+export interface ExtrinsicDetails {
   allFees: BN;
   allTotal: BN;
   amount: Balance;
-  id: number;
   recipientAddress: string;
+  senderPair: KeyringPair;
+}
+
+/**
+ * An item from the TxQueue
+ */
+export interface PendingExtrinsic {
+  details: ExtrinsicDetails;
+  extrinsic: Extrinsic;
+  id: number;
   status: {
-    isFinalized: boolean;
-    isDropped: boolean;
-    isUsurped: boolean;
+    isAskingForConfirm: boolean; // created for light-ui
+    isFinalized: boolean; // comes from node
+    isDropped: boolean; // comes from node
+    isPending: boolean; // created for light-ui
+    isUsurped: boolean;  // comes from node
   };
   unsubscribe: () => void;
 }
 
-export interface SubmitParams {
-  amount: Balance;
-  allFees: BN;
-  allTotal: BN;
-  extrinsic: SubmittableExtrinsic<RxResult, RxResult>;
-  recipientAddress: string;
-  senderAddress: string;
+export interface EnqueueParams extends ExtrinsicDetails {
+  extrinsic: Extrinsic;
 }
 
 interface Props {
-  children: any;
+  children: React.ReactNode;
 }
 
 const successObservable = new Subject();
 const errorObservable = new Subject();
 
 export const TxQueueContext = createContext({
-  txQueue: [] as PendingTransaction[],
-  submit: (params: SubmitParams) => { console.error('TxQueueContext called without Provider.'); },
-  clear: () => { console.error('TxQueueContext called without Provider.'); },
+  enqueue: (extrinsic: Extrinsic, details: ExtrinsicDetails) => { console.error(INIT_ERROR); },
+  txQueue: [] as PendingExtrinsic[],
+  submit: (extrinsicId: number) => { console.error(INIT_ERROR); },
+  clear: () => { console.error(INIT_ERROR); },
   successObservable,
   errorObservable
 });
 
 export function TxQueueContextProvider (props: Props) {
 
-  const [txQueue, setTxQueue]: [PendingTransaction[], any] = useState([] as PendingTransaction[]);
+  const [txQueue, setTxQueue] = useState([] as PendingExtrinsic[]);
 
-  const replaceTx = (id: number, newTx: PendingTransaction) => {
-    setTxQueue((prevTxQueue: PendingTransaction[]) => prevTxQueue.map((tx: PendingTransaction) => (
+  const replaceTx = (id: number, newTx: PendingExtrinsic) => {
+    setTxQueue((prevTxQueue: PendingExtrinsic[]) => prevTxQueue.map((tx: PendingExtrinsic) => (
       tx.id === id
         ? newTx
         : tx
     )));
   };
 
-  const closeTxSubscription = (id: number) => {
-    const tx = txQueue.find((tx) => tx.id === id);
+  const closeTxSubscription = (extrinsicId: number) => {
+    const tx = txQueue.find((tx) => tx.id === extrinsicId);
     if (tx) tx.unsubscribe();
   };
 
   const [txCounter, setTxCounter] = useState(0);
 
-  const submit = (params: SubmitParams) => {
-    const { extrinsic, senderAddress, allFees, allTotal, amount, recipientAddress } = params;
-
-    const transactionId = txCounter;
+  const enqueue = (extrinsic: Extrinsic, details: ExtrinsicDetails) => {
+    const extrinsicId = txCounter;
     setTxCounter(txCounter + 1);
 
+    l.log(`Queued extrinsic #${extrinsicId} from ${details.senderPair.address()} to ${details.recipientAddress} of amount ${details.amount}`, details);
+
+    setTxQueue(txQueue.concat({
+      details,
+      extrinsic,
+      id: extrinsicId,
+      status: {
+        isAskingForConfirm: true,
+        isFinalized: false,
+        isDropped: false,
+        isPending: false,
+        isUsurped: false
+      },
+      unsubscribe: () => { /* Do nothing on unsubscribe at this stage */ }
+    }));
+  };
+
+  const submit = (extrinsicId: number) => {
+    const pendingExtrinsic = txQueue.find((tx) => tx.id === extrinsicId);
+
+    if (!pendingExtrinsic) {
+      l.error(`There's no extrinsic with id #${extrinsicId}`);
+      return;
+    }
+
+    const {
+      details: { senderPair, amount, recipientAddress },
+      extrinsic,
+      status
+    } = pendingExtrinsic;
+
+    if (!status.isAskingForConfirm) {
+      l.error(`Extrinsic #${extrinsicId} is being submitted, but its status is not isAskingForConfirm`);
+      return;
+    }
+
+    l.log(`Extrinsic #${extrinsicId} is being sent`);
+
     const subscription = extrinsic
-      .signAndSend(senderAddress) // send the extrinsic
+      .signAndSend(senderPair) // send the extrinsic
       .subscribe(
         (txResult: SubmittableResult) => {
           const { status: { isFinalized, isDropped, isUsurped } } = txResult;
 
-          replaceTx(transactionId, {
-            ...newPendingTx, status: { isFinalized, isDropped, isUsurped }
+          replaceTx(extrinsicId, {
+            ...pendingExtrinsic, status: {
+              isAskingForConfirm: false,
+              isDropped,
+              isFinalized,
+              isPending: false,
+              isUsurped
+            }
           });
 
           if (isFinalized) {
-            successObservable.next({ amount, recipientAddress, senderAddress });
+            successObservable.next({ amount, recipientAddress, senderPair });
           }
 
           if (isFinalized || isDropped || isUsurped) {
-            closeTxSubscription(transactionId);
+            closeTxSubscription(extrinsicId);
           }
         },
         (error: Error) => {
@@ -95,21 +153,15 @@ export function TxQueueContextProvider (props: Props) {
         }
       );
 
-    const newPendingTx = {
-      allFees,
-      allTotal,
-      amount,
-      id: transactionId,
-      recipientAddress,
+    replaceTx(extrinsicId, {
+      ...pendingExtrinsic,
       status: {
-        isFinalized: false,
-        isDropped: false,
-        isUsurped: false
+        ...pendingExtrinsic.status,
+        isAskingForConfirm: false,
+        isPending: true
       },
-      unsubscribe: () => subscription.unsubscribe()
-    };
-
-    setTxQueue(txQueue.concat(newPendingTx));
+      unsubscribe: () => { subscription.unsubscribe(); }
+    });
   };
 
   const clear = () => {
@@ -117,7 +169,16 @@ export function TxQueueContextProvider (props: Props) {
     setTxQueue([]);
   };
 
-  return <TxQueueContext.Provider value={{ txQueue, submit, clear, successObservable, errorObservable }}>
-    {props.children}
-  </TxQueueContext.Provider>;
+  return (
+    <TxQueueContext.Provider value={{
+      clear,
+      enqueue,
+      submit,
+      txQueue,
+      successObservable,
+      errorObservable
+    }}>
+      {props.children}
+    </TxQueueContext.Provider>
+  );
 }

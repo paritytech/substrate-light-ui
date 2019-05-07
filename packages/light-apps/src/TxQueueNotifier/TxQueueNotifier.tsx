@@ -15,7 +15,7 @@ export function TxQueueNotifier () {
   // Display notification on success
   useEffect(() => {
     const subscription = successObservable.subscribe((details: any) => {
-      const { amount, recipientAddress, senderAddress } = details;
+      const { amount, recipientAddress, senderPair } = details;
 
       const content = (
         <Message.Content>
@@ -23,7 +23,7 @@ export function TxQueueNotifier () {
             <span>Transaction Completed!</span>
             <StackedHorizontal>
               <Margin as='span' left='small' right='small' top='small'>
-                <IdentityIcon theme='substrate' size={16} value={senderAddress} />
+                <IdentityIcon theme='substrate' size={16} value={senderPair.address()} />
               </Margin>
               sent {amount.toString()} units to
               <Margin as='span' left='small' right='small' top='small'>

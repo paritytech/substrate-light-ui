@@ -71,7 +71,7 @@ export class TxQueue extends React.PureComponent<Props, State> {
   renderDetails () {
     const { match: { params: { currentAccount } } } = this.props;
 
-    const { allFees, allTotal, amount, recipientAddress } = this.context.txQueue[0];
+    const { details: { allFees, allTotal, amount, recipientAddress } } = this.context.txQueue[0];
 
     return (
       <Segment placeholder>
@@ -87,7 +87,7 @@ export class TxQueue extends React.PureComponent<Props, State> {
   renderSummary () {
     const { match: { params: { currentAccount } } } = this.props;
 
-    const { amount, recipientAddress } = this.context.txQueue[0];
+    const { details: { amount, recipientAddress } } = this.context.txQueue[0];
 
     return (
       <StackedHorizontal>
