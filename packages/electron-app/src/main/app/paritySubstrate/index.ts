@@ -34,11 +34,6 @@ class ParitySubstrate {
       await this.run();
       pino.info('Running Parity Substrate');
       resolve(true);
-    })
-    .then(isRunning => {
-      // Notify the renderers
-      sluiWindow.webContents.send('substrate-running', isRunning);
-      global.isSubstrateRunning = isRunning; // Send this variable to renderers via IPC
     });
   }
 
