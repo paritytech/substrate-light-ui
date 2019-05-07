@@ -5,27 +5,28 @@
 import { KeyringPair } from '@polkadot/keyring/types';
 import InputAddress from '@polkadot/ui-app/InputAddress';
 import { TxQueueContext } from '@substrate/ui-common';
-import { Form, Input, Modal, Stacked } from '@substrate/ui-components';
+import { ErrorText, Form, Input, Modal, Stacked } from '@substrate/ui-components';
 import { Either, left, right } from 'fp-ts/lib/Either';
 import React, { useContext, useState } from 'react';
 
-function unlockAccount (keyringPair: KeyringPair, password: string): Either<string, void> {
+function unlockAccount (keyringPair: KeyringPair, password: string): Either<Error, KeyringPair> {
   if (!keyringPair.isLocked()) {
-    return right(undefined);
+    return right(keyringPair);
   }
 
   try {
     keyringPair.decodePkcs8(password);
-  } catch (error) {
-    return left(error.message);
+  } catch (err) {
+    return left(err);
   }
 
-  return right(undefined);
+  return right(keyringPair);
 }
 
 export function Signer () {
   const { clear, submit, txQueue } = useContext(TxQueueContext);
   const [inputPassword, setInputPassword] = useState('');
+  const [error, setError] = useState('');
 
   const pendingTx = txQueue.find(({ status: { isAskingForConfirm } }) => isAskingForConfirm);
 
@@ -36,6 +37,7 @@ export function Signer () {
   const { senderPair } = pendingTx.details;
 
   const handlePasswordChange = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    setError('');
     setInputPassword(value);
   };
 
@@ -43,12 +45,10 @@ export function Signer () {
     <Modal
       as={Form}
       onSubmit={() => {
-        if (unlockAccount(senderPair, 'amaama').isRight()) {
-          submit(pendingTx.id);
-        } else {
-          console.log('TODO Add error');
-        }
-
+        unlockAccount(senderPair, inputPassword).fold(
+          (err) => setError(err.message),
+          () => submit(pendingTx.id)
+        );
       }}
       open
     >
@@ -69,6 +69,7 @@ export function Signer () {
               type='password'
               value={inputPassword}
             />}
+            {error && <ErrorText>{error}</ErrorText>}
           </Stacked>
         </Modal.Content>
         <Modal.Actions>

@@ -130,6 +130,8 @@ export function TxQueueContextProvider (props: Props) {
         (txResult: SubmittableResult) => {
           const { status: { isFinalized, isDropped, isUsurped } } = txResult;
 
+          l.log(`Extrinsic #${extrinsicId} has new status:`, txResult);
+
           replaceTx(extrinsicId, {
             ...pendingExtrinsic, status: {
               isAskingForConfirm: false,
@@ -150,6 +152,12 @@ export function TxQueueContextProvider (props: Props) {
         },
         (error: Error) => {
           errorObservable.next({ error: error.message });
+        },
+        () => {
+          // Lock pair, as we don't need it anymore
+          // In the future, the locking strategy could be done in ui-keyring:
+          // https://github.com/polkadot-js/apps/issues/1102
+          senderPair.lock();
         }
       );
 
