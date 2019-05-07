@@ -72,7 +72,7 @@ function downloadSubstrate() {
         .then(script => {
             writeFileSync('./getSubstrate.sh', script);
             // spawn a child process to run the script
-            const getSubstrate = spawn('sh', ['./getSubstrate.sh']);
+            const getSubstrate = spawn('sh', ['./getSubstrate.sh', '--', '--fast']);
             // handle events as they come up
             getSubstrate.stdout.on('data', data => console.log(data.toString()));
             getSubstrate.stderr.on('data', error => console.log(error.toString()));

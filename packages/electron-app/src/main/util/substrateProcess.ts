@@ -9,13 +9,16 @@ import { bundledPath } from './staticPath';
 export const runSubstrateDev = () => {
   const substrate = spawn(bundledPath, ['--dev']); // FIXME: --light
 
-  substrate.stdout.on('data', data => console.log('stdout => ', data.toString()));
+  substrate.stdout.on('data', data => console.log(data.toString()));
   substrate.stderr.on('data', error => {
-    console.log('stderr => ', error.toString());
+    console.log(error.toString());
+  });
+  substrate.on('error', error => {
+    console.log('Substrate process errored => ', error.toString());
+    purgeDevChain();
   });
   substrate.on('exit', code => {
-    console.log('substrate process exited with code -> ', code && code.toString());
-    purgeDevChain();
+    console.log('Substrate process exited with code -> ', code && code.toString());
   });
 };
 

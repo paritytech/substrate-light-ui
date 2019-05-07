@@ -32,6 +32,6 @@
     "source-map-support": "^0.5.10"
   },
   "substrate": {
-    "version": "~0.9.2"
+    "version": "~1.0.0"
   }
 }
