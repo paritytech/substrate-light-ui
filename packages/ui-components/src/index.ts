@@ -35,5 +35,7 @@ export * from './NavLink';
 export * from './Shared.styles';
 export * from './stateful';
 export * from './TextArea';
+export * from './TxDetails';
+export * from './TxSummary';
 export * from './types';
 export * from './WalletCard';

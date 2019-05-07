@@ -175,6 +175,7 @@ export function TxQueueContextProvider (props: Props) {
   const clear = () => {
     txQueue.forEach(({ unsubscribe }) => { unsubscribe(); });
     setTxQueue([]);
+    l.log('Cleared all extrinsics');
   };
 
   return (

@@ -18,7 +18,7 @@ export class ManageAddresses extends React.PureComponent<Props> {
       <WalletCard
         header='Address Book'
         height='100%'>
-        <StackedHorizontal justifyContent='stretch' alignItems='stretch'>
+        <StackedHorizontal justifyContent='space-between' alignItems='stretch'>
           <FlexItem>
             <Switch>
               <Route path='/addresses/:currentAccount/:editAddress' component={Edit} />

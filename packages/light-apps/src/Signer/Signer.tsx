@@ -3,12 +3,17 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { KeyringPair } from '@polkadot/keyring/types';
-import InputAddress from '@polkadot/ui-app/InputAddress';
 import { TxQueueContext } from '@substrate/ui-common';
-import { ErrorText, Form, Input, Modal, Stacked } from '@substrate/ui-components';
+import { ErrorText, Form, Input, Margin, Modal, NavButton, Stacked, StyledLinkButton, TxDetails, TxSummary, StackedHorizontal } from '@substrate/ui-components';
 import { Either, left, right } from 'fp-ts/lib/Either';
 import React, { useContext, useState } from 'react';
 
+/**
+ * Unlock a pair using a password, keeping the secret key in memory.
+ *
+ * @param keyringPair - The pair to unlock
+ * @param password - The password to use to unlock
+ */
 function unlockAccount (keyringPair: KeyringPair, password: string): Either<Error, KeyringPair> {
   if (!keyringPair.isLocked()) {
     return right(keyringPair);
@@ -51,34 +56,49 @@ export function Signer () {
         );
       }}
       open
+      size='tiny'
     >
       <React.Fragment>
-        <Modal.Header>Confirm transaction</Modal.Header>
+        <Modal.Header color='lightBlue1' textAlign='left'>Sign transaction</Modal.Header>
         <Modal.Content>
-          <Stacked>
-            <InputAddress
-              isDisabled
-              type='account'
-              value={senderPair.address()}
-              withLabel={false}
+          <Stacked alignItems='flex-start'>
+            <p>By signing this transaction you are confirming that you wish to transfer</p>
+            <TxSummary
+              amount={pendingTx.details.amount}
+              recipientAddress={pendingTx.details.recipientAddress}
+              senderAddress={senderPair.address()}
             />
-            {senderPair.isLocked() && <Input
-              fluid
-              label='Password'
-              onChange={handlePasswordChange}
-              type='password'
-              value={inputPassword}
-            />}
+            {senderPair.isLocked() && <React.Fragment>
+              <Margin top />
+              <Input
+                fluid
+                label='Password'
+                onChange={handlePasswordChange}
+                type='password'
+                value={inputPassword}
+              />
+              <Margin top />
+            </React.Fragment>}
             {error && <ErrorText>{error}</ErrorText>}
+            <TxDetails
+              allFees={pendingTx.details.allFees}
+              allTotal={pendingTx.details.allTotal}
+              amount={pendingTx.details.amount}
+              recipientAddress={pendingTx.details.recipientAddress}
+              senderAddress={senderPair.address()}
+            />
           </Stacked>
         </Modal.Content>
         <Modal.Actions>
-          <button onClick={clear} type='button'>
-            Cancel
-        </button>
-          <button disabled={senderPair.isLocked() && !inputPassword}>
-            OK
-        </button>
+          <StackedHorizontal justifyContent='flex-end'>
+            <StyledLinkButton onClick={clear} type='button'>
+              Cancel
+          </StyledLinkButton>
+            <Margin left='small' />
+            <NavButton disabled={senderPair.isLocked() && !inputPassword}>
+              OK
+        </NavButton>
+          </StackedHorizontal>
         </Modal.Actions>
       </React.Fragment>
     </Modal>

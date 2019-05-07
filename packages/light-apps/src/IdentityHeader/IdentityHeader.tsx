@@ -16,7 +16,7 @@ interface MatchParams {
 
 interface Props extends RouteComponentProps<MatchParams> { }
 
-export function IdentityHeader (props: Props) {
+export function IdentityHeader(props: Props) {
   const { history } = props;
   const { keyring } = useContext(AppContext);
   const { enqueue } = useContext(AlertsContext);
@@ -52,7 +52,7 @@ export function IdentityHeader (props: Props) {
     setInputName(value);
   const renderRenameModal = () => {
     return (
-      <Modal closeOnDimmerClick closeOnEscape open={renameModalOpen} trigger={<Dropdown.Item icon='edit' onClick={openRenameModal} text='Rename Account'/>}>
+      <Modal closeOnDimmerClick closeOnEscape open={renameModalOpen} trigger={<Dropdown.Item icon='edit' onClick={openRenameModal} text='Rename Account' />}>
         <WithSpaceAround>
           <Stacked>
             <Modal.SubHeader>Rename account</Modal.SubHeader>
@@ -133,7 +133,7 @@ export function IdentityHeader (props: Props) {
   const closeForgetModal = () => setForgetModalOpen(false);
   const renderForgetConfirmationModal = () => {
     return (
-      <Modal closeOnDimmerClick={true} closeOnEscape={true} open={forgetModalOpen} trigger={<Dropdown.Item icon='trash' onClick={openForgetModal} text='Forget Account'/>}>
+      <Modal closeOnDimmerClick={true} closeOnEscape={true} open={forgetModalOpen} trigger={<Dropdown.Item icon='trash' onClick={openForgetModal} text='Forget Account' />}>
         <WithSpaceAround>
           <Stacked>
             <Modal.SubHeader> Please Confirm You Want to Forget this Account </Modal.SubHeader>
@@ -226,7 +226,7 @@ export function IdentityHeader (props: Props) {
     };
 
     return (
-      <StackedHorizontal justifyContent='start' alignItems='flex-start'>
+      <StackedHorizontal justifyContent='flex-start' alignItems='flex-start'>
         <Menu stackable secondary>
           <Menu.Item onClick={navToTransfer}>
             Transfer Balance
