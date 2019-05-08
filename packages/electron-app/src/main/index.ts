@@ -32,12 +32,6 @@ app.once('ready', () => {
   return new ParitySubstrate();
 });
 
-// @ts-ignore No idea what tslint is on about here..`
-// "argument of type 'closed' cannot be assigned to parameter of type 'window-all-closed'"
-app.on('closed', function () {
-  sluiApp = undefined;
-});
-
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
   // On OS X it is common for applications and their menu bar
@@ -88,6 +82,10 @@ function createWindow () {
       slashes: true
     })
   );
+
+  sluiApp.on('closed', function () {
+    sluiApp = undefined;
+  });
 
   if (process.env.NODE_ENV !== 'production') {
     installExtension(REACT_DEVELOPER_TOOLS)
