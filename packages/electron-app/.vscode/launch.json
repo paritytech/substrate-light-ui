@@ -1,0 +1,23 @@
+// Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
+// This software may be modified and distributed under the terms
+// of the Apache-2.0 license. See the LICENSE file for details.
+
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Main Process",
+            "type": "node",
+            "request": "launch",
+            "cwd": "../",
+            "runtimeExecutable": "../node_modules/.bin/electron",
+            "windows": {
+                "runtimeExecutable": "../node_modules/.bin/electron.cmd"
+            },
+            "args": [
+                "."
+            ],
+            "outputCapture": "std"
+        }
+    ]
+}

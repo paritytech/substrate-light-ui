@@ -16,4 +16,4 @@ export const staticPath = app.isPackaged
   ? __dirname.replace(/app\.asar$/, 'static')
   : path.join(process.cwd(), 'static');
 
-export const bundledPath = path.join(staticPath, 'substrate/target/release/substrate');
+export const bundledPath = path.join(staticPath, 'substrate');

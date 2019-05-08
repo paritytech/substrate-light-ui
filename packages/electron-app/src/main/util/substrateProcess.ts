@@ -11,6 +11,7 @@ import { bundledPath } from './staticPath';
 
 // TEMPORARY: change to runSubstrateLight once the light client is available.
 export const runSubstrateDev = () => {
+  console.log('running substrate dev ....');
   const substrate = spawn(bundledPath, ['--dev']); // FIXME: --light
 
   substrate.stdout.on('data', data => pino.info(data.toString()));
@@ -27,6 +28,7 @@ export const runSubstrateDev = () => {
 };
 
 export const purgeDevChain = () => {
+  console.log('purging substrate dev ....');
   // n.b. -y flag is used to skip interactive prompt.
   const purge = spawn(bundledPath, ['purge-chain', '--dev', '-y']); // FIXME: --light
   purge.stdout.once('data', data => {
