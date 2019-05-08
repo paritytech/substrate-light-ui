@@ -40,7 +40,7 @@ app.on('window-all-closed', function () {
   }
 });
 
-function createWindow() {
+function createWindow () {
   let sluiApp = new BrowserWindow({
     height: 1920,
     resizable: true,
