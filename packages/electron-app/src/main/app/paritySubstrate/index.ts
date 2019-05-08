@@ -23,26 +23,18 @@ class ParitySubstrate {
     */
 
     // Run the bundled Parity Substrate if needed and wanted
-    // @ts-ignore
+
     return new Promise(async (resolve, reject) => {
-      if (await this.isRunning()) {
+      if (await isSubstrateRunning()) {
         resolve(true);
         return;
       }
 
       // Parity Substrate isn't running: run the bundled binary
-      await this.run();
+      runSubstrateDev();
       pino.info('Running Parity Substrate');
       resolve(true);
     });
-  }
-
-  isRunning = async () => {
-    return isSubstrateRunning();
-  }
-
-  run = async () => {
-    return runSubstrateDev();
   }
 }
 
