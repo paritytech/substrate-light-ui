@@ -5,3 +5,4 @@
 export * from './csp';
 export * from './isSubstrateRunning';
 export * from './staticPath';
+export * from './substrateProcess';

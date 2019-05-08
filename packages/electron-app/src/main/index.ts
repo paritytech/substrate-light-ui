@@ -8,12 +8,12 @@ import path from 'path';
 import Pino from 'pino';
 import url from 'url';
 
-import ParitySubstrate from './app/paritySubstrate';
-import { CSP, staticPath } from './util';
+import { CSP, isSubstrateRunning, runSubstrateDev, staticPath } from './util';
 
 const { app, BrowserWindow, session } = electron;
 const pino = new Pino();
 let sluiApp: Electron.BrowserWindow | undefined;
+let hasCalledInitParitySubstrate = false;
 
 pino.info('Platform detected: ', process.platform);
 pino.info('Process type: ', process.type);
@@ -21,7 +21,7 @@ pino.info('Process ID: ', process.pid);
 pino.info('Process args: ', process.argv);
 pino.info('Electron version: ', process.versions['electron']);
 
-app.once('ready', () => {
+app.once('ready', async () => {
   // https://electronjs.org/docs/tutorial/security#electron-security-warnings
   process.env.ELECTRON_ENABLE_SECURITY_WARNINGS = 'true';
 
@@ -29,7 +29,17 @@ app.once('ready', () => {
   createWindow();
 
   // create Parity Substrate as child of the Main process
-  return new ParitySubstrate();
+  if (await isSubstrateRunning()) {
+    // do nothing
+    return;
+  } else if (hasCalledInitParitySubstrate) {
+    pino.error('Unable to initialise Parity Substrate more than once');
+    return;
+  } else {
+    runSubstrateDev();
+    pino.info('Running Parity Substrate');
+    hasCalledInitParitySubstrate = true;
+  }
 });
 
 // Quit when all windows are closed.
