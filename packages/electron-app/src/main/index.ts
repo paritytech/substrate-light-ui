@@ -13,6 +13,7 @@ import { CSP, staticPath } from './util';
 
 const { app, BrowserWindow, session } = electron;
 const pino = new Pino();
+let sluiApp: Electron.BrowserWindow | undefined;
 
 pino.info('Platform detected: ', process.platform);
 pino.info('Process type: ', process.type);
@@ -31,6 +32,12 @@ app.once('ready', () => {
   return new ParitySubstrate();
 });
 
+// @ts-ignore No idea what tslint is on about here..`
+// "argument of type 'closed' cannot be assigned to parameter of type 'window-all-closed'"
+app.on('closed', function () {
+  sluiApp = undefined;
+});
+
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
   // On OS X it is common for applications and their menu bar
@@ -40,8 +47,16 @@ app.on('window-all-closed', function () {
   }
 });
 
+app.on('activate', function () {
+  // On OS X it's common to re-create a window in the app when the
+  // dock icon is clicked and there are no other windows open.
+  if (sluiApp === undefined) {
+    createWindow();
+  }
+});
+
 function createWindow () {
-  let sluiApp = new BrowserWindow({
+  sluiApp = new BrowserWindow({
     height: 1920,
     resizable: true,
     width: 1440,
@@ -65,8 +80,6 @@ function createWindow () {
     }
   });
 
-  sluiApp.emit('create-app');
-
   sluiApp.loadURL(
     (process.env.NODE_ENV !== 'production' && process.env.ELECTRON_START_URL) ||
     url.format({
@@ -81,8 +94,6 @@ function createWindow () {
       .then((name: string) => console.log(`Added Extension:  ${name}`))
       .catch((err: string) => console.log('An error occurred: ', err));
   }
-
-  sluiApp.emit('after-create-window');
 
   // Content Security Policy (CSP)
   session.defaultSession!.webRequest.onHeadersReceived((details, callback) => {

@@ -19,7 +19,7 @@ class ParitySubstrate {
     /*
     * - If an instance of Parity Substrate is already running, we connect to it.
     * - If no instance of Parity Substrate is running, we run Parity
-    *   Substrate from the static path / download and copy Parity Substrate to static path.
+    *   Substrate from the static path.
     */
 
     // Run the bundled Parity Substrate if needed and wanted

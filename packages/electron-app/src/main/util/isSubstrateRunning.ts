@@ -14,31 +14,25 @@ const pino = Pino();
 const TIMEOUT_MS = 1000;
 
 /**
- * Detect if another instance of parity is already running or not. To achieve
+ * Detect if another instance of Substrate is already running or not. To achieve
  * that, we just ping 127.0.0.1:9944.
  */
-export function isSubstrateRunning () {
-  return new Promise((resolve, reject) => {
-    const wsInterface = TRUSTED_LOOPBACK;
-    const wsPort = DEFAULT_WS_PORT;
+export async function isSubstrateRunning () {
+  const wsInterface = TRUSTED_LOOPBACK;
+  const wsPort = DEFAULT_WS_PORT;
 
-    /**
-     * Try to ping 9944 to test if Substrate is running.
-     */
-    const host = `http://${wsInterface}:${wsPort}`;
+  /**
+   * Try to ping 9944 to test if Substrate is running.
+   */
+  const host = `http://${wsInterface}:${wsPort}`;
 
-    axios
-        .get(host, {
-          timeout: TIMEOUT_MS
-        })
-        .then(_ => {
-          pino.info('@substrate/electron:main')(
-            `Another instance of substrate is already running on ${host}, skip running local instance.`
-            );
-          resolve(true);
-        })
-        .catch(() => {
-          resolve(false);
-        });
-  });
+  try {
+    await axios.get(host, { timeout: TIMEOUT_MS });
+    pino.info('@substrate/electron:main')(
+      `Another instance of substrate is already running on ${host}, skip running local instance.`
+    );
+    return true;
+  } catch {
+    return false;
+  }
 }

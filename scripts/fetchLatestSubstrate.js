@@ -59,7 +59,7 @@ if (existsSync(BUNDLED_PATH)) {
             process.exit(1);
         });
 } else {
-    // Bundled Parity wasn't found, we download the latest version
+    // Bundled Parity Substrate wasn't found, we download the latest version
     downloadSubstrate();
 }
 
