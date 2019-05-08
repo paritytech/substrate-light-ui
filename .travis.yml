@@ -10,12 +10,12 @@ before_install:
   - export PATH=$HOME/.yarn/bin:$PATH
 install:
   - yarn install
-after_success:
-  - yarn fetch-substrate
 script:
   - yarn build
   - yarn lint
   - yarn test
+after_success:
+  - yarn fetch-substrate
 before_deploy:
   - yarn run storybook-build
 deploy:

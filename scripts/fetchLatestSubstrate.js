@@ -1,33 +1,32 @@
 // curl https://getsubstrate.io -sSf | bash
 
+const exec = promisify(require('child_process').exec);
+const fetch = require('node-fetch');
 const { chmod, existsSync, writeFileSync } = require('fs');
 const ncp = require('ncp');
-const fetch = require('node-fetch');
 const os = require('os');
 const path = require('path');
 const { promisify } = require('util');
 const semver = require('semver');
+const spawn = require('child_process').spawn;
 
 const {
     substrate: { version: versionRequirement }
 } = require('../packages/electron-app/package.json');
-const HOME_DIR = os.homedir();
-const ENDPOINT = 'https://getsubstrate.io';
 
-const exec = promisify(require('child_process').exec);
 const fsChmod = promisify(chmod);
 const pncp = promisify(ncp);
-var spawn = require('child_process').spawn;
 
+const HOME_DIR = os.homedir();
+const ENDPOINT = 'https://getsubstrate.io';
 const STATIC_DIRECTORY = path.join(
     '..',
     'packages',
     'electron-app',
     'static'
 );
-
 const BUNDLED_PATH = path.join(STATIC_DIRECTORY, '/substrate/target/release/substrate');
-let PATH_TO_SUBSTRATE = `${HOME_DIR}/.cargo/bin/substrate`;
+const PATH_TO_SUBSTRATE = `${HOME_DIR}/.cargo/bin/substrate`;
 
 if (existsSync(BUNDLED_PATH)) {
     // Bundled Parity Substrate was found, we check if the version matches the minimum requirements

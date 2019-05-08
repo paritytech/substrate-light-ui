@@ -1,7 +1,7 @@
 // Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
-import { BrowserWindow } from 'electron';
+
 import Pino from 'pino';
 
 import { isSubstrateRunning } from '../../util';
@@ -11,7 +11,7 @@ const pino = Pino();
 let hasCalledInitParitySubstrate = false;
 
 class ParitySubstrate {
-  constructor (sluiWindow: BrowserWindow) {
+  constructor () {
     if (hasCalledInitParitySubstrate) {
       throw new Error('Unable to initialise Parity Substrate more than once');
     }
