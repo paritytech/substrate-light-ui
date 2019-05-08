@@ -4,14 +4,12 @@
 
 import electron from 'electron';
 import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
-import Pino from 'pino';
 import path from 'path';
 import url from 'url';
 
-import { CSP, staticPath } from './util';
+import { staticPath } from './util';
 
-const { app, BrowserWindow, session } = electron;
-const pino = Pino();
+const { app, BrowserWindow } = electron;
 let mainWindow: Electron.BrowserWindow | undefined;
 
 // https://electronjs.org/docs/tutorial/security#electron-security-warnings
@@ -56,23 +54,6 @@ function createWindow () {
       .then((name: string) => console.log(`Added Extension:  ${name}`))
       .catch((err: string) => console.log('An error occurred: ', err));
   }
-
-  // Content Security Policy (CSP)
-  session.defaultSession!.webRequest.onHeadersReceived((details, callback) => {
-    // Note: `onHeadersReceived` will not be called in prod, because we use the
-    // file:// protocol: https://electronjs.org/docs/tutorial/security#csp-meta-tag
-    // Instead, the CSP are the ones in the meta tag inside index.html
-    pino.debug(
-      'Configuring Content-Security-Policy for environment development'
-    );
-
-    callback({
-      responseHeaders: {
-        ...details.responseHeaders,
-        'Content-Security-Policy': [CSP]
-      }
-    });
-  });
 
   mainWindow.on('closed', () => {
     mainWindow = undefined;
