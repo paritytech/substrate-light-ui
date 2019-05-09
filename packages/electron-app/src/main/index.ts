@@ -22,10 +22,7 @@ pino.info('Process ID: ', process.pid);
 pino.info('Process args: ', process.argv);
 pino.info('Electron version: ', process.versions['electron']);
 
-let substrateProc: import('child_process').ChildProcessWithoutNullStreams;
-
 app.once('ready', async () => {
-
   const setPid = (pid: number) => {
     pino.info('setting substrate pid -> ', pid);
     substratePid = pid;
