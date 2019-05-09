@@ -21,6 +21,8 @@ pino.info('Process ID: ', process.pid);
 pino.info('Process args: ', process.argv);
 pino.info('Electron version: ', process.versions['electron']);
 
+let substrateProc: import('child_process').ChildProcessWithoutNullStreams;
+
 app.once('ready', async () => {
   // https://electronjs.org/docs/tutorial/security#electron-security-warnings
   process.env.ELECTRON_ENABLE_SECURITY_WARNINGS = 'true';
@@ -30,13 +32,15 @@ app.once('ready', async () => {
 
   // create Parity Substrate as child of the Main process
   if (await isSubstrateRunning()) {
+    pino.error('Substrate instance is allready running!');
+    console.error('Substrate instance is allready running!');
     // do nothing
     return;
   } else if (hasCalledInitParitySubstrate) {
     pino.error('Unable to initialise Parity Substrate more than once');
     return;
   } else {
-    runSubstrateDev();
+    substrateProc = runSubstrateDev();
     pino.info('Running Parity Substrate');
     hasCalledInitParitySubstrate = true;
   }
@@ -48,6 +52,7 @@ app.on('window-all-closed', function () {
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
     app.quit();
+    substrateProc.kill('SIGINT');
   }
 });
 

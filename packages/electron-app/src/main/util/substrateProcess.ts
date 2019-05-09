@@ -25,6 +25,8 @@ export const runSubstrateDev = () => {
   substrate.on('exit', code => {
     pino.error('Substrate process exited with code -> ', code && code.toString());
   });
+
+  return substrate;
 };
 
 export const purgeDevChain = () => {
