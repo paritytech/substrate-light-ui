@@ -54,10 +54,9 @@ app.on('window-all-closed', function () {
   // On OS X it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
+    killSubstrate();
     app.quit();
   }
-
-  process.kill(substratePid);
 });
 
 app.on('activate', function () {
@@ -67,6 +66,20 @@ app.on('activate', function () {
     createWindow();
   }
 });
+
+// Make sure Substrate stops when UI stops
+app.on('before-quit', killSubstrate);
+
+app.on('will-quit', killSubstrate);
+
+app.on('quit', () => {
+  pino.info('Leaving Substrate Light UI');
+  killSubstrate();
+});
+
+function killSubstrate () {
+  process.kill(substratePid);
+}
 
 function createWindow () {
   sluiApp = new BrowserWindow({
@@ -104,6 +117,8 @@ function createWindow () {
 
   sluiApp.on('closed', function () {
     sluiApp = undefined;
+    console.log('sluiapp on closed event -> ', substratePid);
+    process.kill(substratePid);
   });
 
   if (process.env.NODE_ENV !== 'production') {
