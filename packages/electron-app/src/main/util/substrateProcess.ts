@@ -10,7 +10,7 @@ const pino = Pino();
 import { bundledPath } from './staticPath';
 
 // TEMPORARY: change to runSubstrateLight once the light client is available.
-export const runSubstrateDev = (setPid: (pid: number) => void) => {
+export const runSubstrateDev = (setPid?: (pid: number) => void) => {
   pino.info('running substrate dev ....');
   const substrate = spawn(bundledPath, ['--dev']); // FIXME: --light
 
@@ -26,7 +26,7 @@ export const runSubstrateDev = (setPid: (pid: number) => void) => {
     pino.error('Substrate process exited with code -> ', code && code.toString());
   });
 
-  setPid(substrate.pid);
+  setPid && setPid(substrate.pid);
 };
 
 export const purgeDevChain = () => {
