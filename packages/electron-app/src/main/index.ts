@@ -22,6 +22,8 @@ pino.info('Process ID: ', process.pid);
 pino.info('Process args: ', process.argv);
 pino.info('Electron version: ', process.versions['electron']);
 
+let substrateProc: import('child_process').ChildProcessWithoutNullStreams;
+
 app.once('ready', async () => {
 
   const setPid = (pid: number) => {
@@ -33,6 +35,8 @@ app.once('ready', async () => {
   process.env.ELECTRON_ENABLE_SECURITY_WARNINGS = 'true';
 
   if (await isSubstrateRunning()) {
+    pino.error('Substrate instance is allready running!');
+    console.error('Substrate instance is allready running!');
     // do nothing
     pino.info('Substrate is running, do nothing.');
     return;

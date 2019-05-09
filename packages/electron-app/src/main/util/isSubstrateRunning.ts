@@ -2,8 +2,6 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-// Ping ws://localhost:9944 for a response
-
 import axios from 'axios';
 import Pino from 'pino';
 
@@ -12,6 +10,7 @@ import { DEFAULT_HTTP_PORT, TRUSTED_LOOPBACK } from '../app/constants';
 const pino = Pino();
 
 /**
+ * Substrate apibroadcasts through WS on port 9944 and through HTTP on port 9933 by default.
  * Detect if another instance of Substrate is already running or not. To achieve
  * that, we just ping 127.0.0.1:9933.
  */
