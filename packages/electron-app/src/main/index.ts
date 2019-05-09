@@ -55,8 +55,9 @@ app.on('window-all-closed', function () {
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
     app.quit();
-    process.kill(substratePid);
   }
+
+  process.kill(substratePid);
 });
 
 app.on('activate', function () {
