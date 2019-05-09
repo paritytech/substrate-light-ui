@@ -13,6 +13,7 @@ import { CSP, isSubstrateRunning, runSubstrateDev, staticPath } from './util';
 const { app, BrowserWindow, session } = electron;
 const pino = new Pino();
 let sluiApp: Electron.BrowserWindow | undefined;
+let substratePid: number;
 let hasCalledInitParitySubstrate = false;
 
 pino.info('Platform detected: ', process.platform);
@@ -22,24 +23,29 @@ pino.info('Process args: ', process.argv);
 pino.info('Electron version: ', process.versions['electron']);
 
 app.once('ready', async () => {
+
+  const setPid = (pid: number) => {
+    pino.info('setting substrate pid -> ', pid);
+    substratePid = pid;
+  };
+
   // https://electronjs.org/docs/tutorial/security#electron-security-warnings
   process.env.ELECTRON_ENABLE_SECURITY_WARNINGS = 'true';
 
-  // create new BrowserWindow Renderer process
-  createWindow();
-
-  // create Parity Substrate as child of the Main process
   if (await isSubstrateRunning()) {
     // do nothing
+    pino.info('Substrate is running, do nothing.');
     return;
   } else if (hasCalledInitParitySubstrate) {
     pino.error('Unable to initialise Parity Substrate more than once');
     return;
   } else {
-    runSubstrateDev();
+    runSubstrateDev(setPid);
     pino.info('Running Parity Substrate');
     hasCalledInitParitySubstrate = true;
   }
+
+  createWindow();
 });
 
 // Quit when all windows are closed.
@@ -48,6 +54,7 @@ app.on('window-all-closed', function () {
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
     app.quit();
+    process.kill(substratePid);
   }
 });
 
