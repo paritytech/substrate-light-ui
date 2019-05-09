@@ -32,10 +32,8 @@ app.once('ready', async () => {
   process.env.ELECTRON_ENABLE_SECURITY_WARNINGS = 'true';
 
   if (await isSubstrateRunning()) {
-    pino.error('Substrate instance is allready running!');
-    console.error('Substrate instance is allready running!');
     // do nothing
-    pino.info('Substrate is running, do nothing.');
+    pino.error('Substrate instance is already running!');
     return;
   } else if (hasCalledInitParitySubstrate) {
     pino.error('Unable to initialise Parity Substrate more than once');
@@ -117,7 +115,6 @@ function createWindow () {
 
   sluiApp.on('closed', function () {
     sluiApp = undefined;
-    console.log('sluiapp on closed event -> ', substratePid);
     process.kill(substratePid);
   });
 
