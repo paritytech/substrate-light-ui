@@ -1,19 +1,19 @@
 // curl https://getsubstrate.io -sSf | bash
 
-const exec = promisify(require('child_process').exec);
 const fetch = require('node-fetch');
 const { chmod, existsSync, writeFileSync } = require('fs');
 const ncp = require('ncp');
 const os = require('os');
 const path = require('path');
-const { promisify } = require('util');
 const semver = require('semver');
 const spawn = require('child_process').spawn;
+const { promisify } = require('util');
 
 const {
     substrate: { version: versionRequirement }
 } = require('../packages/electron-app/package.json');
 
+const exec = promisify(require('child_process').exec);
 const fsChmod = promisify(chmod);
 const pncp = promisify(ncp);
 
@@ -25,7 +25,7 @@ const STATIC_DIRECTORY = path.join(
     'electron-app',
     'static'
 );
-const BUNDLED_PATH = path.join(STATIC_DIRECTORY, '/substrate/target/release/substrate');
+const BUNDLED_PATH = path.join(STATIC_DIRECTORY, '/substrate');
 const PATH_TO_SUBSTRATE = `${HOME_DIR}/.cargo/bin/substrate`;
 
 if (existsSync(BUNDLED_PATH)) {
@@ -83,12 +83,10 @@ function downloadSubstrate() {
                 // FIXME control flow depending on code
                 console.log(`process ended with code: ${code}`);
 
-                const destinationPath = path.join(STATIC_DIRECTORY, 'substrate');
-
                 // copy the entire directory
-                return pncp(PATH_TO_SUBSTRATE, destinationPath)
-                    .then(() => fsChmod(destinationPath, 0o755))
-                    .then(() => destinationPath);
+                return pncp(PATH_TO_SUBSTRATE, BUNDLED_PATH)
+                    .then(() => fsChmod(BUNDLED_PATH, 0o755))
+                    .then(() => BUNDLED_PATH);
             });
         })
         .catch(e => console.log('Fatal error with getSubstrate script =>', e))
