@@ -5,7 +5,7 @@
 import { ApiRx, WsProvider } from '@polkadot/api';
 import { ChainProperties, Health, Text } from '@polkadot/types';
 import keyring from '@polkadot/ui-keyring';
-import { ENDPOINTS } from '@polkadot/ui-settings/defaults';
+import settings from '@polkadot/ui-settings';
 import { logger } from '@polkadot/util';
 import React from 'react';
 import { combineLatest, Observable } from 'rxjs';
@@ -43,7 +43,7 @@ const DISCONNECTED_STATE_PROPERTIES = {
   }
 };
 
-const wsUrl = ENDPOINTS[0].value || undefined;
+const wsUrl = settings.apiUrl;
 
 const INIT_ERROR = new Error('Please wait for `isReady` before fetching this property');
 
@@ -61,7 +61,7 @@ const l = logger('ui-common');
 // FIXME we could probably split this out into small modular contexts once we
 // use https://reactjs.org/docs/hooks-reference.html#usecontext
 export class ContextGate extends React.PureComponent<{}, State> {
-  api = new ApiRx(wsUrl ? new WsProvider(wsUrl) : undefined);
+  api = new ApiRx(new WsProvider(wsUrl));
 
   state: State = {
     ...DISCONNECTED_STATE_PROPERTIES
