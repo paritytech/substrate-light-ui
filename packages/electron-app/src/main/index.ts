@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import * as cp from 'child_process';
+import { ChildProcess } from 'child_process';
 import electron from 'electron';
 import path from 'path';
 import Pino from 'pino';
@@ -13,7 +13,7 @@ import { CSP, isSubstrateRunning, runSubstrateDev, staticPath } from './util';
 const { app, BrowserWindow, session } = electron;
 const pino = new Pino();
 let sluiApp: Electron.BrowserWindow | undefined;
-let substrateProc: cp.ChildProcess;
+let substrateProc: ChildProcess;
 let hasCalledInitParitySubstrate = false;
 
 pino.info('Platform detected: ', process.platform);
@@ -23,7 +23,7 @@ pino.info('Process args: ', process.argv);
 pino.info('Electron version: ', process.versions['electron']);
 
 app.once('ready', async () => {
-  const setProc = (proc: cp.ChildProcess) => {
+  const setProc = (proc: ChildProcess) => {
     pino.info('setting substrate process -> ', proc);
     substrateProc = proc;
   };
