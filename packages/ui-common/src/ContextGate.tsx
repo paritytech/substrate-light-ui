@@ -5,7 +5,7 @@
 import { ApiRx, WsProvider } from '@polkadot/api';
 import { ChainProperties, Health, Text } from '@polkadot/types';
 import keyring from '@polkadot/ui-keyring';
-import settings from '@polkadot/ui-settings';
+import { ENDPOINTS } from '@polkadot/ui-settings/defaults';
 import { logger } from '@polkadot/util';
 import React from 'react';
 import { combineLatest, Observable } from 'rxjs';
@@ -43,7 +43,7 @@ const DISCONNECTED_STATE_PROPERTIES = {
   }
 };
 
-const wsUrl = settings.apiUrl || undefined;
+const wsUrl = ENDPOINTS[0].value || undefined;
 
 const INIT_ERROR = new Error('Please wait for `isReady` before fetching this property');
 
