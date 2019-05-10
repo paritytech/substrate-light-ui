@@ -4,12 +4,14 @@
 
 import { spawn, ChildProcess } from 'child_process';
 import Pino from 'pino';
-const pino = Pino();
 
 import { bundledPath } from './staticPath';
 
+const pino = Pino();
+let substrateProc: ChildProcess;
+
 // TEMPORARY: change to runSubstrateLight once the light client is available.
-export const runSubstrateDev = (setProc?: (proc: ChildProcess) => void) => {
+export const runSubstrateDev = () => {
   pino.info('running substrate dev ....');
   const substrate = spawn(bundledPath, ['--dev']); // FIXME: --light
 
@@ -25,7 +27,12 @@ export const runSubstrateDev = (setProc?: (proc: ChildProcess) => void) => {
     pino.error('Substrate process exited with code -> ', code && code.toString());
   });
 
-  setProc && setProc(substrate);
+  substrateProc = substrate;
+};
+
+export const killSubstrate = () => {
+  pino.info('setting substrate process -> ', substrateProc);
+  substrateProc.kill();
 };
 
 export const purgeDevChain = () => {
