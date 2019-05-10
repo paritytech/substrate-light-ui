@@ -31,8 +31,10 @@ export const runSubstrateDev = () => {
 };
 
 export const killSubstrate = () => {
-  pino.info('setting substrate process -> ', substrateProc);
-  substrateProc.kill();
+  if (substrateProc) {
+    pino.info('setting substrate process -> ', substrateProc);
+    substrateProc.kill();
+  }
 };
 
 export const purgeDevChain = () => {

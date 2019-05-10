@@ -2,14 +2,17 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import electron from 'electron';
+import { app, BrowserWindow } from 'electron';
 import path from 'path';
 import Pino from 'pino';
 import url from 'url';
 
+import { initMenu } from './app/menu';
 import { isSubstrateRunning, killSubstrate, runSubstrateDev, staticPath } from './util';
 
-const { app, BrowserWindow } = electron;
+// https://electronjs.org/docs/tutorial/security#electron-security-warnings
+process.env.ELECTRON_ENABLE_SECURITY_WARNINGS = 'true';
+
 const pino = new Pino();
 let sluiApp: Electron.BrowserWindow | undefined;
 let hasCalledInitParitySubstrate = false;
@@ -20,10 +23,9 @@ pino.info('Process ID: ', process.pid);
 pino.info('Process args: ', process.argv);
 pino.info('Electron version: ', process.versions['electron']);
 
-app.once('ready', async () => {
-  // https://electronjs.org/docs/tutorial/security#electron-security-warnings
-  process.env.ELECTRON_ENABLE_SECURITY_WARNINGS = 'true';
+initMenu();
 
+app.once('ready', async () => {
   if (await isSubstrateRunning()) {
     // do nothing
     pino.error('Substrate instance is already running!');
