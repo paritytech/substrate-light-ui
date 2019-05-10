@@ -7,9 +7,9 @@ import path from 'path';
 import Pino from 'pino';
 import url from 'url';
 
-import { CSP, isSubstrateRunning, killSubstrate, runSubstrateDev, staticPath } from './util';
+import { isSubstrateRunning, killSubstrate, runSubstrateDev, staticPath } from './util';
 
-const { app, BrowserWindow, session } = electron;
+const { app, BrowserWindow } = electron;
 const pino = new Pino();
 let sluiApp: Electron.BrowserWindow | undefined;
 let hasCalledInitParitySubstrate = false;
@@ -105,22 +105,5 @@ function createWindow () {
   sluiApp.on('closed', function () {
     sluiApp = undefined;
     killSubstrate();
-  });
-
-  // Content Security Policy (CSP)
-  session.defaultSession!.webRequest.onHeadersReceived((details, callback) => {
-    // Note: `onHeadersReceived` will not be called in prod, because we use the
-    // file:// protocol: https://electronjs.org/docs/tutorial/security#csp-meta-tag
-    // Instead, the CSP are the ones in the meta tag inside index.html
-    pino.debug(
-      'Configuring Content-Security-Policy for environment development'
-    );
-
-    callback({
-      responseHeaders: {
-        ...details.responseHeaders,
-        'Content-Security-Policy': [CSP]
-      }
-    });
   });
 }

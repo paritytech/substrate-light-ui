@@ -4,7 +4,6 @@
 
 import { DerivedBalances, DerivedFees } from '@polkadot/api-derive/types';
 import { Index } from '@polkadot/types';
-import { logger } from '@polkadot/util';
 import { AppContext, TxQueueContext } from '@substrate/ui-common';
 import { Balance, Form, Input, NavButton, StackedHorizontal, SubHeader } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';
@@ -23,11 +22,9 @@ interface SendMatchParams extends MatchParams {
 
 interface Props extends RouteComponentProps<SendMatchParams> { }
 
-const l = logger('transfer-app');
-
 export function SendBalance (props: Props) {
   const { api, keyring } = useContext(AppContext);
-  const { submit } = useContext(TxQueueContext);
+  const { enqueue } = useContext(TxQueueContext);
 
   const { history, match: { params: { currentAccount, recipientAddress } } } = props;
 
@@ -83,12 +80,9 @@ export function SendBalance (props: Props) {
       (allExtrinsicData) => {
         // If everything is correct, then submit the extrinsic
 
-        const { extrinsic, amount, allFees, allTotal } = allExtrinsicData;
+        const { extrinsic, amount, allFees, allTotal, recipientAddress: rcptAddress } = allExtrinsicData;
 
-        l.log('Sending tx from', currentAccount, 'to', recipientAddress, 'of amount', amount);
-
-        const senderPair = keyring.getPair(currentAccount);
-        submit({ extrinsic, amount, allFees, allTotal, senderPair, recipientAddress: recipientAddress as any });
+        enqueue(extrinsic, { amount, allFees, allTotal, senderPair: keyring.getPair(currentAccount), recipientAddress: rcptAddress });
       });
   };
 

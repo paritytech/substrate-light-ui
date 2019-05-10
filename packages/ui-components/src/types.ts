@@ -16,7 +16,7 @@ export type SUIPosition = 'bottom' | 'left' | 'right' | 'top';
 
 export type FlexAlign = 'flex-start' | 'flex-end' | 'center' | 'stretch' | 'baseline';
 
-export type FlexJustify = 'start' | 'center' | 'space-around' | 'space-between' | 'space-evenly' | 'stretch';
+export type FlexJustify = 'flex-start' | 'flex-end' | 'center' | 'space-around' | 'space-between';
 
 /**
  * Size for <Input />

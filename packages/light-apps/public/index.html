@@ -10,16 +10,16 @@
   <meta http-equiv="Content-Security-Policy" content="
     block-all-mixed-content;
     child-src 'none';
-    connect-src http: ws:;
+    connect-src 'self' ws:;
     default-src 'none';
     font-src 'self' data: https:;
     form-action 'none';
     frame-src 'none';
     img-src 'self' data:;
-    manifest-src 'none';
+    manifest-src 'self';
     media-src 'none';
     object-src 'none';
-    script-src 'self' 'unsafe-inline';
+    script-src 'self' 'unsafe-inline' 'unsafe-eval';
     style-src 'self' 'unsafe-inline' https:;
     worker-src 'none';
   ">

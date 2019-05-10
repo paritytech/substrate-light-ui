@@ -70,7 +70,7 @@ export const Header = styled.h2<HeaderProps>`
   font-size: ${FONT_SIZES.big};
   margin: ${props => props.margin ? MARGIN_SIZES[props.margin] : `${MARGIN_SIZES.big} 0`};
   padding: ${MARGIN_SIZES.small} ${MARGIN_SIZES.medium};
-  text-align: center;
+  text-align: ${props => props.textAlign || 'center'};
 `;
 
 export const DynamicSizeText = styled.p<DynamicSizeTextProps>`
