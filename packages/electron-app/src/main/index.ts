@@ -2,8 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import * as cp from 'child_process';
 import electron from 'electron';
-import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 import path from 'path';
 import Pino from 'pino';
 import url from 'url';
@@ -13,7 +13,7 @@ import { CSP, isSubstrateRunning, runSubstrateDev, staticPath } from './util';
 const { app, BrowserWindow, session } = electron;
 const pino = new Pino();
 let sluiApp: Electron.BrowserWindow | undefined;
-let substratePid: number;
+let substrateProc: cp.ChildProcess;
 let hasCalledInitParitySubstrate = false;
 
 pino.info('Platform detected: ', process.platform);
@@ -23,9 +23,9 @@ pino.info('Process args: ', process.argv);
 pino.info('Electron version: ', process.versions['electron']);
 
 app.once('ready', async () => {
-  const setPid = (pid: number) => {
-    pino.info('setting substrate pid -> ', pid);
-    substratePid = pid;
+  const setProc = (proc: cp.ChildProcess) => {
+    pino.info('setting substrate process -> ', proc);
+    substrateProc = proc;
   };
 
   // https://electronjs.org/docs/tutorial/security#electron-security-warnings
@@ -39,7 +39,7 @@ app.once('ready', async () => {
     pino.error('Unable to initialise Parity Substrate more than once');
     return;
   } else {
-    runSubstrateDev(setPid);
+    runSubstrateDev(setProc);
     pino.info('Running Parity Substrate');
     hasCalledInitParitySubstrate = true;
   }
@@ -76,7 +76,7 @@ app.on('quit', () => {
 });
 
 function killSubstrate () {
-  process.kill(substratePid);
+  substrateProc.kill();
 }
 
 function createWindow () {
@@ -115,14 +115,8 @@ function createWindow () {
 
   sluiApp.on('closed', function () {
     sluiApp = undefined;
-    process.kill(substratePid);
+    substrateProc.kill();
   });
-
-  if (process.env.NODE_ENV !== 'production') {
-    installExtension(REACT_DEVELOPER_TOOLS)
-      .then((name: string) => console.log(`Added Extension:  ${name}`))
-      .catch((err: string) => console.log('An error occurred: ', err));
-  }
 
   // Content Security Policy (CSP)
   session.defaultSession!.webRequest.onHeadersReceived((details, callback) => {
