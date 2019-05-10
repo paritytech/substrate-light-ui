@@ -25,9 +25,11 @@
     "webpack": "^4.28.3"
   },
   "dependencies": {
-    "@types/electron-devtools-installer": "^2.2.0",
-    "electron-devtools-installer": "^2.2.4",
+    "axios": "^0.18.0",
     "pino": "^5.12.3",
     "source-map-support": "^0.5.10"
+  },
+  "substrate": {
+    "version": "~1.0.0"
   }
 }

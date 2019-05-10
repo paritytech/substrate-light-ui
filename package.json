@@ -24,6 +24,7 @@
     "build": "lerna exec yarn build --stream",
     "clean": "polkadot-dev-clean-build",
     "electron": "cd packages/electron-app && yarn electron",
+    "fetch-substrate": "cd ./scripts && node fetchLatestSubstrate.js",
     "lint": "tsc --noEmit && tslint --project .",
     "package": "cd packages/electron-app && yarn package",
     "prebuild": "yarn clean",
@@ -36,6 +37,9 @@
     "test": "CI=true lerna run test --parallel"
   },
   "devDependencies": {
-    "@polkadot/dev": "^0.25.13"
+    "@polkadot/dev": "^0.25.13",
+    "ncp": "^2.0.0",
+    "node-fetch": "^2.5.0",
+    "semver": "^6.0.0"
   }
 }

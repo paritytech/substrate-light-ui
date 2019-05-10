@@ -3,20 +3,73 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import electron from 'electron';
-import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 import path from 'path';
+import Pino from 'pino';
 import url from 'url';
 
-import { staticPath } from './util';
+import { isSubstrateRunning, killSubstrate, runSubstrateDev, staticPath } from './util';
 
 const { app, BrowserWindow } = electron;
-let mainWindow: Electron.BrowserWindow | undefined;
+const pino = new Pino();
+let sluiApp: Electron.BrowserWindow | undefined;
+let hasCalledInitParitySubstrate = false;
 
-// https://electronjs.org/docs/tutorial/security#electron-security-warnings
-process.env.ELECTRON_ENABLE_SECURITY_WARNINGS = 'true';
+pino.info('Platform detected: ', process.platform);
+pino.info('Process type: ', process.type);
+pino.info('Process ID: ', process.pid);
+pino.info('Process args: ', process.argv);
+pino.info('Electron version: ', process.versions['electron']);
+
+app.once('ready', async () => {
+  // https://electronjs.org/docs/tutorial/security#electron-security-warnings
+  process.env.ELECTRON_ENABLE_SECURITY_WARNINGS = 'true';
+
+  if (await isSubstrateRunning()) {
+    // do nothing
+    pino.error('Substrate instance is already running!');
+    return;
+  } else if (hasCalledInitParitySubstrate) {
+    pino.error('Unable to initialise Parity Substrate more than once');
+    return;
+  } else {
+    runSubstrateDev();
+    pino.info('Running Parity Substrate');
+    hasCalledInitParitySubstrate = true;
+  }
+
+  createWindow();
+});
+
+// Quit when all windows are closed.
+app.on('window-all-closed', function () {
+  // On OS X it is common for applications and their menu bar
+  // to stay active until the user quits explicitly with Cmd + Q
+  if (process.platform !== 'darwin') {
+    killSubstrate();
+    app.quit();
+  }
+});
+
+app.on('activate', function () {
+  // On OS X it's common to re-create a window in the app when the
+  // dock icon is clicked and there are no other windows open.
+  if (sluiApp === undefined) {
+    createWindow();
+  }
+});
+
+// Make sure Substrate stops when UI stops
+app.on('before-quit', killSubstrate);
+
+app.on('will-quit', killSubstrate);
+
+app.on('quit', () => {
+  pino.info('Leaving Substrate Light UI');
+  killSubstrate();
+});
 
 function createWindow () {
-  mainWindow = new BrowserWindow({
+  sluiApp = new BrowserWindow({
     height: 1920,
     resizable: true,
     width: 1440,
@@ -40,7 +93,7 @@ function createWindow () {
     }
   });
 
-  mainWindow.loadURL(
+  sluiApp.loadURL(
     (process.env.NODE_ENV !== 'production' && process.env.ELECTRON_START_URL) ||
     url.format({
       pathname: path.join(staticPath, 'build', 'index.html'),
@@ -49,39 +102,8 @@ function createWindow () {
     })
   );
 
-  if (process.env.NODE_ENV !== 'production') {
-    installExtension(REACT_DEVELOPER_TOOLS)
-      .then((name: string) => console.log(`Added Extension:  ${name}`))
-      .catch((err: string) => console.log('An error occurred: ', err));
-  }
-
-  mainWindow.on('closed', () => {
-    mainWindow = undefined;
+  sluiApp.on('closed', function () {
+    sluiApp = undefined;
+    killSubstrate();
   });
 }
-
-app.on('ready', createWindow);
-
-app.on('activate', function () {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (mainWindow === undefined) {
-    createWindow();
-  }
-});
-
-// Uncomment this block if ever we decide to use a webview in the app.
-// app.on('web-contents-created', (event, contents) => {
-//   contents.on('will-attach-webview', (event, webPreferences, params) => {
-//     event.preventDefault();
-//   });
-// });
-
-// Quit when all windows are closed.
-app.on('window-all-closed', function () {
-  // On OS X it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-});

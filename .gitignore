@@ -2,6 +2,8 @@ build/
 dist/
 coverage/
 node_modules/
+packages/electron-app/static/substrate
+scripts/getSubstrate.sh
 tmp/
 .DS_Store
 .env.local
