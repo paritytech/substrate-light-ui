@@ -1,4 +1,4 @@
-![license](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)
+![license](https://img.shields.io/badge/License-Apache%202.0-blue.svg)
 [![Build Status](https://travis-ci.org/paritytech/substrate-light-ui.svg?branch=master)](https://travis-ci.org/paritytech/substrate-light-ui)
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=paritytech/substrate-light-ui)](https://dependabot.com)
 <a href="https://codeclimate.com/github/paritytech/substrate-light-ui/maintainability"><img src="https://api.codeclimate.com/v1/badges/bdff9a9d1f154523d3b9/maintainability" /></a>
