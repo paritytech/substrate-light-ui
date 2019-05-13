@@ -1,0 +1,90 @@
+stages:
+  - test
+  - build
+
+variables:
+  GIT_DEPTH: '3'
+  SIMPLECOV: 'true'
+  RUST_BACKTRACE: '1'
+  RUSTFLAGS: ''
+  CARGOFLAGS: ''
+
+cache:
+  key: '${CI_JOB_NAME}'
+  paths:
+    - node_modules/
+    - packages/*/node_modules/
+
+.branches: &branches
+  only:
+    - tags
+    - triggers
+    - master
+
+linux-test:
+  stage: test
+  image: node:10
+  script:
+    - curl -o- -L https://yarnpkg.com/install.sh | bash
+    - export PATH=$HOME/.yarn/bin:$PATH
+    - yarn install
+    - yarn test
+    - yarn build
+    - yarn lint
+  tags:
+    - linux-docker
+
+linux-build:
+  stage: build
+  image: node:10
+  <<: *branches
+  script:
+    - curl -o- -L https://yarnpkg.com/install.sh | bash
+    - export PATH=$HOME/.yarn/bin:$PATH
+    - yarn install
+    - yarn build
+    - yarn fetch-substrate
+    - yarn release --linux
+  tags:
+    - linux-docker
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - 'packages/electron-app/dist/*.AppImage'
+      - 'packages/electron-app/dist/*.tar.xz'
+      - 'packages/electron-app/dist/*.snap'
+      - 'packages/electron-app/dist/*.deb'
+
+osx-build:
+  stage: build
+  <<: *branches
+  script:
+    - curl -o- -L https://yarnpkg.com/install.sh | bash
+    - export PATH=$HOME/.yarn/bin:$PATH
+    - yarn install
+    - yarn build
+    - yarn fetch-substrate
+    - yarn release --mac
+  tags:
+    - darwin-shell
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - 'packages/electron-app/dist/*.dmg'
+      - 'packages/electron-app/dist/*.zip'
+
+win-build:
+  stage: build
+  image: electronuserland/builder:wine
+  <<: *branches
+  script:
+    - yarn install
+    - yarn build
+    - yarn fetch-substrate # FIXME This should fetch a windows substrate
+    - yarn release --win
+  tags:
+    - linux-docker
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - 'packages/electron-app/dist/*.exe'
