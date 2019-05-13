@@ -19,7 +19,7 @@
   ],
   "homepage": "./",
   "dependencies": {
-    "@polkadot/ui-assets": "^0.37.1",
+    "@polkadot/ui-assets": "^0.38.1",
     "@polkadot/ui-settings": "^0.37.1",
     "@substrate/transfer-app": "0.1.0",
     "@substrate/ui-common": "0.1.0",

@@ -1034,10 +1034,17 @@
   dependencies:
     regenerator-runtime "^0.12.0"
 
-"@babel/runtime@7.4.3", "@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.3.1", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.2", "@babel/runtime@^7.4.3":
+"@babel/runtime@7.4.3":
   version "7.4.3"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.4.3.tgz#79888e452034223ad9609187a0ad1fe0d2ad4bdc"
   integrity sha512-9lsJwJLxDh/T3Q3SZszfWOTkk3pHbkmH+3KY+zwIDmsNlxsumuhS2TH3NIpktU4kNvfzy+k3eLT7aTJSPTo0OA==
+  dependencies:
+    regenerator-runtime "^0.13.2"
+
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.3.1", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.2", "@babel/runtime@^7.4.3", "@babel/runtime@^7.4.4":
+  version "7.4.4"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.4.4.tgz#dc2e34982eb236803aa27a07fea6857af1b9171d"
+  integrity sha512-w0+uT71b6Yi7i5SE0co4NioIpSYS6lLiXvCzWzGSKvpK5vdQtCbICHMj+gbAKAOtxiV6HsVh/MBdaF9EQ6faSg==
   dependencies:
     regenerator-runtime "^0.13.2"
 
@@ -2243,12 +2250,12 @@
     store "^2.0.12"
     styled-theming "^2.2.0"
 
-"@polkadot/ui-assets@^0.37.1":
-  version "0.37.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-assets/-/ui-assets-0.37.1.tgz#01b273cfeb119c2fd71aeb185b52be112b04ccb4"
-  integrity sha512-yxdYyqZ6kle30hSIsZig/auCSaTLc1F7TN2kfPnUQN2QorUp0rggbennIL7Jx6SVRE8ri6Vb1JTsazL4KFqIKA==
+"@polkadot/ui-assets@^0.38.1":
+  version "0.38.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-assets/-/ui-assets-0.38.1.tgz#493a83e8cfd21e53a2236d30f087c3d73babd6a2"
+  integrity sha512-Oj3yldkpcHFI7A43Prbh34cfUlI8C6ih4nlokjaHsxiSXsi7vYeF+rAns8i4u2oP5QquK6FA/f9hGNigewyoEQ==
   dependencies:
-    "@babel/runtime" "^7.4.3"
+    "@babel/runtime" "^7.4.4"
 
 "@polkadot/ui-identicon@^0.38.0-beta.2":
   version "0.38.0-beta.3"
