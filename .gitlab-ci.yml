@@ -85,4 +85,4 @@ win-build:
   artifacts:
     expire_in: 1 week
     paths:
-- 'packages/electron-app/dist/*.exe'
+      - 'packages/electron-app/dist/*.exe'
