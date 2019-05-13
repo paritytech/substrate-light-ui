@@ -1,0 +1,23 @@
+{
+  "name": "governance-app",
+  "version": "0.2.0",
+  "description": "A basic governance UI optimized for passive stakeholders, i.e. non-validators running light clients.",
+  "keywords": [
+    "governance",
+    "light"
+  ],
+  "author": "",
+  "homepage": "https://github.com/paritytech/substrate-light-ui#readme",
+  "license": "Apache-2.0",
+  "main": "lib/governance-app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paritytech/substrate-light-ui.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/paritytech/substrate-light-ui/issues"
+  }
+}
