@@ -27,7 +27,7 @@ export function Content () {
               <React.Fragment>
                 <Route path={['/accounts/:currentAccount/add', '/addresses/:currentAccount', '/governance/:currentAccount', '/transfer/:currentAccount']} component={IdentityHeader} />
                 <Switch>
-                  <Redirect exact from='/' to={`/transfer/${defaultAccount.json.address}`} />
+                  <Redirect exact from='/' to={`/governance/${defaultAccount.json.address}`} />
                   <Redirect exact from='/governance' to={`/governance/${defaultAccount.json.address}`} />
                   <Redirect exact from='/transfer' to={`/transfer/${defaultAccount.json.address}`} />
                   <Route path='/addresses/:currentAccount' component={ManageAddresses} />

@@ -10,7 +10,8 @@ export {
   Menu, MenuProps,
   Message, MessageProps,
   Segment, SegmentProps,
-  Step, StepProps
+  Step, StepProps,
+  Table, TableProps
 } from 'semantic-ui-react';
 
 export * from './Accordion';
@@ -32,6 +33,7 @@ export * from './MnemonicSegment';
 export * from './Modal';
 export * from './NavButton';
 export * from './NavLink';
+export * from './Progress';
 export * from './Shared.styles';
 export * from './stateful';
 export * from './TextArea';
