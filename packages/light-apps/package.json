@@ -21,6 +21,7 @@
   "dependencies": {
     "@polkadot/ui-assets": "^0.37.1",
     "@polkadot/ui-settings": "^0.37.1",
+    "@substrate/governance-app": "^0.2.0",
     "@substrate/transfer-app": "^0.2.0",
     "@substrate/ui-common": "^0.2.0",
     "@substrate/ui-components": "^0.2.0",

@@ -16,6 +16,7 @@ SRCS=(
 	"packages/ui-common/"
   "packages/ui-components/"
 	"packages/transfer-app/"
+  "packages/governance-app"
 )
 
 # Save current directory.
