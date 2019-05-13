@@ -138,6 +138,46 @@ export const StyledNavButton = styled.button`
   }
 `;
 
+export const VoteNayButton = styled.button`
+background-image: linear-gradient(
+    107deg,
+    ${props => props.theme.hotPink},
+    ${props => props.theme.electricPurple}
+  );
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px 0 rgba(${props => props.theme.black}, 0.3);
+  color: ${props => props.theme.white};
+  fontSize: ${FONT_SIZES.large};
+  height: 21px;
+  width: 51px;
+
+  :hover {
+    cursor: pointer;
+  }
+`;
+
+
+export const VoteYayButton = styled.button`
+background-image: linear-gradient(
+    107deg,
+    ${props => props.theme.lightBlue1},
+    ${props => props.theme.lightBlue2}
+  );
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px 0 rgba(${props => props.theme.black}, 0.3);
+  color: ${props => props.theme.white};
+  fontSize: ${FONT_SIZES.large};
+  height: 21px;
+  width: 51px;
+
+  :hover {
+    cursor: pointer;
+  }
+`;
+
+
 export const Stacked = styled.div<StackProps>`
   align-items: ${props => props.alignItems || 'center'};
   display: flex;

@@ -7,9 +7,6 @@ import { ThemeProvider } from 'styled-components';
 
 import { GlobalStyle, substrateLightTheme } from '../../src/globalStyle';
 
-// ThemeProvider doesn't expect RenderFunction as child.
-// ts-ignore in render not yet supported
-
 export const withTheme = (storyFn: any) => {
   return (
     <React.Fragment>
