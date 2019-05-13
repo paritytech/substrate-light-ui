@@ -9,6 +9,7 @@
     "light"
   ],
   "license": "Apache-2.0",
+  "main": "build/index.js",
   "private": true,
   "repository": {
     "type": "git",

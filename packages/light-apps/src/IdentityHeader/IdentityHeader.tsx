@@ -192,7 +192,7 @@ export function IdentityHeader (props: Props) {
     return (
       <Menu stackable>
         <Switch>
-          <Route path={['/transfer']}>
+          <Route path={['/governance', '/transfer']}>
             <Menu.Item fitted>
               <StackedHorizontal>
                 <InputAddress
@@ -256,6 +256,10 @@ export function IdentityHeader (props: Props) {
   };
 
   const renderSecondaryMenu = () => {
+    const navToGovernance = () => {
+      history.push(`/governance/${address}`);
+    };
+
     const navToManageAddressBook = () => {
       history.push(`/addresses/${address}`);
     };
@@ -267,6 +271,11 @@ export function IdentityHeader (props: Props) {
     return (
       <StackedHorizontal justifyContent='flex-start' alignItems='flex-start'>
         <Menu stackable secondary>
+          <Menu.Item onClick={navToGovernance}>
+            Governance
+            <Margin left='small' />
+            <Icon color='black' name='hand paper outline' />
+          </Menu.Item>
           <Menu.Item onClick={navToTransfer}>
             Transfer Balance
             <Margin left='small' />
