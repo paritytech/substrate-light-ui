@@ -2,51 +2,71 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { formatNumber } from '@polkadot/util';
+import { Proposal, ReferendumInfo } from '@polkadot/types';
 import { Card, Menu, Table, Progress, StackedHorizontal, VoteNayButton, VoteYayButton, WrapperDiv } from '@substrate/ui-components';
 import { AppContext, Subscribe } from '@substrate/ui-common';
 
 import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { Observable, zip } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { combineLatest, Observable } from 'rxjs';
 
-interface IProps extends RouteComponentProps {
-
-}
+interface IProps extends RouteComponentProps {}
 
 // 'query.democracy.publicPropCount',
 //   'query.democracy.referendumCount',
 
 export function Governance (props: IProps) {
   const { api } = useContext(AppContext);
-  const [proposalCount, setPropCount] = useState();
-  const [referendumCount, setRefCount] = useState()
+  const [proposals, setProposals] = useState();
+  const [referenda, setReferenda] = useState();
 
   useEffect(() => {
-    const subscription = zip(
-      api.query.democracy.publicPropCount() as unknown as Observable<Text>,
-      api.query.democracy.referendumCount() as unknown as Observable<Text>
+    const subscription = combineLatest(
+      [
+        api.query.democracy.publicProps() as unknown as Observable<Array<Proposal>>,
+        api.derive.democracy.referendums() as unknown as Observable<Array<ReferendumInfo>>
+      ]
     )
-      .pipe(
-        take(1)
-      )
-      .subscribe(([proposalCount, referendumCount]) => {
-        setPropCount(proposalCount);
-        setRefCount(referendumCount);
-      });
+    .subscribe(([proposals, referenda]) => {
+      setProposals(proposals);
+      setReferenda(referenda);
+    });
     return () => subscription.unsubscribe();
   });
+
+  const renderProposalRow = (proposal: Proposal) => {
+    console.log(proposal);
+    debugger;
+
+    return (
+      <Table.Row>
+        <Table.Cell>123</Table.Cell>
+        <Table.Cell>extrinsic</Table.Cell>
+        <Table.Cell>address</Table.Cell>
+        <Table.Cell>address</Table.Cell>
+        <Table.Cell>time</Table.Cell>
+        <Table.Cell>section.method</Table.Cell>
+        <Table.Cell>
+          <WrapperDiv>
+            <StackedHorizontal>
+              <Progress size='tiny' />
+              <StackedHorizontal>
+                <VoteNayButton />
+                <VoteYayButton />
+              </StackedHorizontal>
+            </StackedHorizontal>
+          </WrapperDiv>
+        </Table.Cell>
+      </Table.Row>
+    );
+  }
 
   return (
     <Card height='100%'>
       <Menu stackable>
-        <Menu.Item>Proposals </Menu.Item>
-        <Menu.Item>Referendums </Menu.Item>
+        <Menu.Item>Proposals ({proposals && proposals.length})</Menu.Item>
+        <Menu.Item>Referenda ({referenda && referenda.length})</Menu.Item>
       </Menu>
-      <Card.Header> Proposals </Card.Header>
-      <Card.Description> active: {formatNumber(proposalCount)} </Card.Description>
-      <Card.Description> pending: {formatNumber(referendumCount)} </Card.Description>
 
       <Card.Content>
         <Table attached>
@@ -63,25 +83,9 @@ export function Governance (props: IProps) {
           </Table.Header>
 
           <Table.Body>
-            <Table.Row>
-              <Table.Cell>123</Table.Cell>
-              <Table.Cell>extrinsic</Table.Cell>
-              <Table.Cell>address</Table.Cell>
-              <Table.Cell>address</Table.Cell>
-              <Table.Cell>time</Table.Cell>
-              <Table.Cell>section.method</Table.Cell>
-              <Table.Cell>
-                <WrapperDiv>
-                  <StackedHorizontal>
-                    <Progress size='tiny' />
-                    <StackedHorizontal>
-                      <VoteNayButton />
-                      <VoteYayButton />
-                    </StackedHorizontal>
-                  </StackedHorizontal>
-                </WrapperDiv>
-              </Table.Cell>
-            </Table.Row>
+            {
+              proposals && proposals.length && proposals.map((proposal: any) => renderProposalRow(proposal))
+            }
           </Table.Body>
         </Table>
       </Card.Content>
