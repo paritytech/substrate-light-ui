@@ -1,6 +1,6 @@
 {
   "name": "@substrate/electron-app",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "Parity Technologies <admin@parity.io>",
   "description": "Substrate Light UI",
   "license": "Apache-2.0",
@@ -15,7 +15,7 @@
     "test": "echo Skipped."
   },
   "devDependencies": {
-    "@substrate/light-apps": "0.1.0",
+    "@substrate/light-apps": "^0.2.0",
     "copyfiles": "^2.0.0",
     "cross-env": "^5.2.0",
     "electron": "^4.0.0",
