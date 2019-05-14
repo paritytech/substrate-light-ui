@@ -7,7 +7,7 @@ import { Proposal } from '@polkadot/types';
 import BN from 'bn.js';
 import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { combineLatest, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { ProposalRow } from './ProposalRow';
 
@@ -16,16 +16,13 @@ interface IProps extends RouteComponentProps {}
 export function Proposals (props: IProps) {
   const { api } = useContext(AppContext);
   const [publicProposals, setProposals] = useState();
-  const [propCount, setCount] = useState();
 
   useEffect(() => {
-    const subscription = combineLatest([
-        api.query.democracy.publicProps() as unknown as Observable<Array<[BN, Proposal]>>,
-        api.query.democracy.publicPropCount() as unknown as Observable<BN>
-      ])
-      .subscribe(([proposals, count]) => {
+    const subscription =
+      (api.query.democracy.publicProps() as unknown as Observable<any>)
+      .subscribe((proposals) => {
+        console.log(proposals);
         setProposals(proposals);
-        setCount(count);
       });
     return () => subscription.unsubscribe();
   });
@@ -54,7 +51,6 @@ export function Proposals (props: IProps) {
       </Table.Header>
 
       <Table.Body>
-        { propCount && propCount.toString() } proposals pending...
         {
           publicProposals && publicProposals.map((propo: any) => (
             renderProposalRow(propo[0], propo[1])

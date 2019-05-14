@@ -14,6 +14,8 @@ export function ProposalRow (props: IProps) {
   const { proposal } = props;
   const { meta, method, section } = Method.findFunction(proposal.callIndex);
 
+  debugger;
+
   return (
     <Table.Row>
       <Table.Cell>Block number</Table.Cell>

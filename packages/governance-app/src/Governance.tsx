@@ -6,7 +6,7 @@ import { Card, Menu } from '@substrate/ui-components';
 import BN from 'bn.js';
 import React, { useEffect, useContext, useState } from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 
 import { Proposals } from './Proposals';
 
@@ -18,14 +18,18 @@ interface IProps extends RouteComponentProps<MatchParams> {}
 
 export function Governance (props: IProps) {
   const { api } = useContext(AppContext);
-  const [propCount, setCount] = useState();
+  const [propCount, setPropCount] = useState();
+  const [refCount, setRefCount] = useState();
 
   useEffect(() => {
-    const subscription =
-      (api.query.democracy.publicPropCount() as unknown as Observable<BN>)
-        .subscribe((count) => {
-          setCount(count);
-        });
+    const subscription = combineLatest([
+      api.query.democracy.publicPropCount() as unknown as Observable<BN>,
+      api.query.democracy.referendumCount() as unknown as Observable<BN>
+    ])
+    .subscribe(([propCount, refCount]) => {
+      setPropCount(propCount);
+      setRefCount(refCount);
+    });
     return () => subscription.unsubscribe();
   });
 
@@ -37,7 +41,7 @@ export function Governance (props: IProps) {
     <Card height='100%'>
       <Menu stackable>
         <Menu.Item onClick={navToProposals}>Proposals ({propCount && propCount.toString()})</Menu.Item>
-        <Menu.Item>Referenda ()</Menu.Item>
+        <Menu.Item>Referenda ({refCount && refCount.toString()})</Menu.Item>
       </Menu>
 
       <Card.Content>
