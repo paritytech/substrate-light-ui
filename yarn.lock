@@ -8501,9 +8501,9 @@ forwarded@~0.1.2:
   integrity sha1-mMI9qxF1ZXuMBXPozszZGw/xjIQ=
 
 fp-ts@^1.16.1:
-  version "1.17.3"
-  resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-1.17.3.tgz#5064afc4bee8ddcaea567479bfc62d527e015825"
-  integrity sha512-r4gHfAWaRrYPsmdzRl1U9CkpbdOi8fPg5F5KiazAadENz5DKdWEaCDPl2Tf92fvkZGD/ekZ3EHu3gtXIVcsXtA==
+  version "1.18.0"
+  resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-1.18.0.tgz#c95d272f66dc04d8bc1412409b3bdfc752785964"
+  integrity sha512-/i6HCf35XH5uCmaNsIPUTIMeWdP37b4d8FBU2jKJfE21oov+DcTVKe56zgqn4AXEACccuw4kNmZTTa9auSmxdg==
 
 fragment-cache@^0.2.1:
   version "0.2.1"
