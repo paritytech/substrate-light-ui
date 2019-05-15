@@ -15,7 +15,7 @@ interface IProps extends RouteComponentProps {}
 
 export function Proposals (props: IProps) {
   const { api } = useContext(AppContext);
-  const [proposals, setProposals] = useState();
+  const [publicProposals, setProposals] = useState();
 
   useEffect(() => {
     const subscription = (api.query.democracy.publicProps() as unknown as Observable<Vec<(PropIndex, Proposal, AccountId)>>)
@@ -34,12 +34,15 @@ export function Proposals (props: IProps) {
     console.log(propo[2]); // AccountId
 
     const propIndex = propo[0];
-    const _proposal = propo[1];
+    const proposal = propo[1];
+    const proposer = propo[2];
 
     return (
       <ProposalRow
         key={propIndex.toString()}
-        proposal={_proposal}
+        propIndex={propIndex}
+        proposal={proposal}
+        proposer={proposer}
       />
     );
   };
@@ -54,13 +57,14 @@ export function Proposals (props: IProps) {
           <Table.HeaderCell>Seconded By</Table.HeaderCell>
           <Table.HeaderCell>Remaining Time</Table.HeaderCell>
           <Table.HeaderCell>Meta Description</Table.HeaderCell>
+          <Table.HeaderCell>Proposal Balance</Table.HeaderCell>
           <Table.HeaderCell>Votes</Table.HeaderCell>
         </Table.Row>
       </Table.Header>
 
       <Table.Body>
         {
-          proposals && proposals.map((p: Vec<(PropIndex, Proposal, AccountId)>) => {
+          publicProposals && publicProposals.map((p: Vec<(PropIndex, Proposal, AccountId)>) => {
             console.log('p -> ', p);
             if (p[0] !== undefined) {
               console.log('p is defined -> ', p[0]);
