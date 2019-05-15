@@ -9,7 +9,9 @@ Light client focused user interface for the Polkadot and Substrate networks.
 
 The Light UI is meant to be **an intuitive interface for beginner users** to easily interact with the main components of various Substrate chains.
 
-## [» Download the latest release «](https://github.com/paritytech/substrate-light-ui/releases/latest)
+## [» Download the latest release (macOS only) «](https://github.com/paritytech/substrate-light-ui/releases/latest)
+
+Linux and Windows binaries are planned, but need more time. For Linux and Windows users, please [build the project manually](#build-this-repo-and-run) for now.
 
 ## Overview
 
