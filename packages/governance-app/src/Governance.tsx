@@ -7,6 +7,7 @@ import BN from 'bn.js';
 import React, { useEffect, useContext, useState } from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { Observable, combineLatest } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 import { Proposals } from './Proposals';
 
@@ -26,6 +27,9 @@ export function Governance (props: IProps) {
       api.query.democracy.publicPropCount() as unknown as Observable<BN>,
       api.query.democracy.referendumCount() as unknown as Observable<BN>
     ])
+    .pipe(
+      take(1)
+    )
     .subscribe(([propCount, refCount]) => {
       setPropCount(propCount);
       setRefCount(refCount);
