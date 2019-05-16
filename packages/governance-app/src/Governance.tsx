@@ -7,11 +7,12 @@ import { Card, Menu, WrapperDiv } from '@substrate/ui-components';
 import BN from 'bn.js';
 import React, { useEffect, useContext, useState } from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
-import { Observable, combineLatest } from 'rxjs';
+import { Observable, zip } from 'rxjs';
 import { take } from 'rxjs/operators';
 import Progress from 'semantic-ui-react/dist/commonjs/modules/Progress/Progress';
 
 import { Proposals } from './Proposals';
+import { Referenda } from './Referenda';
 
 interface MatchParams {
   currentAccount: string;
@@ -38,11 +39,11 @@ export function Governance (props: IProps) {
   });
 
   useEffect(() => {
-    const subscription = combineLatest([
+    const subscription = zip(
       api.query.democracy.publicPropCount() as unknown as Observable<BN>,
       api.query.democracy.referendumCount() as unknown as Observable<BN>,
       api.derive.chain.bestNumber() as unknown as Observable<BlockNumber>
-    ])
+    )
     .subscribe(([propCount, refCount, blockNumber]) => {
       setPropCount(propCount);
       setRefCount(refCount);
@@ -55,14 +56,15 @@ export function Governance (props: IProps) {
     props.history.push(`/governance/${props.match.params.currentAccount}/proposals`);
   };
 
-  console.log('launch period => ', launchPeriod);
-  console.log('best block number => ', latestBlockNumber);
+  const navToReferenda = () => {
+    props.history.push(`/governance/${props.match.params.currentAccount}/referenda`);
+  };
 
   return (
     <Card height='100%'>
       <Menu stackable>
         <Menu.Item onClick={navToProposals}>Proposals ({propCount && propCount.toString()})</Menu.Item>
-        <Menu.Item>Referenda ({refCount && refCount.toString()})</Menu.Item>
+        <Menu.Item onClick={navToReferenda}>Referenda ({refCount && refCount.toString()})</Menu.Item>
 
         <Menu.Menu position='right'>
           <Menu.Item>
@@ -82,6 +84,7 @@ export function Governance (props: IProps) {
       <Card.Content>
         <Switch>
           <Route path='/governance/:currentAccount/proposals' component={Proposals} />
+          <Route path='/governanace/:currentAccount/referenda' component={Referenda} />
           <Redirect exact from='/governance/:currentAccount' to='/governance/:currentAccount/proposals' />
         </Switch>
       </Card.Content>
