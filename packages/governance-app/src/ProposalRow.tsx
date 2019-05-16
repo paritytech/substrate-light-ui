@@ -62,7 +62,7 @@ export function ProposalRow (props: IProps) {
         }
       </Table.Cell>
       <Table.Cell><AddressSummary address={proposer.toString()} orientation='horizontal' size='tiny' /></Table.Cell>
-      <Table.Cell style={{ overflowY: 'scroll' }}><SecondersList accountIds={depositorAccountIds} /></Table.Cell>
+      <Table.Cell><SecondersList accountIds={depositorAccountIds} /></Table.Cell>
       <Table.Cell>{depositedBalance}</Table.Cell>
       <Table.Cell>
         <StackedHorizontal>

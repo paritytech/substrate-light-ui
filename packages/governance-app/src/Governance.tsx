@@ -8,7 +8,7 @@ import BN from 'bn.js';
 import React, { useEffect, useContext, useState } from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { combineLatest, Observable } from 'rxjs';
-import { take, throttleTime } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import Progress from 'semantic-ui-react/dist/commonjs/modules/Progress/Progress';
 
 import { Democracy } from './Democracy';
@@ -28,43 +28,34 @@ export function Governance (props: IProps) {
   const [councilMotionsCount, setCouncilMotionsCount] = useState();
 
   useEffect(() => {
-    const launchPeriodSub = (api.query.democracy.launchPeriod() as unknown as Observable<BlockNumber>)
-      .pipe(
-        take(1)
-      )
-      .subscribe(launchPeriod => {
-        setLaunchPeriod(launchPeriod);
-      });
-    return () => launchPeriodSub.unsubscribe();
-  });
-
-  useEffect(() => {
     const blockSub = (api.derive.chain.bestNumber() as unknown as Observable<BlockNumber>)
                       .subscribe(blockNumber => setLatestBlockNumber(blockNumber));
 
     return () => blockSub.unsubscribe();
-  });
+  }, []);
 
   useEffect(() => {
     const subscription = combineLatest([
+      api.query.democracy.launchPeriod() as unknown as Observable<BlockNumber>,
       api.query.democracy.publicPropCount() as unknown as Observable<BN>,
-      api.query.democracy.referendumCount() as unknown as Observable<BN>,
-      api.query.councilMotions.proposalCount() as unknown as Observable<BN>
+      api.query.councilMotions.proposalCount() as unknown as Observable<BN>,
+      api.query.democracy.referendumCount() as unknown as Observable<BN>
     ])
     .pipe(
-      throttleTime(2500)
+      take(1)
     )
-    .subscribe(([propCount, refCount, motionsCount]) => {
+    .subscribe(([launchPeriod, propCount, motionsCount, refCount]) => {
+      setLaunchPeriod(launchPeriod);
       setPropCount(propCount);
       setRefCount(refCount);
       setCouncilMotionsCount(motionsCount);
     });
     return () => subscription.unsubscribe();
-  });
+  }, []);
 
   return (
     <Card height='100%'>
-      <Menu fitted stackable>
+      <Menu stackable>
         <Menu.Item>
           <Stacked justifyContent='flex-end'>
             Democracy
@@ -78,6 +69,7 @@ export function Governance (props: IProps) {
             <FadedText>Motions ({councilMotionsCount && councilMotionsCount.toString()})</FadedText>
           </Stacked>
         </Menu.Item>
+        <Menu.Item>Delegations</Menu.Item>
 
         <Menu.Menu position='right'>
           <Menu.Item>

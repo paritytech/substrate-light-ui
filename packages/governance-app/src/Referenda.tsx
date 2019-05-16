@@ -21,7 +21,7 @@ export function Referenda (props: IProps) {
         setReferenda(referenda);
       });
     return () => subscription.unsubscribe();
-  });
+  }, []);
 
   const renderReferendumRow = (_referendum: any) => {
     return (
@@ -57,14 +57,13 @@ export function Referenda (props: IProps) {
     return (
       <Table.Header>
         <Table.Row>
-          <Table.HeaderCell>Block #</Table.HeaderCell>
+          <Table.HeaderCell>ID #</Table.HeaderCell>
           <Table.HeaderCell>Proposal</Table.HeaderCell>
-          <Table.HeaderCell>Proposed By</Table.HeaderCell>
-          <Table.HeaderCell>Seconded By</Table.HeaderCell>
-          <Table.HeaderCell>Remaining Blocks</Table.HeaderCell>
-          <Table.HeaderCell>Meta Description</Table.HeaderCell>
-          <Table.HeaderCell>Proposal Balance</Table.HeaderCell>
-          <Table.HeaderCell>Votes</Table.HeaderCell>
+          <Table.HeaderCell>Referendum Info</Table.HeaderCell>
+          <Table.HeaderCell>Voting Period</Table.HeaderCell>
+          <Table.HeaderCell>Voters For</Table.HeaderCell>
+          <Table.HeaderCell>Time Remaining</Table.HeaderCell>
+          <Table.HeaderCell>Actions</Table.HeaderCell>
         </Table.Row>
       </Table.Header>
     );
