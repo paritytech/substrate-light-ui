@@ -66,6 +66,7 @@ export function Governance (props: IProps) {
       <Menu stackable>
         <Menu.Item onClick={navToProposals}>Proposals ({propCount && propCount.toString()})</Menu.Item>
         <Menu.Item onClick={navToReferenda}>Referenda ({refCount && refCount.toString()})</Menu.Item>
+        <Menu.Item> Council () </Menu.Item>
 
         <Menu.Menu position='right'>
           <Menu.Item>
@@ -92,3 +93,7 @@ export function Governance (props: IProps) {
     </Card>
   );
 }
+
+// time remaining for a proposal to go to referendum:
+// block number when it was proposed + launch period = decision time
+// time remaining at block X = current block - proposed block

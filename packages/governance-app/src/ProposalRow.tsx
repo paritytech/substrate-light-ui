@@ -4,7 +4,7 @@
 
 import { AccountId, Method, Option, PropIndex, Proposal, Tuple } from '@polkadot/types';
 import { AppContext } from '@substrate/ui-common';
-import { AddressSummary, FadedText, Progress, Stacked, StackedHorizontal, Table, VoteNayButton, VoteYayButton, WrapperDiv } from '@substrate/ui-components';
+import { AddressSummary, FadedText, StackedHorizontal, Table, VoteNayButton, VoteYayButton } from '@substrate/ui-components';
 import React, { useEffect, useContext, useState } from 'react';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -58,23 +58,17 @@ export function ProposalRow (props: IProps) {
       <Table.Cell>{section}.{method}</Table.Cell>
       <Table.Cell><AddressSummary address={proposer.toString()} orientation='horizontal' size='tiny' /></Table.Cell>
       <Table.Cell><SecondersList accountIds={depositorAccountIds} /></Table.Cell>
-      <Table.Cell>Remaining time</Table.Cell>
       <Table.Cell>
         {
-          meta && meta.documentation
-            ? meta.documentation.join(' ')
-            : ''
+          meta && meta.documentation && meta.documentation.join(' ') || 'No Description Available'
         }
       </Table.Cell>
       <Table.Cell>{depositedBalance}</Table.Cell>
       <Table.Cell>
-        <Stacked>
-          <WrapperDiv width='100%'><Progress size='tiny' /></WrapperDiv>
-          <StackedHorizontal>
-            <VoteNayButton> Nay </VoteNayButton>
-            <VoteYayButton> Yay </VoteYayButton>
-          </StackedHorizontal>
-        </Stacked>
+        <StackedHorizontal>
+          <VoteNayButton> Nay </VoteNayButton>
+          <VoteYayButton> Yay </VoteYayButton>
+        </StackedHorizontal>
       </Table.Cell>
     </Table.Row>
   );

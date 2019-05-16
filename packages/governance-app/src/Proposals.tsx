@@ -80,7 +80,6 @@ export function Proposals (props: IProps) {
           <Table.HeaderCell>Proposal</Table.HeaderCell>
           <Table.HeaderCell>Proposed By</Table.HeaderCell>
           <Table.HeaderCell>Seconded By</Table.HeaderCell>
-          <Table.HeaderCell>Remaining Blocks</Table.HeaderCell>
           <Table.HeaderCell>Meta Description</Table.HeaderCell>
           <Table.HeaderCell>Proposal Balance</Table.HeaderCell>
           <Table.HeaderCell>Votes</Table.HeaderCell>
