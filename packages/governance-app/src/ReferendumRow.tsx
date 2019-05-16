@@ -1,28 +1,22 @@
 // Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
-// This software may be modified and distributed under the terms
+// This software may be modified and distributed un3r the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { AppContext } from '@substrate/ui-common';
 import { Table } from '@substrate/ui-components';
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
+// import { votes } from '@polkadot/api-derive/democracy';
 
 interface IProps {
   idNumber: any;
   key: string;
-  value: any;
+  referendum: any;
 };
 
-// const SecondersList = (accountIds: any) => {
-//   return accountIds && accountIds.forEach((accountId: AccountId) => {
-//     return (
-//       <AddressSummary address={accountId.toString()} orientation='horizontal' size='tiny' />
-//     );
-//   });
-// };
-
 export function ReferendumRow (props: IProps) {
-  const { idNumber } = props;
+  const { idNumber, key, referendum } = props;
   const { api } = useContext(AppContext);
+  const [votesForRef, setVotesFor] = useState();
   // const [totalVoteCount, setTotalVoteCount] = useState(0);
   // const [yayVoteCount, setYayVoteCount] = useState(0);
   // const [nayVoteCount, setNayVoteCount] = useState(0);
@@ -30,15 +24,20 @@ export function ReferendumRow (props: IProps) {
   useEffect(() => {
     const subscription = (api.derive.democracy.referendumVotesFor(idNumber))
       .subscribe(votesForRef => {
-        console.log(votesForRef);
-        debugger;
+        setVotesFor(votesForRef);
       });
     return () => subscription.unsubscribe();
   });
 
+  // referendum.end => BlockNumber
+  // referendum.proposal => Map
+  // referendum.threshold => Proposal
+  // referendum.delay => BlockNumber
+
   return (
     <Table.Row>
-      <Table.Cell>just testing....</Table.Cell>
+      <Table.Cell>{votesForRef}</Table.Cell>
+      <Table.Cell>{referendum}</Table.Cell>
     </Table.Row>
   );
 };

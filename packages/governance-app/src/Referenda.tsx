@@ -4,14 +4,12 @@
 import { ReferendumInfoExtended } from '@polkadot/api-derive/democracy/referendumInfo';
 import { Option } from '@polkadot/types';
 import { AppContext } from '@substrate/ui-common';
-import { FadedText, Table } from '@substrate/ui-components';
-// import BN from 'bn.js';
+import { FadedText, Header, Stacked, Table } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
 import { Observable } from 'rxjs';
 
 import { ReferendumRow } from './ReferendumRow';
-interface IProps extends RouteComponentProps { }
+interface IProps { }
 
 export function Referenda (props: IProps) {
   const { api } = useContext(AppContext);
@@ -30,7 +28,7 @@ export function Referenda (props: IProps) {
       <ReferendumRow
         idNumber={_referendum.index}
         key={_referendum.index.toString()}
-        value={_referendum}
+        referendum={_referendum}
         />
     );
   };
@@ -49,6 +47,7 @@ export function Referenda (props: IProps) {
     return (
       referenda.map((_referendum: Option<ReferendumInfoExtended>) => {
         const referendum = _referendum.unwrapOr(null);
+
         renderReferendumRow(referendum);
       })
     );
@@ -72,11 +71,18 @@ export function Referenda (props: IProps) {
   };
 
   return (
-    <Table>
-      {renderReferendaTableHeaderRow()}
-      <Table.Body>
-        {referenda && renderReferendaTable() || renderEmptyTable()}
-      </Table.Body>
-    </Table>
+    <Stacked alignItems='flex-start'>
+      <Header margin='small'>Public Referenda </Header>
+      <Table>
+        {renderReferendaTableHeaderRow()}
+        <Table.Body>
+          {
+            referenda && referenda.length
+              ? renderReferendaTable()
+              : renderEmptyTable()
+          }
+        </Table.Body>
+      </Table>
+    </Stacked>
   );
 }

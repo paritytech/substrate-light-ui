@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 import { BlockNumber } from '@polkadot/types';
 import { AppContext } from '@substrate/ui-common';
-import { Card, Menu, WrapperDiv } from '@substrate/ui-components';
+import { Card, FadedText, Menu, WrapperDiv, Stacked, StackedHorizontal } from '@substrate/ui-components';
 import BN from 'bn.js';
 import React, { useEffect, useContext, useState } from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
@@ -11,8 +11,7 @@ import { combineLatest, Observable } from 'rxjs';
 import { take, throttleTime } from 'rxjs/operators';
 import Progress from 'semantic-ui-react/dist/commonjs/modules/Progress/Progress';
 
-import { Proposals } from './Proposals';
-import { Referenda } from './Referenda';
+import { Democracy } from './Democracy';
 
 interface MatchParams {
   currentAccount: string;
@@ -26,6 +25,7 @@ export function Governance (props: IProps) {
   const [refCount, setRefCount] = useState();
   const [launchPeriod, setLaunchPeriod] = useState();
   const [latestBlockNumber, setLatestBlockNumber] = useState();
+  const [councilMotionsCount, setCouncilMotionsCount] = useState();
 
   useEffect(() => {
     const launchPeriodSub = (api.query.democracy.launchPeriod() as unknown as Observable<BlockNumber>)
@@ -48,32 +48,36 @@ export function Governance (props: IProps) {
   useEffect(() => {
     const subscription = combineLatest([
       api.query.democracy.publicPropCount() as unknown as Observable<BN>,
-      api.query.democracy.referendumCount() as unknown as Observable<BN>
+      api.query.democracy.referendumCount() as unknown as Observable<BN>,
+      api.query.councilMotions.proposalCount() as unknown as Observable<BN>
     ])
     .pipe(
       throttleTime(2500)
     )
-    .subscribe(([propCount, refCount]) => {
+    .subscribe(([propCount, refCount, motionsCount]) => {
       setPropCount(propCount);
       setRefCount(refCount);
+      setCouncilMotionsCount(motionsCount);
     });
     return () => subscription.unsubscribe();
   });
 
-  const navToProposals = () => {
-    props.history.push(`/governance/${props.match.params.currentAccount}/proposals`);
-  };
-
-  const navToReferenda = () => {
-    props.history.push(`/governance/${props.match.params.currentAccount}/referenda`);
-  };
-
   return (
     <Card height='100%'>
-      <Menu stackable>
-        <Menu.Item onClick={navToProposals}>Proposals ({propCount && propCount.toString()})</Menu.Item>
-        <Menu.Item onClick={navToReferenda}>Referenda ({refCount && refCount.toString()})</Menu.Item>
-        <Menu.Item> Council () </Menu.Item>
+      <Menu fitted stackable>
+        <Menu.Item>
+          <Stacked justifyContent='flex-end'>
+            Democracy
+            <FadedText>Proposals ({propCount && propCount.toString()})</FadedText>
+            <FadedText>Referenda ({refCount && refCount.toString()})</FadedText>
+          </Stacked>
+        </Menu.Item>
+        <Menu.Item>
+          <Stacked justifyContent='flex-end'>
+            Council
+            <FadedText>Motions ({councilMotionsCount && councilMotionsCount.toString()})</FadedText>
+          </Stacked>
+        </Menu.Item>
 
         <Menu.Menu position='right'>
           <Menu.Item>
@@ -92,9 +96,8 @@ export function Governance (props: IProps) {
 
       <Card.Content>
         <Switch>
-          <Route path='/governance/:currentAccount/proposals' component={Proposals} />
-          <Route path='/governance/:currentAccount/referenda' component={Referenda} />
-          <Redirect exact from='/governance/:currentAccount' to='/governance/:currentAccount/proposals' />
+          <Route path='/governance/:currentAccount/democracy' component={Democracy} />
+          <Redirect exact from='/governance/:currentAccount' to='/governance/:currentAccount/democracy' />
         </Switch>
       </Card.Content>
     </Card>

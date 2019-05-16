@@ -2,16 +2,15 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 import { AppContext } from '@substrate/ui-common';
-import { FadedText, Table } from '@substrate/ui-components';
+import { FadedText, Header, Stacked, Table } from '@substrate/ui-components';
 import { PropIndex, Proposal, Tuple, Vector } from '@polkadot/types';
 // import BN from 'bn.js';
 import React, { useContext, useEffect, useState } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { ProposalRow } from './ProposalRow';
-interface IProps extends RouteComponentProps {}
+interface IProps {}
 
 export function Proposals (props: IProps) {
   const { api } = useContext(AppContext);
@@ -85,15 +84,18 @@ export function Proposals (props: IProps) {
   };
 
   return (
-    <Table>
-      { renderProposalsTableHeaderRow() }
-      <Table.Body>
-      {
-        publicProposals && publicProposals[0]
-          ? renderProposalsTable()
-          : renderEmptyTable()
-      }
-      </Table.Body>
-    </Table>
+    <Stacked alignItems='flex-start'>
+      <Header margin='small'> Public Proposals </Header>
+      <Table striped>
+        { renderProposalsTableHeaderRow() }
+        <Table.Body>
+        {
+          publicProposals && publicProposals[0]
+            ? renderProposalsTable()
+            : renderEmptyTable()
+        }
+        </Table.Body>
+      </Table>
+    </Stacked>
   );
 }
