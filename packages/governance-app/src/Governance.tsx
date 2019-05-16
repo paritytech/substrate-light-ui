@@ -47,8 +47,8 @@ export function Governance (props: IProps) {
     .subscribe(([launchPeriod, propCount, motionsCount, refCount]) => {
       setLaunchPeriod(launchPeriod);
       setPropCount(propCount);
-      setRefCount(refCount);
       setCouncilMotionsCount(motionsCount);
+      setRefCount(refCount);
     });
     return () => subscription.unsubscribe();
   }, []);

@@ -23,16 +23,6 @@ export function Referenda (props: IProps) {
     return () => subscription.unsubscribe();
   }, []);
 
-  const renderReferendumRow = (_referendum: any) => {
-    return (
-      <ReferendumRow
-        idNumber={_referendum.index}
-        key={_referendum.index.toString()}
-        referendum={_referendum}
-        />
-    );
-  };
-
   const renderEmptyTable = () => {
     return (
       <Table.Row>
@@ -48,7 +38,10 @@ export function Referenda (props: IProps) {
       referenda.map((_referendum: Option<ReferendumInfoExtended>) => {
         const referendum = _referendum.unwrapOr(null);
 
-        renderReferendumRow(referendum);
+        return (
+          referendum
+            && <ReferendumRow idNumber={referendum.index} key={referendum.index.toString()} referendum={referendum}/>
+        );
       })
     );
   };
@@ -59,7 +52,7 @@ export function Referenda (props: IProps) {
         <Table.Row>
           <Table.HeaderCell>ID #</Table.HeaderCell>
           <Table.HeaderCell>Proposal</Table.HeaderCell>
-          <Table.HeaderCell>Referendum Info</Table.HeaderCell>
+          <Table.HeaderCell>Enactment Delay</Table.HeaderCell>
           <Table.HeaderCell>Voting Period</Table.HeaderCell>
           <Table.HeaderCell>Voters For</Table.HeaderCell>
           <Table.HeaderCell>Time Remaining</Table.HeaderCell>
