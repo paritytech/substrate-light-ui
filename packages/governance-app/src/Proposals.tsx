@@ -33,10 +33,6 @@ export function Proposals (props: IProps) {
   // FIXME Tuple doesn't take generic types
   // More accurate type is Vector<(PropIndex, Proposal, AccountId)>
   const renderProposalRow = (_proposal: any) => {
-    console.log(_proposal[0]); // PropIndex
-    console.log(_proposal[1]); // Proposal
-    console.log(_proposal[2]); // AccountId
-
     const propIndex: PropIndex = _proposal[0];
     const proposal: Proposal = _proposal[1];
     const proposer = _proposal[2];
@@ -76,13 +72,13 @@ export function Proposals (props: IProps) {
     return (
       <Table.Header>
         <Table.Row>
-          <Table.HeaderCell>Block #</Table.HeaderCell>
-          <Table.HeaderCell>Proposal</Table.HeaderCell>
+          <Table.HeaderCell>Proposal #</Table.HeaderCell>
+          <Table.HeaderCell>Extrinsic</Table.HeaderCell>
+          <Table.HeaderCell>Meta Description</Table.HeaderCell>
           <Table.HeaderCell>Proposed By</Table.HeaderCell>
           <Table.HeaderCell>Seconded By</Table.HeaderCell>
-          <Table.HeaderCell>Meta Description</Table.HeaderCell>
           <Table.HeaderCell>Proposal Balance</Table.HeaderCell>
-          <Table.HeaderCell>Votes</Table.HeaderCell>
+          <Table.HeaderCell>Actions</Table.HeaderCell>
         </Table.Row>
       </Table.Header>
     );

@@ -8,7 +8,7 @@ import BN from 'bn.js';
 import React, { useEffect, useContext, useState } from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { combineLatest, Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { take, throttleTime } from 'rxjs/operators';
 import Progress from 'semantic-ui-react/dist/commonjs/modules/Progress/Progress';
 
 import { Proposals } from './Proposals';
@@ -39,16 +39,23 @@ export function Governance (props: IProps) {
   });
 
   useEffect(() => {
-    // FIXME this is super slow
+    const blockSub = (api.derive.chain.bestNumber() as unknown as Observable<BlockNumber>)
+                      .subscribe(blockNumber => setLatestBlockNumber(blockNumber));
+
+    return () => blockSub.unsubscribe();
+  });
+
+  useEffect(() => {
     const subscription = combineLatest([
       api.query.democracy.publicPropCount() as unknown as Observable<BN>,
-      api.query.democracy.referendumCount() as unknown as Observable<BN>,
-      api.derive.chain.bestNumber() as unknown as Observable<BlockNumber>
+      api.query.democracy.referendumCount() as unknown as Observable<BN>
     ])
-    .subscribe(([propCount, refCount, blockNumber]) => {
+    .pipe(
+      throttleTime(2500)
+    )
+    .subscribe(([propCount, refCount]) => {
       setPropCount(propCount);
       setRefCount(refCount);
-      setLatestBlockNumber(blockNumber);
     });
     return () => subscription.unsubscribe();
   });
@@ -86,14 +93,10 @@ export function Governance (props: IProps) {
       <Card.Content>
         <Switch>
           <Route path='/governance/:currentAccount/proposals' component={Proposals} />
-          <Route path='/governanace/:currentAccount/referenda' component={Referenda} />
+          <Route path='/governance/:currentAccount/referenda' component={Referenda} />
           <Redirect exact from='/governance/:currentAccount' to='/governance/:currentAccount/proposals' />
         </Switch>
       </Card.Content>
     </Card>
   );
 }
-
-// time remaining for a proposal to go to referendum:
-// block number when it was proposed + launch period = decision time
-// time remaining at block X = current block - proposed block

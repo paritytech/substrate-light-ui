@@ -10,10 +10,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Observable } from 'rxjs';
 
-// import { ReferendumRow } from './ReferendumRow';
+import { ReferendumRow } from './ReferendumRow';
 interface IProps extends RouteComponentProps { }
 
-export function Referenda(props: IProps) {
+export function Referenda (props: IProps) {
   const { api } = useContext(AppContext);
   const [referenda, setReferenda] = useState();
 
@@ -21,22 +21,18 @@ export function Referenda(props: IProps) {
     const subscription = (api.derive.democracy.referendums() as unknown as Observable<Array<Option<ReferendumInfoExtended>>>)
       .subscribe((referenda) => {
         setReferenda(referenda);
-        console.log('setting referenda -> ', referenda);
       });
     return () => subscription.unsubscribe();
   });
 
   const renderReferendumRow = (_referendum: any) => {
-    console.log(_referendum);
-    console.log(_referendum[0]);
-    console.log(_referendum[1]);
-    console.log(_referendum[2]);
-
-    debugger;
-
-    // return (
-    //   <ReferendumRow />
-    // );
+    return (
+      <ReferendumRow
+        idNumber={_referendum.index}
+        key={_referendum.index.toString()}
+        value={_referendum}
+        />
+    );
   };
 
   const renderEmptyTable = () => {
@@ -53,31 +49,34 @@ export function Referenda(props: IProps) {
     return (
       referenda.map((_referendum: Option<ReferendumInfoExtended>) => {
         const referendum = _referendum.unwrapOr(null);
-
-        debugger;
+        renderReferendumRow(referendum);
       })
     );
   };
 
-  // // FIXME
-  // const renderReferendaTableHeaderRow = () => {
-  //   return (
-  //     <Table.Header>
-  //       <Table.Row>
-  //         <Table.HeaderCell>Block #</Table.HeaderCell>
-  //         <Table.HeaderCell>Proposal</Table.HeaderCell>
-  //         <Table.HeaderCell>Proposed By</Table.HeaderCell>
-  //         <Table.HeaderCell>Seconded By</Table.HeaderCell>
-  //         <Table.HeaderCell>Remaining Blocks</Table.HeaderCell>
-  //         <Table.HeaderCell>Meta Description</Table.HeaderCell>
-  //         <Table.HeaderCell>Proposal Balance</Table.HeaderCell>
-  //         <Table.HeaderCell>Votes</Table.HeaderCell>
-  //       </Table.Row>
-  //     </Table.Header>
-  //   );
-  // };
+  const renderReferendaTableHeaderRow = () => {
+    return (
+      <Table.Header>
+        <Table.Row>
+          <Table.HeaderCell>Block #</Table.HeaderCell>
+          <Table.HeaderCell>Proposal</Table.HeaderCell>
+          <Table.HeaderCell>Proposed By</Table.HeaderCell>
+          <Table.HeaderCell>Seconded By</Table.HeaderCell>
+          <Table.HeaderCell>Remaining Blocks</Table.HeaderCell>
+          <Table.HeaderCell>Meta Description</Table.HeaderCell>
+          <Table.HeaderCell>Proposal Balance</Table.HeaderCell>
+          <Table.HeaderCell>Votes</Table.HeaderCell>
+        </Table.Row>
+      </Table.Header>
+    );
+  };
 
   return (
-    referenda && renderReferendaTable()
+    <Table>
+      {renderReferendaTableHeaderRow()}
+      <Table.Body>
+        {referenda && renderReferendaTable() || renderEmptyTable()}
+      </Table.Body>
+    </Table>
   );
 }

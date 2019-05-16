@@ -2,12 +2,9 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AccountId, Method, Option, PropIndex, Proposal, Tuple } from '@polkadot/types';
 import { AppContext } from '@substrate/ui-common';
-import { AddressSummary, Progress, Stacked, StackedHorizontal, Table, VoteNayButton, VoteYayButton, WrapperDiv } from '@substrate/ui-components';
-import React, { useEffect, useContext, useState } from 'react';
-import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { Table } from '@substrate/ui-components';
+import React, { useEffect, useContext } from 'react';
 
 interface IProps {
   idNumber: any;
@@ -24,11 +21,11 @@ interface IProps {
 // };
 
 export function ReferendumRow (props: IProps) {
-  const { idNumber, key, value } = props;
+  const { idNumber } = props;
   const { api } = useContext(AppContext);
-  const [totalVoteCount, setTotalVoteCount] = useState(0);
-  const [yayVoteCount, setYayVoteCount] = useState(0);
-  const [nayVoteCount, setNayVoteCount] = useState(0);
+  // const [totalVoteCount, setTotalVoteCount] = useState(0);
+  // const [yayVoteCount, setYayVoteCount] = useState(0);
+  // const [nayVoteCount, setNayVoteCount] = useState(0);
 
   useEffect(() => {
     const subscription = (api.derive.democracy.referendumVotesFor(idNumber))

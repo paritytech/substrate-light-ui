@@ -4,7 +4,7 @@
 
 import { AccountId, Method, Option, PropIndex, Proposal, Tuple } from '@polkadot/types';
 import { AppContext } from '@substrate/ui-common';
-import { AddressSummary, FadedText, StackedHorizontal, Table, VoteNayButton, VoteYayButton } from '@substrate/ui-components';
+import { AddressSummary, FadedText, StackedHorizontal, StyledNavButton, Table } from '@substrate/ui-components';
 import React, { useEffect, useContext, useState } from 'react';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -16,7 +16,7 @@ interface IProps {
   proposer: AccountId;
 }
 
-const SecondersList = (accountIds: Array<AccountId> | null) => {
+const SecondersList = (accountIds: any) => {
   if (accountIds && accountIds.length) {
     return accountIds.map((accountId: AccountId) => {
       return (
@@ -56,18 +56,17 @@ export function ProposalRow (props: IProps) {
     <Table.Row>
       <Table.Cell>{propIndex.toString()}</Table.Cell>
       <Table.Cell>{section}.{method}</Table.Cell>
-      <Table.Cell><AddressSummary address={proposer.toString()} orientation='horizontal' size='tiny' /></Table.Cell>
-      <Table.Cell><SecondersList accountIds={depositorAccountIds} /></Table.Cell>
       <Table.Cell>
         {
           meta && meta.documentation && meta.documentation.join(' ') || 'No Description Available'
         }
       </Table.Cell>
+      <Table.Cell><AddressSummary address={proposer.toString()} orientation='horizontal' size='tiny' /></Table.Cell>
+      <Table.Cell style={{ overflowY: 'scroll' }}><SecondersList accountIds={depositorAccountIds} /></Table.Cell>
       <Table.Cell>{depositedBalance}</Table.Cell>
       <Table.Cell>
         <StackedHorizontal>
-          <VoteNayButton> Nay </VoteNayButton>
-          <VoteYayButton> Yay </VoteYayButton>
+          <StyledNavButton> Second </StyledNavButton>
         </StackedHorizontal>
       </Table.Cell>
     </Table.Row>
