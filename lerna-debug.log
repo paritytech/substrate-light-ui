@@ -1,0 +1,117 @@
+0 silly argv {
+0 silly argv   _: [ 'exec' ],
+0 silly argv   parallel: true,
+0 silly argv   args: [ 'start' ],
+0 silly argv   lernaVersion: '3.13.3',
+0 silly argv   '$0': '/Users/yj/Developer/Parity/polkadot-js/substrate-light-ui/node_modules/.bin/lerna',
+0 silly argv   cmd: 'yarn'
+0 silly argv }
+1 notice cli v3.13.3
+2 verbose rootPath /Users/yj/Developer/Parity/polkadot-js/substrate-light-ui
+3 silly batched [
+3 silly batched   PackageGraphNode {
+3 silly batched     name: '@substrate/ui-common',
+3 silly batched     externalDependencies: Map { '@polkadot/api' => [Object] },
+3 silly batched     localDependencies: Map {},
+3 silly batched     localDependents: Map {
+3 silly batched       '@substrate/governance-app' => [PackageGraphNode],
+3 silly batched       '@substrate/light-apps' => [PackageGraphNode],
+3 silly batched       '@substrate/transfer-app' => [PackageGraphNode],
+3 silly batched       '@substrate/ui-components' => [PackageGraphNode]
+3 silly batched     }
+3 silly batched   }
+3 silly batched ]
+4 silly batched [
+4 silly batched   PackageGraphNode {
+4 silly batched     name: '@substrate/ui-components',
+4 silly batched     externalDependencies: Map {
+4 silly batched       '@storybook/addon-actions' => [Object],
+4 silly batched       '@storybook/addon-knobs' => [Object],
+4 silly batched       '@storybook/addon-links' => [Object],
+4 silly batched       '@storybook/react' => [Object],
+4 silly batched       '@types/storybook__addon-actions' => [Object],
+4 silly batched       '@types/storybook__addon-knobs' => [Object],
+4 silly batched       '@types/storybook__addon-links' => [Object],
+4 silly batched       '@types/storybook__react' => [Object],
+4 silly batched       '@polkadot/ui-app' => [Object],
+4 silly batched       '@polkadot/ui-signer' => [Object],
+4 silly batched       '@types/styled-components' => [Object],
+4 silly batched       'react-dropzone' => [Object],
+4 silly batched       'semantic-ui-react' => [Object],
+4 silly batched       'styled-components' => [Object]
+4 silly batched     },
+4 silly batched     localDependencies: Map {},
+4 silly batched     localDependents: Map {
+4 silly batched       '@substrate/governance-app' => [PackageGraphNode],
+4 silly batched       '@substrate/light-apps' => [PackageGraphNode],
+4 silly batched       '@substrate/transfer-app' => [PackageGraphNode]
+4 silly batched     }
+4 silly batched   }
+4 silly batched ]
+5 silly batched [
+5 silly batched   PackageGraphNode {
+5 silly batched     name: '@substrate/governance-app',
+5 silly batched     externalDependencies: Map {},
+5 silly batched     localDependencies: Map {},
+5 silly batched     localDependents: Map { '@substrate/light-apps' => [PackageGraphNode] }
+5 silly batched   },
+5 silly batched   PackageGraphNode {
+5 silly batched     name: '@substrate/transfer-app',
+5 silly batched     externalDependencies: Map { 'fp-ts' => [Object] },
+5 silly batched     localDependencies: Map {},
+5 silly batched     localDependents: Map { '@substrate/light-apps' => [PackageGraphNode] }
+5 silly batched   }
+5 silly batched ]
+6 silly batched [
+6 silly batched   PackageGraphNode {
+6 silly batched     name: '@substrate/light-apps',
+6 silly batched     externalDependencies: Map {
+6 silly batched       '@polkadot/ui-assets' => [Object],
+6 silly batched       '@polkadot/ui-settings' => [Object],
+6 silly batched       '@types/file-saver' => [Object],
+6 silly batched       '@types/react-dom' => [Object],
+6 silly batched       '@types/react-router-dom' => [Object],
+6 silly batched       'file-saver' => [Object],
+6 silly batched       'react' => [Object],
+6 silly batched       'react-dom' => [Object],
+6 silly batched       'react-router-dom' => [Object],
+6 silly batched       'react-scripts' => [Object],
+6 silly batched       'rxjs' => [Object],
+6 silly batched       'semantic-ui-css' => [Object],
+6 silly batched       'store' => [Object],
+6 silly batched       'symbol-observable' => [Object]
+6 silly batched     },
+6 silly batched     localDependencies: Map {},
+6 silly batched     localDependents: Map { '@substrate/electron-app' => [PackageGraphNode] }
+6 silly batched   }
+6 silly batched ]
+7 silly batched [
+7 silly batched   PackageGraphNode {
+7 silly batched     name: '@substrate/electron-app',
+7 silly batched     externalDependencies: Map {
+7 silly batched       'copyfiles' => [Object],
+7 silly batched       'cross-env' => [Object],
+7 silly batched       'electron' => [Object],
+7 silly batched       'electron-builder' => [Object],
+7 silly batched       'electron-webpack' => [Object],
+7 silly batched       'electron-webpack-ts' => [Object],
+7 silly batched       'webpack' => [Object],
+7 silly batched       'axios' => [Object],
+7 silly batched       'pino' => [Object],
+7 silly batched       'source-map-support' => [Object]
+7 silly batched     },
+7 silly batched     localDependencies: Map {},
+7 silly batched     localDependents: Map {}
+7 silly batched   }
+7 silly batched ]
+8 info Executing command in 6 packages: "yarn start"
+9 error MaxBufferError: stdout maxBuffer exceeded
+9 error     at PassThrough.<anonymous> (/Users/yj/Developer/Parity/polkadot-js/substrate-light-ui/node_modules/get-stream/index.js:41:19)
+9 error     at PassThrough.emit (events.js:201:15)
+9 error     at addChunk (_stream_readable.js:290:12)
+9 error     at readableAddChunk (_stream_readable.js:267:13)
+9 error     at PassThrough.Readable.push (_stream_readable.js:226:10)
+9 error     at PassThrough.Transform.push (_stream_transform.js:150:32)
+9 error     at PassThrough.afterTransform (_stream_transform.js:94:10)
+9 error     at PassThrough._transform (_stream_passthrough.js:44:3)
+9 error     at PassThrough.Transform._read (_stream_transform.js:189:10)
