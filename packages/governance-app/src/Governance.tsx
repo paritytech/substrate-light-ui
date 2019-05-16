@@ -7,7 +7,7 @@ import { Card, Menu, WrapperDiv } from '@substrate/ui-components';
 import BN from 'bn.js';
 import React, { useEffect, useContext, useState } from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
-import { Observable, zip } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import Progress from 'semantic-ui-react/dist/commonjs/modules/Progress/Progress';
 
@@ -39,11 +39,12 @@ export function Governance (props: IProps) {
   });
 
   useEffect(() => {
-    const subscription = zip(
+    // FIXME this is super slow
+    const subscription = combineLatest([
       api.query.democracy.publicPropCount() as unknown as Observable<BN>,
       api.query.democracy.referendumCount() as unknown as Observable<BN>,
       api.derive.chain.bestNumber() as unknown as Observable<BlockNumber>
-    )
+    ])
     .subscribe(([propCount, refCount, blockNumber]) => {
       setPropCount(propCount);
       setRefCount(refCount);

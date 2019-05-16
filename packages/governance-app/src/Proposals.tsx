@@ -67,7 +67,7 @@ export function Proposals (props: IProps) {
     return (
       publicProposals.map((proposal: Vector<any>) => {
         // @ts-ignore
-        return proposal[0] && renderProposalRow(proposal[0]);
+        return proposal && renderProposalRow(proposal);
       })
     );
   };

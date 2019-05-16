@@ -4,7 +4,7 @@
 
 import { AccountId, Method, Option, PropIndex, Proposal, Tuple } from '@polkadot/types';
 import { AppContext } from '@substrate/ui-common';
-import { AddressSummary, Progress, Stacked, StackedHorizontal, Table, VoteNayButton, VoteYayButton, WrapperDiv } from '@substrate/ui-components';
+import { AddressSummary, FadedText, Progress, Stacked, StackedHorizontal, Table, VoteNayButton, VoteYayButton, WrapperDiv } from '@substrate/ui-components';
 import React, { useEffect, useContext, useState } from 'react';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -14,14 +14,18 @@ interface IProps {
   propIndex: PropIndex;
   proposal: Proposal;
   proposer: AccountId;
-};
+}
 
-const SecondersList = (accountIds: any) => {
-  return accountIds && accountIds.forEach((accountId: AccountId) => {
-    return (
-      <AddressSummary address={accountId.toString()} orientation='horizontal' size='tiny' />
-    );
-  });
+const SecondersList = (accountIds: Array<AccountId> | null) => {
+  if (accountIds && accountIds.length) {
+    return accountIds.map((accountId: AccountId) => {
+      return (
+        <AddressSummary address={accountId.toString()} orientation='horizontal' size='tiny' />
+      );
+    });
+  } else {
+    return <FadedText> No Seconders Yet </FadedText>;
+  }
 };
 
 export function ProposalRow (props: IProps) {
@@ -64,15 +68,13 @@ export function ProposalRow (props: IProps) {
       </Table.Cell>
       <Table.Cell>{depositedBalance}</Table.Cell>
       <Table.Cell>
-        <WrapperDiv>
-          <Stacked>
-            <Progress size='tiny' />
-            <StackedHorizontal>
-              <VoteNayButton> Nay </VoteNayButton>
-              <VoteYayButton> Yay </VoteYayButton>
-            </StackedHorizontal>
-          </Stacked>
-        </WrapperDiv>
+        <Stacked>
+          <WrapperDiv width='100%'><Progress size='tiny' /></WrapperDiv>
+          <StackedHorizontal>
+            <VoteNayButton> Nay </VoteNayButton>
+            <VoteYayButton> Yay </VoteYayButton>
+          </StackedHorizontal>
+        </Stacked>
       </Table.Cell>
     </Table.Row>
   );

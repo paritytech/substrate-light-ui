@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 import { ReferendumInfoExtended } from '@polkadot/api-derive/democracy/referendumInfo';
-import { PropIndex, Option, Proposal, Vector } from '@polkadot/types';
+import { Option } from '@polkadot/types';
 import { AppContext } from '@substrate/ui-common';
 import { FadedText, Table } from '@substrate/ui-components';
 // import BN from 'bn.js';
@@ -10,7 +10,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Observable } from 'rxjs';
 
-import { ReferendumRow } from './ReferendumRow';
+// import { ReferendumRow } from './ReferendumRow';
 interface IProps extends RouteComponentProps { }
 
 export function Referenda(props: IProps) {
@@ -21,6 +21,7 @@ export function Referenda(props: IProps) {
     const subscription = (api.derive.democracy.referendums() as unknown as Observable<Array<Option<ReferendumInfoExtended>>>)
       .subscribe((referenda) => {
         setReferenda(referenda);
+        console.log('setting referenda -> ', referenda);
       });
     return () => subscription.unsubscribe();
   });
@@ -58,34 +59,25 @@ export function Referenda(props: IProps) {
     );
   };
 
-  // FIXME
-  const renderReferendaTableHeaderRow = () => {
-    return (
-      <Table.Header>
-        <Table.Row>
-          <Table.HeaderCell>Block #</Table.HeaderCell>
-          <Table.HeaderCell>Proposal</Table.HeaderCell>
-          <Table.HeaderCell>Proposed By</Table.HeaderCell>
-          <Table.HeaderCell>Seconded By</Table.HeaderCell>
-          <Table.HeaderCell>Remaining Blocks</Table.HeaderCell>
-          <Table.HeaderCell>Meta Description</Table.HeaderCell>
-          <Table.HeaderCell>Proposal Balance</Table.HeaderCell>
-          <Table.HeaderCell>Votes</Table.HeaderCell>
-        </Table.Row>
-      </Table.Header>
-    );
-  };
+  // // FIXME
+  // const renderReferendaTableHeaderRow = () => {
+  //   return (
+  //     <Table.Header>
+  //       <Table.Row>
+  //         <Table.HeaderCell>Block #</Table.HeaderCell>
+  //         <Table.HeaderCell>Proposal</Table.HeaderCell>
+  //         <Table.HeaderCell>Proposed By</Table.HeaderCell>
+  //         <Table.HeaderCell>Seconded By</Table.HeaderCell>
+  //         <Table.HeaderCell>Remaining Blocks</Table.HeaderCell>
+  //         <Table.HeaderCell>Meta Description</Table.HeaderCell>
+  //         <Table.HeaderCell>Proposal Balance</Table.HeaderCell>
+  //         <Table.HeaderCell>Votes</Table.HeaderCell>
+  //       </Table.Row>
+  //     </Table.Header>
+  //   );
+  // };
 
   return (
-    <Table>
-      {renderReferendaTableHeaderRow()}
-      <Table.Body>
-        {
-          referenda
-            ? renderReferendaTable()
-            : renderEmptyTable()
-        }
-      </Table.Body>
-    </Table>
+    referenda && renderReferendaTable()
   );
 }
