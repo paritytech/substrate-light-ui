@@ -7,11 +7,11 @@ import { storiesOf } from '@storybook/react';
 import { withKnobs, number } from '@storybook/addon-knobs';
 
 import { withTheme } from './customDecorators';
-import { AyeNay } from '../src/AyeNay';
+import { YayNay } from '../src/YayNay';
 
 storiesOf('Aye Or Nay', module)
   .addDecorator(withKnobs)
   .addDecorator(withTheme)
   .add('Example', () => (
-    <AyeNay aye={number('aye', 12)} nay={number('nay', 23)} />
+    <YayNay aye={number('aye', 12)} nay={number('nay', 23)} />
   ));

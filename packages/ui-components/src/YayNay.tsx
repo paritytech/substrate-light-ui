@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
+import { Bar, BarChart, CartesianGrid, Tooltip, XAxis, YAxis } from 'recharts';
 
 interface IProps {
   aye: number;
@@ -12,21 +12,24 @@ interface IProps {
   width?: number;
 }
 
-export const AyeNay = (props: IProps) => {
+export const YayNay = (props: IProps) => {
   const { aye, nay, height, width } = props;
 
   const data = [
     {
-      aye,
-      nay
+      name: 'votes',
+      aye: aye,
+      nay: nay
     }
   ];
 
+  // FIXME: layout: horizontal doesn't work properly for some reason...
   return (
-    <BarChart width={width || 250} height={height || 750} data={data} layout='horizontal'>
+    <BarChart barCategoryGap={0} width={width || 150} height={height || 150} data={data}>
       <CartesianGrid strokeDasharray='3 3' />
-      <XAxis />
-      <YAxis dataKey='votes' />
+      <XAxis dataKey='name' />
+      <YAxis />
+      <Tooltip />
       <Bar dataKey='aye' fill='#8884d8' />
       <Bar dataKey='nay' fill='#82ca9d' />
     </BarChart>
