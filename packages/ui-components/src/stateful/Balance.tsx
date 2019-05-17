@@ -5,7 +5,7 @@
 import { Balance as BalanceType } from '@polkadot/types';
 import { AppContext } from '@substrate/ui-common';
 import React, { useContext, useEffect, useState } from 'react';
-import { Observable,of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 import { BalanceDisplay, BalanceDisplayProps } from '../BalanceDisplay';
 
