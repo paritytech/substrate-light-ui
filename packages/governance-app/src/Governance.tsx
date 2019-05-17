@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 import { BlockNumber } from '@polkadot/types';
 import { AppContext } from '@substrate/ui-common';
-import { Card, FadedText, Menu, WrapperDiv, Stacked, StackedHorizontal } from '@substrate/ui-components';
+import { Card, FadedText, Menu, WrapperDiv, Stacked } from '@substrate/ui-components';
 import BN from 'bn.js';
 import React, { useEffect, useContext, useState } from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';

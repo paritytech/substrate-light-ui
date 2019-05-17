@@ -20,7 +20,7 @@ export function ReferendumRow (props: IProps) {
   const { api } = useContext(AppContext);
   const [latestBlockNumber, setLatestBlockNumber] = useState();
   const [votesForRef, setVotesFor] = useState();
-  const { meta, method, section } = Method.findFunction(referendum.proposal.callIndex);
+  const { method, section } = Method.findFunction(referendum.proposal.callIndex);
 
   // const [totalVoteCount, setTotalVoteCount] = useState(0);
   // const [yayVoteCount, setYayVoteCount] = useState(0);
@@ -46,6 +46,9 @@ export function ReferendumRow (props: IProps) {
     return () => subscription.unsubscribe();
   }, []);
 
+
+  console.log(votesForRef);
+
   return (
     <Table.Row>
       <Table.Cell>{idNumber.toString()}</Table.Cell>
@@ -57,7 +60,9 @@ export function ReferendumRow (props: IProps) {
         <Stacked>
           <WrapperDiv width='100%'>
             {referendum.threshold.toString()}
+
             <Progress size='tiny' />
+
           </WrapperDiv>
           <StackedHorizontal>
             <VoteNayButton> Nay </VoteNayButton>
