@@ -2,14 +2,16 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import accounts from '@polkadot/ui-keyring/observable/accounts';
+import accountObservable from '@polkadot/ui-keyring/observable/accounts';
 import addressObservable from '@polkadot/ui-keyring/observable/addresses';
-import { combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Subscribe, TxQueueContext } from '@substrate/ui-common';
+import { SingleAddress } from '@polkadot/ui-keyring/observable/types';
+import { TxQueueContext } from '@substrate/ui-common';
 import { WalletCard } from '@substrate/ui-components';
-import React, { useContext } from 'react';
+import { findFirst, flatten } from 'fp-ts/lib/Array';
+import React, { useContext, useEffect, useState } from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
+import { combineLatest, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { SendBalance } from './SendBalance';
 import { TxQueue } from './TxQueue';
@@ -21,31 +23,33 @@ interface MatchParams {
 interface Props extends RouteComponentProps<MatchParams> { }
 
 export function Transfer (props: Props) {
-
+  const { match: { params: { currentAccount } } } = props;
   const { txQueue } = useContext(TxQueueContext);
+  const [allAddresses, setAllAddresses] = useState<SingleAddress[]>([]);
+  useEffect(() => {
+    const allAddressessub = combineLatest([
+      accountObservable.subject.pipe(map(Object.values)) as Observable<SingleAddress[]>,
+      addressObservable.subject.pipe(map(Object.values)) as Observable<SingleAddress[]>
+    ])
+      .pipe(map(flatten))
+      .subscribe(setAllAddresses);
+
+    return () => allAddressessub.unsubscribe();
+  }, []);
+
+  // Find, inside `allAddresses`, the first one that's different than
+  // currentAccount. If not found, then take currentAccount
+  const firstDifferentAddress = findFirst(
+    allAddresses,
+    ({ json: { address } }) => address !== currentAccount
+  )
+    .map(({ json: { address } }) => address)
+    .getOrElse(currentAccount);
 
   return (
     <WalletCard header='Transfer Balance' height='100%'>
       <Switch>
-        <Route exact path='/transfer/:currentAccount/' render={({ match: { params: { currentAccount } } }) => (
-          <Subscribe>
-            {
-              combineLatest([
-                accounts.subject,
-                addressObservable.subject
-              ])
-                .pipe(
-                  map(([accounts, addresses]) => [
-                    ...Object.values(accounts).map(account => account.json.address),
-                    ...Object.values(addresses).map(address => address.json.address)]),
-                  map(addresses => addresses.filter(address => address !== currentAccount)),
-                  map(([firstDifferentAddress, ...rest]) => (
-                    <Redirect to={`/transfer/${currentAccount}/${firstDifferentAddress || currentAccount}`} />
-                  ))
-                )
-            }
-          </Subscribe>
-        )} />
+        <Redirect exact from='/transfer/:currentAccount/' to={`/transfer/${currentAccount}/${firstDifferentAddress}`} />
         {txQueue.length
           ? <Route path='/transfer/:currentAccount/:recipientAddress' component={TxQueue} />
           : <Route path='/transfer/:currentAccount/:recipientAddress' component={SendBalance} />
