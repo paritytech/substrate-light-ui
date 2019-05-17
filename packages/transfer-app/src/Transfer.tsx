@@ -58,13 +58,11 @@ function renderContent (
     .map(({ json: { address } }) => address)
     .getOrElse(currentAccount);
 
-  return allAddresses.length && (
-    <Switch>
-      <Redirect exact from='/transfer/:currentAccount/' to={`/transfer/${currentAccount}/${firstDifferentAddress}`} />
-      {txQueue.length
-        ? <Route path='/transfer/:currentAccount/:recipientAddress' component={TxQueue} />
-        : <Route path='/transfer/:currentAccount/:recipientAddress' component={SendBalance} />
-      }
-    </Switch>
-  );
+  return <Switch>
+    <Redirect exact from='/transfer/:currentAccount/' to={`/transfer/${currentAccount}/${firstDifferentAddress}`} />
+    {txQueue.length
+      ? <Route path='/transfer/:currentAccount/:recipientAddress' component={TxQueue} />
+      : <Route path='/transfer/:currentAccount/:recipientAddress' component={SendBalance} />
+    }
+  </Switch>;
 }
