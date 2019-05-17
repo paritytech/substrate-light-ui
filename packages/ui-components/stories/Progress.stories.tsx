@@ -4,7 +4,7 @@
 
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { boolean, number, select, text, withKnobs } from '@storybook/addon-knobs';
+import { boolean, number, select, withKnobs } from '@storybook/addon-knobs';
 
 import { withTheme } from './customDecorators';
 import { Progress } from '../src/Progress';
@@ -18,7 +18,6 @@ storiesOf('Progress Bar', module)
   .add('Primary', () => (
     <WrapperDiv>
       <Progress
-        color={select('color', colors)}
         disabled={boolean('disable', false)}
         percent={number('percent complete', 50)}
          />

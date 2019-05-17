@@ -59,7 +59,9 @@ export function ReferendumRow (props: IProps) {
         <Stacked>
           <WrapperDiv width='100%'>
             {referendum.threshold.toString()}
+
             <Progress size='tiny' />
+
           </WrapperDiv>
           <StackedHorizontal>
             <VoteNayButton> Nay </VoteNayButton>
