@@ -3,9 +3,12 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import accounts from '@polkadot/ui-keyring/observable/accounts';
+import { SingleAddress } from '@polkadot/ui-keyring/observable/types';
 import { Transfer } from '@substrate/transfer-app';
-import { Subscribe } from '@substrate/ui-common';
-import React from 'react';
+import { AppContext } from '@substrate/ui-common';
+import { head } from 'fp-ts/lib/Array';
+import { none, Option } from 'fp-ts/lib/Option';
+import React, { useContext, useEffect, useState } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { map } from 'rxjs/operators';
 
@@ -16,30 +19,35 @@ import { Onboarding } from '../Onboarding';
 import { Signer } from '../Signer';
 
 export function Content () {
+  const { api } = useContext(AppContext);
+  const [defaultAccount, setDefaultAccount] = useState<Option<SingleAddress>>(none);
+  useEffect(() => {
+    const accountsSub = accounts.subject
+      .pipe(map(Object.values), map(head))
+      .subscribe(setDefaultAccount);
+
+    return () => accountsSub.unsubscribe();
+  }, [api]);
+
   return (
     <React.Fragment>
-      <Subscribe>
-        {accounts.subject.pipe(
-          map(Object.values),
-          map(([defaultAccount]) => defaultAccount
-            ? (
-              <React.Fragment>
-                <Route path={['/accounts/:currentAccount/add', '/addresses/:currentAccount', '/transfer/:currentAccount']} component={IdentityHeader} />
-                <Switch>
-                  <Redirect exact from='/' to={`/transfer/${defaultAccount.json.address}`} />
-                  <Redirect exact from='/transfer' to={`/transfer/${defaultAccount.json.address}`} />
-                  <Route path='/addresses/:currentAccount' component={ManageAddresses} />
-                  <Route path='/accounts/:currentAccount/add/' component={AddAccount} />
-                  <Route path='/transfer/:currentAccount' component={Transfer} />
-                  <Redirect to='/' />
-                </Switch>
-              </React.Fragment>
-            )
-            : <Route component={Onboarding} />
-          )
-        )}
-      </Subscribe>
-      <Signer />
+      {defaultAccount
+        .map(({ json }) => (
+          <React.Fragment>
+            <Route path={['/accounts/:currentAccount/add', '/addresses/:currentAccount', '/transfer/:currentAccount']} component={IdentityHeader} />
+            <Switch>
+              <Redirect exact from='/' to={`/transfer/${json.address}`} />
+              <Redirect exact from='/transfer' to={`/transfer/${json.address}`} />
+              <Route path='/addresses/:currentAccount' component={ManageAddresses} />
+              <Route path='/accounts/:currentAccount/add/' component={AddAccount} />
+              <Route path='/transfer/:currentAccount' component={Transfer} />
+              <Redirect to='/' />
+            </Switch>
+          </React.Fragment>
+        ))
+        .getOrElse(<Route component={Onboarding} />)
+      }
+      < Signer />
     </React.Fragment>
   );
 }
