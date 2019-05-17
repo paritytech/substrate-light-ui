@@ -17,8 +17,11 @@
   "dependencies": {
     "@polkadot/ui-app": "^0.32.1",
     "@polkadot/ui-signer": "^0.32.1",
+    "@types/recharts": "^1.1.16",
     "@types/styled-components": "4.1.0",
+    "babel-loader": "8.0.5",
     "react-dropzone": "^10.0.0",
+    "recharts": "^1.6.0",
     "semantic-ui-react": "^0.87.1",
     "styled-components": "^4.1.3"
   },
