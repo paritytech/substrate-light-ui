@@ -16,17 +16,6 @@ interface MatchParams {
 interface Props extends RouteComponentProps<MatchParams> { }
 
 export function SavedAddresses (props: Props) {
-  return (
-    <Stacked>
-      <SubHeader> Select an address to edit its metadata. </SubHeader>
-      <WithSpace>
-        {renderAllAddressesFromKeyring(props)}
-      </WithSpace>
-    </Stacked>
-  );
-}
-
-function renderAllAddressesFromKeyring (props: Props) {
   const { match: { params: { currentAccount } } } = props;
   const [addresses, setAddresses] = useState<SingleAddress[]>([]);
   useEffect(() => {
@@ -37,6 +26,17 @@ function renderAllAddressesFromKeyring (props: Props) {
     return () => addressesSub.unsubscribe();
   }, []);
 
+  return (
+    <Stacked>
+      <SubHeader> Select an address to edit its metadata. </SubHeader>
+      <WithSpace>
+        {renderAllAddressesFromKeyring(addresses, currentAccount)}
+      </WithSpace>
+    </Stacked>
+  );
+}
+
+function renderAllAddressesFromKeyring (addresses: SingleAddress[], currentAccount: string) {
   return (
     addresses.length
       ? addresses.map((address: SingleAddress) =>

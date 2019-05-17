@@ -37,6 +37,11 @@ export function Transfer (props: Props) {
     return () => allAddressessub.unsubscribe();
   }, []);
 
+  // We need to have addresses
+  if (!allAddresses.length) {
+    return null;
+  }
+
   // Find, inside `allAddresses`, the first one that's different than
   // currentAccount. If not found, then take currentAccount
   const firstDifferentAddress = findFirst(
