@@ -3,35 +3,56 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import { Bar, BarChart, CartesianGrid, Tooltip, XAxis, YAxis } from 'recharts';
+import { Bar, BarChart, CartesianGrid, ResponsiveContainer, ToolTip, XAxis, YAxis } from 'recharts';
 
 interface IProps {
-  aye: number;
+  yay: number;
   nay: number;
   height?: number;
   width?: number;
 }
 
 export const YayNay = (props: IProps) => {
-  const { aye, nay, height, width } = props;
+  const { yay, nay, height, width } = props;
 
   const data = [
     {
-      name: 'votes',
-      aye: aye,
+      name: 'yay',
+      yay: yay
+    },
+    {
+      name: 'nay',
       nay: nay
     }
   ];
 
-  // FIXME: layout: horizontal doesn't work properly for some reason...
   return (
-    <BarChart barCategoryGap={0} width={width || 150} height={height || 150} data={data}>
-      <CartesianGrid strokeDasharray='3 3' />
-      <XAxis dataKey='name' />
-      <YAxis />
-      <Tooltip />
-      <Bar dataKey='aye' fill='#8884d8' />
-      <Bar dataKey='nay' fill='#82ca9d' />
-    </BarChart>
+    <ResponsiveContainer height={height || 100} width={width || 200}>
+      <BarChart
+        data={data}
+        margin={{ top: 0, right: 40, left: 40, bottom: 20 }}
+        layout='vertical'
+        barCategoryGap='20%'
+        barGap={2}
+        maxBarSize={10}
+      >
+        <CartesianGrid horizontal={false} stroke='#a0a0a0' strokeWidth={0.5} />
+        <ToolTip />
+        <XAxis
+          type='number'
+          axisLine={false}
+          stroke='#a0a0a0'
+        />
+        <YAxis type='category' dataKey={'name'} width={40} />
+        <Bar
+          animationDuration={1000}
+          dataKey='yay' fill='#5c53fc'
+          label={{ position: 'right', backgroundColor: '#fff' }} />
+        <Bar
+          animationDuration={1000}
+          dataKey='nay' fill='#5c53fc'
+          label={{ position: 'right', backgroundColor: '#fff' }} />
+      </BarChart>
+    </ResponsiveContainer>
   );
 };

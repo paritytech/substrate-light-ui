@@ -5,7 +5,7 @@
 import { DerivedReferendumVote } from '@polkadot/api-derive/types';
 import { AccountId, BlockNumber, Method, Vector } from '@polkadot/types';
 import { AppContext } from '@substrate/ui-common';
-import { Stacked, StackedHorizontal, Table, WrapperDiv, VoteNayButton, VoteYayButton, YayNay } from '@substrate/ui-components';
+import { FadedText, Stacked, StackedHorizontal, SubHeader, Table, WrapperDiv, VoteNayButton, VoteYayButton, YayNay } from '@substrate/ui-components';
 import BN from 'bn.js';
 import React, { useEffect, useContext, useState } from 'react';
 import { Observable, combineLatest } from 'rxjs';
@@ -18,12 +18,11 @@ interface IProps {
 export function ReferendumRow (props: IProps) {
   const { idNumber, referendum } = props;
   const { api } = useContext(AppContext);
-  const [latestBlockNumber, setLatestBlockNumber] = useState();
+  const [latestBlockNumber, setLatestBlockNumber] = useState(new BlockNumber());
   const [votesForRef, setVotesFor] = useState();
-  const [votersFor, setVotersFor] = useState();
   const { method, section } = Method.findFunction(referendum.proposal.callIndex);
 
-  // const [totalVoteBalance, setTotalVoteBalance] = useState(new BN(0));
+  const [totalVoteBalance, setTotalVoteBalance] = useState(new BN(0));
   const [yayVoteBalance, setYayVoteBalance] = useState(new BN(0));
   const [nayVoteBalance, setNayVoteBalance] = useState(new BN(0));
   const [yayVoteCount, setYayVoteCount] = useState(0);
@@ -32,19 +31,15 @@ export function ReferendumRow (props: IProps) {
   useEffect(() => {
     const subscription = combineLatest([
       api.derive.chain.bestNumber() as unknown as Observable<BlockNumber>,
-      api.derive.democracy.referendumVotesFor(idNumber) as unknown as Observable<Array<DerivedReferendumVote>>,
-      api.query.democracy.votersFor(idNumber) as unknown as Observable<Vector<AccountId>>
+      api.derive.democracy.referendumVotesFor(idNumber) as unknown as Observable<Array<DerivedReferendumVote>>
     ])
-    .subscribe(([latestBlockNumber, votesForRef, votersFor]) => {
+    .subscribe(([latestBlockNumber, votesForRef]) => {
       setLatestBlockNumber(latestBlockNumber);
       setVotesFor(votesForRef);
-      setVotersFor(votersFor);
     });
 
     return () => subscription.unsubscribe();
   }, []);
-
-  console.log(votersFor);
 
   useEffect(() => {
     votesForRef && votesForRef.forEach((v: DerivedReferendumVote) => {
@@ -56,27 +51,31 @@ export function ReferendumRow (props: IProps) {
         setNayVoteBalance(nayVoteBalance.add(v.balance));
       }
     });
+    setTotalVoteBalance(yayVoteBalance.add(nayVoteBalance));
   }, [votesForRef]);
 
   return (
     <Table.Row>
       <Table.Cell>{idNumber.toString()}</Table.Cell>
       <Table.Cell>{method}.{section}</Table.Cell>
-      <Table.Cell>{referendum.delay.toString()} </Table.Cell>
-      <Table.Cell>{votesForRef && votesForRef.length}</Table.Cell>
-      <Table.Cell>{referendum.end - latestBlockNumber} Blocks Remaining</Table.Cell>
+      <Table.Cell>{referendum.delay.toString()} Blocks </Table.Cell>
       <Table.Cell>
         <Stacked>
-          <WrapperDiv width='100%'>
-            {referendum.threshold.toString()}
-            <YayNay aye={yayVoteCount} nay={nayVoteCount} />
-          </WrapperDiv>
-          <StackedHorizontal>
-            <VoteNayButton> Nay </VoteNayButton>
-            <VoteYayButton> Yay </VoteYayButton>
-          </StackedHorizontal>
+          <b>Count:</b><FadedText>{votesForRef && votesForRef.length}</FadedText>
+          <b>Balance:</b><FadedText>{totalVoteBalance.toNumber()}</FadedText>
         </Stacked>
+      </Table.Cell>
+      <Table.Cell>{referendum.end - latestBlockNumber.toNumber()} Blocks Remaining</Table.Cell>
+      <Table.Cell>
+          <Stacked>
+            <SubHeader>{referendum.threshold.toString()}</SubHeader>
+            <YayNay yay={yayVoteCount} nay={nayVoteCount} />
+            <StackedHorizontal>
+                <VoteNayButton> Nay </VoteNayButton>
+                <VoteYayButton> Yay </VoteYayButton>
+            </StackedHorizontal>
+          </Stacked>
       </Table.Cell>
     </Table.Row>
   );
-}
+};

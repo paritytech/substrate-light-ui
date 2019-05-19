@@ -16,11 +16,12 @@ interface IProps {
   proposer: AccountId;
 }
 
-const SecondersList = (accountIds: any) => {
-  if (accountIds && accountIds.length) {
+const renderSecondersList = (accountIds: Array<AccountId>) => {
+  console.log(accountIds[0]);
+  if (accountIds && accountIds.length && accountIds[0] !== new AccountId([0])) {
     return accountIds.map((accountId: AccountId) => {
       return (
-        <AddressSummary address={accountId.toString()} orientation='horizontal' size='tiny' />
+        <AddressSummary address={accountId.toString()} orientation='vertical' size='tiny' />
       );
     });
   } else {
@@ -31,7 +32,7 @@ const SecondersList = (accountIds: any) => {
 export function ProposalRow (props: IProps) {
   const { api } = useContext(AppContext);
   const [depositedBalance, setDepositedBalance] = useState();
-  const [depositorAccountIds, setDepositorAccountIds] = useState();
+  const [depositorAccountIds, setDepositorAccountIds] = useState([new AccountId([0])]);
   const { propIndex, proposal, proposer } = props;
   const { meta, method, section } = Method.findFunction(proposal.callIndex);
 
@@ -61,8 +62,8 @@ export function ProposalRow (props: IProps) {
           meta && meta.documentation && meta.documentation.join(' ') || 'No Description Available'
         }
       </Table.Cell>
-      <Table.Cell><AddressSummary address={proposer.toString()} orientation='horizontal' size='tiny' /></Table.Cell>
-      <Table.Cell><SecondersList accountIds={depositorAccountIds} /></Table.Cell>
+      <Table.Cell><AddressSummary address={proposer.toString()} orientation='vertical' size='tiny' /></Table.Cell>
+      <Table.Cell>{renderSecondersList(depositorAccountIds)}</Table.Cell>
       <Table.Cell>{depositedBalance}</Table.Cell>
       <Table.Cell>
         <StackedHorizontal>

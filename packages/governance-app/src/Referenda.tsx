@@ -53,7 +53,7 @@ export function Referenda (props: IProps) {
           <Table.HeaderCell>ID #</Table.HeaderCell>
           <Table.HeaderCell>Proposal</Table.HeaderCell>
           <Table.HeaderCell>Enactment Delay</Table.HeaderCell>
-          <Table.HeaderCell>Votes Count</Table.HeaderCell>
+          <Table.HeaderCell>Total Votes</Table.HeaderCell>
           <Table.HeaderCell>Time Remaining</Table.HeaderCell>
           <Table.HeaderCell>Actions</Table.HeaderCell>
         </Table.Row>

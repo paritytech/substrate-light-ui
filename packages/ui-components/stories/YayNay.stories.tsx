@@ -7,11 +7,14 @@ import { storiesOf } from '@storybook/react';
 import { withKnobs, number } from '@storybook/addon-knobs';
 
 import { withTheme } from './customDecorators';
+import { WrapperDiv } from '../src/Shared.styles';
 import { YayNay } from '../src/YayNay';
 
-storiesOf('Aye Or Nay', module)
+storiesOf('Yay or Nay', module)
   .addDecorator(withKnobs)
   .addDecorator(withTheme)
   .add('Example', () => (
-    <YayNay aye={number('aye', 12)} nay={number('nay', 23)} />
+    <WrapperDiv>
+      <YayNay yay={number('yay', 12)} nay={number('nay', 23)} />
+    </WrapperDiv>
   ));
