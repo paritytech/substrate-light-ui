@@ -13,6 +13,8 @@ import { isSubstrateRunning, killSubstrate, runSubstrateDev, staticPath } from '
 // https://electronjs.org/docs/tutorial/security#electron-security-warnings
 process.env.ELECTRON_ENABLE_SECURITY_WARNINGS = 'true';
 
+const REACT_DEV_LOCALHOST = 'http://localhost:3000';
+
 const pino = new Pino();
 let sluiApp: Electron.BrowserWindow | undefined;
 let hasCalledInitParitySubstrate = false;
@@ -96,12 +98,13 @@ function createWindow () {
   });
 
   sluiApp.loadURL(
-    (process.env.NODE_ENV !== 'production' && process.env.ELECTRON_START_URL) ||
-    url.format({
-      pathname: path.join(staticPath, 'build', 'index.html'),
-      protocol: 'file:',
-      slashes: true
-    })
+    process.env.NODE_ENV !== 'production'
+      ? REACT_DEV_LOCALHOST
+      : url.format({
+        pathname: path.join(staticPath, 'build', 'index.html'),
+        protocol: 'file:',
+        slashes: true
+      })
   );
 
   sluiApp.on('closed', function () {
