@@ -3,9 +3,9 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { Balance as BalanceType } from '@polkadot/types';
-import { AppContext, Subscribe } from '@substrate/ui-common';
-import React from 'react';
-import { map } from 'rxjs/operators';
+import { AppContext } from '@substrate/ui-common';
+import React, { useContext, useEffect, useState } from 'react';
+import { Observable, of } from 'rxjs';
 
 import { BalanceDisplay, BalanceDisplayProps } from '../BalanceDisplay';
 
@@ -15,34 +15,19 @@ interface BalanceProps extends Pick<BalanceDisplayProps, Exclude<keyof BalanceDi
 
 const ZERO_BALANCE = new BalanceType(0);
 
-export class Balance extends React.PureComponent<BalanceProps> {
-  static contextType = AppContext;
+export function Balance (props: BalanceProps) {
+  const { address, ...rest } = props;
+  const { api, system: { properties } } = useContext(AppContext);
+  const [balance, setBalance] = useState<BalanceType>(ZERO_BALANCE);
+  useEffect(() => {
+    const balance$ = address
+      ? (api.query.balances.freeBalance(address) as Observable<BalanceType>)
+      : of(ZERO_BALANCE);
 
-  context!: React.ContextType<typeof AppContext>; // http://bit.ly/typescript-and-react-context
+    const balanceSub = balance$.subscribe(setBalance);
 
-  render () {
-    const { api, system: { properties } } = this.context;
-    const { address, ...rest } = this.props;
+    return () => balanceSub.unsubscribe();
+  }, [api, address]);
 
-    if (!address) {
-      return <BalanceDisplay balance={ZERO_BALANCE} tokenSymbol={properties.tokenSymbol} {...rest} />;
-    }
-
-    return (
-      <Subscribe>
-        {
-          // FIXME using any because freeBalance gives a Codec here, not a Balance
-          // Wait for @polkadot/api to have TS support for all query.*
-          api.query.balances.freeBalance(address).pipe(map(this.renderBalance as any))
-        }
-      </Subscribe>
-    );
-  }
-
-  renderBalance = (balance: BalanceType) => {
-    const { system: { properties } } = this.context;
-    const { address, ...rest } = this.props;
-
-    return <BalanceDisplay balance={balance} tokenSymbol={properties.tokenSymbol} {...rest} />;
-  }
+  return <BalanceDisplay balance={balance} tokenSymbol={properties.tokenSymbol} {...rest} />;
 }
