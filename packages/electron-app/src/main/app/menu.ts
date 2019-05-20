@@ -3,9 +3,8 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { app, Menu, shell } from 'electron';
-import Pino from 'pino';
 
-const pino = new Pino();
+import { logger } from '../util';
 
 const template = [
   // { role: 'appMenu' }
@@ -98,7 +97,7 @@ const template = [
         click () {
           shell
             .openExternal('https://github.com/paritytech/substrate-light-ui')
-            .catch(pino.error);
+            .catch(logger.error);
         }
       }
     ]
