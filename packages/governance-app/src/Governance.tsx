@@ -11,6 +11,7 @@ import { combineLatest, Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import Progress from 'semantic-ui-react/dist/commonjs/modules/Progress/Progress';
 
+import { Council } from './Council';
 import { Democracy } from './Democracy';
 
 interface MatchParams {
@@ -53,17 +54,33 @@ export function Governance (props: IProps) {
     return () => subscription.unsubscribe();
   }, []);
 
+  const navToDemocracy = () => {
+    let { history, location, match } = props;
+    let currentPath = location.pathname.split('/')[3];
+    if (currentPath !== 'democracy') {
+      history.push(`/governance/${match.params.currentAccount}/democracy`);
+    }
+  };
+
+  const navToCouncil = () => {
+    let { history, location, match } = props;
+    let currentPath = location.pathname.split('/')[3];
+    if (currentPath !== 'council') {
+      history.push(`/governance/${match.params.currentAccount}/council`);
+    }
+  };
+
   return (
     <Card height='100%'>
       <Menu stackable>
-        <Menu.Item>
-          <Stacked justifyContent='flex-end'>
-            Democracy
+        <Menu.Item onClick={navToDemocracy}>
+          Democracy
+          <Stacked justifyContent='flex-end' alignItems='center'>
             <FadedText>Proposals ({propCount && propCount.toString()})</FadedText>
             <FadedText>Referenda ({refCount && refCount.toString()})</FadedText>
           </Stacked>
         </Menu.Item>
-        <Menu.Item>
+        <Menu.Item onClick={navToCouncil}>
           <Stacked justifyContent='flex-end'>
             Council
             <FadedText>Motions ({councilMotionsCount && councilMotionsCount.toString()})</FadedText>
@@ -89,6 +106,7 @@ export function Governance (props: IProps) {
       <Card.Content>
         <Switch>
           <Route path='/governance/:currentAccount/democracy' component={Democracy} />
+          <Route path='/governance/:currentAccount/council' component={Council} />
           <Redirect exact from='/governance/:currentAccount' to='/governance/:currentAccount/democracy' />
         </Switch>
       </Card.Content>
