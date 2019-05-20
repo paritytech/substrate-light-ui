@@ -41,4 +41,3 @@ storiesOf('Button', module)
       <VoteNayButton onClick={action('Nay')}> Nay </VoteNayButton>
     </React.Fragment>
   ));
-  

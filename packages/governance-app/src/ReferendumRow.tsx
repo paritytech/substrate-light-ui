@@ -108,4 +108,4 @@ export function ReferendumRow (props: IProps) {
       </Table.Cell>
     </Table.Row>
   );
-};
+}

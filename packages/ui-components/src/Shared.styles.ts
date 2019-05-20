@@ -157,7 +157,6 @@ background-image: linear-gradient(
   }
 `;
 
-
 export const VoteYayButton = styled.button`
 background-image: linear-gradient(
     107deg,
@@ -176,7 +175,6 @@ background-image: linear-gradient(
     cursor: pointer;
   }
 `;
-
 
 export const Stacked = styled.div<StackProps>`
   align-items: ${props => props.alignItems || 'center'};

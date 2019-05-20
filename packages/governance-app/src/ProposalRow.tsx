@@ -85,4 +85,4 @@ export function ProposalRow (props: IProps) {
       </Table.Cell>
     </Table.Row>
   );
-};
+}
