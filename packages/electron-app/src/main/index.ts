@@ -97,15 +97,17 @@ function createWindow () {
     }
   });
 
-  sluiApp.loadURL(
-    process.env.NODE_ENV !== 'production'
-      ? REACT_DEV_LOCALHOST
-      : url.format({
-        pathname: path.join(staticPath, 'build', 'index.html'),
-        protocol: 'file:',
-        slashes: true
-      })
-  );
+  sluiApp
+    .loadURL(
+      process.env.NODE_ENV !== 'production'
+        ? REACT_DEV_LOCALHOST
+        : url.format({
+          pathname: path.join(staticPath, 'build', 'index.html'),
+          protocol: 'file:',
+          slashes: true
+        })
+    )
+    .catch(pino.error);
 
   sluiApp.on('closed', function () {
     sluiApp = undefined;
