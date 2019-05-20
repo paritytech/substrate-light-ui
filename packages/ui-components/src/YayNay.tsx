@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, ToolTip, XAxis, YAxis } from 'recharts';
+import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 interface IProps {
   yay: number;
@@ -32,12 +32,12 @@ export const YayNay = (props: IProps) => {
         data={data}
         margin={{ top: 0, right: 40, left: 40, bottom: 20 }}
         layout='vertical'
-        barCategoryGap='20%'
-        barGap={2}
-        maxBarSize={10}
+        barCategoryGap='0'
+        barGap={1}
+        maxBarSize={25}
       >
         <CartesianGrid horizontal={false} stroke='#a0a0a0' strokeWidth={0.5} />
-        <ToolTip />
+        <Tooltip />
         <XAxis
           type='number'
           axisLine={false}
@@ -46,11 +46,13 @@ export const YayNay = (props: IProps) => {
         <YAxis type='category' dataKey={'name'} width={40} />
         <Bar
           animationDuration={1000}
+          barSize={25}
           dataKey='yay' fill='#5c53fc'
           label={{ position: 'right', backgroundColor: '#fff' }} />
         <Bar
           animationDuration={1000}
-          dataKey='nay' fill='#5c53fc'
+          barSize={25}
+          dataKey='nay' fill='#ff5d3e'
           label={{ position: 'right', backgroundColor: '#fff' }} />
       </BarChart>
     </ResponsiveContainer>

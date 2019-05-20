@@ -17,8 +17,7 @@ interface IProps {
 }
 
 const renderSecondersList = (accountIds: Array<AccountId>) => {
-  console.log(accountIds[0]);
-  if (accountIds && accountIds.length && accountIds[0] !== new AccountId([0])) {
+  if (accountIds && accountIds.length) {
     return accountIds.map((accountId: AccountId) => {
       return (
         <AddressSummary address={accountId.toString()} orientation='vertical' size='tiny' />
@@ -32,7 +31,7 @@ const renderSecondersList = (accountIds: Array<AccountId>) => {
 export function ProposalRow (props: IProps) {
   const { api } = useContext(AppContext);
   const [depositedBalance, setDepositedBalance] = useState();
-  const [depositorAccountIds, setDepositorAccountIds] = useState([new AccountId([0])]);
+  const [depositorAccountIds, setDepositorAccountIds] = useState();
   const { propIndex, proposal, proposer } = props;
   const { meta, method, section } = Method.findFunction(proposal.callIndex);
 
