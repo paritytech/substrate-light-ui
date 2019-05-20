@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AccountId, Method, Option, PropIndex, Proposal, Tuple, Address } from '@polkadot/types';
+import { AccountId, Method, Option, PropIndex, Proposal, Tuple } from '@polkadot/types';
 import { AppContext } from '@substrate/ui-common';
 import { AddressSummary, Dropdown, FadedText, StackedHorizontal, StyledNavButton, SubHeader, Table } from '@substrate/ui-components';
 import React, { useEffect, useContext, useState } from 'react';

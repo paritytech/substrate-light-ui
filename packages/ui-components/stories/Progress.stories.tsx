@@ -4,13 +4,11 @@
 
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { boolean, number, select, withKnobs } from '@storybook/addon-knobs';
+import { boolean, number, withKnobs } from '@storybook/addon-knobs';
 
 import { withTheme } from './customDecorators';
 import { Progress } from '../src/Progress';
 import { WrapperDiv } from '../src/Shared.styles';
-
-let colors = ['blue', 'red', 'green', 'orange', 'yellow']; // Fixme: use the gradients
 
 storiesOf('Progress Bar', module)
   .addDecorator(withKnobs)
