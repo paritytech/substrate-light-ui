@@ -4,6 +4,8 @@
 
 import { app, Menu, shell } from 'electron';
 
+import { logger } from '../util';
+
 const template = [
   // { role: 'appMenu' }
   ...(process.platform === 'darwin' ? [{
@@ -92,7 +94,11 @@ const template = [
     submenu: [
       {
         label: 'Learn More',
-        click () { shell.openExternal('https://github.com/paritytech/substrate-light-ui'); }
+        click () {
+          shell
+            .openExternal('https://github.com/paritytech/substrate-light-ui')
+            .catch(logger.error);
+        }
       }
     ]
   }
