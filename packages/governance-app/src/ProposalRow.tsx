@@ -2,9 +2,9 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AccountId, Method, Option, PropIndex, Proposal, Tuple } from '@polkadot/types';
+import { AccountId, Method, Option, PropIndex, Proposal, Tuple, Address } from '@polkadot/types';
 import { AppContext } from '@substrate/ui-common';
-import { AddressSummary, FadedText, StackedHorizontal, StyledNavButton, Table } from '@substrate/ui-components';
+import { AddressSummary, Dropdown, FadedText, StackedHorizontal, StyledNavButton, SubHeader, Table } from '@substrate/ui-components';
 import React, { useEffect, useContext, useState } from 'react';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -15,20 +15,6 @@ interface IProps {
   proposal: Proposal;
   proposer: AccountId;
 }
-
-const renderSecondersList = (accountIds: Array<AccountId>) => {
-  if (accountIds && accountIds.length) {
-    console.log('account ids =>', accountIds);
-    return accountIds.map((accountId: AccountId) => {
-      return (
-        <AddressSummary address={accountId.toString()} orientation='vertical' size='tiny' />
-      );
-    });
-  } else {
-    return <FadedText> No Seconders Yet </FadedText>;
-  }
-};
-
 export function ProposalRow (props: IProps) {
   const { propIndex, proposal, proposer } = props;
   const { api } = useContext(AppContext);
@@ -43,15 +29,29 @@ export function ProposalRow (props: IProps) {
         take(1)
       )
       .subscribe((deposit) => {
+        // @type deposit: Option<(BalanceOf,Vec<AccountId>)>
         let d = deposit.unwrapOr(null);
         if (d) {
           setDepositedBalance(d[0].toString());
-          // @ts-ignore FIXME tuple not generic
-          setDepositorAccountIds(d[1][0]);
+          setDepositorAccountIds(d[1]);
         }
       });
     return () => subscription.unsubscribe();
-  }, []);
+  });
+
+  const renderSecondersList = (accountIds: Array<AccountId>) => {
+    if (accountIds && accountIds.length) {
+      return accountIds.map((accountId: AccountId) => {
+        return (
+          <Dropdown.Item key={accountId.toString()}>
+            <AddressSummary address={accountId.toString()} orientation='vertical' size='tiny' />
+          </Dropdown.Item>
+        );
+      });
+    } else {
+      return <FadedText> No Seconders Yet </FadedText>;
+    }
+  };
 
   return (
     <Table.Row>
@@ -62,8 +62,21 @@ export function ProposalRow (props: IProps) {
           meta && meta.documentation && meta.documentation.join(' ') || 'No Description Available'
         }
       </Table.Cell>
-      <Table.Cell><AddressSummary address={proposer.toString()} orientation='vertical' size='tiny' /></Table.Cell>
-      <Table.Cell>{renderSecondersList(depositorAccountIds)}</Table.Cell>
+      <Table.Cell><AddressSummary address={proposer.toString()} noBalance orientation='vertical' size='tiny' /></Table.Cell>
+      <Table.Cell>
+        <Dropdown icon={
+          depositorAccountIds
+            && <React.Fragment>
+                <FadedText>View All</FadedText>
+                <SubHeader noMargin>{depositorAccountIds.length}</SubHeader>
+                <FadedText>Seconders</FadedText>
+              </React.Fragment> || ''
+          } scrolling>
+          <Dropdown.Menu>
+            {renderSecondersList(depositorAccountIds)}
+          </Dropdown.Menu>
+        </Dropdown>
+      </Table.Cell>
       <Table.Cell>{depositedBalance}</Table.Cell>
       <Table.Cell>
         <StackedHorizontal>

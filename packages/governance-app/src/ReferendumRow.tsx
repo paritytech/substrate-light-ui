@@ -5,7 +5,7 @@
 import { DerivedReferendumVote } from '@polkadot/api-derive/types';
 import { BlockNumber, Method } from '@polkadot/types';
 import { AppContext } from '@substrate/ui-common';
-import { FadedText, Stacked, SubHeader, Table, VoteNayButton, VoteYayButton, YayNay } from '@substrate/ui-components';
+import { FadedText, Margin, Stacked, SubHeader, Table, VoteNayButton, VoteYayButton, YayNay } from '@substrate/ui-components';
 import BN from 'bn.js';
 import React, { useEffect, useContext, useReducer, useState } from 'react';
 import { Observable, combineLatest } from 'rxjs';
@@ -102,6 +102,7 @@ export function ReferendumRow (props: IProps) {
       <Table.Cell>
         <Stacked>
           <VoteNayButton> Nay </VoteNayButton>
+          <Margin top />
           <VoteYayButton> Yay </VoteYayButton>
         </Stacked>
       </Table.Cell>

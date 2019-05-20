@@ -29,8 +29,7 @@ export function Proposals (props: IProps) {
     return () => subscription.unsubscribe();
   });
 
-  // FIXME Tuple doesn't take generic types
-  // More accurate type is Vector<(PropIndex, Proposal, AccountId)>
+  // FIXME: More accurate type is Vector<(PropIndex, Proposal, AccountId)>
   const renderProposalRow = (_proposal: any) => {
     const propIndex: PropIndex = _proposal[0];
     const proposal: Proposal = _proposal[1];
@@ -57,8 +56,7 @@ export function Proposals (props: IProps) {
   };
 
   const renderProposalsTable = () => {
-    // FIXME Tuple doesn't take generic types
-    // More accurate type is Vector<(PropIndex, Proposal, AccountId)>
+    // FIXME More accurate type is Vector<(PropIndex, Proposal, AccountId)>
     return (
       publicProposals.map((proposal: Vector<any>) => {
         // @ts-ignore

@@ -19,6 +19,7 @@ type SummaryStyles = {
 type Props = {
   address?: string,
   name?: string | React.ReactNode,
+  noBalance?: boolean,
   orientation?: OrientationType,
   size?: SizeType
 };
@@ -28,7 +29,7 @@ const PLACEHOLDER_ADDRESS = '5'.padEnd(16, 'x');
 
 export class AddressSummary extends React.PureComponent<Props> {
   render () {
-    const { address, name, orientation = 'vertical', size = 'medium' } = this.props;
+    const { address, name, noBalance = false, orientation = 'vertical', size = 'medium' } = this.props;
     let styles: SummaryStyles = { identiconSize: 16, fontSize: 'medium' };
 
     switch (size) {
@@ -52,7 +53,7 @@ export class AddressSummary extends React.PureComponent<Props> {
         <Stacked>
           <IdentityIcon value={address as string || PLACEHOLDER_ADDRESS} theme={'substrate'} size={styles.identiconSize} />
           <DynamicSizeText fontSize={styles.fontSize}> {name || PLACEHOLDER_NAME} </DynamicSizeText>
-          <Balance address={address} fontSize={styles.fontSize} />
+          {!noBalance && <Balance address={address} fontSize={styles.fontSize} />}
         </Stacked>
       );
     } else {
@@ -62,7 +63,7 @@ export class AddressSummary extends React.PureComponent<Props> {
           <Margin left />
           <Stacked>
             <DynamicSizeText fontSize={styles.fontSize}> {name || PLACEHOLDER_NAME} </DynamicSizeText>
-            <Balance address={address} fontSize={styles.fontSize} />
+            {!noBalance && <Balance address={address} fontSize={styles.fontSize} />}
           </Stacked>
         </StackedHorizontal>
       );
