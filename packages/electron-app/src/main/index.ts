@@ -4,38 +4,36 @@
 
 import { app, BrowserWindow } from 'electron';
 import path from 'path';
-import Pino from 'pino';
 import url from 'url';
 
+import { isSubstrateRunning } from './app/isSubstrateRunning';
 import { initMenu } from './app/menu';
-import { isSubstrateRunning, killSubstrate, runSubstrateDev, staticPath } from './util';
+import { killSubstrate, runSubstrateDev } from './app/substrateProcess';
+import { logger, staticPath } from './util';
 
 // https://electronjs.org/docs/tutorial/security#electron-security-warnings
 process.env.ELECTRON_ENABLE_SECURITY_WARNINGS = 'true';
 
-const pino = new Pino();
 let sluiApp: Electron.BrowserWindow | undefined;
 let hasCalledInitParitySubstrate = false;
 
-pino.info('Platform detected: ', process.platform);
-pino.info('Process type: ', process.type);
-pino.info('Process ID: ', process.pid);
-pino.info('Process args: ', process.argv);
-pino.info('Electron version: ', process.versions['electron']);
+logger.info(`Platform detected: ${process.platform}`);
+logger.info(`Process type: ${process.type}`);
+logger.info(`Process ID: ${process.pid}`);
+logger.info(`Process args: ${process.argv}`);
+logger.info(`Electron version: ${process.versions['electron']}`);
 
 initMenu();
 
 app.once('ready', async () => {
   if (await isSubstrateRunning()) {
     // do nothing
-    pino.error('Substrate instance is already running!');
     return;
   } else if (hasCalledInitParitySubstrate) {
-    pino.error('Unable to initialise Parity Substrate more than once');
+    logger.error('Unable to initialise Parity Substrate more than once');
     return;
   } else {
     runSubstrateDev();
-    pino.info('Running Parity Substrate');
     hasCalledInitParitySubstrate = true;
   }
 
@@ -66,7 +64,6 @@ app.on('before-quit', killSubstrate);
 app.on('will-quit', killSubstrate);
 
 app.on('quit', () => {
-  pino.info('Leaving Substrate Light UI');
   killSubstrate();
 });
 
