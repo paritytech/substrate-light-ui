@@ -4,7 +4,6 @@
 import { AppContext } from '@substrate/ui-common';
 import { FadedText, Header, Stacked, Table } from '@substrate/ui-components';
 import { PropIndex, Proposal, Tuple, Vector } from '@polkadot/types';
-// import BN from 'bn.js';
 import React, { useContext, useEffect, useState } from 'react';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -59,7 +58,6 @@ export function Proposals (props: IProps) {
     // FIXME More accurate type is Vector<(PropIndex, Proposal, AccountId)>
     return (
       publicProposals.map((proposal: Vector<any>) => {
-        // @ts-ignore
         return proposal && renderProposalRow(proposal);
       })
     );
