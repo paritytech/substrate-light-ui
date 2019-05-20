@@ -13,18 +13,33 @@ import { Observable, combineLatest } from 'rxjs';
 interface IProps {
   idNumber: any;
   referendum: any;
-};
+}
 
 const votesReducer = (state: any, action: any) => {
   switch (action.type) {
-    case 'YAY':
-      const yayVoteCount = state.yayVoteCount + 1;
-      const yayVoteBalance = state.yayVoteBalance.add(action.balance);
-      return { ...state, yayVoteBalance, yayVoteCount };
-    case 'NAY':
-      const nayVoteCount = state.nayVoteCount + 1;
-      const nayVoteBalance = state.nayVoteBalance.add(action.balance);
-      return { ...state, nayVoteBalance, nayVoteCount };
+    case 'NEW_VOTE':
+      const newState = action.votes && action.votes.reduce((state: any, v: DerivedReferendumVote) => {
+        if (v.vote.ltn(0)) {
+          state.yayVoteCount++;
+          state.yayVoteBalance = state.yayVoteBalance.add(v.balance);
+        } else {
+          state.nayVoteCount++;
+          state.nayVoteBalance = state.nayVoteBalance.add(v.balance);
+        }
+
+        state.voteCount++;
+        state.totalVoteBalance = state.totalVoteBalance.add(v.balance);
+
+        return state;
+      },
+        {
+          nayVoteBalance: new BN(0),
+          nayVoteCount: 0,
+          yayVoteBalance: new BN(0),
+          yayVoteCount: 0,
+          totalVoteBalance: new BN(0)
+        });
+      return newState;
     default:
       throw new Error();
   }
@@ -35,15 +50,6 @@ export function ReferendumRow (props: IProps) {
   const { api } = useContext(AppContext);
   const [latestBlockNumber, setLatestBlockNumber] = useState(new BlockNumber());
   const [votesForRef, setVotesFor] = useState();
-
-  const { method, section } = Method.findFunction(referendum.proposal.callIndex);
-
-  // const [totalVoteBalance, setTotalVoteBalance] = useState(new BN(0));
-  // const [yayVoteBalance, setYayVoteBalance] = useState(new BN(0));
-  // const [nayVoteBalance, setNayVoteBalance] = useState(new BN(0));
-  // const [yayVoteCount, setYayVoteCount] = useState(0);
-  // const [nayVoteCount, setNayVoteCount] = useState(0);
-
   const [votes, dispatch] = useReducer(votesReducer, {
     nayVoteBalance: new BN(0),
     nayVoteCount: 0,
@@ -51,6 +57,8 @@ export function ReferendumRow (props: IProps) {
     yayVoteCount: 0,
     totalVoteBalance: new BN(0)
   });
+
+  const { method, section } = Method.findFunction(referendum.proposal.callIndex);
 
   useEffect(() => {
     const subscription = combineLatest([
@@ -66,30 +74,11 @@ export function ReferendumRow (props: IProps) {
   }, []);
 
   useEffect(() => {
-    // votesForRef && votesForRef.reduce({ yayVoteCount, nayVoteCount }, ({ balance, vote }: DerivedReferendumVote) => {
-    //   if (vote.ltn(0)) {
-    //     handleYay(balance);
-    //   } else {
-    //     handleNay(balance);
-    //   }
-    // });
-    // setTotalVoteBalance(yayVoteBalance.add(nayVoteBalance));
-
-    votesForRef && votesForRef.forEach((v: DerivedReferendumVote) => {
-      if (v.vote.ltn(0)) {
-        handleYay(v.balance);
-      } else {
-        handleNay(v.balance);
-      }
-    });
+    votesForRef && handleNewVote(votesForRef);
   }, [votesForRef]);
 
-  const handleYay = (balance: BN) => {
-    dispatch({ type: 'YAY', balance });
-  };
-
-  const handleNay = (balance: BN) => {
-    dispatch({ type: 'NAY', balance });
+  const handleNewVote = (votes: Array<DerivedReferendumVote>) => {
+    dispatch({ type: 'NEW_VOTE', votes });
   };
 
   return (

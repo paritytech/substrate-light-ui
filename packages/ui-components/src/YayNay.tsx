@@ -27,7 +27,7 @@ export const YayNay = (props: IProps) => {
   ];
 
   return (
-    <ResponsiveContainer height={height || 100} width={width || 200}>
+    <ResponsiveContainer height={height || 100} width={width || '100%'}>
       <BarChart
         data={data}
         margin={{ top: 0, right: 40, left: 40, bottom: 20 }}

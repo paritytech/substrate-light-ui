@@ -18,6 +18,7 @@ interface IProps {
 
 const renderSecondersList = (accountIds: Array<AccountId>) => {
   if (accountIds && accountIds.length) {
+    console.log('account ids =>', accountIds);
     return accountIds.map((accountId: AccountId) => {
       return (
         <AddressSummary address={accountId.toString()} orientation='vertical' size='tiny' />
@@ -29,10 +30,10 @@ const renderSecondersList = (accountIds: Array<AccountId>) => {
 };
 
 export function ProposalRow (props: IProps) {
+  const { propIndex, proposal, proposer } = props;
   const { api } = useContext(AppContext);
   const [depositedBalance, setDepositedBalance] = useState();
   const [depositorAccountIds, setDepositorAccountIds] = useState();
-  const { propIndex, proposal, proposer } = props;
   const { meta, method, section } = Method.findFunction(proposal.callIndex);
 
   useEffect(() => {
@@ -50,7 +51,7 @@ export function ProposalRow (props: IProps) {
         }
       });
     return () => subscription.unsubscribe();
-  });
+  }, []);
 
   return (
     <Table.Row>
