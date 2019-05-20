@@ -10,19 +10,26 @@ let substrateProc: ChildProcess;
 
 // TEMPORARY: change to runSubstrateLight once the light client is available.
 export const runSubstrateDev = () => {
+  if (substrateProc) {
+    logger.error('Unable to initialise Parity Substrate more than once');
+    return;
+  }
+
   logger.info('Running `substrate --dev`');
   const substrate = spawn(bundledPath, ['--dev']); // FIXME: --light
 
-  substrate.stdout.on('data', data => logger.info(data.toString()));
+  substrate.stdout.on('data', data => {
+    logger.info(data.toString());
+  });
   substrate.stderr.on('data', error => {
+    // Substrate outputs in stderr, so we .info here
     logger.info(error.toString());
   });
   substrate.on('error', error => {
     logger.error(`Substrate process errored: ${error.toString()}`);
-    purgeDevChain();
   });
   substrate.on('exit', code => {
-    logger.error(`Substrate process exited with code: ${code && code.toString()}`);
+    logger.debug(`Substrate process exited with code: ${code && code.toString()}`);
   });
 
   substrateProc = substrate;
@@ -33,15 +40,4 @@ export const killSubstrate = () => {
     logger.info('Killing Substrate');
     substrateProc.kill();
   }
-};
-
-export const purgeDevChain = () => {
-  logger.info('Purging Substrate');
-  // n.b. -y flag is used to skip interactive prompt.
-  const purge = spawn(bundledPath, ['purge-chain', '--dev', '-y']); // FIXME: --light
-  purge.stdout.once('data', data => {
-    logger.info(`Purging chain: ${data.toString()}`);
-    runSubstrateDev();
-  });
-  purge.stderr.on('data', stderr => logger.error(`Error while purging chain: ${stderr.toString()}`));
 };

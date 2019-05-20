@@ -29,7 +29,7 @@ export async function isSubstrateRunning () {
     logger.info(`Another instance of substrate is already running on ${host}, skip running local instance`);
     return true;
   } catch {
-    logger.info(`Cannot find any running instance of substrate on ${host}`);
+    logger.debug(`Cannot find any running instance of substrate on ${host}`);
     return false;
   }
 }

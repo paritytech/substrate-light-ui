@@ -9,32 +9,26 @@ import url from 'url';
 import { isSubstrateRunning } from './app/isSubstrateRunning';
 import { initMenu } from './app/menu';
 import { killSubstrate, runSubstrateDev } from './app/substrateProcess';
+// @ts-ignore No idea why we have module not found
+import { productName } from '../../electron-builder.json';
+// @ts-ignore No idea why we have module not found
+import { version } from '../../package.json';
 import { logger, staticPath } from './util';
 
 // https://electronjs.org/docs/tutorial/security#electron-security-warnings
 process.env.ELECTRON_ENABLE_SECURITY_WARNINGS = 'true';
 
 let sluiApp: Electron.BrowserWindow | undefined;
-let hasCalledInitParitySubstrate = false;
 
-logger.info(`Platform detected: ${process.platform}`);
-logger.info(`Process type: ${process.type}`);
-logger.info(`Process ID: ${process.pid}`);
-logger.info(`Process args: ${process.argv}`);
-logger.info(`Electron version: ${process.versions['electron']}`);
+logger.info(`Starting ${productName} v${version}`);
+logger.debug(`Platform detected: ${process.platform}`);
+logger.debug(`Process args: ${process.argv}`);
 
 initMenu();
 
 app.once('ready', async () => {
-  if (await isSubstrateRunning()) {
-    // do nothing
-    return;
-  } else if (hasCalledInitParitySubstrate) {
-    logger.error('Unable to initialise Parity Substrate more than once');
-    return;
-  } else {
+  if (!await isSubstrateRunning()) {
     runSubstrateDev();
-    hasCalledInitParitySubstrate = true;
   }
 
   createWindow();
