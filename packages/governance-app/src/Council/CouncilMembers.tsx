@@ -3,25 +3,40 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { Tuple, Vector } from '@polkadot/types';
-import { AddressSummary, Card, FadedText } from '@substrate/ui-components';
-import React from 'react';
+import { AppContext } from '@substrate/ui-common';
+import { AddressSummary, Card, FadedText, Header } from '@substrate/ui-components';
+import React, { useContext, useEffect, useState } from 'react';
+import { Observable } from 'rxjs';
 
-// More accurately a Vector<(AccountId, BlockNumber)>
-interface IProps {
-  activeCouncil: Vector<Tuple>;
-}
+export function CouncilMembers () {
+  const { api } = useContext(AppContext);
+  const [activeCouncil, setActiveCouncil] = useState();
 
-export function CouncilMembers(props: IProps) {
-  const { activeCouncil } = props;
+  useEffect(() => {
+    const subscription =
+      (api.query.council.activeCouncil() as unknown as Observable<Vector<Tuple>>)
+      .subscribe(([activeCouncil]) => {
+        setActiveCouncil(activeCouncil);
+      });
 
-  return activeCouncil.map(([accountId, blockNumber]) => {
-    return (
-      <Card height='234px' key={accountId.toString()}>
-        <Card.Content>
-          <AddressSummary address={accountId.toString()} />
-          <FadedText>Valid till: {blockNumber.toString()}</FadedText>
-        </Card.Content>
-      </Card>
-    );
-  });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  return (
+    <React.Fragment>
+      <Header>Active Council ({activeCouncil && activeCouncil.length}) </Header>
+      {
+        activeCouncil.map(([accountId, blockNumber]) => {
+          return (
+            <Card height='234px' key={accountId.toString()}>
+              <Card.Content>
+                <AddressSummary address={accountId.toString()} />
+                <FadedText>Valid till: {blockNumber.toString()}</FadedText>
+              </Card.Content>
+            </Card>
+          );
+        })
+      }
+    </React.Fragment>
+  );
 }
