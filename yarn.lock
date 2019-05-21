@@ -3185,9 +3185,9 @@
     "@types/jest-diff" "*"
 
 "@types/lodash@^4.14.110":
-  version "4.14.129"
-  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.129.tgz#9aaca391db126802482655c48dd79a814488202f"
-  integrity sha512-oYaV0eSlnOacOr7i4X1FFdH8ttSlb57gu3I9MuStIv2CYkISEY84dNHYsC3bF6sNH7qYcu1BtVrCtQ8Q4KPTfQ==
+  version "4.14.130"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.130.tgz#04b3a690d5f4fc34579963c99adae067b8c8eb5a"
+  integrity sha512-H++wk0tbneBsRVfLkgAAd0IIpmpVr2Bj4T0HncoOsQf3/xrJexRYQK2Tqo0Ej3pFslM8GkMgdis9bu6xIb1ycw==
 
 "@types/marked@^0.4.0":
   version "0.4.2"
@@ -3287,17 +3287,17 @@
     "@types/react-router" "*"
 
 "@types/react-router@*":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@types/react-router/-/react-router-5.0.0.tgz#22ae8f55d8af770ea1f755218936f01bfe1bfe27"
-  integrity sha512-0JjtJMxkQSyWUHTHaD3GhKf6rcZSUFmcQob8OlPTsbnxnIg2Nh3btkss4uke5CKVRtbCMipGU7My5jtfZQC+jw==
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/@types/react-router/-/react-router-5.0.1.tgz#9f4548c75755c55b0cffdd743080e5afa87da6dd"
+  integrity sha512-vOyVO0u3Cs0w6G5DzYqNVqcTsurEnDgOmmkJf2s7VwtunWzpPgI6dHsCBX68vXqeICpP6jCfojgJcHkm5BV7hQ==
   dependencies:
     "@types/history" "*"
     "@types/react" "*"
 
 "@types/react@*":
-  version "16.8.17"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.8.17.tgz#f287b76a5badb93bc9aa3f54521a3eb53d6c2374"
-  integrity sha512-pln3mgc6VfkNg92WXODul/ONo140huK9OMsx62GlBlZ2lvjNK86PQJhYMPLO1i66aF5O9OPyZefogvNltBIszA==
+  version "16.8.18"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.8.18.tgz#fe66fb748b0b6ca9709d38b87b2d1356d960a511"
+  integrity sha512-lUXdKzRqWR4FebR5tGHkLCqnvQJS4fdXKCBrNGGbglqZg2gpU+J82pMONevQODUotATs9fc9k66bx3/St8vReg==
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
@@ -6403,18 +6403,18 @@ copyfiles@^2.0.0:
     yargs "^11.0.0"
 
 core-js-compat@^3.0.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/core-js-compat/-/core-js-compat-3.1.0.tgz#340492a001d81100812e0f6e874ee6e21639ae92"
-  integrity sha512-v8M7YAMacMOJ4T4Z9QSud3dFYASMDvK9d2RWBHRSJlO4nGboLQVtFdbDmgzxfM7XrvcvO56L0sHcqGjuk/4wTQ==
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/core-js-compat/-/core-js-compat-3.1.1.tgz#a1ae7edd5b791066d6eaa969c1b62986b844fd42"
+  integrity sha512-RH3kv8NFovFRMdeTEUgu8nMquEWKEVttOY3JFi8mN75sg72zygPqWbpWNTUw4JYEU43562tlzhdWsWqXmdFAnQ==
   dependencies:
     browserslist "^4.6.0"
-    core-js-pure "3.1.0"
+    core-js-pure "3.1.1"
     semver "^6.0.0"
 
-core-js-pure@3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/core-js-pure/-/core-js-pure-3.1.0.tgz#5e12e66435df4f2cc7df84cc891350aaeb66d0f0"
-  integrity sha512-9NxJBUp8p35vrBbEhQl+FvKbYY68fELWld0asAXMnfWl9xRrN472mw/n+ZvmnG0fYh4U7agPcJZ7iqcJW5R9Rg==
+core-js-pure@3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/core-js-pure/-/core-js-pure-3.1.1.tgz#92494ab7bae22f156ae93973a5e2738814efa7f8"
+  integrity sha512-jH3ZJ0CJ0wwDvWY0olbOComLo6tbWg4kE2x0j4+wlqYnofwF9mYm98YvADuENUzGw69IddmWFCF1FQ2S0jP96A==
 
 core-js@3.0.1:
   version "3.0.1"
@@ -6427,14 +6427,14 @@ core-js@^1.0.0:
   integrity sha1-ZSKUwUZR2yj6k70tX/KYOk8IxjY=
 
 core-js@^2.4.0, core-js@^2.5.0, core-js@^2.5.1, core-js@^2.5.7, core-js@^2.6.5:
-  version "2.6.6"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.6.tgz#00eb6d6bf815471cc16d8563edd7d38786dec50b"
-  integrity sha512-Mt/LaAym54NXnrjEMdo918cT2h70tqb/Yl7T3uPHQHRm5SxVoqlKmerUy4mL11k8saSBDWQ7ULIHxmeFyT3pfg==
+  version "2.6.7"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.7.tgz#c2b19af9b50ec49c356ee087d6155632a889e968"
+  integrity sha512-ydmsQxDVH7lDpYoirXft8S83ddKKfdsrsmWhtyj7xafXVLbLhKOyfD7kAi2ueFfeP7m9rNavjW59O3hLLzzC5A==
 
 core-js@^3.0.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.1.0.tgz#7118f0dad99054204b6821c1f82e67b42cc21628"
-  integrity sha512-EyF8cMvUWRDWRLmC3+i50D1DqK4aFZWb/6PDPP2QfX2r0zXkgR2V9wt7jX7TRM0Qdj/3f6+JQkqfCaGkSj92iQ==
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.1.1.tgz#502ba6e7c15300de20a372b390f9fc9039db76f2"
+  integrity sha512-OddJJmAMN6czmPEtp1ScHFWq4RXzH1iWJFGL8CZ6UcopeBzCMjo4Slv0UoLW2hhny1/wsDowm6xCmBCWQ1azkA==
 
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
@@ -8519,9 +8519,9 @@ file-saver@^2.0.0:
   integrity sha512-Wz3c3XQ5xroCxd1G8b7yL0Ehkf0TC9oYC6buPFkNnU9EnaPlifeAFCyCh+iewXTyFRcg0a6j3J7FmJsIhlhBdw==
 
 file-selector@^0.1.11:
-  version "0.1.11"
-  resolved "https://registry.yarnpkg.com/file-selector/-/file-selector-0.1.11.tgz#4648d1303fc594afe8638d0f35caed38697d32cf"
-  integrity sha512-NopCegJ7QuoqVzUdSLcZb0M9IFO69CSFZzuZhZBasfQxepNwa1ehL6L9UKe3EyBof3EUeraccfJocLCRAvtxdg==
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/file-selector/-/file-selector-0.1.12.tgz#fe726547be219a787a9dcc640575a04a032b1fd0"
+  integrity sha512-Kx7RTzxyQipHuiqyZGf+Nz4vY9R1XGxuQl/hLoJwq+J4avk/9wxxgZyHKtbyIPJmbD4A66DWGYfyykWNpcYutQ==
   dependencies:
     tslib "^1.9.0"
 
@@ -9735,9 +9735,9 @@ i18next-xhr-backend@^2.0.1:
   integrity sha512-CP0XPjJsTE4hY1rM1KXFYo63Ib61EBLEcTvMDyJwr0vs9p/UTuA3ENCmzSs9+ghZgWSjdOigc0oUERHaxctbsQ==
 
 i18next@^15.0.9:
-  version "15.1.1"
-  resolved "https://registry.yarnpkg.com/i18next/-/i18next-15.1.1.tgz#2d60cdee151b019e171e44a666ccd6b704ac867a"
-  integrity sha512-yamlJ/hV8IcD7oqOrioR/l6Bn461+PqO3Y62fNb2VwNH+m37biYW4vvVMgSrbSww2HWwnx+VbOK2VUoxfvd1wQ==
+  version "15.1.2"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-15.1.2.tgz#635b7bc688cf36620cab8fa1c3af97817a47f95a"
+  integrity sha512-98ELn/dqep00DQ/v1E1gpM21HNN6nqU3mS85mYKd9P7lXrhfUcuysPaa3HviKSFb3WPdjf7avuAST3P0dhNp/A==
   dependencies:
     "@babel/runtime" "^7.3.1"
 
@@ -15454,9 +15454,9 @@ regex-not@^1.0.0, regex-not@^1.0.2:
     safe-regex "^1.1.0"
 
 regexp-tree@^0.1.0:
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/regexp-tree/-/regexp-tree-0.1.8.tgz#277e9fb98596af7fa22d8cb38627bfcf4ae2fed2"
-  integrity sha512-9ASu7tuCKzdFa2YKfJmnmlilFrIJ8HFfE6MCs4aDLUw4gTBAaNwTTx/gw8Qo97fsV+UTVQXTmz9sHByeC8sKZg==
+  version "0.1.10"
+  resolved "https://registry.yarnpkg.com/regexp-tree/-/regexp-tree-0.1.10.tgz#d837816a039c7af8a8d64d7a7c3cf6a1d93450bc"
+  integrity sha512-K1qVSbcedffwuIslMwpe6vGlj+ZXRnGkvjAtFHfDZZZuEdA/h0dxljAPu9vhUo6Rrx2U2AwJ+nSQ6hK+lrP5MQ==
 
 regexp.prototype.flags@^1.2.0:
   version "1.2.0"

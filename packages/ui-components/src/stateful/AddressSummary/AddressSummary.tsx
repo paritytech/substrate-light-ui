@@ -58,10 +58,10 @@ export class AddressSummary extends React.PureComponent<Props> {
       );
     } else {
       return (
-        <StackedHorizontal justifyContent='space-around'>
+        <StackedHorizontal alignItems='flex-start' justifyContent='space-around'>
           <IdentityIcon value={address as string || PLACEHOLDER_ADDRESS} theme={'substrate'} size={styles.identiconSize} />
           <Margin left />
-          <Stacked>
+          <Stacked alignItems='flex-start' justifyContent='flex-start'>
             <DynamicSizeText fontSize={styles.fontSize}> {name || PLACEHOLDER_NAME} </DynamicSizeText>
             {!noBalance && <Balance address={address} fontSize={styles.fontSize} />}
           </Stacked>

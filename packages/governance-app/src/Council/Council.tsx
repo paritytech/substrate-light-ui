@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Grid, Header, Margin } from '@substrate/ui-components';
+import { Grid, Margin } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
@@ -22,7 +22,6 @@ export function Council (props: IProps) {
         <CouncilMembers />
       </Grid.Column>
       <Grid.Column width='8'>
-        <Header>Council Candidates ({councilCandidates && councilCandidates.length})</Header>
         <CouncilCandidates />
       </Grid.Column>
     </Grid>

@@ -35,12 +35,12 @@ export function CouncilCandidates () {
             })
           }
         </React.Fragment>
-      )
+      );
     } else {
       return (
         <Stacked>
           <FadedText>No Candidates Found</FadedText>
-          <StyledNavLink to={'/#'}>Click here to learn more about the Council</StyledNavLink>
+          <StyledNavLink to={'https://wiki.polkadot.network/en/latest/polkadot/learn/governance/#council'}>Click here to learn more about the Council</StyledNavLink>
         </Stacked>
       );
     }

@@ -12,6 +12,7 @@ import { take } from 'rxjs/operators';
 export function CouncilSummary () {
   const { api } = useContext(AppContext);
 
+  const [carryCount, setCarryCount] = useState();
   const [desiredSeats, setDesiredSeats] = useState();
   const [termDuration, setTermDuration] = useState();
   const [voteCount, setVoteCount] = useState();
@@ -20,48 +21,58 @@ export function CouncilSummary () {
 
   useEffect(() => {
     const subscription = combineLatest([
+      (api.query.council.carryCount() as unknown as Observable<U32>),
       (api.query.council.desiredSeats() as unknown as Observable<U32>),
       (api.query.council.termDuration() as unknown as Observable<BlockNumber>),
       (api.query.council.voteCount() as unknown as Observable<VoteIndex>),
       (api.query.council.votingBond() as unknown as Observable<BalanceOf>),
       (api.query.council.votingPeriod() as unknown as Observable<BlockNumber>)
     ])
-      .pipe(
-        take(1)
-      )
-      .subscribe(([desiredSeats, termDuration, voteCount, votingBond, votingPeriod]) => {
-        setDesiredSeats(desiredSeats);
-        setTermDuration(termDuration);
-        setVoteCount(voteCount);
-        setVotingBond(votingBond);
-        setVotingPeriod(votingPeriod);
-      });
+    .pipe(
+      take(1)
+    )
+    .subscribe(([carryCount, desiredSeats, termDuration, voteCount, votingBond, votingPeriod]) => {
+      setCarryCount(carryCount);
+      setDesiredSeats(desiredSeats);
+      setTermDuration(termDuration);
+      setVoteCount(voteCount);
+      setVotingBond(votingBond);
+      setVotingPeriod(votingPeriod);
+    });
 
     return () => subscription.unsubscribe();
   }, []);
 
   return (
-    <Grid.Row centered>
-      <Grid.Column width='3'>
-        <SubHeader>Term Duration: </SubHeader>
-        <FadedText>{termDuration && termDuration.toString()} Blocks</FadedText>
-      </Grid.Column>
-      <Grid.Column width='3'>
-        <SubHeader>Desired Seats: </SubHeader>
-        <FadedText>{desiredSeats && desiredSeats.toString()} Seats</FadedText>
-      </Grid.Column>
-      <Grid.Column width='3'>
-        <SubHeader>Votes Count: </SubHeader>
-        <FadedText>{voteCount && voteCount.toString()} Votes </FadedText>
-      </Grid.Column>
-      <Grid.Column width='3'>
-        <SubHeader>Voting Bond:</SubHeader>
-        <FadedText>{votingBond && votingBond.toString()}</FadedText>
-      </Grid.Column>
-      <Grid.Column width='3'>
-        <SubHeader>Voting Period:</SubHeader>
-        <FadedText>{votingPeriod && votingPeriod.toString()}</FadedText>
-      </Grid.Column>
-    </Grid.Row>
+    <React.Fragment>
+      <Grid.Row centered>
+        <Grid.Column width='4'>
+          <SubHeader>Term Duration: </SubHeader>
+          <FadedText>{termDuration && termDuration.toString()} Blocks</FadedText>
+        </Grid.Column>
+        <Grid.Column width='4'>
+          <SubHeader>Desired Seats: </SubHeader>
+          <FadedText>{desiredSeats && desiredSeats.toString()} Seats</FadedText>
+        </Grid.Column>
+        <Grid.Column width='4'>
+          <SubHeader>Carry Count: </SubHeader>
+          <FadedText>{carryCount && carryCount.toString()} Seats</FadedText>
+        </Grid.Column>
+        <Grid.Column width='4'>
+          <SubHeader>Votes Count: </SubHeader>
+          <FadedText>{voteCount && voteCount.toString()} Votes </FadedText>
+        </Grid.Column>
+      </Grid.Row>
+      <Grid.Row>
+        <Grid.Column width='4'>
+          <SubHeader>Voting Bond:</SubHeader>
+          <FadedText>{votingBond && votingBond.toString()}</FadedText>
+        </Grid.Column>
+        <Grid.Column width='4'>
+          <SubHeader>Voting Period:</SubHeader>
+          <FadedText>{votingPeriod && votingPeriod.toString()}</FadedText>
+        </Grid.Column>
+      </Grid.Row>
+    </React.Fragment>
   );
 }
