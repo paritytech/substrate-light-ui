@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import { Margin, StackedHorizontal } from '@substrate/ui-components';
+import { Margin, StackedHorizontal, SubHeader } from '@substrate/ui-components';
 
 import { BlockCounterProps, NodeStatusProps } from './types';
 
@@ -20,7 +20,10 @@ const GreenCircle = () => (
 );
 
 export const BlockCounter = ({ blockNumber, chainName }: BlockCounterProps) => (
-  <p> {chainName && chainName.toString()} #: {blockNumber && blockNumber.toString()} </p>
+  <React.Fragment>
+    <SubHeader noMargin> {chainName && chainName.toString()} </SubHeader>
+    <p> Block #: {blockNumber && blockNumber.toString()} </p>
+  </React.Fragment>
 );
 
 export const NodeStatus = ({ isSyncing }: NodeStatusProps) => (
