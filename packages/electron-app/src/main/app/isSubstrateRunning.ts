@@ -3,11 +3,9 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import axios from 'axios';
-import Pino from 'pino';
 
-import { DEFAULT_HTTP_PORT, TRUSTED_LOOPBACK } from '../app/constants';
-
-const pino = Pino();
+import { DEFAULT_HTTP_PORT, TRUSTED_LOOPBACK } from './constants';
+import { logger } from '../util';
 
 /**
  * Substrate apibroadcasts through WS on port 9944 and through HTTP on port 9933 by default.
@@ -28,10 +26,10 @@ export async function isSubstrateRunning () {
     };
 
     await axios(options);
-    pino.info(`@substrate/electron:main | Another instance of substrate is already running on ${host}, skip running local instance.`);
+    logger.info(`Another instance of substrate is already running on ${host}, skip running local instance`);
     return true;
   } catch {
-    pino.info(`@substrate/electron:main | Did not detect anything running on ${host}... proceed with running the local instance`);
+    logger.debug(`Cannot find any running instance of substrate on ${host}`);
     return false;
   }
 }
