@@ -118,7 +118,7 @@ export function ContextGate (props: { children: React.ReactNode }) {
           }
         });
       });
-  });
+  }, []);
 
   return (
     <AlertsContextProvider>
