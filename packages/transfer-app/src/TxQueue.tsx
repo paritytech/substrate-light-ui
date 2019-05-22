@@ -18,7 +18,7 @@ export function TxQueue (props: Props) {
   const { clear, txQueue } = useContext(TxQueueContext);
 
   // The parent component will redirect to SendBalance if empty txQueue
-  if (!txQueue.length) return;
+  if (!txQueue.length) return null;
 
   return (
     <StackedHorizontal alignItems='flex-start'>
