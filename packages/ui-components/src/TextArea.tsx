@@ -6,21 +6,19 @@ import React from 'react';
 import { Form } from 'semantic-ui-react';
 import SUITextArea from 'semantic-ui-react/dist/commonjs/addons/TextArea';
 
-type Props = {
+export type TextAreaProps = {
   placeholder?: string,
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void,
   rows?: number,
   value?: string
 };
 
-export class TextArea extends React.PureComponent<Props> {
-  render () {
-    const { placeholder, rows, value } = this.props;
+export function TextArea (props: TextAreaProps) {
+  const { placeholder, rows, value } = props;
 
-    return (
-      <Form>
-        <SUITextArea placeholder={placeholder} rows={rows} style={{ minHeight: '100px' }} value={value} />
-      </Form>
-    );
-  }
+  return (
+    <Form>
+      <SUITextArea placeholder={placeholder} rows={rows} style={{ minHeight: '100px' }} value={value} />
+    </Form>
+  );
 }

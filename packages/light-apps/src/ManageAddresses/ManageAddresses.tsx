@@ -3,34 +3,30 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import { Route, RouteComponentProps, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 import { Add } from './Add';
 import { Edit } from './Edit';
 import { SavedAddresses } from '../SavedAddresses';
 import { FlexItem, Margin, StackedHorizontal, WalletCard } from '@substrate/ui-components';
 
-interface Props extends RouteComponentProps<{}> { }
-
-export class ManageAddresses extends React.PureComponent<Props> {
-  render () {
-    return (
-      <WalletCard
-        header='Address Book'
-        height='100%'>
-        <StackedHorizontal justifyContent='space-between' alignItems='stretch'>
-          <FlexItem>
-            <Switch>
-              <Route path='/addresses/:currentAccount/:editAddress' component={Edit} />
-              <Route component={Add} />
-            </Switch>
-          </FlexItem>
-          <Margin left />
-          <FlexItem>
-            <Route path='/addresses/:currentAccount' component={SavedAddresses} />
-          </FlexItem>
-        </StackedHorizontal>
-      </WalletCard>
-    );
-  }
+export function ManageAddresses () {
+  return (
+    <WalletCard
+      header='Address Book'
+      height='100%'>
+      <StackedHorizontal justifyContent='space-between' alignItems='stretch'>
+        <FlexItem>
+          <Switch>
+            <Route path='/addresses/:currentAccount/:editAddress' component={Edit} />
+            <Route component={Add} />
+          </Switch>
+        </FlexItem>
+        <Margin left />
+        <FlexItem>
+          <Route path='/addresses/:currentAccount' component={SavedAddresses} />
+        </FlexItem>
+      </StackedHorizontal>
+    </WalletCard>
+  );
 }

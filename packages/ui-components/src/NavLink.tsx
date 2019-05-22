@@ -8,24 +8,22 @@ import { DynamicSizeText, StyledNavLink } from './Shared.styles';
 import { StyledNavLinkProps } from './StyleProps';
 import { FontSize } from './types';
 
-interface Props extends StyledNavLinkProps {
+export interface NavLinkProps extends StyledNavLinkProps {
   fontSize?: FontSize;
   fontWeight?: string;
   value?: string;
 }
 
-export class NavLink extends React.PureComponent<Props> {
-  render () {
-    const { children, fontSize = 'medium', fontWeight = '300', value, ...rest } = this.props;
+export function NavLink (props: NavLinkProps) {
+  const { children, fontSize = 'medium', fontWeight = '300', value, ...rest } = props;
 
-    return (
-      <StyledNavLink {...rest}>
-        <DynamicSizeText
-          fontSize={fontSize}
-          fontWeight={fontWeight}>
-          {value || children}
-        </DynamicSizeText>
-      </StyledNavLink>
-    );
-  }
+  return (
+    <StyledNavLink {...rest}>
+      <DynamicSizeText
+        fontSize={fontSize}
+        fontWeight={fontWeight}>
+        {value || children}
+      </DynamicSizeText>
+    </StyledNavLink>
+  );
 }

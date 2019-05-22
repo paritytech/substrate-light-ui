@@ -6,6 +6,7 @@
 export {
   Dropdown, DropdownProps,
   Form, FormProps,
+  Grid, GridProps,
   List, ListProps,
   Menu, MenuProps,
   Message, MessageProps,
@@ -23,7 +24,6 @@ export * from './CopyButton';
 export * from './constants';
 export * from './FlexSegment';
 export * from './globalStyle';
-export * from './Grid';
 export * from './Icon';
 export * from './InputFile';
 export * from './Loading';

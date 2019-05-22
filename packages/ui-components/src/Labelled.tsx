@@ -5,32 +5,24 @@
 import React from 'react';
 import Label from 'semantic-ui-react/dist/commonjs/elements/Label/Label';
 
-type Props = {
+type LabelledProps = {
   children: React.ReactNode,
   isHidden?: boolean,
   label?: React.ReactNode,
   withLabel?: boolean
 };
 
-export class Labelled extends React.PureComponent<Props> {
-  render () {
-    const { children, isHidden = false, label, withLabel = false } = this.props;
+export function Labelled (props: LabelledProps) {
+  const { children, isHidden = false, label, withLabel = false } = props;
 
-    if (isHidden) {
-      return null;
-    }
-
-    return (
-      <div>
-        {
-          withLabel
-            ? <Label>
-              {label}
-            </Label>
-            : null
-        }
-        {children}
-      </div>
-    );
+  if (isHidden) {
+    return null;
   }
+
+  return (
+    <div>
+      {withLabel && <Label>{label}</Label>}
+      {children}
+    </div>
+  );
 }

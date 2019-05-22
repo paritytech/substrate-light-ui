@@ -17,21 +17,18 @@ export type BalanceDisplayProps = {
 
 const PLACEHOLDER_BALANCE = new Balance(0);
 const PLACEHOLDER_TOKEN_SYMBOL = 'UNIT';
+const defaultProps = {
+  balance: PLACEHOLDER_BALANCE,
+  fontSize: 'large' as FontSize,
+  tokenSymbol: PLACEHOLDER_TOKEN_SYMBOL
+};
 
-export class BalanceDisplay extends React.PureComponent<BalanceDisplayProps> {
-  static defaultProps: BalanceDisplayProps = {
-    balance: PLACEHOLDER_BALANCE,
-    fontSize: 'large',
-    tokenSymbol: PLACEHOLDER_TOKEN_SYMBOL
-  };
+export function BalanceDisplay (props: BalanceDisplayProps = defaultProps) {
+  const { balance, fontSize, fontWeight, tokenSymbol } = props;
 
-  render () {
-    const { balance, fontSize, fontWeight, tokenSymbol } = this.props;
-
-    return (
-      <DynamicSizeText fontSize={fontSize} fontWeight={fontWeight} >
-        Balance: {(balance!.toString(10))} {tokenSymbol}
-      </DynamicSizeText>
-    );
-  }
+  return (
+    <DynamicSizeText fontSize={fontSize} fontWeight={fontWeight} >
+      Balance: {(balance!.toString(10))} {tokenSymbol}
+    </DynamicSizeText>
+  );
 }

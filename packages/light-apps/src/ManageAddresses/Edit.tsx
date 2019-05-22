@@ -15,16 +15,14 @@ interface MatchParams {
 
 interface Props extends RouteComponentProps<MatchParams> { }
 
-export class Edit extends React.PureComponent<Props> {
-  render () {
-    const { match: { params: { currentAccount, editAddress } } } = this.props;
-    return (
-      <Stacked>
-        <SubHeader> Rename this address in your address book. </SubHeader>
-        <Margin top />
-        <NavLink to={`/addresses/${currentAccount}`}> Add a New Address </NavLink>
-        <SaveAddress addressDisabled defaultAddress={editAddress} />
-      </Stacked>
-    );
-  }
+export function Edit (props: Props) {
+  const { match: { params: { currentAccount, editAddress } } } = props;
+  return (
+    <Stacked>
+      <SubHeader> Rename this address in your address book. </SubHeader>
+      <Margin top />
+      <NavLink to={`/addresses/${currentAccount}`}> Add a New Address </NavLink>
+      <SaveAddress addressDisabled defaultAddress={editAddress} />
+    </Stacked>
+  );
 }

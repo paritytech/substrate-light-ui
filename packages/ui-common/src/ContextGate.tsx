@@ -7,7 +7,7 @@ import { ChainProperties, Health, Text } from '@polkadot/types';
 import keyring from '@polkadot/ui-keyring';
 import settings from '@polkadot/ui-settings';
 import { logger } from '@polkadot/util';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
 
@@ -16,7 +16,6 @@ import { isTestChain } from './util';
 import { AlertsContextProvider } from './AlertsContext';
 import { TxQueueContextProvider } from './TxQueueContext';
 
-// Holds the state for all the contexts
 interface State {
   isReady: boolean;
   system: System;
@@ -51,49 +50,40 @@ let keyringInitialized = false;
 
 const l = logger('ui-common');
 
-// The reasons why we regroup all contexts in one big context is:
-// 1. I don't like the render props syntax with the context consumer. -Amaury
-// 2. We want to access Context in lifecycle methods like componentDidMount.
-// It's either adding a wrapper and passing as props, like:
-// https://github.com/facebook/react/issues/12397#issuecomment-375501574
-// or use one context for everything:
-// https://github.com/facebook/react/issues/12397#issuecomment-462142714
-// FIXME we could probably split this out into small modular contexts once we
-// use https://reactjs.org/docs/hooks-reference.html#usecontext
-export class ContextGate extends React.PureComponent<{}, State> {
-  api = new ApiRx(new WsProvider(wsUrl));
+const api = new ApiRx(new WsProvider(wsUrl));
 
-  state: State = {
-    ...DISCONNECTED_STATE_PROPERTIES
-  };
+export function ContextGate (props: { children: React.ReactNode }) {
+  const { children } = props;
+  const [state, setState] = useState<State>(DISCONNECTED_STATE_PROPERTIES);
+  const { isReady, system } = state;
 
-  componentDidMount () {
+  useEffect(() => {
     // Block the UI when disconnected
-    this.api.isConnected.pipe(
+    api.isConnected.pipe(
       filter(isConnected => !isConnected)
     ).subscribe((_) => {
-      this.setState(DISCONNECTED_STATE_PROPERTIES);
+      setState(DISCONNECTED_STATE_PROPERTIES);
     });
 
     // We want to fetch all the information again each time we reconnect. We
     // might be connecting to a different node, or the node might have changed
     // settings.
-    this.api.isConnected
+    api.isConnected
       .pipe(
         filter(isConnected => isConnected),
         // API needs to be ready to be able to use RPCs; connected isn't enough
         switchMap(_ =>
-          this.api.isReady
+          api.isReady
         ),
         switchMap(_ =>
           // Get info about the current chain
           // FIXME Correct types should come from @polkadot/api to avoid type assertion
           combineLatest([
-            this.api.rpc.system.chain() as Observable<Text>,
-            this.api.rpc.system.health() as Observable<Health>,
-            this.api.rpc.system.name() as Observable<Text>,
-            this.api.rpc.system.properties() as Observable<ChainProperties>,
-            this.api.rpc.system.version() as Observable<Text>
+            api.rpc.system.chain() as Observable<Text>,
+            api.rpc.system.health() as Observable<Health>,
+            api.rpc.system.name() as Observable<Text>,
+            api.rpc.system.properties() as Observable<ChainProperties>,
+            api.rpc.system.version() as Observable<Text>
           ])
         )
       )
@@ -117,8 +107,7 @@ export class ContextGate extends React.PureComponent<{}, State> {
         l.log(`Api connected to ${wsUrl}`);
         l.log(`Api ready, connected to chain "${chain}" with properties ${JSON.stringify(properties)}`);
 
-        this.setState(state => ({
-          ...state,
+        setState({
           isReady: true,
           system: {
             chain: chain.toString(),
@@ -127,27 +116,22 @@ export class ContextGate extends React.PureComponent<{}, State> {
             properties,
             version: version.toString()
           }
-        }));
+        });
       });
-  }
+  });
 
-  render () {
-    const { children } = this.props;
-    const { isReady, system } = this.state;
-
-    return (
-      <AlertsContextProvider>
-        <TxQueueContextProvider>
-          <AppContext.Provider value={{
-            api: this.api,
-            isReady,
-            keyring,
-            system
-          }}>
-            {children}
-          </AppContext.Provider>
-        </TxQueueContextProvider>
-      </AlertsContextProvider>
-    );
-  }
+  return (
+    <AlertsContextProvider>
+      <TxQueueContextProvider>
+        <AppContext.Provider value={{
+          api: api,
+          isReady,
+          keyring,
+          system
+        }}>
+          {children}
+        </AppContext.Provider>
+      </TxQueueContextProvider>
+    </AlertsContextProvider>
+  );
 }

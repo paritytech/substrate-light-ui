@@ -7,21 +7,19 @@ import React from 'react';
 import { CopyButton } from './CopyButton';
 import { FlexSegment } from './FlexSegment';
 
-type Props = {
+export type AddressProps = {
   address?: string
 };
 
 const PLACEHOLDER_ADDRESS = '5'.padEnd(16, 'x');
 
-export class Address extends React.PureComponent<Props> {
-  render () {
-    const { address } = this.props;
+export function Address (props: AddressProps) {
+  const { address } = props;
 
-    return (
-      <FlexSegment>
-        {address || PLACEHOLDER_ADDRESS}
-        <CopyButton value={address} />
-      </FlexSegment>
-    );
-  }
+  return (
+    <FlexSegment>
+      {address || PLACEHOLDER_ADDRESS}
+      <CopyButton value={address} />
+    </FlexSegment>
+  );
 }

@@ -2,19 +2,15 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import React from 'react';
+import React, { useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import styled from 'styled-components';
 
 import { Icon } from './Icon';
 import { Stacked } from './Shared.styles';
 
-type Props = {
+export type CopyButtonProps = {
   value?: string
-};
-
-type State = {
-  copied: boolean
 };
 
 const StyledCopyButton = styled.button`
@@ -28,30 +24,24 @@ const StyledCopyButton = styled.button`
   }
 `;
 
-export class CopyButton extends React.PureComponent<Props, State> {
-  state: State = {
-    copied: false
+export function CopyButton (props: CopyButtonProps) {
+  const { value } = props;
+  const [copied, setCopied] = useState(false);
+
+  const handleCopied = () => {
+    setCopied(true);
+
+    setTimeout(() => setCopied(false), 1000);
   };
 
-  handleCopied = () => {
-    this.setState({ copied: true });
-
-    setTimeout(() => this.setState({ copied: false }), 1000);
-  }
-
-  render () {
-    const { copied } = this.state;
-    const { value } = this.props;
-
-    return (
-      <CopyToClipboard text={value || ''} onCopy={this.handleCopied}>
-        <StyledCopyButton>
-          <Stacked>
-            <Icon name={copied ? 'check' : 'copy'} />
-            {copied && <small> Copied! </small>}
-          </Stacked>
-        </StyledCopyButton>
-      </CopyToClipboard>
-    );
-  }
+  return (
+    <CopyToClipboard text={value || ''} onCopy={handleCopied}>
+      <StyledCopyButton>
+        <Stacked>
+          <Icon name={copied ? 'check' : 'copy'} />
+          {copied && <small> Copied! </small>}
+        </Stacked>
+      </StyledCopyButton>
+    </CopyToClipboard>
+  );
 }

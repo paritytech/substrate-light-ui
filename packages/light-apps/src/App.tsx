@@ -21,30 +21,28 @@ import { TxQueueNotifier } from './TxQueueNotifier';
 const Router: any =
   process.env.NODE_ENV === 'production' ? MemoryRouter : BrowserRouter;
 
-export class App extends React.PureComponent {
-  render () {
-    return (
-      <ContextGate>
-        <ThemeProvider theme={substrateLightTheme}>
-          <Router>
-            <Container>
-              <GlobalStyle />
-              <AppContext.Consumer>
-                {({ isReady }) => isReady
-                  ? <React.Fragment>
-                    <TopBar />
-                    <Content />
-                  </React.Fragment>
-                  : <Loading active>
-                    Connecting to the node...
+export function App () {
+  return (
+    <ContextGate>
+      <ThemeProvider theme={substrateLightTheme}>
+        <Router>
+          <Container>
+            <GlobalStyle />
+            <AppContext.Consumer>
+              {({ isReady }) => isReady
+                ? <React.Fragment>
+                  <TopBar />
+                  <Content />
+                </React.Fragment>
+                : <Loading active>
+                  Connecting to the node...
                     </Loading>}
-              </AppContext.Consumer>
-              <TxQueueNotifier />
-              <Alerts />
-            </Container>
-          </Router>
-        </ThemeProvider>
-      </ContextGate>
-    );
-  }
+            </AppContext.Consumer>
+            <TxQueueNotifier />
+            <Alerts />
+          </Container>
+        </Router>
+      </ThemeProvider>
+    </ContextGate>
+  );
 }

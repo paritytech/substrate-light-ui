@@ -9,18 +9,16 @@ import { Modal } from '@substrate/ui-components';
 import { ImportWithJson } from './ImportWithJson';
 import { ImportWithPhrase } from './ImportWithPhrase';
 
-export class ImportOptionsScreen extends React.PureComponent {
-  render () {
-    return (
-      <React.Fragment>
-        <Modal.Header> Unlock Account </Modal.Header>
-        <Modal.Content>
-          <Switch>
-            <Route path='/import/withJson' component={ImportWithJson} />
-            <Route path='/import/withPhrase' component={ImportWithPhrase} />
-          </Switch>
-        </Modal.Content>
-      </React.Fragment>
-    );
-  }
+export function ImportOptionsScreen () {
+  return (
+    <React.Fragment>
+      <Modal.Header> Unlock Account </Modal.Header>
+      <Modal.Content>
+        <Switch>
+          <Route path='/import/withJson' component={ImportWithJson} />
+          <Route path='/import/withPhrase' component={ImportWithPhrase} />
+        </Switch>
+      </Modal.Content>
+    </React.Fragment>
+  );
 }

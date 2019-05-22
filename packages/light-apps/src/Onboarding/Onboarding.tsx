@@ -8,23 +8,21 @@ import { Container, Modal } from '@substrate/ui-components';
 
 import { CreateNewAccountScreen, ImportOptionsScreen, SaveScreen } from './index';
 
-export class Onboarding extends React.PureComponent {
-  render () {
-    return (
-      <Modal
-        dimmer='inverted'
-        open
-        size='tiny'
-      >
-        <Container>
-          <Switch>
-            <Route path='/create' component={CreateNewAccountScreen} />
-            <Route path='/import' component={ImportOptionsScreen} />
-            <Route path='/save/:importMethod' component={SaveScreen} />
-            <Redirect to='/create' />
-          </Switch>
-        </Container>
-      </Modal>
-    );
-  }
+export function Onboarding () {
+  return (
+    <Modal
+      dimmer='inverted'
+      open
+      size='tiny'
+    >
+      <Container>
+        <Switch>
+          <Route path='/create' component={CreateNewAccountScreen} />
+          <Route path='/import' component={ImportOptionsScreen} />
+          <Route path='/save/:importMethod' component={SaveScreen} />
+          <Redirect to='/create' />
+        </Switch>
+      </Container>
+    </Modal>
+  );
 }
