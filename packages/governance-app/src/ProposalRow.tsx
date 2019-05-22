@@ -66,11 +66,12 @@ export function ProposalRow (props: IProps) {
       <Table.Cell>
         <Dropdown icon={
           depositorAccountIds
-            && <React.Fragment>
+            ? <React.Fragment>
                 <FadedText>View All</FadedText>
                 <SubHeader noMargin>{depositorAccountIds.length}</SubHeader>
                 <FadedText>Seconders</FadedText>
-              </React.Fragment> || ''
+              </React.Fragment>
+            : ''
           } scrolling>
           <Dropdown.Menu>
             {renderSecondersList(depositorAccountIds)}

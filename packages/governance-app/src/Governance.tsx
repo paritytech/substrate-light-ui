@@ -1,6 +1,7 @@
 // Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
+
 import { BlockNumber } from '@polkadot/types';
 import { AppContext } from '@substrate/ui-common';
 import { Card, FadedText, Menu, WrapperDiv, Stacked } from '@substrate/ui-components';
@@ -79,7 +80,7 @@ export function Governance (props: IProps) {
                 label='Launch Period'
                 progress='ratio'
                 size='small'
-                total={launchPeriod && launchPeriod.toString() || 1}
+                total={launchPeriod ? launchPeriod.toString() : 1}
                 value={latestBlockNumber && latestBlockNumber.mod(launchPeriod || new BN(1)).addn(1).toString()} />
             </WrapperDiv>
           </Menu.Item>
