@@ -11,14 +11,13 @@
     "build": "electron-webpack",
     "electron": "electron dist/main/main.js",
     "package": "electron-builder",
-    "start": "cross-env ELECTRON_START_URL=http://localhost:3000 electron-webpack dev",
+    "start": "electron-webpack dev",
     "test": "echo Skipped."
   },
   "devDependencies": {
     "@substrate/light-apps": "^0.2.0",
     "copyfiles": "^2.0.0",
-    "cross-env": "^5.2.0",
-    "electron": "^4.0.0",
+    "electron": "^5.0.1",
     "electron-builder": "^20.38.5",
     "electron-webpack": "^2.6.2",
     "electron-webpack-ts": "^3.1.1",
@@ -26,8 +25,8 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "pino": "^5.12.3",
-    "source-map-support": "^0.5.10"
+    "source-map-support": "^0.5.10",
+    "winston": "^3.2.1"
   },
   "substrate": {
     "version": "~1.0.0"
