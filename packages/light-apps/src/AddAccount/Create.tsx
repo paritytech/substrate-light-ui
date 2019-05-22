@@ -50,7 +50,7 @@ function validate (values: UserInput): Either<UserInputError, UserInput> {
     errors.rewritePhrase = 'Mnemonic does not match rewrite';
   }
 
-  return Object.keys(errors).length ? left(errors) : right(values as UserInput);
+  return Object.keys(errors).length ? left(errors) : right(values);
 }
 
 export function Create (props: Props) {
