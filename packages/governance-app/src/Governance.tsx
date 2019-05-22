@@ -12,10 +12,7 @@ import { combineLatest, Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import Progress from 'semantic-ui-react/dist/commonjs/modules/Progress/Progress';
 
-<<<<<<< HEAD
 import { Council } from './Council';
-=======
->>>>>>> 94a7c7de79df3a059ae3f3a48f510ddd8472aeb7
 import { Democracy } from './Democracy';
 
 interface MatchParams {
@@ -58,7 +55,6 @@ export function Governance (props: IProps) {
     return () => subscription.unsubscribe();
   }, []);
 
-<<<<<<< HEAD
   const navToDemocracy = () => {
     let { history, location, match } = props;
     let currentPath = location.pathname.split('/')[3];
@@ -81,23 +77,11 @@ export function Governance (props: IProps) {
         <Menu.Item onClick={navToDemocracy}>
           Democracy
           <Stacked justifyContent='flex-end' alignItems='center'>
-=======
-  return (
-    <Card height='100%'>
-      <Menu stackable>
-        <Menu.Item>
-          <Stacked justifyContent='flex-end'>
-            Democracy
->>>>>>> 94a7c7de79df3a059ae3f3a48f510ddd8472aeb7
             <FadedText>Proposals ({propCount && propCount.toString()})</FadedText>
             <FadedText>Referenda ({refCount && refCount.toString()})</FadedText>
           </Stacked>
         </Menu.Item>
-<<<<<<< HEAD
         <Menu.Item onClick={navToCouncil}>
-=======
-        <Menu.Item>
->>>>>>> 94a7c7de79df3a059ae3f3a48f510ddd8472aeb7
           <Stacked justifyContent='flex-end'>
             Council
             <FadedText>Motions ({councilMotionsCount && councilMotionsCount.toString()})</FadedText>
@@ -113,11 +97,7 @@ export function Governance (props: IProps) {
                 label='Launch Period'
                 progress='ratio'
                 size='small'
-<<<<<<< HEAD
-                total={launchPeriod && launchPeriod.toString() || 1}
-=======
                 total={launchPeriod ? launchPeriod.toString() : 1}
->>>>>>> 94a7c7de79df3a059ae3f3a48f510ddd8472aeb7
                 value={latestBlockNumber && latestBlockNumber.mod(launchPeriod || new BN(1)).addn(1).toString()} />
             </WrapperDiv>
           </Menu.Item>
@@ -127,10 +107,7 @@ export function Governance (props: IProps) {
       <Card.Content>
         <Switch>
           <Route path='/governance/:currentAccount/democracy' component={Democracy} />
-<<<<<<< HEAD
           <Route path='/governance/:currentAccount/council' component={Council} />
-=======
->>>>>>> 94a7c7de79df3a059ae3f3a48f510ddd8472aeb7
           <Redirect exact from='/governance/:currentAccount' to='/governance/:currentAccount/democracy' />
         </Switch>
       </Card.Content>

@@ -5,10 +5,7 @@
 import React from 'react';
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
-<<<<<<< HEAD
-=======
 // TODO export these props for reuse
->>>>>>> 94a7c7de79df3a059ae3f3a48f510ddd8472aeb7
 interface IProps {
   yay: number;
   nay: number;
