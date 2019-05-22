@@ -3,6 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import accounts from '@polkadot/ui-keyring/observable/accounts';
+import { Governance } from '@substrate/governance-app';
 import { SingleAddress } from '@polkadot/ui-keyring/observable/types';
 import { Transfer } from '@substrate/transfer-app';
 import { AppContext } from '@substrate/ui-common';
@@ -34,12 +35,14 @@ export function Content () {
       {defaultAccount
         .map(({ json }) => (
           <React.Fragment>
-            <Route path={['/accounts/:currentAccount/add', '/addresses/:currentAccount', '/transfer/:currentAccount']} component={IdentityHeader} />
+            <Route path={['/accounts/:currentAccount/add', '/addresses/:currentAccount', '/governance/:currentAccount', '/transfer/:currentAccount']} component={IdentityHeader} />
             <Switch>
-              <Redirect exact from='/' to={`/transfer/${json.address}`} />
+              <Redirect exact from='/' to={`/governance/${json.address}`} />
+              <Redirect exact from='/governance' to={`/governance/${json.address}`} />
               <Redirect exact from='/transfer' to={`/transfer/${json.address}`} />
               <Route path='/addresses/:currentAccount' component={ManageAddresses} />
               <Route path='/accounts/:currentAccount/add/' component={AddAccount} />
+              <Route path='/governance/:currentAccount' component={Governance} />
               <Route path='/transfer/:currentAccount' component={Transfer} />
               <Redirect to='/' />
             </Switch>

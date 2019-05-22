@@ -10,27 +10,34 @@ import { select, text, withKnobs } from '@storybook/addon-knobs';
 import { withTheme } from './customDecorators';
 import { FONT_SIZES } from '../src/constants';
 import { NavButton } from '../src/NavButton';
+import { VoteNayButton, VoteYayButton } from '../src/Shared.styles';
 import { FontSize } from '../src/types';
 
-storiesOf('NavButton', module)
+storiesOf('Button', module)
   .addDecorator(withKnobs)
   .addDecorator(withTheme)
-  .add('no children', () => (
+  .add('NavButton | no children', () => (
     <NavButton />
   ))
-  .add('with child string', () => (
+  .add('NavButton | with child string', () => (
     <NavButton onClick={action('clicked')}> {text('child', 'Button')} </NavButton>
   ))
-  .add('with value prop', () => (
+  .add('NavButton | with value prop', () => (
     <NavButton
       onClick={action('clicked')}
       value={text('value', 'Button')}> This should be ignored </NavButton>
   ))
-  .add('with font props', () => (
+  .add('NavButton | with font props', () => (
     <NavButton
       fontSize={select('font size', FONT_SIZES, 'medium') as FontSize}
       fontWeight={text('font weight', '500')}
       onClick={action('clicked')}>
       {text('child', 'Button')}
     </NavButton>
+  ))
+  .add('VoteButtons | ', () => (
+    <React.Fragment>
+      <VoteYayButton onClick={action('Yay')}> Yay </VoteYayButton>
+      <VoteNayButton onClick={action('Nay')}> Nay </VoteNayButton>
+    </React.Fragment>
   ));

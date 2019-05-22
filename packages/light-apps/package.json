@@ -1,6 +1,6 @@
 {
   "name": "@substrate/light-apps",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "Parity Technologies <admin@parity.io>",
   "description": "User interface optimized for the Substrate light client",
   "license": "Apache-2.0",
@@ -21,9 +21,10 @@
   "dependencies": {
     "@polkadot/ui-assets": "^0.37.1",
     "@polkadot/ui-settings": "^0.37.1",
-    "@substrate/transfer-app": "0.1.0",
-    "@substrate/ui-common": "0.1.0",
-    "@substrate/ui-components": "0.1.0",
+    "@substrate/governance-app": "^0.2.0",
+    "@substrate/transfer-app": "^0.2.0",
+    "@substrate/ui-common": "^0.2.0",
+    "@substrate/ui-components": "^0.2.0",
     "@types/file-saver": "^2.0.0",
     "@types/react-dom": "^16.0.11",
     "@types/react-router-dom": "^4.3.1",

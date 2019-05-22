@@ -24,3 +24,5 @@ export type FlexJustify = 'flex-start' | 'flex-end' | 'center' | 'space-around' 
 export type SUIInputSize = 'mini' | 'small' | 'large' | 'big' | 'huge' | 'massive';
 
 export type SUISize = 'mini' | 'tiny' | 'small' | 'medium' | 'large' | 'big' | 'huge' | 'massive';
+
+export type SUIProgressBarSize = 'tiny' | 'small' | 'medium' | 'large' | 'big';
