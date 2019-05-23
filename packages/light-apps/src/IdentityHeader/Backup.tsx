@@ -20,7 +20,7 @@ export function Backup (props: Props) {
   const [password, setPassword] = useState('');
 
   const closeBackupModal = () => { setModalOpen(false); setPassword(''); };
-  const onChangepassword = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) =>
+  const onChangePassword = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) =>
     setPassword(value);
 
   const backupCurrentAccount = () => {
@@ -52,7 +52,7 @@ export function Backup (props: Props) {
         <Modal.Actions>
           <Stacked>
             <FadedText> Please encrypt your account first with the account's password. </FadedText>
-            <Input onChange={onChangepassword} type='password' value={password} />
+            <Input onChange={onChangePassword} type='password' value={password} />
             <StackedHorizontal>
               <WithSpaceBetween>
                 <StyledLinkButton onClick={closeBackupModal}><Icon name='remove' color='red' /> <FadedText>Cancel</FadedText></StyledLinkButton>
