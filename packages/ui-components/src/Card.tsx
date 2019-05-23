@@ -3,12 +3,10 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import SUICard from 'semantic-ui-react/dist/commonjs/views/Card';
+import SUICard, { CardProps as SUICardProps } from 'semantic-ui-react/dist/commonjs/views/Card';
 import styled from 'styled-components';
 
-type Props = {
-  [index: string]: any;
-};
+type CardProps = SUICardProps;
 
 const StyledCard = styled<any>(SUICard)`
  &&& {
@@ -21,15 +19,12 @@ const StyledCard = styled<any>(SUICard)`
  }
 `;
 
-export class Card extends React.PureComponent<Props> {
-  // TODO: move away from the defaults and use custom subcomponents
-  static Header = SUICard.Header;
-  static Description = SUICard.Description;
-  static Content = SUICard.Content;
-
-  render () {
-    return (
-      <StyledCard {...this.props} />
-    );
-  }
+export function Card (props: CardProps) {
+  return (
+    <StyledCard {...props} />
+  );
 }
+
+Card.Header = SUICard.Header;
+Card.Description = SUICard.Description;
+Card.Content = SUICard.Content;

@@ -14,46 +14,44 @@ interface Props {
   values: Either<Errors, AllExtrinsicData>;
 }
 
-export class Validation extends React.PureComponent<Props> {
-  render () {
-    const { values } = this.props;
-    const warnings = fromEither(values).chain(validateWarnings);
+export function Validation (props: Props) {
+  const { values } = props;
+  const warnings = fromEither(values).chain(validateWarnings);
 
-    return (
-      <Stacked alignItems='flex-start'>
-        {values.fold(this.renderErrors, this.renderNull)}
-        {warnings.fold(null, this.renderWarnings)}
-      </Stacked>
-    );
-  }
+  return (
+    <Stacked alignItems='flex-start'>
+      {values.fold(renderErrors, renderNull)}
+      {warnings.fold(null, renderWarnings)}
+    </Stacked>
+  );
+}
 
-  renderErrors (errors: Errors) {
-    // For now we assume there's only one error, and show it. It should be
-    // relatively easy to extend to show multiple errors.
-    const error = Object.values(errors)[0];
+function renderErrors (errors: Errors) {
+  // For now we assume there's only one error, and show it. It should be
+  // relatively easy to extend to show multiple errors.
+  const error = Object.values(errors)[0];
 
-    return (
-      <React.Fragment>
-        <SubHeader textAlign='left'>Errors</SubHeader>
-        <ErrorText>
-          {error}
-        </ErrorText>
-      </React.Fragment>
-    );
-  }
+  return (
+    <React.Fragment>
+      <SubHeader textAlign='left'>Errors</SubHeader>
+      <ErrorText>
+        {error}
+      </ErrorText>
+    </React.Fragment>
+  );
+}
 
-  renderNull () {
-    return null;
-  }
+function renderNull () {
+  return null;
+}
 
-  renderWarnings (warnings: Warnings) {
-    return (
-      <React.Fragment>
-        <SubHeader textAlign='left'>Warnings</SubHeader>
-        <List>
-          {warnings.map((warning) => <List.Item key={warning}>{warning}</List.Item>)}
-        </List>
-      </React.Fragment>
-    );
-  }
+function renderWarnings (warnings: Warnings) {
+  return (
+    <React.Fragment>
+      <SubHeader textAlign='left'>Warnings</SubHeader>
+      <List>
+        {warnings.map((warning) => <List.Item key={warning}>{warning}</List.Item>)}
+      </List>
+    </React.Fragment>
+  );
 }

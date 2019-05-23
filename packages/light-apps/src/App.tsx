@@ -2,12 +2,12 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import React from 'react';
-import { BrowserRouter, MemoryRouter } from 'react-router-dom';
-import 'semantic-ui-css/semantic.min.css';
 import { AppContext, ContextGate } from '@substrate/ui-common';
 import { Container, GlobalStyle, Loading, substrateLightTheme } from '@substrate/ui-components';
+import React from 'react';
+import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
+import 'semantic-ui-css/semantic.min.css';
 
 import { Alerts } from './Alerts';
 import { Content } from './Content';
@@ -21,30 +21,28 @@ import { TxQueueNotifier } from './TxQueueNotifier';
 const Router: any =
   process.env.NODE_ENV === 'production' ? MemoryRouter : BrowserRouter;
 
-export class App extends React.PureComponent {
-  render () {
-    return (
-      <ContextGate>
-        <ThemeProvider theme={substrateLightTheme}>
-          <Router>
-            <Container>
-              <GlobalStyle />
-              <AppContext.Consumer>
-                {({ isReady }) => isReady
-                  ? <React.Fragment>
-                    <TopBar />
-                    <Content />
-                  </React.Fragment>
-                  : <Loading active>
-                    Connecting to the node...
+export function App () {
+  return (
+    <ContextGate>
+      <ThemeProvider theme={substrateLightTheme}>
+        <Router>
+          <Container>
+            <GlobalStyle />
+            <AppContext.Consumer>
+              {({ isReady }) => isReady
+                ? <React.Fragment>
+                  <TopBar />
+                  <Content />
+                </React.Fragment>
+                : <Loading active>
+                  Connecting to the node...
                     </Loading>}
-              </AppContext.Consumer>
-              <TxQueueNotifier />
-              <Alerts />
-            </Container>
-          </Router>
-        </ThemeProvider>
-      </ContextGate>
-    );
-  }
+            </AppContext.Consumer>
+            <TxQueueNotifier />
+            <Alerts />
+          </Container>
+        </Router>
+      </ThemeProvider>
+    </ContextGate>
+  );
 }

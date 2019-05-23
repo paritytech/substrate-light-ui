@@ -2,10 +2,14 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { Keyring } from '@polkadot/ui-keyring';
+import { KeyringAddress } from '@polkadot/ui-keyring/types';
 import { isFunction } from '@polkadot/util';
-import React from 'react';
 import { AppContext } from '@substrate/ui-common';
 import { ErrorText, Form, Input, Margin, NavButton, Stacked, SuccessText, WrapperDiv } from '@substrate/ui-components';
+import { Either, fromOption, tryCatch2v } from 'fp-ts/lib/Either';
+import { fromNullable } from 'fp-ts/lib/Option';
+import React, { useContext, useEffect, useState } from 'react';
 
 interface Props {
   addressDisabled?: boolean;
@@ -13,153 +17,129 @@ interface Props {
   onSave?: () => void;
 }
 
-type State = {
-  address: string,
-  error?: string,
-  name: string,
-  success?: string
-};
+/**
+ * From an `address` string, check if it's in the keyring, and returns an Either
+ * of KeyringAddress.
+ */
+function getKeyringAddress (keyring: Keyring, address?: string): Either<Error, KeyringAddress> {
+  return fromOption(new Error('You need to specify an address'))(fromNullable(address))
+    // `keyring.getAddress` might fail: catch and return None if it does
+    .chain((addr) => tryCatch2v(() => keyring.getAddress(addr), (e) => e as Error))
+    .chain((keyringAddress) => tryCatch2v(
+      () => {
+        // If `.getMeta` doesn't throw, then it mean the address exists
+        // https://github.com/polkadot-js/ui/issues/133
+        keyringAddress.getMeta();
+        return keyringAddress;
+      },
+      (e) => e as Error)
+    );
+}
 
-export class SaveAddress extends React.PureComponent<Props, State> {
-  static contextType = AppContext;
+export function SaveAddress (props: Props) {
+  const { addressDisabled, defaultAddress, onSave } = props;
 
-  context!: React.ContextType<typeof AppContext>; // http://bit.ly/typescript-and-react-context
+  const { keyring } = useContext(AppContext);
 
-  state: State = {
-    address: this.props.defaultAddress || '',
-    name: ''
+  const [address, setAddress] = useState(defaultAddress || '');
+  const keyringAddress = getKeyringAddress(keyring, address);
+  const [name, setName] = useState(
+    keyringAddress.map((keyringAddress) => keyringAddress.getMeta().name).getOrElse('')
+  );
+
+  useEffect(() => {
+    setAddress(defaultAddress || '');
+    setName(keyringAddress.map((keyringAddress) => keyringAddress.getMeta().name).getOrElse(''));
+    // eslint-disable-next-line
+  }, [defaultAddress]); // No need for keyringAddress dep, because it already depends on defaultAddress
+
+  const [error, setError] = useState<string | undefined>(undefined);
+  const [success, setSuccess] = useState<string | undefined>(undefined);
+
+  const handleInputAddress = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    setAddress(value);
   };
 
-  componentDidMount () {
-    const name = this.getName(this.props.defaultAddress);
-    if (name) {
-      this.setState({ name: name });
-    }
-  }
+  const handleInputName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    setName(value);
+  };
 
-  componentDidUpdate (prevProps: Props) {
-    if (this.props.defaultAddress && prevProps.defaultAddress !== this.props.defaultAddress) {
-      const name = this.getName(this.props.defaultAddress) || '';
-      this.setState({
-        address: this.props.defaultAddress,
-        error: undefined,
-        name,
-        success: undefined
-      });
-    }
-  }
-
-  getName = (address?: string) => {
-    if (!address) {
-      return;
-    }
-
-    const { keyring } = this.context;
-
-    return keyring.getAddress(address).getMeta().name;
-  }
-
-  handleInputAddress = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ address: value });
-  }
-
-  handleInputName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ name: value });
-  }
-
-  handleSubmit = () => {
-    const { keyring } = this.context;
-    const { onSave } = this.props;
-    const { address, name } = this.state;
-
+  const handleSubmit = () => {
     try {
       // if address already saved under this name: throw
       const lookupAddress = keyring.getAddress(address);
-      try {
-        if (lookupAddress && lookupAddress.getMeta().name === name) {
-          throw new Error('This address has already been saved under this name.');
-        }
-      } catch (_error) {
-        /* Do nothing */
+      if (lookupAddress && lookupAddress.getMeta().name === name) {
+        throw new Error('This address has already been saved under this name.');
       }
 
       // If the address is already saved, just update the name
       keyring.saveAddress(address, { name });
 
-      this.onSuccess(lookupAddress
-        ? 'Successfully edited existing address'
-        : 'Successfully saved address');
+      onSuccess('Successfully saved address');
 
       if (isFunction(onSave)) {
         onSave();
       }
     } catch (e) {
-      this.onError(e.message);
+      onError(e.message);
     }
-  }
+  };
 
-  onError = (value: string) => {
-    this.setState({ error: value, success: undefined });
-  }
+  const onError = (value?: string) => {
+    setError(value);
+    setSuccess(undefined);
+  };
 
-  onSuccess = (value: string) => {
-    this.setState({ error: undefined, success: value });
-  }
+  const onSuccess = (value?: string) => {
+    setError(undefined);
+    setSuccess(value);
+  };
 
-  render () {
-    const { addressDisabled } = this.props;
-    const { address, name } = this.state;
+  return (
+    <Form onSubmit={handleSubmit}>
+      <Stacked>
+        <WrapperDiv>
+          <Input
+            disabled={addressDisabled}
+            fluid
+            label='Address'
+            onChange={handleInputAddress}
+            required
+            placeholder='e.g. 5ErZS1o.....'
+            type='text'
+            value={address}
+          />
+          <Margin top />
+          <Input
+            fluid
+            label='Name'
+            onChange={handleInputName}
+            required
+            type='text'
+            value={name}
+          />
+          <Margin top />
+          <NavButton type='submit' value='Save Address' />
+          {renderError(error)}
+          {renderSuccess(success)}
+        </WrapperDiv>
+      </Stacked>
+    </Form>
+  );
+}
 
-    return (
-      <Form onSubmit={this.handleSubmit}>
-        <Stacked>
-          <WrapperDiv>
-            <Input
-              disabled={addressDisabled}
-              fluid
-              label='Address'
-              onChange={this.handleInputAddress}
-              required
-              placeholder='e.g. 5ErZS1o.....'
-              type='text'
-              value={address}
-            />
-            <Margin top />
-            <Input
-              fluid
-              label='Name'
-              onChange={this.handleInputName}
-              required
-              type='text'
-              value={name}
-            />
-            <Margin top />
-            <NavButton type='submit' value='Save Address' />
-            {this.renderError()}
-            {this.renderSuccess()}
-          </WrapperDiv>
-        </Stacked>
-      </Form>
-    );
-  }
+function renderError (error?: string) {
+  return (
+    <ErrorText>
+      {error}
+    </ErrorText>
+  );
+}
 
-  renderError () {
-    const { error } = this.state;
-
-    return (
-      <ErrorText>
-        {error || null}
-      </ErrorText>
-    );
-  }
-
-  renderSuccess () {
-    const { success } = this.state;
-
-    return (
-      <SuccessText>
-        {success || null}
-      </SuccessText>
-    );
-  }
+function renderSuccess (success?: string) {
+  return (
+    <SuccessText>
+      {success}
+    </SuccessText>
+  );
 }

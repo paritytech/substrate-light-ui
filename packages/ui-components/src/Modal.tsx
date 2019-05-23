@@ -3,17 +3,14 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import SUIModal from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
+import SUIModal, { ModalProps as SUIModalProps } from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
 import styled from 'styled-components';
 
 import { Header, FadedText, SubHeader } from './Shared.styles';
 
-type Props = {
-  [index: string]: any
-};
+type ModalProps = SUIModalProps;
 
-// FIXME: don't use any
-const StyledContent = styled<any>(SUIModal.Content)`
+const StyledContent = styled(SUIModal.Content)`
   &&& {
     display: flex;
     align-items: center;
@@ -27,19 +24,15 @@ const StyledActions = styled(StyledContent)`
 `;
 
 // FIXME: this component is reused here and in @polkadot/apps - should be moved to @polkadot/ui
-export class Modal extends React.PureComponent<Props> {
-  static Actions = StyledActions;
-  static Content = StyledContent;
-  static Header = Header;
-  static SubHeader = SubHeader;
-  static FadedText = FadedText;
-  static Description = SUIModal.Description;
-
-  render () {
-    return (
-      <SUIModal
-        {...this.props}
-      />
-    );
-  }
+export function Modal (props: ModalProps) {
+  return (
+    <SUIModal {...props} />
+  );
 }
+
+Modal.Actions = StyledActions;
+Modal.Content = StyledContent;
+Modal.Header = Header;
+Modal.SubHeader = SubHeader;
+Modal.FadedText = FadedText;
+Modal.Description = SUIModal.Description;
