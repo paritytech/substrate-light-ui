@@ -1,13 +1,15 @@
 // Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
+
 import uiSettings from '@polkadot/ui-settings';
-import { AppContext, AlertsContext } from '@substrate/ui-common';
-import { Balance, CopyButton, Dropdown, DropdownProps, FadedText, Icon, Margin, Menu, Modal, NavLink, Stacked, StackedHorizontal, StyledLinkButton, WithSpaceAround, SubHeader } from '@substrate/ui-components';
-import React, { useContext, useState } from 'react';
+import { AlertsContext } from '@substrate/ui-common';
+import { Balance, CopyButton, Dropdown, DropdownProps, FadedText, Icon, Margin, Menu, NavLink, StackedHorizontal, SubHeader } from '@substrate/ui-components';
+import React, { useContext } from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 
 import { Backup } from './Backup';
+import { Forget } from './Forget';
 import { InputAddress } from './IdentityHeader.styles';
 import { Rename } from './Rename';
 
@@ -43,57 +45,11 @@ const urlChanged = (selectedUrl: string): boolean => {
 
 export function IdentityHeader (props: Props) {
   const { history, match: { params: { currentAccount } } } = props;
-  const { keyring } = useContext(AppContext);
   const { enqueue } = useContext(AlertsContext);
-
-  // Alert helpers
-  const notifyError = (value: any) => {
-    enqueue({
-      content: value,
-      type: 'success'
-    });
-  };
 
   // Change account
   const changeCurrentAccount = (account: string) => {
-    history.push(`/transfer/${account}`);
-  };
-
-  // Forget modal
-  const [forgetModalOpen, setForgetModalOpen] = useState(false);
-  const openForgetModal = () => setForgetModalOpen(true);
-  const closeForgetModal = () => setForgetModalOpen(false);
-  const renderForgetConfirmationModal = () => {
-    return (
-      <Modal closeOnDimmerClick={true} closeOnEscape={true} open={forgetModalOpen} trigger={<Dropdown.Item icon='trash' onClick={openForgetModal} text='Forget Account' />}>
-        <WithSpaceAround>
-          <Stacked>
-            <Modal.SubHeader> Please Confirm You Want to Forget this Account </Modal.SubHeader>
-            <b>By pressing confirm, you will be removing this account from your Saved Accounts. </b>
-            <Margin top />
-            <FadedText> You can restore this later from your mnemonic phrase or json backup file. </FadedText>
-            <Modal.Actions>
-              <StackedHorizontal>
-                <StyledLinkButton onClick={closeForgetModal}><Icon name='remove' color='red' /> <FadedText> Cancel </FadedText> </StyledLinkButton>
-                <StyledLinkButton onClick={forgetCurrentAccount}><Icon name='checkmark' color='green' /> <FadedText> Confirm Forget </FadedText> </StyledLinkButton>
-              </StackedHorizontal>
-            </Modal.Actions>
-          </Stacked>
-        </WithSpaceAround>
-      </Modal>
-    );
-  };
-  const forgetCurrentAccount = () => {
-    try {
-      // forget it from keyring
-      keyring.forgetAccount(currentAccount);
-
-      closeForgetModal();
-
-      history.push('/transfer');
-    } catch (e) {
-      notifyError(e.message);
-    }
+    history.push(`/governance/${account}`);
   };
 
   const renderPrimaryMenu = () => {
@@ -130,7 +86,7 @@ export function IdentityHeader (props: Props) {
                 <Dropdown.Menu>
                   <Rename currentAccount={currentAccount} />
                   <Backup currentAccount={currentAccount} />
-                  {renderForgetConfirmationModal()}
+                  <Forget currentAccount={currentAccount} history={history} />
                 </Dropdown.Menu>
               </Dropdown>
             </Menu.Menu>
