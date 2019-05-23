@@ -55,24 +55,28 @@ function validateDerived (values: SubResults & UserInputs & WithAmountExtrinsic)
   const isReserved = currentBalance.freeBalance.isZero() && currentBalance.reservedBalance.gtn(0);
   const overLimit = txLength >= MAX_SIZE_BYTES;
 
+  const errors = {} as Errors;
+
   if (!hasAvailable) {
-    return left({ amount: 'The selected account does not have the required balance available for this transaction.' });
+    errors.amount = 'The selected account does not have the required balance available for this transaction.';
   }
   if (overLimit) {
-    return left({ amount: `This transaction will be rejected by the node as it is greater than the maximum size of ${MAX_SIZE_MB}MB.` });
+    errors.amount = `This transaction will be rejected by the node as it is greater than the maximum size of ${MAX_SIZE_MB}MB.`;
   }
 
-  return right({
-    ...values,
-    allFees,
-    allTotal,
-    hasAvailable,
-    isCreation,
-    isNoEffect,
-    isRemovable,
-    isReserved,
-    overLimit
-  });
+  return Object.keys(errors).length
+    ? left(errors)
+    : right({
+      ...values,
+      allFees,
+      allTotal,
+      hasAvailable,
+      isCreation,
+      isNoEffect,
+      isRemovable,
+      isReserved,
+      overLimit
+    });
 }
 
 /**
@@ -92,24 +96,27 @@ function validateExtrinsic (api: ApiRx) {
  */
 function validateSubResults (values: Partial<SubResults & UserInputs>): Either<Errors, SubResults & UserInputs> {
   const { accountNonce, currentBalance, fees, recipientBalance, ...rest } = values;
+  const errors = {} as Errors;
 
   if (!accountNonce) {
-    return left({ accountNonce: 'Please wait while we fetch your account nonce.' });
+    errors.accountNonce = 'Please wait while we fetch your account nonce.';
   }
 
   if (!fees) {
-    return left({ fees: 'Please wait while we fetch transfer fees.' });
+    errors.fees = 'Please wait while we fetch transfer fees.';
   }
 
   if (!currentBalance) {
-    return left({ currentBalance: 'Please wait while we fetch your voting balance.' });
+    errors.currentBalance = 'Please wait while we fetch your voting balance.';
   }
 
   if (!recipientBalance) {
-    return left({ recipientBalance: "Please wait while we fetch the recipient's balance." });
+    errors.recipientBalance = "Please wait while we fetch the recipient's balance.";
   }
 
-  return right({ accountNonce, currentBalance, fees, recipientBalance, ...rest } as SubResults & UserInputs);
+  return Object.keys(errors).length
+    ? left(errors)
+    : right({ accountNonce, currentBalance, fees, recipientBalance, ...rest } as SubResults & UserInputs);
 }
 
 /**
@@ -117,22 +124,27 @@ function validateSubResults (values: Partial<SubResults & UserInputs>): Either<E
  */
 function validateUserInputs (values: Partial<SubResults & UserInputs>): Either<Errors, Partial<SubResults> & UserInputs> {
   const { amountAsString, currentAccount, recipientAddress, ...rest } = values;
+  const errors = {} as Errors;
 
   if (!currentAccount) {
-    return left({ currentAccount: 'Please enter a sender account.' });
+    errors.currentAccount = 'Please enter a sender account.';
   }
+
   if (!recipientAddress) {
-    return left({ recipientAddress: 'Please enter a recipient address.' });
+    errors.recipientAddress = 'Please enter a recipient address.';
   }
+
   if (currentAccount === recipientAddress) {
-    return left({ currentAccount: 'You cannot send balance to yourself.' });
+    errors.currentAccount = 'You cannot send balance to yourself.';
   }
 
   if (!amountAsString) {
-    return left({ amount: 'Please enter an amount' });
+    errors.amount = 'Please enter an amount';
   }
 
-  return right({ amountAsString, currentAccount, recipientAddress, ...rest } as Partial<SubResults> & UserInputs);
+  return Object.keys(errors).length
+    ? left(errors)
+    : right({ amountAsString, currentAccount, recipientAddress, ...rest } as Partial<SubResults> & UserInputs);
 }
 
 /**
