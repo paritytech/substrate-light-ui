@@ -6,7 +6,7 @@ import React from 'react';
 import { Form } from 'semantic-ui-react';
 import SUITextArea from 'semantic-ui-react/dist/commonjs/addons/TextArea';
 
-export type TextAreaProps = {
+type TextAreaProps = {
   placeholder?: string,
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void,
   rows?: number,

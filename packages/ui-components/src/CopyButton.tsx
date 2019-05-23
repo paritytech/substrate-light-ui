@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import { Icon } from './Icon';
 import { Stacked } from './Shared.styles';
 
-export type CopyButtonProps = {
+type CopyButtonProps = {
   value?: string
 };
 

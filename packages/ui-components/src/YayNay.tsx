@@ -5,14 +5,14 @@
 import React from 'react';
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
-interface IProps {
+interface YayNayProps {
   yay: number;
   nay: number;
   height?: number;
   width?: number;
 }
 
-export const YayNay = (props: IProps) => {
+export const YayNay = (props: YayNayProps) => {
   const { yay, nay, height, width } = props;
 
   const data = [

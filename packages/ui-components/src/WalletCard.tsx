@@ -6,7 +6,7 @@ import React from 'react';
 
 import { Card, Header, SubHeader, Stacked, WithSpaceAround } from './index';
 
-export type WalletCardProps = {
+type WalletCardProps = {
   children: React.ReactNode,
   header: string,
   height?: string,

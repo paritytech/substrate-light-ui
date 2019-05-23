@@ -5,7 +5,7 @@
 import React from 'react';
 import { Dimmer, Loader } from 'semantic-ui-react';
 
-export type LoadingProps = {
+type LoadingProps = {
   active: boolean,
   children?: React.ReactNode | string
 };

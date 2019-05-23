@@ -7,7 +7,7 @@ import React from 'react';
 import { DynamicSizeText, StyledNavButton } from './Shared.styles';
 import { FontSize } from './types';
 
-export interface NavButtonProps extends React.AllHTMLAttributes<HTMLButtonElement> {
+interface NavButtonProps extends React.AllHTMLAttributes<HTMLButtonElement> {
   children?: any;
   fontSize?: FontSize;
   fontWeight?: string;

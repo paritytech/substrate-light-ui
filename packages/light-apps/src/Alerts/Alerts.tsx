@@ -2,9 +2,9 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import React, { useContext } from 'react';
 import { Alert } from '@substrate/ui-components';
 import { Alert as AlertType, AlertsContext } from '@substrate/ui-common';
+import React, { useContext } from 'react';
 
 export function Alerts () {
   const { alerts, remove } = useContext(AlertsContext);

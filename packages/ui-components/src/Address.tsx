@@ -7,7 +7,7 @@ import React from 'react';
 import { CopyButton } from './CopyButton';
 import { FlexSegment } from './FlexSegment';
 
-export type AddressProps = {
+type AddressProps = {
   address?: string
 };
 

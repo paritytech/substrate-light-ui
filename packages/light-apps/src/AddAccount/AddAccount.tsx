@@ -2,10 +2,10 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { Menu, WalletCard } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps, Link, Switch, Route, Redirect } from 'react-router-dom';
 import { Container } from 'semantic-ui-react';
-import { Menu, WalletCard } from '@substrate/ui-components';
 
 import { Create } from './Create';
 import { ImportWithJson } from './ImportWithJson';

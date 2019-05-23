@@ -11,7 +11,7 @@ import { DynamicSizeText, Stacked, StackedHorizontal } from '../../Shared.styles
 import { OrientationType, SizeType } from './types';
 import { FontSize } from '../../types';
 
-export type AddressSummaryProps = {
+type AddressSummaryProps = {
   address?: string,
   name?: string,
   noBalance?: boolean,
