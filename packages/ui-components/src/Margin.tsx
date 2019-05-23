@@ -9,7 +9,7 @@ import { SUISize } from './types';
 
 type MarginPropsValue = SUISize | boolean | undefined;
 
-export interface MarginProps {
+interface MarginProps {
   bottom?: MarginPropsValue; // bottom=true means bottom='medium'
   left?: MarginPropsValue;
   right?: MarginPropsValue;

@@ -6,7 +6,7 @@ import React from 'react';
 import SUICard, { CardProps as SUICardProps } from 'semantic-ui-react/dist/commonjs/views/Card';
 import styled from 'styled-components';
 
-export type CardProps = SUICardProps;
+type CardProps = SUICardProps;
 
 const StyledCard = styled<any>(SUICard)`
  &&& {

@@ -8,7 +8,7 @@ import styled from 'styled-components';
 
 import { Header, FadedText, SubHeader } from './Shared.styles';
 
-export type ModalProps = SUIModalProps;
+type ModalProps = SUIModalProps;
 
 const StyledContent = styled(SUIModal.Content)`
   &&& {

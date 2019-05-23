@@ -50,8 +50,8 @@ export function SaveAddress (props: Props) {
   useEffect(() => {
     setAddress(defaultAddress || '');
     setName(keyringAddress.map((keyringAddress) => keyringAddress.getMeta().name).getOrElse(''));
-    // eslint-disable-next-line keyringAddress depends on defaultAddress, no need to add it below
-  }, [defaultAddress]);
+    // eslint-disable-next-line
+  }, [defaultAddress]); // No need for keyringAddress dep, because it already depends on defaultAddress
 
   const [error, setError] = useState<string | undefined>(undefined);
   const [success, setSuccess] = useState<string | undefined>(undefined);

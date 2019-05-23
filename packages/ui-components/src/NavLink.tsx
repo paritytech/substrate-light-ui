@@ -8,7 +8,7 @@ import { DynamicSizeText, StyledNavLink } from './Shared.styles';
 import { StyledNavLinkProps } from './StyleProps';
 import { FontSize } from './types';
 
-export interface NavLinkProps extends StyledNavLinkProps {
+interface NavLinkProps extends StyledNavLinkProps {
   fontSize?: FontSize;
   fontWeight?: string;
   value?: string;

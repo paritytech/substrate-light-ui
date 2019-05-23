@@ -6,7 +6,7 @@ import React from 'react';
 
 import { Icon, FadedText, FlexSegment, RefreshButton } from './';
 
-export type MnemonicSegmentProps = {
+type MnemonicSegmentProps = {
   mnemonic?: string,
   onClick?: () => void
 };
