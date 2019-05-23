@@ -3,12 +3,13 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 import uiSettings from '@polkadot/ui-settings';
 import { AppContext, AlertsContext } from '@substrate/ui-common';
-import { Balance, CopyButton, Dropdown, DropdownProps, FadedText, Icon, Input, Margin, Menu, Modal, NavLink, Stacked, StackedHorizontal, StyledLinkButton, WithSpaceAround, WithSpaceBetween, SubHeader } from '@substrate/ui-components';
+import { Balance, CopyButton, Dropdown, DropdownProps, FadedText, Icon, Margin, Menu, Modal, NavLink, Stacked, StackedHorizontal, StyledLinkButton, WithSpaceAround, SubHeader } from '@substrate/ui-components';
 import React, { useContext, useState } from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 
 import { Backup } from './Backup';
 import { InputAddress } from './IdentityHeader.styles';
+import { Rename } from './Rename';
 
 const KEY_PREFIX = '__dropdown_option_';
 
@@ -41,12 +42,9 @@ const urlChanged = (selectedUrl: string): boolean => {
 };
 
 export function IdentityHeader (props: Props) {
-  const { history } = props;
+  const { history, match: { params: { currentAccount } } } = props;
   const { keyring } = useContext(AppContext);
   const { enqueue } = useContext(AlertsContext);
-
-  const address = props.location.pathname.split('/')[2];
-  const [name, setName] = useState(address && keyring.getPair(address).getMeta().name);
 
   // Alert helpers
   const notifyError = (value: any) => {
@@ -55,55 +53,10 @@ export function IdentityHeader (props: Props) {
       type: 'success'
     });
   };
-  const notifySuccess = (value: any) => {
-    enqueue({
-      content: value,
-      type: 'error'
-    });
-  };
 
   // Change account
   const changeCurrentAccount = (account: string) => {
     history.push(`/transfer/${account}`);
-  };
-
-  // Rename modal
-  const [renameModalOpen, setRenameModalOpen] = useState(false);
-  const openRenameModal = () => setRenameModalOpen(true);
-  const closeRenameModal = () => { setRenameModalOpen(false); setInputName(name); };
-  const [inputName, setInputName] = useState(name);
-  const onChangeInputName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) =>
-    setInputName(value);
-  const renderRenameModal = () => {
-    return (
-      <Modal closeOnDimmerClick closeOnEscape open={renameModalOpen} trigger={<Dropdown.Item icon='edit' onClick={openRenameModal} text='Rename Account' />}>
-        <WithSpaceAround>
-          <Stacked>
-            <Modal.SubHeader>Rename account</Modal.SubHeader>
-            <FadedText>Please enter the new name of the account.</FadedText>
-            <Modal.Actions>
-              <Stacked>
-                <FadedText>Account name</FadedText>
-                <Input onChange={onChangeInputName} type='text' value={inputName} />
-                <StackedHorizontal>
-                  <WithSpaceBetween>
-                    <StyledLinkButton onClick={closeRenameModal}><Icon name='remove' color='red' /> <FadedText>Cancel</FadedText></StyledLinkButton>
-                    <StyledLinkButton onClick={renameCurrentAccount}><Icon name='checkmark' color='green' /> <FadedText>Rename</FadedText></StyledLinkButton>
-                  </WithSpaceBetween>
-                </StackedHorizontal>
-              </Stacked>
-            </Modal.Actions>
-          </Stacked>
-        </WithSpaceAround>
-      </Modal>
-    );
-  };
-  const renameCurrentAccount = () => {
-    keyring.saveAccountMeta(keyring.getPair(address), { name: inputName });
-
-    setName(inputName);
-    closeRenameModal();
-    notifySuccess('Successfully renamed account!');
   };
 
   // Forget modal
@@ -133,7 +86,7 @@ export function IdentityHeader (props: Props) {
   const forgetCurrentAccount = () => {
     try {
       // forget it from keyring
-      keyring.forgetAccount(address);
+      keyring.forgetAccount(currentAccount);
 
       closeForgetModal();
 
@@ -154,15 +107,15 @@ export function IdentityHeader (props: Props) {
                   label={null}
                   onChange={changeCurrentAccount}
                   type='account'
-                  value={address}
+                  value={currentAccount}
                   withLabel={false}
                 />
-                <CopyButton value={address} />
+                <CopyButton value={currentAccount} />
               </StackedHorizontal>
             </Menu.Item>
-            <Menu.Item><Balance address={address} fontSize='medium' /></Menu.Item>
+            <Menu.Item><Balance address={currentAccount} fontSize='medium' /></Menu.Item>
             <Menu.Item>
-              <NavLink to={`/accounts/${address}/add`}>
+              <NavLink to={`/accounts/${currentAccount}/add`}>
                 Add an Account <Icon name='plus' />
               </NavLink>
             </Menu.Item>
@@ -175,8 +128,8 @@ export function IdentityHeader (props: Props) {
                 text='Manage Account &nbsp;' /* TODO add margin to the icon instead */
               >
                 <Dropdown.Menu>
-                  {renderRenameModal()}
-                  <Backup currentAccount={address} />
+                  <Rename currentAccount={currentAccount} />
+                  <Backup currentAccount={currentAccount} />
                   {renderForgetConfirmationModal()}
                 </Dropdown.Menu>
               </Dropdown>
@@ -212,15 +165,15 @@ export function IdentityHeader (props: Props) {
 
   const renderSecondaryMenu = () => {
     const navToGovernance = () => {
-      history.push(`/governance/${address}`);
+      history.push(`/governance/${currentAccount}`);
     };
 
     const navToManageAddressBook = () => {
-      history.push(`/addresses/${address}`);
+      history.push(`/addresses/${currentAccount}`);
     };
 
     const navToTransfer = () => {
-      history.push(`/transfer/${address}`);
+      history.push(`/transfer/${currentAccount}`);
     };
 
     return (

@@ -2,38 +2,15 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Keyring } from '@polkadot/ui-keyring';
-import { KeyringAddress } from '@polkadot/ui-keyring/types';
 import { isFunction } from '@polkadot/util';
-import { AppContext } from '@substrate/ui-common';
+import { AppContext, getKeyringAddress } from '@substrate/ui-common';
 import { ErrorText, Form, Input, Margin, NavButton, Stacked, SuccessText, WrapperDiv } from '@substrate/ui-components';
-import { Either, fromOption, tryCatch2v } from 'fp-ts/lib/Either';
-import { fromNullable } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
 
 interface Props {
   addressDisabled?: boolean;
   defaultAddress?: string;
   onSave?: () => void;
-}
-
-/**
- * From an `address` string, check if it's in the keyring, and returns an Either
- * of KeyringAddress.
- */
-function getKeyringAddress (keyring: Keyring, address?: string): Either<Error, KeyringAddress> {
-  return fromOption(new Error('You need to specify an address'))(fromNullable(address))
-    // `keyring.getAddress` might fail: catch and return None if it does
-    .chain((addr) => tryCatch2v(() => keyring.getAddress(addr), (e) => e as Error))
-    .chain((keyringAddress) => tryCatch2v(
-      () => {
-        // If `.getMeta` doesn't throw, then it mean the address exists
-        // https://github.com/polkadot-js/ui/issues/133
-        keyringAddress.getMeta();
-        return keyringAddress;
-      },
-      (e) => e as Error)
-    );
 }
 
 export function SaveAddress (props: Props) {
