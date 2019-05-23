@@ -16,7 +16,7 @@ type SummaryStyles = {
   fontSize: FontSize
 };
 
-export type AddressSummaryProps = {
+type AddressSummaryProps = {
   address?: string,
   name?: string | React.ReactNode,
   noBalance?: boolean,

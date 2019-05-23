@@ -8,7 +8,7 @@ import React from 'react';
 import { FontSize, FontWeight } from './types';
 import { DynamicSizeText } from './Shared.styles';
 
-type BalanceDisplayProps = {
+export type BalanceDisplayProps = {
   balance?: Balance,
   fontSize?: FontSize,
   fontWeight?: FontWeight,
