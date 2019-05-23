@@ -11,14 +11,9 @@ import { DynamicSizeText, Stacked, StackedHorizontal } from '../../Shared.styles
 import { OrientationType, SizeType } from './types';
 import { FontSize } from '../../types';
 
-type SummaryStyles = {
-  identiconSize: number,
-  fontSize: FontSize
-};
-
 export type AddressSummaryProps = {
   address?: string,
-  name?: string | React.ReactNode,
+  name?: string,
   noBalance?: boolean,
   orientation?: OrientationType,
   size?: SizeType
@@ -28,43 +23,53 @@ const PLACEHOLDER_NAME = 'No Name';
 const PLACEHOLDER_ADDRESS = '5'.padEnd(16, 'x');
 
 export function AddressSummary (props: AddressSummaryProps) {
-  const { address, name, noBalance = false, orientation = 'vertical', size = 'medium' } = props;
-  let styles: SummaryStyles = { identiconSize: 16, fontSize: 'medium' };
+  const {
+    address = PLACEHOLDER_ADDRESS,
+    name = PLACEHOLDER_NAME,
+    noBalance = false,
+    orientation = 'vertical',
+    size = 'medium'
+  } = props;
 
-  switch (size) {
-    case 'tiny':
-      styles = { identiconSize: 16, fontSize: 'small' };
-      break;
-    case 'small':
-      styles = { identiconSize: 32, fontSize: 'medium' };
-      break;
-    case 'medium':
-      styles = { identiconSize: 64, fontSize: 'large' };
-      break;
-    case 'large':
-      styles = { identiconSize: 128, fontSize: 'big' };
-      break;
-    default:
-  }
-
-  if (orientation === 'vertical') {
-    return (
+  return orientation === 'vertical'
+    ? (
       <Stacked>
-        <IdentityIcon value={address as string || PLACEHOLDER_ADDRESS} theme={'substrate'} size={styles.identiconSize} />
-        <DynamicSizeText fontSize={styles.fontSize}> {name || PLACEHOLDER_NAME} </DynamicSizeText>
-        {!noBalance && <Balance address={address} fontSize={styles.fontSize} />}
+        {renderIcon(address, size)}
+        {renderDetails(address, name, noBalance, size)}
       </Stacked>
-    );
-  } else {
-    return (
+    )
+    : (
       <StackedHorizontal justifyContent='space-around'>
-        <IdentityIcon value={address as string || PLACEHOLDER_ADDRESS} theme={'substrate'} size={styles.identiconSize} />
+        {renderIcon(address, size)}
         <Margin left />
         <Stacked>
-          <DynamicSizeText fontSize={styles.fontSize}> {name || PLACEHOLDER_NAME} </DynamicSizeText>
-          {!noBalance && <Balance address={address} fontSize={styles.fontSize} />}
+          {renderDetails(address, name, noBalance, size)}
         </Stacked>
       </StackedHorizontal>
     );
-  }
+}
+
+const ICON_SIZES = {
+  tiny: 16,
+  small: 32,
+  medium: 64,
+  large: 128
+};
+
+function renderIcon (address: string, size: SizeType) {
+  return <IdentityIcon value={address} theme={'substrate'} size={ICON_SIZES[size]} />;
+}
+
+const FONT_SIZES = {
+  tiny: 'small',
+  small: 'medium',
+  medium: 'large',
+  large: 'big'
+};
+
+function renderDetails (address: string, name: string, noBalance: boolean, size: SizeType) {
+  return <React.Fragment>
+    <DynamicSizeText fontSize={FONT_SIZES[size] as FontSize}> {name} </DynamicSizeText>
+    {!noBalance && <Balance address={address} fontSize={FONT_SIZES[size] as FontSize} />}
+  </React.Fragment>;
 }
