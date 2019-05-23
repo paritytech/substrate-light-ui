@@ -4,10 +4,10 @@
 import uiSettings from '@polkadot/ui-settings';
 import { AppContext, AlertsContext } from '@substrate/ui-common';
 import { Balance, CopyButton, Dropdown, DropdownProps, FadedText, Icon, Input, Margin, Menu, Modal, NavLink, Stacked, StackedHorizontal, StyledLinkButton, WithSpaceAround, WithSpaceBetween, SubHeader } from '@substrate/ui-components';
-import FileSaver from 'file-saver';
 import React, { useContext, useState } from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 
+import { Backup } from './Backup';
 import { InputAddress } from './IdentityHeader.styles';
 
 const KEY_PREFIX = '__dropdown_option_';
@@ -106,51 +106,6 @@ export function IdentityHeader (props: Props) {
     notifySuccess('Successfully renamed account!');
   };
 
-  // Backup modal
-  const [backupModalOpen, setBackupModalOpen] = useState(false);
-  const openBackupModal = () => setBackupModalOpen(true);
-  const closeBackupModal = () => { setBackupModalOpen(false); setInputPassword(''); };
-  const [inputPassword, setInputPassword] = useState('');
-  const onChangeInputPassword = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) =>
-    setInputPassword(value);
-  const renderBackupConfirmationModal = () => {
-    return (
-      <Modal closeOnDimmerClick closeOnEscape open={backupModalOpen} trigger={<Dropdown.Item icon='arrow alternate circle down' onClick={openBackupModal} text='Backup Account' />}>
-        <WithSpaceAround>
-          <Modal.SubHeader> Please Confirm You Want to Backup this Account </Modal.SubHeader>
-          <FadedText>By pressing confirm you will be downloading a JSON keyfile that can later be used to unlock your account. </FadedText>
-          <Modal.Actions>
-            <Stacked>
-              <FadedText> Please encrypt your account first with the account's password. </FadedText>
-              <Input onChange={onChangeInputPassword} type='password' value={inputPassword} />
-              <StackedHorizontal>
-                <WithSpaceBetween>
-                  <StyledLinkButton onClick={closeBackupModal}><Icon name='remove' color='red' /> <FadedText>Cancel</FadedText></StyledLinkButton>
-                  <StyledLinkButton onClick={backupCurrentAccount}><Icon name='checkmark' color='green' /> <FadedText>Confirm Backup</FadedText></StyledLinkButton>
-                </WithSpaceBetween>
-              </StackedHorizontal>
-            </Stacked>
-          </Modal.Actions>
-        </WithSpaceAround>
-      </Modal>
-    );
-  };
-  const backupCurrentAccount = () => {
-    try {
-      const pair = keyring.getPair(address);
-      const json = keyring.backupAccount(pair, inputPassword);
-      const blob = new Blob([JSON.stringify(json)], { type: 'application/json; charset=utf-8' });
-
-      FileSaver.saveAs(blob, `${address}.json`);
-
-      closeBackupModal();
-      notifySuccess('Successfully backed up account to json keyfile!');
-    } catch (e) {
-      closeBackupModal();
-      notifyError(e.message);
-    }
-  };
-
   // Forget modal
   const [forgetModalOpen, setForgetModalOpen] = useState(false);
   const openForgetModal = () => setForgetModalOpen(true);
@@ -221,7 +176,7 @@ export function IdentityHeader (props: Props) {
               >
                 <Dropdown.Menu>
                   {renderRenameModal()}
-                  {renderBackupConfirmationModal()}
+                  <Backup currentAccount={address} />
                   {renderForgetConfirmationModal()}
                 </Dropdown.Menu>
               </Dropdown>
