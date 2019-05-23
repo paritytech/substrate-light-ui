@@ -13,8 +13,6 @@ import React, { useContext, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
 interface Props extends RouteComponentProps { }
-
-type Steps = 'create' | 'rewrite';
 interface UserInput {
   mnemonic: string;
   name: string;
@@ -22,6 +20,8 @@ interface UserInput {
   rewritePhrase: string;
 }
 interface UserInputError extends Partial<UserInput> { }
+
+type Steps = 'create' | 'rewrite';
 
 /**
  * Derive public address from mnemonic key

@@ -2,12 +2,12 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import React from 'react';
-import { BrowserRouter, MemoryRouter } from 'react-router-dom';
-import 'semantic-ui-css/semantic.min.css';
 import { AppContext, ContextGate } from '@substrate/ui-common';
 import { Container, GlobalStyle, Loading, substrateLightTheme } from '@substrate/ui-components';
+import React from 'react';
+import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
+import 'semantic-ui-css/semantic.min.css';
 
 import { Alerts } from './Alerts';
 import { Content } from './Content';

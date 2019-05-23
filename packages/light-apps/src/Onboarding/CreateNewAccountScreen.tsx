@@ -2,12 +2,12 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import FileSaver from 'file-saver';
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
-import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
 import { AppContext } from '@substrate/ui-common';
 import { AddressSummary, ErrorText, FadedText, Input, Margin, MnemonicSegment, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SubHeader, WithSpaceAround } from '@substrate/ui-components';
+import FileSaver from 'file-saver';
+import React from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 
 interface Props extends RouteComponentProps { }
 
@@ -173,7 +173,7 @@ export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
     return (
       <React.Fragment>
         <Modal.Actions>
-            <NavButton onClick={this.toggleStep}> Next </NavButton>
+          <NavButton onClick={this.toggleStep}> Next </NavButton>
         </Modal.Actions>
       </React.Fragment>
     );
