@@ -4,34 +4,22 @@
 
 import { AppContext } from '@substrate/ui-common';
 import { ErrorText, Input, Margin, Modal, NavButton, Stacked, WrapperDiv } from '@substrate/ui-components';
-import React from 'react';
+import { none, Option, some } from 'fp-ts/lib/Option';
+import React, { useContext, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
 interface Props extends RouteComponentProps { }
 
-type State = {
-  error?: string;
-  name?: string;
-  password: string;
-  recoveryPhrase: string;
-};
+export function ImportWithPhrase (props: Props) {
+  const { history } = props;
+  const { keyring } = useContext(AppContext);
 
-export class ImportWithPhrase extends React.PureComponent<Props> {
-  static contextType = AppContext;
+  const [error, setError] = useState<Option<string>>(none);
+  const [name, setName] = useState('');
+  const [password, setPassword] = useState('');
+  const [recoveryPhrase, setRecoveryPhrase] = useState('');
 
-  context!: React.ContextType<typeof AppContext>;
-
-  state: State = {
-    name: '',
-    password: '',
-    recoveryPhrase: ''
-  };
-
-  handleUnlockWithPhrase = () => {
-    const { keyring } = this.context;
-    const { name, password, recoveryPhrase } = this.state;
-    const { history } = this.props;
-
+  const handleUnlockWithPhrase = () => {
     try {
       if (!password) {
         throw new Error('Please enter the password you used to create this account');
@@ -47,76 +35,55 @@ export class ImportWithPhrase extends React.PureComponent<Props> {
         throw new Error('Invalid phrase. Please check it and try again.');
       }
     } catch (e) {
-      this.onError(e.message);
+      setError(some(e.message));
     }
-  }
+  };
 
-  onChangeName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      name: value
-    });
-  }
+  const handleChangeName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    setName(value);
+  };
 
-  onChangePassword = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      password: value
-    });
-  }
+  const handleChangePassword = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(value);
+  };
 
-  onChangePhrase = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      recoveryPhrase: value
-    });
-  }
+  const handleChangePhrase = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    setRecoveryPhrase(value);
+  };
 
-  onError = (value: string) => {
-    this.setState({
-      error: value
-    });
-  }
-
-  render () {
-    const { name, password, recoveryPhrase } = this.state;
-
-    return (
-      <Stacked justifyContent='space-between'>
-        <Modal.SubHeader> Import Account from Mnemonic Recovery Phrase </Modal.SubHeader>
-        <WrapperDiv width='40rem'>
-          <Input
-            fluid
-            label='Phrase'
-            onChange={this.onChangePhrase}
-            type='text'
-            value={recoveryPhrase} />
-          <Margin top />
-          <Input
-            fluid
-            label='Name'
-            onChange={this.onChangeName}
-            type='text'
-            value={name} />
-          <Margin top />
-          <Input
-            fluid
-            label='Password'
-            onChange={this.onChangePassword}
-            type='password'
-            value={password} />
-        </WrapperDiv>
+  return (
+    <Stacked justifyContent='space-between'>
+      <Modal.SubHeader> Import Account from Mnemonic Recovery Phrase </Modal.SubHeader>
+      <WrapperDiv width='40rem'>
+        <Input
+          fluid
+          label='Phrase'
+          onChange={handleChangePhrase}
+          type='text'
+          value={recoveryPhrase} />
         <Margin top />
-        <NavButton onClick={this.handleUnlockWithPhrase} value='Restore' />
-        {this.renderError()}
-      </Stacked>
-    );
-  }
+        <Input
+          fluid
+          label='Name'
+          onChange={handleChangeName}
+          type='text'
+          value={name} />
+        <Margin top />
+        <Input
+          fluid
+          label='Password'
+          onChange={handleChangePassword}
+          type='password'
+          value={password} />
+      </WrapperDiv>
+      <Margin top />
+      <NavButton onClick={handleUnlockWithPhrase} value='Restore' />
+      {renderError(error)}
+    </Stacked>
+  );
+}
 
-  renderError () {
-    const { error } = this.state;
+function renderError (error: Option<string>) {
+  return error.fold(null, err => <ErrorText>{err}</ErrorText>);
 
-    return (
-      <ErrorText>
-        {error}
-      </ErrorText>
-    );
-  }
 }
