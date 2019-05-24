@@ -4,11 +4,39 @@
 
 import { AppContext, handler } from '@substrate/ui-common';
 import { ErrorText, Input, Margin, Modal, NavButton, Stacked, WrapperDiv } from '@substrate/ui-components';
+import { Either, left, right, tryCatch2v } from 'fp-ts/lib/Either';
 import { none, Option, some } from 'fp-ts/lib/Option';
 import React, { useContext, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
 interface Props extends RouteComponentProps { }
+interface UserInput {
+  name: string;
+  password: string;
+  recoveryPhrase: string;
+}
+interface UserInputError extends Partial<UserInput> {
+  createAccount?: string;
+}
+
+/**
+ * Validate user inputs
+ */
+function validate (values: UserInput): Either<UserInputError, UserInput> {
+  const errors = {} as UserInputError;
+
+  (['name', 'password', 'recoveryPhrase'] as (keyof UserInput)[])
+    .filter((key) => !values[key])
+    .forEach((key) => {
+      errors[key] = `Field "${key}" cannot be empty`;
+    });
+
+  if (values.recoveryPhrase.split(' ').length !== 12) {
+    errors.recoveryPhrase = 'Invalid phrase. Please check it and try again.';
+  }
+
+  return Object.keys(errors).length ? left(errors) : right(values);
+}
 
 export function ImportWithPhrase (props: Props) {
   const { history } = props;
@@ -20,23 +48,18 @@ export function ImportWithPhrase (props: Props) {
   const [recoveryPhrase, setRecoveryPhrase] = useState('');
 
   const handleUnlockWithPhrase = () => {
-    try {
-      if (!password) {
-        throw new Error('Please enter the password you used to create this account');
-      }
-
-      if (recoveryPhrase && recoveryPhrase.split(' ').length === 12) {
-        const meta = { name: name };
-
-        let pair = keyring.createAccountMnemonic(recoveryPhrase, password, meta);
-
-        history.push(`identity/${pair.address()}`);
-      } else {
-        throw new Error('Invalid phrase. Please check it and try again.');
-      }
-    } catch (e) {
-      setError(some(e.message));
-    }
+    validate({ name, password, recoveryPhrase })
+      .chain(({ name, password, recoveryPhrase }) => tryCatch2v(
+        () => {
+          // This is inside tryCatch, because it might fail
+          keyring.createAccountMnemonic(recoveryPhrase, password, { name });
+        },
+        (err) => ({ createAccount: (err as Error).message })
+      ))
+      .fold(
+        (err) => setError(some(Object.values(err)[0])), // If there are errors, only show the 1st one
+        () => history.push('/')
+      );
   };
 
   return (

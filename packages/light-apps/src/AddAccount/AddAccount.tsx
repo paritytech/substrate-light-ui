@@ -40,7 +40,7 @@ export function AddAccount (props: Props) {
     <Container>
       <Menu>
         {MENUS.map(({ label, route }) => (
-          <Link to={`/accounts/${currentAccount}/add/${route}`}>
+          <Link key={route} to={`/accounts/${currentAccount}/add/${route}`}>
             <Menu.Item active={activeTab === route}>
               {label}
             </Menu.Item>
