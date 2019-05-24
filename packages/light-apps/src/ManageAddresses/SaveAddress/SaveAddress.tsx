@@ -2,15 +2,24 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { KeyringAddress } from '@polkadot/ui-keyring/types';
 import { isFunction } from '@polkadot/util';
 import { AppContext, getKeyringAddress, handler } from '@substrate/ui-common';
 import { ErrorText, Form, Input, Margin, NavButton, Stacked, SuccessText, WrapperDiv } from '@substrate/ui-components';
+import { Either } from 'fp-ts/lib/Either';
 import React, { useContext, useEffect, useState } from 'react';
 
 interface Props {
   addressDisabled?: boolean;
   defaultAddress?: string;
   onSave?: () => void;
+}
+
+/**
+ * Get the address's name. Return `''` if the address doesn't exist.
+ */
+function getAddressName (keyringAddress: Either<Error, KeyringAddress>) {
+  return keyringAddress.map((keyringAddress) => keyringAddress.getMeta().name || '').getOrElse('');
 }
 
 export function SaveAddress (props: Props) {
@@ -20,13 +29,11 @@ export function SaveAddress (props: Props) {
 
   const [address, setAddress] = useState(defaultAddress);
   const keyringAddress = getKeyringAddress(keyring, address);
-  const [name, setName] = useState(
-    keyringAddress.map((keyringAddress) => keyringAddress.getMeta().name || '').getOrElse('')
-  );
+  const [name, setName] = useState(getAddressName(keyringAddress));
 
   useEffect(() => {
     setAddress(defaultAddress);
-    setName(keyringAddress.map((keyringAddress) => keyringAddress.getMeta().name || '').getOrElse(''));
+    setName(getAddressName(keyringAddress));
     // eslint-disable-next-line
   }, [defaultAddress]); // No need for keyringAddress dep, because it already depends on defaultAddress
 
