@@ -40,7 +40,13 @@ export function CouncilCandidates () {
       return (
         <Stacked>
           <FadedText>No Candidates Found</FadedText>
-          <StyledNavLink to={'https://wiki.polkadot.network/en/latest/polkadot/learn/governance/#council'}>Click here to learn more about the Council</StyledNavLink>
+          <a
+            href='https://wiki.polkadot.network/en/latest/polkadot/learn/governance/#council'
+            rel='noopener noreferrer'
+            target='_blank'
+          >
+            Click here to learn more about the Council
+          </a>
         </Stacked>
       );
     }
