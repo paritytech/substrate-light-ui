@@ -107,8 +107,8 @@ export function Create (props: Props) {
       <AddressSummary address={address} name={name} />
       <Margin top />
       {step === 'create'
-        ? renderCreateStep(mnemonic, name, password, setMnemonic, setName, setPassword, goToNextStep)
-        : renderRewriteStep(mnemonic, rewritePhrase, setRewritePhrase, createNewAccount, goToPreviousStep)
+        ? renderCreateStep({ mnemonic, name, password }, { setMnemonic, setName, setPassword }, goToNextStep)
+        : renderRewriteStep({ mnemonic, rewritePhrase }, { setRewritePhrase }, createNewAccount, goToPreviousStep)
       }
       {renderError(error)}
     </Stacked>
@@ -117,14 +117,21 @@ export function Create (props: Props) {
 }
 
 function renderCreateStep (
-  mnemonic: string,
-  name: string,
-  password: string,
-  setMnemonic: React.Dispatch<React.SetStateAction<string>>,
-  setName: React.Dispatch<React.SetStateAction<string>>,
-  setPassword: React.Dispatch<React.SetStateAction<string>>,
+  values: {
+    mnemonic: string,
+    name: string,
+    password: string
+  },
+  setters: {
+    setMnemonic: React.Dispatch<React.SetStateAction<string>>,
+    setName: React.Dispatch<React.SetStateAction<string>>,
+    setPassword: React.Dispatch<React.SetStateAction<string>>
+  },
   goToNextStep: () => void
 ) {
+  const { mnemonic, name, password } = values;
+  const { setMnemonic, setName, setPassword } = setters;
+
   return (
     <React.Fragment>
       <Stacked>
@@ -150,12 +157,18 @@ function renderError (error: Option<string>) {
 }
 
 function renderRewriteStep (
-  mnemonic: string,
-  rewritePhrase: string,
-  setRewritePhrase: React.Dispatch<React.SetStateAction<string>>,
+  values: {
+    mnemonic: string,
+    rewritePhrase: string
+  },
+  setters: {
+    setRewritePhrase: React.Dispatch<React.SetStateAction<string>>
+  },
   createNewAccount: () => void,
   goToPreviousStep: () => void
 ) {
+  const { mnemonic, rewritePhrase } = values;
+  const { setRewritePhrase } = setters;
   const handler = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => setRewritePhrase(value);
 
   return (
