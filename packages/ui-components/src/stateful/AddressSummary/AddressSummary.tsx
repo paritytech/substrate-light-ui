@@ -16,7 +16,7 @@ type SummaryStyles = {
   fontSize: FontSize
 };
 
-type Props = {
+type AddressSummaryProps = {
   address?: string,
   name?: string | React.ReactNode,
   noBalance?: boolean,
@@ -27,46 +27,44 @@ type Props = {
 const PLACEHOLDER_NAME = 'No Name';
 const PLACEHOLDER_ADDRESS = '5'.padEnd(16, 'x');
 
-export class AddressSummary extends React.PureComponent<Props> {
-  render () {
-    const { address, name, noBalance = false, orientation = 'vertical', size = 'medium' } = this.props;
-    let styles: SummaryStyles = { identiconSize: 16, fontSize: 'medium' };
+export function AddressSummary (props: AddressSummaryProps) {
+  const { address, name, noBalance = false, orientation = 'vertical', size = 'medium' } = props;
+  let styles: SummaryStyles = { identiconSize: 16, fontSize: 'medium' };
 
-    switch (size) {
-      case 'tiny':
-        styles = { identiconSize: 16, fontSize: 'small' };
-        break;
-      case 'small':
-        styles = { identiconSize: 32, fontSize: 'medium' };
-        break;
-      case 'medium':
-        styles = { identiconSize: 64, fontSize: 'large' };
-        break;
-      case 'large':
-        styles = { identiconSize: 128, fontSize: 'big' };
-        break;
-      default:
-    }
+  switch (size) {
+    case 'tiny':
+      styles = { identiconSize: 16, fontSize: 'small' };
+      break;
+    case 'small':
+      styles = { identiconSize: 32, fontSize: 'medium' };
+      break;
+    case 'medium':
+      styles = { identiconSize: 64, fontSize: 'large' };
+      break;
+    case 'large':
+      styles = { identiconSize: 128, fontSize: 'big' };
+      break;
+    default:
+  }
 
-    if (orientation === 'vertical') {
-      return (
+  if (orientation === 'vertical') {
+    return (
+      <Stacked>
+        <IdentityIcon value={address as string || PLACEHOLDER_ADDRESS} theme={'substrate'} size={styles.identiconSize} />
+        <DynamicSizeText fontSize={styles.fontSize}> {name || PLACEHOLDER_NAME} </DynamicSizeText>
+        {!noBalance && <Balance address={address} fontSize={styles.fontSize} />}
+      </Stacked>
+    );
+  } else {
+    return (
+      <StackedHorizontal justifyContent='space-around'>
+        <IdentityIcon value={address as string || PLACEHOLDER_ADDRESS} theme={'substrate'} size={styles.identiconSize} />
+        <Margin left />
         <Stacked>
-          <IdentityIcon value={address as string || PLACEHOLDER_ADDRESS} theme={'substrate'} size={styles.identiconSize} />
           <DynamicSizeText fontSize={styles.fontSize}> {name || PLACEHOLDER_NAME} </DynamicSizeText>
           {!noBalance && <Balance address={address} fontSize={styles.fontSize} />}
         </Stacked>
-      );
-    } else {
-      return (
-        <StackedHorizontal alignItems='flex-start' justifyContent='space-around'>
-          <IdentityIcon value={address as string || PLACEHOLDER_ADDRESS} theme={'substrate'} size={styles.identiconSize} />
-          <Margin left />
-          <Stacked alignItems='flex-start' justifyContent='flex-start'>
-            <DynamicSizeText fontSize={styles.fontSize}> {name || PLACEHOLDER_NAME} </DynamicSizeText>
-            {!noBalance && <Balance address={address} fontSize={styles.fontSize} />}
-          </Stacked>
-        </StackedHorizontal>
-      );
-    }
+      </StackedHorizontal>
+    );
   }
 }

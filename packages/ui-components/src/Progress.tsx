@@ -7,7 +7,7 @@ import SUIProgress from 'semantic-ui-react/dist/commonjs/modules/Progress/Progre
 
 import { SUIProgressBarSize } from './types';
 
-interface IProps {
+interface ProgressProps {
   color?: any; // FIXME
   disabled?: boolean;
   percent?: number;
@@ -15,7 +15,7 @@ interface IProps {
   value?: number;
 }
 
-export function Progress (props: IProps) {
+export function Progress (props: ProgressProps) {
   const { color = 'blue', disabled, percent, size } = props;
 
   return (
