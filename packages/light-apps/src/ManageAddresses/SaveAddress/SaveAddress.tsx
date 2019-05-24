@@ -14,18 +14,18 @@ interface Props {
 }
 
 export function SaveAddress (props: Props) {
-  const { addressDisabled, defaultAddress, onSave } = props;
+  const { addressDisabled, defaultAddress = '', onSave } = props;
 
   const { keyring } = useContext(AppContext);
 
-  const [address, setAddress] = useState(defaultAddress || '');
+  const [address, setAddress] = useState(defaultAddress);
   const keyringAddress = getKeyringAddress(keyring, address);
   const [name, setName] = useState(
     keyringAddress.map((keyringAddress) => keyringAddress.getMeta().name).getOrElse('')
   );
 
   useEffect(() => {
-    setAddress(defaultAddress || '');
+    setAddress(defaultAddress);
     setName(keyringAddress.map((keyringAddress) => keyringAddress.getMeta().name).getOrElse(''));
     // eslint-disable-next-line
   }, [defaultAddress]); // No need for keyringAddress dep, because it already depends on defaultAddress
