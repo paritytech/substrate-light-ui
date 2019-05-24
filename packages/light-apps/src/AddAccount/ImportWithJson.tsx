@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AppContext, AlertsContext } from '@substrate/ui-common';
+import { AlertsContext, AppContext, handler } from '@substrate/ui-common';
 import { Input, InputFile, Margin, NavButton, Stacked, SubHeader, WrapperDiv } from '@substrate/ui-components';
 import React, { useState, useContext } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -17,7 +17,7 @@ export function ImportWithJson (props: Props) {
   const { enqueue } = useContext(AlertsContext);
   const { keyring } = useContext(AppContext);
 
-  const [step, setStep]: [Step, (step: Step) => void] = useState('upload' as Step);
+  const [step, setStep] = useState('upload' as Step);
   const [inputPassword, setInputPassword] = useState('');
   const [jsonString, setJsonString] = useState('');
 
@@ -35,10 +35,6 @@ export function ImportWithJson (props: Props) {
         type: 'error'
       });
     }
-  };
-
-  const handlePasswordChange = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-    setInputPassword(value);
   };
 
   const handleRestoreWithJson = () => {
@@ -69,7 +65,7 @@ export function ImportWithJson (props: Props) {
                 <Input
                   fluid
                   label='Password'
-                  onChange={handlePasswordChange}
+                  onChange={handler(setInputPassword)}
                   type='password' />
               </WrapperDiv>
               <Margin top />

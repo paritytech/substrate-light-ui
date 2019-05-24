@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { isFunction } from '@polkadot/util';
-import { AppContext, getKeyringAddress } from '@substrate/ui-common';
+import { AppContext, getKeyringAddress, handler } from '@substrate/ui-common';
 import { ErrorText, Form, Input, Margin, NavButton, Stacked, SuccessText, WrapperDiv } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';
 
@@ -21,25 +21,17 @@ export function SaveAddress (props: Props) {
   const [address, setAddress] = useState(defaultAddress);
   const keyringAddress = getKeyringAddress(keyring, address);
   const [name, setName] = useState(
-    keyringAddress.map((keyringAddress) => keyringAddress.getMeta().name).getOrElse('')
+    keyringAddress.map((keyringAddress) => keyringAddress.getMeta().name || '').getOrElse('')
   );
 
   useEffect(() => {
     setAddress(defaultAddress);
-    setName(keyringAddress.map((keyringAddress) => keyringAddress.getMeta().name).getOrElse(''));
+    setName(keyringAddress.map((keyringAddress) => keyringAddress.getMeta().name || '').getOrElse(''));
     // eslint-disable-next-line
   }, [defaultAddress]); // No need for keyringAddress dep, because it already depends on defaultAddress
 
   const [error, setError] = useState<string | undefined>(undefined);
   const [success, setSuccess] = useState<string | undefined>(undefined);
-
-  const handleInputAddress = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-    setAddress(value);
-  };
-
-  const handleInputName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-    setName(value);
-  };
 
   const handleSubmit = () => {
     try {
@@ -80,7 +72,7 @@ export function SaveAddress (props: Props) {
             disabled={addressDisabled}
             fluid
             label='Address'
-            onChange={handleInputAddress}
+            onChange={handler(setAddress)}
             required
             placeholder='e.g. 5ErZS1o.....'
             type='text'
@@ -90,7 +82,7 @@ export function SaveAddress (props: Props) {
           <Input
             fluid
             label='Name'
-            onChange={handleInputName}
+            onChange={handler(setName)}
             required
             type='text'
             value={name}

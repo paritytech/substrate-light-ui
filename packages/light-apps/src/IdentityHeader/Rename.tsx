@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AppContext, AlertsContext, getKeyringAccount } from '@substrate/ui-common';
+import { AlertsContext, AppContext, getKeyringAccount, handler } from '@substrate/ui-common';
 import { Dropdown, FadedText, Icon, Input, Modal, Stacked, StackedHorizontal, StyledLinkButton, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
 import React, { useContext, useState } from 'react';
 
@@ -23,8 +23,6 @@ export function Rename (props: Props) {
 
   const openRenameModal = () => setModalOpen(true);
   const closeRenameModal = () => { setModalOpen(false); setName(name); };
-  const handleChange = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) =>
-    setName(value);
 
   const renameCurrentAccount = () => {
     keyring.saveAccountMeta(keyring.getPair(currentAccount), { name });
@@ -42,7 +40,7 @@ export function Rename (props: Props) {
           <Modal.Actions>
             <Stacked>
               <FadedText>Account name</FadedText>
-              <Input onChange={handleChange} type='text' value={name} />
+              <Input onChange={handler(setName)} type='text' value={name} />
               <StackedHorizontal>
                 <WithSpaceBetween>
                   <StyledLinkButton onClick={closeRenameModal}><Icon name='remove' color='red' /> <FadedText>Cancel</FadedText></StyledLinkButton>

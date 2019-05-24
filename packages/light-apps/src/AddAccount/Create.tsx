@@ -4,7 +4,7 @@
 
 import { Keyring } from '@polkadot/ui-keyring';
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
-import { AppContext } from '@substrate/ui-common';
+import { AppContext, handler } from '@substrate/ui-common';
 import { AddressSummary, ErrorText, FadedText, Input, Margin, MnemonicSegment, NavButton, Stacked, StyledLinkButton, SubHeader, WrapperDiv, WithSpaceAround } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
 import { Either, left, right } from 'fp-ts/lib/Either';
@@ -150,10 +150,7 @@ function renderCreateStep (
 }
 
 function renderError (error: Option<string>) {
-  return error.fold(
-    null,
-    (err) => <ErrorText>{err}</ErrorText>
-  );
+  return error.fold(null, (err) => <ErrorText>{err}</ErrorText>);
 }
 
 function renderRewriteStep (
@@ -169,7 +166,6 @@ function renderRewriteStep (
 ) {
   const { mnemonic, rewritePhrase } = values;
   const { setRewritePhrase } = setters;
-  const handler = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => setRewritePhrase(value);
 
   return (
     <React.Fragment>
@@ -183,7 +179,7 @@ function renderRewriteStep (
           <Input
             autoFocus
             fluid
-            onChange={handler}
+            onChange={handler(setRewritePhrase)}
             type='text'
             value={rewritePhrase} />
         </WrapperDiv>
@@ -200,8 +196,6 @@ function renderRewriteStep (
 }
 
 function renderSetName (name: string, setName: React.Dispatch<React.SetStateAction<string>>) {
-  const handler = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => setName(value);
-
   return (
     <Stacked>
       <SubHeader> Give it a name </SubHeader>
@@ -210,7 +204,7 @@ function renderSetName (name: string, setName: React.Dispatch<React.SetStateActi
           autoFocus
           fluid
           min={1}
-          onChange={handler}
+          onChange={handler(setName)}
           type='text'
           value={name}
         />
@@ -220,8 +214,6 @@ function renderSetName (name: string, setName: React.Dispatch<React.SetStateActi
 }
 
 function renderSetPassword (password: string, setPassword: React.Dispatch<React.SetStateAction<string>>) {
-  const handler = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => setPassword(value);
-
   return (
     <Stacked>
       <SubHeader> Encrypt it with a passphrase </SubHeader>
@@ -229,7 +221,7 @@ function renderSetPassword (password: string, setPassword: React.Dispatch<React.
         <Input
           fluid
           min={8}
-          onChange={handler}
+          onChange={handler(setPassword)}
           type='password'
           value={password}
         />

@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AppContext } from '@substrate/ui-common';
+import { AppContext, handler } from '@substrate/ui-common';
 import { ErrorText, Input, Margin, Modal, NavButton, Stacked, WrapperDiv } from '@substrate/ui-components';
 import { none, Option, some } from 'fp-ts/lib/Option';
 import React, { useContext, useState } from 'react';
@@ -39,18 +39,6 @@ export function ImportWithPhrase (props: Props) {
     }
   };
 
-  const handleChangeName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-    setName(value);
-  };
-
-  const handleChangePassword = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(value);
-  };
-
-  const handleChangePhrase = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-    setRecoveryPhrase(value);
-  };
-
   return (
     <Stacked justifyContent='space-between'>
       <Modal.SubHeader> Import Account from Mnemonic Recovery Phrase </Modal.SubHeader>
@@ -58,21 +46,21 @@ export function ImportWithPhrase (props: Props) {
         <Input
           fluid
           label='Phrase'
-          onChange={handleChangePhrase}
+          onChange={handler(setRecoveryPhrase)}
           type='text'
           value={recoveryPhrase} />
         <Margin top />
         <Input
           fluid
           label='Name'
-          onChange={handleChangeName}
+          onChange={handler(setName)}
           type='text'
           value={name} />
         <Margin top />
         <Input
           fluid
           label='Password'
-          onChange={handleChangePassword}
+          onChange={handler(setPassword)}
           type='password'
           value={password} />
       </WrapperDiv>
@@ -84,6 +72,5 @@ export function ImportWithPhrase (props: Props) {
 }
 
 function renderError (error: Option<string>) {
-  return error.fold(null, err => <ErrorText>{err}</ErrorText>);
-
+  return error.fold(null, (err) => <ErrorText>{err}</ErrorText>);
 }
