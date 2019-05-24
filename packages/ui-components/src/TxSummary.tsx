@@ -6,7 +6,7 @@ import IdentityIcon from '@polkadot/ui-identicon';
 import BN from 'bn.js';
 import React from 'react';
 
-import { Margin, StackedHorizontal } from './';
+import { DEFAULT_TOKEN_SYMBOL, Margin, StackedHorizontal } from './';
 
 type TxSummaryProps = {
   amount: BN
@@ -15,17 +15,24 @@ type TxSummaryProps = {
   tokenSymbol?: string
 };
 
-export function TxSummary ({ amount, recipientAddress, senderAddress, tokenSymbol }: TxSummaryProps) {
+export function TxSummary ({
+  amount,
+  recipientAddress,
+  senderAddress,
+  tokenSymbol = DEFAULT_TOKEN_SYMBOL
+}: TxSummaryProps) {
   return (
     <StackedHorizontal>
-      transfer {amount.toString()} {tokenSymbol || 'UNIT'} from
-      <Margin as='span' left='small' right='small' top='small'>
-        <IdentityIcon theme='substrate' size={16} value={senderAddress} />
-      </Margin>
+      transfer {amount.toString()} {tokenSymbol} from
+      {smallIcon(senderAddress)}
       to
-      <Margin as='span' left='small' right='small' top='small'>
-        <IdentityIcon theme='substrate' size={16} value={recipientAddress} />
-      </Margin>
+      {smallIcon(recipientAddress)}
     </StackedHorizontal>
   );
+}
+
+function smallIcon (address: string) {
+  return <Margin as='span' left='small' right='small' top='small'>
+    <IdentityIcon theme='substrate' size={16} value={address} />
+  </Margin>;
 }

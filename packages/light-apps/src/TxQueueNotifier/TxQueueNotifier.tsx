@@ -6,10 +6,10 @@ import { AlertsContext, AppContext, TxQueueContext } from '@substrate/ui-common'
 import { Message, StackedHorizontal, TxSummary } from '@substrate/ui-components';
 import React, { useContext, useEffect } from 'react';
 
-export function TxQueueNotifier () {
-  const { errorObservable, successObservable } = useContext(TxQueueContext);
+export function TxQueueNotifier() {
   const { enqueue } = useContext(AlertsContext);
   const { system: { properties: { tokenSymbol } } } = useContext(AppContext);
+  const { errorObservable, successObservable } = useContext(TxQueueContext);
 
   // Display notification on success
   useEffect(() => {
@@ -37,7 +37,7 @@ export function TxQueueNotifier () {
     });
 
     return () => subscription.unsubscribe();
-  }, [successObservable, enqueue]);
+  }, [enqueue, successObservable, tokenSymbol]);
 
   // Display notification on error
   useEffect(() => {
