@@ -17,28 +17,35 @@ interface MatchParams {
 
 interface Props extends RouteComponentProps<MatchParams> { }
 
+const MENUS = [
+  {
+    label: 'Generate new account',
+    route: 'generate'
+  },
+  {
+    label: 'Import from JSON keyfile',
+    route: 'json'
+  },
+  {
+    label: 'Import from mnemonic phrase',
+    route: 'phrase'
+  }
+];
+
 export function AddAccount (props: Props) {
-  const activeTab = props.location.pathname.split('/')[4];
+  const activeTab = props.location.pathname.split('/')[4]; // FIXME Is there a better way to do that?
   const { match: { params: { currentAccount } } } = props;
 
   return (
     <Container>
       <Menu>
-        <Link to={`/accounts/${currentAccount}/add/generate`}>
-          <Menu.Item active={activeTab === 'generate'}>
-            Generate new account
+        {MENUS.map(({ label, route }) => (
+          <Link to={`/accounts/${currentAccount}/add/${route}`}>
+            <Menu.Item active={activeTab === route}>
+              {label}
             </Menu.Item>
-        </Link>
-        <Link to={`/accounts/${currentAccount}/add/json`}>
-          <Menu.Item active={activeTab === 'json'}>
-            Import from JSON keyfile
-            </Menu.Item>
-        </Link>
-        <Link to={`/accounts/${currentAccount}/add/phrase`}>
-          <Menu.Item active={activeTab === 'phrase'}>
-            Import from mnemonic phrase
-            </Menu.Item>
-        </Link>
+          </Link>
+        ))}
       </Menu>
 
       <WalletCard header='Add an Account' height='100%'>
