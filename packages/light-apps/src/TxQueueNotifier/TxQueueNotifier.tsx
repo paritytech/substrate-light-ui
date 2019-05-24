@@ -6,7 +6,7 @@ import { AlertsContext, AppContext, TxQueueContext } from '@substrate/ui-common'
 import { Message, StackedHorizontal, TxSummary } from '@substrate/ui-components';
 import React, { useContext, useEffect } from 'react';
 
-export function TxQueueNotifier() {
+export function TxQueueNotifier () {
   const { enqueue } = useContext(AlertsContext);
   const { system: { properties: { tokenSymbol } } } = useContext(AppContext);
   const { errorObservable, successObservable } = useContext(TxQueueContext);
