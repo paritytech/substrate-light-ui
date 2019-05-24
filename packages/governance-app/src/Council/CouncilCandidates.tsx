@@ -4,7 +4,7 @@
 
 import { AccountId, Vector } from '@polkadot/types';
 import { AppContext } from '@substrate/ui-common';
-import { FadedText, Header, Stacked, StyledNavLink } from '@substrate/ui-components';
+import { FadedText, Header, Stacked } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';
 import { Observable } from 'rxjs';
 
