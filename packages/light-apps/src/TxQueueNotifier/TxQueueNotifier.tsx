@@ -2,34 +2,30 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import IdentityIcon from '@polkadot/ui-identicon';
-import { AlertsContext, TxQueueContext } from '@substrate/ui-common';
-import { Margin, StackedHorizontal } from '@substrate/ui-components';
+import { AlertsContext, AppContext, TxQueueContext } from '@substrate/ui-common';
+import { Message, StackedHorizontal, TxSummary } from '@substrate/ui-components';
 import React, { useContext, useEffect } from 'react';
-import { Message } from 'semantic-ui-react';
 
 export function TxQueueNotifier () {
   const { errorObservable, successObservable } = useContext(TxQueueContext);
   const { enqueue } = useContext(AlertsContext);
+  const { system: { properties: { tokenSymbol } } } = useContext(AppContext);
 
   // Display notification on success
   useEffect(() => {
-    const subscription = successObservable.subscribe((details: any) => {
+    const subscription = successObservable.subscribe((details) => {
       const { amount, recipientAddress, senderPair } = details;
 
       const content = (
         <Message.Content>
           <StackedHorizontal justifyContent='space-around'>
             <span>Transaction Completed!</span>
-            <StackedHorizontal>
-              <Margin as='span' left='small' right='small' top='small'>
-                <IdentityIcon theme='substrate' size={16} value={senderPair.address()} />
-              </Margin>
-              sent {amount.toString()} units to
-              <Margin as='span' left='small' right='small' top='small'>
-                <IdentityIcon theme='substrate' size={16} value={recipientAddress} />
-              </Margin>
-            </StackedHorizontal>
+            <TxSummary
+              amount={amount}
+              recipientAddress={recipientAddress}
+              senderAddress={senderPair.address()}
+              tokenSymbol={tokenSymbol}
+            />
           </StackedHorizontal>
         </Message.Content>
       );

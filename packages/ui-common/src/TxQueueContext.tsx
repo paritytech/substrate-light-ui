@@ -51,8 +51,8 @@ interface Props {
   children: React.ReactNode;
 }
 
-const successObservable = new Subject();
-const errorObservable = new Subject();
+const successObservable = new Subject<ExtrinsicDetails>();
+const errorObservable = new Subject<{ error: string }>();
 
 export const TxQueueContext = createContext({
   enqueue: (extrinsic: Extrinsic, details: ExtrinsicDetails) => { console.error(INIT_ERROR); },
@@ -123,10 +123,11 @@ export function TxQueueContextProvider (props: Props) {
     }
 
     const {
-      details: { senderPair, amount, recipientAddress },
+      details,
       extrinsic,
       status
     } = pendingExtrinsic;
+    const { senderPair } = details;
 
     if (!status.isAskingForConfirm) {
       l.error(`Extrinsic #${extrinsicId} is being submitted, but its status is not isAskingForConfirm`);
@@ -154,7 +155,7 @@ export function TxQueueContextProvider (props: Props) {
           });
 
           if (isFinalized) {
-            successObservable.next({ amount, recipientAddress, senderPair });
+            successObservable.next(details);
           }
 
           if (isFinalized || isDropped || isUsurped) {
