@@ -72,9 +72,6 @@ function renderDetails (address: string, name: string, noBalance: boolean, size:
     <React.Fragment>
       <DynamicSizeText fontSize={FONT_SIZES[size] as FontSize}> {name} </DynamicSizeText>
       {!noBalance && <Balance address={address} fontSize={FONT_SIZES[size] as FontSize} />}
-    </React.Fragment>
+    </React.Fragment>;
   );
-    <DynamicSizeText fontSize={FONT_SIZES[size] as FontSize}> {name} </DynamicSizeText>
-    {!noBalance && <Balance address={address} fontSize={FONT_SIZES[size] as FontSize} />}
-  </React.Fragment>;
 }
