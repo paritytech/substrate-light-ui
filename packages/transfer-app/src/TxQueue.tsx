@@ -72,19 +72,17 @@ function renderTxStatus (txQueue: PendingExtrinsic[]) {
   const { isFinalized, isDropped, isUsurped } = txQueue[0].status;
 
   if (isFinalized) {
-    return <Stacked>
-      <SubHeader color='lightBlue1' >Transaction completed!</SubHeader>
-      <Icon name='check' size='big' />
-    </Stacked>;
+    return renderTxStatusHelper('Transaction completed!', 'check');
   } else if (isDropped || isUsurped) {
-    return <Stacked>
-      <SubHeader color='lightBlue1'>Transaction error!</SubHeader>
-      <Icon error name='cross' size='big' />
-    </Stacked>;
+    return renderTxStatusHelper('Transaction error!', 'cross');
   } else {
-    return <Stacked>
-      <SubHeader color='lightBlue1'>Sending...</SubHeader>
-      <Icon loading name='spinner' size='big' />
-    </Stacked>;
+    return renderTxStatusHelper('Sending...', 'spinner');
   }
+}
+
+function renderTxStatusHelper (label: string, icon: string) {
+  return <Stacked>
+    <SubHeader color='lightBlue1' >{label}</SubHeader>
+    <Icon name={icon} size='big' />
+  </Stacked>;
 }

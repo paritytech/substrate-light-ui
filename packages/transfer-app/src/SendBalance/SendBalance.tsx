@@ -4,7 +4,7 @@
 
 import { DerivedBalances, DerivedFees } from '@polkadot/api-derive/types';
 import { Index } from '@polkadot/types';
-import { AppContext, TxQueueContext } from '@substrate/ui-common';
+import { AppContext, handler, TxQueueContext } from '@substrate/ui-common';
 import { Balance, Form, Input, NavButton, StackedHorizontal, SubHeader } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -42,10 +42,6 @@ export function SendBalance (props: Props) {
 
   const changeRecipientAddress = (newRecipientAddress: string) => {
     history.push(`/transfer/${currentAccount}/${newRecipientAddress}`);
-  };
-
-  const handleChangeAmount = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-    setAmountAsString(value);
   };
 
   // Subscribe to sender's & receivers's balances, nonce and some fees
@@ -108,7 +104,7 @@ export function SendBalance (props: Props) {
             label='UNIT'
             labelPosition='right'
             min={0}
-            onChange={handleChangeAmount}
+            onChange={handler(setAmountAsString)}
             placeholder='e.g. 1.00'
             type='number'
             value={amountAsString}

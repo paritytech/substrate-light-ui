@@ -25,33 +25,19 @@ export function ProposalRow (props: IProps) {
   useEffect(() => {
     const subscription =
       (api.query.democracy.depositOf(propIndex) as unknown as Observable<Option<Tuple>>)
-      .pipe(
-        take(1)
-      )
-      .subscribe((deposit) => {
-        // @type deposit: Option<(BalanceOf,Vec<AccountId>)>
-        let d = deposit.unwrapOr(null);
-        if (d) {
-          setDepositedBalance(d[0].toString());
-          setDepositorAccountIds(d[1]);
-        }
-      });
+        .pipe(
+          take(1)
+        )
+        .subscribe((deposit) => {
+          // @type deposit: Option<(BalanceOf,Vec<AccountId>)>
+          let d = deposit.unwrapOr(null);
+          if (d) {
+            setDepositedBalance(d[0].toString());
+            setDepositorAccountIds(d[1]);
+          }
+        });
     return () => subscription.unsubscribe();
   });
-
-  const renderSecondersList = (accountIds: Array<AccountId>) => {
-    if (accountIds && accountIds.length) {
-      return accountIds.map((accountId: AccountId) => {
-        return (
-          <Dropdown.Item key={accountId.toString()}>
-            <AddressSummary address={accountId.toString()} orientation='vertical' size='tiny' />
-          </Dropdown.Item>
-        );
-      });
-    } else {
-      return <FadedText> No Seconders Yet </FadedText>;
-    }
-  };
 
   return (
     <Table.Row>
@@ -67,12 +53,12 @@ export function ProposalRow (props: IProps) {
         <Dropdown icon={
           depositorAccountIds
             ? <React.Fragment>
-                <FadedText>View All</FadedText>
-                <SubHeader noMargin>{depositorAccountIds.length}</SubHeader>
-                <FadedText>Seconders</FadedText>
-              </React.Fragment>
+              <FadedText>View All</FadedText>
+              <SubHeader noMargin>{depositorAccountIds.length}</SubHeader>
+              <FadedText>Seconders</FadedText>
+            </React.Fragment>
             : ''
-          } scrolling>
+        } scrolling>
           <Dropdown.Menu>
             {renderSecondersList(depositorAccountIds)}
           </Dropdown.Menu>
@@ -86,4 +72,18 @@ export function ProposalRow (props: IProps) {
       </Table.Cell>
     </Table.Row>
   );
+}
+
+function renderSecondersList (accountIds: Array<AccountId>) {
+  if (accountIds && accountIds.length) {
+    return accountIds.map((accountId: AccountId) => {
+      return (
+        <Dropdown.Item key={accountId.toString()}>
+          <AddressSummary address={accountId.toString()} orientation='vertical' size='tiny' />
+        </Dropdown.Item>
+      );
+    });
+  } else {
+    return <FadedText> No Seconders Yet </FadedText>;
+  }
 }
