@@ -7770,9 +7770,9 @@ electron-webpack@^2.6.2:
     yargs "^12.0.5"
 
 electron@^5.0.1:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-5.0.1.tgz#6bd7bf4d25e9bfce4cccd629d587fba5281f95cc"
-  integrity sha512-8KksyhAPcpXVeO8ViVGxfZAuf8yEVBCtV0h/lMBD8VFbCQ9icej1K5csCFAGirbZbqOz5IdsBZX9Gpb9n4RCag==
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-5.0.2.tgz#0f6b38ae7e344b94f433d9171e50568f56962fc7"
+  integrity sha512-bUHKQhyuOen/q8iHTkrnzqB9CAwBDI+vHbeu21kpq2bqAD+t25yfrmUEcYHaPL4fZOAhk6nnRqskF6/Xd+aZxg==
   dependencies:
     "@types/node" "^10.12.18"
     electron-download "^4.1.0"
@@ -8830,9 +8830,9 @@ forwarded@~0.1.2:
   integrity sha1-mMI9qxF1ZXuMBXPozszZGw/xjIQ=
 
 fp-ts@^1.16.1:
-  version "1.18.1"
-  resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-1.18.1.tgz#c76ef38250125afbda5ad712a92750cc3e6ca6d9"
-  integrity sha512-esfGgsuc0S9Q23YnoWQH4DrnBIJ7LCbA7AsUKFwawVsYmVZ7Cl+3cjd8nAhJLWwpUKDRsBsMJOf+uX4ZakZMsQ==
+  version "1.18.2"
+  resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-1.18.2.tgz#b9a7025174e1a59bc43b485b3a0ca6f78e371d01"
+  integrity sha512-kznerusCuG5dUt0bH6eiQHVp2fstPiSlyzGb//rYgMMxCuromWEoVS0riH++86vyJm9Nv1B+pbe6udDx1tqjfA==
 
 fragment-cache@^0.2.1:
   version "0.2.1"
@@ -14924,9 +14924,9 @@ react-dom@^16.6.3, react-dom@^16.7.0, react-dom@^16.8.2:
     scheduler "^0.13.6"
 
 react-dropzone@^10.0.0:
-  version "10.1.4"
-  resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-10.1.4.tgz#ede6057f6544ee97030e78d954a257d3e785f08b"
-  integrity sha512-Dc/yxW6AWaNhZcN6e6sl6Q+5nbDgLargDsldqS+FVUDyMOyuWBiTGJex9WHA0S0CU6x1EoUeVItNctd4yTjdLw==
+  version "10.1.5"
+  resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-10.1.5.tgz#5f2817ab924b270010c7034fe01f49b6240b9c91"
+  integrity sha512-Hbe7soBc/i1fid7K3BU8T1oUJFnYO2AicS22F2MxcueMYDfKBWqZMr5ED3CoTAMs//9t2W30eyFiXm1h4wLCqA==
   dependencies:
     attr-accept "^1.1.3"
     file-selector "^0.1.11"
