@@ -2,12 +2,11 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AccountId, Balance, Option } from '@polkadot/types';
+import { Balance } from '@polkadot/types';
 import React from 'react';
 
 import { FontSize, FontWeight } from './types';
 import { DynamicSizeText, FadedText, Stacked } from './Shared.styles';
-import { Observable } from 'rxjs';
 
 export type BalanceDisplayProps = {
   freeBalance?: Balance,

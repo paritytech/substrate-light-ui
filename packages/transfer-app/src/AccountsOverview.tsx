@@ -104,7 +104,7 @@ function AccountsOverviewCard (props: any) {
               </Card.Content>
             </React.Fragment>
           : <React.Fragment>
-              <Card.Content><AddressSummary address={address} name={name} size='medium' /></Card.Content>
+              <Card.Content><AddressSummary address={address} detailed name={name} size='medium' /></Card.Content>
               <WithSpaceAround>
                 <Card.Description>
                   <StackedHorizontal>

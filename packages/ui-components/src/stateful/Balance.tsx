@@ -2,13 +2,14 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Balance as BalanceType } from '@polkadot/types';
+import { AccountId, Balance as BalanceType, Option } from '@polkadot/types';
 import { AppContext } from '@substrate/ui-common';
 import React, { useContext, useEffect, useState } from 'react';
-import { Observable, of } from 'rxjs';
+import { combineLatest, Observable, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 import { BalanceDisplay, BalanceDisplayProps } from '../BalanceDisplay';
-import { DerivedBalances } from '@polkadot/api-derive/types';
+// import { DerivedBalances } from '@polkadot/api-derive/types';
 
 interface BalanceProps extends Pick<BalanceDisplayProps, Exclude<keyof BalanceDisplayProps, 'balance'>> {
   address?: string;
@@ -21,9 +22,9 @@ export function Balance (props: BalanceProps) {
   const { address, detailed = false, ...rest } = props;
   const { api, system: { properties } } = useContext(AppContext);
   const [freeBalance, setFreeBalance] = useState<BalanceType>(ZERO_BALANCE);
-  const [reservedBalance, setReservedBalance] = useState<BalanceType>(ZERO_BALANCE);
-  const [votingBalance, setVotingBalance] = useState<BalanceType>(ZERO_BALANCE);
-  const [lockedBalance, setLockedBalance] = useState<BalanceType>(ZERO_BALANCE);
+  const [reservedBalance, setReservedBalance] = useState();
+  const [votingBalance, setVotingBalance] = useState();
+  const [lockedBalance, setLockedBalance] = useState();
 
   useEffect(() => {
     let balanceSub = of(ZERO_BALANCE).subscribe(setFreeBalance);
@@ -32,14 +33,26 @@ export function Balance (props: BalanceProps) {
       balanceSub = (api.query.balances.freeBalance(address) as Observable<BalanceType>)
         .subscribe(setFreeBalance);
     } else { // If Specified, Also Subscribe to the rest
-      balanceSub =
-        (api.derive.balances.all(address) as unknown as Observable<DerivedBalances>)
-          .subscribe((derivedBalances) => {
-            setFreeBalance(derivedBalances.freeBalance);
-            setReservedBalance(derivedBalances.reservedBalance);
-            setVotingBalance(derivedBalances.votingBalance);
-            setLockedBalance(derivedBalances.stakingBalance);
-          });
+      balanceSub = combineLatest([
+        api.query.balances.freeBalance(address) as Observable<BalanceType>,
+        api.query.balances.reservedBalance(address) as Observable<BalanceType>,
+        api.query.staking.bonded(address) as Observable<Option<AccountId>>,
+        api.query.staking.ledger(address) as Observable<Option<AccountId>>
+      ])
+      .pipe(
+        switchMap(([freeBalance, reservedBalance, bonded, ledger]) => {
+          const b = bonded.unwrapOr(null);
+          const l = ledger.unwrapOr(null);
+          console.log(b, l);
+          debugger;
+        })
+      )
+      .subscribe(([freeBalance, reservedBalance, bondedBalance, lockedBalance]) => {
+        setFreeBalance(freeBalance);
+        setReservedBalance(reservedBalance);
+        setBondedBalance(bondedBalance);
+        setLockedBalance(lockedBalance);
+      });
     }
 
     return () => balanceSub.unsubscribe();
