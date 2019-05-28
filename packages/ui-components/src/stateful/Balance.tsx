@@ -5,7 +5,7 @@
 import { Balance as BalanceType, Option, StakingLedger } from '@polkadot/types';
 import { AppContext } from '@substrate/ui-common';
 import React, { useContext, useEffect, useState } from 'react';
-import { combineLatest, from, merge, Observable, of, zip } from 'rxjs';
+import { combineLatest, from, Observable, of, zip } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { BalanceDisplay, BalanceDisplayProps } from '../BalanceDisplay';
