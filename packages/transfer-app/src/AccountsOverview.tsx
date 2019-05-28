@@ -90,7 +90,7 @@ function AccountsOverviewCard (props: any) {
   };
 
   return (
-    <Card height='20rem'>
+    <Card height='22rem'>
       {
         actionType
           ? <React.Fragment>
@@ -131,7 +131,7 @@ export function AccountsOverview (props: IProps) {
 
   const renderAccountCard = (address: string, name: string) => {
     return (
-      <Grid.Column width='5'>
+      <Grid.Column width='4'>
         <AccountsOverviewCard address={address} name={name} history={history} />
       </Grid.Column>
     );
@@ -139,9 +139,9 @@ export function AccountsOverview (props: IProps) {
 
   return (
     <Grid>
-      <Grid.Row celled>
+      <Grid.Row>
        {
-          keyring.getPairs().slice(4).map((pair) => {
+          keyring.getPairs().slice(0, 4).map((pair) => {
             return renderAccountCard(pair.address(), pair.getMeta().name);
           })
        }

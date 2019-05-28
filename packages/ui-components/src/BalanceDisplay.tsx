@@ -2,17 +2,21 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Balance } from '@polkadot/types';
+import { AccountId, Balance, Option } from '@polkadot/types';
 import React from 'react';
 
 import { FontSize, FontWeight } from './types';
-import { DynamicSizeText } from './Shared.styles';
+import { DynamicSizeText, FadedText, Stacked } from './Shared.styles';
+import { Observable } from 'rxjs';
 
 export type BalanceDisplayProps = {
-  balance?: Balance,
+  freeBalance?: Balance,
   fontSize?: FontSize,
   fontWeight?: FontWeight,
-  tokenSymbol?: string
+  reservedBalance?: Balance,
+  lockedBalance?: Balance,
+  tokenSymbol?: string,
+  votingBalance?: Balance
 };
 
 const PLACEHOLDER_BALANCE = new Balance(0);
@@ -24,11 +28,17 @@ const defaultProps = {
 };
 
 export function BalanceDisplay (props: BalanceDisplayProps = defaultProps) {
-  const { balance, fontSize, fontWeight, tokenSymbol } = props;
+  const { freeBalance, lockedBalance, fontSize, fontWeight, reservedBalance, votingBalance, tokenSymbol } = props;
 
   return (
-    <DynamicSizeText fontSize={fontSize} fontWeight={fontWeight} >
-      Balance: {(balance!.toString(10))} {tokenSymbol}
-    </DynamicSizeText>
+    <Stacked>
+      <DynamicSizeText fontSize={fontSize} fontWeight={fontWeight}>
+        Balance {(freeBalance!.toString(10))} {tokenSymbol}
+      </DynamicSizeText>
+
+      {reservedBalance && <FadedText>{reservedBalance.toString(5)}</FadedText>}
+      {lockedBalance && <FadedText>{lockedBalance.toString(5)}</FadedText>}
+      {votingBalance && <FadedText>{votingBalance.toString(5)}</FadedText>}
+    </Stacked>
   );
 }
