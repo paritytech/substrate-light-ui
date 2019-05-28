@@ -90,7 +90,7 @@ function AccountsOverviewCard (props: any) {
   };
 
   return (
-    <Card height='22rem'>
+    <Card height={actionType ? '25rem' : '15rem'}>
       {
         actionType
           ? <React.Fragment>

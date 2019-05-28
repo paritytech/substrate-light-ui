@@ -5,11 +5,10 @@
 import { Balance as BalanceType, Option, StakingLedger } from '@polkadot/types';
 import { AppContext } from '@substrate/ui-common';
 import React, { useContext, useEffect, useState } from 'react';
-import { combineLatest, from, Observable, of, zip } from 'rxjs';
+import { combineLatest, from, Observable, Subscription, zip } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { BalanceDisplay, BalanceDisplayProps } from '../BalanceDisplay';
-// import { DerivedBalances } from '@polkadot/api-derive/types';
 
 interface BalanceProps extends Pick<BalanceDisplayProps, Exclude<keyof BalanceDisplayProps, 'balance'>> {
   address?: string;
@@ -21,12 +20,12 @@ const ZERO_BALANCE = new BalanceType(0);
 export function Balance (props: BalanceProps) {
   const { address, detailed = false, ...rest } = props;
   const { api, system: { properties } } = useContext(AppContext);
-  const [freeBalance, setFreeBalance] = useState<BalanceType>(ZERO_BALANCE);
+  const [freeBalance, setFreeBalance] = useState();
   const [reservedBalance, setReservedBalance] = useState();
   const [bondedBalance, setBondedBalance] = useState();
 
   useEffect(() => {
-    let balanceSub = of(ZERO_BALANCE).subscribe(setFreeBalance);
+    let balanceSub: Subscription;
     // By Default, Only Show the Free Balance
     if (!detailed) {
       balanceSub = (api.query.balances.freeBalance(address) as Observable<BalanceType>)
@@ -46,19 +45,17 @@ export function Balance (props: BalanceProps) {
 
           const bondedBalance = l ? l.active : ZERO_BALANCE;
 
-          return zip(from([freeBalance, reservedBalance, bondedBalance]));
+          return zip(
+            from([freeBalance, reservedBalance, bondedBalance])
+          );
         })
       )
       .subscribe(([freeBalance, reservedBalance, bondedBalance]) => {
-        console.log('reserved -> ', reservedBalance);
-        console.log('bonded -> ', bondedBalance);
-        debugger;
         setFreeBalance(freeBalance);
         setReservedBalance(reservedBalance);
         setBondedBalance(bondedBalance);
       });
     }
-
     return () => balanceSub.unsubscribe();
   }, [api, address]);
 
@@ -67,7 +64,6 @@ export function Balance (props: BalanceProps) {
       bondedBalance={bondedBalance}
       freeBalance={freeBalance}
       reservedBalance={reservedBalance}
-      lockedBalance={ZERO_BALANCE}
       tokenSymbol={properties.tokenSymbol}
       {...rest} />
   );

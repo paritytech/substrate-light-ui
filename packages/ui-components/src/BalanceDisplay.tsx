@@ -32,7 +32,7 @@ export function BalanceDisplay (props: BalanceDisplayProps = defaultProps) {
   return (
     <Stacked>
       <DynamicSizeText fontSize={fontSize} fontWeight={fontWeight}>
-        Balance {(freeBalance!.toString(10))} {tokenSymbol}
+        Balance {(freeBalance && freeBalance.toString(10))} {tokenSymbol}
       </DynamicSizeText>
 
       {bondedBalance && <span><b>Bonded:</b> <FadedText>{bondedBalance.toString(5)}</FadedText></span>}
