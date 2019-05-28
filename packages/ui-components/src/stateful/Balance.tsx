@@ -2,10 +2,10 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AccountId, Balance as BalanceType, Option } from '@polkadot/types';
+import { Balance as BalanceType, Option, StakingLedger } from '@polkadot/types';
 import { AppContext } from '@substrate/ui-common';
 import React, { useContext, useEffect, useState } from 'react';
-import { combineLatest, Observable, of } from 'rxjs';
+import { combineLatest, from, merge, Observable, of, zip } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { BalanceDisplay, BalanceDisplayProps } from '../BalanceDisplay';
@@ -23,35 +23,39 @@ export function Balance (props: BalanceProps) {
   const { api, system: { properties } } = useContext(AppContext);
   const [freeBalance, setFreeBalance] = useState<BalanceType>(ZERO_BALANCE);
   const [reservedBalance, setReservedBalance] = useState();
-  const [votingBalance, setVotingBalance] = useState();
-  const [lockedBalance, setLockedBalance] = useState();
+  const [bondedBalance, setBondedBalance] = useState();
 
   useEffect(() => {
     let balanceSub = of(ZERO_BALANCE).subscribe(setFreeBalance);
-    // By Default Just Care About Free Balance
+    // By Default, Only Show the Free Balance
     if (!detailed) {
       balanceSub = (api.query.balances.freeBalance(address) as Observable<BalanceType>)
         .subscribe(setFreeBalance);
-    } else { // If Specified, Also Subscribe to the rest
+    } else {
+      // If Specified, Also Show More Detailed Balances
       balanceSub = combineLatest([
         api.query.balances.freeBalance(address) as Observable<BalanceType>,
         api.query.balances.reservedBalance(address) as Observable<BalanceType>,
-        api.query.staking.bonded(address) as Observable<Option<AccountId>>,
-        api.query.staking.ledger(address) as Observable<Option<AccountId>>
+        api.query.staking.bonded(address) as Observable<Option<any>>,
+        api.query.staking.ledger(address) as Observable<Option<StakingLedger>>
       ])
       .pipe(
         switchMap(([freeBalance, reservedBalance, bonded, ledger]) => {
-          const b = bonded.unwrapOr(null);
+          // const b = bonded.unwrapOr(null);
           const l = ledger.unwrapOr(null);
-          console.log(b, l);
-          debugger;
+
+          const bondedBalance = l ? l.active : ZERO_BALANCE;
+
+          return zip(from([freeBalance, reservedBalance, bondedBalance]));
         })
       )
-      .subscribe(([freeBalance, reservedBalance, bondedBalance, lockedBalance]) => {
+      .subscribe(([freeBalance, reservedBalance, bondedBalance]) => {
+        console.log('reserved -> ', reservedBalance);
+        console.log('bonded -> ', bondedBalance);
+        debugger;
         setFreeBalance(freeBalance);
         setReservedBalance(reservedBalance);
         setBondedBalance(bondedBalance);
-        setLockedBalance(lockedBalance);
       });
     }
 
@@ -60,11 +64,11 @@ export function Balance (props: BalanceProps) {
 
   return (
     <BalanceDisplay
+      bondedBalance={bondedBalance}
       freeBalance={freeBalance}
       reservedBalance={reservedBalance}
-      lockedBalance={lockedBalance}
+      lockedBalance={ZERO_BALANCE}
       tokenSymbol={properties.tokenSymbol}
-      votingBalance={votingBalance}
       {...rest} />
   );
 }
