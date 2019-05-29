@@ -7,17 +7,13 @@ import React from 'react';
 
 import { BlockCounterProps, NodeStatusProps } from './types';
 
-const RedCircle = () => (
+const Circle = (fill: string) =>
   <svg height='10' width='10'>
-    <circle cx='5' cy='5' r='5' fill='#ff0000' />
-  </svg>
-);
+    <circle cx='5' cy='5' r='5' fill={fill} />
+  </svg>;
 
-const GreenCircle = () => (
-  <svg height='10' width='10'>
-    <circle cx='5' cy='5' r='5' fill='#79c879' />
-  </svg>
-);
+const GreenCircle = () => Circle('#79c879');
+const RedCircle = () => Circle('#ff0000');
 
 export const BlockCounter = ({ blockNumber, chainName }: BlockCounterProps) => (
   <React.Fragment>

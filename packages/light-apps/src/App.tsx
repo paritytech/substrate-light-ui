@@ -33,12 +33,12 @@ export function App () {
                 ? <React.Fragment>
                   <TopBar />
                   <Content />
+                  <TxQueueNotifier />
                 </React.Fragment>
                 : <Loading active>
                   Connecting to the node...
                     </Loading>}
             </AppContext.Consumer>
-            <TxQueueNotifier />
             <Alerts />
           </Container>
         </Router>

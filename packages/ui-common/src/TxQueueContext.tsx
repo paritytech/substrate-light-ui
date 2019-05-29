@@ -51,8 +51,8 @@ interface Props {
   children: React.ReactNode;
 }
 
-const successObservable = new Subject();
-const errorObservable = new Subject();
+const successObservable = new Subject<ExtrinsicDetails>();
+const errorObservable = new Subject<{ error: string }>();
 
 export const TxQueueContext = createContext({
   enqueue: (extrinsic: Extrinsic, details: ExtrinsicDetails) => { console.error(INIT_ERROR); },
@@ -65,23 +65,31 @@ export const TxQueueContext = createContext({
 
 export function TxQueueContextProvider (props: Props) {
 
+  const [txCounter, setTxCounter] = useState(0); // Number of tx sent in total
   const [txQueue, setTxQueue] = useState([] as PendingExtrinsic[]);
 
-  const replaceTx = (id: number, newTx: PendingExtrinsic) => {
+  /**
+   * Replace tx with id `extrinsicId` with a new tx
+   */
+  const replaceTx = (extrinsicId: number, newTx: PendingExtrinsic) => {
     setTxQueue((prevTxQueue: PendingExtrinsic[]) => prevTxQueue.map((tx: PendingExtrinsic) => (
-      tx.id === id
+      tx.id === extrinsicId
         ? newTx
         : tx
     )));
   };
 
+  /**
+   * Unsubscribe the tx with id `extrinsicId`
+   */
   const closeTxSubscription = (extrinsicId: number) => {
     const tx = txQueue.find((tx) => tx.id === extrinsicId);
     if (tx) tx.unsubscribe();
   };
 
-  const [txCounter, setTxCounter] = useState(0);
-
+  /**
+   * Add a tx to the queue
+   */
   const enqueue = (extrinsic: Extrinsic, details: ExtrinsicDetails) => {
     const extrinsicId = txCounter;
     setTxCounter(txCounter + 1);
@@ -103,6 +111,9 @@ export function TxQueueContextProvider (props: Props) {
     }));
   };
 
+  /**
+   * Sign and send the tx with id `extrinsicId`
+   */
   const submit = (extrinsicId: number) => {
     const pendingExtrinsic = txQueue.find((tx) => tx.id === extrinsicId);
 
@@ -112,10 +123,11 @@ export function TxQueueContextProvider (props: Props) {
     }
 
     const {
-      details: { senderPair, amount, recipientAddress },
+      details,
       extrinsic,
       status
     } = pendingExtrinsic;
+    const { senderPair } = details;
 
     if (!status.isAskingForConfirm) {
       l.error(`Extrinsic #${extrinsicId} is being submitted, but its status is not isAskingForConfirm`);
@@ -143,7 +155,7 @@ export function TxQueueContextProvider (props: Props) {
           });
 
           if (isFinalized) {
-            successObservable.next({ amount, recipientAddress, senderPair });
+            successObservable.next(details);
           }
 
           if (isFinalized || isDropped || isUsurped) {
@@ -172,6 +184,9 @@ export function TxQueueContextProvider (props: Props) {
     });
   };
 
+  /**
+   * Clear the txQueue.
+   */
   const clear = () => {
     txQueue.forEach(({ unsubscribe }) => { unsubscribe(); });
     setTxQueue([]);
