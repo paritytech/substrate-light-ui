@@ -14,7 +14,7 @@ export function CouncilCandidates () {
 
   useEffect(() => {
     const subscription =
-      (api.query.council.candidates() as unknown as Observable<Vector<AccountId>>)
+      (api.query.council.candidates() as Observable<Vector<AccountId>>)
       .subscribe((councilCandidates) => {
         setCouncilCandidates(councilCandidates);
       });
@@ -22,35 +22,31 @@ export function CouncilCandidates () {
     return () => subscription.unsubscribe();
   }, []);
 
-  const renderCouncilCandidates = () => {
-    if (councilCandidates && councilCandidates.length) {
-      return (
-        <React.Fragment>
-          <Header>Council Candidates ({councilCandidates && councilCandidates.length})</Header>
-          {
-            councilCandidates.map((accountId: AccountId) => {
-              return (
-                <li>{accountId} is a candidate</li>
-              );
-            })
-          }
-        </React.Fragment>
-      );
-    } else {
-      return (
-        <Stacked>
-          <FadedText>No Candidates Found</FadedText>
-          <a
-            href='https://wiki.polkadot.network/en/latest/polkadot/learn/governance/#council'
-            rel='noopener noreferrer'
-            target='_blank'
-          >
-            Click here to learn more about the Council
+  if (councilCandidates && councilCandidates.length) {
+    return (
+      <React.Fragment>
+        <Header>Council Candidates ({councilCandidates && councilCandidates.length})</Header>
+        {
+          councilCandidates.map((accountId: AccountId) => {
+            return (
+              <li>{accountId} is a candidate</li>
+            );
+          })
+        }
+      </React.Fragment>
+    );
+  } else {
+    return (
+      <Stacked>
+        <FadedText>No Candidates Found</FadedText>
+        <a
+          href='https://wiki.polkadot.network/en/latest/polkadot/learn/governance/#council'
+          rel='noopener noreferrer'
+          target='_blank'
+        >
+          Click here to learn more about the Council
           </a>
-        </Stacked>
-      );
-    }
-  };
-
-  return renderCouncilCandidates();
+      </Stacked>
+    );
+  }
 }

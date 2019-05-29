@@ -1,6 +1,7 @@
 // Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
+
 import { AppContext } from '@substrate/ui-common';
 import { FadedText, Header, Stacked, Table } from '@substrate/ui-components';
 import { PropIndex, Proposal, Tuple, Vector } from '@polkadot/types';
@@ -58,7 +59,7 @@ export function Proposals (props: IProps) {
     // FIXME More accurate type is Vector<(PropIndex, Proposal, AccountId)>
     return (
       publicProposals.map((proposal: Vector<any>) => {
-        return proposal && renderProposalRow(proposal);
+        return renderProposalRow(proposal);
       })
     );
   };
