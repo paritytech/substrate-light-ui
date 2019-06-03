@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Margin, StackedHorizontal } from '@substrate/ui-components';
+import { Margin, StackedHorizontal, SubHeader } from '@substrate/ui-components';
 import React from 'react';
 
 import { BlockCounterProps, NodeStatusProps } from './types';
@@ -16,7 +16,10 @@ const GreenCircle = () => Circle('#79c879');
 const RedCircle = () => Circle('#ff0000');
 
 export const BlockCounter = ({ blockNumber, chainName }: BlockCounterProps) => (
-  <p> {chainName && chainName.toString()} #: {blockNumber && blockNumber.toString()} </p>
+  <React.Fragment>
+    <SubHeader noMargin> {chainName && chainName.toString()} </SubHeader>
+    <p> Block #: {blockNumber && blockNumber.toString()} </p>
+  </React.Fragment>
 );
 
 export const NodeStatus = ({ isSyncing }: NodeStatusProps) => (
