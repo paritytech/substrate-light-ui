@@ -5,7 +5,7 @@
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
 import { AppContext } from '@substrate/ui-common';
 import FileSaver from 'file-saver';
-import { Card, Header, FadedText, FlexItem, Icon, Input, Margin, Modal, Stacked, SubHeader, StackedHorizontal, WithSpaceAround } from '@substrate/ui-components';
+import { Card, Header, FadedText, FlexItem, Icon, Input, Margin, Modal, Stacked, SubHeader, StackedHorizontal, WithSpaceAround, StyledNavButton } from '@substrate/ui-components';
 import React, { useContext, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
@@ -143,15 +143,26 @@ function ChooseCreationOption (props: any) {
 
 function SetupNominator (props: any) {
   const { keyring } = useContext(AppContext);
-  const [stashPassword, setStashPassword] = useState();
+  const [controllerPassword, setControllerPassword] = useState<string>();
+  const [stashPassword, setStashPassword] = useState<string>();
   const [promptStashPassword, togglePromptStashPassword] = useState(false);
+  const [promptControllerPassword, togglePromptControllerPassword] = useState(false);
 
   const createStash = () => {
     if (!stashPassword) {
       togglePromptStashPassword(true);
       return;
     }
+  };
 
+  const createController = () => {
+    if (!controllerPassword) {
+      togglePromptControllerPassword(true);
+      return;
+    }
+  };
+
+  const confirmCreate = () => {
     const mnemonic = mnemonicGenerate();
     const keypair = naclKeypairFromSeed(mnemonicToSeed(mnemonic));
 
@@ -159,13 +170,30 @@ function SetupNominator (props: any) {
       keypair.publicKey
     );
 
-    let pair = keyring.createAccountMnemonic(mnemonic, stashPassword, { name: 'Stash', type: 'stash' });
+    let stashPair = keyring.createAccountMnemonic(mnemonic, stashPassword, { name: 'Stash', type: 'stash' });
+    let controllerPair = keyring.createAccountMnemonic(mnemonic, controllerPassword, { name: 'Controller', type: 'controller' });
 
-    const address = pair.address();
-    const json = pair.toJson(stashPassword);
-    const blob = new Blob([JSON.stringify(json)], { type: 'application/json; charset=utf-8' });
+    const stashAddress = stashPair.address();
+    const stashJson = stashPair.toJson(stashPassword);
 
-    FileSaver.saveAs(blob, `${address}.json`);
+    const controllerAddress = controllerPair.address();
+    const controllerJson = stashPair.toJson(controllerPassword);
+
+    const stashBlob = new Blob([JSON.stringify(stashJson)], { type: 'application/json; charset=utf-8' });
+    const controllerBlob = new Blob([JSON.stringify(controllerJson)], { type: 'application/json; charset=utf-8' });
+
+
+    // FIXME do this synchronously
+    FileSaver.saveAs(stashBlob, `${stashAddress}.json`);
+    FileSaver.saveAs(controllerBlob, `${controllerAddress}.json`);
+  };
+
+  const handleChangeControllerPassword = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    setControllerPassword(value);
+  };
+
+  const handleChangeStashPassword = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    setStashPassword(value);
   };
 
   return (
@@ -178,7 +206,7 @@ function SetupNominator (props: any) {
           <StackedHorizontal>
             <FlexItem>
               <Card height='23rem' onClick={createStash}>
-                <Card.Header><SubHeader>Stash</SubHeader></Card.Header>
+  <Card.Header><SubHeader>Stash</SubHeader>{stashPassword && <Icon color='green' name='check' size='small' />}</Card.Header>
                 <Margin top />
                 <Card.Description>
                   <Icon name='square full' size='huge' />
@@ -186,24 +214,28 @@ function SetupNominator (props: any) {
                     <FadedText>The stash key is a key which will in most cases be a cold wallet, existing on a piece of paper in a safe or protected by layers of hardware security. You can think of this as a saving's account at a bank, which ideally is only ever touched in urgent conditions. It should rarely, if ever, be exposed to the internet or used to submit extrinsics.</FadedText>
                   </WithSpaceAround>
                   {
-                    promptStashPassword && <Input onChange={setStashPassword}/>
+                    promptStashPassword && <Input label='password' onChange={handleChangeStashPassword} placeholder='enter a password for your stash account.' type='password' value={stashPassword} />
                   }
                 </Card.Description>
               </Card>
             </FlexItem>
             <FlexItem>
-              <Card height='23rem'>
-                <Card.Header><SubHeader>Controller</SubHeader></Card.Header>
+              <Card height='23rem' onClick={createController}>
+                <Card.Header><SubHeader>Controller</SubHeader>{controllerPassword && <Icon color='green' name='check' size='small' />}</Card.Header>
                 <Margin top />
                 <Card.Description>
                   <Icon name='chess board' size='huge' />
                   <WithSpaceAround>
                     <FadedText>Controller keys should hold some DOTs to pay for fees but they should not be used to hold huge amounts or life savings.</FadedText>
                   </WithSpaceAround>
+                  {
+                    promptControllerPassword && <Input label='password' onChange={handleChangeControllerPassword} placeholder='enter a password for your controller account.' type='password' value={controllerPassword} />
+                  }
                 </Card.Description>
               </Card>
             </FlexItem>
           </StackedHorizontal>
+          {stashPassword && controllerPassword && <StyledNavButton onClick={confirmCreate}>Confirm</StyledNavButton>}
         </Stacked>
       </Modal.Content>
     </React.Fragment>
