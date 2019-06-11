@@ -13,7 +13,7 @@ export function Onboarding () {
     <Modal
       dimmer='inverted'
       open
-      size='tiny'
+      size='large'
     >
       <Container>
         <Switch>
