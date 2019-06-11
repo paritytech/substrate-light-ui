@@ -7,7 +7,7 @@ import React from 'react';
 
 export function Intro (props: any) {
   return (
-    <React.Fragment>
+    <WithSpaceAround>
       Welcome to {props.chain}, Made with Parity Substrate
       <Modal.Header>
         <Header margin='small'>Let's get you started.</Header>
@@ -19,34 +19,38 @@ export function Intro (props: any) {
           <StackedHorizontal>
             <FlexItem>
               <Card height='17rem' onClick={props.onSelectMode} data-mode='easy'>
-                <Card.Header><SubHeader>Automatic (recommended)</SubHeader></Card.Header>
-                <Margin top />
-                <Card.Description>
-                  <Icon size='huge' name='car' />
+                <WithSpaceAround>
+                  <Card.Header><SubHeader>Automatic (recommended)</SubHeader></Card.Header>
                   <Margin top />
-                  <WithSpaceAround>
-                    <FadedText>I want my experience to be as seamless as possible by opting into the default settings.</FadedText>
-                  </WithSpaceAround>
-                </Card.Description>
+                  <Card.Description>
+                    <Icon size='huge' name='car' />
+                    <Margin top />
+                    <WithSpaceAround>
+                      <FadedText>I want my experience to be as seamless as possible by opting into the default settings.</FadedText>
+                    </WithSpaceAround>
+                  </Card.Description>
+                </WithSpaceAround>
               </Card>
             </FlexItem>
             <Margin left />
             <FlexItem>
               <Card height='17rem' onClick={props.onSelectMode} data-mode='hard'>
-                <Card.Header><SubHeader>Manual</SubHeader></Card.Header>
-                <Margin top />
-                <Card.Description>
-                  <Icon size='huge' name='sticker mule' />
+                <WithSpaceAround>
+                  <Card.Header><SubHeader>Manual</SubHeader></Card.Header>
                   <Margin top />
-                  <WithSpaceAround>
-                    <FadedText>I know what I am doing and I want to be involved with every step of the process of setting up my accounts and interacting with my chain.</FadedText>
-                  </WithSpaceAround>
-                </Card.Description>
+                  <Card.Description>
+                    <Icon size='huge' name='sticker mule' />
+                    <Margin top />
+                    <WithSpaceAround>
+                      <FadedText>I know what I am doing and I want to be involved with every step of the process of setting up my accounts and interacting with my chain.</FadedText>
+                    </WithSpaceAround>
+                  </Card.Description>
+                </WithSpaceAround>
               </Card>
             </FlexItem>
           </StackedHorizontal>
         </Stacked>
       </Modal.Content>
-    </React.Fragment>
+    </WithSpaceAround>
   )
 }

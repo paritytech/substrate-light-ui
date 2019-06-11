@@ -5,7 +5,6 @@
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
 import { AppContext } from '@substrate/ui-common';
 import { Card, FadedText, FlexItem, Icon, Input, Margin, MnemonicSegment, Modal, Stacked, StackedHorizontal, StyledNavButton, SubHeader, WithSpaceAround } from '@substrate/ui-components';
-import FileSaver from 'file-saver';
 import React, { useContext, useState } from 'react';
 
 export function SetupNominator (props: any) {
@@ -46,22 +45,6 @@ export function SetupNominator (props: any) {
     keyring.encodeAddress(
       controllerKeyPair.publicKey
     );
-
-    let stashPair = keyring.createAccountMnemonic(stashMnemonic, stashPassword, { name: 'Stash', type: 'stash' });
-    let controllerPair = keyring.createAccountMnemonic(controllerMnemonic, controllerPassword, { name: 'Controller', type: 'controller' });
-
-    const stashAddress = stashPair.address();
-    const stashJson = stashPair.toJson(stashPassword);
-
-    const controllerAddress = controllerPair.address();
-    const controllerJson = controllerPair.toJson(controllerPassword);
-
-    const stashBlob = new Blob([JSON.stringify(stashJson)], { type: 'application/json; charset=utf-8' });
-    const controllerBlob = new Blob([JSON.stringify(controllerJson)], { type: 'application/json; charset=utf-8' });
-
-    // FIXME do this synchronously
-    FileSaver.saveAs(stashBlob, `${stashAddress}.json`);
-    FileSaver.saveAs(controllerBlob, `${controllerAddress}.json`);
   };
 
   const handleChangeControllerPassword = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,42 +65,46 @@ export function SetupNominator (props: any) {
           <StackedHorizontal>
             <FlexItem>
               <Card height='23rem' onClick={createStash}>
-                <Card.Header><SubHeader>Stash</SubHeader>{stashPassword && <Icon color='green' name='check' size='small' />}</Card.Header>
-                <Margin top />
-                <Card.Description>
-                  <Icon name='square full' size='huge' />
-                  <WithSpaceAround>
-                    <FadedText>The stash key is a key which will in most cases be a cold wallet, existing on a piece of paper in a safe or protected by layers of hardware security. You can think of this as a saving's account at a bank, which ideally is only ever touched in urgent conditions. It should rarely, if ever, be exposed to the internet or used to submit extrinsics.</FadedText>
-                  </WithSpaceAround>
-                  {
-                    promptStashDetails && (
-                      <React.Fragment>
-                        <Input label='password' onChange={handleChangeStashPassword} placeholder='enter a password for your stash account.' type='password' value={stashPassword} />
-                        <MnemonicSegment mnemonic={stashMnemonic} />
-                      </React.Fragment>
-                    )
-                  }
-                </Card.Description>
+                <WithSpaceAround>
+                  <Card.Header><SubHeader>Stash</SubHeader>{stashPassword && <Icon color='green' name='check' size='small' />}</Card.Header>
+                  <Margin top />
+                  <Card.Description>
+                    <Icon name='square full' size='huge' />
+                    <WithSpaceAround>
+                      <FadedText>The stash key is a key which will in most cases be a cold wallet, existing on a piece of paper in a safe or protected by layers of hardware security. You can think of this as a saving's account at a bank, which ideally is only ever touched in urgent conditions. It should rarely, if ever, be exposed to the internet or used to submit extrinsics.</FadedText>
+                    </WithSpaceAround>
+                    {
+                      promptStashDetails && (
+                        <React.Fragment>
+                          <Input label='password' onChange={handleChangeStashPassword} placeholder='enter a password for your stash account.' type='password' value={stashPassword} />
+                          <MnemonicSegment mnemonic={stashMnemonic} />
+                        </React.Fragment>
+                      )
+                    }
+                  </Card.Description>
+                </WithSpaceAround>
               </Card>
             </FlexItem>
             <FlexItem>
               <Card height='23rem' onClick={createController}>
-                <Card.Header><SubHeader>Controller</SubHeader>{controllerPassword && <Icon color='green' name='check' size='small' />}</Card.Header>
-                <Margin top />
-                <Card.Description>
-                  <Icon name='chess board' size='huge' />
-                  <WithSpaceAround>
-                    <FadedText>Controller keys should hold some DOTs to pay for fees but they should not be used to hold huge amounts or life savings.</FadedText>
-                  </WithSpaceAround>
-                  {
-                    promptControllerDetails && (
-                      <React.Fragment>
-                        <Input label='password' onChange={handleChangeControllerPassword} placeholder='enter a password for your controller account.' type='password' value={controllerPassword} />
-                        <MnemonicSegment mnemonic={controllerMnemonic} />
-                      </React.Fragment>
-                    )
-                  }
-                </Card.Description>
+                <WithSpaceAround>
+                  <Card.Header><SubHeader>Controller</SubHeader>{controllerPassword && <Icon color='green' name='check' size='small' />}</Card.Header>
+                  <Margin top />
+                  <Card.Description>
+                    <Icon name='chess board' size='huge' />
+                    <WithSpaceAround>
+                      <FadedText>Controller keys should hold some DOTs to pay for fees but they should not be used to hold huge amounts or life savings.</FadedText>
+                    </WithSpaceAround>
+                    {
+                      promptControllerDetails && (
+                        <React.Fragment>
+                          <Input label='password' onChange={handleChangeControllerPassword} placeholder='enter a password for your controller account.' type='password' value={controllerPassword} />
+                          <MnemonicSegment mnemonic={controllerMnemonic} />
+                        </React.Fragment>
+                      )
+                    }
+                  </Card.Description>
+                </WithSpaceAround>
               </Card>
             </FlexItem>
           </StackedHorizontal>
@@ -126,4 +113,4 @@ export function SetupNominator (props: any) {
       </Modal.Content>
     </WithSpaceAround>
   );
-}
+};
