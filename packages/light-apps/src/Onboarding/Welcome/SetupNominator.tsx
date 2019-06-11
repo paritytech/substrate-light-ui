@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
+import { mnemonicGenerate, mnemonicToSeed, schnorrkelKeypairFromSeed } from '@polkadot/util-crypto';
 import { AppContext } from '@substrate/ui-common';
 import { Card, FadedText, FlexItem, Icon, Input, Margin, MnemonicSegment, Modal, Stacked, StackedHorizontal, StyledNavButton, SubHeader, WithSpaceAround } from '@substrate/ui-components';
 import React, { useContext, useState, useEffect } from 'react';
@@ -26,18 +26,26 @@ export function SetupNominator (props: Props) {
   }, []);
 
   const confirmCreate = () => {
-    const stashKeypair = naclKeypairFromSeed(mnemonicToSeed(stashMnemonic));
-    const controllerKeyPair = naclKeypairFromSeed(mnemonicToSeed(controllerMnemonic));
+    const stashAddress = schnorrkelKeypairFromSeed(mnemonicToSeed(stashMnemonic));
+    const controllerAddress = schnorrkelKeypairFromSeed(mnemonicToSeed(controllerMnemonic));
 
     keyring.encodeAddress(
-      stashKeypair.publicKey
+      stashAddress.publicKey
     );
 
     keyring.encodeAddress(
-      controllerKeyPair.publicKey
+      controllerAddress.publicKey
     );
 
-    props.history.push(`/transfer`);
+    // const stashPair = keyring.createAccountMnemonic(stashMnemonic, stashPassword, { name: 'Stash', type: 'stash' });
+    const stashPair = keyring.addFromUri(`${stashMnemonic.trim()}`, { name: 'Stash', type: 'stash' }, 'sr25519');
+    // const controllerPair = keyring.createAccountMnemonic(controllerMnemonic, controllerPassword, { name: 'Controller', type: 'controller' });
+    const controllerPair = keyring.addFromUri(`${controllerMnemonic.trim()}`, { name: 'Controller', type: 'controller' }, 'sr25519');
+
+    console.log('created stash account => ', stashPair);
+    console.log('created controller account => ', controllerPair);
+
+    props.history.push(`/transfer/${controllerPair.address()}`);
   };
 
   const handleChangeControllerPassword = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
