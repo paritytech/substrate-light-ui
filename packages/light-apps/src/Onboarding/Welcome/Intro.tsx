@@ -2,13 +2,20 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { AppContext } from '@substrate/ui-common';
 import { Card, Header, FadedText, FlexItem, Icon, Margin, Modal, Stacked, StackedHorizontal, SubHeader, WithSpaceAround } from '@substrate/ui-components';
-import React from 'react';
+import React, { useContext } from 'react';
 
 export function Intro (props: any) {
+  const { system } = useContext(AppContext);
+
+  const onSelectMode = ({ currentTarget: { dataset: { mode } } }: React.MouseEvent<HTMLElement>) => {
+    props.history.push(`/welcome/chooseCreationOption/${mode}`);
+  };
+
   return (
     <WithSpaceAround>
-      Welcome to {props.chain}, Made with Parity Substrate
+      Welcome to {system.chain}, Made with Parity Substrate
       <Modal.Header>
         <Header margin='small'>Let's get you started.</Header>
         <SubHeader margin='small'>Choose Your Experience Level.</SubHeader>
@@ -18,7 +25,7 @@ export function Intro (props: any) {
         <Stacked>
           <StackedHorizontal>
             <FlexItem>
-              <Card height='17rem' onClick={props.onSelectMode} data-mode='easy'>
+              <Card height='17rem' onClick={onSelectMode} data-mode='easy'>
                 <WithSpaceAround>
                   <Card.Header><SubHeader>Automatic (recommended)</SubHeader></Card.Header>
                   <Margin top />
@@ -34,7 +41,7 @@ export function Intro (props: any) {
             </FlexItem>
             <Margin left />
             <FlexItem>
-              <Card height='17rem' onClick={props.onSelectMode} data-mode='hard'>
+              <Card height='17rem' onClick={onSelectMode} data-mode='hard'>
                 <WithSpaceAround>
                   <Card.Header><SubHeader>Manual</SubHeader></Card.Header>
                   <Margin top />

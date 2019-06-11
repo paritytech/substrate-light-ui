@@ -4,8 +4,23 @@
 
 import { Card, FadedText, FlexItem, Icon, Margin, Modal, Stacked, StackedHorizontal, SubHeader, WithSpaceAround } from '@substrate/ui-components';
 import React from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 
-export function ChooseCreationOption (props: any) {
+interface MatchParams {
+  option: string;
+}
+
+interface Props extends RouteComponentProps<MatchParams> { }
+
+export function ChooseCreationOption (props: Props) {
+  const createIdle = () => {
+    props.history.push('/create');
+  };
+
+  const setupNominator = () => {
+    props.history.push('/welcome/setupNominator');
+  };
+
   const renderEasy = () => {
     return (
       <WithSpaceAround>
@@ -17,7 +32,7 @@ export function ChooseCreationOption (props: any) {
 
             <StackedHorizontal>
               <FlexItem>
-                <Card height='17rem' onClick={props.setupNominator}>
+                <Card height='17rem' onClick={setupNominator}>
                   <WithSpaceAround>
                     <Card.Header><SubHeader>Set Up My Nominator Profile</SubHeader></Card.Header>
                     <Margin top />
@@ -28,8 +43,9 @@ export function ChooseCreationOption (props: any) {
                   </WithSpaceAround>
                 </Card>
               </FlexItem>
+              <Margin left />
               <FlexItem>
-                <Card height='17rem' onClick={props.createIdle}>
+                <Card height='17rem' onClick={createIdle}>
                   <WithSpaceAround>
                     <Card.Header><SubHeader>Create an Idle Account</SubHeader></Card.Header>
                     <Margin top />
@@ -55,7 +71,7 @@ export function ChooseCreationOption (props: any) {
     );
   };
 
-  if (props.difficulty === 'easy') {
+  if (props.match.params.option === 'easy') {
     return renderEasy();
   } else {
     return renderHard();
