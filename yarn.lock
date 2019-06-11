@@ -3456,9 +3456,9 @@
     "@types/storybook__react" "*"
 
 "@types/storybook__addon-links@^3.3.4":
-  version "3.3.4"
-  resolved "https://registry.yarnpkg.com/@types/storybook__addon-links/-/storybook__addon-links-3.3.4.tgz#f6ecac5a94389d69c21887d77b79eb40c305418a"
-  integrity sha512-vKYBgSB4hjjmxFN+wDTfrwXYHcduzMkvXNReiMxQNwlUmdHrcvonCTWNux0qQ/C5MRppi1u8Iz2ZkHK0odc8cQ==
+  version "3.3.5"
+  resolved "https://registry.yarnpkg.com/@types/storybook__addon-links/-/storybook__addon-links-3.3.5.tgz#38326426b3a83a237123bce0d348d9159451710f"
+  integrity sha512-h+8Kb+uZv4/uuWD+K5rku8aRxdl6yjDJrFzbcGwwdZt6IwYGK9G8PmkP+6Hv+N7HMOuyhrZPiLL//qVFWDL/0Q==
   dependencies:
     "@types/react" "*"
 
