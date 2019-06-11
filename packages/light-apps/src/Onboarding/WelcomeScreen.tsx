@@ -2,12 +2,12 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
 import { AppContext } from '@substrate/ui-common';
-import { Card, Header, FadedText, FlexItem, Icon, Margin, Modal, Stacked, SubHeader, StackedHorizontal, WithSpaceAround } from '@substrate/ui-components';
+import FileSaver from 'file-saver';
+import { Card, Header, FadedText, FlexItem, Icon, Input, Margin, Modal, Stacked, SubHeader, StackedHorizontal, WithSpaceAround } from '@substrate/ui-components';
 import React, { useContext, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-
-import { CreateNewAccountScreen } from './index';
 
 interface Props extends RouteComponentProps { }
 
@@ -142,6 +142,32 @@ function ChooseCreationOption (props: any) {
 }
 
 function SetupNominator (props: any) {
+  const { keyring } = useContext(AppContext);
+  const [stashPassword, setStashPassword] = useState();
+  const [promptStashPassword, togglePromptStashPassword] = useState(false);
+
+  const createStash = () => {
+    if (!stashPassword) {
+      togglePromptStashPassword(true);
+      return;
+    }
+
+    const mnemonic = mnemonicGenerate();
+    const keypair = naclKeypairFromSeed(mnemonicToSeed(mnemonic));
+
+    keyring.encodeAddress(
+      keypair.publicKey
+    );
+
+    let pair = keyring.createAccountMnemonic(mnemonic, stashPassword, { name: 'Stash', type: 'stash' });
+
+    const address = pair.address();
+    const json = pair.toJson(stashPassword);
+    const blob = new Blob([JSON.stringify(json)], { type: 'application/json; charset=utf-8' });
+
+    FileSaver.saveAs(blob, `${address}.json`);
+  };
+
   return (
     <React.Fragment>
       <Modal.Header>Setup Nominator Profile</Modal.Header>
@@ -151,7 +177,7 @@ function SetupNominator (props: any) {
 
           <StackedHorizontal>
             <FlexItem>
-              <Card height='23rem'>
+              <Card height='23rem' onClick={createStash}>
                 <Card.Header><SubHeader>Stash</SubHeader></Card.Header>
                 <Margin top />
                 <Card.Description>
@@ -159,6 +185,9 @@ function SetupNominator (props: any) {
                   <WithSpaceAround>
                     <FadedText>The stash key is a key which will in most cases be a cold wallet, existing on a piece of paper in a safe or protected by layers of hardware security. You can think of this as a saving's account at a bank, which ideally is only ever touched in urgent conditions. It should rarely, if ever, be exposed to the internet or used to submit extrinsics.</FadedText>
                   </WithSpaceAround>
+                  {
+                    promptStashPassword && <Input onChange={setStashPassword}/>
+                  }
                 </Card.Description>
               </Card>
             </FlexItem>
@@ -175,7 +204,6 @@ function SetupNominator (props: any) {
               </Card>
             </FlexItem>
           </StackedHorizontal>
-          <CreateNewAccountScreen {...props} />
         </Stacked>
       </Modal.Content>
     </React.Fragment>

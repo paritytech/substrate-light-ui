@@ -109,6 +109,7 @@ export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
       error: value
     });
   }
+
   toggleStep = () => {
     const { address, password, step } = this.state;
 
