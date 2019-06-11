@@ -10,6 +10,7 @@ import { FlexAlign, FlexJustify, FontSize, MarginSize } from './types';
 export interface HeaderProps {
   color?: Color;
   margin?: MarginSize;
+  noMargin?: boolean;
   textAlign?: string;
 }
 

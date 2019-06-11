@@ -6,7 +6,7 @@ import { Container, Modal } from '@substrate/ui-components';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-import { CreateNewAccountScreen, ImportOptionsScreen, SaveScreen } from './index';
+import { CreateNewAccountScreen, ImportOptionsScreen, SaveScreen, WelcomeScreen } from './index';
 
 export function Onboarding () {
   return (
@@ -17,10 +17,11 @@ export function Onboarding () {
     >
       <Container>
         <Switch>
+          <Route path='/welcome' component={WelcomeScreen} />
           <Route path='/create' component={CreateNewAccountScreen} />
           <Route path='/import' component={ImportOptionsScreen} />
           <Route path='/save/:importMethod' component={SaveScreen} />
-          <Redirect to='/create' />
+          <Redirect to='/welcome' />
         </Switch>
       </Container>
     </Modal>
