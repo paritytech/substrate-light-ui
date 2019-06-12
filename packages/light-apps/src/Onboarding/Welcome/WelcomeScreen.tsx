@@ -5,7 +5,7 @@
 import React from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 
-import { Intro, ChooseCreationOption, SetupNominator } from './index';
+import { Intro, SetupNominator } from './index';
 
 interface Props extends RouteComponentProps { }
 
@@ -13,7 +13,6 @@ export function WelcomeScreen (props: Props) {
   return (
     <Switch>
       <Route path='/welcome/intro' component={Intro} />
-      <Route path='/welcome/chooseCreationOption/:option' component={ChooseCreationOption} />
       <Route path='/welcome/setupNominator' component={SetupNominator} />
       <Redirect exact to='/welcome/intro' />
     </Switch>

@@ -4,7 +4,7 @@
 
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
 import { AppContext } from '@substrate/ui-common';
-import { AddressSummary, ErrorText, FadedText, Input, Margin, MnemonicSegment, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SubHeader, WithSpaceAround } from '@substrate/ui-components';
+import { AddressSummary, ErrorText, FadedText, Icon, Input, Margin, MnemonicSegment, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SubHeader, WithSpaceAround } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -38,10 +38,7 @@ export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
   };
 
   componentDidMount () {
-    const mnemonic = mnemonicGenerate();
-    const address = this.generateAddressFromMnemonic(mnemonic);
-
-    this.setState({ address, mnemonic });
+    this.newMnemonic();
   }
 
   createNewAccount = () => {
@@ -132,6 +129,7 @@ export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
 
     return (
       <React.Fragment>
+        <Icon name='arrow left' onClick={this.props.history.goBack} />
         <Modal.Header> Create New Account </Modal.Header>
         <Modal.Content>
           {

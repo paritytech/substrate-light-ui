@@ -9,55 +9,59 @@ import React, { useContext } from 'react';
 export function Intro (props: any) {
   const { system } = useContext(AppContext);
 
-  const onSelectMode = ({ currentTarget: { dataset: { mode } } }: React.MouseEvent<HTMLElement>) => {
-    props.history.push(`/welcome/chooseCreationOption/${mode}`);
+  const createManually = () => {
+    props.history.push('/create');
   };
+
+  const setupNominator = () => {
+    props.history.push('/welcome/setupNominator');
+  };
+
+  function RenderOptions () {
+    return (
+      <Stacked>
+        <FadedText>In order to put your DOTs to use as a light client user, you'll want to nominate a reliable validator. Alternatively, you can just create an account and setup your nominator profile at a later time. </FadedText>
+        <StackedHorizontal>
+          <FlexItem>
+            <Card height='15rem' onClick={setupNominator}>
+              <WithSpaceAround>
+                <Card.Header><SubHeader>Set Up My Nominator Profile From Scratch</SubHeader></Card.Header>
+                <Margin top='big' />
+                <Card.Description>
+                  <Icon name='sun' size='huge' />
+                  <Margin top='big' />
+                  <FadedText>This will help you create a Stash and a Controller account and link them together for you.</FadedText>
+                </Card.Description>
+              </WithSpaceAround>
+            </Card>
+          </FlexItem>
+          <Margin left />
+          <FlexItem>
+            <Card height='15rem' onClick={createManually}>
+              <WithSpaceAround>
+                <Card.Header><SubHeader>Let Me Handle It</SubHeader></Card.Header>
+                <Margin top='big' />
+                <Card.Description>
+                  <Icon name='moon' size='huge' />
+                  <Margin top='big' />
+                  <FadedText>This will let you to create your account manually.</FadedText>
+                </Card.Description>
+              </WithSpaceAround>
+            </Card>
+          </FlexItem>
+        </StackedHorizontal>
+      </Stacked>
+    );
+  }
 
   return (
     <WithSpaceAround>
-      Welcome to {system.chain}, Made with Parity Substrate
       <Modal.Header>
+        Welcome to {system.chain}, Made with Parity Substrate.
         <Header margin='small'>Let's get you started.</Header>
-        <SubHeader margin='small'>Choose Your Experience Level.</SubHeader>
+        <SubHeader margin='small'>Choose How You Want Your Accounts Setup.</SubHeader>
       </Modal.Header>
-
-      <Modal.Content>
-        <Stacked>
-          <StackedHorizontal>
-            <FlexItem>
-              <Card height='17rem' onClick={onSelectMode} data-mode='easy'>
-                <WithSpaceAround>
-                  <Card.Header><SubHeader>Automatic (recommended)</SubHeader></Card.Header>
-                  <Margin top />
-                  <Card.Description>
-                    <Icon size='huge' name='car' />
-                    <Margin top />
-                    <WithSpaceAround>
-                      <FadedText>I want my experience to be as seamless as possible by opting into the default settings.</FadedText>
-                    </WithSpaceAround>
-                  </Card.Description>
-                </WithSpaceAround>
-              </Card>
-            </FlexItem>
-            <Margin left />
-            <FlexItem>
-              <Card height='17rem' onClick={onSelectMode} data-mode='hard'>
-                <WithSpaceAround>
-                  <Card.Header><SubHeader>Manual</SubHeader></Card.Header>
-                  <Margin top />
-                  <Card.Description>
-                    <Icon size='huge' name='sticker mule' />
-                    <Margin top />
-                    <WithSpaceAround>
-                      <FadedText>I know what I am doing and I want to be involved with every step of the process of setting up my accounts and interacting with my chain.</FadedText>
-                    </WithSpaceAround>
-                  </Card.Description>
-                </WithSpaceAround>
-              </Card>
-            </FlexItem>
-          </StackedHorizontal>
-        </Stacked>
-      </Modal.Content>
+      <RenderOptions />
     </WithSpaceAround>
   );
 }

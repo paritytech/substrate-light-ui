@@ -63,12 +63,12 @@ export function SetupNominator (props: Props) {
     setStashRewrite(value);
   };
 
-  function CreateStashCard () {
+  const renderStashCard = () => {
     return (
       <FlexItem>
         <Card height='43rem'>
           <WithSpaceAround>
-            <Card.Header>{stashPassword && stashRewrite && <Icon color='green' name='check' size='big' />}<SubHeader>Stash</SubHeader></Card.Header>
+            <Card.Header><SubHeader>Stash</SubHeader></Card.Header>
             <Margin top />
             <Card.Description>
               <Icon name='square full' size='huge' />
@@ -84,19 +84,20 @@ export function SetupNominator (props: Props) {
               <Input onChange={handleStashRewrite} placeholder='rewrite the above mnemonic here.' value={stashRewrite} />
               <Margin top />
               <FadedText> IMPORTANT! The above mnemonic is a recovery phrase that anyone can use to access this account. Make sure to keep it safe and private. </FadedText>
+              {stashPassword && stashRewrite && <Icon color='green' name='check' size='big' />}
             </Card.Description>
           </WithSpaceAround>
         </Card>
       </FlexItem>
     );
-  }
+  };
 
-  function CreateControllerCard () {
+  const renderControllerCard = () => {
     return (
       <FlexItem>
         <Card height='43rem'>
           <WithSpaceAround>
-            <Card.Header>{controllerPassword && controllerRewrite && <Icon color='green' name='check' size='big' />}<SubHeader>Controller</SubHeader></Card.Header>
+            <Card.Header><SubHeader>Controller</SubHeader></Card.Header>
             <Margin top />
             <Card.Description>
               <Icon name='chess board' size='huge' />
@@ -112,15 +113,17 @@ export function SetupNominator (props: Props) {
               <Input onChange={handleControllerRewrite} placeholder='rewrite the above mnemonic here.' value={controllerRewrite} />
               <Margin top />
               <FadedText> IMPORTANT! The above mnemonic is a recovery phrase that anyone can use to access this account. Make sure to keep it safe and private. </FadedText>
+              {controllerPassword && controllerRewrite && <Icon color='green' name='check' size='big' />}
             </Card.Description>
           </WithSpaceAround>
         </Card>
       </FlexItem>
     );
-  }
+  };
 
   return (
     <WithSpaceAround>
+      <Icon name='arrow left' onClick={props.history.goBack}/>
       <Modal.Header>Setup Nominator Profile</Modal.Header>
       <Modal.Content>
         <Stacked>
@@ -128,9 +131,9 @@ export function SetupNominator (props: Props) {
           <FadedText> These accounts are only different in how they are intended to be used. There is no underlying cryptographic difference in how their keys are created. </FadedText>
           <Margin bottom />
           <StackedHorizontal>
-            <CreateStashCard />
+            { renderStashCard() }
             <Margin left />
-            <CreateControllerCard />
+            { renderControllerCard() }
           </StackedHorizontal>
           <Margin top='huge' />
           {
