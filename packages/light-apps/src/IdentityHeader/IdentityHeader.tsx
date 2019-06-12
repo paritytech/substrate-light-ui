@@ -44,12 +44,18 @@ const urlChanged = (selectedUrl: string): boolean => {
 };
 
 export function IdentityHeader (props: Props) {
-  const { history, match: { params: { currentAccount } } } = props;
+  const { history, location, match: { params: { currentAccount } } } = props;
   const { enqueue } = useContext(AlertsContext);
+
+  const currentPath = location.pathname.split('/')[1];
 
   // Change account
   const changeCurrentAccount = (account: string) => {
-    history.push(`/governance/${account}`);
+    if (currentPath === 'governance') {
+      history.push(`/governance/${account}`);
+    } else if (currentPath === 'transfer') {
+      history.push(`/transfer/${account}`)
+    }
   };
 
   const renderPrimaryMenu = () => {
@@ -95,9 +101,13 @@ export function IdentityHeader (props: Props) {
             <Menu.Item><FadedText>Manage Address Book</FadedText></Menu.Item>
             <Menu.Item><SubHeader>Inspect the status of any identity and name it for later use</SubHeader></Menu.Item>
           </Route>
-          <Route path='/accounts'>
+          <Route path='/accounts/:currentAccount/add'>
             <Menu.Item><FadedText>Add Account</FadedText></Menu.Item>
             <Menu.Item><SubHeader>Create a new account from a generated mnemonic seed, or import via your JSON backup file/mnemonic phrase. </SubHeader></Menu.Item>
+          </Route>
+          <Route path='/manageAccounts'>
+            <Menu.Item><FadedText>Manage Accounts</FadedText></Menu.Item>
+            <Menu.Item><SubHeader>Manage Your Accounts, including Staking, Bonding, Nominating </SubHeader></Menu.Item>
           </Route>
         </Switch>
       </Menu>
@@ -120,6 +130,10 @@ export function IdentityHeader (props: Props) {
   };
 
   const renderSecondaryMenu = () => {
+    const navToAccounts = () => {
+      history.push(`/manageAccounts`);
+    };
+
     const navToGovernance = () => {
       history.push(`/governance/${currentAccount}`);
     };
@@ -135,6 +149,11 @@ export function IdentityHeader (props: Props) {
     return (
       <StackedHorizontal justifyContent='flex-start' alignItems='flex-start'>
         <Menu stackable secondary>
+          <Menu.Item onClick={navToAccounts}>
+            Accounts
+            <Margin left='small' />
+            <Icon color='black' name='id card' />
+          </Menu.Item>
           <Menu.Item onClick={navToGovernance}>
             Governance
             <Margin left='small' />
