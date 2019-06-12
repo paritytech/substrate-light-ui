@@ -1,0 +1,20 @@
+{
+  "name": "@substrate/accounts-app",
+  "version": "0.2.0",
+  "author": "Parity Technologies <admin@parity.io>",
+  "description": "Accounts management app",
+  "license": "Apache-2.0",
+  "main": "build/index.js",
+  "private": true,
+  "repository": "https://github.com/paritytech/substrate-light-ui.git",
+  "scripts": {
+    "build": "tsc",
+    "start": "yarn build --watch",
+    "test": "echo skipped"
+  },
+  "dependencies": {
+    "@substrate/ui-common": "^0.2.0",
+    "@substrate/ui-components": "^0.2.0",
+    "fp-ts": "^1.16.1"
+  }
+}
