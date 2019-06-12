@@ -59,5 +59,5 @@ export function Intro (props: any) {
         </Stacked>
       </Modal.Content>
     </WithSpaceAround>
-  )
+  );
 }
