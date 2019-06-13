@@ -13,6 +13,7 @@ import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { AccountsOverview } from './AccountsOverview';
 import { SendBalance } from './SendBalance';
 import { TxQueue } from './TxQueue';
 
@@ -38,9 +39,12 @@ export function Transfer (props: Props) {
   }, []);
 
   return (
-    <WalletCard header='Transfer Balance' height='100%'>
-      {allAddresses.length && renderContent(allAddresses, currentAccount, txQueue)}
-    </WalletCard >
+    <React.Fragment>
+      <AccountsOverview {...props} />
+      <WalletCard header='Transfer Balance' height='100%'>
+        {allAddresses.length && renderContent(allAddresses, currentAccount, txQueue)}
+      </WalletCard >
+    </React.Fragment>
   );
 }
 
@@ -58,11 +62,13 @@ function renderContent (
     .map(({ json: { address } }) => address)
     .getOrElse(currentAccount);
 
-  return <Switch>
-    <Redirect exact from='/transfer/:currentAccount/' to={`/transfer/${currentAccount}/${firstDifferentAddress}`} />
-    {txQueue.length
-      ? <Route path='/transfer/:currentAccount/:recipientAddress' component={TxQueue} />
-      : <Route path='/transfer/:currentAccount/:recipientAddress' component={SendBalance} />
-    }
-  </Switch>;
+  return (
+    <Switch>
+      {txQueue.length
+        ? <Route path='/transfer/:currentAccount/:recipientAddress' component={TxQueue} />
+        : <Route path='/transfer/:currentAccount/:recipientAddress' component={SendBalance} />
+      }
+      <Redirect exact from='/transfer/:currentAccount/' to={`/transfer/${currentAccount}/${firstDifferentAddress}`} />
+    </Switch>
+  );
 }

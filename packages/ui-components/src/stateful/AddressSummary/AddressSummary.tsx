@@ -13,9 +13,11 @@ import { FontSize } from '../../types';
 
 type AddressSummaryProps = {
   address?: string,
+  detailed?: boolean,
   name?: string,
   noBalance?: boolean,
   orientation?: OrientationType,
+  showAllBalances?: boolean,
   size?: SizeType
 };
 
@@ -28,6 +30,7 @@ export function AddressSummary (props: AddressSummaryProps) {
     name = PLACEHOLDER_NAME,
     noBalance = false,
     orientation = 'vertical',
+    detailed = false,
     size = 'medium'
   } = props;
 
@@ -35,7 +38,7 @@ export function AddressSummary (props: AddressSummaryProps) {
     ? (
       <Stacked>
         {renderIcon(address, size)}
-        {renderDetails(address, name, noBalance, size)}
+        {renderDetails(address, detailed, name, noBalance, size)}
       </Stacked>
     )
     : (
@@ -43,7 +46,7 @@ export function AddressSummary (props: AddressSummaryProps) {
         {renderIcon(address, size)}
         <Margin left />
         <Stacked>
-          {renderDetails(address, name, noBalance, size)}
+          {renderDetails(address, detailed, name, noBalance, size)}
         </Stacked>
       </StackedHorizontal>
     );
@@ -67,11 +70,11 @@ const FONT_SIZES = {
   large: 'big'
 };
 
-function renderDetails (address: string, name: string, noBalance: boolean, size: SizeType) {
+function renderDetails (address: string, detailed: boolean, name: string, noBalance: boolean, size: SizeType) {
   return (
     <React.Fragment>
       <DynamicSizeText fontSize={FONT_SIZES[size] as FontSize}> {name} </DynamicSizeText>
-      {!noBalance && <Balance address={address} fontSize={FONT_SIZES[size] as FontSize} />}
+      {!noBalance && <Balance address={address} detailed={detailed} fontSize={FONT_SIZES[size] as FontSize} />}
     </React.Fragment>
   );
 }

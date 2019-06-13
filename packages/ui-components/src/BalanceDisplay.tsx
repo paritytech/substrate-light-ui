@@ -6,12 +6,15 @@ import { Balance } from '@polkadot/types';
 import React from 'react';
 
 import { FontSize, FontWeight } from './types';
-import { DynamicSizeText } from './Shared.styles';
+import { DynamicSizeText, FadedText, Stacked } from './Shared.styles';
 
 export type BalanceDisplayProps = {
-  balance?: Balance,
+  bondedBalance?: Balance
+  freeBalance?: Balance,
   fontSize?: FontSize,
   fontWeight?: FontWeight,
+  reservedBalance?: Balance,
+  lockedBalance?: Balance,
   tokenSymbol?: string
 };
 
@@ -24,11 +27,17 @@ const defaultProps = {
 };
 
 export function BalanceDisplay (props: BalanceDisplayProps = defaultProps) {
-  const { balance, fontSize, fontWeight, tokenSymbol } = props;
+  const { bondedBalance, freeBalance, lockedBalance, fontSize, fontWeight, reservedBalance, tokenSymbol } = props;
 
   return (
-    <DynamicSizeText fontSize={fontSize} fontWeight={fontWeight} >
-      Balance: {(balance!.toString(10))} {tokenSymbol}
-    </DynamicSizeText>
+    <Stacked>
+      <DynamicSizeText fontSize={fontSize} fontWeight={fontWeight}>
+        Balance {(freeBalance && freeBalance.toString(10))} {tokenSymbol}
+      </DynamicSizeText>
+
+      {bondedBalance && <span><b>Bonded:</b> <FadedText>{bondedBalance.toString(5)}</FadedText></span>}
+      {reservedBalance && <span><b>Reserved:</b><FadedText>{reservedBalance.toString(5)}</FadedText></span>}
+      {lockedBalance && <span><b>Locked:</b><FadedText>{lockedBalance.toString(5)}</FadedText></span>}
+    </Stacked>
   );
 }
