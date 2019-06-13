@@ -2,14 +2,16 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import accountObservable from '@polkadot/ui-keyring/observable/accounts';
+import { SingleAddress } from '@polkadot/ui-keyring/observable/types';
 import { AppContext, handler, AlertsContext } from '@substrate/ui-common';
-import { AddressSummary, Card, FadedText, Grid, Icon, Margin, Stacked, StackedHorizontal, StyledLinkButton, SubHeader, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
+import { AddressSummary, Card, FadedText, Grid, Icon, Input, Margin, Stacked, StackedHorizontal, StyledLinkButton, SubHeader, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
-import React, { useContext, useState } from 'react';
-import { RouteComponentProps } from 'react-router';
-import { Input } from 'semantic-ui-react';
+import React, { useContext, useEffect, useState } from 'react';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-interface IProps extends RouteComponentProps {}
+interface IProps {}
 
 type AccountOverviewActionTypes = 'forget' | 'backup' | null;
 
@@ -72,7 +74,7 @@ function AccountsOverviewCard (props: any) {
 
   const renderConfirmForget = () => {
     return (
-      <WithSpaceAround>
+      <WithSpaceAround margin='big'>
         <Stacked>
           <SubHeader> Please Confirm You Want to Forget this Account </SubHeader>
           <b>By pressing confirm, you will be removing this account from your Saved Accounts. </b>
@@ -127,9 +129,18 @@ function AccountsOverviewCard (props: any) {
 
 export function AccountsOverview (props: IProps) {
   const { history } = props;
-  const { keyring } = useContext(AppContext);
+  const [allUnlockedAccounts, setAllUnlocked] = useState<SingleAddress[]>([]);
 
-  const renderAccountCard = (address: string, name: string) => {
+  useEffect(() => {
+    const accountsSub =
+      (accountObservable.subject.pipe(map(Object.values)) as Observable<SingleAddress[]>)
+        .subscribe(setAllUnlocked);
+
+    return () => accountsSub.unsubscribe();
+  }, []);
+
+
+  const renderAccountCard = (address: string, name?: string) => {
     return (
       <Grid.Column width='4'>
         <AccountsOverviewCard address={address} name={name} history={history} />
@@ -141,8 +152,8 @@ export function AccountsOverview (props: IProps) {
     <Grid>
       <Grid.Row>
        {
-          keyring.getPairs().slice(0, 4).map((pair) => {
-            return renderAccountCard(pair.address(), pair.getMeta().name);
+          allUnlockedAccounts.map((account) => {
+            return renderAccountCard(account.json.address, account.json.meta.name);
           })
        }
       </Grid.Row>

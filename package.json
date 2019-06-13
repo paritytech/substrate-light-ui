@@ -41,5 +41,8 @@
     "ncp": "^2.0.0",
     "node-fetch": "^2.5.0",
     "semver": "^6.0.0"
+  },
+  "peerDependencies": {
+    "typescript": "3.4.5"
   }
 }
