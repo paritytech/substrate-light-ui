@@ -20,8 +20,8 @@ export async function isSubstrateRunning () {
 
   try {
     const options = {
-      headers: { 'Content-type': 'application/json' },
-      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST' as 'POST',
       url: host
     };
 
