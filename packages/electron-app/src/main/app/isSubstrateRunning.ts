@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import axios from 'axios';
+import axios, { Method } from 'axios';
 
 import { DEFAULT_HTTP_PORT, TRUSTED_LOOPBACK } from './constants';
 import { logger } from '../util';
@@ -21,7 +21,7 @@ export async function isSubstrateRunning () {
   try {
     const options = {
       headers: { 'Content-Type': 'application/json' },
-      method: 'POST' as 'POST',
+      method: 'POST' as Method,
       url: host
     };
 
