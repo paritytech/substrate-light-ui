@@ -2563,10 +2563,10 @@
     store "^2.0.12"
     styled-theming "^2.2.0"
 
-"@polkadot/ui-assets@^0.41.1":
-  version "0.41.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-assets/-/ui-assets-0.41.1.tgz#6d9f3f13435339d057cef46c2d0632623c275c3a"
-  integrity sha512-WCiQ5PZKpPgUezp196zqxJBrF602i8e0noMXbQvVVHMK/4UKjbIaHezuS/I8frFDVmzeGaMI7J0i1rFmBeqrRw==
+"@polkadot/ui-assets@^0.40.1":
+  version "0.40.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-assets/-/ui-assets-0.40.1.tgz#cf2956a32ea7e9e0ea30779920e5a40b66f6e3b5"
+  integrity sha512-GrOh08egwpVL1EjnT9jgOq4JYiriEbbPyzLYjteZUBCSv/JvxNaAT7JBUCb5pV8hXXvYpnqhBUCOXAZxTiV3HQ==
   dependencies:
     "@babel/runtime" "^7.4.5"
 
@@ -2606,15 +2606,6 @@
   version "0.40.1"
   resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-0.40.1.tgz#0ee8dee7f0169dcba4e0a46cf1821bc81db79985"
   integrity sha512-lryh4hm+89T0aEVIzLCGI8rDxO+aaqTZxB8R4jsvCbdBP8EtlCMEXlT8nYnaYi1/bdg2WP2jr0kyyq2f6Mxb7A==
-  dependencies:
-    "@babel/runtime" "^7.4.5"
-    "@types/store" "^2.0.2"
-    store "^2.0.12"
-
-"@polkadot/ui-settings@^0.41.1":
-  version "0.41.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-0.41.1.tgz#34ff160d78a15403d0a21eb95729bb6e932da604"
-  integrity sha512-gcgq+VeufDRDizexvxroi/C0YqDixTqvucGRwMWLtm6fslJFhqX0XT/0boYB1lx4Zz77/Plc4HVfkizlFPDcEw==
   dependencies:
     "@babel/runtime" "^7.4.5"
     "@types/store" "^2.0.2"
