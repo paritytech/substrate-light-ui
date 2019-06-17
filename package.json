@@ -1,6 +1,6 @@
 {
   "name": "@substrate/light-ui",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "author": "Parity Technologies <admin@parity.io>",
   "description": "User interface optimized for the Substrate light client",
   "license": "Apache-2.0",
@@ -41,5 +41,8 @@
     "ncp": "^2.0.0",
     "node-fetch": "^2.5.0",
     "semver": "^6.0.0"
+  },
+  "peerDependencies": {
+    "typescript": "3.4.5"
   }
 }
