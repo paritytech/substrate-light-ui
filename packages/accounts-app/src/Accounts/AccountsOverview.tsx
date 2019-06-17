@@ -12,10 +12,12 @@ import { map } from 'rxjs/operators';
 
 import { AccountsOverviewCard } from './AccountsOverviewCard';
 
-interface IProps extends RouteComponentProps {}
+interface IProps extends RouteComponentProps {
+  limit?: number;
+}
 
 export function AccountsOverview (props: IProps) {
-  const { history } = props;
+  const { history, limit } = props;
   const [allUnlockedAccounts, setAllUnlocked] = useState<SingleAddress[]>([]);
 
   useEffect(() => {
@@ -25,7 +27,6 @@ export function AccountsOverview (props: IProps) {
 
     return () => accountsSub.unsubscribe();
   }, []);
-
 
   const renderAccountCard = (address: string, name?: string) => {
     return (
@@ -39,9 +40,9 @@ export function AccountsOverview (props: IProps) {
     <Grid>
       <Grid.Row>
        {
-          allUnlockedAccounts.map((account) => {
-            return renderAccountCard(account.json.address, account.json.meta.name);
-          })
+        allUnlockedAccounts.slice(0, limit || allUnlockedAccounts.length).map((account) => {
+          return renderAccountCard(account.json.address, account.json.meta.name);
+        })
        }
       </Grid.Row>
     </Grid>

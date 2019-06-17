@@ -40,7 +40,7 @@ export function Transfer (props: Props) {
 
   return (
     <React.Fragment>
-      <AccountsOverview {...props} />
+      <AccountsOverview limit={4} {...props} />
       <WalletCard header='Transfer Balance' height='100%'>
         {allAddresses.length && renderContent(allAddresses, currentAccount, txQueue)}
       </WalletCard >
