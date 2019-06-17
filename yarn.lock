@@ -2482,10 +2482,10 @@
     store "^2.0.12"
     styled-theming "^2.2.0"
 
-"@polkadot/ui-assets@^0.40.1":
-  version "0.40.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-assets/-/ui-assets-0.40.1.tgz#cf2956a32ea7e9e0ea30779920e5a40b66f6e3b5"
-  integrity sha512-GrOh08egwpVL1EjnT9jgOq4JYiriEbbPyzLYjteZUBCSv/JvxNaAT7JBUCb5pV8hXXvYpnqhBUCOXAZxTiV3HQ==
+"@polkadot/ui-assets@^0.41.1":
+  version "0.41.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-assets/-/ui-assets-0.41.1.tgz#6d9f3f13435339d057cef46c2d0632623c275c3a"
+  integrity sha512-WCiQ5PZKpPgUezp196zqxJBrF602i8e0noMXbQvVVHMK/4UKjbIaHezuS/I8frFDVmzeGaMI7J0i1rFmBeqrRw==
   dependencies:
     "@babel/runtime" "^7.4.5"
 
