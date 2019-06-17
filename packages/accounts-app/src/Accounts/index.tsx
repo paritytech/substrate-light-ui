@@ -3,10 +3,17 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
+import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
+
 import { AccountsOverview } from './AccountsOverview';
 
-interface Props {}
+interface Props extends RouteComponentProps {}
 
 export function Accounts (props: Props) {
-  return <AccountsOverview />;
+  return (
+    <Switch>
+      <Route path='/manageAccounts/:currentAccount/overview' component={AccountsOverview} />
+      <Redirect from='/manageAccounts/:currentAccount' to='/manageAccounts/:currentAccount/overview' />
+    </Switch>
+  );
 }

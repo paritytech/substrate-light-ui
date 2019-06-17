@@ -13,7 +13,7 @@ import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Accounts } from '@substrate/accounts-app';
+import { AccountsOverview } from '@substrate/accounts-app';
 import { SendBalance } from './SendBalance';
 import { TxQueue } from './TxQueue';
 
@@ -40,7 +40,7 @@ export function Transfer (props: Props) {
 
   return (
     <React.Fragment>
-      <Accounts />
+      <AccountsOverview {...props} />
       <WalletCard header='Transfer Balance' height='100%'>
         {allAddresses.length && renderContent(allAddresses, currentAccount, txQueue)}
       </WalletCard >
