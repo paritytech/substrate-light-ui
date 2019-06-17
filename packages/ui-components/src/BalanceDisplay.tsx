@@ -9,10 +9,10 @@ import { FontSize, FontWeight } from './types';
 import { DynamicSizeText, FadedText, Stacked } from './Shared.styles';
 
 export type BalanceDisplayProps = {
-  bondedBalance?: Balance
   freeBalance?: Balance,
   fontSize?: FontSize,
   fontWeight?: FontWeight,
+  nominatedBalance?: Balance
   reservedBalance?: Balance,
   lockedBalance?: Balance,
   tokenSymbol?: string
@@ -27,7 +27,7 @@ const defaultProps = {
 };
 
 export function BalanceDisplay (props: BalanceDisplayProps = defaultProps) {
-  const { bondedBalance, freeBalance, lockedBalance, fontSize, fontWeight, reservedBalance, tokenSymbol } = props;
+  const { freeBalance, lockedBalance, nominatedBalance, fontSize, fontWeight, reservedBalance, tokenSymbol } = props;
 
   return (
     <Stacked>
@@ -35,7 +35,7 @@ export function BalanceDisplay (props: BalanceDisplayProps = defaultProps) {
         Balance {(freeBalance && freeBalance.toString(10))} {tokenSymbol}
       </DynamicSizeText>
 
-      {bondedBalance && <span><b>Bonded:</b> <FadedText>{bondedBalance.toString(5)}</FadedText></span>}
+      {nominatedBalance && <span><b>Bonded:</b> <FadedText>{nominatedBalance.toString(5)}</FadedText></span>}
       {reservedBalance && <span><b>Reserved:</b><FadedText>{reservedBalance.toString(5)}</FadedText></span>}
       {lockedBalance && <span><b>Locked:</b><FadedText>{lockedBalance.toString(5)}</FadedText></span>}
     </Stacked>

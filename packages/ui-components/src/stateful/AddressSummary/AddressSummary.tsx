@@ -17,7 +17,6 @@ type AddressSummaryProps = {
   name?: string,
   noBalance?: boolean,
   orientation?: OrientationType,
-  showAllBalances?: boolean,
   size?: SizeType
 };
 

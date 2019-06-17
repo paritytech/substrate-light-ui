@@ -30,7 +30,7 @@ export function AccountsOverview (props: IProps) {
 
   const renderAccountCard = (address: string, name?: string) => {
     return (
-      <Grid.Column width='4'>
+      <Grid.Column width='4' key={address}>
         <AccountsOverviewCard address={address} name={name} history={history} />
       </Grid.Column>
     );
