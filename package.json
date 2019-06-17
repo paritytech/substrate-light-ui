@@ -40,9 +40,7 @@
     "@polkadot/dev": "^0.29.1",
     "ncp": "^2.0.0",
     "node-fetch": "^2.5.0",
-    "semver": "^6.0.0"
-  },
-  "peerDependencies": {
+    "semver": "^6.0.0",
     "typescript": "3.4.5"
   }
 }

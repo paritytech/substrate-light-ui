@@ -2,19 +2,41 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { DerivedStaking, DerivedBalances } from '@polkadot/api-derive/types';
 import { AppContext, handler, AlertsContext } from '@substrate/ui-common';
 import { AddressSummary, Card, FadedText, Icon, Input, Margin, Stacked, StackedHorizontal, StyledLinkButton, SubHeader, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { combineLatest, Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 type AccountOverviewActionTypes = 'forget' | 'backup' | null;
 
-export function AccountsOverviewCard(props: any) {
+export function AccountsOverviewCard (props: any) {
   const { address, history, name } = props;
-  const { keyring } = useContext(AppContext);
+  const { api, keyring } = useContext(AppContext);
   const { enqueue } = useContext(AlertsContext);
   const [actionType, setActionType] = useState();
+  const [allBalances, setAllBalances] = useState();
   const [password, setPassword] = useState();
+  const [stakingInfo, setStakingInfo] = useState();
+
+  useEffect(() => {
+    const stakingInfoSub = 
+      combineLatest([
+        api.derive.staking.info(address) as Observable<DerivedStaking>,
+        api.derive.balances.all(address) as Observable<DerivedBalances>
+      ])
+      .pipe(
+        take(1)
+      )
+      .subscribe(([stakingInfo, allBalances]) => {
+        setStakingInfo(stakingInfo);
+        setAllBalances(allBalances);
+      });
+    
+    return stakingInfoSub.unsubscribe();
+  }, []);
 
   const handleAction = (actionType: AccountOverviewActionTypes) => {
     setActionType(actionType);
