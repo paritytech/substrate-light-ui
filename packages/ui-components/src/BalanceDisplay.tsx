@@ -4,6 +4,7 @@
 
 import { Balance } from '@polkadot/types';
 import { DerivedBalances, DerivedStaking } from '@polkadot/api-derive/types';
+import { formatBalance } from '@polkadot/util';
 import React from 'react';
 
 import { FontSize, FontWeight } from './types';
@@ -34,10 +35,10 @@ export function BalanceDisplay (props: BalanceDisplayProps = defaultProps) {
 
     return (
       <React.Fragment>
-        <span><b>Available:</b> <FadedText>{availableBalance.toString(5) || PLACEHOLDER_BALANCE.toString()}</FadedText></span>
-        <span><b>Redeemable:</b> <FadedText>{allStaking && allStaking.redeemable && allStaking.redeemable.toString(5) || PLACEHOLDER_BALANCE.toString()}</FadedText></span>
-        <span><b>Reserved:</b><FadedText>{reservedBalance.toString(5) || PLACEHOLDER_BALANCE.toString()}</FadedText></span>
-        <span><b>Locked:</b><FadedText>{lockedBalance.toString(5) || PLACEHOLDER_BALANCE.toString()}</FadedText></span>
+        <span><b>Available:</b> <FadedText>{formatBalance(availableBalance) || PLACEHOLDER_BALANCE.toString()}</FadedText></span>
+        <span><b>Redeemable:</b> <FadedText>{allStaking && allStaking.redeemable && formatBalance(allStaking.redeemable) || PLACEHOLDER_BALANCE.toString()}</FadedText></span>
+        <span><b>Reserved:</b><FadedText>{formatBalance(reservedBalance) || PLACEHOLDER_BALANCE.toString()}</FadedText></span>
+        <span><b>Locked:</b><FadedText>{formatBalance(lockedBalance) || PLACEHOLDER_BALANCE.toString()}</FadedText></span>
       </React.Fragment>
     )
   }
@@ -45,7 +46,7 @@ export function BalanceDisplay (props: BalanceDisplayProps = defaultProps) {
   return (
     <Stacked>
       <DynamicSizeText fontSize={fontSize} fontWeight={fontWeight}>
-        Balance {(allBalances && allBalances.freeBalance && allBalances.freeBalance.toString(10))} {tokenSymbol}
+        <span><b>Free Balance:</b> {(allBalances && allBalances.freeBalance && formatBalance(allBalances.freeBalance))} {tokenSymbol}</span>
       </DynamicSizeText>
       {
         detailed

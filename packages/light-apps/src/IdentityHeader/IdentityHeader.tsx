@@ -62,7 +62,7 @@ export function IdentityHeader (props: Props) {
     return (
       <Menu stackable>
         <Switch>
-          <Route path={['/governance', '/transfer']}>
+          <Route path={['/governance', '/manageAccounts', '/transfer']}>
             <Menu.Item fitted>
               <StackedHorizontal>
                 <InputAddress
@@ -75,7 +75,7 @@ export function IdentityHeader (props: Props) {
                 <CopyButton value={currentAccount} />
               </StackedHorizontal>
             </Menu.Item>
-            <Menu.Item><Balance address={currentAccount} fontSize='medium' /></Menu.Item>
+            <Menu.Item><Balance address={currentAccount} detailed={false} fontSize='medium' /></Menu.Item>
             <Menu.Item>
               <NavLink to={`/accounts/${currentAccount}/add`}>
                 Add an Account <Icon name='plus' />

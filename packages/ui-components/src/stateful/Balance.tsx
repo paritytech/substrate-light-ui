@@ -38,7 +38,7 @@ export function Balance (props: BalanceProps) {
     <BalanceDisplay
       allBalances={allBalances}
       allStaking={allStaking}
-      detailed
+      detailed={detailed}
       tokenSymbol={properties.tokenSymbol}
       {...rest} />
   );
