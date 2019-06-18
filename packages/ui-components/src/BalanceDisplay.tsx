@@ -3,41 +3,55 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { Balance } from '@polkadot/types';
+import { DerivedBalances, DerivedStaking } from '@polkadot/api-derive/types';
 import React from 'react';
 
 import { FontSize, FontWeight } from './types';
 import { DynamicSizeText, FadedText, Stacked } from './Shared.styles';
 
 export type BalanceDisplayProps = {
-  freeBalance?: Balance,
+  allBalances?: DerivedBalances,
+  allStaking?: DerivedStaking,
+  detailed?: boolean,
   fontSize?: FontSize,
   fontWeight?: FontWeight,
-  nominatedBalance?: Balance
-  reservedBalance?: Balance,
-  lockedBalance?: Balance,
   tokenSymbol?: string
 };
 
 const PLACEHOLDER_BALANCE = new Balance(0);
 const PLACEHOLDER_TOKEN_SYMBOL = 'UNIT';
 const defaultProps = {
-  balance: PLACEHOLDER_BALANCE,
+  detailed: false,
   fontSize: 'large' as FontSize,
   tokenSymbol: PLACEHOLDER_TOKEN_SYMBOL
 };
 
 export function BalanceDisplay (props: BalanceDisplayProps = defaultProps) {
-  const { freeBalance, lockedBalance, nominatedBalance, fontSize, fontWeight, reservedBalance, tokenSymbol } = props;
+  const { allBalances, allStaking, detailed, fontSize, fontWeight, tokenSymbol } = props;
+
+  const renderDetailedBalances = () => {
+    const { availableBalance, lockedBalance, reservedBalance } = allBalances!;
+
+    return (
+      <React.Fragment>
+        <span><b>Available:</b> <FadedText>{availableBalance.toString(5) || PLACEHOLDER_BALANCE.toString()}</FadedText></span>
+        <span><b>Redeemable:</b> <FadedText>{allStaking && allStaking.redeemable && allStaking.redeemable.toString(5) || PLACEHOLDER_BALANCE.toString()}</FadedText></span>
+        <span><b>Reserved:</b><FadedText>{reservedBalance.toString(5) || PLACEHOLDER_BALANCE.toString()}</FadedText></span>
+        <span><b>Locked:</b><FadedText>{lockedBalance.toString(5) || PLACEHOLDER_BALANCE.toString()}</FadedText></span>
+      </React.Fragment>
+    )
+  }
 
   return (
     <Stacked>
       <DynamicSizeText fontSize={fontSize} fontWeight={fontWeight}>
-        Balance {(freeBalance && freeBalance.toString(10))} {tokenSymbol}
+        Balance {(allBalances && allBalances.freeBalance && allBalances.freeBalance.toString(10))} {tokenSymbol}
       </DynamicSizeText>
-
-      {nominatedBalance && <span><b>Bonded:</b> <FadedText>{nominatedBalance.toString(5)}</FadedText></span>}
-      {reservedBalance && <span><b>Reserved:</b><FadedText>{reservedBalance.toString(5)}</FadedText></span>}
-      {lockedBalance && <span><b>Locked:</b><FadedText>{lockedBalance.toString(5)}</FadedText></span>}
+      {
+        detailed
+          && allBalances
+          && renderDetailedBalances()
+      }
     </Stacked>
   );
 }

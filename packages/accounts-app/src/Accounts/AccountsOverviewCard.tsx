@@ -2,31 +2,19 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { DerivedStaking } from '@polkadot/api-derive/types';
 import { AppContext, handler, AlertsContext } from '@substrate/ui-common';
 import { AddressSummary, Card, FadedText, Icon, Input, Margin, Stacked, StackedHorizontal, StyledLinkButton, SubHeader, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
-import React, { useContext, useEffect, useState } from 'react';
-import { Observable } from 'rxjs';
+import React, { useContext, useState } from 'react';
 
 type AccountOverviewActionTypes = 'forget' | 'backup' | null;
 
 export function AccountsOverviewCard (props: any) {
   const { address, history, name } = props;
-  const { api, keyring } = useContext(AppContext);
+  const { keyring } = useContext(AppContext);
   const { enqueue } = useContext(AlertsContext);
   const [actionType, setActionType] = useState();
   const [password, setPassword] = useState();
-  const [stakingInfo, setStakingInfo] = useState();
-
-  useEffect(() => {
-    const subscription = 
-      (api.derive.staking.info(address) as Observable<DerivedStaking>)
-        .subscribe(setStakingInfo);
-
-      console.log(stakingInfo);
-    return subscription.unsubscribe();
-  }, []);
 
   const handleAction = (actionType: AccountOverviewActionTypes) => {
     setActionType(actionType);
@@ -98,7 +86,7 @@ export function AccountsOverviewCard (props: any) {
   };
 
   return (
-    <Card height={actionType ? '25rem' : '15rem'}>
+    <Card height={actionType && '25rem'}>
       {
         actionType
           ? <React.Fragment>

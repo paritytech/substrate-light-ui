@@ -4,7 +4,7 @@
 
 import accountObservable from '@polkadot/ui-keyring/observable/accounts';
 import { SingleAddress } from '@polkadot/ui-keyring/observable/types';
-import { Grid } from '@substrate/ui-components';
+import { Grid, WithSpaceAround } from '@substrate/ui-components';
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Observable } from 'rxjs';
@@ -12,37 +12,33 @@ import { map } from 'rxjs/operators';
 
 import { AccountsOverviewCard } from './AccountsOverviewCard';
 
-interface IProps extends RouteComponentProps {
-  limit?: number;
-}
+interface IProps extends RouteComponentProps { }
 
 export function AccountsOverview (props: IProps) {
-  const { history, limit } = props;
+  const { history } = props;
   const [allUnlockedAccounts, setAllUnlocked] = useState<SingleAddress[]>([]);
 
   useEffect(() => {
     const accountsSub =
       (accountObservable.subject.pipe(map(Object.values)) as Observable<SingleAddress[]>)
         .subscribe(setAllUnlocked);
-
+    
     return () => accountsSub.unsubscribe();
   }, []);
-
-  const renderAccountCard = (address: string, name?: string) => {
-    return (
-      <Grid.Column width='4' key={address}>
-        <AccountsOverviewCard address={address} name={name} history={history} />
-      </Grid.Column>
-    );
-  };
 
   return (
     <Grid>
       <Grid.Row>
        {
-        allUnlockedAccounts.slice(0, limit || allUnlockedAccounts.length).map((account) => {
-          return renderAccountCard(account.json.address, account.json.meta.name);
-        })
+          allUnlockedAccounts.map((account) => {
+            return (
+              <WithSpaceAround key={account.json.address}>
+                <Grid.Column width='4'>
+                  <AccountsOverviewCard address={account.json.address} name={account.json.meta.name} history={history} />
+                </Grid.Column>
+              </WithSpaceAround>
+            );
+          })
        }
       </Grid.Row>
     </Grid>
