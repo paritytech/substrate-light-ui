@@ -21,15 +21,19 @@ export function AccountsOverviewCard (props: any) {
   };
 
   const handleBackup = () => {
-    const pair = keyring.getPair(address);
-    const json = keyring.backupAccount(pair, password);
-    const blob = new Blob([JSON.stringify(json)], { type: 'application/json; charset=utf-8' });
+    try {
+      const pair = keyring.getPair(address);
+      const json = keyring.backupAccount(pair, password);
+      const blob = new Blob([JSON.stringify(json)], { type: 'application/json; charset=utf-8' });
 
-    FileSaver.saveAs(blob, `${address}.json`);
+      FileSaver.saveAs(blob, `${address}.json`);
 
-    handleAction(null);
+      handleAction(null);
 
-    enqueue({ content: 'Successfully backed up account to json keyfile!', type: 'success' });
+      enqueue({ content: 'Successfully backed up account to json keyfile!', type: 'success' });
+    } catch (e) {
+      enqueue({ content: e.message, type: 'error' });
+    }
   };
 
   const handleForget = () => {
@@ -44,6 +48,10 @@ export function AccountsOverviewCard (props: any) {
       enqueue({ content: e.message, type: 'error' });
     }
   };
+
+  const handleTransfer = () => {
+    history.push(`/transfer/${address}`);
+  }
 
   const renderConfirmBackup = () => {
     return (
@@ -84,9 +92,9 @@ export function AccountsOverviewCard (props: any) {
       </WithSpaceAround>
     );
   };
-
+  
   return (
-    <Card height={actionType && '25rem'}>
+    <Card height='28rem'>
       {
         actionType
           ? <React.Fragment>
@@ -101,8 +109,15 @@ export function AccountsOverviewCard (props: any) {
           </React.Fragment>
           : <React.Fragment>
             <Card.Content><AddressSummary address={address} detailed name={name} size='small' /></Card.Content>
-            <WithSpaceAround>
+            <WithSpaceAround margin='small'>
               <Card.Description>
+                <StackedHorizontal>
+                  <StyledLinkButton onClick={handleTransfer}>
+                    <Icon name='send' />
+                    Send From
+                    </StyledLinkButton>
+                </StackedHorizontal>
+                <Margin bottom />
                 <StackedHorizontal>
                   <StyledLinkButton onClick={() => handleAction('forget')}>
                     <Icon name='remove' />

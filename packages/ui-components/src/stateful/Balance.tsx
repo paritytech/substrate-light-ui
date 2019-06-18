@@ -16,14 +16,12 @@ interface BalanceProps extends Pick<BalanceDisplayProps, Exclude<keyof BalanceDi
 
 export function Balance (props: BalanceProps) {
   const { address, detailed = false, ...rest } = props;
-  const { api, system: { properties } } = useContext(AppContext);
+  const { api } = useContext(AppContext);
   const [allBalances, setAllBalances] = useState();
   const [allStaking, setAllStaking] = useState();
 
   useEffect(() => {
-    let balanceSub: Subscription;
-      // If Specified, Also Show More Detailed Balances
-    balanceSub = combineLatest([
+    let balanceSub: Subscription = combineLatest([
         (api.derive.balances.all(address) as Observable<DerivedBalances>),
         (api.derive.staking.info(address) as Observable<DerivedStaking>)
       ]).subscribe(([allBalances, allStaking]) => {
@@ -34,12 +32,17 @@ export function Balance (props: BalanceProps) {
     return () => balanceSub.unsubscribe();
   }, [api, address]);
 
+  const handleRedeem = async (address: string) => {
+    await api.tx.staking.withdrawUnbonded(address);
+    return;
+  }
+
   return (
     <BalanceDisplay
       allBalances={allBalances}
       allStaking={allStaking}
       detailed={detailed}
-      tokenSymbol={properties.tokenSymbol}
+      handleRedeem={handleRedeem}
       {...rest} />
   );
 }

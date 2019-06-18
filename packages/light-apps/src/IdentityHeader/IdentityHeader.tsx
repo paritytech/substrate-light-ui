@@ -162,7 +162,7 @@ export function IdentityHeader (props: Props) {
           <Menu.Item onClick={navToTransfer}>
             Transfer Balance
             <Margin left='small' />
-            <Icon color='black' name='arrow right' />
+            <Icon color='black' name='send' />
           </Menu.Item>
           <Menu.Item onClick={navToManageAddressBook}>
             Manage Address Book

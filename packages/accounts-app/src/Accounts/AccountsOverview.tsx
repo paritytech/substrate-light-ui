@@ -28,15 +28,15 @@ export function AccountsOverview (props: IProps) {
 
   return (
     <Grid>
-      <Grid.Row>
+      <Grid.Row centered>
        {
           allUnlockedAccounts.map((account) => {
             return (
-              <WithSpaceAround key={account.json.address}>
-                <Grid.Column width='4'>
+              <Grid.Column width='5' key={account.json.address}>
+                <WithSpaceAround margin='small'>
                   <AccountsOverviewCard address={account.json.address} name={account.json.meta.name} history={history} />
-                </Grid.Column>
-              </WithSpaceAround>
+                </WithSpaceAround>
+              </Grid.Column>
             );
           })
        }
