@@ -53,14 +53,12 @@ function renderContent (
 ) {
   // Find, inside `allAddresses`, the first one that's different than
   // currentAccount. If not found, then take currentAccount
-
-  // @ts-ignore
-  const firstDifferentAddress = findFirst(
-    allAddresses,
-    ({ json: { address } }) => address !== currentAccount
-  )
-    .map(({ json: { address } }) => address)
-    .getOrElse(currentAccount);
+  const firstDifferentAddress =
+    findFirst(
+      ({ json: { address } }: SingleAddress) => address !== currentAccount
+    )(allAddresses)
+      .map(({ json: { address } }: SingleAddress) => address)
+      .getOrElse(currentAccount);
 
   return (
     <Switch>
