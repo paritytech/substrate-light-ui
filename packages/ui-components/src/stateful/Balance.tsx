@@ -5,7 +5,7 @@
 import { DerivedBalances, DerivedStaking } from '@polkadot/api-derive/types';
 import { AppContext } from '@substrate/ui-common';
 import React, { useContext, useEffect, useState } from 'react';
-import { combineLatest, Observable, Subscription } from 'rxjs';
+import { combineLatest, Observable, of, Subscription } from 'rxjs';
 
 import { BalanceDisplay, BalanceDisplayProps } from '../BalanceDisplay';
 
@@ -33,9 +33,8 @@ export function Balance (props: BalanceProps) {
   }, [api, address]);
 
   const handleRedeem = async (address: string) => {
-    await api.tx.staking.withdrawUnbonded(address);
-    return;
-  }
+    of(api.tx.staking.withdrawUnbonded(address)).subscribe();
+  };
 
   return (
     <BalanceDisplay

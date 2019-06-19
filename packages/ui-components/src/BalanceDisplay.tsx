@@ -46,8 +46,8 @@ export function BalanceDisplay (props: BalanceDisplayProps = defaultProps) {
         <span><b>Locked:</b><FadedText>{formatBalance(lockedBalance) || PLACEHOLDER_BALANCE.toString()}</FadedText></span>
         {renderUnlocking()}
       </React.Fragment>
-    )
-  }
+    );
+  };
 
   const renderRedeemButton = () => {
     return (allStaking && allStaking.controllerId && (
@@ -56,7 +56,7 @@ export function BalanceDisplay (props: BalanceDisplayProps = defaultProps) {
         Redeem Funds
       </StyledLinkButton>
     ));
-  }
+  };
 
   const renderUnlocking = () => {
     return (
@@ -74,7 +74,7 @@ export function BalanceDisplay (props: BalanceDisplayProps = defaultProps) {
         </div>
       ))
     );
-  }
+  };
 
   return (
     <Stacked>

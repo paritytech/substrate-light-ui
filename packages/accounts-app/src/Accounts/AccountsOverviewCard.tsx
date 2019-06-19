@@ -51,7 +51,7 @@ export function AccountsOverviewCard (props: any) {
 
   const handleTransfer = () => {
     history.push(`/transfer/${address}`);
-  }
+  };
 
   const renderConfirmBackup = () => {
     return (
@@ -92,7 +92,7 @@ export function AccountsOverviewCard (props: any) {
       </WithSpaceAround>
     );
   };
-  
+
   return (
     <Card height='28rem'>
       {

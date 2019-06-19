@@ -22,7 +22,7 @@ export function AccountsOverview (props: IProps) {
     const accountsSub =
       (accountObservable.subject.pipe(map(Object.values)) as Observable<SingleAddress[]>)
         .subscribe(setAllUnlocked);
-    
+
     return () => accountsSub.unsubscribe();
   }, []);
 

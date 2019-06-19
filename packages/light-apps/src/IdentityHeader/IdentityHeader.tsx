@@ -54,7 +54,7 @@ export function IdentityHeader (props: Props) {
     if (currentPath === 'governance') {
       history.push(`/governance/${account}`);
     } else if (currentPath === 'transfer') {
-      history.push(`/transfer/${account}`)
+      history.push(`/transfer/${account}`);
     }
   };
 
