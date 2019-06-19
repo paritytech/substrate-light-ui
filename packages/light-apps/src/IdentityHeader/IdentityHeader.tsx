@@ -51,11 +51,7 @@ export function IdentityHeader (props: Props) {
 
   // Change account
   const changeCurrentAccount = (account: string) => {
-    if (currentPath === 'governance') {
-      history.push(`/governance/${account}`);
-    } else if (currentPath === 'transfer') {
-      history.push(`/transfer/${account}`);
-    }
+    history.push(`/${currentPath}/${account}`);
   };
 
   const renderPrimaryMenu = () => {
@@ -105,7 +101,7 @@ export function IdentityHeader (props: Props) {
             <Menu.Item><FadedText>Add Account</FadedText></Menu.Item>
             <Menu.Item><SubHeader>Create a new account from a generated mnemonic seed, or import via your JSON backup file/mnemonic phrase. </SubHeader></Menu.Item>
           </Route>
-          <Route path='/manageAccounts'>
+          <Route path='/manageAccounts/:currentAccount'>
             <Menu.Item><FadedText>Manage Accounts</FadedText></Menu.Item>
             <Menu.Item><SubHeader>Manage Your Accounts, including Staking, Bonding, Nominating </SubHeader></Menu.Item>
           </Route>
@@ -131,7 +127,7 @@ export function IdentityHeader (props: Props) {
 
   const renderSecondaryMenu = () => {
     const navToAccounts = () => {
-      history.push(`/manageAccounts`);
+      history.push(`/manageAccounts/${currentAccount}`);
     };
 
     const navToGovernance = () => {

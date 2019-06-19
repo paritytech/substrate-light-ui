@@ -4,7 +4,7 @@
 
 import accountObservable from '@polkadot/ui-keyring/observable/accounts';
 import { SingleAddress } from '@polkadot/ui-keyring/observable/types';
-import { Grid, WithSpaceAround } from '@substrate/ui-components';
+import { Grid } from '@substrate/ui-components';
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Observable } from 'rxjs';
@@ -27,20 +27,16 @@ export function AccountsOverview (props: IProps) {
   }, []);
 
   return (
-    <Grid>
-      <Grid.Row centered>
+    <Grid columns={16}>
        {
           allUnlockedAccounts.map((account) => {
             return (
-              <Grid.Column width='5' key={account.json.address}>
-                <WithSpaceAround margin='small'>
-                  <AccountsOverviewCard address={account.json.address} name={account.json.meta.name} history={history} />
-                </WithSpaceAround>
+              <Grid.Column key={account.json.address} stretched width='4'>
+                <AccountsOverviewCard address={account.json.address} name={account.json.meta.name} history={history} />
               </Grid.Column>
             );
           })
        }
-      </Grid.Row>
     </Grid>
   );
 }

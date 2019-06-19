@@ -49,7 +49,7 @@ export function AccountsOverviewCard (props: any) {
     }
   };
 
-  const handleTransfer = () => {
+  const navToTransfer = () => {
     history.push(`/transfer/${address}`);
   };
 
@@ -94,44 +94,46 @@ export function AccountsOverviewCard (props: any) {
   };
 
   return (
-    <Card height='28rem'>
-      {
-        actionType
-          ? <React.Fragment>
-            <Card.Content>
-              <SubHeader>Are You Sure?</SubHeader>
-              {
-                actionType === 'backup'
-                  ? renderConfirmBackup()
-                  : renderConfirmForget()
-              }
-            </Card.Content>
-          </React.Fragment>
-          : <React.Fragment>
-            <Card.Content><AddressSummary address={address} detailed name={name} size='small' /></Card.Content>
-            <WithSpaceAround margin='small'>
-              <Card.Description>
-                <StackedHorizontal>
-                  <StyledLinkButton onClick={handleTransfer}>
-                    <Icon name='send' />
-                    Send From
-                    </StyledLinkButton>
-                </StackedHorizontal>
-                <Margin bottom />
-                <StackedHorizontal>
-                  <StyledLinkButton onClick={() => handleAction('forget')}>
-                    <Icon name='remove' />
-                    Forget
-                    </StyledLinkButton>
-                  <StyledLinkButton onClick={() => handleAction('backup')}>
-                    <Icon name='arrow alternate circle down' />
-                    Backup
-                    </StyledLinkButton>
-                </StackedHorizontal>
-              </Card.Description>
-            </WithSpaceAround>
-          </React.Fragment>
-      }
-    </Card>
+    <React.Fragment>
+      <Card height='28rem'>
+        {
+          actionType
+            ? <React.Fragment>
+              <Card.Content>
+                <SubHeader>Are You Sure?</SubHeader>
+                {
+                  actionType === 'backup'
+                    ? renderConfirmBackup()
+                    : renderConfirmForget()
+                }
+              </Card.Content>
+            </React.Fragment>
+            : <React.Fragment>
+              <Card.Content><AddressSummary address={address} detailed name={name} size='small' /></Card.Content>
+              <WithSpaceAround margin='small'>
+                <Card.Description>
+                  <StackedHorizontal>
+                    <StyledLinkButton onClick={navToTransfer}>
+                      <Icon name='send' />
+                      Send From
+                      </StyledLinkButton>
+                  </StackedHorizontal>
+                  <Margin bottom />
+                  <StackedHorizontal>
+                    <StyledLinkButton onClick={() => handleAction('forget')}>
+                      <Icon name='remove' />
+                      Forget
+                      </StyledLinkButton>
+                    <StyledLinkButton onClick={() => handleAction('backup')}>
+                      <Icon name='arrow alternate circle down' />
+                      Backup
+                      </StyledLinkButton>
+                  </StackedHorizontal>
+                </Card.Description>
+              </WithSpaceAround>
+            </React.Fragment>
+        }
+      </Card>
+    </React.Fragment>
   );
 }
