@@ -26,10 +26,7 @@ const PLACEHOLDER_ADDRESS = '5'.padEnd(16, 'x');
 export function AddressSummary (props: AddressSummaryProps) {
   const {
     address = PLACEHOLDER_ADDRESS,
-    name = PLACEHOLDER_NAME,
-    noBalance = false,
     orientation = 'vertical',
-    detailed = false,
     size = 'medium'
   } = props;
 
@@ -37,7 +34,7 @@ export function AddressSummary (props: AddressSummaryProps) {
     ? (
       <Stacked>
         {renderIcon(address, size)}
-        {renderDetails(address, detailed, name, noBalance, size)}
+        {renderDetails(props)}
       </Stacked>
     )
     : (
@@ -45,7 +42,7 @@ export function AddressSummary (props: AddressSummaryProps) {
         {renderIcon(address, size)}
         <Margin left />
         <Stacked>
-          {renderDetails(address, detailed, name, noBalance, size)}
+          {renderDetails(props)}
         </Stacked>
       </StackedHorizontal>
     );
@@ -62,14 +59,16 @@ function renderIcon (address: string, size: SizeType) {
   return <IdentityIcon value={address} theme={'substrate'} size={ICON_SIZES[size]} />;
 }
 
-const FONT_SIZES = {
+const FONT_SIZES: any = {
   tiny: 'small',
   small: 'medium',
   medium: 'large',
   large: 'big'
 };
 
-function renderDetails (address: string, detailed: boolean, name: string, noBalance: boolean, size: SizeType) {
+function renderDetails (props: AddressSummaryProps) {
+  const { address = PLACEHOLDER_ADDRESS, detailed, name = PLACEHOLDER_NAME, noBalance, size = 'medium' } = props;
+
   return (
     <React.Fragment>
       <DynamicSizeText fontSize={FONT_SIZES[size] as FontSize}> {name} </DynamicSizeText>
