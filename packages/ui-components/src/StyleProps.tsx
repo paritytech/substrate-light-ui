@@ -5,7 +5,7 @@
 import { LinkProps } from 'react-router-dom';
 
 import { Color } from './globalStyle';
-import { FlexAlign, FlexJustify, FontSize, MarginSize } from './types';
+import { FlexAlign, FlexDirection, FlexJustify, FontSize, MarginSize } from './types';
 
 export interface HeaderProps {
   color?: Color;
@@ -44,6 +44,10 @@ export interface SubHeaderProps {
 export interface WithSpaceAroundProps {
   margin?: MarginSize;
   padding?: MarginSize;
+}
+
+export interface WithSpaceBetweenProps {
+  flexDirection?: FlexDirection;
 }
 
 export interface WrapperDivProps {
