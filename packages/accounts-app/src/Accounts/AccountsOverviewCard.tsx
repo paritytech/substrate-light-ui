@@ -7,6 +7,8 @@ import { AddressSummary, Card, FadedText, Icon, Input, Margin, Stacked, StackedH
 import FileSaver from 'file-saver';
 import React, { useContext, useState } from 'react';
 
+import { AccountsOverviewDetailed } from './AccountsOverviewDetailed';
+
 type AccountOverviewActionTypes = 'forget' | 'backup' | null;
 
 export function AccountsOverviewCard (props: any) {
@@ -76,7 +78,7 @@ export function AccountsOverviewCard (props: any) {
 
   const renderConfirmForget = () => {
     return (
-      <WithSpaceAround margin='big'>
+      <WithSpaceAround>
         <Stacked>
           <SubHeader> Please Confirm You Want to Forget this Account </SubHeader>
           <b>By pressing confirm, you will be removing this account from your Saved Accounts. </b>
@@ -95,7 +97,7 @@ export function AccountsOverviewCard (props: any) {
 
   return (
     <React.Fragment>
-      <Card height='28rem'>
+      <Card height='30rem'>
         {
           actionType
             ? <React.Fragment>
@@ -109,9 +111,11 @@ export function AccountsOverviewCard (props: any) {
               </Card.Content>
             </React.Fragment>
             : <React.Fragment>
-              <Card.Content><AddressSummary address={address} detailed name={name} size='small' /></Card.Content>
-              <WithSpaceAround margin='small'>
-                <Card.Description>
+              <Card.Content>
+                <AddressSummary address={address} detailed name={name} size='small' />
+                <Margin bottom />
+                <StackedHorizontal><AccountsOverviewDetailed address={address} name={name} /></StackedHorizontal>
+                <WithSpaceAround>
                   <StackedHorizontal>
                     <StyledLinkButton onClick={navToTransfer}>
                       <Icon name='send' />
@@ -127,10 +131,10 @@ export function AccountsOverviewCard (props: any) {
                     <StyledLinkButton onClick={() => handleAction('backup')}>
                       <Icon name='arrow alternate circle down' />
                       Backup
-                      </StyledLinkButton>
+                    </StyledLinkButton>
                   </StackedHorizontal>
-                </Card.Description>
-              </WithSpaceAround>
+                </WithSpaceAround>
+              </Card.Content>
             </React.Fragment>
         }
       </Card>
