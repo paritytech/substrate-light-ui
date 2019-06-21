@@ -8,14 +8,15 @@ import React from 'react';
 
 import { Balance } from '../Balance';
 import { Margin } from '../../Margin';
-import { DynamicSizeText, Stacked, StackedHorizontal } from '../../Shared.styles';
+import { DynamicSizeText, SubHeader, Stacked, StackedHorizontal } from '../../Shared.styles';
 import { OrientationType, SizeType } from './types';
 import { FlexJustify, FontSize } from '../../types';
-
 
 type AddressSummaryProps = {
   address?: string,
   detailed?: boolean,
+  isNominator?: boolean,
+  isValidator?: boolean,
   justifyContent?: FlexJustify,
   name?: string,
   noBalance?: boolean,
@@ -28,6 +29,8 @@ const PLACEHOLDER_NAME = 'No Name';
 export function AddressSummary (props: AddressSummaryProps) {
   const {
     address,
+    isNominator = false,
+    isValidator = false,
     justifyContent = 'space-around',
     orientation = 'vertical',
     size = 'medium'
@@ -73,12 +76,18 @@ const FONT_SIZES: any = {
   large: 'big'
 };
 
+function renderBadge(type: string) {
+  return type === 'nominator' ? <SubHeader>nominator</SubHeader> : <SubHeader>validator</SubHeader>   
+}
+
 function renderDetails (props: AddressSummaryProps) {
-  const { address, detailed, name = PLACEHOLDER_NAME, noBalance, size = 'medium' } = props;
+  const { address, detailed, isNominator, isValidator, name = PLACEHOLDER_NAME, noBalance, size = 'medium' } = props;
 
   return (
     <React.Fragment>
       <DynamicSizeText fontSize={FONT_SIZES[size] as FontSize}> {name} </DynamicSizeText>
+      { isNominator && renderBadge('nominator') }
+      { isValidator && renderBadge('validator') }
       {!noBalance && <Balance address={address} detailed={detailed} fontSize={FONT_SIZES[size] as FontSize} />}
     </React.Fragment>
   );

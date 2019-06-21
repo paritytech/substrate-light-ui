@@ -6,7 +6,7 @@ import { DerivedStaking } from '@polkadot/api-derive/types';
 import { AccountId, Balance, Exposure } from '@polkadot/types';
 import { formatBalance } from '@polkadot/util';
 import { AppContext } from '@substrate/ui-common';
-import { AddressSummary, FadedText, FlexItem, Loading, Modal, Stacked, StackedHorizontal, StyledLinkButton, SubHeader, WithSpace, Grid } from '@substrate/ui-components';
+import { AddressSummary, FadedText, Loading, Modal, Stacked, StyledLinkButton, SubHeader, WithSpace, Grid } from '@substrate/ui-components';
 import { fromNullable } from 'fp-ts/lib/Option';
 import React, { useEffect, useState, useContext } from 'react';
 import { Observable, Subscription } from 'rxjs';
@@ -21,6 +21,7 @@ interface Props {
 interface State {
   controllerId?: string,
   isStashNominating?: boolean,
+  isStashValidating?: boolean,
   nominators?: any,
   sessionId?: string,
   stashActive?: any,
@@ -42,15 +43,20 @@ export function AccountsOverviewDetailed (props: Props) {
               return;
             }
 
-            const { controllerId, nextSessionId, nominators, stakers, stashId, stakingLedger } = stakingInfo;
+            const { controllerId, nextSessionId, nominators, stakers, stashId, stakingLedger, validatorPrefs } = stakingInfo;
+
+            const isStashNominating = nominators && nominators.length !== 0;
+            const isStashValidating = !!validatorPrefs && !validatorPrefs.isEmpty && !isStashNominating;
 
             const state = {
               controllerId: controllerId && controllerId.toString(),
-              isStashNominating: nominators && nominators.length !== 0,
-              nominators: nominators,
+              isStashNominating,
+              isStashValidating,
+              nominators,
+              // rewardDestination: rewardDestination && rewardDestination.toNumber(), FIXME update api to ^.81.0 first
               sessionId: nextSessionId && nextSessionId.toString(),
               stashActive: stakingLedger ? formatBalance(stakingLedger.active) : formatBalance(new Balance(0)),
-              stakers: stakers,
+              stakers,
               stashId: stashId && stashId.toString(),
               stashTotal: stakingLedger ? formatBalance(stakingLedger.total) : formatBalance(new Balance(0))
             }
@@ -60,13 +66,6 @@ export function AccountsOverviewDetailed (props: Props) {
   
     return () => subscription.unsubscribe();
   }, [api]);
-
-  // const getNominators = () => {
-  //   return fromNullable(state)
-  //     .mapNullable(({ stakers }) => stakers)
-  //     .map((stakers) => stakers.others.map(({ who, value }: any): [AccountId, Balance] => [who, value]))
-  //     .getOrElse([])
-  // }
 
   const renderUnBondedAccountOptions = () => {
     return (
@@ -112,18 +111,25 @@ export function AccountsOverviewDetailed (props: Props) {
           <Grid.Row>
             <SubHeader>Currently Nominating:</SubHeader>
               {
-                state!.isStashNominating
-                && state!.nominators.map((address: AccountId) => (
-                  <AddressSummary
-                    address={address.toString()}
-                    key={address.toString()}
-                    orientation='horizontal'
-                    size='small'
-                  />
-                ))
+                state!.nominators
+                  ? state!.nominators
+                      .map((address: AccountId) => {
+                        return <AddressSummary
+                          address={address.toString()}
+                          key={address.toString()}
+                          orientation='horizontal'
+                          size='small'
+                        />
+                      })
+                  : <div>Nobody</div>
               }
           </Grid.Row>
         </WithSpace>
+        <WithSpace>
+          <Grid.Row>
+            <SubHeader> Reward Destination: </SubHeader>
+          </Grid.Row>
+        </WithSpace >
       </Grid.Column>
     )
   }
@@ -134,7 +140,7 @@ export function AccountsOverviewDetailed (props: Props) {
       <WithSpace>
         <Modal.Header>Details About: {address}</Modal.Header>
           <Grid columns='16'>
-            <Grid.Column stretched width='6'><AddressSummary address={address} detailed name={name} size='medium' /></Grid.Column>
+          <Grid.Column stretched width='6'><AddressSummary address={address} detailed isNominator={state && state.isStashNominating} isValidator={state && state.isStashValidating} name={name} size='medium' /></Grid.Column>
             {
               fromNullable(state)
                 .map(() => renderDetails())
