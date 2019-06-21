@@ -114,7 +114,7 @@ export function AccountsOverviewCard (props: any) {
               <Card.Content>
                 <AddressSummary address={address} detailed name={name} size='small' />
                 <Margin bottom />
-                <StackedHorizontal><AccountsOverviewDetailed address={address} name={name} /></StackedHorizontal>
+                <StackedHorizontal><AccountsOverviewDetailed address={address} handleBackup={() => handleAction('backup')} handleForget={() => handleAction('forget')} name={name} /></StackedHorizontal>
                 <WithSpaceAround>
                   <StackedHorizontal>
                     <StyledLinkButton onClick={navToTransfer}>

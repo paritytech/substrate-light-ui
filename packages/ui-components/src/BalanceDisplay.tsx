@@ -79,7 +79,7 @@ export function BalanceDisplay (props: BalanceDisplayProps = defaultProps) {
   return (
     <Stacked>
       <DynamicSizeText fontSize={fontSize} fontWeight={fontWeight}>
-        <span><b>Free Balance:</b> {(allBalances && allBalances.freeBalance && formatBalance(allBalances.freeBalance))}</span>
+        <span><b>Total Balance:</b> {(allBalances && allBalances.freeBalance && formatBalance(allBalances.freeBalance))}</span>
         <FadedText>Transactions: {allBalances && formatNumber(allBalances.accountNonce)}</FadedText>
       </DynamicSizeText>
       {
