@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import IdentityIcon from '@polkadot/ui-identicon';
-import { fromNullable } from 'fp-ts/lib/Option'
+import { fromNullable } from 'fp-ts/lib/Option';
 import React from 'react';
 
 import { Balance } from '../Balance';
@@ -29,8 +29,6 @@ const PLACEHOLDER_NAME = 'No Name';
 export function AddressSummary (props: AddressSummaryProps) {
   const {
     address,
-    isNominator = false,
-    isValidator = false,
     justifyContent = 'space-around',
     orientation = 'vertical',
     size = 'medium'
@@ -55,7 +53,7 @@ export function AddressSummary (props: AddressSummaryProps) {
             </StackedHorizontal>
           );
     })
-    .getOrElse(<div>No Address Provided</div>)  
+    .getOrElse(<div>No Address Provided</div>);
 }
 
 const ICON_SIZES = {
@@ -76,8 +74,8 @@ const FONT_SIZES: any = {
   large: 'big'
 };
 
-function renderBadge(type: string) {
-  return type === 'nominator' ? <SubHeader>nominator</SubHeader> : <SubHeader>validator</SubHeader>   
+function renderBadge (type: string) {
+  return type === 'nominator' ? <SubHeader>nominator</SubHeader> : <SubHeader>validator</SubHeader>;
 }
 
 function renderDetails (props: AddressSummaryProps) {

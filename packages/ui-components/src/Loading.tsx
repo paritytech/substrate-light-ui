@@ -9,11 +9,11 @@ type LoadingProps = {
   active: boolean,
   children?: React.ReactNode | string,
   inline?: boolean,
-  inverted?: boolean,
+  inverted?: boolean
 };
 
 export function Loading (props: LoadingProps) {
-  const { active, children, inline=false, inverted=false } = props;
+  const { active, children, inline = false, inverted = false } = props;
   return (
     <React.Fragment>
       <Dimmer active={active}>
