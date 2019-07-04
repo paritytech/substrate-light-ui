@@ -10,6 +10,8 @@ import { Address, AddressSummary, FadedText, Grid, Loading, Menu, Modal, Stacked
 import { fromNullable } from 'fp-ts/lib/Option';
 import React, { useEffect, useState, useContext } from 'react';
 import { Observable, Subscription } from 'rxjs';
+import { StakingOptions } from './StakingOptions';
+import { BalanceOverview } from './BalanceOverview';
 
 interface Props {
   address: string;
@@ -34,6 +36,7 @@ export function AccountsOverviewDetailed (props: Props) {
   const { address, name } = props;
   const { api } = useContext(AppContext);
   const [state, setState] = useState<State>();
+  const [page, setPage] = useState('balancesOverview');
 
   useEffect(() => {
     let subscription: Subscription =
@@ -66,38 +69,15 @@ export function AccountsOverviewDetailed (props: Props) {
     return () => subscription.unsubscribe();
   }, [api]);
 
-  const renderUnBondedAccountOptions = () => {
-    return (
-      <WithSpace>
-        <SubHeader>Account is not bonded.</SubHeader>
-        <StyledLinkButton>Choose Staking Options</StyledLinkButton>
-      </WithSpace>
-    );
-  };
-
-  const renderBalanceDetails = () => {
-    return (
-      <Grid.Column width='5'>
-        <Stacked justifyContent='flex-start' alignItems='flex-start'>
-          {
-            state!.controllerId === address
-              ? <WithSpace><SubHeader>Stash:</SubHeader> <AddressSummary address={state!.stashId} size='small' orientation='horizontal' /></WithSpace>
-              : state!.stashId === address
-                ? <WithSpace><SubHeader>Controller:</SubHeader><AddressSummary address={state!.controllerId} size='small' orientation='horizontal' /></WithSpace>
-                : renderUnBondedAccountOptions()
-          }
-          <WithSpace><SubHeader>Stash Active:</SubHeader> <FadedText>{state!.stashActive}</FadedText> </WithSpace>
-          <WithSpace><SubHeader>Stakers Total:</SubHeader> <FadedText>{formatBalance(state!.stakers && state!.stakers.total)}</FadedText> </WithSpace>
-          <WithSpace><SubHeader>Bonded:</SubHeader> <FadedText>{state!.stashTotal} </FadedText></WithSpace>
-        </Stacked>
-      </Grid.Column>
-    );
-  };
-
   const renderDetails = () => {
     return (
       <React.Fragment>
-        {renderBalanceDetails()}
+        {
+          fromNullable(state)
+            .mapNullable(({ controllerId, stashId, stakers, stashActive, stashTotal }) => ({ address, controllerId, stashId, stakers, stashActive, stashTotal }))
+            .map((props) => <BalanceOverview address={address} {...props} />)
+            .getOrElse(<Loading active />)
+        }
         {renderNominationDetails()}
       </React.Fragment>
     );
@@ -133,31 +113,44 @@ export function AccountsOverviewDetailed (props: Props) {
     );
   };
 
-  const renderContent = () => {
+  const renderGeneral = () => {
     return (
       <React.Fragment>
         <Grid.Column stretched width='6'>
           <AddressSummary address={address} detailed isNominator={state && state.isStashNominating} isValidator={state && state.isStashValidating} name={name} size='medium' />
-
         </Grid.Column>
-        {renderDetails()}
+        {
+          page === 'stakingOptions'
+            ? renderStakingOptions()
+            : renderDetails()
+        }
       </React.Fragment>
     );
   };
+
+  const renderStakingOptions = () => {
+    return <StakingOptions />
+  }
+  
+  const toggleScreen = () => {
+    page === 'stakingOptions'
+      ? setPage('balancesOverview')
+      : setPage('stakingOptions');
+  }
 
   return (
     <Modal trigger={<StyledLinkButton>Show More</StyledLinkButton>}>
       <Menu>
         <Menu.Menu position='left'><Address address={address} /></Menu.Menu>
         <Menu.Menu position='right'>
-          <Menu.Item>Staking Options</Menu.Item>
+          <Menu.Item onClick={toggleScreen}>{page === 'stakingOptions' ? 'Balances Overview' : 'Staking Options'}</Menu.Item>
         </Menu.Menu>
       </Menu>
       <WithSpaceAround>
         <Grid columns='16'>
           {
             fromNullable(state)
-              .map(() => renderContent())
+              .map(() => renderGeneral())
               .getOrElse(<Loading active inline inverted />)
           }
         </Grid>
