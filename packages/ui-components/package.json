@@ -15,7 +15,8 @@
     "test": "echo skipped"
   },
   "dependencies": {
-    "@polkadot/ui-app": "^0.33.1",
+    "@polkadot/ui-app": "^0.34.0-beta.26",
+    "@polkadot/ui-identicon": "^0.41.1",    
     "@polkadot/ui-signer": "^0.33.1",
     "@types/recharts": "^1.1.16",
     "@types/styled-components": "4.1.0",

@@ -3,8 +3,10 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { AccountId, BlockNumber, Tuple, Vector } from '@polkadot/types';
+import { isUndefined } from '@polkadot/util';
 import { AppContext } from '@substrate/ui-common';
 import { AddressSummary, Card, FadedText, Header, StackedHorizontal } from '@substrate/ui-components';
+import { tryCatch2v } from 'fp-ts/lib/Either';
 import React, { useContext, useEffect, useState } from 'react';
 import { Observable } from 'rxjs';
 
@@ -28,11 +30,22 @@ export function CouncilMembers () {
       {
         activeCouncil && activeCouncil.map(([accountId, blockNumber]: [AccountId, BlockNumber]) => {
           let name;
-          try {
-            name = keyring.getAccount(accountId).getMeta().name;
-          } catch (e) {
-            name = '';
-          }
+
+          tryCatch2v(
+            () => keyring.getAccount(accountId),
+            (e: any) => new Error(e.message)
+          )
+          .chain((pair) => tryCatch2v(
+            () => {
+              if (!isUndefined(pair)) {
+                return pair.meta;
+              }
+              name = '';
+              throw new Error('message');
+            },
+            (e) => e as Error
+          ));
+
           return (
             <Card height='120px' key={accountId.toString()}>
               <Card.Content>

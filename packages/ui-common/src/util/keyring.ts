@@ -6,6 +6,7 @@ import { Keyring } from '@polkadot/ui-keyring';
 import { KeyringAddress } from '@polkadot/ui-keyring/types';
 import { Either, fromOption, tryCatch2v } from 'fp-ts/lib/Either';
 import { fromNullable } from 'fp-ts/lib/Option';
+import { isUndefined } from '@polkadot/util';
 
 enum AddressType {
   Account,
@@ -20,17 +21,17 @@ function keyringHelper (type: AddressType, keyring: Keyring, address?: string): 
   const keyringFunction = (type === AddressType.Account ? keyring.getAccount : keyring.getAddress).bind(keyring);
 
   return fromOption(new Error('You need to specify an address'))(fromNullable(address))
-    // `keyring.getAddress` might fail: catch and return None if it does
+    // `keyring.getAddress` might fail: catch and return None if it does, pass on the KeyringAddress otherwise
     .chain((addr) => tryCatch2v(() => keyringFunction(addr), (e) => e as Error))
     .chain((keyringAddress) => tryCatch2v(
       () => {
-        // If `.getMeta` doesn't throw, then it mean the address exists
-        // https://github.com/polkadot-js/ui/issues/133
-        keyringAddress.getMeta();
-        return keyringAddress;
+        if (!isUndefined(keyringAddress)) {
+          return keyringAddress;
+        }
+        throw new Error('The address you are looking for does not exist in keyring');
       },
-      (e) => e as Error)
-    );
+      (e) => e as Error
+    ));
 }
 
 /**
