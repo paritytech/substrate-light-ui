@@ -4,6 +4,7 @@
 
 import { BlockNumber } from '@polkadot/types';
 import { AppContext } from '@substrate/ui-common';
+// @ts-ignore
 import { Card, FadedText, Menu, WrapperDiv, Stacked } from '@substrate/ui-components';
 import BN from 'bn.js';
 import React, { useEffect, useContext, useState } from 'react';
