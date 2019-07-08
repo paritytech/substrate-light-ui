@@ -35,7 +35,7 @@
     "@storybook/react": "^4.1.4",
     "@substrate/ui-common": "^0.2.0",
     "@types/storybook__addon-actions": "^3.4.2",
-    "@types/storybook__addon-knobs": "^4.0.2",
+    "@types/storybook__addon-knobs": "^5.0.2",
     "@types/storybook__addon-links": "^3.3.4",
     "@types/storybook__react": "^4.0.0"
   }
