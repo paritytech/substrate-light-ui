@@ -44,7 +44,7 @@ export function ImportWithJson (props: Props) {
 
       let pair = keyring.restoreAccount(json, inputPassword);
 
-      history.push(`/transfer/${pair.address()}`);
+      history.push(`/transfer/${pair.address}`);
     } catch (e) {
       enqueue({
         content: e.message,

@@ -5,7 +5,6 @@
 import { AccountId, BlockNumber, Tuple, Vector } from '@polkadot/types';
 import { isUndefined } from '@polkadot/util';
 import { AppContext } from '@substrate/ui-common';
-// @ts-ignore
 import { AddressSummary, Card, FadedText, Header, StackedHorizontal } from '@substrate/ui-components';
 import { tryCatch2v } from 'fp-ts/lib/Either';
 import React, { useContext, useEffect, useState } from 'react';
@@ -39,10 +38,10 @@ export function CouncilMembers () {
           .chain((pair) => tryCatch2v(
             () => {
               if (!isUndefined(pair)) {
-                return pair.meta;
+                name = pair.meta.name;
               }
               name = '';
-              throw new Error('message');
+              throw new Error('could not get meta from pair');
             },
             (e) => e as Error
           ));

@@ -4,9 +4,9 @@
 
 import { Keyring } from '@polkadot/ui-keyring';
 import { KeyringAddress } from '@polkadot/ui-keyring/types';
+import { isUndefined } from '@polkadot/util';
 import { Either, fromOption, tryCatch2v } from 'fp-ts/lib/Either';
 import { fromNullable } from 'fp-ts/lib/Option';
-import { isUndefined } from '@polkadot/util';
 
 enum AddressType {
   Account,

@@ -15,7 +15,7 @@ import React, { useContext, useState } from 'react';
  * @param password - The password to use to unlock
  */
 function unlockAccount (keyringPair: KeyringPair, password: string): Either<Error, KeyringPair> {
-  if (!keyringPair.isLocked()) {
+  if (!keyringPair.isLocked) {
     return right(keyringPair);
   }
 
@@ -66,9 +66,9 @@ export function Signer () {
             <TxSummary
               amount={pendingTx.details.amount}
               recipientAddress={pendingTx.details.recipientAddress}
-              senderAddress={senderPair.address()}
+              senderAddress={senderPair.address}
             />
-            {senderPair.isLocked() && <React.Fragment>
+            {senderPair.isLocked && <React.Fragment>
               <Margin top />
               <Input
                 fluid
@@ -85,7 +85,7 @@ export function Signer () {
               allTotal={pendingTx.details.allTotal}
               amount={pendingTx.details.amount}
               recipientAddress={pendingTx.details.recipientAddress}
-              senderAddress={senderPair.address()}
+              senderAddress={senderPair.address}
             />
           </Stacked>
         </Modal.Content>
@@ -95,7 +95,7 @@ export function Signer () {
               Cancel
           </StyledLinkButton>
             <Margin left='small' />
-            <NavButton disabled={senderPair.isLocked() && !inputPassword}>
+            <NavButton disabled={senderPair.isLocked && !inputPassword}>
               OK
         </NavButton>
           </StackedHorizontal>

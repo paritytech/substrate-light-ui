@@ -72,14 +72,16 @@ export function Create (props: Props) {
     validation.fold(
       (err) => { onError(err); },
       (values) => {
-        const pair = keyring.createAccountMnemonic(values.mnemonic, values.password, { name: values.name });
+        // keyring.createFromUri(`${phrase.trim()}${derivePath}`, {}, pairType).address;
+        // keyring.addUri(`${seed}${derivePath}`, password, { name, tags }, pairType);
+        const result = keyring.addUri(values.mnemonic.trim(), values.password, { name: values.name });
 
-        const json = pair.toJson(values.password);
+        const json = result.json;
         const blob = new Blob([JSON.stringify(json)], { type: 'application/json; charset=utf-8' });
 
-        FileSaver.saveAs(blob, `${values.name}-${pair.address()}.json`);
+        FileSaver.saveAs(blob, `${values.name}-${result.pair.address}.json`);
 
-        history.push(`/transfer/${pair.address()}`);
+        history.push(`/transfer/${result.pair.address}`);
       }
     );
   };

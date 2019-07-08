@@ -19,7 +19,7 @@ export function Rename (props: Props) {
 
   // Rename modal
   const [modalOpen, setModalOpen] = useState(false);
-  const [name, setName] = useState(keyringAccount.map((account) => account.getMeta().name || '').getOrElse(''));
+  const [name, setName] = useState(keyringAccount.map((account) => account.meta.name || '').getOrElse(''));
 
   const openRenameModal = () => setModalOpen(true);
   const closeRenameModal = () => { setModalOpen(false); setName(name); };

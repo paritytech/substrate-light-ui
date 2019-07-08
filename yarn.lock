@@ -2393,7 +2393,7 @@
     universal-user-agent "^2.0.0"
     url-template "^2.0.8"
 
-"@polkadot/api-contract@^0.82.0-beta.25":
+"@polkadot/api-contract@^0.82.0-beta.1", "@polkadot/api-contract@^0.82.0-beta.25":
   version "0.82.0-beta.29"
   resolved "https://registry.yarnpkg.com/@polkadot/api-contract/-/api-contract-0.82.0-beta.29.tgz#ba62e14c163abbf9b1263f87fb4e886d4759ae28"
   integrity sha512-MACmY1x0NwuQo8B0GFAWMAMmZRWOEFYeTVgRFj/blpngda3k0q6rHzWL58MU7uPNPKL8mQBqhq1oKzRg9W50dg==
@@ -2485,7 +2485,7 @@
   dependencies:
     "@babel/runtime" "^7.4.5"
 
-"@polkadot/keyring@^0.94.0-beta.3", "@polkadot/keyring@^0.94.0-beta.4":
+"@polkadot/keyring@^0.94.0-beta.4":
   version "0.94.0-beta.4"
   resolved "https://registry.yarnpkg.com/@polkadot/keyring/-/keyring-0.94.0-beta.4.tgz#445770a05fea5663fac0efd0f45de0f238487549"
   integrity sha512-j6Fu1092OjRfAQOFDxo2g6HC2UDgbesYeYqqeM8ibsQ/dSiisax02xO/n8N7/6uzREHM1lDIUn8pM8JGo2hm/Q==
@@ -2531,7 +2531,7 @@
     "@polkadot/util" "^0.94.0-beta.4"
     "@polkadot/util-crypto" "^0.94.0-beta.4"
 
-"@polkadot/types@^0.82.0-beta.25", "@polkadot/types@^0.82.0-beta.29", "@polkadot/types@^0.82.0-beta.9":
+"@polkadot/types@^0.82.0-beta.25", "@polkadot/types@^0.82.0-beta.29":
   version "0.82.0-beta.29"
   resolved "https://registry.yarnpkg.com/@polkadot/types/-/types-0.82.0-beta.29.tgz#f263942f5bec1a54192b09314a173e49e0334a19"
   integrity sha512-GTipgGZXvVsYwaseOvQv8VCi+fCFUh7KKVhfSVl8hTxme/0f+iABvnCreVRzroW0Nlleu5rcQ/1jEiiONkM3mQ==
@@ -3625,10 +3625,10 @@
     "@types/react" "*"
     "@types/webpack-env" "*"
 
-"@types/styled-components@*", "@types/styled-components@4.1.8":
-  version "4.1.8"
-  resolved "https://registry.yarnpkg.com/@types/styled-components/-/styled-components-4.1.8.tgz#15c8a53bb4b9066e528fafb7558963dee5690ae0"
-  integrity sha512-NrG0wmB9Rafy5i00GFxUM/uEge148bX2QPr+Q/MI2fXrew6WOp1hN2A3YEG0AeT45z47CMdJ3BEffPsdQCWayA==
+"@types/styled-components@*", "@types/styled-components@4.1.0", "@types/styled-components@4.1.3", "@types/styled-components@4.1.8":
+  version "4.1.3"
+  resolved "https://registry.yarnpkg.com/@types/styled-components/-/styled-components-4.1.3.tgz#8d33a8e782e795c1da411b71a0e911a82968dd95"
+  integrity sha512-KufaiYcIbfm9z5ikqCJuhjXPCfTdv1GXLe4Ad1Qb12LjeE8FWocuwqMnIgYMMkflsqVAIv7xckcK5eU1l2qHdA==
   dependencies:
     "@types/node" "*"
     "@types/react" "*"

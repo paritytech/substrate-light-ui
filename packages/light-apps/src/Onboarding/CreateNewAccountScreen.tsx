@@ -50,10 +50,10 @@ export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
     const { mnemonic, name, password } = this.state;
 
     if (this.validateFields()) {
-      let pair = keyring.createAccountMnemonic(mnemonic, password, { name });
+      const result = keyring.addUri(mnemonic.trim(), password, { name });
 
-      const address = pair.address();
-      const json = pair.toJson(password);
+      const address = result.pair.address;
+      const json = result.json;
       const blob = new Blob([JSON.stringify(json)], { type: 'application/json; charset=utf-8' });
 
       FileSaver.saveAs(blob, `${address}.json`);

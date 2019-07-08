@@ -52,7 +52,7 @@ export function ImportWithPhrase (props: Props) {
       .chain(({ name, password, recoveryPhrase }) => tryCatch2v(
         () => {
           // This is inside tryCatch, because it might fail
-          keyring.createAccountMnemonic(recoveryPhrase, password, { name });
+          keyring.createFromUri(recoveryPhrase.trim(), {}, 'sr25519');
         },
         (err) => ({ createAccount: (err as Error).message })
       ))
