@@ -3,8 +3,9 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { AlertsContext, AppContext, getKeyringAccount, handler } from '@substrate/ui-common';
-import { Dropdown, FadedText, Icon, Input, Modal, Stacked, StackedHorizontal, StyledLinkButton, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
+import { Dropdown, FadedText, Icon, Input, Stacked, StackedHorizontal, StyledLinkButton, SubHeader, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
 import React, { useContext, useState } from 'react';
+import Modal from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
 
 interface Props {
   currentAccount: string;
@@ -35,7 +36,7 @@ export function Rename (props: Props) {
     <Modal closeOnDimmerClick closeOnEscape open={modalOpen} trigger={<Dropdown.Item icon='edit' onClick={openRenameModal} text='Rename Account' />}>
       <WithSpaceAround>
         <Stacked>
-          <Modal.SubHeader>Rename account</Modal.SubHeader>
+          <SubHeader>Rename account</SubHeader>
           <FadedText>Please enter the new name of the account.</FadedText>
           <Modal.Actions>
             <Stacked>

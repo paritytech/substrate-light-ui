@@ -4,12 +4,13 @@
 
 import { BlockNumber } from '@polkadot/types';
 import { AppContext } from '@substrate/ui-common';
-import { Card, FadedText, Menu, WrapperDiv, Stacked } from '@substrate/ui-components';
+import { FadedText, Menu, Stacked, WrapperDiv } from '@substrate/ui-components';
 import BN from 'bn.js';
 import React, { useEffect, useContext, useState } from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { combineLatest, Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
+import Card from 'semantic-ui-react/dist/commonjs/views/Card';
 import Progress from 'semantic-ui-react/dist/commonjs/modules/Progress/Progress';
 
 import { Council } from './Council';
@@ -72,7 +73,7 @@ export function Governance (props: IProps) {
   };
 
   return (
-    <Card height='100%'>
+    <Card height='100%' fluid>
       <Menu stackable>
         <Menu.Item onClick={navToDemocracy}>
           Democracy

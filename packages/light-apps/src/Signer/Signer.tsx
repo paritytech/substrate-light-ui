@@ -4,9 +4,10 @@
 
 import { KeyringPair } from '@polkadot/keyring/types';
 import { TxQueueContext } from '@substrate/ui-common';
-import { ErrorText, Form, Input, Margin, Modal, NavButton, Stacked, StyledLinkButton, TxDetails, TxSummary, StackedHorizontal } from '@substrate/ui-components';
+import { ErrorText, Form, Input, Margin, NavButton, Stacked, StyledLinkButton, TxDetails, TxSummary, StackedHorizontal } from '@substrate/ui-components';
 import { Either, left, right } from 'fp-ts/lib/Either';
 import React, { useContext, useState } from 'react';
+import Modal from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
 
 /**
  * Unlock a pair using a password, keeping the secret key in memory.

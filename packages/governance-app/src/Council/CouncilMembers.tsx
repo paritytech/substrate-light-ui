@@ -5,7 +5,8 @@
 import { AccountId, BlockNumber, Tuple, Vector } from '@polkadot/types';
 import { isUndefined } from '@polkadot/util';
 import { AppContext } from '@substrate/ui-common';
-import { AddressSummary, Card, FadedText, Header, StackedHorizontal } from '@substrate/ui-components';
+import { AddressSummary, FadedText, Header, StackedHorizontal } from '@substrate/ui-components';
+import Card from 'semantic-ui-react/dist/commonjs/views/Card';
 import { tryCatch2v } from 'fp-ts/lib/Either';
 import React, { useContext, useEffect, useState } from 'react';
 import { Observable } from 'rxjs';

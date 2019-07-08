@@ -3,7 +3,8 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { AppContext, handler } from '@substrate/ui-common';
-import { ErrorText, Input, Margin, Modal, NavButton, Stacked, WrapperDiv } from '@substrate/ui-components';
+import { ErrorText, Input, Margin, NavButton, Stacked, SubHeader, WrapperDiv } from '@substrate/ui-components';
+
 import { Either, left, right, tryCatch2v } from 'fp-ts/lib/Either';
 import { none, Option, some } from 'fp-ts/lib/Option';
 import React, { useContext, useState } from 'react';
@@ -64,7 +65,7 @@ export function ImportWithPhrase (props: Props) {
 
   return (
     <Stacked justifyContent='space-between'>
-      <Modal.SubHeader> Import Account from Mnemonic Recovery Phrase </Modal.SubHeader>
+      <SubHeader> Import Account from Mnemonic Recovery Phrase </SubHeader>
       <WrapperDiv width='40rem'>
         <Input
           fluid
