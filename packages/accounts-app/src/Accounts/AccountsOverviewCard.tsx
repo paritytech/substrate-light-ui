@@ -3,9 +3,10 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { AppContext, handler, AlertsContext } from '@substrate/ui-common';
-import { AddressSummary, Card, FadedText, Icon, Input, Margin, Stacked, StackedHorizontal, StyledLinkButton, SubHeader, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
+import { AddressSummary, FadedText, Icon, Input, Margin, Stacked, StackedHorizontal, StyledLinkButton, SubHeader, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
 import React, { useContext, useState } from 'react';
+import Card from 'semantic-ui-react/dist/commonjs/views/Card';
 
 import { AccountsOverviewDetailed } from './AccountsOverviewDetailed';
 

@@ -9,16 +9,16 @@ import { Exposure } from "@polkadot/types";
 
 interface Props {
   address: string;
-  controllerId: string;
-  stashId: string;
-  stakers: Exposure;
+  controllerId?: string;
+  stashId?: string;
+  stakers?: Exposure;
   stashActive: any;
   stashTotal: string;
 }
 
 export function BalanceOverview (props: Props) {
   const { address, controllerId, stakers, stashId, stashActive, stashTotal } = props;
-  
+
   const renderUnBondedAccountOptions = () => {
     return (
       <WithSpace>

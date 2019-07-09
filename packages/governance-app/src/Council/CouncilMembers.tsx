@@ -6,10 +6,10 @@ import { AccountId, BlockNumber, Tuple, Vector } from '@polkadot/types';
 import { isUndefined } from '@polkadot/util';
 import { AppContext } from '@substrate/ui-common';
 import { AddressSummary, FadedText, Header, StackedHorizontal } from '@substrate/ui-components';
-import Card from 'semantic-ui-react/dist/commonjs/views/Card';
 import { tryCatch2v } from 'fp-ts/lib/Either';
 import React, { useContext, useEffect, useState } from 'react';
 import { Observable } from 'rxjs';
+import Card from 'semantic-ui-react/dist/commonjs/views/Card';
 
 export function CouncilMembers () {
   const { api, keyring } = useContext(AppContext);

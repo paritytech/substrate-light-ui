@@ -6,10 +6,12 @@ import { DerivedStaking } from '@polkadot/api-derive/types';
 import { AccountId, Balance, Exposure } from '@polkadot/types';
 import { formatBalance } from '@polkadot/util';
 import { AppContext } from '@substrate/ui-common';
-import { Address, AddressSummary, FadedText, Grid, Loading, Menu, Modal, Stacked, StyledLinkButton, SubHeader, WithSpace, WithSpaceAround } from '@substrate/ui-components';
+import { Address, AddressSummary, Grid, Loading, Menu, StyledLinkButton, SubHeader, WithSpace, WithSpaceAround } from '@substrate/ui-components';
 import { fromNullable } from 'fp-ts/lib/Option';
 import React, { useEffect, useState, useContext } from 'react';
 import { Observable, Subscription } from 'rxjs';
+import Modal from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
+
 import { StakingOptions } from './StakingOptions';
 import { BalanceOverview } from './BalanceOverview';
 

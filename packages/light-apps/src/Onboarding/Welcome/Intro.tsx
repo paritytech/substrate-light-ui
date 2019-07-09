@@ -3,8 +3,10 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { AppContext } from '@substrate/ui-common';
-import { Card, Header, FadedText, FlexItem, Icon, Margin, Modal, Stacked, StackedHorizontal, SubHeader, WithSpaceAround } from '@substrate/ui-components';
+import { Header, FadedText, FlexItem, Icon, Margin, Stacked, StackedHorizontal, SubHeader, WithSpaceAround } from '@substrate/ui-components';
 import React, { useContext } from 'react';
+import Card from 'semantic-ui-react/dist/commonjs/views/Card';
+import Modal from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
 
 export function Intro (props: any) {
   const { system } = useContext(AppContext);
