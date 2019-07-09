@@ -1208,6 +1208,13 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
+"@babel/runtime@^7.5.2":
+  version "7.5.2"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.5.2.tgz#98f584f4d03be5d8142c77107ffaedee4d5956f1"
+  integrity sha512-9M29wrrP7//JBGX70+IrDuD1w4iOYhUGpJNMQJVNAXue+cFeFlMTqBECouIziXPUphlgrfjcfiEpGX4t0WGK4g==
+  dependencies:
+    regenerator-runtime "^0.13.2"
+
 "@babel/template@^7.1.0", "@babel/template@^7.4.0", "@babel/template@^7.4.4":
   version "7.4.4"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.4.4.tgz#f4b88d1225689a08f5bc3a17483545be9e4ed237"
@@ -2394,12 +2401,12 @@
     url-template "^2.0.8"
 
 "@polkadot/api-contract@^0.82.0-beta.1", "@polkadot/api-contract@^0.82.0-beta.25":
-  version "0.82.0-beta.29"
-  resolved "https://registry.yarnpkg.com/@polkadot/api-contract/-/api-contract-0.82.0-beta.29.tgz#ba62e14c163abbf9b1263f87fb4e886d4759ae28"
-  integrity sha512-MACmY1x0NwuQo8B0GFAWMAMmZRWOEFYeTVgRFj/blpngda3k0q6rHzWL58MU7uPNPKL8mQBqhq1oKzRg9W50dg==
+  version "0.82.0-beta.35"
+  resolved "https://registry.yarnpkg.com/@polkadot/api-contract/-/api-contract-0.82.0-beta.35.tgz#20310afc29edb155da80082f7bfbc9aee593d33c"
+  integrity sha512-maZOMlMpLDTXpQLRGn4q69vVM4mVPdw+vpCOzR0cdyt2LocHMZME2JR2HNYgaQTGH/WIDh7NGEuBleQGGruzMw==
   dependencies:
-    "@babel/runtime" "^7.4.5"
-    "@polkadot/types" "^0.82.0-beta.29"
+    "@babel/runtime" "^7.5.2"
+    "@polkadot/types" "^0.82.0-beta.35"
 
 "@polkadot/api-derive@^0.82.0-beta.29":
   version "0.82.0-beta.29"
@@ -2531,14 +2538,14 @@
     "@polkadot/util" "^0.94.0-beta.4"
     "@polkadot/util-crypto" "^0.94.0-beta.4"
 
-"@polkadot/types@^0.82.0-beta.25", "@polkadot/types@^0.82.0-beta.29":
-  version "0.82.0-beta.29"
-  resolved "https://registry.yarnpkg.com/@polkadot/types/-/types-0.82.0-beta.29.tgz#f263942f5bec1a54192b09314a173e49e0334a19"
-  integrity sha512-GTipgGZXvVsYwaseOvQv8VCi+fCFUh7KKVhfSVl8hTxme/0f+iABvnCreVRzroW0Nlleu5rcQ/1jEiiONkM3mQ==
+"@polkadot/types@^0.82.0-beta.25", "@polkadot/types@^0.82.0-beta.29", "@polkadot/types@^0.82.0-beta.35":
+  version "0.82.0-beta.35"
+  resolved "https://registry.yarnpkg.com/@polkadot/types/-/types-0.82.0-beta.35.tgz#c3895533d918a0293ea2e632516e1ab96424c82e"
+  integrity sha512-SH4j/AmngDl1wCG0SYfRP9EicjJNF106F3T49o9U8mkC/QXkbBTCP0KJgvMz+iQ3wnAwAaAVecGTfyawLR0nJQ==
   dependencies:
-    "@babel/runtime" "^7.4.5"
-    "@polkadot/util" "^0.94.0-beta.4"
-    "@polkadot/util-crypto" "^0.94.0-beta.4"
+    "@babel/runtime" "^7.5.2"
+    "@polkadot/util" "^0.94.0-beta.6"
+    "@polkadot/util-crypto" "^0.94.0-beta.6"
 
 "@polkadot/ui-api@^0.33.1":
   version "0.33.1"
@@ -2764,7 +2771,7 @@
     "@babel/runtime" "^7.4.5"
     "@polkadot/ui-app" "^0.33.1"
 
-"@polkadot/util-crypto@^0.94.0-beta.4":
+"@polkadot/util-crypto@^0.94.0-beta.4", "@polkadot/util-crypto@^0.94.0-beta.6":
   version "0.94.0-beta.4"
   resolved "https://registry.yarnpkg.com/@polkadot/util-crypto/-/util-crypto-0.94.0-beta.4.tgz#6dd6db4346247c7bdfae0a669e651d9a1c18295c"
   integrity sha512-CNzjy92l6zjPm9B1e5plhINtrNKfS2dySExQZeNGJpOUb/dgn2TYzwhoQf4ZAUv0VzLqtgtO4TrwhXtiCFPzRg==
@@ -2785,7 +2792,7 @@
     tweetnacl "^1.0.1"
     xxhashjs "^0.2.2"
 
-"@polkadot/util@^0.94.0-beta.4":
+"@polkadot/util@^0.94.0-beta.4", "@polkadot/util@^0.94.0-beta.6":
   version "0.94.0-beta.4"
   resolved "https://registry.yarnpkg.com/@polkadot/util/-/util-0.94.0-beta.4.tgz#f0e702bc3f2a65fc4266076dd69449a7a92f5c32"
   integrity sha512-dla3lV/9WVxODJHSytwNXsbRbs/Jx3ewXDyovptxMqHuepAsNlL44szbRZ+umIDG63JlFoI9eycLK+LEXnVnIA==
@@ -9254,10 +9261,10 @@ forwarded@~0.1.2:
   resolved "https://registry.yarnpkg.com/forwarded/-/forwarded-0.1.2.tgz#98c23dab1175657b8c0573e8ceccd91b0ff18c84"
   integrity sha1-mMI9qxF1ZXuMBXPozszZGw/xjIQ=
 
-fp-ts@^1.16.1:
-  version "1.19.4"
-  resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-1.19.4.tgz#258ac247b79ac0ea82a91b31b665a93f735e7636"
-  integrity sha512-/gCyXWxe2ncEeXqKqVUOVRDQvN8UVDfPgRsP2coix8YvVNgaxppRiQQ6wZsEuouL0EQFK0yXrqRgzO/NBowMvA==
+fp-ts@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-2.0.1.tgz#0f6cb37f7f7014daf4c8b43d3c07b944219fa841"
+  integrity sha512-tw/L1f6hd29bYk3IlhA3qdnqz9LJ13yeecjk0XqC8g9E76P5ZXzNcjXA5zQ0zNlsGhdVhDIHRJB738oGpB8PnA==
 
 fragment-cache@^0.2.1:
   version "0.2.1"
@@ -18421,9 +18428,9 @@ typedoc@^0.14.2:
     typescript "3.2.x"
 
 typescript@3.2.x, typescript@^3.4.1, typescript@^3.5.2:
-  version "3.5.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.5.2.tgz#a09e1dc69bc9551cadf17dba10ee42cf55e5d56c"
-  integrity sha512-7KxJovlYhTX5RaRbUdkAXN1KUZ8PwWlTzQdHV6xNqvuFOs7+WBo10TQUqT19Q/Jz2hk5v9TQDIhyLhhJY4p5AA==
+  version "3.5.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.5.3.tgz#c830f657f93f1ea846819e929092f5fe5983e977"
+  integrity sha512-ACzBtm/PhXBDId6a6sDJfroT2pOWt/oOnk4/dElG5G33ZL776N3Y6/6bKZJBFpd+b05F3Ct9qDjMeJmRWtE2/g==
 
 ua-parser-js@^0.7.18:
   version "0.7.20"
