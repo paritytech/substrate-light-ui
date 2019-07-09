@@ -131,14 +131,14 @@ export function AccountsOverviewDetailed (props: Props) {
   };
 
   const renderStakingOptions = () => {
-    return <StakingOptions />
-  }
-  
+    return <StakingOptions />;
+  };
+
   const toggleScreen = () => {
     page === 'stakingOptions'
       ? setPage('balancesOverview')
       : setPage('stakingOptions');
-  }
+  };
 
   return (
     <Modal trigger={<StyledLinkButton>Show More</StyledLinkButton>}>

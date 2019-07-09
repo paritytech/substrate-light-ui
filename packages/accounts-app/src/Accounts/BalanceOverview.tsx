@@ -2,10 +2,10 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import React from "react";
-import { AddressSummary, FadedText, Grid, Stacked, SubHeader, WithSpace, StyledLinkButton } from "@substrate/ui-components";
-import { formatBalance } from "@polkadot/util";
-import { Exposure } from "@polkadot/types";
+import React from 'react';
+import { AddressSummary, FadedText, Grid, Stacked, SubHeader, WithSpace, StyledLinkButton } from '@substrate/ui-components';
+import { formatBalance } from '@polkadot/util';
+import { Exposure } from '@polkadot/types';
 
 interface Props {
   address: string;
