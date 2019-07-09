@@ -8,7 +8,6 @@ import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import Modal from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
 
-
 interface Props extends RouteComponentProps { }
 
 export class ImportWithJson extends React.PureComponent<Props> {
