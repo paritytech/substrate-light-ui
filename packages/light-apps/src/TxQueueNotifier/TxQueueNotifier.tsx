@@ -23,7 +23,7 @@ export function TxQueueNotifier () {
             <TxSummary
               amount={amount}
               recipientAddress={recipientAddress}
-              senderAddress={senderPair.address()}
+              senderAddress={senderPair.address}
               tokenSymbol={tokenSymbol}
             />
           </StackedHorizontal>

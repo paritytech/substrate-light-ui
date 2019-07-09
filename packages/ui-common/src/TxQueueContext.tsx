@@ -2,7 +2,6 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { RxResult } from '@polkadot/api/rx/types';
 import { SubmittableExtrinsic, SubmittableResult } from '@polkadot/api/SubmittableExtrinsic';
 import { KeyringPair } from '@polkadot/keyring/types';
 import { Balance } from '@polkadot/types';
@@ -16,7 +15,7 @@ const l = logger('tx-queue');
 
 const INIT_ERROR = new Error('TxQueueContext called without Provider.');
 
-type Extrinsic = SubmittableExtrinsic<RxResult, RxResult>;
+type Extrinsic = SubmittableExtrinsic<'rxjs'>;
 
 export interface ExtrinsicDetails {
   allFees: BN;
@@ -94,7 +93,7 @@ export function TxQueueContextProvider (props: Props) {
     const extrinsicId = txCounter;
     setTxCounter(txCounter + 1);
 
-    l.log(`Queued extrinsic #${extrinsicId} from ${details.senderPair.address()} to ${details.recipientAddress} of amount ${details.amount}`, details);
+    l.log(`Queued extrinsic #${extrinsicId} from ${details.senderPair.address} to ${details.recipientAddress} of amount ${details.amount}`, details);
 
     setTxQueue(txQueue.concat({
       details,

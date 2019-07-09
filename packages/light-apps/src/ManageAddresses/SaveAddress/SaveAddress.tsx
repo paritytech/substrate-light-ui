@@ -19,7 +19,7 @@ interface Props {
  * Get the address's name. Return `''` if the address doesn't exist.
  */
 function getAddressName (keyringAddress: Either<Error, KeyringAddress>) {
-  return keyringAddress.map((keyringAddress) => keyringAddress.getMeta().name || '').getOrElse('');
+  return keyringAddress.map((keyringAddress) => keyringAddress.meta.name || '').getOrElse('');
 }
 
 export function SaveAddress (props: Props) {
@@ -44,7 +44,7 @@ export function SaveAddress (props: Props) {
     try {
       // if address already saved under this name: throw
       const lookupAddress = keyring.getAddress(address);
-      if (lookupAddress && lookupAddress.getMeta().name === name) {
+      if (lookupAddress && lookupAddress.meta.name === name) {
         throw new Error('This address has already been saved under this name.');
       }
 

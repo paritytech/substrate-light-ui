@@ -3,9 +3,10 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { AlertsContext } from '@substrate/ui-common';
-import { InputFile, Modal, NavLink, Stacked } from '@substrate/ui-components';
+import { FadedText, InputFile, NavLink, Stacked, SubHeader } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
+import Modal from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
 
 interface Props extends RouteComponentProps { }
 
@@ -36,12 +37,12 @@ export class ImportWithJson extends React.PureComponent<Props> {
     return (
       <React.Fragment>
         <Stacked>
-          <Modal.SubHeader> Restore Account from JSON Backup File </Modal.SubHeader>
+          <SubHeader> Restore Account from JSON Backup File </SubHeader>
           <InputFile onChange={this.handleFileUploaded} />
           <Modal.Actions>
             <Stacked>
               <NavLink to='/import/withPhrase'> Import with Phrase Instead </NavLink>
-              <Modal.FadedText>or</Modal.FadedText>
+              <FadedText>or</FadedText>
               <NavLink to='/create'> Create New Account </NavLink>
             </Stacked>
           </Modal.Actions>

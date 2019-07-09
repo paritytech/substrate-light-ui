@@ -48,12 +48,12 @@ export const YayNay = (props: YayNayProps) => {
           animationDuration={1000}
           barSize={25}
           dataKey='yay' fill='#5c53fc'
-          label={{ position: 'right', backgroundColor: '#fff' }} />
+          label={{ position: 'right' }} />
         <Bar
           animationDuration={1000}
           barSize={25}
           dataKey='nay' fill='#ff5d3e'
-          label={{ position: 'right', backgroundColor: '#fff' }} />
+          label={{ position: 'right' }} />
       </BarChart>
     </ResponsiveContainer>
   );
