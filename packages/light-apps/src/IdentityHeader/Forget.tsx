@@ -3,9 +3,10 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { AppContext, AlertsContext } from '@substrate/ui-common';
-import { Dropdown, FadedText, Icon, Margin, Modal, Stacked, StackedHorizontal, StyledLinkButton, WithSpaceAround } from '@substrate/ui-components';
+import { Dropdown, FadedText, Icon, Margin, Stacked, StackedHorizontal, StyledLinkButton, SubHeader, WithSpaceAround } from '@substrate/ui-components';
 import H from 'history';
 import React, { useContext, useState } from 'react';
+import Modal from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
 
 interface Props {
   currentAccount: string;
@@ -38,7 +39,7 @@ export function Forget (props: Props) {
     <Modal closeOnDimmerClick={true} closeOnEscape={true} open={forgetModalOpen} trigger={<Dropdown.Item icon='trash' onClick={openForgetModal} text='Forget Account' />}>
       <WithSpaceAround>
         <Stacked>
-          <Modal.SubHeader> Please Confirm You Want to Forget this Account </Modal.SubHeader>
+          <SubHeader> Please Confirm You Want to Forget this Account </SubHeader>
           <b>By pressing confirm, you will be removing this account from your Saved Accounts. </b>
           <Margin top />
           <FadedText> You can restore this later from your mnemonic phrase or json backup file. </FadedText>

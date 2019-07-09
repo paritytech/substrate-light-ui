@@ -2,7 +2,6 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { RxResult } from '@polkadot/api/rx/types';
 import { SubmittableExtrinsic } from '@polkadot/api/SubmittableExtrinsic';
 import { DerivedBalances, DerivedFees } from '@polkadot/api-derive/types';
 import { Balance, Index } from '@polkadot/types';
@@ -38,7 +37,7 @@ export interface WithAmount {
  * Amount as Balance and Extrinsic
  */
 export interface WithAmountExtrinsic extends WithAmount {
-  extrinsic: SubmittableExtrinsic<RxResult, RxResult>;
+  extrinsic: SubmittableExtrinsic<'rxjs'>;
 }
 
 /**

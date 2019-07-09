@@ -15,11 +15,12 @@ interface IProps {
   referendum: any;
 }
 
+// FIXME: also get Convictions if they exist
 const votesReducer = (state: any, action: any) => {
   switch (action.type) {
     case 'NEW_VOTE':
       const newState = action.votes && action.votes.reduce((state: any, v: DerivedReferendumVote) => {
-        if (v.vote.ltn(0)) {
+        if (v.vote.isAye) {
           state.yayVoteCount++;
           state.yayVoteBalance = state.yayVoteBalance.add(v.balance);
         } else {
