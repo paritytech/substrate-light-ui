@@ -15,6 +15,7 @@ import { AppContext, System } from './AppContext';
 import { isTestChain } from './util';
 import { AlertsContextProvider } from './AlertsContext';
 import { TxQueueContextProvider } from './TxQueueContext';
+import { UserContextProvider } from './UserContext';
 
 interface State {
   isReady: boolean;
@@ -129,7 +130,9 @@ export function ContextGate (props: { children: React.ReactNode }) {
           keyring,
           system
         }}>
-          {children}
+          <UserContextProvider>
+            {children}
+          </UserContextProvider>
         </AppContext.Provider>
       </TxQueueContextProvider>
     </AlertsContextProvider>
