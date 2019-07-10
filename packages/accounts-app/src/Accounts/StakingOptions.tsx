@@ -3,15 +3,35 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { AppContext } from '@substrate/ui-common';
-import { Card, Container, FadedText, Header, Icon, Step, SubHeader, Stacked, StackedHorizontal, FlexItem } from '@substrate/ui-components';
+import { Container, FadedText, Header, Icon, Step, SubHeader, StackedHorizontal, FlexItem, Margin } from '@substrate/ui-components';
 import React, { useContext, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
+import { fromNullable, none, Option, some } from 'fp-ts/lib/Option';
+// import { fromNullable } from 'fp-ts/lib/Either';
 
 interface Props extends RouteComponentProps {}
 
 export function StakingOptions (props: Props) {
   const { system: { properties: { tokenSymbol }, chain } } = useContext(AppContext);
   const [activeStep, setActiveStep] = useState('setup');
+
+  // const nextStep = () => {
+  //   switch(activeStep) {
+  //     case 'setup':
+  //       setActiveStep('bond');
+  //       break;
+  //     case 'bond':
+  //       setActiveStep('nominate');
+  //       break;
+  //     case 'nominate':
+  //       setActiveStep('confirm');
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // };
+
+  console.log(setActiveStep);
 
   return (
     <Container>
@@ -52,7 +72,14 @@ export function StakingOptions (props: Props) {
             </Step.Group>
           </FlexItem>
           <FlexItem>
-            action area
+            {
+              // FIX ME this is shite
+              fromNullable(activeStep)
+                .map((activeStep: string) => activeStep === 'setup' ? some('<Setup />') : none)
+                .map((activeStep: Option<string>) => activeStep.toString() === 'bond' ? some('<Bond />') : none)
+                .map((activeStep: Option<string>) => activeStep.toString() === 'nominate' ? some('<Nominate />') : none)
+                .getOrElse(none).toString()
+            }
           </FlexItem>
         </StackedHorizontal>
     </Container>

@@ -6,20 +6,21 @@ import { DerivedStaking } from '@polkadot/api-derive/types';
 import { AccountId, Balance, Exposure } from '@polkadot/types';
 import { formatBalance } from '@polkadot/util';
 import { AppContext } from '@substrate/ui-common';
-import { Address, AddressSummary, Grid, Loading, Menu, StyledLinkButton, SubHeader, WithSpace, WithSpaceAround } from '@substrate/ui-components';
+import { AddressSummary, Container, Grid, Loading, SubHeader, WithSpace } from '@substrate/ui-components';
 import { fromNullable } from 'fp-ts/lib/Option';
 import React, { useEffect, useState, useContext } from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 import { Observable, Subscription } from 'rxjs';
-import Modal from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
 
-import { StakingOptions } from './StakingOptions';
 import { BalanceOverview } from './BalanceOverview';
 
-interface Props {
+interface MatchParams {
+  currentAccount: string;
+}
+
+interface Props extends RouteComponentProps<MatchParams> {
   address: string;
   name: string;
-  handleForget: () => void;
-  handleBackup: () => void;
 }
 
 interface State {
@@ -35,14 +36,13 @@ interface State {
 }
 
 export function AccountsOverviewDetailed (props: Props) {
-  const { address, name } = props;
+  const { match: { params: { currentAccount } } } = props;
   const { api } = useContext(AppContext);
   const [state, setState] = useState<State>();
-  const [page, setPage] = useState('balancesOverview');
 
   useEffect(() => {
     let subscription: Subscription =
-        (api.derive.staking.info(address) as Observable<DerivedStaking>)
+      (api.derive.staking.info(currentAccount) as Observable<DerivedStaking>)
           .subscribe((stakingInfo: DerivedStaking) => {
             if (!stakingInfo) {
               return;
@@ -76,8 +76,8 @@ export function AccountsOverviewDetailed (props: Props) {
       <React.Fragment>
         {
           fromNullable(state)
-            .mapNullable(({ controllerId, stashId, stakers, stashActive, stashTotal }) => ({ address, controllerId, stashId, stakers, stashActive, stashTotal }))
-            .map((props) => <BalanceOverview address={address} {...props} />)
+            .mapNullable(({ controllerId, stashId, stakers, stashActive, stashTotal }) => ({ address: currentAccount, controllerId, stashId, stakers, stashActive, stashTotal }))
+            .map((props) => <BalanceOverview address={currentAccount} {...props} />)
             .getOrElse(<Loading active />)
         }
         {renderNominationDetails()}
@@ -119,44 +119,22 @@ export function AccountsOverviewDetailed (props: Props) {
     return (
       <React.Fragment>
         <Grid.Column stretched width='6'>
-          <AddressSummary address={address} detailed isNominator={state && state.isStashNominating} isValidator={state && state.isStashValidating} name={name} size='medium' />
+          <AddressSummary address={currentAccount} detailed isNominator={state && state.isStashNominating} isValidator={state && state.isStashValidating} name={name} size='medium' />
         </Grid.Column>
-        {
-          page === 'stakingOptions'
-            ? renderStakingOptions()
-            : renderDetails()
-        }
+        {renderDetails()}
       </React.Fragment>
     );
   };
 
-  const renderStakingOptions = () => {
-    return <StakingOptions />;
-  };
-
-  const toggleScreen = () => {
-    page === 'stakingOptions'
-      ? setPage('balancesOverview')
-      : setPage('stakingOptions');
-  };
-
   return (
-    <Modal trigger={<StyledLinkButton>Show More</StyledLinkButton>}>
-      <Menu>
-        <Menu.Menu position='left'><Address address={address} /></Menu.Menu>
-        <Menu.Menu position='right'>
-          <Menu.Item onClick={toggleScreen}>{page === 'stakingOptions' ? 'Balances Overview' : 'Staking Options'}</Menu.Item>
-        </Menu.Menu>
-      </Menu>
-      <WithSpaceAround>
-        <Grid columns='16'>
-          {
-            fromNullable(state)
-              .map(() => renderGeneral())
-              .getOrElse(<Loading active inline inverted />)
-          }
-        </Grid>
-      </WithSpaceAround>
-    </Modal>
+    <Container>
+      <Grid columns='16'>
+        {
+          fromNullable(state)
+            .map(() => renderGeneral())
+            .getOrElse(<Loading active inline inverted />)
+        }
+      </Grid>
+    </Container>
   );
 }

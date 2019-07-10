@@ -8,19 +8,21 @@ import FileSaver from 'file-saver';
 import React, { useContext, useState } from 'react';
 import Card from 'semantic-ui-react/dist/commonjs/views/Card';
 
-import { AccountsOverviewDetailed } from './AccountsOverviewDetailed';
-
-type AccountOverviewActionTypes = 'forget' | 'backup' | null;
-
 export function AccountsOverviewCard (props: any) {
   const { address, history, name } = props;
   const { keyring } = useContext(AppContext);
   const { enqueue } = useContext(AlertsContext);
-  const [actionType, setActionType] = useState();
+  const [confirmScreen, setConfirmScreen] = useState();
   const [password, setPassword] = useState();
 
-  const handleAction = (actionType: AccountOverviewActionTypes) => {
-    setActionType(actionType);
+  const handleAction = ({ currentTarget: { dataset: { action } } }: any) => {
+    if (action === 'forget') {
+      confirmScreen ? handleForget() : setConfirmScreen('forget');
+    } else if (action === 'backup') {
+      confirmScreen ? handleBackup() : setConfirmScreen('backup');
+    } else if (action === 'cancel') {
+      setConfirmScreen(null);
+    }
   };
 
   const handleBackup = () => {
@@ -30,8 +32,6 @@ export function AccountsOverviewCard (props: any) {
       const blob = new Blob([JSON.stringify(json)], { type: 'application/json; charset=utf-8' });
 
       FileSaver.saveAs(blob, `${address}.json`);
-
-      handleAction(null);
 
       enqueue({ content: 'Successfully backed up account to json keyfile!', type: 'success' });
     } catch (e) {
@@ -44,12 +44,14 @@ export function AccountsOverviewCard (props: any) {
       // forget it from keyring
       keyring.forgetAccount(address);
 
-      handleAction(null);
-
       history.push('/');
     } catch (e) {
       enqueue({ content: e.message, type: 'error' });
     }
+  };
+
+  const navToBalances = () => {
+    history.push(`/manageAccounts/${address}/balances`);
   };
 
   const navToTransfer = () => {
@@ -67,8 +69,8 @@ export function AccountsOverviewCard (props: any) {
             <Input onChange={handler(setPassword)} type='password' value={password} />
             <StackedHorizontal>
               <WithSpaceBetween>
-                <StyledLinkButton onClick={() => handleAction(null)}><Icon name='remove' color='red' /> <FadedText>Cancel</FadedText></StyledLinkButton>
-                <StyledLinkButton onClick={handleBackup}><Icon name='checkmark' color='green' /> <FadedText>Confirm Backup</FadedText></StyledLinkButton>
+                <StyledLinkButton onClick={handleAction} data-action='cancel'><Icon name='remove' color='red' /> <FadedText>Cancel</FadedText></StyledLinkButton>
+                <StyledLinkButton onClick={handleAction} data-action='backup'><Icon name='checkmark' color='green' /> <FadedText>Confirm Backup</FadedText></StyledLinkButton>
               </WithSpaceBetween>
             </StackedHorizontal>
           </Stacked>
@@ -87,8 +89,8 @@ export function AccountsOverviewCard (props: any) {
           <FadedText> You can restore this later from your mnemonic phrase or json backup file. </FadedText>
           <Card.Description>
             <StackedHorizontal>
-              <StyledLinkButton onClick={() => handleAction(null)}><Icon name='remove' color='red' /> <FadedText> Cancel </FadedText> </StyledLinkButton>
-              <StyledLinkButton onClick={handleForget}><Icon name='checkmark' color='green' /> <FadedText> Confirm Forget </FadedText> </StyledLinkButton>
+              <StyledLinkButton onClick={handleAction} data-action='cancel'><Icon name='remove' color='red' /> <FadedText> Cancel </FadedText> </StyledLinkButton>
+              <StyledLinkButton onClick={handleAction} data-action='forget'><Icon name='checkmark' color='green' /> <FadedText> Confirm Forget </FadedText> </StyledLinkButton>
             </StackedHorizontal>
           </Card.Description>
         </Stacked>
@@ -100,12 +102,12 @@ export function AccountsOverviewCard (props: any) {
     <React.Fragment>
       <Card height='30rem'>
         {
-          actionType
+          confirmScreen
             ? <React.Fragment>
               <Card.Content>
                 <SubHeader>Are You Sure?</SubHeader>
                 {
-                  actionType === 'backup'
+                  confirmScreen === 'backup'
                     ? renderConfirmBackup()
                     : renderConfirmForget()
                 }
@@ -115,7 +117,7 @@ export function AccountsOverviewCard (props: any) {
               <Card.Content>
                 <AddressSummary address={address} detailed name={name} size='small' />
                 <Margin bottom />
-                <StackedHorizontal><AccountsOverviewDetailed address={address} handleBackup={() => handleAction('backup')} handleForget={() => handleAction('forget')} name={name} /></StackedHorizontal>
+                <StackedHorizontal><StyledLinkButton onClick={navToBalances}>Show More</StyledLinkButton></StackedHorizontal>
                 <WithSpaceAround>
                   <StackedHorizontal>
                     <StyledLinkButton onClick={navToTransfer}>
@@ -125,11 +127,11 @@ export function AccountsOverviewCard (props: any) {
                   </StackedHorizontal>
                   <Margin bottom />
                   <StackedHorizontal>
-                    <StyledLinkButton onClick={() => handleAction('forget')}>
+                    <StyledLinkButton onClick={handleAction} data-action='forget'>
                       <Icon name='remove' />
                       Forget
                       </StyledLinkButton>
-                    <StyledLinkButton onClick={() => handleAction('backup')}>
+                    <StyledLinkButton onClick={handleAction} data-action='backup'>
                       <Icon name='arrow alternate circle down' />
                       Backup
                     </StyledLinkButton>

@@ -29,7 +29,7 @@ const Options = (props: Props) => {
   };
 
   const navToBalance = () => {
-    history.push(`/manageAccounts/${currentAccount}/balance`);
+    history.push(`/manageAccounts/${currentAccount}/balances`);
   };
 
   const navToStaking = () => {
@@ -53,7 +53,7 @@ export function Accounts (props: Props) {
         <Route path='/manageAccounts/:currentAccount/overview' component={AccountsOverview} />
         <Route path='/manageAccounts/:currentAccount/balances' component={AccountsOverviewDetailed} />
         <Route path='/manageAccounts/:currentAccount/staking' component={StakingOptions} />
-        <Redirect from='/manageAccounts/:currentAccount' to='/manageAccounts/:currentAccount/staking' />
+        <Redirect from='/manageAccounts/:currentAccount' to='/manageAccounts/:currentAccount/overview' />
       </Switch>
     </React.Fragment>
   );
