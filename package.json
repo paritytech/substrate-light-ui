@@ -43,10 +43,10 @@
     "semver": "^6.0.0"
   },
   "resolutions": {
-    "@polkadot/api": "^0.82.0-beta.30",
-    "@polkadot/api-contract": "^0.82.0-beta.30",
+    "@polkadot/api": "^0.82.0-beta.53",
+    "@polkadot/api-contract": "^0.82.0-beta.53",
     "@polkadot/keyring": "^0.94.0-beta.5",
-    "@polkadot/types": "^0.82.0-beta.30",
+    "@polkadot/types": "^0.82.0-beta.53",
     "@polkadot/util": "^0.94.0-beta.5",
     "@polkadot/util-crypto": "^0.94.0-beta.5",
     "@types/styled-components": "4.1.3",
