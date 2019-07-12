@@ -4,34 +4,30 @@
 
 import { AppContext } from '@substrate/ui-common';
 import { Container, FadedText, Header, Icon, Step, SubHeader, StackedHorizontal, FlexItem, Margin } from '@substrate/ui-components';
-import React, { useContext, useState } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
-import { fromNullable, none, Option, some } from 'fp-ts/lib/Option';
-// import { fromNullable } from 'fp-ts/lib/Either';
+import React, { useContext, useState, useEffect } from 'react';
+import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 
-interface Props extends RouteComponentProps {}
+import { Bond } from './Bond';
+import { Setup } from './Setup';
+
+interface MatchParams {
+  currentAccount?: string;
+}
+
+interface Props extends RouteComponentProps<MatchParams> {}
 
 export function StakingOptions (props: Props) {
+  // const { match: { params: { currentAccount } } } = props;
   const { system: { properties: { tokenSymbol }, chain } } = useContext(AppContext);
-  const [activeStep, setActiveStep] = useState('setup');
+  const [activeStep, setActiveStep] = useState();
+  const [controller, setController] = useState();
+  const [stash, setStash] = useState();
 
-  // const nextStep = () => {
-  //   switch(activeStep) {
-  //     case 'setup':
-  //       setActiveStep('bond');
-  //       break;
-  //     case 'bond':
-  //       setActiveStep('nominate');
-  //       break;
-  //     case 'nominate':
-  //       setActiveStep('confirm');
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // };
-
-  console.log(setActiveStep);
+  useEffect(() => {
+    const { location } = props;
+    const step = location.pathname.split('/')[4];
+    setActiveStep(step);
+  }, []);
 
   return (
     <Container>
@@ -72,14 +68,11 @@ export function StakingOptions (props: Props) {
             </Step.Group>
           </FlexItem>
           <FlexItem>
-            {
-              // FIX ME this is shite
-              fromNullable(activeStep)
-                .map((activeStep: string) => activeStep === 'setup' ? some('<Setup />') : none)
-                .map((activeStep: Option<string>) => activeStep.toString() === 'bond' ? some('<Bond />') : none)
-                .map((activeStep: Option<string>) => activeStep.toString() === 'nominate' ? some('<Nominate />') : none)
-                .getOrElse(none).toString()
-            }
+            <Switch>
+              <Route path='/manageAccounts/:currentAccount/staking/setup' render={(props) => <Setup stash={stash} controller={controller} setStash={setStash} setController={setController} {...props} /> } />
+              <Route path='/manageAccounts/:currentAccount/staking/bond' component={Bond} />
+              <Redirect from='/manageAccounts/:currentAccount/staking/' to='/manageAccounts/:currentAccount/staking/setup' />
+            </Switch>
           </FlexItem>
         </StackedHorizontal>
     </Container>
