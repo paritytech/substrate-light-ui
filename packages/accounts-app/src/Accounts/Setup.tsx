@@ -3,10 +3,9 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import PolkadotInputAddress from '@polkadot/ui-app/InputAddress';
-import { Balance, Stacked, SubHeader, FlexItem, StyledNavButton, ErrorText } from '@substrate/ui-components';
-import { none, Option, some } from 'fp-ts/lib/Option';
+import { Balance, Stacked, SubHeader, FlexItem, StyledNavButton, ErrorText, SuccessText } from '@substrate/ui-components';
 import { Either, left, right } from 'fp-ts/lib/Either';
-import React, { useState, Dispatch } from 'react';
+import React, { Dispatch } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -37,53 +36,54 @@ type Error = string;
 type Errors = Array<Error>;
 
 interface ValidationProps {
-  errors: Option<Errors>;
+  value: Either<Errors, Accounts>;
 }
 
 function Validation (props: ValidationProps) {
-  const { errors } = props;
+  const { value } = props;
 
-  const renderErrors = (errors: Errors) => {
-    return Object.values(errors).map(error => {
-      return (
-        <React.Fragment>
-          <ErrorText>
-            {error}
-          </ErrorText>
-        </React.Fragment>
-      );
-    });
-  };
+  function renderErrors (errors: Errors) {
+    return (
+      <React.Fragment>
+        {
+          errors.map(error => (
+            <ErrorText>
+              {error}
+            </ErrorText>
+          ))
+        }
+      </React.Fragment>
+    );
+  }
+
+  function renderSuccess (accounts: Accounts) {
+    return (
+      <React.Fragment>
+        <SuccessText>success!</SuccessText>
+      </React.Fragment>
+    );
+  }
 
   return (
     <Stacked>
-      <SubHeader textAlign='left'>Errors</SubHeader>
-      {
-        errors.fold(
-          renderErrors,
-          () => null
-        )
-      }
+      {value.fold(renderErrors, renderSuccess)}
     </Stacked>
   );
 }
 
 export function Setup (props: Props) {
-  const [errors, setErrors] = useState<Option<Errors>>(none);
-  const { controller, setController, setStash, stash } = props;
+  const { controller, history, setController, setStash, stash } = props;
+
+  const status: Either<Errors, Accounts> = validate().fold(
+    (errors: string[]) => left(errors),
+    (accounts: Accounts) => right(accounts)
+  );
 
   const handleNext = () => {
-    const { history } = props;
-
-    validate().fold(
-      (errors: string[]) => setErrors(some(errors)),
-      ({ stash }: Accounts) => {
-        history.push(`/manageAccounts/${stash}/staking/bond`);
-      }
-    );
+    status.isRight() && history.push(`/manageAccounts/${stash}/staking/bond`);
   };
 
-  const validate = (): Either<Errors, Accounts> => {
+  function validate (): Either<Errors, Accounts> {
     const errors = [] as Errors;
     // controlelr should be diff from stash
     if (controller === stash) {
@@ -94,11 +94,8 @@ export function Setup (props: Props) {
 
     // stash account should have significantly more balance than controller
 
-    return errors.length ? left(errors) : right({
-      stash,
-      controller
-    });
-  };
+    return errors.length ? left(errors) : right({ stash, controller } as Accounts);
+  }
 
   return (
     <React.Fragment>
@@ -126,7 +123,7 @@ export function Setup (props: Props) {
           <Balance address={controller} />
         </FlexItem>
         <FlexItem>
-          <Validation errors={errors} />
+          <Validation value={status} />
         </FlexItem>
         <FlexItem>
           <StyledNavButton onClick={handleNext}>Next</StyledNavButton>
