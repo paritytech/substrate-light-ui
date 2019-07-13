@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import PolkadotInputAddress from '@polkadot/ui-app/InputAddress';
-import { Balance, Stacked, SubHeader, FlexItem, StyledNavButton, ErrorText, SuccessText } from '@substrate/ui-components';
+import { Balance, Icon, ErrorText, FlexItem, Stacked, StyledNavButton, SubHeader } from '@substrate/ui-components';
 import { Either, left, right } from 'fp-ts/lib/Either';
 import React, { Dispatch } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -59,7 +59,7 @@ function Validation (props: ValidationProps) {
   function renderSuccess (accounts: Accounts) {
     return (
       <React.Fragment>
-        <SuccessText>success!</SuccessText>
+        <Icon name='checkmark' />
       </React.Fragment>
     );
   }
@@ -90,8 +90,11 @@ export function Setup (props: Props) {
       errors.push('Controller account must be different from Stash account!');
     }
 
+    // TODO first do the PR that'll move account related queries to user context. avoids duplicating balance calls everywhere.
+    // https://github.com/paritytech/substrate-light-ui/pull/415
+    //
     // both should have a decent amount of balance.
-
+    //
     // stash account should have significantly more balance than controller
 
     return errors.length ? left(errors) : right({ stash, controller } as Accounts);
