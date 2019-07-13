@@ -6,7 +6,7 @@ import { DerivedStaking } from '@polkadot/api-derive/types';
 import { AccountId, Balance, Exposure } from '@polkadot/types';
 import { formatBalance } from '@polkadot/util';
 import { AppContext } from '@substrate/ui-common';
-import { AddressSummary, Container, Grid, Loading, SubHeader, WithSpace } from '@substrate/ui-components';
+import { AddressSummary, Card, Container, Grid, Loading, SubHeader, WithSpace } from '@substrate/ui-components';
 import { fromNullable } from 'fp-ts/lib/Option';
 import React, { useEffect, useState, useContext } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -73,7 +73,7 @@ export function AccountsOverviewDetailed (props: Props) {
 
   const renderDetails = () => {
     return (
-      <React.Fragment>
+      <Card>
         {
           fromNullable(state)
             .mapNullable(({ controllerId, stashId, stakers, stashActive, stashTotal }) => ({ address: currentAccount, controllerId, stashId, stakers, stashActive, stashTotal }))
@@ -81,13 +81,13 @@ export function AccountsOverviewDetailed (props: Props) {
             .getOrElse(<Loading active />)
         }
         {renderNominationDetails()}
-      </React.Fragment>
+      </Card>
     );
   };
 
   const renderNominationDetails = () => {
     return (
-      <Grid.Column width='5'>
+      <Card>
         <WithSpace>
           <Grid.Row>
             <SubHeader noMargin>Currently Nominating:</SubHeader>
@@ -110,19 +110,19 @@ export function AccountsOverviewDetailed (props: Props) {
           <Grid.Row>
             <SubHeader> Reward Destination: </SubHeader>
           </Grid.Row>
-        </WithSpace >
-      </Grid.Column>
+        </WithSpace>
+      </Card>
     );
   };
 
   const renderGeneral = () => {
     return (
-      <React.Fragment>
+      <Grid.Row>
         <Grid.Column stretched width='6'>
-          <AddressSummary address={currentAccount} detailed isNominator={state && state.isStashNominating} isValidator={state && state.isStashValidating} name={name} size='medium' />
+          <Card><AddressSummary address={currentAccount} detailed isNominator={state && state.isStashNominating} isValidator={state && state.isStashValidating} name={name} size='medium' /></Card>
         </Grid.Column>
-        {renderDetails()}
-      </React.Fragment>
+        <Grid.Column stretched width='6'>{renderDetails()}</Grid.Column>
+      </Grid.Row>
     );
   };
 

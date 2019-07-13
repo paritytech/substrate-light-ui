@@ -3,10 +3,14 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { isUndefined } from '@polkadot/util';
-import { Dropdown, DropdownProps, Input, Stacked, SubHeader, WithSpaceAround } from '@substrate/ui-components';
+import { AppContext, TxQueueContext } from '@substrate/ui-common';
+import { Dropdown, DropdownProps, Input, Stacked, SubHeader, WithSpaceAround, StyledNavButton } from '@substrate/ui-components';
 import BN from 'bn.js';
-import React, { useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
+import { Subscription, pipe, Observable } from 'rxjs';
+import { first, zip } from 'rxjs/operators';
+import { Balance } from '@polkadot/types';
 
 interface MatchParams {
   currentAccount?: string;
@@ -29,14 +33,34 @@ export const rewardDestinationOptions = [
 ];
 
 export function Bond (props: Props) {
+  const { controller, stash } = props;
+  const { api, keyring } = useContext(AppContext);
+  const { enqueue, txQueue } = useContext(TxQueueContext);
   const [bond, setBond] = useState<BN>(new BN(0));
   const [destination, setDestination] = useState<RewardDestinationOption>();
+
+  useEffect(() => {
+    // const feesSubscription = zip(
+    //   api.consts.balances.transactionBaseFee(),
+    //   api.consts.balances.transactionByteFee()
+    // )
+  }, [])
+
+  const handleConfirmBond = () => {
+    enqueue(api.tx.staking.bond(controller, bond, destination), {
+      allFees: new BN(0),
+      allTotal: new BN(0),
+      amount: new Balance(bond),
+      recipientAddress: controller,
+      senderPair: keyring.getPair(stash)
+    });
+  };
+
+  const handleSetBond = ({ currentTarget: { value } }: React.SyntheticEvent<HTMLInputElement>) => !isUndefined(value) ? setBond(new BN(value)) : setBond(new BN(0));
 
   const onSelect = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
     setDestination(data as RewardDestinationOption);
   };
-
-  const handleSetBond = ({ currentTarget: { value } }: React.SyntheticEvent<HTMLInputElement>) => !isUndefined(value) ? setBond(new BN(value)) : setBond(new BN(0));
 
   // TODO: show the selected bond amount as percentage of total balance
 
@@ -61,6 +85,9 @@ export function Bond (props: Props) {
           options={rewardDestinationOptions}
           value={destination && destination.text}
         />
+      </WithSpaceAround>
+      <WithSpaceAround>
+        <StyledNavButton onClick={handleConfirmBond}>Confirm</StyledNavButton>
       </WithSpaceAround>
     </Stacked>
   );
