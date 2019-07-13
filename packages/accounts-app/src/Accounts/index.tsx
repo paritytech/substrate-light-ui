@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 
 import { AccountsOverview } from './AccountsOverview';
-import { StakingOptions } from './StakingOptions';
+import { StakingOptions } from './Staking';
 import { AccountsOverviewDetailed } from './AccountsOverviewDetailed';
 
 interface MatchParams {
@@ -53,7 +53,7 @@ export function Accounts (props: Props) {
         <Route path='/manageAccounts/:currentAccount/overview' component={AccountsOverview} />
         <Route path='/manageAccounts/:currentAccount/balances' component={AccountsOverviewDetailed} />
         <Route path='/manageAccounts/:currentAccount/staking' component={StakingOptions} />
-        <Redirect from='/manageAccounts/:currentAccount' to='/manageAccounts/:currentAccount/overview' />
+        <Redirect from='/manageAccounts/:currentAccount' to='/manageAccounts/:currentAccount/staking/bond' />
       </Switch>
     </React.Fragment>
   );

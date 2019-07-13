@@ -5,7 +5,7 @@
 import PolkadotInputAddress from '@polkadot/ui-app/InputAddress';
 import { Balance, Icon, ErrorText, FlexItem, Stacked, StyledNavButton, SubHeader } from '@substrate/ui-components';
 import { Either, left, right } from 'fp-ts/lib/Either';
-import React, { Dispatch } from 'react';
+import React, { Dispatch, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -72,15 +72,23 @@ function Validation (props: ValidationProps) {
 }
 
 export function Setup (props: Props) {
-  const { controller, history, setController, setStash, stash } = props;
+  const { history } = props;
+  const [controller, setController] = useState();
+  const [stash, setStash] = useState();
 
   const status: Either<Errors, Accounts> = validate().fold(
-    (errors: string[]) => left(errors),
+    (errors: Errors) => left(errors),
     (accounts: Accounts) => right(accounts)
   );
 
   const handleNext = () => {
-    status.isRight() && history.push(`/manageAccounts/${stash}/staking/bond`);
+    status.fold(
+      () => { /* */ },
+      ({ controller, stash }: Accounts) => history.push(`/manageAccounts/${stash}/staking/bond`, {
+        controller,
+        stash
+      })
+    );
   };
 
   function validate (): Either<Errors, Accounts> {
