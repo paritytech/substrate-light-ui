@@ -53,7 +53,7 @@ export function Accounts (props: Props) {
         <Route path='/manageAccounts/:currentAccount/overview' component={AccountsOverview} />
         <Route path='/manageAccounts/:currentAccount/balances' component={AccountsOverviewDetailed} />
         <Route path='/manageAccounts/:currentAccount/staking' component={StakingOptions} />
-        <Redirect from='/manageAccounts/:currentAccount' to='/manageAccounts/:currentAccount/staking/bond' />
+        <Redirect from='/manageAccounts/:currentAccount' to='/manageAccounts/:currentAccount/staking/overview' />
       </Switch>
     </React.Fragment>
   );

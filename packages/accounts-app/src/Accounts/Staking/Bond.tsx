@@ -2,15 +2,18 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { SubmittableExtrinsic } from '@polkadot/api/SubmittableExtrinsic';
+import { DerivedFees, DerivedBalances } from '@polkadot/api-derive/types';
+import { Index, getTypeRegistry } from '@polkadot/types';
 import { isUndefined } from '@polkadot/util';
-import { AppContext, TxQueueContext } from '@substrate/ui-common';
+import { validate } from '../../validate';
+import { AppContext, AlertsContext, TxQueueContext } from '@substrate/ui-common';
 import { Dropdown, DropdownProps, Input, Stacked, SubHeader, WithSpaceAround, StyledNavButton } from '@substrate/ui-components';
 import BN from 'bn.js';
 import React, { useContext, useState, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { Subscription, pipe, Observable } from 'rxjs';
-import { first, zip } from 'rxjs/operators';
-import { Balance } from '@polkadot/types';
+import { Subscription, Observable, zip } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 interface MatchParams {
   currentAccount?: string;
@@ -33,27 +36,67 @@ export const rewardDestinationOptions = [
 ];
 
 export function Bond (props: Props) {
-  const { controller, stash } = props;
-  const { api, keyring } = useContext(AppContext);
-  const { enqueue, txQueue } = useContext(TxQueueContext);
+  const { api } = useContext(AppContext);
+  const { enqueue: alert } = useContext(AlertsContext);
+  const { enqueue } = useContext(TxQueueContext);
   const [bond, setBond] = useState<BN>(new BN(0));
+  const [controllerBalance, setControllerBalance] = useState<DerivedBalances>();
+  const [stashBalance, setStashBalance] = useState<DerivedBalances>();
   const [destination, setDestination] = useState<RewardDestinationOption>();
+  const [fees, setFees] = useState<DerivedFees>();
+  const [nonce, setNonce] = useState<Index>();
 
+  const { history } = props;
+  const { controller, stash } = history.location.state;
+
+  // use api.consts when it is availabe in @polkadot/api
   useEffect(() => {
-    // const feesSubscription = zip(
-    //   api.consts.balances.transactionBaseFee(),
-    //   api.consts.balances.transactionByteFee()
-    // )
-  }, [])
+    if (!stash) {
+      return;
+    }
+
+    const subscription: Subscription = zip(
+      api.derive.balances.fees() as Observable<DerivedFees>,
+      api.derive.balances.votingBalance(stash) as Observable<DerivedBalances>,
+      api.derive.balances.votingBalance(controller) as Observable<DerivedBalances>,
+      api.query.system.accountNonce(stash) as Observable<Index>
+    ).pipe(
+      take(1)
+    ).subscribe(([fees, stashBalance, controllerBalance, nonce]) => {
+      setControllerBalance(controllerBalance);
+      setStashBalance(stashBalance);
+      setFees(fees);
+      setNonce(nonce);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [stash, controller]);
 
   const handleConfirmBond = () => {
-    enqueue(api.tx.staking.bond(controller, bond, destination), {
-      allFees: new BN(0),
-      allTotal: new BN(0),
-      amount: new Balance(bond),
-      recipientAddress: controller,
-      senderPair: keyring.getPair(stash)
-    });
+    if (isUndefined(fees)) {
+      alert({ type: 'error', content: 'calculating fees...please try again in a bit.' });
+      return;
+    }
+
+    const info = {
+      amountAsString: bond.toString(),
+      accountNonce: nonce,
+      currentBalance: stashBalance,
+      fees,
+      recipientBalance:
+      controllerBalance,
+      currentAccount: stash,
+      recipientAddress: controller
+    };
+
+    const method = api.tx.staking.bond(controller, bond, destination);
+    const extrinsic = new (getTypeRegistry().getOrThrow('Extrinsic'))(method) as SubmittableExtrinsic<'rxjs'>;
+    const extrinsicDetails = validate(info, api);
+
+    extrinsicDetails.fold(
+      (errors: any) => alert({ type: 'error', content: errors }),
+      (extrinsicDetails: any) => enqueue(extrinsic, extrinsicDetails)
+    );
   };
 
   const handleSetBond = ({ currentTarget: { value } }: React.SyntheticEvent<HTMLInputElement>) => !isUndefined(value) ? setBond(new BN(value)) : setBond(new BN(0));
@@ -73,7 +116,6 @@ export function Bond (props: Props) {
           label='Set Amount to Stake.'
           onChange={handleSetBond}
           placholder='The total amount of the Stash balance that will be at stake in any forthcoming eras (rewards are distributed in proportion to stake).'
-          withLabel
           value={bond.toNumber()}
           />
       </WithSpaceAround>
