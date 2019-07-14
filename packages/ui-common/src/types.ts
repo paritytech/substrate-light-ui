@@ -26,18 +26,15 @@ export interface SubResults {
   recipientBalance: DerivedBalances;
 }
 
+export interface WithExtrinsic {
+  extrinsic: SubmittableExtrinsic<'rxjs'>;
+}
+
 /**
  * Amount as Balance
  */
 export interface WithAmount {
   amount: Balance;
-}
-
-/**
- * Amount as Balance and Extrinsic
- */
-export interface WithAmountExtrinsic extends WithAmount {
-  extrinsic: SubmittableExtrinsic<'rxjs'>;
 }
 
 /**
@@ -57,10 +54,10 @@ export interface WithDerived {
 /**
  * Everything above
  */
-export type AllExtrinsicData = SubResults & UserInputs & WithAmountExtrinsic & WithDerived;
+export type AllExtrinsicData = SubResults & UserInputs & WithExtrinsic & WithAmount & WithDerived;
 
 /**
  * Form errors and warnings
  */
-export type Errors = Partial<Record<keyof (SubResults & UserInputs & WithAmountExtrinsic), string>>;
+export type Errors = Partial<Record<keyof (SubResults & UserInputs & WithExtrinsic & WithAmount), string>>;
 export type Warnings = string[];

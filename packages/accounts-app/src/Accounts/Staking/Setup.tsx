@@ -3,11 +3,14 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import PolkadotInputAddress from '@polkadot/ui-app/InputAddress';
-import { Balance, Icon, ErrorText, FlexItem, Stacked, StyledNavButton, SubHeader, WithSpace } from '@substrate/ui-components';
+import { Balance, FlexItem, Stacked, StyledNavButton, SubHeader } from '@substrate/ui-components';
 import { Either, left, right } from 'fp-ts/lib/Either';
 import React, { Dispatch, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
+
+import { Validation } from './Validation';
+import { Accounts, Errors } from '../types';
 
 export const InputAddress = styled(PolkadotInputAddress)`
   .dropdown {
@@ -25,50 +28,6 @@ interface Props extends RouteComponentProps<MatchParams> {
   controller: string;
   setStash: Dispatch<any>;
   stash: string;
-}
-
-type Accounts = {
-  stash: string,
-  controller: string
-};
-
-type Error = string;
-type Errors = Array<Error>;
-
-interface ValidationProps {
-  value: Either<Errors, Accounts>;
-}
-
-function Validation (props: ValidationProps) {
-  const { value } = props;
-
-  function renderErrors (errors: Errors) {
-    return (
-      <WithSpace>
-        {
-          errors.map(error => (
-            <ErrorText key={error}>
-              {error}
-            </ErrorText>
-          ))
-        }
-      </WithSpace>
-    );
-  }
-
-  function renderSuccess (accounts: Accounts) {
-    return (
-      <WithSpace>
-        <Icon name='checkmark' />
-      </WithSpace>
-    );
-  }
-
-  return (
-    <Stacked>
-      {value.fold(renderErrors, renderSuccess)}
-    </Stacked>
-  );
 }
 
 export function Setup (props: Props) {

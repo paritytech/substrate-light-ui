@@ -3,15 +3,14 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import ApiRx from '@polkadot/api/rx';
-import { SubmittableExtrinsic } from '@polkadot/api/SubmittableExtrinsic';
-import { Balance, getTypeRegistry } from '@polkadot/types';
+import { Balance } from '@polkadot/types';
 import { MAX_SIZE_BYTES, MAX_SIZE_MB } from '@polkadot/ui-signer/Checks/constants';
 import { compactToU8a } from '@polkadot/util';
 import BN from 'bn.js';
 import { Either, left, right } from 'fp-ts/lib/Either';
 import { none, some } from 'fp-ts/lib/Option';
 
-import { AllExtrinsicData, Errors, SubResults, UserInputs, WithAmount, WithAmountExtrinsic } from '../types';
+import { AllExtrinsicData, Errors, SubResults, UserInputs, WithAmount, WithExtrinsic } from '../types';
 
 const LENGTH_PUBLICKEY = 32 + 1; // publicKey + prefix
 const LENGTH_SIGNATURE = 64;
@@ -21,7 +20,7 @@ const SIGNATURE_SIZE = LENGTH_PUBLICKEY + LENGTH_SIGNATURE + LENGTH_ERA;
 /**
  * Make sure the amount (as a BN) is correct.
  */
-function validateAmount (values: SubResults & UserInputs): Either<Errors, SubResults & UserInputs & WithAmount> {
+function validateAmount (values: SubResults & UserInputs & WithExtrinsic): Either<Errors, SubResults & UserInputs & WithExtrinsic & WithAmount> {
   const { amountAsString, ...rest } = values;
   const amount = new Balance(amountAsString);
 
@@ -33,14 +32,14 @@ function validateAmount (values: SubResults & UserInputs): Either<Errors, SubRes
     return left({ amount: 'Please make sure you are sending more than 0 balance.' });
   }
 
-  return right({ amount, ...rest } as SubResults & UserInputs & WithAmount);
+  return right({ amount, ...rest } as SubResults & UserInputs & WithExtrinsic & WithAmount);
 }
 
 /**
  * Make sure derived validations (fees, minimal amount) are correct.
  * @see https://github.com/polkadot-js/apps/blob/master/packages/ui-signer/src/Checks/index.tsx#L63-L111
  */
-function validateDerived (values: SubResults & UserInputs & WithAmountExtrinsic): Either<Errors, AllExtrinsicData> {
+function validateDerived (values: SubResults & UserInputs & WithExtrinsic & WithAmount): Either<Errors, AllExtrinsicData> {
   const { accountNonce, amount, currentBalance, extrinsic, fees, recipientBalance } = values;
 
   const txLength = SIGNATURE_SIZE + compactToU8a(accountNonce).length + extrinsic.encodedLength;
@@ -84,20 +83,24 @@ function validateDerived (values: SubResults & UserInputs & WithAmountExtrinsic)
  * Add the extrinsic object, no validation done here.
  */
 function validateExtrinsic (api: ApiRx) {
-  return function (values: SubResults & UserInputs & WithAmount): Either<Errors, SubResults & UserInputs & WithAmountExtrinsic> {
-    const { amount, recipientAddress } = values;
-    const method = api.tx.balances.transfer(recipientAddress, amount);
-    // FIXME this can't possibly the best way to do this? maybe use createSubmittableExtrinsic?
-    const extrinsic = new (getTypeRegistry().getOrThrow('Extrinsic'))(method) as SubmittableExtrinsic<'rxjs'>;
+  return function (values: SubResults & UserInputs & WithExtrinsic & WithAmount): Either<Errors, SubResults & UserInputs & WithExtrinsic & WithAmount> {
+    const { extrinsic } = values;
 
-    return right({ ...values, extrinsic } as SubResults & UserInputs & WithAmountExtrinsic);
+    const errors = {} as Errors;
+    if (!extrinsic) {
+      // FIXME: code should never reach here
+      errors.extrinsic = 'Extrinsic was not defined. Please refresh and try again or raise an issue.';
+      left(errors);
+    }
+
+    return right(values);
   };
 }
 
 /**
  * Make sure the subscription results are here.
  */
-function validateSubResults (values: Partial<SubResults & UserInputs>): Either<Errors, SubResults & UserInputs> {
+function validateSubResults(values: Partial<SubResults & WithExtrinsic & UserInputs>): Either<Errors, SubResults & WithExtrinsic & UserInputs> {
   const { accountNonce, currentBalance, fees, recipientBalance, ...rest } = values;
   const errors = {} as Errors;
 
@@ -119,14 +122,14 @@ function validateSubResults (values: Partial<SubResults & UserInputs>): Either<E
 
   return Object.keys(errors).length
     ? left(errors)
-    : right({ accountNonce, currentBalance, fees, recipientBalance, ...rest } as SubResults & UserInputs);
+    : right({ accountNonce, currentBalance, fees, recipientBalance, ...rest } as SubResults & WithExtrinsic & UserInputs);
 }
 
 /**
  * Make sure everything the user inputted is correct.
  */
-function validateUserInputs (values: Partial<SubResults & UserInputs>): Either<Errors, Partial<SubResults> & UserInputs> {
-  const { amountAsString, currentAccount, recipientAddress, ...rest } = values;
+function validateUserInputs (values: Partial<SubResults & UserInputs & WithExtrinsic>): Either<Errors, Partial<SubResults> & UserInputs> {
+  const { amountAsString, currentAccount, recipientAddress, extrinsic, ...rest } = values;
   const errors = {} as Errors;
 
   if (!currentAccount) {
@@ -147,7 +150,7 @@ function validateUserInputs (values: Partial<SubResults & UserInputs>): Either<E
 
   return Object.keys(errors).length
     ? left(errors)
-    : right({ amountAsString, currentAccount, recipientAddress, ...rest } as Partial<SubResults> & UserInputs);
+    : right({ amountAsString, currentAccount, recipientAddress, extrinsic, ...rest } as Partial<SubResults> & UserInputs);
 }
 
 /**
@@ -184,7 +187,7 @@ export function validateWarnings (values: AllExtrinsicData) {
  * from the `.chain()` syntax.
  */
 export function validate (
-  values: Partial<UserInputs & SubResults>,
+  values: Partial<UserInputs & WithExtrinsic & SubResults>,
   api: ApiRx
 ): Either<Errors, AllExtrinsicData> {
 

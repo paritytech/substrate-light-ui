@@ -90,6 +90,7 @@ export function TxQueueContextProvider (props: Props) {
    * Add a tx to the queue
    */
   const enqueue = (extrinsic: Extrinsic, details: ExtrinsicDetails) => {
+    debugger;
     const extrinsicId = txCounter;
     setTxCounter(txCounter + 1);
 
@@ -114,7 +115,6 @@ export function TxQueueContextProvider (props: Props) {
    * Sign and send the tx with id `extrinsicId`
    */
   const submit = (extrinsicId: number) => {
-    debugger;
     const pendingExtrinsic = txQueue.find((tx) => tx.id === extrinsicId);
 
     if (!pendingExtrinsic) {

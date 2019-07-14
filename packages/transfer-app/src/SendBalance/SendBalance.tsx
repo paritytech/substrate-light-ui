@@ -33,7 +33,8 @@ export function SendBalance (props: Props) {
   const [fees, setFees] = useState();
   const [recipientBalance, setRecipientBalance] = useState();
 
-  const values = validate({ amountAsString, accountNonce, currentBalance, fees, recipientBalance, currentAccount, recipientAddress }, api);
+  const extrinsic = api.tx.balances.transfer(recipientAddress, amountAsString);
+  const values = validate({ amountAsString, accountNonce, currentBalance, extrinsic, fees, recipientBalance, currentAccount, recipientAddress }, api);
 
   const changeCurrentAccount = (newCurrentAccount: string) => {
     history.push(`/transfer/${newCurrentAccount}/${recipientAddress}`);
@@ -68,13 +69,12 @@ export function SendBalance (props: Props) {
   }, [currentAccount, recipientAddress]);
 
   const handleSubmit = () => {
-    const values = validate({ amountAsString, accountNonce, currentBalance, fees, recipientBalance, currentAccount, recipientAddress }, api);
+    const values = validate({ amountAsString, accountNonce, currentBalance, extrinsic, fees, recipientBalance, currentAccount, recipientAddress }, api);
 
     values.fold(
-      () => {/* Do nothing if error */ },
+      (error) => { console.error(error); },
       (allExtrinsicData: AllExtrinsicData) => {
         // If everything is correct, then submit the extrinsic
-
         const { extrinsic, amount, allFees, allTotal, recipientAddress: rcptAddress } = allExtrinsicData;
 
         enqueue(extrinsic, { amount, allFees, allTotal, senderPair: keyring.getPair(currentAccount), recipientAddress: rcptAddress });

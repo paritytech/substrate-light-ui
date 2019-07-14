@@ -4,7 +4,7 @@
 
 import { SubmittableExtrinsic } from '@polkadot/api/SubmittableExtrinsic';
 import { DerivedFees, DerivedBalances } from '@polkadot/api-derive/types';
-import { Index, getTypeRegistry } from '@polkadot/types';
+import { Index } from '@polkadot/types';
 import { isUndefined } from '@polkadot/util';
 import { AppContext, AlertsContext, TxQueueContext, validate } from '@substrate/ui-common';
 import { Dropdown, DropdownProps, Input, Stacked, SubHeader, WithSpaceAround, StyledNavButton } from '@substrate/ui-components';
@@ -13,6 +13,8 @@ import React, { useContext, useState, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Subscription, Observable, zip } from 'rxjs';
 import { take } from 'rxjs/operators';
+
+import { Validation } from './Validation';
 
 interface MatchParams {
   currentAccount?: string;
@@ -35,7 +37,7 @@ export const rewardDestinationOptions = [
 ];
 
 export function Bond (props: Props) {
-  const { api } = useContext(AppContext);
+  const { api, keyring } = useContext(AppContext);
   const { enqueue: alert } = useContext(AlertsContext);
   const { enqueue } = useContext(TxQueueContext);
   const [bond, setBond] = useState<BN>(new BN(0));
@@ -47,6 +49,9 @@ export function Bond (props: Props) {
 
   const { history } = props;
   const { controller, stash } = history.location.state;
+
+  const extrinsic = api.tx.staking.bond(stash, bond, 0);
+  const values = validate({ amountAsString: bond.toString(), accountNonce: nonce, currentBalance: stashBalance, extrinsic, fees, recipientBalance: controllerBalance, currentAccount: stash, recipientAddress: controller }, api);
 
   // use api.consts when it is availabe in @polkadot/api
   useEffect(() => {
@@ -77,24 +82,27 @@ export function Bond (props: Props) {
       return;
     }
 
-    const info = {
-      amountAsString: bond.toString(),
-      accountNonce: nonce,
-      currentBalance: stashBalance,
-      fees,
-      recipientBalance:
-      controllerBalance,
-      currentAccount: stash,
-      recipientAddress: controller
-    };
+    if (isUndefined(stash)) {
+      return;
+    }
 
-    const method = api.tx.staking.bond(controller, bond, destination);
-    const extrinsic = new (getTypeRegistry().getOrThrow('Extrinsic'))(method) as SubmittableExtrinsic<'rxjs'>;
-    const extrinsicDetails = validate(info, api);
+    if (isUndefined(destination)) {
+      return;
+    }
 
-    extrinsicDetails.fold(
+    const extrinsic = api.tx.staking.bond(stash, bond, destination.value);
+    console.log(extrinsic);
+    debugger;
+    const values = validate({ amountAsString: bond.toString(), accountNonce: nonce, currentBalance: stashBalance, extrinsic, fees, recipientBalance: controllerBalance, currentAccount: stash, recipientAddress: controller }, api);
+    values.fold(
       (errors: any) => alert({ type: 'error', content: errors }),
-      (extrinsicDetails: any) => enqueue(extrinsic, extrinsicDetails)
+      (allExtrinsicData: any) => {
+        const { extrinsic, amount, allFees, allTotal, recipientAddress: controller } = allExtrinsicData;
+
+        const details = { amount, allFees, allTotal, senderPair: keyring.getPair(stash), recipientAddress: controller };
+
+        enqueue(extrinsic, details);
+      }
     );
   };
 
@@ -129,6 +137,9 @@ export function Bond (props: Props) {
       </WithSpaceAround>
       <WithSpaceAround>
         <StyledNavButton onClick={handleConfirmBond}>Confirm</StyledNavButton>
+      </WithSpaceAround>
+      <WithSpaceAround>
+        <Validation values={values} />
       </WithSpaceAround>
     </Stacked>
   );
