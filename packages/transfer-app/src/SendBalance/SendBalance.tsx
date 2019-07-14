@@ -4,7 +4,7 @@
 
 import { DerivedBalances, DerivedFees } from '@polkadot/api-derive/types';
 import { Index } from '@polkadot/types';
-import { AppContext, handler, TxQueueContext } from '@substrate/ui-common';
+import { AppContext, handler, TxQueueContext, validate, AllExtrinsicData } from '@substrate/ui-common';
 import { Balance, Form, Input, NavButton, StackedHorizontal, SubHeader } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -13,7 +13,6 @@ import { take } from 'rxjs/operators';
 
 import { CenterDiv, InputAddress, LeftDiv, RightDiv } from '../Transfer.styles';
 import { MatchParams } from '../types';
-import { validate } from './validate';
 import { Validation } from './Validation';
 
 interface SendMatchParams extends MatchParams {
@@ -73,7 +72,7 @@ export function SendBalance (props: Props) {
 
     values.fold(
       () => {/* Do nothing if error */ },
-      (allExtrinsicData) => {
+      (allExtrinsicData: AllExtrinsicData) => {
         // If everything is correct, then submit the extrinsic
 
         const { extrinsic, amount, allFees, allTotal, recipientAddress: rcptAddress } = allExtrinsicData;

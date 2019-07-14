@@ -3,6 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import ApiRx from '@polkadot/api/rx';
+import { SubmittableExtrinsic } from '@polkadot/api/SubmittableExtrinsic';
 import { Balance, getTypeRegistry } from '@polkadot/types';
 import { MAX_SIZE_BYTES, MAX_SIZE_MB } from '@polkadot/ui-signer/Checks/constants';
 import { compactToU8a } from '@polkadot/util';
@@ -10,8 +11,7 @@ import BN from 'bn.js';
 import { Either, left, right } from 'fp-ts/lib/Either';
 import { none, some } from 'fp-ts/lib/Option';
 
-import { AllExtrinsicData, Errors, SubResults, UserInputs, WithAmount, WithAmountExtrinsic } from './types';
-import { SubmittableExtrinsic } from '@polkadot/api/SubmittableExtrinsic';
+import { AllExtrinsicData, Errors, SubResults, UserInputs, WithAmount, WithAmountExtrinsic } from '../types';
 
 const LENGTH_PUBLICKEY = 32 + 1; // publicKey + prefix
 const LENGTH_SIGNATURE = 64;

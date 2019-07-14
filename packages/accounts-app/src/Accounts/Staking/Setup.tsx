@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import PolkadotInputAddress from '@polkadot/ui-app/InputAddress';
-import { Balance, Icon, ErrorText, FlexItem, Stacked, StyledNavButton, SubHeader } from '@substrate/ui-components';
+import { Balance, Icon, ErrorText, FlexItem, Stacked, StyledNavButton, SubHeader, WithSpace } from '@substrate/ui-components';
 import { Either, left, right } from 'fp-ts/lib/Either';
 import React, { Dispatch, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -44,23 +44,23 @@ function Validation (props: ValidationProps) {
 
   function renderErrors (errors: Errors) {
     return (
-      <React.Fragment>
+      <WithSpace>
         {
           errors.map(error => (
-            <ErrorText>
+            <ErrorText key={error}>
               {error}
             </ErrorText>
           ))
         }
-      </React.Fragment>
+      </WithSpace>
     );
   }
 
   function renderSuccess (accounts: Accounts) {
     return (
-      <React.Fragment>
+      <WithSpace>
         <Icon name='checkmark' />
-      </React.Fragment>
+      </WithSpace>
     );
   }
 

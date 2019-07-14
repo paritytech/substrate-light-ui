@@ -114,6 +114,7 @@ export function TxQueueContextProvider (props: Props) {
    * Sign and send the tx with id `extrinsicId`
    */
   const submit = (extrinsicId: number) => {
+    debugger;
     const pendingExtrinsic = txQueue.find((tx) => tx.id === extrinsicId);
 
     if (!pendingExtrinsic) {
@@ -134,6 +135,8 @@ export function TxQueueContextProvider (props: Props) {
     }
 
     l.log(`Extrinsic #${extrinsicId} is being sent`);
+
+    debugger;
 
     const subscription = extrinsic
       .signAndSend(senderPair) // send the extrinsic
