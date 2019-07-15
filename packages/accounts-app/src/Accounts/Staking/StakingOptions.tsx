@@ -28,44 +28,46 @@ export function StakingOptions (props: Props) {
 
   return (
     <Container>
-      <WithSpace>
-        <Header noMargin>Staking Your {tokenSymbol || 'UNIT'}'s on {chain}.</Header>
-        <FadedText>Staking helps secure the network and also gives you a chance at earning a portion of the rewards, if the Validators you nominate successfully author a block.</FadedText>
-        <SubHeader>Be Careful! You can also get slashed if your Validator misbehaves.</SubHeader>
-      </WithSpace>
+      <Card height='100%'>
+        <WithSpace>
+          <Header noMargin>Staking Your {tokenSymbol || 'UNIT'}'s on {chain}.</Header>
+          <FadedText>Staking helps secure the network and also gives you a chance at earning a portion of the rewards, if the Validators you nominate successfully author a block.</FadedText>
+          <SubHeader>Be Careful! You can also get slashed if your Validator misbehaves.</SubHeader>
+        </WithSpace>
+      </Card>
         <StackedHorizontal alignItems='stretch'>
             <FlexItem>
-            <WithSpaceAround>
-              <Step.Group vertical>
-                <Step active={activeStep === 'setup'}>
-                  <Icon name='truck' />
-                  <Step.Content>
-                    <Step.Title>Account Setup</Step.Title>
-                    <Step.Description>Set up the required accounts</Step.Description>
+              <Card height='100%'>
+                <Step.Group vertical>
+                  <Step active={activeStep === 'setup'}>
+                    <Icon name='truck' />
                     <Step.Content>
-                      You will need to set up a stash and controller.
+                      <Step.Title>Account Setup</Step.Title>
+                      <Step.Description>Set up the required accounts</Step.Description>
+                      <Step.Content>
+                        You will need to set up a stash and controller.
+                      </Step.Content>
                     </Step.Content>
-                  </Step.Content>
-                </Step>
+                  </Step>
 
-                <Step active={activeStep === 'bond'}>
-                  <Icon name='payment' />
-                  <Step.Content>
-                    <Step.Title>Set Bonding Preferences</Step.Title>
-                    <Step.Description>How much do you want to stake? and more.</Step.Description>
-                  </Step.Content>
-                </Step>
+                  <Step active={activeStep === 'bond'}>
+                    <Icon name='payment' />
+                    <Step.Content>
+                      <Step.Title>Set Bonding Preferences</Step.Title>
+                      <Step.Description>How much do you want to stake? and more.</Step.Description>
+                    </Step.Content>
+                  </Step>
 
-                <Step active={activeStep === 'nominate'}>
-                  <Icon name='info' />
-                  <Step.Content>
-                    <Step.Title>Nominate Validator(s)</Step.Title>
-                    <Step.Description>Nominating your funds to a Validator</Step.Description>
-                    <Step.Content> signals that they are trustworthy.</Step.Content>
-                  </Step.Content>
-                </Step>
-              </Step.Group>
-            </WithSpaceAround>
+                  <Step active={activeStep === 'nominate'}>
+                    <Icon name='info' />
+                    <Step.Content>
+                      <Step.Title>Nominate Validator(s)</Step.Title>
+                      <Step.Description>Nominating your funds to a Validator</Step.Description>
+                      <Step.Content> signals that they are trustworthy.</Step.Content>
+                    </Step.Content>
+                  </Step>
+                </Step.Group>
+            </Card>
           </FlexItem>
           <FlexItem>
             <Card>

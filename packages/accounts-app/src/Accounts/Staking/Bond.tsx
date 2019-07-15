@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { SubmittableExtrinsic } from '@polkadot/api/SubmittableExtrinsic';
+// import { SubmittableExtrinsic } from '@polkadot/api/SubmittableExtrinsic';
 import { DerivedFees, DerivedBalances } from '@polkadot/api-derive/types';
 import { Index } from '@polkadot/types';
 import { isUndefined } from '@polkadot/util';
@@ -14,7 +14,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { Subscription, Observable, zip } from 'rxjs';
 import { take } from 'rxjs/operators';
 
-import { Validation } from './Validation';
+// import { Validation } from './Validation';
 
 interface MatchParams {
   currentAccount?: string;
@@ -50,8 +50,8 @@ export function Bond (props: Props) {
   const { history } = props;
   const { controller, stash } = history.location.state;
 
-  const extrinsic = api.tx.staking.bond(stash, bond, 0);
-  const values = validate({ amountAsString: bond.toString(), accountNonce: nonce, currentBalance: stashBalance, extrinsic, fees, recipientBalance: controllerBalance, currentAccount: stash, recipientAddress: controller }, api);
+  // const extrinsic = api.tx.staking.bond(stash, bond, 0);
+  // validate({ amountAsString: bond.toString(), accountNonce: nonce, currentBalance: stashBalance, extrinsic, fees, recipientBalance: controllerBalance, currentAccount: stash, recipientAddress: controller }, api);
 
   // use api.consts when it is availabe in @polkadot/api
   useEffect(() => {
@@ -89,10 +89,11 @@ export function Bond (props: Props) {
     if (isUndefined(destination)) {
       return;
     }
-
+    // @ts-ignore
     const extrinsic = api.tx.staking.bond(stash, bond, destination.value);
     console.log(extrinsic);
     debugger;
+    // @ts-ignore
     const values = validate({ amountAsString: bond.toString(), accountNonce: nonce, currentBalance: stashBalance, extrinsic, fees, recipientBalance: controllerBalance, currentAccount: stash, recipientAddress: controller }, api);
     values.fold(
       (errors: any) => alert({ type: 'error', content: errors }),
@@ -139,7 +140,6 @@ export function Bond (props: Props) {
         <StyledNavButton onClick={handleConfirmBond}>Confirm</StyledNavButton>
       </WithSpaceAround>
       <WithSpaceAround>
-        <Validation values={values} />
       </WithSpaceAround>
     </Stacked>
   );

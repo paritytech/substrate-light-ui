@@ -71,40 +71,37 @@ export function AccountsOverviewDetailed (props: Props) {
     return () => subscription.unsubscribe();
   }, [api]);
 
-  const renderDetails = () => {
+  const renderBalanceDetails = () => {
     return (
-      <Card>
+      <Card height='100%'>
         {
           fromNullable(state)
             .mapNullable(({ controllerId, stashId, stakers, stashActive, stashTotal }) => ({ address: currentAccount, controllerId, stashId, stakers, stashActive, stashTotal }))
             .map((props) => <BalanceOverview address={currentAccount} {...props} />)
             .getOrElse(<Loading active />)
         }
-        {renderNominationDetails()}
       </Card>
     );
   };
 
   const renderNominationDetails = () => {
     return (
-      <Card>
+      <Card height='100%'>
         <WithSpace>
-          <Grid.Row>
-            <SubHeader noMargin>Currently Nominating:</SubHeader>
-              {
-                state!.nominators
-                  ? state!.nominators
-                      .map((address: AccountId) => {
-                        return <AddressSummary
-                          address={address.toString()}
-                          key={address.toString()}
-                          orientation='horizontal'
-                          size='small'
-                        />;
-                      })
-                  : <div>Nobody</div>
-              }
-          </Grid.Row>
+          <SubHeader noMargin>Currently Nominating:</SubHeader>
+            {
+              state!.nominators
+                ? state!.nominators
+                    .map((address: AccountId) => {
+                      return <AddressSummary
+                        address={address.toString()}
+                        key={address.toString()}
+                        orientation='horizontal'
+                        size='small'
+                      />;
+                    })
+                : <div>Nobody</div>
+            }
         </WithSpace>
         <WithSpace>
           <Grid.Row>
@@ -121,7 +118,8 @@ export function AccountsOverviewDetailed (props: Props) {
         <Grid.Column stretched width='6'>
           <Card><AddressSummary address={currentAccount} detailed isNominator={state && state.isStashNominating} isValidator={state && state.isStashValidating} name={name} size='medium' /></Card>
         </Grid.Column>
-        <Grid.Column stretched width='6'>{renderDetails()}</Grid.Column>
+        <Grid.Column stretched width='5'>{renderBalanceDetails()} </Grid.Column>
+        <Grid.Column stretched width='5'>{renderNominationDetails()}</Grid.Column>
       </Grid.Row>
     );
   };

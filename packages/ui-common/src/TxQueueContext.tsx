@@ -21,6 +21,7 @@ export interface ExtrinsicDetails {
   allFees: BN;
   allTotal: BN;
   amount: Balance;
+  methodCall: string;
   recipientAddress: string;
   senderPair: KeyringPair;
 }
