@@ -127,11 +127,7 @@ export function AccountsOverviewDetailed (props: Props) {
   return (
     <Container>
       <Grid columns='16'>
-        {
-          fromNullable(state)
-            .map(() => renderGeneral())
-            .getOrElse(<Loading active inline inverted />)
-        }
+        {state && renderGeneral()}
       </Grid>
     </Container>
   );

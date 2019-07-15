@@ -23,7 +23,7 @@ export function AccountsOverviewCard (props: Props) {
   const [password, setPassword] = useState();
 
   const handleBackup = () => {
-    if (confirmScreen) {
+    if (confirmScreen !== 'backup') {
       setConfirmScreen('backup');
       return;
     }
@@ -48,7 +48,7 @@ export function AccountsOverviewCard (props: Props) {
   };
 
   const handleForget = () => {
-    if (confirmScreen) {
+    if (confirmScreen !== 'forget') {
       setConfirmScreen('forget');
       return;
     }
@@ -82,8 +82,8 @@ export function AccountsOverviewCard (props: Props) {
             <Input onChange={handler(setPassword)} type='password' value={password} />
             <StackedHorizontal>
               <WithSpaceBetween>
-                <StyledLinkButton onClick={handleCancel} data-action='cancel'><Icon name='remove' color='red' /> <FadedText>Cancel</FadedText></StyledLinkButton>
-                <StyledLinkButton onClick={handleBackup} data-action='backup'><Icon name='checkmark' color='green' /> <FadedText>Confirm Backup</FadedText></StyledLinkButton>
+                <StyledLinkButton onClick={handleCancel}><Icon name='remove' color='red' /> <FadedText>Cancel</FadedText></StyledLinkButton>
+                <StyledLinkButton onClick={handleBackup}><Icon name='checkmark' color='green' /> <FadedText>Confirm Backup</FadedText></StyledLinkButton>
               </WithSpaceBetween>
             </StackedHorizontal>
           </Stacked>
@@ -102,8 +102,8 @@ export function AccountsOverviewCard (props: Props) {
           <FadedText> You can restore this later from your mnemonic phrase or json backup file. </FadedText>
           <Card.Description>
             <StackedHorizontal>
-              <StyledLinkButton onClick={handleCancel} data-action='cancel'><Icon name='remove' color='red' /> <FadedText> Cancel </FadedText> </StyledLinkButton>
-              <StyledLinkButton onClick={handleForget} data-action='forget'><Icon name='checkmark' color='green' /> <FadedText> Confirm Forget </FadedText> </StyledLinkButton>
+              <StyledLinkButton onClick={handleCancel}><Icon name='remove' color='red' /> <FadedText> Cancel </FadedText> </StyledLinkButton>
+              <StyledLinkButton onClick={handleForget}><Icon name='checkmark' color='green' /> <FadedText> Confirm Forget </FadedText> </StyledLinkButton>
             </StackedHorizontal>
           </Card.Description>
         </Stacked>
@@ -140,11 +140,11 @@ export function AccountsOverviewCard (props: Props) {
                   </StackedHorizontal>
                   <Margin bottom />
                   <StackedHorizontal>
-                    <StyledLinkButton onClick={handleForget} data-action='forget'>
+                    <StyledLinkButton onClick={handleForget}>
                       <Icon name='remove' />
                       Forget
                       </StyledLinkButton>
-                    <StyledLinkButton onClick={handleBackup} data-action='backup'>
+                    <StyledLinkButton onClick={handleBackup}>
                       <Icon name='arrow alternate circle down' />
                       Backup
                     </StyledLinkButton>
