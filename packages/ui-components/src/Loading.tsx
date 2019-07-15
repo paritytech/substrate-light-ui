@@ -7,15 +7,17 @@ import { Dimmer, Loader } from 'semantic-ui-react';
 
 type LoadingProps = {
   active: boolean,
-  children?: React.ReactNode | string
+  children?: React.ReactNode | string,
+  inline?: boolean,
+  inverted?: boolean
 };
 
 export function Loading (props: LoadingProps) {
-  const { active, children } = props;
+  const { active, children, inline = false, inverted = false } = props;
   return (
     <React.Fragment>
       <Dimmer active={active}>
-        <Loader>
+        <Loader active={active} inline={inline} inverted={inverted}>
           {children}
         </Loader>
       </Dimmer>

@@ -9,7 +9,8 @@ import React from 'react';
 import { DEFAULT_TOKEN_SYMBOL, Margin, StackedHorizontal } from './';
 
 type TxSummaryProps = {
-  amount: BN
+  amount: BN,
+  methodCall: string,
   recipientAddress: string,
   senderAddress: string,
   tokenSymbol?: string
@@ -17,13 +18,14 @@ type TxSummaryProps = {
 
 export function TxSummary ({
   amount,
+  methodCall,
   recipientAddress,
   senderAddress,
   tokenSymbol = DEFAULT_TOKEN_SYMBOL
 }: TxSummaryProps) {
   return (
     <StackedHorizontal>
-      transfer {amount.toString()} {tokenSymbol} from
+      {methodCall} {amount.toString()} {tokenSymbol} from
       {smallIcon(senderAddress)}
       to
       {smallIcon(recipientAddress)}

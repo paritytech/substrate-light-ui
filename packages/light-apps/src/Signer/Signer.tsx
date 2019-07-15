@@ -63,9 +63,10 @@ export function Signer () {
         <Modal.Header color='lightBlue1' textAlign='left'>Sign transaction</Modal.Header>
         <Modal.Content>
           <Stacked alignItems='flex-start'>
-            <p>By signing this transaction you are confirming that you wish to transfer</p>
+            <p>By signing this transaction you are confirming that you wish to: </p>
             <TxSummary
               amount={pendingTx.details.amount}
+              methodCall={pendingTx.extrinsic.method.meta.name.toString()}
               recipientAddress={pendingTx.details.recipientAddress}
               senderAddress={senderPair.address}
             />

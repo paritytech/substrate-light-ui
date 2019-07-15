@@ -44,19 +44,21 @@ const urlChanged = (selectedUrl: string): boolean => {
 };
 
 export function IdentityHeader (props: Props) {
-  const { history, match: { params: { currentAccount } } } = props;
+  const { history, location, match: { params: { currentAccount } } } = props;
   const { enqueue } = useContext(AlertsContext);
+
+  const currentPath = location.pathname.split('/')[1];
 
   // Change account
   const changeCurrentAccount = (account: string) => {
-    history.push(`/governance/${account}`);
+    history.push(`/${currentPath}/${account}`);
   };
 
   const renderPrimaryMenu = () => {
     return (
       <Menu stackable>
         <Switch>
-          <Route path={['/governance', '/transfer']}>
+          <Route path={['/governance', '/manageAccounts', '/transfer']}>
             <Menu.Item fitted>
               <StackedHorizontal>
                 <InputAddress
@@ -95,9 +97,13 @@ export function IdentityHeader (props: Props) {
             <Menu.Item><FadedText>Manage Address Book</FadedText></Menu.Item>
             <Menu.Item><SubHeader>Inspect the status of any identity and name it for later use</SubHeader></Menu.Item>
           </Route>
-          <Route path='/accounts'>
+          <Route path='/accounts/:currentAccount/add'>
             <Menu.Item><FadedText>Add Account</FadedText></Menu.Item>
             <Menu.Item><SubHeader>Create a new account from a generated mnemonic seed, or import via your JSON backup file/mnemonic phrase. </SubHeader></Menu.Item>
+          </Route>
+          <Route path='/manageAccounts/:currentAccount'>
+            <Menu.Item><FadedText>Manage Accounts</FadedText></Menu.Item>
+            <Menu.Item><SubHeader>Manage Your Accounts, including Staking, Bonding, Nominating </SubHeader></Menu.Item>
           </Route>
         </Switch>
       </Menu>
@@ -120,6 +126,10 @@ export function IdentityHeader (props: Props) {
   };
 
   const renderSecondaryMenu = () => {
+    const navToAccounts = () => {
+      history.push(`/manageAccounts/${currentAccount}`);
+    };
+
     const navToGovernance = () => {
       history.push(`/governance/${currentAccount}`);
     };
@@ -135,6 +145,11 @@ export function IdentityHeader (props: Props) {
     return (
       <StackedHorizontal justifyContent='flex-start' alignItems='flex-start'>
         <Menu stackable secondary>
+          <Menu.Item onClick={navToAccounts}>
+            Accounts
+            <Margin left='small' />
+            <Icon color='black' name='id card' />
+          </Menu.Item>
           <Menu.Item onClick={navToGovernance}>
             Governance
             <Margin left='small' />
@@ -143,7 +158,7 @@ export function IdentityHeader (props: Props) {
           <Menu.Item onClick={navToTransfer}>
             Transfer Balance
             <Margin left='small' />
-            <Icon color='black' name='arrow right' />
+            <Icon color='black' name='send' />
           </Menu.Item>
           <Menu.Item onClick={navToManageAddressBook}>
             Manage Address Book

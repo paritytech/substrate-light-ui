@@ -6,4 +6,5 @@ export * from './AlertsContext';
 export * from './AppContext';
 export * from './ContextGate';
 export * from './TxQueueContext';
+export * from './types';
 export * from './util';

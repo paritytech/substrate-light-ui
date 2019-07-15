@@ -38,9 +38,11 @@ export function Transfer (props: Props) {
   }, []);
 
   return (
-    <WalletCard header='Transfer Balance' height='100%'>
-      {allAddresses.length && renderContent(allAddresses, currentAccount, txQueue)}
-    </WalletCard >
+    <React.Fragment>
+      <WalletCard header='Transfer Balance' height='100%'>
+        {allAddresses.length && renderContent(allAddresses, currentAccount, txQueue)}
+      </WalletCard >
+    </React.Fragment>
   );
 }
 
@@ -52,16 +54,19 @@ function renderContent (
   // Find, inside `allAddresses`, the first one that's different than
   // currentAccount. If not found, then take currentAccount
   const firstDifferentAddress = findFirst(
+    allAddresses,
     (singleAddress: SingleAddress) => singleAddress.json.address !== currentAccount
-  )(allAddresses)
+  )
     .map(({ json: { address } }) => address)
     .getOrElse(currentAccount);
 
-  return <Switch>
-    <Redirect exact from='/transfer/:currentAccount/' to={`/transfer/${currentAccount}/${firstDifferentAddress}`} />
-    {txQueue.length
-      ? <Route path='/transfer/:currentAccount/:recipientAddress' component={TxQueue} />
-      : <Route path='/transfer/:currentAccount/:recipientAddress' component={SendBalance} />
-    }
-  </Switch>;
+  return (
+    <Switch>
+      {txQueue.length
+        ? <Route path='/transfer/:currentAccount/:recipientAddress' component={TxQueue} />
+        : <Route path='/transfer/:currentAccount/:recipientAddress' component={SendBalance} />
+      }
+      <Redirect exact from='/transfer/:currentAccount/' to={`/transfer/${currentAccount}/${firstDifferentAddress}`} />
+    </Switch>
+  );
 }

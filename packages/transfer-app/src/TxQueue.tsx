@@ -57,11 +57,12 @@ function renderDetails (currentAccount: string, txQueue: PendingExtrinsic[]) {
 }
 
 function renderSummary (currentAccount: string, txQueue: PendingExtrinsic[]) {
-  const { details: { amount, recipientAddress } } = txQueue[0];
+  const { details: { amount, recipientAddress }, extrinsic: { meta: { name } } } = txQueue[0];
 
   return (
     <TxSummary
       amount={amount}
+      methodCall={name.toString()}
       recipientAddress={recipientAddress}
       senderAddress={currentAccount}
     />

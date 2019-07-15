@@ -3,32 +3,90 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { Balance } from '@polkadot/types';
+import { DerivedBalances, DerivedStaking } from '@polkadot/api-derive/types';
+import { formatBalance, formatNumber } from '@polkadot/util';
 import React from 'react';
 
 import { FontSize, FontWeight } from './types';
-import { DynamicSizeText } from './Shared.styles';
+import { DynamicSizeText, FadedText, Stacked, StyledLinkButton } from './Shared.styles';
+import { Icon } from './index';
 
 export type BalanceDisplayProps = {
-  balance?: Balance,
+  allBalances?: DerivedBalances,
+  allStaking?: DerivedStaking,
+  detailed?: boolean,
   fontSize?: FontSize,
   fontWeight?: FontWeight,
-  tokenSymbol?: string
+  handleRedeem?: (address: string) => void
 };
 
 const PLACEHOLDER_BALANCE = new Balance(0);
-const PLACEHOLDER_TOKEN_SYMBOL = 'UNIT';
 const defaultProps = {
-  balance: PLACEHOLDER_BALANCE,
-  fontSize: 'large' as FontSize,
-  tokenSymbol: PLACEHOLDER_TOKEN_SYMBOL
+  detailed: false,
+  fontSize: 'large' as FontSize
 };
 
 export function BalanceDisplay (props: BalanceDisplayProps = defaultProps) {
-  const { balance, fontSize, fontWeight, tokenSymbol } = props;
+  const { allBalances, allStaking, detailed, fontSize, fontWeight, handleRedeem } = props;
+
+  const renderDetailedBalances = () => {
+    const { availableBalance, lockedBalance, reservedBalance } = allBalances!;
+
+    return (
+      <React.Fragment>
+        <span><b>Available:</b> <FadedText>{formatBalance(availableBalance) || PLACEHOLDER_BALANCE.toString()}</FadedText></span>
+        <span>
+          <b>Redeemable:</b>
+          <FadedText>
+            {allStaking && allStaking.redeemable && formatBalance(allStaking.redeemable) || PLACEHOLDER_BALANCE.toString()}
+          </FadedText>
+          {allStaking && allStaking.redeemable && allStaking.redeemable.gtn(0) && renderRedeemButton()}
+        </span>
+        <span><b>Reserved:</b><FadedText>{formatBalance(reservedBalance) || PLACEHOLDER_BALANCE.toString()}</FadedText></span>
+        <span><b>Locked:</b><FadedText>{formatBalance(lockedBalance) || PLACEHOLDER_BALANCE.toString()}</FadedText></span>
+        {renderUnlocking()}
+      </React.Fragment>
+    );
+  };
+
+  const renderRedeemButton = () => {
+    return (allStaking && allStaking.controllerId && (
+      <StyledLinkButton onClick={() => handleRedeem && handleRedeem(allStaking.controllerId!.toString())}>
+        <Icon name='lock' />
+        Redeem Funds
+      </StyledLinkButton>
+    ));
+  };
+
+  const renderUnlocking = () => {
+    return (
+      allStaking &&
+      allStaking.unlocking &&
+      allStaking.unlocking.map(({ remainingBlocks, value }, index) => (
+        <div key={index}>
+          {formatBalance(value)}
+          <Icon
+            name='info circle'
+            data-tip
+            data-for={`unlocking-trigger-${index}`}
+          />
+          <FadedText> Blocks remaining: {remainingBlocks}</FadedText>
+        </div>
+      ))
+    );
+  };
 
   return (
-    <DynamicSizeText fontSize={fontSize} fontWeight={fontWeight} >
-      Balance: {(balance!.toString(10))} {tokenSymbol}
-    </DynamicSizeText>
+    <Stacked>
+      <DynamicSizeText fontSize={fontSize} fontWeight={fontWeight}>
+        <span><b>Total Balance:</b> {(allBalances && allBalances.freeBalance && formatBalance(allBalances.freeBalance))}</span>
+        <FadedText>Transactions: {allBalances && formatNumber(allBalances.accountNonce)}</FadedText>
+      </DynamicSizeText>
+      {
+        detailed
+          && allBalances
+          && renderDetailedBalances()
+      }
+    </Stacked>
   );
 }

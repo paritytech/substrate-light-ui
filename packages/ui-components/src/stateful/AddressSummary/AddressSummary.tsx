@@ -3,16 +3,21 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import IdentityIcon from '@polkadot/ui-identicon';
+import { fromNullable } from 'fp-ts/lib/Option';
 import React from 'react';
 
 import { Balance } from '../Balance';
 import { Margin } from '../../Margin';
-import { DynamicSizeText, Stacked, StackedHorizontal } from '../../Shared.styles';
+import { DynamicSizeText, SubHeader, Stacked, StackedHorizontal } from '../../Shared.styles';
 import { OrientationType, SizeType } from './types';
-import { FontSize } from '../../types';
+import { FlexJustify, FontSize } from '../../types';
 
 type AddressSummaryProps = {
   address?: string,
+  detailed?: boolean,
+  isNominator?: boolean,
+  isValidator?: boolean,
+  justifyContent?: FlexJustify,
   name?: string,
   noBalance?: boolean,
   orientation?: OrientationType,
@@ -20,33 +25,35 @@ type AddressSummaryProps = {
 };
 
 const PLACEHOLDER_NAME = 'No Name';
-const PLACEHOLDER_ADDRESS = '5'.padEnd(16, 'x');
 
 export function AddressSummary (props: AddressSummaryProps) {
   const {
-    address = PLACEHOLDER_ADDRESS,
-    name = PLACEHOLDER_NAME,
-    noBalance = false,
+    address,
+    justifyContent = 'space-around',
     orientation = 'vertical',
     size = 'medium'
   } = props;
 
-  return orientation === 'vertical'
-    ? (
-      <Stacked>
-        {renderIcon(address, size)}
-        {renderDetails(address, name, noBalance, size)}
-      </Stacked>
-    )
-    : (
-      <StackedHorizontal justifyContent='space-around'>
-        {renderIcon(address, size)}
-        <Margin left />
-        <Stacked>
-          {renderDetails(address, name, noBalance, size)}
-        </Stacked>
-      </StackedHorizontal>
-    );
+  return fromNullable(address)
+    .map((address: string) => {
+      return orientation === 'vertical'
+          ? (
+            <Stacked>
+              {renderIcon(address, size)}
+              {renderDetails(props)}
+            </Stacked>
+          )
+          : (
+            <StackedHorizontal justifyContent={justifyContent}>
+              {renderIcon(address, size)}
+              <Margin left />
+              <Stacked>
+                {renderDetails(props)}
+              </Stacked>
+            </StackedHorizontal>
+          );
+    })
+    .getOrElse(<div>No Address Provided</div>);
 }
 
 const ICON_SIZES = {
@@ -60,18 +67,26 @@ function renderIcon (address: string, size: SizeType) {
   return <IdentityIcon value={address} theme={'substrate'} size={ICON_SIZES[size]} />;
 }
 
-const FONT_SIZES = {
+const FONT_SIZES: any = {
   tiny: 'small',
   small: 'medium',
   medium: 'large',
   large: 'big'
 };
 
-function renderDetails (address: string, name: string, noBalance: boolean, size: SizeType) {
+function renderBadge (type: string) {
+  return type === 'nominator' ? <SubHeader>nominator</SubHeader> : <SubHeader>validator</SubHeader>;
+}
+
+function renderDetails (props: AddressSummaryProps) {
+  const { address, detailed, isNominator, isValidator, name = PLACEHOLDER_NAME, noBalance, size = 'medium' } = props;
+
   return (
     <React.Fragment>
       <DynamicSizeText fontSize={FONT_SIZES[size] as FontSize}> {name} </DynamicSizeText>
-      {!noBalance && <Balance address={address} fontSize={FONT_SIZES[size] as FontSize} />}
+      { isNominator && renderBadge('nominator') }
+      { isValidator && renderBadge('validator') }
+      {!noBalance && <Balance address={address} detailed={detailed} fontSize={FONT_SIZES[size] as FontSize} />}
     </React.Fragment>
   );
 }
