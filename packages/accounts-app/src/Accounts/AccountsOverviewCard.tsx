@@ -4,28 +4,30 @@
 
 import { AppContext, handler, AlertsContext } from '@substrate/ui-common';
 import { AddressSummary, FadedText, Icon, Input, Margin, Stacked, StackedHorizontal, StyledLinkButton, SubHeader, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
+import H from 'history';
 import FileSaver from 'file-saver';
 import React, { useContext, useState } from 'react';
 import Card from 'semantic-ui-react/dist/commonjs/views/Card';
 
-export function AccountsOverviewCard (props: any) {
+interface Props {
+  address: string;
+  history: H.History;
+  name?: string;
+}
+
+export function AccountsOverviewCard (props: Props) {
   const { address, history, name } = props;
   const { keyring } = useContext(AppContext);
   const { enqueue } = useContext(AlertsContext);
   const [confirmScreen, setConfirmScreen] = useState();
   const [password, setPassword] = useState();
 
-  const handleAction = ({ currentTarget: { dataset: { action } } }: any) => {
-    if (action === 'forget') {
-      confirmScreen ? handleForget() : setConfirmScreen('forget');
-    } else if (action === 'backup') {
-      confirmScreen ? handleBackup() : setConfirmScreen('backup');
-    } else if (action === 'cancel') {
-      setConfirmScreen(null);
-    }
-  };
-
   const handleBackup = () => {
+    if (confirmScreen) {
+      setConfirmScreen('backup');
+      return;
+    }
+
     try {
       const pair = keyring.getPair(address);
       const json = keyring.backupAccount(pair, password);
@@ -39,7 +41,18 @@ export function AccountsOverviewCard (props: any) {
     }
   };
 
+  const handleCancel = () => {
+    if (confirmScreen) {
+      setConfirmScreen(null);
+    }
+  };
+
   const handleForget = () => {
+    if (confirmScreen) {
+      setConfirmScreen('forget');
+      return;
+    }
+
     try {
       // forget it from keyring
       keyring.forgetAccount(address);
@@ -69,8 +82,8 @@ export function AccountsOverviewCard (props: any) {
             <Input onChange={handler(setPassword)} type='password' value={password} />
             <StackedHorizontal>
               <WithSpaceBetween>
-                <StyledLinkButton onClick={handleAction} data-action='cancel'><Icon name='remove' color='red' /> <FadedText>Cancel</FadedText></StyledLinkButton>
-                <StyledLinkButton onClick={handleAction} data-action='backup'><Icon name='checkmark' color='green' /> <FadedText>Confirm Backup</FadedText></StyledLinkButton>
+                <StyledLinkButton onClick={handleCancel} data-action='cancel'><Icon name='remove' color='red' /> <FadedText>Cancel</FadedText></StyledLinkButton>
+                <StyledLinkButton onClick={handleBackup} data-action='backup'><Icon name='checkmark' color='green' /> <FadedText>Confirm Backup</FadedText></StyledLinkButton>
               </WithSpaceBetween>
             </StackedHorizontal>
           </Stacked>
@@ -89,8 +102,8 @@ export function AccountsOverviewCard (props: any) {
           <FadedText> You can restore this later from your mnemonic phrase or json backup file. </FadedText>
           <Card.Description>
             <StackedHorizontal>
-              <StyledLinkButton onClick={handleAction} data-action='cancel'><Icon name='remove' color='red' /> <FadedText> Cancel </FadedText> </StyledLinkButton>
-              <StyledLinkButton onClick={handleAction} data-action='forget'><Icon name='checkmark' color='green' /> <FadedText> Confirm Forget </FadedText> </StyledLinkButton>
+              <StyledLinkButton onClick={handleCancel} data-action='cancel'><Icon name='remove' color='red' /> <FadedText> Cancel </FadedText> </StyledLinkButton>
+              <StyledLinkButton onClick={handleForget} data-action='forget'><Icon name='checkmark' color='green' /> <FadedText> Confirm Forget </FadedText> </StyledLinkButton>
             </StackedHorizontal>
           </Card.Description>
         </Stacked>
@@ -127,11 +140,11 @@ export function AccountsOverviewCard (props: any) {
                   </StackedHorizontal>
                   <Margin bottom />
                   <StackedHorizontal>
-                    <StyledLinkButton onClick={handleAction} data-action='forget'>
+                    <StyledLinkButton onClick={handleForget} data-action='forget'>
                       <Icon name='remove' />
                       Forget
                       </StyledLinkButton>
-                    <StyledLinkButton onClick={handleAction} data-action='backup'>
+                    <StyledLinkButton onClick={handleBackup} data-action='backup'>
                       <Icon name='arrow alternate circle down' />
                       Backup
                     </StyledLinkButton>

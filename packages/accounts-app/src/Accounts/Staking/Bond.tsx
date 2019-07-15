@@ -2,7 +2,6 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-// import { SubmittableExtrinsic } from '@polkadot/api/SubmittableExtrinsic';
 import { DerivedFees, DerivedBalances } from '@polkadot/api-derive/types';
 import { Index } from '@polkadot/types';
 import { isUndefined } from '@polkadot/util';
@@ -13,8 +12,6 @@ import React, { useContext, useState, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Subscription, Observable, zip } from 'rxjs';
 import { take } from 'rxjs/operators';
-
-// import { Validation } from './Validation';
 
 interface MatchParams {
   currentAccount?: string;
