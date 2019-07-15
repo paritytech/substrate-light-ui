@@ -2421,12 +2421,12 @@
     url-template "^2.0.8"
 
 "@polkadot/api-contract@^0.82.0-beta.30", "@polkadot/api-contract@^0.82.0-beta.53":
-  version "0.82.0-beta.57"
-  resolved "https://registry.yarnpkg.com/@polkadot/api-contract/-/api-contract-0.82.0-beta.57.tgz#a4393b70c4f363d83c4163b0daad6d2b64d00d35"
-  integrity sha512-OyDsBKLPi63YI97tG1HVEc4YBbqxMPOrB6ihQlCRFWOfe6urOxm/TTkOAP2+wLP2HAIGw/mg58P24TNLfXaW9Q==
+  version "0.82.0-beta.60"
+  resolved "https://registry.yarnpkg.com/@polkadot/api-contract/-/api-contract-0.82.0-beta.60.tgz#97f1c61c086aabd871cb6640c17045320b7ca851"
+  integrity sha512-rtgY8pt6CbU+AYNvOS8FqGs/Vk664Wm9HVTQDjSm6SXuSkmJcrqz00V23XOZlMz+HfHdJVK+uyZtSeGTDHc8ZQ==
   dependencies:
     "@babel/runtime" "^7.5.4"
-    "@polkadot/types" "^0.82.0-beta.57"
+    "@polkadot/types" "^0.82.0-beta.60"
 
 "@polkadot/api-derive@^0.82.0-beta.57":
   version "0.82.0-beta.57"
@@ -2564,10 +2564,10 @@
     isomorphic-fetch "^2.2.1"
     websocket "^1.0.29"
 
-"@polkadot/types@^0.82.0-beta.53", "@polkadot/types@^0.82.0-beta.57":
-  version "0.82.0-beta.57"
-  resolved "https://registry.yarnpkg.com/@polkadot/types/-/types-0.82.0-beta.57.tgz#e0e91d49c3dd54d9c5c31f0905e12ea9bf8c0f8c"
-  integrity sha512-2MtbHwXvDUtIWqXVmvTVXcrKKBloqM4vl41BshLxFVTEbfKMCAgnj+w7L+6XDUAEAv1fQI6MrZdOtlQFSD0pJA==
+"@polkadot/types@^0.82.0-beta.53", "@polkadot/types@^0.82.0-beta.57", "@polkadot/types@^0.82.0-beta.60":
+  version "0.82.0-beta.60"
+  resolved "https://registry.yarnpkg.com/@polkadot/types/-/types-0.82.0-beta.60.tgz#3de7db4bcafef88b23177f4d32b93919bd134f74"
+  integrity sha512-SYy+W1pQNHA4gjVBQrJ5EPEbBbuY4k/F50/PXrhxGig6NvBDP3/YKW+9bvlH4k2bM73QA0CZRcaimXe4xebS0Q==
   dependencies:
     "@babel/runtime" "^7.5.4"
     "@polkadot/util" "^0.94.0-beta.11"
