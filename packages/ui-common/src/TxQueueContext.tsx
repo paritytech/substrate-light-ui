@@ -91,7 +91,6 @@ export function TxQueueContextProvider (props: Props) {
    * Add a tx to the queue
    */
   const enqueue = (extrinsic: Extrinsic, details: ExtrinsicDetails) => {
-    debugger;
     const extrinsicId = txCounter;
     setTxCounter(txCounter + 1);
 
@@ -136,8 +135,6 @@ export function TxQueueContextProvider (props: Props) {
     }
 
     l.log(`Extrinsic #${extrinsicId} is being sent`);
-
-    debugger;
 
     const subscription = extrinsic
       .signAndSend(senderPair) // send the extrinsic

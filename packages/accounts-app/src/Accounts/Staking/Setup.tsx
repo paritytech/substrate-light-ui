@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import PolkadotInputAddress from '@polkadot/ui-app/InputAddress';
-import { Balance, FlexItem, Stacked, StyledNavButton, SubHeader } from '@substrate/ui-components';
+import { Balance, FlexItem, Header, Margin, Stacked, StyledNavButton, SubHeader } from '@substrate/ui-components';
 import { Either, left, right } from 'fp-ts/lib/Either';
 import React, { Dispatch, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -42,7 +42,7 @@ export function Setup (props: Props) {
 
   const handleNext = () => {
     status.fold(
-      () => { /* */ },
+      (errors) => { console.error(errors); /* should be displayed by Validation */ },
       ({ controller, stash }: Accounts) => history.push(`/manageAccounts/${stash}/staking/bond`, {
         controller,
         stash
@@ -68,37 +68,37 @@ export function Setup (props: Props) {
   }
 
   return (
-    <React.Fragment>
-      <Stacked>
-        <FlexItem>
-          <SubHeader> Select your Stash Account </SubHeader>
-          <InputAddress
-            label={null}
-            onChange={setStash}
-            type='account'
-            value={stash}
-            withLabel={false}
-          />
-          <Balance address={stash} />
-        </FlexItem>
-        <FlexItem>
-          <SubHeader> Select your Controller Account </SubHeader>
-          <InputAddress
-            label={null}
-            onChange={setController}
-            type='account'
-            value={controller}
-            withLabel={false}
-          />
-          <Balance address={controller} />
-        </FlexItem>
-        <FlexItem>
-          <Validation value={status} />
-        </FlexItem>
-        <FlexItem>
-          <StyledNavButton onClick={handleNext}>Next</StyledNavButton>
-        </FlexItem>
-      </Stacked>
-    </React.Fragment>
+    <Stacked>
+      <Header> Setup Accounts </Header>
+      <FlexItem>
+        <SubHeader> Select your Stash Account </SubHeader>
+        <InputAddress
+          label={null}
+          onChange={setStash}
+          type='account'
+          value={stash}
+          withLabel={false}
+        />
+        <Balance address={stash} />
+      </FlexItem>
+      <Margin bottom='large' />
+      <FlexItem>
+        <SubHeader> Select your Controller Account </SubHeader>
+        <InputAddress
+          label={null}
+          onChange={setController}
+          type='account'
+          value={controller}
+          withLabel={false}
+        />
+        <Balance address={controller} />
+      </FlexItem>
+      <FlexItem>
+        <Validation value={status} />
+      </FlexItem>
+      <FlexItem>
+        <StyledNavButton onClick={handleNext}>Next</StyledNavButton>
+      </FlexItem>
+    </Stacked>
   );
 }

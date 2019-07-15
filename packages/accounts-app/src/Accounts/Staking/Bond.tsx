@@ -7,7 +7,7 @@ import { DerivedFees, DerivedBalances } from '@polkadot/api-derive/types';
 import { Index } from '@polkadot/types';
 import { isUndefined } from '@polkadot/util';
 import { AppContext, AlertsContext, TxQueueContext, validate } from '@substrate/ui-common';
-import { Dropdown, DropdownProps, Input, Stacked, SubHeader, WithSpaceAround, StyledNavButton } from '@substrate/ui-components';
+import { Dropdown, DropdownProps, Header, Input, Stacked, SubHeader, WithSpaceAround, StyledNavButton } from '@substrate/ui-components';
 import BN from 'bn.js';
 import React, { useContext, useState, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -43,15 +43,12 @@ export function Bond (props: Props) {
   const [bond, setBond] = useState<BN>(new BN(0));
   const [controllerBalance, setControllerBalance] = useState<DerivedBalances>();
   const [stashBalance, setStashBalance] = useState<DerivedBalances>();
-  const [destination, setDestination] = useState<RewardDestinationOption>();
+  const [destination, setDestination] = useState<RewardDestinationOption>(rewardDestinationOptions[0]);
   const [fees, setFees] = useState<DerivedFees>();
   const [nonce, setNonce] = useState<Index>();
 
   const { history } = props;
   const { controller, stash } = history.location.state;
-
-  // const extrinsic = api.tx.staking.bond(stash, bond, 0);
-  // validate({ amountAsString: bond.toString(), accountNonce: nonce, currentBalance: stashBalance, extrinsic, fees, recipientBalance: controllerBalance, currentAccount: stash, recipientAddress: controller }, api);
 
   // use api.consts when it is availabe in @polkadot/api
   useEffect(() => {
@@ -89,18 +86,18 @@ export function Bond (props: Props) {
     if (isUndefined(destination)) {
       return;
     }
-    // @ts-ignore
+
+    // @ts-ignore the extrinsic works when testing, not sure why tslint is getting the wrong type here
     const extrinsic = api.tx.staking.bond(stash, bond, destination.value);
-    console.log(extrinsic);
-    debugger;
-    // @ts-ignore
+    // @ts-ignore the extrinsic works when testing, not sure why tslint is getting the wrong type here
     const values = validate({ amountAsString: bond.toString(), accountNonce: nonce, currentBalance: stashBalance, extrinsic, fees, recipientBalance: controllerBalance, currentAccount: stash, recipientAddress: controller }, api);
+
     values.fold(
       (errors: any) => alert({ type: 'error', content: errors }),
       (allExtrinsicData: any) => {
         const { extrinsic, amount, allFees, allTotal, recipientAddress: controller } = allExtrinsicData;
 
-        const details = { amount, allFees, allTotal, senderPair: keyring.getPair(stash), recipientAddress: controller };
+        const details = { amount, allFees, allTotal, methodCall: extrinsic.meta.name.toString(), senderPair: keyring.getPair(stash), recipientAddress: controller };
 
         enqueue(extrinsic, details);
       }
@@ -110,7 +107,7 @@ export function Bond (props: Props) {
   const handleSetBond = ({ currentTarget: { value } }: React.SyntheticEvent<HTMLInputElement>) => !isUndefined(value) ? setBond(new BN(value)) : setBond(new BN(0));
 
   const onSelect = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
-    setDestination(data as RewardDestinationOption);
+    setDestination(rewardDestinationOptions[data.value as number]);
   };
 
   // TODO: show the selected bond amount as percentage of total balance
@@ -118,6 +115,7 @@ export function Bond (props: Props) {
   // TODO: allow to set bond amount in terms of percentage of total balance
   return (
     <Stacked>
+      <Header>Bonding Preferences </Header>
       <WithSpaceAround>
         <SubHeader>How much do you wish to stake?</SubHeader>
         <Input
@@ -128,18 +126,17 @@ export function Bond (props: Props) {
           />
       </WithSpaceAround>
       <WithSpaceAround>
-        <SubHeader>Which account should we deposit your share of the rewards?</SubHeader>
+        <SubHeader> How would you like to have your share of the rewards deposited back to you?</SubHeader>
         <Dropdown
-          label={'reward payout destination'}
+          fluid
           onChange={onSelect}
           options={rewardDestinationOptions}
-          value={destination && destination.text}
+          text={destination.text}
+          value={destination.text}
         />
       </WithSpaceAround>
       <WithSpaceAround>
         <StyledNavButton onClick={handleConfirmBond}>Confirm</StyledNavButton>
-      </WithSpaceAround>
-      <WithSpaceAround>
       </WithSpaceAround>
     </Stacked>
   );

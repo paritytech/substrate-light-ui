@@ -100,7 +100,7 @@ function validateExtrinsic (api: ApiRx) {
 /**
  * Make sure the subscription results are here.
  */
-function validateSubResults(values: Partial<SubResults & WithExtrinsic & UserInputs>): Either<Errors, SubResults & WithExtrinsic & UserInputs> {
+function validateSubResults (values: Partial<SubResults & WithExtrinsic & UserInputs>): Either<Errors, SubResults & WithExtrinsic & UserInputs> {
   const { accountNonce, currentBalance, fees, recipientBalance, ...rest } = values;
   const errors = {} as Errors;
 

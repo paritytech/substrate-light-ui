@@ -77,7 +77,7 @@ export function SendBalance (props: Props) {
         // If everything is correct, then submit the extrinsic
         const { extrinsic, amount, allFees, allTotal, recipientAddress: rcptAddress } = allExtrinsicData;
 
-        enqueue(extrinsic, { amount, allFees, allTotal, senderPair: keyring.getPair(currentAccount), recipientAddress: rcptAddress });
+        enqueue(extrinsic, { amount, allFees, allTotal, methodCall: extrinsic.meta.name.toString(), senderPair: keyring.getPair(currentAccount), recipientAddress: rcptAddress });
       });
   };
 

@@ -13,5 +13,5 @@
 // on confirm, redirect to thedetailed balances page, which should now show the stash and controllers
 // as "linked" with the correct bond, plus nominating the correct validator
 
-// should someone who goes to the staking tab from a stash already bonded, they should be directed straight to 
-// validator selection tab. You can nominate multiple validators from the same stash/controller pair.
+// should someone who goes to the staking tab from a stash already bonded, they should be directed straight to
+// validator selection tab. You can nominate multiple validators from the same stash/controller pair
