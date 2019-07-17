@@ -2421,12 +2421,12 @@
     url-template "^2.0.8"
 
 "@polkadot/api-contract@^0.82.0-beta.30", "@polkadot/api-contract@^0.82.0-beta.53":
-  version "0.82.0-beta.59"
-  resolved "https://registry.yarnpkg.com/@polkadot/api-contract/-/api-contract-0.82.0-beta.59.tgz#ea9a39a71ffeaa3ec1daf5644d13d5c1898c62c6"
-  integrity sha512-7lsz5yyK9dUt8AhIdzfHPrwZMZdgzEZGBA0e/gi09HoCskde2WSpoXAxZm+qzXt84t2de//TYVSqZSUrE2DDug==
+  version "0.82.0-beta.69"
+  resolved "https://registry.yarnpkg.com/@polkadot/api-contract/-/api-contract-0.82.0-beta.69.tgz#bbd635eb765adab49b9336307eabde60a67a04cf"
+  integrity sha512-1nEYO/FHeYSDfow42IgYQHYIKTs3qlp0grZCcDTPO0JM7s9Vf7UjD44FAK3ze9/y7zMDHC066Fb6rMj2qcIaBg==
   dependencies:
     "@babel/runtime" "^7.5.4"
-    "@polkadot/types" "^0.82.0-beta.59"
+    "@polkadot/types" "^0.82.0-beta.69"
 
 "@polkadot/api-derive@^0.82.0-beta.57":
   version "0.82.0-beta.57"
@@ -2564,14 +2564,14 @@
     isomorphic-fetch "^2.2.1"
     websocket "^1.0.29"
 
-"@polkadot/types@^0.82.0-beta.53", "@polkadot/types@^0.82.0-beta.57", "@polkadot/types@^0.82.0-beta.59":
-  version "0.82.0-beta.58"
-  resolved "https://registry.yarnpkg.com/@polkadot/types/-/types-0.82.0-beta.58.tgz#026e9be77f8ef219a6a0c377521bfacfd8db24bf"
-  integrity sha512-cpxSikf79nQVi8smDvP2H5rNvJsu2qN9bBw4HNkpXHHFVmhO7wkr4wAkyjjLDSoXfcfpfa5Wfb6gSZABDIJn3A==
+"@polkadot/types@^0.82.0-beta.53", "@polkadot/types@^0.82.0-beta.57", "@polkadot/types@^0.82.0-beta.69":
+  version "0.82.0-beta.69"
+  resolved "https://registry.yarnpkg.com/@polkadot/types/-/types-0.82.0-beta.69.tgz#eb733d74930fbb4656ed9eeda92834d173c7dd35"
+  integrity sha512-2iF6JMLqe1wyxDW5kcX+OFzpUAPYThdyqJbh1GlQQF2yMrzLKyA7K5iCbRnRviowKdnx7/x8tSqOccBib83SEg==
   dependencies:
     "@babel/runtime" "^7.5.4"
-    "@polkadot/util" "^0.94.0-beta.11"
-    "@polkadot/util-crypto" "^0.94.0-beta.11"
+    "@polkadot/util" "^0.94.0-beta.12"
+    "@polkadot/util-crypto" "^0.94.0-beta.12"
 
 "@polkadot/ui-api@^0.34.0-beta.59":
   version "0.34.0-beta.59"
@@ -2691,7 +2691,7 @@
     "@babel/runtime" "^7.5.4"
     "@polkadot/ui-app" "^0.34.0-beta.59"
 
-"@polkadot/util-crypto@^0.94.0-beta.11":
+"@polkadot/util-crypto@^0.94.0-beta.11", "@polkadot/util-crypto@^0.94.0-beta.12":
   version "0.94.0-beta.11"
   resolved "https://registry.yarnpkg.com/@polkadot/util-crypto/-/util-crypto-0.94.0-beta.11.tgz#ad10bb25605f7194754724a55d56cbcae75c2f87"
   integrity sha512-KAs1be9b3KJo0he4lm4wNzKfu6MI57JGALBiGcQdY2xLuSCBLUhahsjlwvpS9oIuymsz/jmQHPk1AkzM//d91Q==
@@ -2713,7 +2713,7 @@
     tweetnacl "^1.0.1"
     xxhashjs "^0.2.2"
 
-"@polkadot/util@^0.94.0-beta.11":
+"@polkadot/util@^0.94.0-beta.11", "@polkadot/util@^0.94.0-beta.12":
   version "0.94.0-beta.11"
   resolved "https://registry.yarnpkg.com/@polkadot/util/-/util-0.94.0-beta.11.tgz#0ecac8b025e922e392ec9f9c9572995676c00384"
   integrity sha512-0gNbooJLo5VlSq0gKPC7gdp7ULHuyaLiQOBprjtHwJvkThGkDBe+h9VkmGVJsiIsZUt7tFZHP6o9BbCr2Z1+VA==
