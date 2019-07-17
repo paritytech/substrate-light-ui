@@ -13,9 +13,9 @@ export type Accounts = {
 type Error = string;
 export type Errors = Array<Error>;
 
-export type RecentlyOffline = [AccountId, BlockNumber, BN][];
+export type RecentlyOffline = Array<[AccountId, BlockNumber, BN]>;
 
-export type RecentlyOfflineMap = Record<string, OfflineStatus[]>;
+export type AccountOfflineStatusesMap = Record<string, OfflineStatus[]>;
 
 export interface OfflineStatus {
   blockNumber: BlockNumber;

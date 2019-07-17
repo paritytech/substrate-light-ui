@@ -7,11 +7,11 @@ import keyring from '@polkadot/ui-keyring';
 import { Container, Table } from '@substrate/ui-components';
 import { AppContext } from '@substrate/ui-common';
 import { fromNullable, some } from 'fp-ts/lib/Option';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { combineLatest, Observable } from 'rxjs';
 
-import { OfflineStatus, RecentlyOfflineMap } from '../types';
+import { AccountOfflineStatusesMap, OfflineStatus, RecentlyOffline } from '../types';
 import { ValidatorRow } from './ValidatorRow';
 
 interface MatchParams {
@@ -22,7 +22,7 @@ interface Props extends RouteComponentProps<MatchParams> {}
 
 export function ValidatorsList (props: Props) {
   const { api } = useContext(AppContext);
-  const [recentlyOffline, setRecentlyOffline] = useState<RecentlyOfflineMap>();
+  const [recentlyOffline, setRecentlyOffline] = useState<AccountOfflineStatusesMap>();
   const [validators, setValidators] = useState<AccountId[]>();
 
   useEffect(() => {
@@ -31,11 +31,9 @@ export function ValidatorsList (props: Props) {
       (api.query.session.validators() as unknown as Observable<AccountId[]>)
     ])
     .subscribe(([stakingRecentlyOffline, validators]) => {
-      console.log(stakingRecentlyOffline);
-      debugger;
       setRecentlyOffline(
         stakingRecentlyOffline.reduce(
-          (result: RecentlyOfflineMap, [accountId, blockNumber, count]: any): RecentlyOfflineMap => {
+          (result: AccountOfflineStatusesMap, [accountId, blockNumber, count]: RecentlyOffline): AccountOfflineStatusesMap => {
             const account = accountId.toString();
 
             if (!result[account]) {
@@ -45,10 +43,10 @@ export function ValidatorsList (props: Props) {
             result[account].push({
               blockNumber,
               count
-            } as OfflineStatus);
+            } as unknown as OfflineStatus);
 
             return result;
-          }, {} as unknown as RecentlyOfflineMap)
+          }, {} as unknown as AccountOfflineStatusesMap)
       );
       setValidators(validators);
     });
@@ -61,6 +59,7 @@ export function ValidatorsList (props: Props) {
           <Table.HeaderCell>Validators ({validators && validators.length}) </Table.HeaderCell>
           <Table.HeaderCell>Times Reported Offline</Table.HeaderCell>
           <Table.HeaderCell>Nominators</Table.HeaderCell>
+          <Table.HeaderCell>Actions</Table.HeaderCell>
         </Table.Row>
       </Table.Header>
     );
@@ -78,7 +77,15 @@ export function ValidatorsList (props: Props) {
               .chain(meta => some(meta.name))
               .getOrElse(undefined);
 
-            return <ValidatorRow name={name} recentlyOffline={recentlyOffline} validator={validator} />;
+            return <ValidatorRow
+                      name={name}
+                      offlineStatuses={
+                        fromNullable(recentlyOffline)
+                            .map(recentlyOffline => recentlyOffline[validator.toString()])
+                            .getOrElse([])
+                      }
+                      validator={validator}
+                    />;
           })
         }
         </Table.Body>
