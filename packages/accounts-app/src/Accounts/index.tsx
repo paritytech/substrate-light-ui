@@ -7,8 +7,9 @@ import React, { useState, useEffect } from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 
 import { AccountsOverview } from './AccountsOverview';
-import { StakingOptions } from './Staking';
 import { AccountsOverviewDetailed } from './AccountsOverviewDetailed';
+import { StakingOptions } from './Staking';
+import { ValidatorsList } from './Validators';
 
 interface MatchParams {
   currentAccount: string;
@@ -36,11 +37,16 @@ const Options = (props: Props) => {
     history.push(`/manageAccounts/${currentAccount}/staking`);
   };
 
+  const navToValidators = () => {
+    history.push(`/manageAccounts/${currentAccount}/validators`);
+  };
+
   return (
     <Menu>
       <Menu.Item active={active === 'overview'} onClick={navToOverview}>View All Accounts</Menu.Item>
       <Menu.Item active={active === 'balances'} onClick={navToBalance}>Detailed Balances</Menu.Item>
       <Menu.Item active={active === 'staking'} onClick={navToStaking}>Staking Options</Menu.Item>
+      <Menu.Item active={active === 'validators'} onClick={navToValidators}>Validators</Menu.Item>
     </Menu>
   );
 };
@@ -53,7 +59,8 @@ export function Accounts (props: Props) {
         <Route path='/manageAccounts/:currentAccount/overview' component={AccountsOverview} />
         <Route path='/manageAccounts/:currentAccount/balances' component={AccountsOverviewDetailed} />
         <Route path='/manageAccounts/:currentAccount/staking' component={StakingOptions} />
-        <Redirect from='/manageAccounts/:currentAccount' to='/manageAccounts/:currentAccount/staking/overview' />
+        <Route path='/manageAccounts/:currentAccount/validators' component={ValidatorsList} />
+        <Redirect from='/manageAccounts/:currentAccount' to='/manageAccounts/:currentAccount/overview' />
       </Switch>
     </React.Fragment>
   );
