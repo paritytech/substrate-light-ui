@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { DerivedStaking } from '@polkadot/api-derive/types';
-import { AccountId, Balance, Exposure } from '@polkadot/types';
+import { AccountId, Balance, Exposure, RewardDestination } from '@polkadot/types';
 import { formatBalance } from '@polkadot/util';
 import { AppContext } from '@substrate/ui-common';
 import { AddressSummary, Card, Container, Grid, Loading, SubHeader, WithSpace } from '@substrate/ui-components';
@@ -23,11 +23,13 @@ interface Props extends RouteComponentProps<MatchParams> {
   name: string;
 }
 
+// FIXME: remove all explicit anys
 interface State {
   controllerId?: string;
   isStashNominating?: boolean;
   isStashValidating?: boolean;
-  nominators?: any;
+  nominators?: AccountId[];
+  rewardDestination?: RewardDestination;
   sessionId?: string;
   stashActive?: any;
   stakers?: Exposure;
@@ -48,7 +50,7 @@ export function AccountsOverviewDetailed (props: Props) {
               return;
             }
 
-            const { controllerId, nextSessionId, nominators, stakers, stashId, stakingLedger, validatorPrefs } = stakingInfo;
+            const { controllerId, nextSessionId, nominators, rewardDestination, stakers, stashId, stakingLedger, validatorPrefs } = stakingInfo;
 
             const isStashNominating = nominators && nominators.length !== 0;
             const isStashValidating = !!validatorPrefs && !validatorPrefs.isEmpty && !isStashNominating;
@@ -58,7 +60,7 @@ export function AccountsOverviewDetailed (props: Props) {
               isStashNominating,
               isStashValidating,
               nominators,
-              // rewardDestination: rewardDestination && rewardDestination.toNumber(), FIXME update api to ^.81.0 first
+              rewardDestination,
               sessionId: nextSessionId && nextSessionId.toString(),
               stashActive: stakingLedger ? formatBalance(stakingLedger.active) : formatBalance(new Balance(0)),
               stakers,
@@ -90,22 +92,22 @@ export function AccountsOverviewDetailed (props: Props) {
         <WithSpace>
           <SubHeader noMargin>Currently Nominating:</SubHeader>
             {
-              state!.nominators
-                ? state!.nominators
-                    .map((address: AccountId) => {
-                      return <AddressSummary
-                        address={address.toString()}
-                        key={address.toString()}
-                        orientation='horizontal'
-                        size='small'
-                      />;
-                    })
-                : <div>Nobody</div>
+              fromNullable(state)
+                .mapNullable(state => state.nominators)
+                .map(nominators => nominators.map((address: AccountId) => {
+                  return <AddressSummary
+                    address={address.toString()}
+                    key={address.toString()}
+                    orientation='horizontal'
+                    size='small'
+                  />;
+                }))
+              .getOrElse([].map(() => <div>Not nominating anybody.</div>))
             }
         </WithSpace>
         <WithSpace>
           <Grid.Row>
-            <SubHeader> Reward Destination: </SubHeader>
+            <SubHeader> Reward Destination: {fromNullable(state).mapNullable(state => state.rewardDestination).mapNullable(rewardDestination => rewardDestination.toString()).getOrElse('Destination not set.')} </SubHeader>
           </Grid.Row>
         </WithSpace>
       </Card>
@@ -116,7 +118,7 @@ export function AccountsOverviewDetailed (props: Props) {
     return (
       <Grid.Row>
         <Grid.Column stretched width='6'>
-          <Card><AddressSummary address={currentAccount} detailed isNominator={state && state.isStashNominating} isValidator={state && state.isStashValidating} name={name} size='medium' /></Card>
+          <Card><AddressSummary address={currentAccount} detailed isNominator={fromNullable(state).map(state => state.isStashNominating).getOrElse(undefined)} isValidator={fromNullable(state).map(state => state.isStashValidating).getOrElse(undefined)} name={name} size='medium' /></Card>
         </Grid.Column>
         <Grid.Column stretched width='5'>{renderBalanceDetails()} </Grid.Column>
         <Grid.Column stretched width='5'>{renderNominationDetails()}</Grid.Column>
@@ -127,7 +129,11 @@ export function AccountsOverviewDetailed (props: Props) {
   return (
     <Container>
       <Grid columns='16'>
-        {state && renderGeneral()}
+        {
+          fromNullable(state)
+            .map(state => renderGeneral())
+            .getOrElse(<div></div>)
+        }
       </Grid>
     </Container>
   );

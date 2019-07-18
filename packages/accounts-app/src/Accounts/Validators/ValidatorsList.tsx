@@ -10,6 +10,7 @@ import { fromNullable, some } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { combineLatest, Observable } from 'rxjs';
+import { Loader } from 'semantic-ui-react';
 
 import { AccountOfflineStatusesMap, OfflineStatus, RecentlyOffline } from '../types';
 import { ValidatorRow } from './ValidatorRow';
@@ -25,6 +26,7 @@ export function ValidatorsList (props: Props) {
   const [recentlyOffline, setRecentlyOffline] = useState<AccountOfflineStatusesMap>();
   const [validators, setValidators] = useState<AccountId[]>();
 
+  // FIXME: cache validators accountIds in localstorage while showing: refreshing....last queried 4 minutes ago.
   useEffect(() => {
     combineLatest([
       (api.query.staking.recentlyOffline() as unknown as Observable<any>),
@@ -50,7 +52,7 @@ export function ValidatorsList (props: Props) {
       );
       setValidators(validators);
     });
-  });
+  }, []);
 
   const renderHeader = () => {
     return (
@@ -71,22 +73,24 @@ export function ValidatorsList (props: Props) {
         {renderHeader()}
         <Table.Body>
         {
-          validators && validators.map(validator => {
-            const name = fromNullable(keyring.getAccount(validator))
-              .chain(account => some(account.meta))
-              .chain(meta => some(meta.name))
-              .getOrElse(undefined);
+          fromNullable(validators)
+            .map(validators =>
+              validators.map(validator => {
+                const name = fromNullable(keyring.getAccount(validator))
+                  .chain(account => some(account.meta))
+                  .chain(meta => some(meta.name))
+                  .getOrElse(undefined);
 
-            return <ValidatorRow
-                      name={name}
-                      offlineStatuses={
-                        fromNullable(recentlyOffline)
-                            .map(recentlyOffline => recentlyOffline[validator.toString()])
-                            .getOrElse([])
-                      }
-                      validator={validator}
-                    />;
-          })
+                return <ValidatorRow
+                  name={name}
+                  offlineStatuses={
+                    fromNullable(recentlyOffline)
+                      .mapNullable(recentlyOffline => recentlyOffline[validator.toString()])
+                      .getOrElse([])
+                  }
+                  validator={validator}
+                />;
+              })).getOrElse([].map(() => <Loader active inline />))
         }
         </Table.Body>
       </Table>

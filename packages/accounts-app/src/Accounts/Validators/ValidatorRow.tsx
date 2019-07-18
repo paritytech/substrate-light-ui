@@ -10,6 +10,7 @@ import { fromNullable } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
 import { Subscription, Observable, combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { Loader } from 'semantic-ui-react';
 
 import { OfflineStatus } from '../types';
 
@@ -22,6 +23,7 @@ interface Props {
 export function ValidatorRow (props: Props) {
   const { name, offlineStatuses, validator } = props;
   const { api } = useContext(AppContext);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [nominatorsForValidator, setNominatorsForValidator] = useState<Array<AccountId>>();
   const [offlineTotal, setOfflineTotal] = useState<BN>(new BN(0));
 
@@ -32,6 +34,7 @@ export function ValidatorRow (props: Props) {
       take(1)
     ).subscribe(([nominators]) => {
       setNominatorsForValidator(nominators);
+      setIsLoading(false);
     });
 
     return () => subscription.unsubscribe();
@@ -41,19 +44,27 @@ export function ValidatorRow (props: Props) {
     fromNullable(offlineStatuses)
       .map(offlineStatuses => setOfflineTotal(offlineStatuses.reduce((total, { count }) => total.add(count), new BN(0))))
       .getOrElse(undefined);
-  });
+  }, [offlineStatuses]);
 
   return (
     <Table.Row>
-      <Table.Cell><AddressSummary address={validator.toString()} orientation='horizontal' name={name} size='medium' /></Table.Cell>
-      <Table.Cell>{offlineTotal.toString()}</Table.Cell>
-      <Table.Cell>
-        {
-          fromNullable(nominatorsForValidator)
-            .map(nom => <AddressSummary address={nom.toString()} />)
-            .getOrElse(<div>No Nominators</div>)
-        }
-      </Table.Cell>
+      {
+        isLoading
+          ? <Table.Cell><Loader active inline /></Table.Cell>
+          : (
+            <React.Fragment>
+              <Table.Cell><AddressSummary address={validator.toString()} orientation='horizontal' name={name} size='medium' /></Table.Cell>
+              <Table.Cell>{offlineTotal.toString()}</Table.Cell>
+              <Table.Cell>
+                 {
+                    fromNullable(nominatorsForValidator)
+                      .mapNullable(nominators => nominators.map(nom => console.log('nom =>>> ', nom)))
+                      .getOrElse([].map(() => console.log('nohting')))
+                 }
+              </Table.Cell>
+            </React.Fragment>
+          )
+      }
     </Table.Row>
   );
 }
