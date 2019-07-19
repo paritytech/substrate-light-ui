@@ -43,14 +43,14 @@
     "semver": "^6.0.0"
   },
   "resolutions": {
-    "@polkadot/api": "^0.82.0-beta.53",
-    "@polkadot/api-contract": "^0.82.0-beta.53",
-    "@polkadot/keyring": "^0.94.0-beta.11",
-    "@polkadot/types": "^0.82.0-beta.53",
-    "@polkadot/util": "^0.94.0-beta.11",
-    "@polkadot/util-crypto": "^0.94.0-beta.11",
-    "@types/styled-components": "4.1.3",
+    "@polkadot/api": "^0.82.0-beta.74",
+    "@polkadot/api-contract": "^0.82.0-beta.74",
+    "@polkadot/keyring": "^0.94.0-beta.14",
+    "@polkadot/types": "^0.82.0-beta.74",
+    "@polkadot/util": "^0.94.0-beta.14",
+    "@polkadot/util-crypto": "^0.94.0-beta.14",
+    "@types/styled-components": "4.1.8",
     "babel-core": "^7.0.0-bridge.0",
-    "typescript": "^3.5.2"
+    "typescript": "^3.5.3"
   }
 }
