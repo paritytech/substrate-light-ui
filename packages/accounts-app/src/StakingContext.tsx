@@ -13,8 +13,8 @@ interface Props {
 }
 
 type DerivedStakingMap = {
-  accountId?: AccountId,
-  derivedStaking?: DerivedStaking
+  accountId: AccountId,
+  derivedStaking: DerivedStaking
 };
 
 type DerivedStakingMapArray = DerivedStakingMap[];
@@ -28,8 +28,8 @@ export interface IStakingContext {
 export const StakingContext: React.Context<IStakingContext> = React.createContext({} as IStakingContext);
 
 // (api.derive.staking.controllers() as unknown as Observable<any>),
-//   (api.query.staking.recentlyOffline() as unknown as Observable<any>),
-//   (api.query.session.validators() as unknown as Observable<AccountId[]>)
+// (api.query.staking.recentlyOffline() as unknown as Observable<any>),
+// (api.query.session.validators() as unknown as Observable<AccountId[]>)
 
 // search if key exists in derivedStakingMapArray. Can't sort by address so best we can do is O(N) which is fine, this list shouldn't exceed length 100 or so.
 const stakingMapReducer = (derivedStakingMapArray: DerivedStakingMapArray, action: any) => {
