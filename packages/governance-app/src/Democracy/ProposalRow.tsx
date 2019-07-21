@@ -55,11 +55,10 @@ export function ProposalRow (props: IProps) {
   });
 
   const handleSeconding = () => {
-    // const { accountNonce, amount, currentBalance, extrinsic, fees, recipientBalance } = values;
     const extrinsic = api.tx.democracy.second(propIndex);
-    debugger;
+    // @ts-ignore works in test...
     const values = validateDerived({ accountNonce, amount: new BN(0), currentBalance: votingBalance, extrinsic, fees, recipientBalance: undefined });
-    debugger;
+
     values.fold(
       (errors: any) => alert({ type: 'error', content: errors }),
       (allExtrinsicData: any) => {
