@@ -98,7 +98,11 @@ export function ProposalRow (props: IProps) {
       <Table.Cell>{depositedBalance}</Table.Cell>
       <Table.Cell>
         <StackedHorizontal>
-          <StyledNavButton onClick={handleSeconding}> Second </StyledNavButton>
+          {
+            depositorAccountIds && depositorAccountIds.find((depositor: AccountId): boolean => depositor.eq(currentAccount))
+              ? <FadedText>Already Seconded!</FadedText>
+              : <StyledNavButton onClick={handleSeconding}> Second </StyledNavButton>
+          }
         </StackedHorizontal>
       </Table.Cell>
     </Table.Row>
