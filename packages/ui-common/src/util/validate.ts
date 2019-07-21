@@ -39,14 +39,19 @@ function validateAmount (values: SubResults & UserInputs & WithExtrinsic): Eithe
  * Make sure derived validations (fees, minimal amount) are correct.
  * @see https://github.com/polkadot-js/apps/blob/master/packages/ui-signer/src/Checks/index.tsx#L63-L111
  */
-function validateDerived (values: SubResults & UserInputs & WithExtrinsic & WithAmount): Either<Errors, AllExtrinsicData> {
-  const { accountNonce, amount, currentBalance, extrinsic, fees, recipientBalance } = values;
+export function validateDerived (values: SubResults & UserInputs & WithExtrinsic & WithAmount): Either<Errors, AllExtrinsicData> {
+  const { accountNonce, amount = new BN(0), currentBalance, extrinsic, fees, recipientBalance } = values;
 
   const txLength = SIGNATURE_SIZE + compactToU8a(accountNonce).length + extrinsic.encodedLength;
   const allFees = fees.transactionBaseFee.add(fees.transactionByteFee.muln(txLength));
 
-  const isCreation = recipientBalance.votingBalance.isZero() && fees.creationFee.gtn(0);
-  const isNoEffect = amount.add(recipientBalance.votingBalance).lte(fees.existentialDeposit);
+  let isCreation = false;
+  let isNoEffect = false;
+
+  if (recipientBalance !== undefined) {
+    isCreation = recipientBalance.votingBalance.isZero() && fees.creationFee.gtn(0);
+    isNoEffect = amount.add(recipientBalance.votingBalance).lte(fees.existentialDeposit);
+  }
 
   const allTotal = amount.add(allFees).add(isCreation ? fees.creationFee : new BN(0));
 

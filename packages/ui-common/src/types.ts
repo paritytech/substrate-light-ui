@@ -23,7 +23,7 @@ export interface SubResults {
   accountNonce: Index;
   currentBalance: DerivedBalances;
   fees: DerivedFees;
-  recipientBalance: DerivedBalances;
+  recipientBalance?: DerivedBalances;
 }
 
 export interface WithExtrinsic {
