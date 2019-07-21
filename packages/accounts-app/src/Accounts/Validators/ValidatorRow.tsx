@@ -19,7 +19,7 @@ interface Props {
   validator: AccountId;
 }
 
-export default function ValidatorRow (props: Props) {
+export function ValidatorRow (props: Props) {
   const { offlineStatuses, validator } = props;
   const { api, keyring } = useContext(AppContext);
   const [nominations, setNominations] = useState<[AccountId, Balance][]>([]);
@@ -29,22 +29,19 @@ export default function ValidatorRow (props: Props) {
     const subscription: Subscription = (api.derive.staking.info(validator.toString()) as unknown as Observable<DerivedStaking>)
       .subscribe((derivedStaking: DerivedStaking) => {
         const { stakers } = derivedStaking;
-        debugger;
         const nominations = stakers ? stakers.others.map(({ who, value }): [AccountId, Balance] => [who, value]) : [];
 
         setNominations(nominations);
-        console.log('stakers => ', stakers);
-        console.log('nominations => ', nominations);
       });
 
     return () => subscription.unsubscribe();
-  });
+  }, []);
 
   useEffect(() => {
     fromNullable(offlineStatuses)
       .map(offlineStatuses => setOfflineTotal(offlineStatuses.reduce((total, { count }) => total.add(count), new BN(0))))
       .getOrElse(undefined);
-  }, [offlineStatuses]);
+  }, []);
 
   return (
       <Table.Row>
