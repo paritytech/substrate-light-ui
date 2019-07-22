@@ -32,7 +32,7 @@ export function ProposalRow (props: IProps) {
 
   useEffect(() => {
     const subscription: Subscription = combineLatest([
-      (api.query.democracy.depositOf(propIndex) as unknown as Observable<Option<Tuple>>),
+      (api.query.democracy.depositOf(propIndex) as Observable<Option<Tuple>>),
       (api.derive.balances.fees() as Observable<DerivedFees>),
       (api.query.system.accountNonce(currentAccount) as Observable<Nonce>),
       (api.derive.balances.votingBalance(currentAccount) as Observable<DerivedBalances>)
