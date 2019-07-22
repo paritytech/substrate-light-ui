@@ -2,12 +2,14 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AccountId, Method, Option, PropIndex, Proposal, Tuple } from '@polkadot/types';
-import { AppContext } from '@substrate/ui-common';
+import { AccountId, Method, Option, PropIndex, Proposal, Tuple, Nonce } from '@polkadot/types';
+import { AppContext, TxQueueContext, validateDerived } from '@substrate/ui-common';
 import { AddressSummary, Dropdown, FadedText, StackedHorizontal, StyledNavButton, SubHeader, Table } from '@substrate/ui-components';
+import BN from 'bn.js';
 import React, { useEffect, useContext, useState } from 'react';
-import { Observable } from 'rxjs';
+import { Observable, Subscription, combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { DerivedFees, DerivedBalances } from '@polkadot/api-derive/types';
 
 interface IProps {
   key: string;
@@ -17,27 +19,56 @@ interface IProps {
 }
 export function ProposalRow (props: IProps) {
   const { propIndex, proposal, proposer } = props;
-  const { api } = useContext(AppContext);
+  const { api, keyring } = useContext(AppContext);
+  const { enqueue } = useContext(TxQueueContext);
+  const [accountNonce, setCurrentNonce] = useState();
+  const [fees, setFees] = useState();
   const [depositedBalance, setDepositedBalance] = useState();
   const [depositorAccountIds, setDepositorAccountIds] = useState();
+  const [votingBalance, setVotingBalance] = useState();
   const { meta, method, section } = Method.findFunction(proposal.callIndex);
 
+  const currentAccount = location.pathname.split('/')[2];
+
   useEffect(() => {
-    const subscription =
-      (api.query.democracy.depositOf(propIndex) as unknown as Observable<Option<Tuple>>)
-        .pipe(
-          take(1)
-        )
-        .subscribe((deposit) => {
-          // @type deposit: Option<(BalanceOf,Vec<AccountId>)>
-          let d = deposit.unwrapOr(null);
-          if (d) {
-            setDepositedBalance(d[0].toString());
-            setDepositorAccountIds(d[1]);
-          }
-        });
+    const subscription: Subscription = combineLatest([
+      (api.query.democracy.depositOf(propIndex) as Observable<Option<Tuple>>),
+      (api.derive.balances.fees() as Observable<DerivedFees>),
+      (api.query.system.accountNonce(currentAccount) as Observable<Nonce>),
+      (api.derive.balances.votingBalance(currentAccount) as Observable<DerivedBalances>)
+    ])
+    .pipe(
+      take(1)
+    )
+    .subscribe(([deposit, fees, nonce, votingBalance]) => {
+      // @type deposit: Option<(BalanceOf,Vec<AccountId>)>
+      let d = deposit.unwrapOr(null);
+      if (d) {
+        setDepositedBalance(d[0].toString());
+        setDepositorAccountIds(d[1]);
+      }
+      setCurrentNonce(nonce);
+      setFees(fees);
+      setVotingBalance(votingBalance);
+    });
     return () => subscription.unsubscribe();
   });
+
+  const handleSeconding = () => {
+    const extrinsic = api.tx.democracy.second(propIndex);
+    // @ts-ignore works in test...
+    const values = validateDerived({ accountNonce, amount: new BN(0), currentBalance: votingBalance, extrinsic, fees, recipientBalance: undefined });
+
+    values.fold(
+      (errors: any) => alert({ type: 'error', content: errors }),
+      (allExtrinsicData: any) => {
+        const { allTotal, allFees, amount, extrinsic } = allExtrinsicData;
+        const details = { amount, allFees, allTotal, methodCall: extrinsic.meta.name.toString(), senderPair: keyring.getPair(currentAccount), recipientAddress: undefined };
+
+        enqueue(extrinsic, details);
+      }
+    );
+  };
 
   return (
     <Table.Row>
@@ -67,7 +98,11 @@ export function ProposalRow (props: IProps) {
       <Table.Cell>{depositedBalance}</Table.Cell>
       <Table.Cell>
         <StackedHorizontal>
-          <StyledNavButton> Second </StyledNavButton>
+          {
+            depositorAccountIds && depositorAccountIds.find((depositor: AccountId): boolean => depositor.eq(currentAccount))
+              ? <FadedText>Already Seconded!</FadedText>
+              : <StyledNavButton onClick={handleSeconding}> Second </StyledNavButton>
+          }
         </StackedHorizontal>
       </Table.Cell>
     </Table.Row>

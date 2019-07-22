@@ -46,8 +46,13 @@ function validateDerived (values: SubResults & UserInputs & WithAmountExtrinsic)
   const txLength = SIGNATURE_SIZE + compactToU8a(accountNonce).length + extrinsic.encodedLength;
   const allFees = fees.transactionBaseFee.add(fees.transactionByteFee.muln(txLength));
 
-  const isCreation = recipientBalance.votingBalance.isZero() && fees.creationFee.gtn(0);
-  const isNoEffect = amount.add(recipientBalance.votingBalance).lte(fees.existentialDeposit);
+  let isCreation = false;
+  let isNoEffect = false;
+
+  if (recipientBalance !== undefined) {
+    isCreation = recipientBalance.votingBalance.isZero() && fees.creationFee.gtn(0);
+    isNoEffect = amount.add(recipientBalance.votingBalance).lte(fees.existentialDeposit);
+  }
 
   const allTotal = amount.add(allFees).add(isCreation ? fees.creationFee : new BN(0));
 

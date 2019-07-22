@@ -11,7 +11,7 @@ import { DEFAULT_TOKEN_SYMBOL, Margin, StackedHorizontal } from './';
 type TxSummaryProps = {
   amount: BN,
   methodCall: string,
-  recipientAddress: string,
+  recipientAddress?: string,
   senderAddress: string,
   tokenSymbol?: string
 };
@@ -28,7 +28,7 @@ export function TxSummary ({
       {methodCall} {amount.toString()} {tokenSymbol} from
       {smallIcon(senderAddress)}
       to
-      {smallIcon(recipientAddress)}
+      {recipientAddress && smallIcon(recipientAddress)}
     </StackedHorizontal>
   );
 }
