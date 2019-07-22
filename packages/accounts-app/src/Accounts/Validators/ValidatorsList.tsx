@@ -27,7 +27,6 @@ export function ValidatorsList (props: Props) {
   const [allStashes, setAllStashes] = useState([]);
   const [currentValidatorsControllersV1OrStashesV2, setCurrentValidatorsControllersV1OrStashesV2] = useState<AccountId[]>([]);
 
-  // FIXME: cache validators accountIds in context while showing: refreshing....last queried 4 minutes ago.
   useEffect(() => {
     combineLatest([
       (api.derive.staking.controllers() as unknown as Observable<any>),
@@ -52,13 +51,9 @@ export function ValidatorsList (props: Props) {
               count
             } as unknown as OfflineStatus);
 
-            console.log(result);
-
             return result;
           }, {} as unknown as AccountOfflineStatusesMap)
       );
-
-      console.log(recentlyOffline);
     });
   }, []);
 
@@ -86,7 +81,7 @@ export function ValidatorsList (props: Props) {
 
   return (
     <Container fluid>
-      <Table celled collapsing fixed stackable width='100%' verticalAlign='middle'>
+      <Table basic celled collapsing compact fixed selectable singleLine size='large' sortable stackable width='16' verticalAlign='middle'>
         {renderHeader()}
         {renderBody()}
       </Table>

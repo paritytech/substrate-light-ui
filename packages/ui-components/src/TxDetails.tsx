@@ -11,7 +11,7 @@ interface TxDetailsProps extends AccordionProps {
   allFees: BN;
   allTotal: BN;
   amount: BN;
-  recipientAddress: string;
+  recipientAddress?: string;
   senderAddress: string;
   tokenSymbol?: string;
 }

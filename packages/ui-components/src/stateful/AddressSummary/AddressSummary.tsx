@@ -19,6 +19,7 @@ type AddressSummaryProps = {
   isValidator?: boolean,
   justifyContent?: FlexJustify,
   name?: string,
+  noPlaceholderName?: boolean,
   noBalance?: boolean,
   orientation?: OrientationType,
   size?: SizeType
@@ -79,11 +80,11 @@ function renderBadge (type: string) {
 }
 
 function renderDetails (props: AddressSummaryProps) {
-  const { address, detailed, isNominator, isValidator, name = PLACEHOLDER_NAME, noBalance, size = 'medium' } = props;
+  const { address, detailed, isNominator, isValidator, name = PLACEHOLDER_NAME, noBalance, noPlaceholderName, size = 'medium' } = props;
 
   return (
     <React.Fragment>
-      <DynamicSizeText fontSize={FONT_SIZES[size] as FontSize}> {name} </DynamicSizeText>
+      <DynamicSizeText fontSize={FONT_SIZES[size] as FontSize}> {noPlaceholderName ? null : name} </DynamicSizeText>
       { isNominator && renderBadge('nominator') }
       { isValidator && renderBadge('validator') }
       {!noBalance && <Balance address={address} detailed={detailed} fontSize={FONT_SIZES[size] as FontSize} />}

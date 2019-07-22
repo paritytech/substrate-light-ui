@@ -22,7 +22,7 @@ export interface ExtrinsicDetails {
   allTotal: BN;
   amount: Balance;
   methodCall: string;
-  recipientAddress: string;
+  recipientAddress?: string;
   senderPair: KeyringPair;
 }
 

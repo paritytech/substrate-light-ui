@@ -2,9 +2,9 @@
 // This software may be modified and distributed un3r the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { DerivedReferendumVote } from '@polkadot/api-derive/types';
-import { BlockNumber, Method } from '@polkadot/types';
-import { AppContext } from '@substrate/ui-common';
+import { DerivedReferendumVote, DerivedFees, DerivedBalances } from '@polkadot/api-derive/types';
+import { BlockNumber, Method, Nonce } from '@polkadot/types';
+import { AppContext, TxQueueContext, validateDerived } from '@substrate/ui-common';
 import { FadedText, Margin, Stacked, SubHeader, Table, VoteNayButton, VoteYayButton, YayNay } from '@substrate/ui-components';
 import BN from 'bn.js';
 import React, { useEffect, useContext, useReducer, useState } from 'react';
@@ -48,9 +48,13 @@ const votesReducer = (state: any, action: any) => {
 
 export function ReferendumRow (props: IProps) {
   const { idNumber, referendum } = props;
-  const { api } = useContext(AppContext);
+  const { api, keyring } = useContext(AppContext);
+  const { enqueue } = useContext(TxQueueContext);
+  const [accountNonce, setNonce] = useState();
   const [latestBlockNumber, setLatestBlockNumber] = useState(new BlockNumber());
+  const [fees, setFees] = useState();
   const [votesForRef, setVotesFor] = useState();
+  const [votingBalance, setVotingBalance] = useState();
   const [votes, dispatch] = useReducer(votesReducer, {
     nayVoteBalance: new BN(0),
     nayVoteCount: 0,
@@ -61,14 +65,22 @@ export function ReferendumRow (props: IProps) {
 
   const { method, section } = Method.findFunction(referendum.proposal.callIndex);
 
+  const currentAccount = location.pathname.split('/')[2];
+
   useEffect(() => {
     const subscription = combineLatest([
-      api.derive.chain.bestNumber() as unknown as Observable<BlockNumber>,
-      api.derive.democracy.referendumVotesFor(idNumber) as unknown as Observable<Array<DerivedReferendumVote>>
+      (api.derive.chain.bestNumber() as unknown as Observable<BlockNumber>),
+      (api.derive.balances.fees() as Observable<DerivedFees>),
+      (api.query.system.accountNonce(currentAccount) as Observable<Nonce>),
+      (api.derive.democracy.referendumVotesFor(idNumber) as unknown as Observable<Array<DerivedReferendumVote>>),
+      (api.derive.balances.votingBalance(currentAccount) as Observable<DerivedBalances>)
     ])
-    .subscribe(([latestBlockNumber, votesForRef]) => {
+    .subscribe(([latestBlockNumber, fees, nonce, votesForRef, votingBalance]) => {
       setLatestBlockNumber(latestBlockNumber);
+      setFees(fees);
+      setNonce(nonce);
       setVotesFor(votesForRef);
+      setVotingBalance(votingBalance);
     });
 
     return () => subscription.unsubscribe();
@@ -80,6 +92,23 @@ export function ReferendumRow (props: IProps) {
 
   const handleNewVote = (votes: Array<DerivedReferendumVote>) => {
     dispatch({ type: 'NEW_VOTE', votes });
+  };
+
+  const handleVote = ({ currentTarget: { dataset: { vote } } }: React.MouseEvent<HTMLElement>) => {
+    const extrinsic = api.tx.democracy.vote(idNumber, vote === 'yay');
+
+    // @ts-ignore works in test...
+    const values = validateDerived({ accountNonce, amount: new BN(0), currentBalance: votingBalance, extrinsic, fees, recipientBalance: undefined });
+
+    values.fold(
+      (errors: any) => alert({ type: 'error', content: errors }),
+      (allExtrinsicData: any) => {
+        const { allTotal, allFees, amount, extrinsic } = allExtrinsicData;
+        const details = { amount, allFees, allTotal, methodCall: extrinsic.meta.name.toString(), senderPair: keyring.getPair(currentAccount), recipientAddress: undefined };
+
+        enqueue(extrinsic, details);
+      }
+    );
   };
 
   return (
@@ -102,9 +131,9 @@ export function ReferendumRow (props: IProps) {
       </Table.Cell>
       <Table.Cell>
         <Stacked>
-          <VoteNayButton> Nay </VoteNayButton>
+          <VoteNayButton onClick={handleVote} data-vote='nay'> Nay </VoteNayButton>
           <Margin top />
-          <VoteYayButton> Yay </VoteYayButton>
+          <VoteYayButton onClick={handleVote} data-vote='yay'> Yay </VoteYayButton>
         </Stacked>
       </Table.Cell>
     </Table.Row>

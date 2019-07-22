@@ -25,6 +25,15 @@ export interface IStakingContext {
   fetchSessionValidators: () => void;
 }
 
+
+
+  // FIXME: cache validators accountIds in context while showing: refreshing....last queried 4 minutes ago.
+
+/*
+  [
+    accountId: DerivedStaking
+  ]
+*/
 export const StakingContext: React.Context<IStakingContext> = React.createContext({} as IStakingContext);
 
 // (api.derive.staking.controllers() as unknown as Observable<any>),
