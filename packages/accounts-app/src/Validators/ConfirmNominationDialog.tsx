@@ -5,7 +5,7 @@
 // import { Nonce, Balance, AccountId } from '@polkadot/types';
 import PolkadotInputAddress from '@polkadot/ui-app/InputAddress';
 // import { AppContext, TxQueueContext, validateDerived } from '@substrate/ui-common';
-import { StyledNavButton, SubHeader, WithSpaceAround, Stacked, Icon, StyledLinkButton, FadedText, StackedHorizontal, WithSpaceBetween, FlexItem } from '@substrate/ui-components';
+import { StyledNavButton, SubHeader, WithSpaceAround, Stacked, Icon, StyledLinkButton, FadedText, StackedHorizontal, FlexItem } from '@substrate/ui-components';
 import React, { useState } from 'react';
 import Modal from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
 import styled from 'styled-components';
@@ -77,17 +77,13 @@ export function ConfirmNominationDialog (props: Props) {
                 withLabel={true}
               />
             </FlexItem>
-            <FlexItem>
-              <StackedHorizontal>
-                <WithSpaceBetween>
-                  <StyledLinkButton onClick={close}><Icon name='remove' color='red' /> <FadedText>Cancel</FadedText></StyledLinkButton>
-                  <StyledNavButton onClick={onConfirm}><Icon name='checkmark' color='green' /> <FadedText>Confirm Nomination</FadedText></StyledNavButton>
-                </WithSpaceBetween>
-              </StackedHorizontal>
-            </FlexItem>
+            <StackedHorizontal>
+              <StyledLinkButton onClick={close}><Icon name='remove' color='red' /> <FadedText>Cancel</FadedText></StyledLinkButton>
+              <StyledNavButton onClick={onConfirm}><Icon name='checkmark' color='green' /> <FadedText>Confirm</FadedText></StyledNavButton>
+            </StackedHorizontal>
           </Stacked>
         </Modal.Actions>
       </WithSpaceAround>
     </Modal>
   );
-}
+};

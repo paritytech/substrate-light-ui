@@ -208,6 +208,7 @@ export const InlineSubHeader = styled(SubHeader)`
 `;
 
 export const WrapperDiv = styled.div<WrapperDivProps>`
+  margin: ${props => props.margin || '1rem'};
   padding: ${props => props.padding || '1rem'};
   width: ${props => props.width || '30rem'};
   height: ${props => props.height || '100%'};

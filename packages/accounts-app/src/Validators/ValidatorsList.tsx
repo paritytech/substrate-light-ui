@@ -4,7 +4,7 @@
 
 import { DerivedSessionInfo } from '@polkadot/api-derive/types';
 import { AccountId, Header } from '@polkadot/types';
-import { Container, Table, Stacked, FadedText, WrapperDiv } from '@substrate/ui-components';
+import { Container, FadedText, Icon, Stacked, StackedHorizontal, Table, WrapperDiv } from '@substrate/ui-components';
 import { AppContext } from '@substrate/ui-common';
 import BN from 'bn.js';
 import { fromNullable } from 'fp-ts/lib/Option';
@@ -38,15 +38,7 @@ export function ValidatorsList (props: Props) {
     localforage.getItem('validators')
       .then(validators => {
         if (!validators) {
-          const validatorSub: Subscription = (api.query.session.validators() as unknown as Observable<AccountId[]>)
-            .subscribe(validators => {
-              localforage.setItem('validators', validators)
-                .then(res => {
-                  setCurrentValidatorsControllersV1OrStashesV2(res);
-                  return () => validatorSub.unsubscribe();
-                })
-                .catch(e => console.error(e));
-            });
+          refreshValidators();
         } else { setCurrentValidatorsControllersV1OrStashesV2(validators as AccountId[]); }
       })
       .catch(e => console.error(e));
@@ -56,38 +48,7 @@ export function ValidatorsList (props: Props) {
     localforage.getItem('recentlyOffine')
       .then((res: any) => {
         if (!res) {
-          const recentlyOfflineSub: Subscription = combineLatest([
-            (api.query.staking.recentlyOffline() as unknown as Observable<any>),
-            (api.rpc.chain.subscribeNewHead() as Observable<Header>)
-          ])
-            .subscribe(([stakingRecentlyOffline, header]) => {
-              const recentlyOffline = stakingRecentlyOffline.reduce(
-                (result: AccountOfflineStatusesMap, [accountId, blockNumber, count]: RecentlyOffline): AccountOfflineStatusesMap => {
-                  const account = accountId.toString();
-
-                  if (!result[account]) {
-                    result[account] = [];
-                  }
-
-                  result[account].push({
-                    blockNumber,
-                    count
-                  } as unknown as OfflineStatus);
-
-                  return result;
-                }, {} as AccountOfflineStatusesMap);
-
-              localforage.setItem('recentlyOffline', recentlyOffline)
-                .then(res => {
-                  setRecentlyOffline(res);
-                  localforage.setItem('lastUpdatedRecentlyOffline', header.blockNumber.toNumber())
-                    .then(() => setLastUpdatedRecentlyOffline(header.blockNumber.toNumber()))
-                    .catch(e => console.error(e));
-
-                  return () => recentlyOfflineSub.unsubscribe();
-                })
-                .catch(e => console.error(e));
-            });
+          refreshRecentlyOffline();
         } else { setRecentlyOffline(res); }
       })
       .catch(e => console.error(e));
@@ -111,14 +72,63 @@ export function ValidatorsList (props: Props) {
     return () => subscription.unsubscribe();
   }, []);
 
+  function refreshValidators () {
+    setCurrentValidatorsControllersV1OrStashesV2([]); // so that it shows loader again
+    const validatorSub: Subscription = (api.query.session.validators() as unknown as Observable<AccountId[]>)
+      .subscribe(validators => {
+        localforage.setItem('validators', validators)
+          .then(() => {
+            setCurrentValidatorsControllersV1OrStashesV2(validators);
+            return () => validatorSub.unsubscribe();
+          })
+          .catch(e => console.error(e));
+      });
+  }
+
+  function refreshRecentlyOffline () {
+    setLastUpdatedRecentlyOffline(undefined); // so that it shows loader again
+    const recentlyOfflineSub: Subscription = combineLatest([
+      (api.query.staking.recentlyOffline() as unknown as Observable<any>),
+      (api.rpc.chain.subscribeNewHead() as Observable<Header>)
+    ])
+      .subscribe(([stakingRecentlyOffline, header]) => {
+        const recentlyOffline = stakingRecentlyOffline.reduce(
+          (result: AccountOfflineStatusesMap, [accountId, blockNumber, count]: RecentlyOffline): AccountOfflineStatusesMap => {
+            const account = accountId.toString();
+
+            if (!result[account]) {
+              result[account] = [];
+            }
+
+            result[account].push({
+              blockNumber,
+              count
+            } as unknown as OfflineStatus);
+
+            return result;
+          }, {} as AccountOfflineStatusesMap);
+
+        localforage.setItem('recentlyOffline', recentlyOffline)
+          .then(() => {
+            setRecentlyOffline(recentlyOffline);
+            localforage.setItem('lastUpdatedRecentlyOffline', header.blockNumber.toNumber())
+              .then(() => setLastUpdatedRecentlyOffline(header.blockNumber.toNumber()))
+              .catch(e => console.error(e));
+
+            return () => recentlyOfflineSub.unsubscribe();
+          })
+          .catch(e => console.error(e));
+      });
+  }
+
   const renderBody = () => (
     <Table.Body>
       {
         currentValidatorsControllersV1OrStashesV2.length
           ? currentValidatorsControllersV1OrStashesV2.map(validator => {
             return <ValidatorRow
-                      offlineStatuses={recentlyOffline && recentlyOffline[validator.toString()]}
-                      validator={validator} />;
+              offlineStatuses={recentlyOffline && recentlyOffline[validator.toString()]}
+              validator={validator} />;
           })
           : <Table.Row textAlign='center'><Loader active inline /></Table.Row>
       }
@@ -133,7 +143,7 @@ export function ValidatorsList (props: Props) {
           <Stacked>
             Validators {`${currentValidatorsControllersV1OrStashesV2.length} / ${validatorCount ? validatorCount.toString() : <Loader active inline size='small' />}`}
             <FadedText> New Validator Set In: </FadedText>
-            <WrapperDiv width='20rem'>
+            <WrapperDiv margin='0rem' padding='0rem' width='20rem'>
               {
                 fromNullable(sessionInfo)
                   .map(sessionInfo =>
@@ -153,11 +163,10 @@ export function ValidatorsList (props: Props) {
         <Table.HeaderCell>
           <Stacked>
             Times Reported Offline
-            <FadedText>last updated: {
-                (lastUpdatedRecentlyOffline && lastBlock)
-                ? Math.abs(lastBlock - lastUpdatedRecentlyOffline)
-                : <Loader inline active size='mini' />
-              } blocks ago </FadedText>
+            <StackedHorizontal>
+              <FadedText>last updated: {(lastUpdatedRecentlyOffline && lastBlock) ? Math.abs(lastBlock - lastUpdatedRecentlyOffline) : <Loader inline active size='mini' /> } blocks ago </FadedText>
+              <Icon name='refresh' onClick={refreshRecentlyOffline} style={{ zIndex: 10000 }} />
+            </StackedHorizontal>
           </Stacked>
         </Table.HeaderCell>
         <Table.HeaderCell>Nominators</Table.HeaderCell>
