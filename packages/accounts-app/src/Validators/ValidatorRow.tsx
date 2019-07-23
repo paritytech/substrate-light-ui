@@ -2,18 +2,20 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { DerivedStaking } from '@polkadot/api-derive/types';
-import { AccountId, Balance } from '@polkadot/types';
+import { DerivedStaking, DerivedFees, DerivedBalances } from '@polkadot/api-derive/types';
+import { AccountId, Balance, Index } from '@polkadot/types';
+import { formatBalance } from '@polkadot/util';
 import { AppContext } from '@substrate/ui-common';
 import { AddressSummary, FadedText, StyledNavButton, Stacked, Table } from '@substrate/ui-components';
 import BN from 'bn.js';
 import { fromNullable, some } from 'fp-ts/lib/Option';
-import localforage from 'localforage';
 import React, { useContext, useEffect, useState } from 'react';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription, Observable, combineLatest, of } from 'rxjs';
 import { Loader } from 'semantic-ui-react';
 
-import { OfflineStatus } from '../types';
+import { OfflineStatus } from '../Accounts/types';
+import { AlertsContext } from '@substrate/ui-common/src';
+import { ConfirmNominationDialog } from './ConfirmNominationDialog';
 
 interface Props {
   offlineStatuses?: OfflineStatus[];
@@ -23,17 +25,23 @@ interface Props {
 export function ValidatorRow (props: Props) {
   const { offlineStatuses, validator } = props;
   const { api, keyring } = useContext(AppContext);
+  // const { enqueue: alert } = useContext(AlertsContext);
   const [nominations, setNominations] = useState<[AccountId, Balance][]>();
+  const [nominees, setNominees] = useState<AccountId[]>();
   const [offlineTotal, setOfflineTotal] = useState<BN>(new BN(0));
 
-  useEffect(() => {
-    const subscription: Subscription = (api.derive.staking.info(validator.toString()) as unknown as Observable<DerivedStaking>)
-      .subscribe((derivedStaking: DerivedStaking) => {
-        const { stakers } = derivedStaking;
-        const nominations = stakers ? stakers.others.map(({ who, value }): [AccountId, Balance] => [who, value]) : [];
+  // const currentAccount = location.pathname.split('/')[2];
 
-        setNominations(nominations);
-      });
+  useEffect(() => {
+    const subscription: Subscription =
+      (api.derive.staking.info(validator) as Observable<DerivedStaking>)
+        .subscribe((derivedStaking: DerivedStaking) => {
+          const { nominators, stakers } = derivedStaking;
+          const nominations = stakers ? stakers.others.map(({ who, value }): [AccountId, Balance] => [who, value]) : [];
+
+          setNominees(nominators); //??????
+          setNominations(nominations); // the list of accounts that nominated this validator
+        });
 
     fromNullable(offlineStatuses)
       .map(offlineStatuses => offlineStatuses.reduce((total, { count }) => total.add(count), new BN(0)))
@@ -42,9 +50,10 @@ export function ValidatorRow (props: Props) {
 
     return () => subscription.unsubscribe();
   }, []);
+
   return (
-    <Table.Row>
-      <Table.Cell width='6'>
+    <Table.Row style={{ height: '200px' }}>
+      <Table.Cell style={{ lineHeight: '0' }} width='7'>
         <AddressSummary
           address={validator.toString()}
           orientation='horizontal'
@@ -55,21 +64,21 @@ export function ValidatorRow (props: Props) {
           noPlaceholderName
           size='medium' />
       </Table.Cell>
-      <Table.Cell textAlign='center' width='2'>{offlineTotal.toString()}</Table.Cell>
-      <Table.Cell collapsing width='5'>
+      <Table.Cell style={{ lineHeight: '0' }} textAlign='center' width='1'>{offlineTotal.toString()}</Table.Cell>
+      <Table.Cell collapsing style={{ lineHeight: '0' }} width='5'>
         {
           nominations
             ? nominations.map(([who, bonded]) => (
               <Stacked>
                 <AddressSummary address={who.toString()} orientation='horizontal' noPlaceholderName size='tiny' />
-                <FadedText>Bonded Amount: {bonded.toString()}</FadedText>
-              </Stacked>)
-              )
+                <FadedText>Bonded Amount: {formatBalance(bonded)}</FadedText>
+              </Stacked>
+              ))
             : <Loader active inline />
         }
       </Table.Cell>
-      <Table.Cell width='3'>
-        <StyledNavButton> Nominate </StyledNavButton>
+      <Table.Cell style={{ lineHeight: '0' }} width='3'>
+        <ConfirmNominationDialog />
       </Table.Cell>
     </Table.Row>
   );

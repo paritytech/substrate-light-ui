@@ -9,7 +9,8 @@ import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { AccountsOverview } from './AccountsOverview';
 import { AccountsOverviewDetailed } from './AccountsOverviewDetailed';
 import { StakingOptions } from './Staking';
-import { ValidatorsList } from './Validators';
+import { ValidatorsList } from '../Validators';
+// import { StakingContextProvider } from '../StakingContext';
 
 interface MatchParams {
   currentAccount: string;
