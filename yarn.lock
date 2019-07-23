@@ -3494,9 +3494,9 @@
   integrity sha512-HR/PrCcxYb2YHviTqH7CMdL1TUhUZLTUKzfrkMhxm1HTa5mg/QtP8XMiuSPz6dZ6wecazAOu8aYZ5DqkNlgHHQ==
 
 "@types/recharts@^1.1.16":
-  version "1.1.19"
-  resolved "https://registry.yarnpkg.com/@types/recharts/-/recharts-1.1.19.tgz#876b442a9d8f7dbedd5d82f694d531d987885279"
-  integrity sha512-lB2kaWIVBkdBD1guTg58NH7FzNgS2ONSVu3LjdJSj5xgiWlcISejwMjLoR39fS6JSOtrXNQy8KbrcHbiWfgviA==
+  version "1.1.20"
+  resolved "https://registry.yarnpkg.com/@types/recharts/-/recharts-1.1.20.tgz#23d7419c5e41b9ab15a5598988596c3f66895608"
+  integrity sha512-YnCo1jJlQbCl1FDnFaofhQFqUBQrlj2Bt9mPhhm5uQLprxRM7Fhpm42mIGPgZgV0/dvKj6gHQhCpCSaQGpn4zA==
   dependencies:
     "@types/d3-shape" "*"
     "@types/react" "*"
