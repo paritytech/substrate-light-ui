@@ -6,6 +6,7 @@ import { Balance } from '@polkadot/types';
 import { DerivedBalances, DerivedStaking } from '@polkadot/api-derive/types';
 import { formatBalance, formatNumber } from '@polkadot/util';
 import React from 'react';
+import Loader from 'semantic-ui-react/dist/commonjs/elements/Loader';
 
 import { FontSize, FontWeight } from './types';
 import { DynamicSizeText, FadedText, Stacked, StyledLinkButton } from './Shared.styles';
@@ -20,7 +21,6 @@ export type BalanceDisplayProps = {
   handleRedeem?: (address: string) => void
 };
 
-const PLACEHOLDER_BALANCE = new Balance(0);
 const defaultProps = {
   detailed: false,
   fontSize: 'large' as FontSize
@@ -34,16 +34,16 @@ export function BalanceDisplay (props: BalanceDisplayProps = defaultProps) {
 
     return (
       <React.Fragment>
-        <span><b>Available:</b> <FadedText>{formatBalance(availableBalance) || PLACEHOLDER_BALANCE.toString()}</FadedText></span>
+        <span><b>Available:</b> <FadedText>{formatBalance(availableBalance) || <Loader active inline size='mini' />}</FadedText></span>
         <span>
           <b>Redeemable:</b>
           <FadedText>
-            {allStaking && allStaking.redeemable && formatBalance(allStaking.redeemable) || PLACEHOLDER_BALANCE.toString()}
+            {allStaking && allStaking.redeemable && formatBalance(allStaking.redeemable) || <Loader active inline size='mini' />}
           </FadedText>
           {allStaking && allStaking.redeemable && allStaking.redeemable.gtn(0) && renderRedeemButton()}
         </span>
-        <span><b>Reserved:</b><FadedText>{formatBalance(reservedBalance) || PLACEHOLDER_BALANCE.toString()}</FadedText></span>
-        <span><b>Locked:</b><FadedText>{formatBalance(lockedBalance) || PLACEHOLDER_BALANCE.toString()}</FadedText></span>
+        <span><b>Reserved:</b><FadedText>{formatBalance(reservedBalance) || <Loader active inline size='mini' />}</FadedText></span>
+        <span><b>Locked:</b><FadedText>{formatBalance(lockedBalance) || <Loader active inline size='mini' />}</FadedText></span>
         {renderUnlocking()}
       </React.Fragment>
     );
@@ -79,8 +79,8 @@ export function BalanceDisplay (props: BalanceDisplayProps = defaultProps) {
   return (
     <Stacked>
       <DynamicSizeText fontSize={fontSize} fontWeight={fontWeight}>
-        <span><b>Total Balance:</b> {(allBalances && allBalances.freeBalance && formatBalance(allBalances.freeBalance))}</span>
-        <FadedText>Transactions: {allBalances && formatNumber(allBalances.accountNonce)}</FadedText>
+        <span><b>Total Balance:</b> {(allBalances && allBalances.freeBalance && formatBalance(allBalances.freeBalance) || <Loader active inline size='mini' />)}</span>
+        <FadedText>Transactions: {allBalances && formatNumber(allBalances.accountNonce) || <Loader active inline size='mini' />}</FadedText>
       </DynamicSizeText>
       {
         detailed

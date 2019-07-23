@@ -2,19 +2,18 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { DerivedStaking, DerivedFees, DerivedBalances } from '@polkadot/api-derive/types';
-import { AccountId, Balance, Index } from '@polkadot/types';
+import { DerivedStaking } from '@polkadot/api-derive/types';
+import { AccountId, Balance } from '@polkadot/types';
 import { formatBalance } from '@polkadot/util';
 import { AppContext } from '@substrate/ui-common';
-import { AddressSummary, FadedText, StyledNavButton, Stacked, Table } from '@substrate/ui-components';
+import { AddressSummary, FadedText, Stacked, Table } from '@substrate/ui-components';
 import BN from 'bn.js';
 import { fromNullable, some } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
-import { Subscription, Observable, combineLatest, of } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { Loader } from 'semantic-ui-react';
 
 import { OfflineStatus } from '../Accounts/types';
-import { AlertsContext } from '@substrate/ui-common/src';
 import { ConfirmNominationDialog } from './ConfirmNominationDialog';
 
 interface Props {
@@ -25,12 +24,9 @@ interface Props {
 export function ValidatorRow (props: Props) {
   const { offlineStatuses, validator } = props;
   const { api, keyring } = useContext(AppContext);
-  // const { enqueue: alert } = useContext(AlertsContext);
   const [nominations, setNominations] = useState<[AccountId, Balance][]>();
   const [nominees, setNominees] = useState<AccountId[]>();
   const [offlineTotal, setOfflineTotal] = useState<BN>(new BN(0));
-
-  // const currentAccount = location.pathname.split('/')[2];
 
   useEffect(() => {
     const subscription: Subscription =
@@ -39,8 +35,8 @@ export function ValidatorRow (props: Props) {
           const { nominators, stakers } = derivedStaking;
           const nominations = stakers ? stakers.others.map(({ who, value }): [AccountId, Balance] => [who, value]) : [];
 
-          setNominees(nominators); //??????
-          setNominations(nominations); // the list of accounts that nominated this validator
+          setNominees(nominators); // the list of accounts this account is nominating
+          setNominations(nominations); // the list of accounts that nominated this account
         });
 
     fromNullable(offlineStatuses)
