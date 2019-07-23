@@ -9,10 +9,10 @@ import { AppContext } from '@substrate/ui-common';
 import BN from 'bn.js';
 import { fromNullable } from 'fp-ts/lib/Option';
 import localforage from 'localforage';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { combineLatest, Observable, Subscription } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { take, first } from 'rxjs/operators';
 import Loader from 'semantic-ui-react/dist/commonjs/elements/Loader/Loader';
 import Progress from 'semantic-ui-react/dist/commonjs/modules/Progress/Progress';
 
@@ -34,22 +34,36 @@ export function ValidatorsList (props: Props) {
   const [sessionInfo, setSessionInfo] = useState<DerivedSessionInfo>();
   const [validatorCount, setValidatorCount] = useState<BN>(new BN(0));
 
+  // If it is the start of a new session, make a new query to get the session validators automatically
+  useEffect(() => {
+    fromNullable(sessionInfo)
+      .map(sessionInfo => sessionInfo.sessionProgress.toNumber() === 0 && refreshValidators())
+      .getOrElse(false);
+  }, []);
+
+  // set state with validators from localstorage if persisted in localstorage, else make new query
   useEffect(() => {
     localforage.getItem('validators')
       .then(validators => {
         if (!validators) {
-          refreshValidators();
-        } else { setCurrentValidatorsControllersV1OrStashesV2(validators as AccountId[]); }
+          return refreshValidators();
+        } else {
+          setCurrentValidatorsControllersV1OrStashesV2(validators as AccountId[]);
+        }
       })
       .catch(e => console.error(e));
   }, []);
 
+  // set state with recentlyOffline from localstorage if persisted in localstorage, else make new query
   useEffect(() => {
     localforage.getItem('recentlyOffine')
       .then((res: any) => {
         if (!res) {
           refreshRecentlyOffline();
-        } else { setRecentlyOffline(res); }
+        } else {
+          setRecentlyOffline(res);
+          return;
+        }
       })
       .catch(e => console.error(e));
   }, []);
@@ -72,25 +86,36 @@ export function ValidatorsList (props: Props) {
     return () => subscription.unsubscribe();
   }, []);
 
-  function refreshValidators () {
+  /*
+    Creates a new subscription to session validators and sets it to state, persists to localstorage.
+    Called automatically if not already set in localstorage or at the start of a new session.
+    Unsubscribes immediately after setting state and localstorage.
+  */
+  const refreshValidators = useCallback(() => {
     setCurrentValidatorsControllersV1OrStashesV2([]); // so that it shows loader again
     const validatorSub: Subscription = (api.query.session.validators() as unknown as Observable<AccountId[]>)
-      .subscribe(validators => {
+      .pipe(first())
+      .subscribe(validators =>
         localforage.setItem('validators', validators)
           .then(() => {
             setCurrentValidatorsControllersV1OrStashesV2(validators);
-            return () => validatorSub.unsubscribe();
+            validatorSub.unsubscribe();
           })
-          .catch(e => console.error(e));
-      });
-  }
+          .catch(e => console.error(e))
+      );
+  }, [api]);
 
-  function refreshRecentlyOffline () {
+  /*
+    Creates a new subscription to recently offline and latest chain head and sets it to state, persists in localstorage.
+    Called automatically if not set in localstorage, or manually by user.
+    Unsubscribes immediately after setting state and localstorage.
+  */
+  const refreshRecentlyOffline = useCallback(() => {
     setLastUpdatedRecentlyOffline(undefined); // so that it shows loader again
     const recentlyOfflineSub: Subscription = combineLatest([
       (api.query.staking.recentlyOffline() as unknown as Observable<any>),
       (api.rpc.chain.subscribeNewHead() as Observable<Header>)
-    ])
+    ]).pipe(first())
       .subscribe(([stakingRecentlyOffline, header]) => {
         const recentlyOffline = stakingRecentlyOffline.reduce(
           (result: AccountOfflineStatusesMap, [accountId, blockNumber, count]: RecentlyOffline): AccountOfflineStatusesMap => {
@@ -107,19 +132,20 @@ export function ValidatorsList (props: Props) {
 
             return result;
           }, {} as AccountOfflineStatusesMap);
-
-        localforage.setItem('recentlyOffline', recentlyOffline)
-          .then(() => {
-            setRecentlyOffline(recentlyOffline);
-            localforage.setItem('lastUpdatedRecentlyOffline', header.blockNumber.toNumber())
-              .then(() => setLastUpdatedRecentlyOffline(header.blockNumber.toNumber()))
-              .catch(e => console.error(e));
-
-            return () => recentlyOfflineSub.unsubscribe();
-          })
-          .catch(e => console.error(e));
+        
+          localforage.setItem('recentlyOffline', recentlyOffline)
+            .then(() => {
+              setRecentlyOffline(recentlyOffline);
+              localforage.setItem('lastUpdatedRecentlyOffline', header.blockNumber.toNumber())
+                .then(() => {
+                  setLastUpdatedRecentlyOffline(header.blockNumber.toNumber());
+                  recentlyOfflineSub.unsubscribe();
+                })
+                .catch(e => console.error(e));
+            })
+            .catch(e => console.error(e));
       });
-  }
+  }, [api]);
 
   const renderBody = () => (
     <Table.Body>
@@ -127,8 +153,9 @@ export function ValidatorsList (props: Props) {
         currentValidatorsControllersV1OrStashesV2.length
           ? currentValidatorsControllersV1OrStashesV2.map(validator => {
             return <ValidatorRow
-              offlineStatuses={recentlyOffline && recentlyOffline[validator.toString()]}
-              validator={validator} />;
+                      key={validator.toString()}
+                      offlineStatuses={recentlyOffline && recentlyOffline[validator.toString()]}
+                      validator={validator} />;
           })
           : <Table.Row textAlign='center'><Loader active inline /></Table.Row>
       }
@@ -138,39 +165,41 @@ export function ValidatorsList (props: Props) {
   const renderHeader = () => {
     return (
       <Table.Header>
-        <Table.HeaderCell>Am I Nominating?</Table.HeaderCell>
-        <Table.HeaderCell>
-          <Stacked>
-            Validators {`${currentValidatorsControllersV1OrStashesV2.length} / ${validatorCount ? validatorCount.toString() : <Loader active inline size='small' />}`}
-            <FadedText> New Validator Set In: </FadedText>
-            <WrapperDiv margin='0rem' padding='0rem' width='20rem'>
-              {
-                fromNullable(sessionInfo)
-                  .map(sessionInfo =>
-                    <Progress
-                      color='pink'
-                      label='session'
-                      progress='ratio'
-                      size='small'
-                      total={sessionInfo.sessionLength.toNumber()}
-                      value={sessionInfo.sessionProgress.toNumber()} />
-                  )
-                  .getOrElse(<Loader active inline size='mini' />)
-              }
-            </WrapperDiv>
-          </Stacked>
-        </Table.HeaderCell>
-        <Table.HeaderCell>
-          <Stacked>
-            Times Reported Offline
-            <StackedHorizontal>
-              <FadedText>last updated: {(lastUpdatedRecentlyOffline && lastBlock) ? Math.abs(lastBlock - lastUpdatedRecentlyOffline) : <Loader inline active size='mini' /> } blocks ago </FadedText>
-              <Icon name='refresh' onClick={refreshRecentlyOffline} style={{ zIndex: 10000 }} />
-            </StackedHorizontal>
-          </Stacked>
-        </Table.HeaderCell>
-        <Table.HeaderCell>Nominators</Table.HeaderCell>
-        <Table.HeaderCell>Actions</Table.HeaderCell>
+        <Table.Row>
+          <Table.HeaderCell>Am I Nominating?</Table.HeaderCell>
+          <Table.HeaderCell>
+            <Stacked>
+              Validators {`${currentValidatorsControllersV1OrStashesV2.length} / ${validatorCount ? validatorCount.toString() : <Loader active inline size='small' />}`}
+              <FadedText> New Validator Set In: </FadedText>
+              <WrapperDiv margin='0rem' padding='0rem' width='20rem'>
+                {
+                  fromNullable(sessionInfo)
+                    .map(sessionInfo =>
+                      <Progress
+                        color='pink'
+                        label='session'
+                        progress='ratio'
+                        size='small'
+                        total={sessionInfo.sessionLength.toNumber()}
+                        value={sessionInfo.sessionProgress.toNumber()} />
+                    )
+                    .getOrElse(<Loader active inline size='mini' />)
+                }
+              </WrapperDiv>
+            </Stacked>
+          </Table.HeaderCell>
+          <Table.HeaderCell>
+            <Stacked>
+              Times Reported Offline
+              <StackedHorizontal>
+                {lastUpdatedRecentlyOffline && lastBlock ? <FadedText>last updated: {Math.abs(lastBlock - lastUpdatedRecentlyOffline)} blocks ago </FadedText> : <Loader inline active size='mini' /> }
+                <Icon name='refresh' onClick={refreshRecentlyOffline} style={{ zIndex: 10000 }} />
+              </StackedHorizontal>
+            </Stacked>
+          </Table.HeaderCell>
+          <Table.HeaderCell>Nominators</Table.HeaderCell>
+          <Table.HeaderCell>Actions</Table.HeaderCell>
+        </Table.Row>
       </Table.Header>
     );
   };

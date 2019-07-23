@@ -11,6 +11,7 @@ import BN from 'bn.js';
 import { fromNullable, some } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
 import { Subscription, Observable } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { Loader } from 'semantic-ui-react';
 
 import { OfflineStatus } from '../Accounts/types';
@@ -32,14 +33,13 @@ export function ValidatorRow (props: Props) {
 
   useEffect(() => {
     const subscription: Subscription =
-      (api.derive.staking.info(validator) as Observable<DerivedStaking>)
-        .subscribe((derivedStaking: DerivedStaking) => {
-          const { nominators, stakers } = derivedStaking;
-          const nominations = stakers ? stakers.others.map(({ who, value }): [AccountId, Balance] => [who, value]) : [];
+      (api.derive.staking.info(validator) as Observable<DerivedStaking>).pipe(first()).subscribe((derivedStaking: DerivedStaking) => {
+        const { nominators, stakers } = derivedStaking;
+        const nominations = stakers ? stakers.others.map(({ who, value }): [AccountId, Balance] => [who, value]) : [];
 
-          setNominees(nominators); // the list of accounts this account is nominating
-          setNominations(nominations); // the list of accounts that nominated this account
-        });
+        setNominees(nominators); // the list of accounts this account is nominating
+        setNominations(nominations); // the list of accounts that nominated this account
+      });
 
     fromNullable(offlineStatuses)
       .map(offlineStatuses => offlineStatuses.reduce((total, { count }) => total.add(count), new BN(0)))
@@ -50,7 +50,7 @@ export function ValidatorRow (props: Props) {
   }, []);
 
   return (
-    <Table.Row style={{ height: '200px' }}>
+    <Table.Row key={validator.toString()} style={{ height: '200px' }}>
       <Table.Cell>
         {
           fromNullable(nominees)
@@ -74,7 +74,7 @@ export function ValidatorRow (props: Props) {
         {
           nominations
             ? nominations.map(([who, bonded]) => (
-              <Stacked>
+              <Stacked key={who.toString()}>
                 <AddressSummary address={who.toString()} orientation='horizontal' noPlaceholderName size='tiny' />
                 <FadedText>Bonded Amount: {formatBalance(bonded)}</FadedText>
               </Stacked>
@@ -83,7 +83,7 @@ export function ValidatorRow (props: Props) {
         }
       </Table.Cell>
       <Table.Cell width='2'>
-        <ConfirmNominationDialog />
+        
       </Table.Cell>
     </Table.Row>
   );

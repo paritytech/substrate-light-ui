@@ -33,16 +33,14 @@ export function BalanceDisplay (props: BalanceDisplayProps = defaultProps) {
 
     return (
       <React.Fragment>
-        <span><b>Available:</b> <FadedText>{formatBalance(availableBalance) || <Loader active inline size='mini' />}</FadedText></span>
+        <span><b>Available:</b> {<FadedText>{formatBalance(availableBalance)}</FadedText> || <Loader active inline size='mini' />}</span>
         <span>
           <b>Redeemable:</b>
-          <FadedText>
-            {allStaking && allStaking.redeemable && formatBalance(allStaking.redeemable) || <Loader active inline size='mini' />}
-          </FadedText>
+          {allStaking && allStaking.redeemable ? <FadedText>{formatBalance(allStaking.redeemable)}</FadedText> : <Loader active inline size='mini' />}
           {allStaking && allStaking.redeemable && allStaking.redeemable.gtn(0) && renderRedeemButton()}
         </span>
-        <span><b>Reserved:</b><FadedText>{formatBalance(reservedBalance) || <Loader active inline size='mini' />}</FadedText></span>
-        <span><b>Locked:</b><FadedText>{formatBalance(lockedBalance) || <Loader active inline size='mini' />}</FadedText></span>
+        <span><b>Reserved:</b>{ reservedBalance ? <FadedText>{formatBalance(reservedBalance)}</FadedText> : <Loader active inline size='mini' />}</span>
+        <span><b>Locked:</b>{ lockedBalance ? <FadedText>{formatBalance(lockedBalance)} </FadedText> : <Loader active inline size='mini' />}</span>
         {renderUnlocking()}
       </React.Fragment>
     );
@@ -69,7 +67,7 @@ export function BalanceDisplay (props: BalanceDisplayProps = defaultProps) {
             data-tip
             data-for={`unlocking-trigger-${index}`}
           />
-          <FadedText> Blocks remaining: {remainingBlocks}</FadedText>
+          <FadedText> Blocks remaining: {remainingBlocks.toNumber()}</FadedText>
         </div>
       ))
     );
@@ -79,7 +77,7 @@ export function BalanceDisplay (props: BalanceDisplayProps = defaultProps) {
     <Stacked>
       <DynamicSizeText fontSize={fontSize} fontWeight={fontWeight}>
         <span><b>Total Balance:</b> {(allBalances && allBalances.freeBalance && formatBalance(allBalances.freeBalance) || <Loader active inline size='mini' />)}</span>
-        <FadedText>Transactions: {allBalances && formatNumber(allBalances.accountNonce) || <Loader active inline size='mini' />}</FadedText>
+        { allBalances ? <FadedText>Transactions: {formatNumber(allBalances.accountNonce)} </FadedText> : <Loader active inline size='mini' />}
       </DynamicSizeText>
       {
         detailed
