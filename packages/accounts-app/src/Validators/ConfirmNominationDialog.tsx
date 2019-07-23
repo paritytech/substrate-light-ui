@@ -6,7 +6,7 @@
 import PolkadotInputAddress from '@polkadot/ui-app/InputAddress';
 // import { AppContext, TxQueueContext, validateDerived } from '@substrate/ui-common';
 import { StyledNavButton, SubHeader, WithSpaceAround, Stacked, Icon, StyledLinkButton, FadedText, StackedHorizontal, WithSpaceBetween, FlexItem } from '@substrate/ui-components';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import Modal from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
 import styled from 'styled-components';
 // import { combineLatest, Observable, Subscription } from 'rxjs';
@@ -71,20 +71,20 @@ export function ConfirmNominationDialog (props: Props) {
               <InputAddress
                 disabled
                 label={'Controller:'}
+                onChange={setController}
                 type='account'
                 value={controller}
                 withLabel={true}
               />
             </FlexItem>
             <FlexItem>
-
+              <StackedHorizontal>
+                <WithSpaceBetween>
+                  <StyledLinkButton onClick={close}><Icon name='remove' color='red' /> <FadedText>Cancel</FadedText></StyledLinkButton>
+                  <StyledNavButton onClick={onConfirm}><Icon name='checkmark' color='green' /> <FadedText>Confirm Nomination</FadedText></StyledNavButton>
+                </WithSpaceBetween>
+              </StackedHorizontal>
             </FlexItem>
-            <StackedHorizontal>
-              <WithSpaceBetween>
-                <StyledLinkButton onClick={close}><Icon name='remove' color='red' /> <FadedText>Cancel</FadedText></StyledLinkButton>
-                <StyledNavButton onClick={onConfirm}><Icon name='checkmark' color='green' /> <FadedText>Confirm Nomination</FadedText></StyledNavButton>
-              </WithSpaceBetween>
-            </StackedHorizontal>
           </Stacked>
         </Modal.Actions>
       </WithSpaceAround>

@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { DerivedFees, DerivedSessionInfo } from '@polkadot/api-derive/types';
+import { DerivedSessionInfo } from '@polkadot/api-derive/types';
 import { AccountId, Header } from '@polkadot/types';
 import { Container, Table, Stacked, FadedText, WrapperDiv } from '@substrate/ui-components';
 import { AppContext } from '@substrate/ui-common';
@@ -28,10 +28,7 @@ interface Props extends RouteComponentProps<MatchParams> {}
 export function ValidatorsList (props: Props) {
   const { api } = useContext(AppContext);
   const [recentlyOffline, setRecentlyOffline] = useState<AccountOfflineStatusesMap>({});
-  const [allControllers, setAllControllers] = useState<string[]>([]);
-  const [allStashes, setAllStashes] = useState<string[]>([]);
   const [currentValidatorsControllersV1OrStashesV2, setCurrentValidatorsControllersV1OrStashesV2] = useState<AccountId[]>([]);
-  const [fees, setFees] = useState();
   const [lastBlock, setLastBlock] = useState<number>();
   const [lastUpdatedRecentlyOffline, setLastUpdatedRecentlyOffline] = useState<number>();
   const [sessionInfo, setSessionInfo] = useState<DerivedSessionInfo>();
@@ -98,8 +95,6 @@ export function ValidatorsList (props: Props) {
 
   useEffect(() => {
     const subscription: Subscription = combineLatest([
-      (api.derive.staking.controllers() as unknown as Observable<any>),
-      (api.derive.balances.fees() as Observable<DerivedFees>),
       (api.rpc.chain.subscribeNewHead() as Observable<Header>),
       (api.derive.session.info() as Observable<DerivedSessionInfo>),
       (api.query.staking.validatorCount() as unknown as Observable<BN>)
@@ -107,13 +102,7 @@ export function ValidatorsList (props: Props) {
     .pipe(
       take(1)
     )
-    .subscribe(([allStashesAndControllers, fees, header, sessionInfo, validatorCount]) => {
-      const allControllers = allStashesAndControllers[1].filter((optId: any): boolean => optId.isSome).map((accountId: any): string => accountId.unwrap().toString());
-      const allStashes = allStashesAndControllers[0].map((accountId: any): string => accountId.toString());
-
-      setAllControllers(allControllers);
-      setAllStashes(allStashes);
-      setFees(fees);
+    .subscribe(([header, sessionInfo, validatorCount]) => {
       setLastBlock(header.blockNumber.toNumber());
       setSessionInfo(sessionInfo);
       setValidatorCount(validatorCount);
@@ -139,11 +128,12 @@ export function ValidatorsList (props: Props) {
   const renderHeader = () => {
     return (
       <Table.Header>
+        <Table.HeaderCell>Am I Nominating?</Table.HeaderCell>
         <Table.HeaderCell>
           <Stacked>
             Validators {`${currentValidatorsControllersV1OrStashesV2.length} / ${validatorCount ? validatorCount.toString() : <Loader active inline size='small' />}`}
             <FadedText> New Validator Set In: </FadedText>
-            <WrapperDiv width='10rem'>
+            <WrapperDiv width='20rem'>
               {
                 fromNullable(sessionInfo)
                   .map(sessionInfo =>

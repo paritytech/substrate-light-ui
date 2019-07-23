@@ -6,7 +6,7 @@ import { DerivedStaking } from '@polkadot/api-derive/types';
 import { AccountId, Balance } from '@polkadot/types';
 import { formatBalance } from '@polkadot/util';
 import { AppContext } from '@substrate/ui-common';
-import { AddressSummary, FadedText, Stacked, Table } from '@substrate/ui-components';
+import { AddressSummary, FadedText, Stacked, Table, Icon } from '@substrate/ui-components';
 import BN from 'bn.js';
 import { fromNullable, some } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
@@ -27,6 +27,8 @@ export function ValidatorRow (props: Props) {
   const [nominations, setNominations] = useState<[AccountId, Balance][]>();
   const [nominees, setNominees] = useState<AccountId[]>();
   const [offlineTotal, setOfflineTotal] = useState<BN>(new BN(0));
+
+  const currentAccount = location.pathname.split('/')[2];
 
   useEffect(() => {
     const subscription: Subscription =
@@ -49,7 +51,14 @@ export function ValidatorRow (props: Props) {
 
   return (
     <Table.Row style={{ height: '200px' }}>
-      <Table.Cell style={{ lineHeight: '0' }} width='7'>
+      <Table.Cell>
+        {
+          fromNullable(nominees)
+            .map(nominees => nominees.includes(new AccountId(currentAccount)) && <Icon name='check' />)
+            .getOrElse(<div></div>)
+        }
+      </Table.Cell>
+      <Table.Cell style={{ lineHeight: '0' }} width='5'>
         <AddressSummary
           address={validator.toString()}
           orientation='horizontal'
@@ -60,7 +69,7 @@ export function ValidatorRow (props: Props) {
           noPlaceholderName
           size='medium' />
       </Table.Cell>
-      <Table.Cell style={{ lineHeight: '0' }} textAlign='center' width='1'>{offlineTotal.toString()}</Table.Cell>
+      <Table.Cell textAlign='center' width='1'>{offlineTotal.toString()}</Table.Cell>
       <Table.Cell collapsing style={{ lineHeight: '0' }} width='5'>
         {
           nominations
@@ -73,7 +82,7 @@ export function ValidatorRow (props: Props) {
             : <Loader active inline />
         }
       </Table.Cell>
-      <Table.Cell style={{ lineHeight: '0' }} width='3'>
+      <Table.Cell width='2'>
         <ConfirmNominationDialog />
       </Table.Cell>
     </Table.Row>

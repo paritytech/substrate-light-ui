@@ -2,7 +2,6 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Balance } from '@polkadot/types';
 import { DerivedBalances, DerivedStaking } from '@polkadot/api-derive/types';
 import { formatBalance, formatNumber } from '@polkadot/util';
 import React from 'react';

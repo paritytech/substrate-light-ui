@@ -46,7 +46,7 @@ export function Content () {
               <Route path='/accounts/:currentAccount/add/' component={AddAccount} />
               <Route path='/governance/:currentAccount' component={Governance} />
               <Route path='/transfer/:currentAccount' component={Transfer} />
-              <Redirect to='/governance' />
+              <Redirect to='/' />
             </Switch>
           </React.Fragment>
         ))
