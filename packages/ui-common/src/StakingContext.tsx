@@ -2,74 +2,60 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { DerivedStaking } from '@polkadot/api-derive/types';
 import { KeyringAddress } from '@polkadot/ui-keyring/types';
-import { AccountId, Option, StakingLedger } from '@polkadot/types';
 import React, { createContext, useContext, useEffect, useReducer } from 'react';
 import { Subscription, Observable } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 
 import { AppContext } from './AppContext';
-import { BondedAccounts } from './types';
-
-const eligibleAccountsReducer = (state: BondedAccounts, action: any) => {
-  switch (action.type) {
-    case 'ADD_CONTROLLER':
-      return {
-        ...state,
-        controllers: state.controllers.concat(action.controller)
-      };
-    case 'ADD_STASH':
-      return {
-        ...state,
-        stashes: state.stashes.concat(action.stash)
-      };
-    default:
-      return state;
-  }
-};
+import { AccountDerivedStakingMap } from './types';
 
 export const StakingContext = createContext({
-  // bonded accounts are accounts that are eligible to nominate
-  bondedAccounts: {
-    controllers: [] as AccountId[],
-    stashes: [] as StakingLedger[]
-  }
+  accountStakingMap: {} as AccountDerivedStakingMap,
+  onlyBondedAccounts: {} as AccountDerivedStakingMap
 });
 
 interface Props {
   children: React.ReactNode;
 }
 
+const accountStakingReducer = (state: any, action: any) => {
+  switch (action.type) {
+    case 'NEW_DERIVED_STAKING':
+      let newState = state;
+      newState.accountStakingMap[action.derivedStaking.accountId] = action.derivedStaking;
+      if (action.derivedStaking.stashId && action.derivedStaking.controllerId) {
+        newState.onlyBondedAccounts[action.derivedStaking.accountId] = action.derivedStaking;
+      }
+      return newState;
+    default:
+      throw new Error('Something went wrong with getting DerivedStaking information...');
+  }
+};
+
 export function StakingContextProvider (props: Props) {
   const { children } = props;
   const { api, isReady, keyring } = useContext(AppContext);
-  const [bondedAccounts, dispatch] = useReducer(eligibleAccountsReducer, {
-    controllers: [] as AccountId[],
-    stashes: [] as StakingLedger[]
-  } as BondedAccounts);
+  const [state, dispatch] = useReducer(accountStakingReducer, {
+    accountStakingMap: {},
+    onlyBondedAccounts: {}
+  });
 
-  // list only the accounts that are either bonded (controller) or bonding (stash)
   useEffect(() => {
     const accounts: KeyringAddress[] = keyring.getAccounts();
     accounts.map(({ address }: KeyringAddress) => {
-      const multiSub: Subscription = (api.queryMulti([
-        [api.query.staking.bonded, address], // try to map to controller
-        [api.query.staking.ledger, address] // try to map to stash
-      ]) as Observable<[Option<AccountId>, Option<StakingLedger>]>)
-        .pipe(
-          first()
-        ).subscribe(([controllerId, stakingLedger]) => {
-          controllerId.isSome ? dispatch({ type: 'ADD_CONTROLLER', controller: controllerId.unwrap() })
-            : stakingLedger.isSome ? dispatch({ type: 'ADD_STASH', stash: stakingLedger.unwrap() })
-              : dispatch({ type: 'DEFAULT' });
+      const subscription: Subscription = (api.derive.staking.info(address) as Observable<DerivedStaking>)
+        .pipe(take(1))
+        .subscribe((derivedStaking: DerivedStaking) => {
+          dispatch({ type: 'NEW_DERIVED_STAKING', derivedStaking });
         });
-
-      return () => multiSub.unsubscribe();
+      return () => subscription.unsubscribe();
     });
   }, [api, isReady, keyring]);
 
   return (
-    <StakingContext.Provider value={{ bondedAccounts }}>
+    <StakingContext.Provider value={{ accountStakingMap: state.accountStakingMap, onlyBondedAccounts: state.onlyBondedAccounts }}>
       {children}
     </StakingContext.Provider>
   );

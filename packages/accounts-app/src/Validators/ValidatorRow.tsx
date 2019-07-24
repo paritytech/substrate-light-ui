@@ -24,7 +24,7 @@ interface Props {
 export function ValidatorRow (props: Props) {
   const { offlineStatuses, validator } = props;
   const { api, keyring } = useContext(AppContext);
-  const [nominations, setNominations] = useState<[AccountId, Balance][]>();
+  const [nominations, setNominations] = useState<[AccountId, Balance][]>([]);
   const [nominees, setNominees] = useState<AccountId[]>();
   const [offlineTotal, setOfflineTotal] = useState<BN>(new BN(0));
 
@@ -85,7 +85,7 @@ export function ValidatorRow (props: Props) {
       <Table.Cell textAlign='center' width='1'>{offlineTotal.toString()}</Table.Cell>
       <Table.Cell collapsing width='5'>
         {
-          nominations
+          nominations.length > 0
             ? nominations.map(([who, bonded]) => (
               <Stacked key={who.toString()}>
                 <AddressSummary address={who.toString()} orientation='horizontal' noPlaceholderName size='tiny' />

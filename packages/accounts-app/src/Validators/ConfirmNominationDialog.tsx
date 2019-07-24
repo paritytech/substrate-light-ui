@@ -2,11 +2,12 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AccountId, Option, StakingLedger } from '@polkadot/types';
-import { AppContext, BondedAccounts, StakingContext, TxQueueContext, validateDerived } from '@substrate/ui-common';
-import { FadedText, FlexItem, Icon, Stacked, StackedHorizontal, StyledLinkButton, StyledNavButton, SubHeader, WithSpaceAround, AddressSummary } from '@substrate/ui-components';
+import { DerivedStaking } from '@polkadot/api-derive/types';
+import { isUndefined } from '@polkadot/util';
+import { AppContext, AccountDerivedStakingMap, StakingContext, TxQueueContext, validateDerived } from '@substrate/ui-common';
+import { AddressSummary, FadedText, Header, Icon, Stacked, StackedHorizontal, StyledLinkButton, StyledNavButton, SubHeader, WithSpace, WithSpaceAround } from '@substrate/ui-components';
 import { fromNullable } from 'fp-ts/lib/Option';
-import React, { useState, useEffect, useContext, useReducer } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Modal from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
 
 // interface Props {
@@ -22,11 +23,9 @@ import Modal from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
 interface Props { }
 
 export function ConfirmNominationDialog (props: Props) {
-  const { bondedAccounts } = useContext(StakingContext);
-
+  const { onlyBondedAccounts } = useContext(StakingContext);
+  console.log(onlyBondedAccounts);
   // const { enqueue } = useContext(TxQueueContext);
-  const [nominator, setNominator] = useState();
-
   const onConfirm = () => {
     // const subscription: Subscription = combineLatest([
     //   (api.derive.balances.fees() as Observable<DerivedFees>)
@@ -45,10 +44,18 @@ export function ConfirmNominationDialog (props: Props) {
       trigger={<StyledNavButton> Nominate </StyledNavButton>}
     >
       <WithSpaceAround>
-        <SubHeader> Please Confirm Your Nomination Preferences </SubHeader>
+        <Header>Select the Account You Wish to Nominate With:</Header>
         <Modal.Actions>
           <Stacked>
-            <SubHeader>Bonded Accounts:</SubHeader>
+            <StackedHorizontal>
+              <WithSpace>
+                <Stacked>
+                  <SubHeader>Bonded Accounts</SubHeader>
+
+                </Stacked>
+              </WithSpace>
+            </StackedHorizontal>
+            <FadedText>If you don't see your account listed here, you should make sure it is bonded before nominating with it.</FadedText>
             <StackedHorizontal>
               <StyledLinkButton onClick={close}><Icon name='remove' color='red' /> <FadedText>Cancel</FadedText></StyledLinkButton>
               <StyledNavButton onClick={onConfirm}><Icon name='checkmark' color='green' /> <FadedText>Confirm</FadedText></StyledNavButton>

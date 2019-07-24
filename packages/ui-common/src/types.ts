@@ -3,14 +3,11 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { SubmittableExtrinsic } from '@polkadot/api/SubmittableExtrinsic';
-import { DerivedBalances, DerivedFees } from '@polkadot/api-derive/types';
-import { AccountId, Balance, Index, StakingLedger } from '@polkadot/types';
+import { DerivedBalances, DerivedFees, DerivedStaking } from '@polkadot/api-derive/types';
+import { Balance, Index } from '@polkadot/types';
 import BN from 'bn.js';
 
-export interface BondedAccounts {
-  controllers: AccountId[];
-  stashes: StakingLedger[];
-}
+export type AccountDerivedStakingMap = Record<string, DerivedStaking>;
 
 /**
  * Form fields inputted by the user
