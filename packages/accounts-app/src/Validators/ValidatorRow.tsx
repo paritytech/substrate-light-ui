@@ -83,7 +83,7 @@ export function ValidatorRow (props: Props) {
         }
       </Table.Cell>
       <Table.Cell width='2'>
-        
+
       </Table.Cell>
     </Table.Row>
   );

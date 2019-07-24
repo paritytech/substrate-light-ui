@@ -5,8 +5,8 @@
 import { AccountId, Option, StakingLedger } from '@polkadot/types';
 import { KeyringAddress } from '@polkadot/ui-keyring/types';
 import { AppContext, TxQueueContext, validateDerived } from '@substrate/ui-common';
-import { FadedText, FlexItem, Icon, Stacked, StackedHorizontal, StyledLinkButton, StyledNavButton, SubHeader, WithSpaceAround } from '@substrate/ui-components';
-import React, { useState, useEffect, useContext } from 'react';
+import { FadedText, FlexItem, Icon, Stacked, StackedHorizontal, StyledLinkButton, StyledNavButton, SubHeader, WithSpaceAround, AddressSummary } from '@substrate/ui-components';
+import React, { useState, useEffect, useContext, useReducer } from 'react';
 import { Observable, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import Modal from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
@@ -23,11 +23,31 @@ import Modal from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
 
 interface Props { }
 
+const eligibleAccountsReducer = (state: any, action: any) => {
+  switch (action.type) {
+    case 'ADD_CONTROLLER':
+      return {
+        ...state,
+        controllers: state.controller.concat(action.controller)
+      };
+    case 'ADD_STASH':
+      return {
+        ...state,
+        stashes: state.stashes.concat(action.stash)
+      };
+    default:
+      return state;
+  }
+};
+
 export function ConfirmNominationDialog (props: Props) {
   const { api, keyring } = useContext(AppContext);
   // const { enqueue } = useContext(TxQueueContext);
   const [nominator, setNominator] = useState();
-  const [eligibleAccounts, setEligibleAccounts] = useState();
+  const [eligibleAccounts, dispatch] = useReducer(eligibleAccountsReducer, {
+    contollers: [],
+    stashes: []
+  });
 
   // list only the accounts that are either bonded (controller) or bonding (stash)
   useEffect(() => {
@@ -41,7 +61,9 @@ export function ConfirmNominationDialog (props: Props) {
       .pipe(
         first()
       ).subscribe(([controllerId, stakingLedger]) => {
-        return controllerId.isSome ? controllerId.unwrap() : stakingLedger.isSome ? stakingLedger.unwrap() : false;
+        controllerId.isSome ? dispatch({ type: 'ADD_CONTROLLER', controller: controllerId.unwrap() })
+          : stakingLedger.isSome ? dispatch({ type: 'ADD_STASH', stash: stakingLedger.unwrap() })
+            : dispatch({ type: 'DEFAULT' });
       });
     });
 
@@ -70,9 +92,6 @@ export function ConfirmNominationDialog (props: Props) {
         <Modal.Actions>
           <Stacked>
             <SubHeader>Eligible Accounts:</SubHeader>
-            {
-
-            }
             <StackedHorizontal>
               <StyledLinkButton onClick={close}><Icon name='remove' color='red' /> <FadedText>Cancel</FadedText></StyledLinkButton>
               <StyledNavButton onClick={onConfirm}><Icon name='checkmark' color='green' /> <FadedText>Confirm</FadedText></StyledNavButton>

@@ -9,7 +9,7 @@ import { AppContext } from '@substrate/ui-common';
 import BN from 'bn.js';
 import { fromNullable } from 'fp-ts/lib/Option';
 import localforage from 'localforage';
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { combineLatest, Observable, Subscription } from 'rxjs';
 import { take, first } from 'rxjs/operators';
@@ -34,15 +34,44 @@ export function ValidatorsList (props: Props) {
   const [sessionInfo, setSessionInfo] = useState<DerivedSessionInfo>();
   const [validatorCount, setValidatorCount] = useState<BN>(new BN(0));
 
+  // let _isMounted = false;
+
+  // useEffect(() => {
+  //   // ~= componentDidMount
+  //   _isMounted = true;
+
+  //   // ~= componentDidUnmount
+  //   return () => {
+  //     _isMounted = false;
+  //   };
+  // }, []);
+
+  /*
+    Creates a new subscription to session validators and sets it to state, persists to localstorage.
+    Called automatically if not already set in localstorage or at the start of a new session.
+    Unsubscribes immediately after setting state and localstorage.
+  */
+  const refreshValidators = useMemo(() => {
+    setCurrentValidatorsControllersV1OrStashesV2([]); // so that it shows loader again
+    const validatorSub: Subscription = (api.query.session.validators() as unknown as Observable<AccountId[]>)
+      .pipe(first())
+      .subscribe(validators => {
+        localforage.setItem('validators', validators)
+          .then(() => setCurrentValidatorsControllersV1OrStashesV2(validators))
+          .catch(e => console.error(e));
+      });
+    return () => validatorSub.unsubscribe();
+  }, [api]);
+
   // If it is the start of a new session, make a new query to get the session validators automatically
-  useEffect(() => {
+  useLayoutEffect(() => {
     fromNullable(sessionInfo)
       .map(sessionInfo => sessionInfo.sessionProgress.toNumber() === 0 && refreshValidators())
       .getOrElse(false);
-  }, []);
+  }, [api, refreshValidators]);
 
   // set state with validators from localstorage if persisted in localstorage, else make new query
-  useEffect(() => {
+  useLayoutEffect(() => {
     localforage.getItem('validators')
       .then(validators => {
         if (!validators) {
@@ -52,57 +81,6 @@ export function ValidatorsList (props: Props) {
         }
       })
       .catch(e => console.error(e));
-  }, []);
-
-  // set state with recentlyOffline from localstorage if persisted in localstorage, else make new query
-  useEffect(() => {
-    localforage.getItem('recentlyOffine')
-      .then((res: any) => {
-        if (!res) {
-          refreshRecentlyOffline();
-        } else {
-          setRecentlyOffline(res);
-          return;
-        }
-      })
-      .catch(e => console.error(e));
-  }, []);
-
-  useEffect(() => {
-    const subscription: Subscription = combineLatest([
-      (api.rpc.chain.subscribeNewHead() as Observable<Header>),
-      (api.derive.session.info() as Observable<DerivedSessionInfo>),
-      (api.query.staking.validatorCount() as unknown as Observable<BN>)
-    ])
-    .pipe(
-      take(1)
-    )
-    .subscribe(([header, sessionInfo, validatorCount]) => {
-      setLastBlock(header.blockNumber.toNumber());
-      setSessionInfo(sessionInfo);
-      setValidatorCount(validatorCount);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  /*
-    Creates a new subscription to session validators and sets it to state, persists to localstorage.
-    Called automatically if not already set in localstorage or at the start of a new session.
-    Unsubscribes immediately after setting state and localstorage.
-  */
-  const refreshValidators = useCallback(() => {
-    setCurrentValidatorsControllersV1OrStashesV2([]); // so that it shows loader again
-    const validatorSub: Subscription = (api.query.session.validators() as unknown as Observable<AccountId[]>)
-      .pipe(first())
-      .subscribe(validators =>
-        localforage.setItem('validators', validators)
-          .then(() => {
-            setCurrentValidatorsControllersV1OrStashesV2(validators);
-            validatorSub.unsubscribe();
-          })
-          .catch(e => console.error(e))
-      );
   }, [api]);
 
   /*
@@ -110,7 +88,7 @@ export function ValidatorsList (props: Props) {
     Called automatically if not set in localstorage, or manually by user.
     Unsubscribes immediately after setting state and localstorage.
   */
-  const refreshRecentlyOffline = useCallback(() => {
+  const refreshRecentlyOffline = useMemo(() => {
     setLastUpdatedRecentlyOffline(undefined); // so that it shows loader again
     const recentlyOfflineSub: Subscription = combineLatest([
       (api.query.staking.recentlyOffline() as unknown as Observable<any>),
@@ -132,20 +110,50 @@ export function ValidatorsList (props: Props) {
 
             return result;
           }, {} as AccountOfflineStatusesMap);
-        
-          localforage.setItem('recentlyOffline', recentlyOffline)
-            .then(() => {
-              setRecentlyOffline(recentlyOffline);
-              localforage.setItem('lastUpdatedRecentlyOffline', header.blockNumber.toNumber())
-                .then(() => {
-                  setLastUpdatedRecentlyOffline(header.blockNumber.toNumber());
-                  recentlyOfflineSub.unsubscribe();
-                })
-                .catch(e => console.error(e));
-            })
-            .catch(e => console.error(e));
+
+        localforage.setItem('recentlyOffline', recentlyOffline)
+          .then(() => {
+            setRecentlyOffline(recentlyOffline);
+            localforage.setItem('lastUpdatedRecentlyOffline', header.blockNumber.toNumber())
+              .then(() => setLastUpdatedRecentlyOffline(header.blockNumber.toNumber()))
+              .catch(e => console.error(e));
+          })
+          .catch(e => console.error(e));
       });
+    return () => recentlyOfflineSub.unsubscribe();
   }, [api]);
+
+  // set state with recentlyOffline from localstorage if persisted in localstorage, else make new query
+  useLayoutEffect(() => {
+    localforage.getItem('recentlyOffine')
+      .then((res: any) => {
+        if (!res) {
+          refreshRecentlyOffline();
+        } else {
+          setRecentlyOffline(res);
+          return;
+        }
+      })
+      .catch(e => console.error(e));
+  }, [api]);
+
+  useEffect(() => {
+    const subscription: Subscription = combineLatest([
+      (api.rpc.chain.subscribeNewHead() as Observable<Header>),
+      (api.derive.session.info() as Observable<DerivedSessionInfo>),
+      (api.query.staking.validatorCount() as unknown as Observable<BN>)
+    ])
+    .pipe(
+      take(1)
+    )
+    .subscribe(([header, sessionInfo, validatorCount]) => {
+      setLastBlock(header.blockNumber.toNumber());
+      setSessionInfo(sessionInfo);
+      setValidatorCount(validatorCount);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const renderBody = () => (
     <Table.Body>
