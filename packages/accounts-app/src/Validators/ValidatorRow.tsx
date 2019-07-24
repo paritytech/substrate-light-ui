@@ -19,7 +19,7 @@ import { ConfirmNominationDialog } from './ConfirmNominationDialog';
 
 interface Props {
   offlineStatuses?: OfflineStatus[];
-  validator: AccountId;
+  validator: string;
 }
 
 export function ValidatorRow (props: Props) {

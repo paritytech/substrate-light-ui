@@ -9,7 +9,7 @@ import { AppContext } from '@substrate/ui-common';
 import BN from 'bn.js';
 import { fromNullable } from 'fp-ts/lib/Option';
 import localforage from 'localforage';
-import React, { useCallback, useContext, useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { combineLatest, Observable, Subscription } from 'rxjs';
 import { take, first } from 'rxjs/operators';
@@ -28,59 +28,56 @@ interface Props extends RouteComponentProps<MatchParams> {}
 export function ValidatorsList (props: Props) {
   const { api } = useContext(AppContext);
   const [recentlyOffline, setRecentlyOffline] = useState<AccountOfflineStatusesMap>({});
-  const [currentValidatorsControllersV1OrStashesV2, setCurrentValidatorsControllersV1OrStashesV2] = useState<AccountId[]>([]);
+  const [currentValidatorsControllersV1OrStashesV2, setCurrentValidatorsControllersV1OrStashesV2] = useState<string[]>([]);
   const [lastBlock, setLastBlock] = useState<number>();
   const [lastUpdatedRecentlyOffline, setLastUpdatedRecentlyOffline] = useState<number>();
   const [sessionInfo, setSessionInfo] = useState<DerivedSessionInfo>();
   const [validatorCount, setValidatorCount] = useState<BN>(new BN(0));
 
-  // let _isMounted = false;
+  let mounted = useRef(false);
 
-  // useEffect(() => {
-  //   // ~= componentDidMount
-  //   _isMounted = true;
+  useEffect(() => {
+    mounted.current = true;
 
-  //   // ~= componentDidUnmount
-  //   return () => {
-  //     _isMounted = false;
-  //   };
-  // }, []);
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
 
   /*
     Creates a new subscription to session validators and sets it to state, persists to localstorage.
     Called automatically if not already set in localstorage or at the start of a new session.
     Unsubscribes immediately after setting state and localstorage.
   */
-  const refreshValidators = useMemo(() => {
-    setCurrentValidatorsControllersV1OrStashesV2([]); // so that it shows loader again
-    const validatorSub: Subscription = (api.query.session.validators() as unknown as Observable<AccountId[]>)
-      .pipe(first())
-      .subscribe(validators => {
-        localforage.setItem('validators', validators)
-          .then(() => setCurrentValidatorsControllersV1OrStashesV2(validators))
-          .catch(e => console.error(e));
-      });
-    return () => validatorSub.unsubscribe();
-  }, [api]);
+  const refreshValidators = () => {
+    if (mounted.current) {
+      setCurrentValidatorsControllersV1OrStashesV2([]); // so that it shows loader again
+      const validatorSub: Subscription = (api.query.session.validators() as unknown as Observable<AccountId[]>)
+        .pipe(first())
+        .subscribe(validators => {
+          localforage.setItem('validators', validators.map(validator => validator.toString()))
+            .then(() => setCurrentValidatorsControllersV1OrStashesV2(validators.map(validator => validator.toString())))
+            .catch(e => console.error(e));
+        });
+      return () => validatorSub.unsubscribe();
+    } else { return () => null; }
+  };
 
   // If it is the start of a new session, make a new query to get the session validators automatically
-  useLayoutEffect(() => {
-    fromNullable(sessionInfo)
+  useEffect(() => {
+    fromNullable(mounted.current)
+      .mapNullable(currentElement => sessionInfo)
       .map(sessionInfo => sessionInfo.sessionProgress.toNumber() === 0 && refreshValidators())
       .getOrElse(false);
-  }, [api, refreshValidators]);
+  }, [api]);
 
   // set state with validators from localstorage if persisted in localstorage, else make new query
-  useLayoutEffect(() => {
-    localforage.getItem('validators')
-      .then(validators => {
-        if (!validators) {
-          return refreshValidators();
-        } else {
-          setCurrentValidatorsControllersV1OrStashesV2(validators as AccountId[]);
-        }
-      })
-      .catch(e => console.error(e));
+  useEffect(() => {
+    if (mounted.current) {
+      localforage.getItem('validators')
+        .then(validators => validators ? refreshValidators() : setCurrentValidatorsControllersV1OrStashesV2(validators as string[]))
+        .catch(e => console.error(e));
+    }
   }, [api]);
 
   /*
@@ -88,7 +85,9 @@ export function ValidatorsList (props: Props) {
     Called automatically if not set in localstorage, or manually by user.
     Unsubscribes immediately after setting state and localstorage.
   */
-  const refreshRecentlyOffline = useMemo(() => {
+  const refreshRecentlyOffline = () => {
+    if (!mounted.current) { return; }
+
     setLastUpdatedRecentlyOffline(undefined); // so that it shows loader again
     const recentlyOfflineSub: Subscription = combineLatest([
       (api.query.staking.recentlyOffline() as unknown as Observable<any>),
@@ -121,20 +120,15 @@ export function ValidatorsList (props: Props) {
           .catch(e => console.error(e));
       });
     return () => recentlyOfflineSub.unsubscribe();
-  }, [api]);
+  };
 
   // set state with recentlyOffline from localstorage if persisted in localstorage, else make new query
-  useLayoutEffect(() => {
-    localforage.getItem('recentlyOffine')
-      .then((res: any) => {
-        if (!res) {
-          refreshRecentlyOffline();
-        } else {
-          setRecentlyOffline(res);
-          return;
-        }
-      })
-      .catch(e => console.error(e));
+  useEffect(() => {
+    if (mounted.current) {
+      localforage.getItem('recentlyOffine')
+        .then((res: any) => !res ? refreshRecentlyOffline() : setRecentlyOffline(res))
+        .catch(e => console.error(e));
+    }
   }, [api]);
 
   useEffect(() => {
@@ -163,7 +157,7 @@ export function ValidatorsList (props: Props) {
             return <ValidatorRow
                       key={validator.toString()}
                       offlineStatuses={recentlyOffline && recentlyOffline[validator.toString()]}
-                      validator={validator} />;
+                      validator={validator.toString()} />;
           })
           : <Table.Row textAlign='center'><Loader active inline /></Table.Row>
       }
