@@ -18,7 +18,8 @@ export interface Alert extends AlertWithoutId {
 export const AlertsContext = createContext({
   enqueue: (newAlertWithoutId: AlertWithoutId) => { console.error('No context provider found above in the tree.'); },
   remove: (Alertid: number) => { console.error('No context provider found above in the tree.'); },
-  alerts: [] as Alert[] });
+  alerts: [] as Alert[]
+});
 
 interface Props {
   children: any;

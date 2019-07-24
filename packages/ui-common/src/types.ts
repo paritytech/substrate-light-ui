@@ -4,8 +4,13 @@
 
 import { SubmittableExtrinsic } from '@polkadot/api/SubmittableExtrinsic';
 import { DerivedBalances, DerivedFees } from '@polkadot/api-derive/types';
-import { Balance, Index } from '@polkadot/types';
+import { AccountId, Balance, Index, StakingLedger } from '@polkadot/types';
 import BN from 'bn.js';
+
+export interface BondedAccounts {
+  controllers: AccountId[];
+  stashes: StakingLedger[];
+}
 
 /**
  * Form fields inputted by the user

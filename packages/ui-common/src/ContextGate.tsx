@@ -14,6 +14,7 @@ import { filter, switchMap } from 'rxjs/operators';
 import { AppContext, System } from './AppContext';
 import { isTestChain } from './util';
 import { AlertsContextProvider } from './AlertsContext';
+import { StakingContextProvider } from './StakingContext';
 import { TxQueueContextProvider } from './TxQueueContext';
 
 interface State {
@@ -129,7 +130,9 @@ export function ContextGate (props: { children: React.ReactNode }) {
           keyring,
           system
         }}>
-          {children}
+          <StakingContextProvider>
+            {children}
+          </StakingContextProvider>
         </AppContext.Provider>
       </TxQueueContextProvider>
     </AlertsContextProvider>

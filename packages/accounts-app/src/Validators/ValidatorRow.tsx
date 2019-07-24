@@ -2,16 +2,15 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { DerivedStaking } from '@polkadot/api-derive/types';
-import { AccountId, Balance } from '@polkadot/types';
+import { AccountId, Balance, Exposure, Option, StakingLedger } from '@polkadot/types';
 import { formatBalance } from '@polkadot/util';
 import { AppContext } from '@substrate/ui-common';
 import { AddressSummary, FadedText, Stacked, Table, Icon } from '@substrate/ui-components';
 import BN from 'bn.js';
 import { fromNullable, some } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
-import { Subscription, Observable } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { combineLatest, Observable, Subscription } from 'rxjs';
+import { first, switchMap } from 'rxjs/operators';
 import { Loader } from 'semantic-ui-react';
 
 import { OfflineStatus } from '../Accounts/types';
@@ -19,7 +18,7 @@ import { ConfirmNominationDialog } from './ConfirmNominationDialog';
 
 interface Props {
   offlineStatuses?: OfflineStatus[];
-  validator: string;
+  validator: AccountId;
 }
 
 export function ValidatorRow (props: Props) {
@@ -32,12 +31,25 @@ export function ValidatorRow (props: Props) {
   const currentAccount = location.pathname.split('/')[2];
 
   useEffect(() => {
-    const subscription: Subscription =
-      (api.derive.staking.info(validator) as Observable<DerivedStaking>).pipe(first()).subscribe((derivedStaking: DerivedStaking) => {
-        const { nominators, stakers } = derivedStaking;
+    const subscription: Subscription = (
+        api.queryMulti([
+          [api.query.staking.bonded, validator], // try to map to controller
+          [api.query.staking.ledger, validator] // try to map to stash
+        ]) as Observable<[Option<AccountId>, Option<StakingLedger>]>
+      )
+      .pipe(
+        switchMap(([controllerId, stakingLedger]) => {
+          const stashId = controllerId.isSome ? controllerId.unwrap() : stakingLedger.isSome ? stakingLedger.unwrap().stash : validator;
+          return combineLatest([
+            (api.query.staking.nominators(stashId) as unknown as Observable<[AccountId[]]>),
+            (api.query.staking.stakers(stashId) as Observable<Exposure>)
+          ]);
+        }),
+        first()
+      )
+      .subscribe(([nominators, stakers]) => {
         const nominations = stakers ? stakers.others.map(({ who, value }): [AccountId, Balance] => [who, value]) : [];
-
-        setNominees(nominators); // the list of accounts this account is nominating
+        setNominees(nominators[0]); // the list of accounts this account is nominating
         setNominations(nominations); // the list of accounts that nominated this account
       });
 
@@ -58,10 +70,11 @@ export function ValidatorRow (props: Props) {
             .getOrElse(<div></div>)
         }
       </Table.Cell>
-      <Table.Cell style={{ lineHeight: '0' }} width='5'>
+      <Table.Cell width='5'>
         <AddressSummary
           address={validator.toString()}
-          orientation='horizontal'
+          justifyContent='center'
+          orientation='vertical'
           name={fromNullable(keyring.getAccount(validator.toString()))
                   .chain(account => some(account.meta))
                   .chain(meta => some(meta.name))
@@ -70,7 +83,7 @@ export function ValidatorRow (props: Props) {
           size='medium' />
       </Table.Cell>
       <Table.Cell textAlign='center' width='1'>{offlineTotal.toString()}</Table.Cell>
-      <Table.Cell collapsing style={{ lineHeight: '0' }} width='5'>
+      <Table.Cell collapsing width='5'>
         {
           nominations
             ? nominations.map(([who, bonded]) => (
@@ -83,7 +96,7 @@ export function ValidatorRow (props: Props) {
         }
       </Table.Cell>
       <Table.Cell width='2'>
-
+          <ConfirmNominationDialog />
       </Table.Cell>
     </Table.Row>
   );

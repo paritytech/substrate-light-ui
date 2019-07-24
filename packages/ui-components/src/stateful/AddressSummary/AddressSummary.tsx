@@ -76,6 +76,7 @@ const FONT_SIZES: any = {
 };
 
 function renderBadge (type: string) {
+  // FIXME make it an actual badge
   return type === 'nominator' ? <SubHeader>nominator</SubHeader> : <SubHeader>validator</SubHeader>;
 }
 
