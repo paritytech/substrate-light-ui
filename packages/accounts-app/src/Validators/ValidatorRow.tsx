@@ -7,6 +7,7 @@ import { formatBalance } from '@polkadot/util';
 import { AppContext } from '@substrate/ui-common';
 import { AddressSummary, FadedText, Stacked, Table, Icon } from '@substrate/ui-components';
 import BN from 'bn.js';
+import H from 'history';
 import { fromNullable, some } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
 import { combineLatest, Observable, Subscription } from 'rxjs';
@@ -17,6 +18,7 @@ import { OfflineStatus } from '../Accounts/types';
 import { ConfirmNominationDialog } from './ConfirmNominationDialog';
 
 interface Props {
+  history: H.history;
   offlineStatuses?: OfflineStatus[];
   validator: AccountId;
 }
@@ -75,7 +77,7 @@ export function ValidatorRow (props: Props) {
           address={validator.toString()}
           justifyContent='center'
           orientation='vertical'
-          name={fromNullable(keyring.getAccount(validator.toString()))
+          name={fromNullable(keyring.getAddress(validator.toString()))
                   .chain(account => some(account.meta))
                   .chain(meta => some(meta.name))
                   .getOrElse(undefined)}
@@ -96,7 +98,7 @@ export function ValidatorRow (props: Props) {
         }
       </Table.Cell>
       <Table.Cell width='2'>
-          <ConfirmNominationDialog />
+        <ConfirmNominationDialog history={props.history} nominatee={validator.toString()} />
       </Table.Cell>
     </Table.Row>
   );

@@ -72,6 +72,7 @@ export function ValidatorsList (props: Props) {
           ? currentValidatorsControllersV1OrStashesV2.map(validator => {
             return <ValidatorRow
                       key={validator.toString()}
+                      history={props.history}
                       offlineStatuses={recentlyOffline && recentlyOffline[validator.toString()]}
                       validator={validator} />;
           })
