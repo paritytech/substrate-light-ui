@@ -36,7 +36,7 @@ export function BalanceDisplay (props: BalanceDisplayProps = defaultProps) {
         <span><b>Available:</b> {<FadedText>{formatBalance(availableBalance)}</FadedText> || <Loader active inline size='mini' />}</span>
         <span>
           <b>Redeemable:</b>
-          {allStaking && allStaking.redeemable ? <FadedText>{formatBalance(allStaking.redeemable)}</FadedText> : <Loader active inline size='mini' />}
+          {allStaking && allStaking.redeemable && <FadedText>{formatBalance(allStaking.redeemable)}</FadedText>}
           {allStaking && allStaking.redeemable && allStaking.redeemable.gtn(0) && renderRedeemButton()}
         </span>
         <span><b>Reserved:</b>{ reservedBalance ? <FadedText>{formatBalance(reservedBalance)}</FadedText> : <Loader active inline size='mini' />}</span>

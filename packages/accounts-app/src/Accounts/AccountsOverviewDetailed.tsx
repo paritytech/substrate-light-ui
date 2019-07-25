@@ -121,7 +121,7 @@ export function AccountsOverviewDetailed (props: Props) {
       <Grid columns='16'>
         {
           fromNullable(stakingInfo)
-            .mapNullable(stakingInfo => renderGeneral())
+            .map(stakingInfo => renderGeneral())
             .getOrElse(<div></div>)
         }
       </Grid>
