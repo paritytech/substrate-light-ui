@@ -18,7 +18,7 @@ import { OfflineStatus } from '../Accounts/types';
 import { ConfirmNominationDialog } from './ConfirmNominationDialog';
 
 interface Props {
-  history: H.history;
+  history: H.History;
   offlineStatuses?: OfflineStatus[];
   validator: AccountId;
 }

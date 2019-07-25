@@ -13,8 +13,8 @@ import { OrientationType, SizeType } from './types';
 import { FlexJustify, FontSize } from '../../types';
 
 type AddressSummaryProps = {
-  address?: string, // TODO support AccountId 
-  bondingPair?: string, // TODO support AccountId 
+  address?: string, // TODO support AccountId
+  bondingPair?: string, // TODO support AccountId
   detailed?: boolean,
   isNominator?: boolean,
   isValidator?: boolean,
