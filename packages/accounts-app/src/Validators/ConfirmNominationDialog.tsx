@@ -2,21 +2,36 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+/*
+Show a list of current validators with ability to sort by times reported offline.
+
+Explain that validators get slashed when they misbehave. Misbehaving is characterized by:
+1. Reported offline
+2. Running malicious code
+
+on confirm, redirect to the detailed balances page, which should now show the stash and controllers as "linked" with the correct bond, plus nominating the correct validator
+
+should someone who goes to the staking tab from a stash already bonded, they should be directed straight to validator selection tab. You can nominate multiple validators from the same stash/controller pair
+*/
+
 import { DerivedFees, DerivedBalances } from '@polkadot/api-derive/types';
 import { AccountId, Balance, Index } from '@polkadot/types';
 import { AppContext, StakingContext, TxQueueContext, validateDerived, AlertsContext } from '@substrate/ui-common';
-import { Address, AddressSummary, Card, FadedText, Header, Icon, Margin, Stacked, StackedHorizontal, StyledLinkButton, StyledNavButton, SubHeader, WithSpace, WithSpaceAround } from '@substrate/ui-components';
+import { Address, AddressSummary, FadedText, Header, Icon, Margin, Stacked, StackedHorizontal, StyledLinkButton, StyledNavButton, SubHeader, WithSpace, WithSpaceAround } from '@substrate/ui-components';
 import H from 'history';
 import { fromNullable, some } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
-import Modal from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
 import { Observable, Subscription, combineLatest } from 'rxjs';
+import Card from 'semantic-ui-react/dist/commonjs/views/Card';
 import Loader from 'semantic-ui-react/dist/commonjs/elements/Loader';
+import Modal from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
 
 interface Props {
   history: H.History;
   nominatee: string;
 }
+
+export const rewardDestinationOptions = ['Send rewards to my Stash account and immediately use it to stake more.', 'Send rewards to my Stash account but do not stake any more.', 'Send rewards to my Controller account.'];
 
 // TODO: p3 refactor all this to smaller components
 export function ConfirmNominationDialog (props: Props) {
@@ -78,7 +93,7 @@ export function ConfirmNominationDialog (props: Props) {
     values.fold(
       (errors: any) => {
         setLoading(false);
-        alert({ type: 'error', content: Object.keys(errors) });
+        alert({ type: 'error', content: Object.values(errors) });
       },
       (allExtrinsicData: any) => {
         const { extrinsic, amount, allFees, allTotal, recipientAddress: nominatee } = allExtrinsicData;
@@ -98,11 +113,12 @@ export function ConfirmNominationDialog (props: Props) {
 
     return (
       <WithSpace key={account.toString()}>
-        <Card height='14rem' onClick={handleAccountSelected} data-account={account.toString()}>
-          <WithSpace>
+        <Card>
+          <Card.Content onClick={handleAccountSelected} data-account={account.toString()}>
             <AddressSummary
               address={account.toString()}
               bondingPair={bondingPair && bondingPair.toString()}
+              detailed
               name={
                 fromNullable(keyring.getAccount(account.toString()))
                   .chain(account => some(account.meta))
@@ -112,7 +128,18 @@ export function ConfirmNominationDialog (props: Props) {
               size='small'
               type={accountType}
             />
-          </WithSpace>
+          </Card.Content>
+          {
+            bondingPair
+              && (
+                <Card.Content extra>
+                  <StackedHorizontal>
+                    <FadedText>Stash:</FadedText>
+                    <Address address={bondingPair.toString()} shortened style={{ zIndex: 10000 }} />
+                  </StackedHorizontal>
+                </Card.Content>
+              )
+          }
         </Card>
       </WithSpace>
     );
@@ -128,7 +155,7 @@ export function ConfirmNominationDialog (props: Props) {
               <WithSpace>
                 <Stacked>
                   <SubHeader>Bonded Accounts</SubHeader>
-                  <StackedHorizontal justifyContent='space-around' alignItems='stretch'>
+                  <Card.Group>
                     {
                       fromNullable(onlyBondedAccounts)
                         .map(bonded => Object.keys(bonded))
@@ -141,7 +168,7 @@ export function ConfirmNominationDialog (props: Props) {
                         .map(accounts => accounts.map(renderBondedAccountOption))
                         .getOrElse([].map(renderNoBondedAccounts))
                     }
-                  </StackedHorizontal>
+                  </Card.Group>
                 </Stacked>
               </WithSpace>
             </StackedHorizontal>
@@ -161,38 +188,65 @@ export function ConfirmNominationDialog (props: Props) {
         <Header>Confirm Details and Nominate!</Header>
         <Stacked><SubHeader>Nominate With: </SubHeader> <Address address={nominateWith}></Address></Stacked>
         <Margin top='huge' />
-        <StackedHorizontal>
-          <Stacked>
-            <FadedText> Nominator </FadedText>
-            <AddressSummary address={nominateWith} detailed name={
-              fromNullable(keyring.getAccount(nominateWith.toString()))
-                .chain(account => some(account.meta))
-                .chain(meta => some(meta.name))
-                .getOrElse(undefined)
-            } orientation='vertical' />
-          </Stacked>
-
+        <Card.Group centered>
+          <Card>
+            <Card.Content>
+              <Stacked>
+                <FadedText> Nominator </FadedText>
+                <AddressSummary
+                  address={nominateWith}
+                  detailed
+                  name={
+                    fromNullable(keyring.getAccount(nominateWith.toString()))
+                      .chain(account => some(account.meta))
+                      .chain(meta => some(meta.name))
+                      .getOrElse(undefined)
+                  }
+                  orientation='vertical'
+                  size='small' />
+              </Stacked>
+            </Card.Content>
+            <Card.Content extra>
+                <SubHeader>Reward Destination: </SubHeader>
+                {
+                  fromNullable(onlyBondedAccounts)
+                    .mapNullable(onlyBondedAccounts => [onlyBondedAccounts, nominateWith])
+                    .map(([onlyBondedAccounts, nominateWith]) => rewardDestinationOptions[onlyBondedAccounts[nominateWith].rewardDestination.toNumber()])
+                    .getOrElse('Reward Destination Not Set...')
+                }
+            </Card.Content>
+          </Card>
           <Margin left />
+          <Card>
+            <Card.Content>
+              <Stacked>
+                <FadedText> Validator </FadedText>
+                <AddressSummary
+                  address={nominatee}
+                  detailed
+                  name={
+                    fromNullable(keyring.getAddress(nominatee.toString()))
+                      .chain(account => some(account.meta))
+                      .chain(meta => some(meta.name))
+                      .getOrElse(undefined)
+                  }
+                  orientation='vertical'
+                  size='small' />
+              </Stacked>
+            </Card.Content>
+          </Card>
+        </Card.Group>
+        <WithSpace>
           <Stacked>
-            <FadedText> Validator </FadedText>
-            <AddressSummary address={nominatee} detailed name={
-              fromNullable(keyring.getAddress(nominatee.toString()))
-                .chain(account => some(account.meta))
-                .chain(meta => some(meta.name))
-                .getOrElse(undefined)
-            } />
+            <StackedHorizontal>
+              <StyledLinkButton onClick={close}><Icon name='remove' color='red' /> <FadedText>Cancel</FadedText></StyledLinkButton>
+              <Margin left />
+              <StyledNavButton onClick={onConfirm}><Icon name='checkmark' color='green' /> Confirm </StyledNavButton>
+            </StackedHorizontal>
+            <Margin bottom />
+            <StyledLinkButton onClick={() => setNominateWith(undefined)}>Change Account</StyledLinkButton>
           </Stacked>
-        </StackedHorizontal>
-        <Margin top />
-        <Stacked>
-          <StackedHorizontal>
-            <StyledLinkButton onClick={close}><Icon name='remove' color='red' /> <FadedText>Cancel</FadedText></StyledLinkButton>
-            <Margin left />
-            <StyledNavButton onClick={onConfirm}><Icon name='checkmark' color='green' /> Confirm </StyledNavButton>
-          </StackedHorizontal>
-          <Margin bottom />
-          <StyledLinkButton onClick={() => setNominateWith(undefined)}>Change Account</StyledLinkButton>
-        </Stacked>
+        </WithSpace>
       </React.Fragment>
       );
     }

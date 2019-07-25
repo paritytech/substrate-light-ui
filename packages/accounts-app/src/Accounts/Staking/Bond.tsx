@@ -90,7 +90,7 @@ export function Bond (props: Props) {
     const values = validate({ amountAsString: bond.toString(), accountNonce: nonce, currentBalance: stashBalance, extrinsic, fees, recipientBalance: controllerBalance, currentAccount: stash, recipientAddress: controller }, api);
 
     values.fold(
-      (errors: any) => alert({ type: 'error', content: errors }),
+      (errors: any) => alert({ type: 'error', content: Object.values(errors) }),
       (allExtrinsicData: any) => {
         const { extrinsic, amount, allFees, allTotal, recipientAddress: controller } = allExtrinsicData;
 

@@ -17,7 +17,7 @@
   "dependencies": {
     "@polkadot/api-contract": "^0.82.0-beta.30",
     "@polkadot/ui-app": "^0.34.0-beta.30",
-    "@polkadot/ui-identicon": "^0.42.0-beta.3",    
+    "@polkadot/ui-identicon": "^0.42.0-beta.15",    
     "@polkadot/ui-signer": "^0.34.0-beta.46",
     "@types/recharts": "^1.1.16",
     "@types/styled-components": "4.1.3",
