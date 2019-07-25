@@ -9,14 +9,15 @@ import { FlexSegment } from './FlexSegment';
 
 type AddressProps = {
   address: string,
-  shortened?: boolean
+  shortened?: boolean,
+  zIndex?: number
 };
 
 export function Address (props: AddressProps) {
-  const { address, shortened } = props;
+  const { address, shortened, zIndex = 0 } = props;
 
   return (
-    <FlexSegment>
+    <FlexSegment style={{ zIndex: zIndex }}>
       {
         shortened
           ? address.slice(0, 8).concat('......').concat(address.slice(address.length - 8, address.length))

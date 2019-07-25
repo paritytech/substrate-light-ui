@@ -135,7 +135,7 @@ export function ConfirmNominationDialog (props: Props) {
                 <Card.Content extra>
                   <StackedHorizontal>
                     <FadedText>Stash:</FadedText>
-                    <Address address={bondingPair.toString()} shortened style={{ zIndex: 10000 }} />
+                    <Address address={bondingPair.toString()} shortened zIndex={100000} />
                   </StackedHorizontal>
                 </Card.Content>
               )
