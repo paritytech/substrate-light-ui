@@ -6,7 +6,9 @@ import { DerivedStaking } from '@polkadot/api-derive/types';
 import { formatBalance } from '@polkadot/util';
 import { AddressSummary, FadedText, Grid, Stacked, SubHeader, WithSpace, StyledLinkButton } from '@substrate/ui-components';
 import H from 'history';
-import React from 'react';
+import React, { useContext } from 'react';
+import { fromNullable, some } from 'fp-ts/lib/Option';
+import { AppContext } from '@substrate/ui-common';
 
 interface Props extends DerivedStaking {
   history: H.History;
@@ -14,12 +16,13 @@ interface Props extends DerivedStaking {
 
 export function BalanceOverview (props: Pick<Props, Exclude<keyof Props, keyof 'validatorPrefs'>>) {
   const { accountId, controllerId, history, stakers, stashId, stakingLedger } = props;
+  const { keyring } = useContext(AppContext);
 
   const renderUnBondedAccountOptions = () => {
     return (
       <WithSpace>
         <SubHeader>Account is not bonded.</SubHeader>
-        <StyledLinkButton onClick={history.push(`/manageAccounts/${accountId}/staking`)}>Choose Staking Options</StyledLinkButton>
+        <StyledLinkButton onClick={() => history.push(`/manageAccounts/${accountId}/staking`)}>Choose Staking Options</StyledLinkButton>
       </WithSpace>
     );
   };
@@ -29,9 +32,31 @@ export function BalanceOverview (props: Pick<Props, Exclude<keyof Props, keyof '
       <Stacked justifyContent='flex-start' alignItems='flex-start'>
         {
           controllerId === accountId
-            ? <WithSpace><SubHeader>Stash:</SubHeader> <AddressSummary address={stashId && stashId.toString()} size='small' orientation='horizontal' /></WithSpace>
+            ? <WithSpace>
+                <SubHeader>Stash:</SubHeader>
+                <AddressSummary
+                  address={stashId && stashId.toString()}
+                  name={fromNullable(keyring.getAccount(accountId.toString()))
+                        .chain(account => some(account.meta))
+                        .chain(meta => some(meta.name))
+                        .getOrElse(undefined)}
+                  orientation='horizontal'
+                  size='small'
+                />
+              </WithSpace>
             : stashId === accountId
-              ? <WithSpace><SubHeader>Controller:</SubHeader><AddressSummary address={controllerId && controllerId.toString()} size='small' orientation='horizontal' /></WithSpace>
+              ? <WithSpace>
+                  <SubHeader>Controller:</SubHeader>
+                  <AddressSummary
+                    address={controllerId && controllerId.toString()}
+                    name={fromNullable(keyring.getAccount(accountId.toString()))
+                      .chain(account => some(account.meta))
+                      .chain(meta => some(meta.name))
+                      .getOrElse(undefined)}
+                    orientation='horizontal'
+                    size='small'
+                  />
+                </WithSpace>
               : renderUnBondedAccountOptions()
         }
         <WithSpace><SubHeader>Stash Active:</SubHeader> <FadedText>{stakingLedger && formatBalance(stakingLedger.active)}</FadedText> </WithSpace>

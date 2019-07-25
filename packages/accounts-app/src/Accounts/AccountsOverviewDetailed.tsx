@@ -3,8 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { DerivedStaking } from '@polkadot/api-derive/types';
-import { AccountId, Balance, Exposure, RewardDestination, ValidatorPrefs } from '@polkadot/types';
-import { formatBalance } from '@polkadot/util';
+import { AccountId } from '@polkadot/types';
 import { AppContext, StakingContext } from '@substrate/ui-common';
 import { AddressSummary, Container, Grid, Loading, SubHeader, WithSpace } from '@substrate/ui-components';
 import { fromNullable } from 'fp-ts/lib/Option';
@@ -122,7 +121,7 @@ export function AccountsOverviewDetailed (props: Props) {
       <Grid columns='16'>
         {
           fromNullable(stakingInfo)
-            .map(stakingInfo => renderGeneral())
+            .mapNullable(stakingInfo => renderGeneral())
             .getOrElse(<div></div>)
         }
       </Grid>
