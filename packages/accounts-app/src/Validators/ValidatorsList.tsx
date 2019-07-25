@@ -26,15 +26,15 @@ interface Props extends RouteComponentProps<MatchParams> {}
 
 export function ValidatorsList (props: Props) {
   const { api } = useContext(AppContext);
-  const [recentlyOffline, setRecentlyOffline] = useState<AccountOfflineStatusesMap>({});
   const [currentValidatorsControllersV1OrStashesV2, setCurrentValidatorsControllersV1OrStashesV2] = useState<AccountId[]>([]);
   const [sessionInfo, setSessionInfo] = useState<DerivedSessionInfo>();
   const [validatorCount, setValidatorCount] = useState<BN>(new BN(0));
+  const [recentlyOffline, setRecentlyOffline] = useState();
 
   useEffect(() => {
     const subscription: Subscription = combineLatest([
       (api.derive.session.info() as Observable<DerivedSessionInfo>),
-      (api.query.staking.recentlyOffline() as unknown as Observable<any>),
+      (api.query.staking.recentlyOffline() as unknown as Observable<RecentlyOffline>),
       (api.query.session.validators() as unknown as Observable<AccountId[]>),
       (api.query.staking.validatorCount() as unknown as Observable<BN>)
     ])
@@ -43,23 +43,23 @@ export function ValidatorsList (props: Props) {
       setSessionInfo(sessionInfo);
       setCurrentValidatorsControllersV1OrStashesV2(validators);
       setValidatorCount(validatorCount);
+      setRecentlyOffline(
+        stakingRecentlyOffline.reduce(
+          (result, [accountId, blockNumber, count]): AccountOfflineStatusesMap => {
+            const account = accountId.toString();
 
-      const recentlyOffline = stakingRecentlyOffline.reduce(
-        (result: AccountOfflineStatusesMap, [accountId, blockNumber, count]: RecentlyOffline): AccountOfflineStatusesMap => {
-          const account = accountId.toString();
+            if (!result[account]) {
+              result[account] = [];
+            }
 
-          if (!result[account]) {
-            result[account] = [];
-          }
+            result[account].push({
+              blockNumber,
+              count
+            });
 
-          result[account].push({
-            blockNumber,
-            count
-          } as unknown as OfflineStatus);
-
-          return result;
-        }, {} as AccountOfflineStatusesMap);
-      setRecentlyOffline(recentlyOffline);
+            return result;
+          }, {} as unknown as AccountOfflineStatusesMap)
+      );
     });
 
     return () => subscription.unsubscribe();
@@ -90,13 +90,12 @@ export function ValidatorsList (props: Props) {
             <Stacked>
               Validators {`${currentValidatorsControllersV1OrStashesV2.length} / ${validatorCount ? validatorCount.toString() : <Loader active inline size='small' />}`}
               <FadedText> New Validator Set In: </FadedText>
-              <WrapperDiv margin='0rem' padding='0rem' width='17rem'>
+              <WrapperDiv margin='0rem' padding='0rem' width='15rem'>
                 {
                   fromNullable(sessionInfo)
                     .map(sessionInfo =>
                       <Progress
                         color='pink'
-                        label='session'
                         progress='ratio'
                         size='small'
                         total={sessionInfo.sessionLength.toNumber()}

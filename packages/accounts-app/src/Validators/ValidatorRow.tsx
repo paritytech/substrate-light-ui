@@ -29,10 +29,12 @@ export function ValidatorRow (props: Props) {
   const [nominations, setNominations] = useState<[AccountId, Balance][]>([]);
   const [nominees, setNominees] = useState<AccountId[]>();
   const [offlineTotal, setOfflineTotal] = useState<BN>(new BN(0));
+  const [loading, setLoading] = useState<boolean>(false);
 
   const currentAccount = location.pathname.split('/')[2];
 
   useEffect(() => {
+    setLoading(true);
     const subscription: Subscription = (
         api.queryMulti([
           [api.query.staking.bonded, validator], // try to map to controller
@@ -51,8 +53,9 @@ export function ValidatorRow (props: Props) {
       )
       .subscribe(([nominators, stakers]) => {
         const nominations = stakers ? stakers.others.map(({ who, value }): [AccountId, Balance] => [who, value]) : [];
-        setNominees(nominators[0]); // the list of accounts this account is nominating
+        setNominees(nominators[0]); // linked map from Array<NominatorStash> => Array<ValidatorStash>.
         setNominations(nominations); // the list of accounts that nominated this account
+        setLoading(false);
       });
 
     fromNullable(offlineStatuses)
@@ -64,12 +67,13 @@ export function ValidatorRow (props: Props) {
   }, []);
 
   return (
-    <Table.Row key={validator.toString()} style={{ height: '200px' }}>
+    <Table.Row key={validator.toString()} style={{ display: 'table-row' }}>
       <Table.Cell>
         {
           fromNullable(nominees)
-            .map(nominees => nominees.includes(new AccountId(currentAccount)) && <Icon name='check' />)
-            .getOrElse(<div></div>)
+            .map(nominees => nominees.includes(new AccountId(currentAccount)))
+            .map(amINominating => amINominating ? <Icon name='check' /> : <FadedText>You are not currently nominating this Validator.</FadedText>)
+            .getOrElse(<Loader active inline />)
         }
       </Table.Cell>
       <Table.Cell width='5'>
@@ -85,20 +89,28 @@ export function ValidatorRow (props: Props) {
           size='medium' />
       </Table.Cell>
       <Table.Cell textAlign='center' width='1'>{offlineTotal.toString()}</Table.Cell>
-      <Table.Cell collapsing width='5'>
+      <Table.Cell width='5'>
+        <div style={{ height: '200px', overflow: 'auto' }}>
         {
-          nominations.length > 0
-            ? nominations.map(([who, bonded]) => (
-              <Stacked key={who.toString()}>
-                <AddressSummary address={who.toString()} orientation='horizontal' noPlaceholderName size='tiny' />
-                <FadedText>Bonded Amount: {formatBalance(bonded)}</FadedText>
-              </Stacked>
-              ))
-            : <Loader active inline />
+          loading
+            ? <Loader active inline />
+            : nominations.length > 0
+              ? nominations.map(([who, bonded]) => (
+                <Stacked key={who.toString()}>
+                  <AddressSummary address={who.toString()} orientation='horizontal' noPlaceholderName size='tiny' />
+                  <FadedText>Bonded Amount: {formatBalance(bonded)}</FadedText>
+                </Stacked>
+                ))
+              : <FadedText> No nominations </FadedText>
         }
+        </div>
       </Table.Cell>
       <Table.Cell width='2'>
-        <ConfirmNominationDialog history={props.history} nominatee={validator.toString()} />
+        {
+          loading
+            ? <Loader active inline />
+            : <ConfirmNominationDialog history={props.history} nominatee={validator.toString()} />
+        }
       </Table.Cell>
     </Table.Row>
   );

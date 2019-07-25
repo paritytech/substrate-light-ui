@@ -78,7 +78,7 @@ export function ConfirmNominationDialog (props: Props) {
     values.fold(
       (errors: any) => {
         setLoading(false);
-        alert({ type: 'error', content: errors });
+        alert({ type: 'error', content: Object.keys(errors) });
       },
       (allExtrinsicData: any) => {
         const { extrinsic, amount, allFees, allTotal, recipientAddress: nominatee } = allExtrinsicData;
