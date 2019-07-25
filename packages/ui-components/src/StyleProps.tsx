@@ -26,6 +26,7 @@ export interface FlexItemProps {
 export interface StackProps {
   alignItems?: FlexAlign;
   justifyContent?: FlexJustify;
+  margin?: string;
   textAlign?: string; // FIXME Use union of possible string
   width?: string;
 }

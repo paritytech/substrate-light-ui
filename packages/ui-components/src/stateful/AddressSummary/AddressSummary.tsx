@@ -8,12 +8,13 @@ import React from 'react';
 
 import { Balance } from '../Balance';
 import { Margin } from '../../Margin';
-import { DynamicSizeText, SubHeader, Stacked, StackedHorizontal } from '../../Shared.styles';
+import { DynamicSizeText, FadedText, SubHeader, Stacked, StackedHorizontal } from '../../Shared.styles';
 import { OrientationType, SizeType } from './types';
 import { FlexJustify, FontSize } from '../../types';
 
 type AddressSummaryProps = {
-  address?: string,
+  address?: string, // TODO support AccountId 
+  bondingPair?: string, // TODO support AccountId 
   detailed?: boolean,
   isNominator?: boolean,
   isValidator?: boolean,
@@ -22,6 +23,7 @@ type AddressSummaryProps = {
   noPlaceholderName?: boolean,
   noBalance?: boolean,
   orientation?: OrientationType,
+  type?: 'stash' | 'controller',
   size?: SizeType
 };
 
@@ -81,14 +83,17 @@ function renderBadge (type: string) {
 }
 
 function renderDetails (props: AddressSummaryProps) {
-  const { address, detailed, isNominator, isValidator, name = PLACEHOLDER_NAME, noBalance, noPlaceholderName, size = 'medium' } = props;
+  const { address, bondingPair, detailed, isNominator, isValidator, name = PLACEHOLDER_NAME, noBalance, noPlaceholderName, size = 'medium', type } = props;
 
+  // FIXME bonding pair has stupidly large margin
   return (
-    <React.Fragment>
+    <Stacked>
       <DynamicSizeText fontSize={FONT_SIZES[size] as FontSize}> {noPlaceholderName ? null : name} </DynamicSizeText>
+      { type && <FadedText> Account Type: {type} </FadedText>}
+      { bondingPair && <StackedHorizontal><FadedText> Bonding Pair: </FadedText> {renderIcon(bondingPair, 'tiny')} </StackedHorizontal> }
       { isNominator && renderBadge('nominator') }
       { isValidator && renderBadge('validator') }
       {!noBalance && <Balance address={address} detailed={detailed} fontSize={FONT_SIZES[size] as FontSize} />}
-    </React.Fragment>
+    </Stacked>
   );
 }

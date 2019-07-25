@@ -43,6 +43,7 @@ export function AccountsOverviewDetailed (props: Props) {
   const [state, setState] = useState<State>();
 
   useEffect(() => {
+    // TODO staking info for each keyring account is now in StakingContext, so just need to load something like accountStakingMap[currentAccount]
     let subscription: Subscription =
       (api.derive.staking.info(currentAccount) as Observable<DerivedStaking>)
           .subscribe((stakingInfo: DerivedStaking) => {

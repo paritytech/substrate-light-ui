@@ -191,6 +191,7 @@ export const StackedHorizontal = styled.div<StackProps>`
   display: flex;
   flex: 1;
   flex-direction: row;
+  margin: ${props => props.margin || 0}
   justify-content: ${props => props.justifyContent || 'center'};
   text-align: ${props => props.textAlign || 'center'};
 `;
