@@ -3,14 +3,14 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { DerivedStaking } from '@polkadot/api-derive/types';
-import { AccountId, Balance, Exposure, RewardDestination } from '@polkadot/types';
+import { AccountId, Balance, Exposure, RewardDestination, ValidatorPrefs } from '@polkadot/types';
 import { formatBalance } from '@polkadot/util';
-import { AppContext } from '@substrate/ui-common';
-import { AddressSummary, Card, Container, Grid, Loading, SubHeader, WithSpace } from '@substrate/ui-components';
+import { AppContext, StakingContext } from '@substrate/ui-common';
+import { AddressSummary, Container, Grid, Loading, SubHeader, WithSpace } from '@substrate/ui-components';
 import { fromNullable } from 'fp-ts/lib/Option';
 import React, { useEffect, useState, useContext } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { Observable, Subscription } from 'rxjs';
+import Card from 'semantic-ui-react/dist/commonjs/views/Card';
 
 import { BalanceOverview } from './BalanceOverview';
 
@@ -23,78 +23,43 @@ interface Props extends RouteComponentProps<MatchParams> {
   name: string;
 }
 
-// FIXME: remove all explicit anys
-interface State {
-  controllerId?: string;
-  isStashNominating?: boolean;
-  isStashValidating?: boolean;
-  nominators?: AccountId[];
-  rewardDestination?: RewardDestination;
-  sessionId?: string;
-  stashActive?: any;
-  stakers?: Exposure;
-  stashId?: string;
-  stashTotal: string;
-}
+export const rewardDestinationOptions = ['Send rewards to my Stash account and immediately use it to stake more.', 'Send rewards to my Stash account but do not stake any more.', 'Send rewards to my Controller account.'];
 
 export function AccountsOverviewDetailed (props: Props) {
-  const { match: { params: { currentAccount } } } = props;
+  const { history, match: { params: { currentAccount } } } = props;
   const { api } = useContext(AppContext);
-  const [state, setState] = useState<State>();
+  const { accountStakingMap } = useContext(StakingContext);
+  const [stakingInfo, setStakingInfo] = useState<DerivedStaking>();
 
   useEffect(() => {
-    // TODO staking info for each keyring account is now in StakingContext, so just need to load something like accountStakingMap[currentAccount]
-    let subscription: Subscription =
-      (api.derive.staking.info(currentAccount) as Observable<DerivedStaking>)
-          .subscribe((stakingInfo: DerivedStaking) => {
-            if (!stakingInfo) {
-              return;
-            }
-
-            const { controllerId, nextSessionId, nominators, rewardDestination, stakers, stashId, stakingLedger, validatorPrefs } = stakingInfo;
-
-            const isStashNominating = nominators && nominators.length !== 0;
-            const isStashValidating = !!validatorPrefs && !validatorPrefs.isEmpty && !isStashNominating;
-
-            const state = {
-              controllerId: controllerId && controllerId.toString(),
-              isStashNominating,
-              isStashValidating,
-              nominators,
-              rewardDestination,
-              sessionId: nextSessionId && nextSessionId.toString(),
-              stashActive: stakingLedger ? formatBalance(stakingLedger.active) : formatBalance(new Balance(0)),
-              stakers,
-              stashId: stashId && stashId.toString(),
-              stashTotal: stakingLedger ? formatBalance(stakingLedger.total) : formatBalance(new Balance(0))
-            };
-
-            setState(state);
-          });
-    return () => subscription.unsubscribe();
+    fromNullable(accountStakingMap[currentAccount])
+      .map(setStakingInfo)
+      .getOrElse(/* do nothing */);
   }, [api]);
 
   const renderBalanceDetails = () => {
     return (
-      <Card height='100%'>
+      <Card>
+        <Card.Content>
         {
-          fromNullable(state)
-            .mapNullable(({ controllerId, stashId, stakers, stashActive, stashTotal }) => ({ address: currentAccount, controllerId, stashId, stakers, stashActive, stashTotal }))
-            .map((props) => <BalanceOverview address={currentAccount} {...props} />)
+          fromNullable(stakingInfo)
+            .map((stakingInfo) => <BalanceOverview history={history} {...stakingInfo} />)
             .getOrElse(<Loading active />)
         }
+        </Card.Content>
       </Card>
     );
   };
 
   const renderNominationDetails = () => {
     return (
-      <Card height='100%'>
+      <Card>
+        <Card.Content>
         <WithSpace>
           <SubHeader noMargin>Currently Nominating:</SubHeader>
             {
-              fromNullable(state)
-                .mapNullable(state => state.nominators)
+              fromNullable(stakingInfo)
+                .mapNullable(stakingInfo => stakingInfo.nominators)
                 .map(nominators => nominators.map((address: AccountId) => {
                   return <AddressSummary
                     address={address.toString()}
@@ -108,22 +73,47 @@ export function AccountsOverviewDetailed (props: Props) {
         </WithSpace>
         <WithSpace>
           <Grid.Row>
-            <SubHeader> Reward Destination: {fromNullable(state).mapNullable(state => state.rewardDestination).mapNullable(rewardDestination => rewardDestination.toString()).getOrElse('Destination not set.')} </SubHeader>
+            <SubHeader>Reward Destination: </SubHeader>
+            {
+              fromNullable(stakingInfo)
+                .mapNullable(({ rewardDestination }) => rewardDestination)
+                .map(rewardDestination => rewardDestinationOptions[rewardDestination.toNumber()])
+                .getOrElse('Reward Destination Not Set...')
+            }
           </Grid.Row>
         </WithSpace>
+        </Card.Content>
       </Card>
     );
   };
 
   const renderGeneral = () => {
+    const isStashNominating = fromNullable(stakingInfo)
+      .mapNullable(({ nominators }) => nominators)
+      .map(nominators => nominators.length > 0)
+      .getOrElse(false);
+
+    const isStashValidating = fromNullable(stakingInfo)
+      .mapNullable(({ validatorPrefs }) => validatorPrefs)
+      .map(validatorPrefs => !!validatorPrefs && !validatorPrefs.isEmpty && !isStashNominating)
+      .getOrElse(false);
+
     return (
-      <Grid.Row>
-        <Grid.Column stretched width='6'>
-          <Card><AddressSummary address={currentAccount} detailed isNominator={fromNullable(state).map(state => state.isStashNominating).getOrElse(undefined)} isValidator={fromNullable(state).map(state => state.isStashValidating).getOrElse(undefined)} name={name} size='medium' /></Card>
-        </Grid.Column>
-        <Grid.Column stretched width='5'>{renderBalanceDetails()} </Grid.Column>
-        <Grid.Column stretched width='5'>{renderNominationDetails()}</Grid.Column>
-      </Grid.Row>
+      <Card.Group centered doubling stackable>
+        <Card>
+          <Card.Content>
+            <AddressSummary
+              address={currentAccount}
+              detailed
+              isNominator={isStashNominating}
+              isValidator={isStashValidating}
+              name={name}
+              size='small' />
+          </Card.Content>
+        </Card>
+        {renderBalanceDetails()}
+        {renderNominationDetails()}
+      </Card.Group>
     );
   };
 
@@ -131,8 +121,8 @@ export function AccountsOverviewDetailed (props: Props) {
     <Container>
       <Grid columns='16'>
         {
-          fromNullable(state)
-            .map(state => renderGeneral())
+          fromNullable(stakingInfo)
+            .map(stakingInfo => renderGeneral())
             .getOrElse(<div></div>)
         }
       </Grid>
