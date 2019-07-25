@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { DerivedFees, DerivedBalances } from '@polkadot/api-derive/types';
-import { AccountId, Index } from '@polkadot/types';
+import { AccountId, Balance, Index } from '@polkadot/types';
 import { AppContext, StakingContext, TxQueueContext, validateDerived } from '@substrate/ui-common';
 import { Address, AddressSummary, Card, FadedText, Header, Icon, Margin, Stacked, StackedHorizontal, StyledLinkButton, StyledNavButton, SubHeader, WithSpace, WithSpaceAround } from '@substrate/ui-components';
 import H from 'history';
@@ -13,7 +13,7 @@ import Modal from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
 import { Observable, Subscription, combineLatest } from 'rxjs';
 
 interface Props {
-  history: H.history;
+  history: H.History;
   nominatee: string;
 }
 
@@ -25,35 +25,67 @@ export function ConfirmNominationDialog (props: Props) {
   const { enqueue } = useContext(TxQueueContext);
   const [nominateWith, setNominateWith] = useState();
 
+  const [controllerReservedBalance, setControllerReservedBalance] = useState();
+  const [controllerVotingBalance, setControllerVotingBalance] = useState();
+  const [fees, setFees] = useState();
+  const [nonce, setNonce] = useState();
+  const [validatorVotingBalance, setValidatorVotingBalance] = useState();
+
+  useEffect(() => {
+    if (!nominateWith) { return; }
+
+    const subscription: Subscription = combineLatest([
+      (api.query.balances.reservedBalance(nominateWith) as Observable<Balance>),
+      (api.derive.balances.votingBalance(nominateWith) as Observable<DerivedBalances>),
+      (api.derive.balances.fees() as Observable<DerivedFees>),
+      (api.query.system.accountNonce(nominateWith) as Observable<Index>),
+      (api.derive.balances.votingBalance(nominatee) as Observable<DerivedBalances>)
+    ])
+    .subscribe(([controllerReservedBalance, controllerVotingBalance, fees, nonce, validatorVotingBalance]) => {
+      setControllerReservedBalance(controllerReservedBalance);
+      setControllerVotingBalance(controllerVotingBalance);
+      setFees(fees);
+      setNonce(nonce);
+      setValidatorVotingBalance(validatorVotingBalance);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [nominateWith]);
+
   const handleAccountSelected = ({ currentTarget: { dataset: { account } } }: React.MouseEvent<HTMLElement>) => {
     setNominateWith(account);
   };
 
   const onConfirm = () => {
-    const subscription: Subscription = combineLatest([
-      (api.derive.balances.fees() as Observable<DerivedFees>),
-      api.query.system.accountNonce(nominateWith) as Observable<Index>,
-      api.derive.balances.votingBalance(nominateWith) as Observable<DerivedBalances>,
-      api.derive.balances.votingBalance(nominatee) as Observable<DerivedBalances>
-    ])
-    .subscribe(([fees, nonce, currentBalance, recipientBalance]) => {
-      const extrinsic = api.tx.staking.nominate(nominatee);
-      // @ts-ignore the extrinsic works when testing, not sure why tslint is getting the wrong type here
-      const values = validateDerived({
-        accountNonce: nonce,
-        amount: ,
-        currentBalance,
-        extrinsic,
-        fees,
-        recipientBalance
-      });
-
-      debugger;
+    // the bonded value of the Controller gets assigned to participate in teh network security.
+    const extrinsic = api.tx.staking.nominate(nominatee);
+    // @ts-ignore the extrinsic works when testing, not sure why tslint is getting the wrong type here
+    const values = validateDerived({
+      accountNonce: nonce,
+      amount: controllerReservedBalance,
+      currentBalance: controllerVotingBalance,
+      extrinsic,
+      fees,
+      recipientBalance: validatorVotingBalance
     });
+
+    debugger;
+
+    values.fold(
+      (errors: any) => alert({ type: 'error', content: errors }),
+      (allExtrinsicData: any) => {
+        const { extrinsic, amount, allFees, allTotal, recipientAddress: nominatee } = allExtrinsicData;
+        debugger;
+        const details = { amount, allFees, allTotal, methodCall: extrinsic.meta.name.toString(), senderPair: keyring.getPair(nominateWith), recipientAddress: nominatee };
+        debugger;
+        enqueue(extrinsic, details);
+      }
+    );
   };
 
+  // TODO for now only show controllers, later add ability to restore and unlock controller from stash in keyring
   const renderBondedAccountOption = (account: AccountId | string) => {
-    // TODO: p2 put this logic somewhere else so it's reusable
+    // TODO: p2 put this logic somewhere elsea so it's reusable
     const stakingInfo = onlyBondedAccounts[account.toString()];
     const accountType = stakingInfo.accountId === stakingInfo.controllerId ? 'controller' : 'stash';
     const bondingPair = accountType === 'controller' ? stakingInfo.stashId : stakingInfo.controllerId;
@@ -81,27 +113,32 @@ export function ConfirmNominationDialog (props: Props) {
   const renderChooseAccount = () => {
     return (
       <React.Fragment>
-      <Header>Select the Account You Wish to Nominate With:</Header>
-      <Modal.Actions>
-        <Stacked>
-          <StackedHorizontal justifyContent='flex-start' alignItems='flex-start'>
-            <WithSpace>
-              <Stacked>
-                <SubHeader>Bonded Accounts</SubHeader>
-                <StackedHorizontal justifyContent='space-around' alignItems='stretch'>
-                  {
-                    fromNullable(onlyBondedAccounts)
-                      .map(bonded => Object.keys(bonded))
-                      .map(accounts => accounts.map(renderBondedAccountOption))
-                      .getOrElse([].map(renderNoBondedAccounts))
-                  }
-                </StackedHorizontal>
-              </Stacked>
-            </WithSpace>
-          </StackedHorizontal>
-          <FadedText>If you don't see an account listed here, you should make sure it is bonded before you can nominate with it.</FadedText>
-        </Stacked>
-      </Modal.Actions>
+        <Header>Select the Account You Wish to Nominate With:</Header>
+        <Modal.Actions>
+          <Stacked>
+            <StackedHorizontal justifyContent='flex-start' alignItems='flex-start'>
+              <WithSpace>
+                <Stacked>
+                  <SubHeader>Bonded Accounts</SubHeader>
+                  <StackedHorizontal justifyContent='space-around' alignItems='stretch'>
+                    {
+                      fromNullable(onlyBondedAccounts)
+                        .map(bonded => Object.keys(bonded))
+                        .map(accounts => accounts.filter((account) => {
+                          const stakingInfo = onlyBondedAccounts[account.toString()];
+                          const accountType = stakingInfo.accountId === stakingInfo.controllerId ? 'controller' : 'stash';
+                          return accountType === 'controller';
+                        }))
+                        .map(accounts => accounts.map(renderBondedAccountOption))
+                        .getOrElse([].map(renderNoBondedAccounts))
+                    }
+                  </StackedHorizontal>
+                </Stacked>
+              </WithSpace>
+            </StackedHorizontal>
+            <FadedText>If you don't see an account listed here, you should make sure it is bonded before you can nominate with it.</FadedText>
+          </Stacked>
+        </Modal.Actions>
       </React.Fragment>
     );
   };
