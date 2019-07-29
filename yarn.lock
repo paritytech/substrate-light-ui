@@ -1216,14 +1216,7 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.3.1", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.0", "@babel/runtime@^7.4.2", "@babel/runtime@^7.4.5", "@babel/runtime@^7.5.4":
-  version "7.5.4"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.5.4.tgz#cb7d1ad7c6d65676e66b47186577930465b5271b"
-  integrity sha512-Na84uwyImZZc3FKf4aUF1tysApzwf3p2yuFBIyBfbzT5glzKTdvYI4KVW4kcgjrzoGUjC7w3YyCHcJKaRxsr2Q==
-  dependencies:
-    regenerator-runtime "^0.13.2"
-
-"@babel/runtime@^7.5.5":
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.3.1", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.0", "@babel/runtime@^7.4.2", "@babel/runtime@^7.4.5", "@babel/runtime@^7.5.4", "@babel/runtime@^7.5.5":
   version "7.5.5"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.5.5.tgz#74fba56d35efbeca444091c7850ccd494fd2f132"
   integrity sha512-28QvEGyQyNkB0/m2B4FU7IEZGK2NUrcMtT6BZEFALTguLk+AUT6ofsHtPk5QyjAdUkpMJ+/Em+quwz4HOt30AQ==
@@ -2428,12 +2421,12 @@
     url-template "^2.0.8"
 
 "@polkadot/api-contract@^0.82.0-beta.30", "@polkadot/api-contract@^0.82.0-beta.53":
-  version "0.82.0-beta.85"
-  resolved "https://registry.yarnpkg.com/@polkadot/api-contract/-/api-contract-0.82.0-beta.85.tgz#fb70864fece2775a2c23a1960e25ad51d956faa3"
-  integrity sha512-nBrGGP7FDHeY8tZLwmMNOdob9Rc+konWOzUfrmYdYXW5tD1HcLq7JpFCl5VDMgpldnGUdlgrroQuKSwKX/Xb2g==
+  version "0.82.0-beta.96"
+  resolved "https://registry.yarnpkg.com/@polkadot/api-contract/-/api-contract-0.82.0-beta.96.tgz#84bd747401d8cdfda6b8cdc786800b98ec1d0250"
+  integrity sha512-fQmW/lBqn0Qibk4gTByH021VBkTlRoeF9JzhviXJvncsBDXCT0ddHMx6jfH/LaS5n+3s1DOtC3SnSSHdZ1GCcQ==
   dependencies:
     "@babel/runtime" "^7.5.5"
-    "@polkadot/types" "^0.82.0-beta.85"
+    "@polkadot/types" "^0.82.0-beta.96"
 
 "@polkadot/api-derive@^0.82.0-beta.57":
   version "0.82.0-beta.57"
@@ -2571,14 +2564,16 @@
     isomorphic-fetch "^2.2.1"
     websocket "^1.0.29"
 
-"@polkadot/types@^0.82.0-beta.53", "@polkadot/types@^0.82.0-beta.57", "@polkadot/types@^0.82.0-beta.85":
-  version "0.82.0-beta.85"
-  resolved "https://registry.yarnpkg.com/@polkadot/types/-/types-0.82.0-beta.85.tgz#5397b1db0afc6da132e5c653671b57568a50a9c6"
-  integrity sha512-D2h5zQYcfcD1tk0CMyubgHBUlDcJU4/1tUZx7qpKCBp4M8xuE+mxypUJoNDUC/Zy3z+lRrPXE56z9GltI6wXgg==
+"@polkadot/types@^0.82.0-beta.53", "@polkadot/types@^0.82.0-beta.57", "@polkadot/types@^0.82.0-beta.96":
+  version "0.82.0-beta.96"
+  resolved "https://registry.yarnpkg.com/@polkadot/types/-/types-0.82.0-beta.96.tgz#46bad53ce8486cabbb14896e1221994b6670be90"
+  integrity sha512-2iFkcmm1DtEGCcAPMbGPLXJnIFKZxisMRGb/ARU50B1pfHSRsKaKC0tiUM/XFVJ5A0IP2/y2YuBYa0PVSrvqTA==
   dependencies:
     "@babel/runtime" "^7.5.5"
     "@polkadot/util" "^0.94.1"
     "@polkadot/util-crypto" "^0.94.1"
+    "@types/memoizee" "^0.4.2"
+    memoizee "^0.4.14"
 
 "@polkadot/ui-api@^0.34.0-beta.59":
   version "0.34.0-beta.59"
