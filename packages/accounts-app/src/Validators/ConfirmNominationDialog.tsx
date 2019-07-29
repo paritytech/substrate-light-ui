@@ -43,11 +43,10 @@ export function ConfirmNominationDialog (props: Props) {
   const [loading, setLoading] = useState(false);
   const [nominateWith, setNominateWith] = useState();
 
-  // const [controllerReservedBalance, setControllerReservedBalance] = useState();
+  const [controllerReservedBalance, setControllerReservedBalance] = useState();
   const [controllerVotingBalance, setControllerVotingBalance] = useState<DerivedBalances>();
   const [fees, setFees] = useState<DerivedFees>();
   const [nonce, setNonce] = useState<Index>();
-  // const [validatorVotingBalance, setValidatorVotingBalance] = useState<DerivedBalances>();
 
   useEffect(() => {
     if (!nominateWith) { return; }
@@ -56,15 +55,13 @@ export function ConfirmNominationDialog (props: Props) {
       (api.query.balances.reservedBalance(nominateWith) as Observable<Balance>),
       (api.derive.balances.votingBalance(nominateWith) as Observable<DerivedBalances>),
       (api.derive.balances.fees() as Observable<DerivedFees>),
-      (api.query.system.accountNonce(nominateWith) as Observable<Index>),
-      (api.derive.balances.votingBalance(nominatee) as Observable<DerivedBalances>)
+      (api.query.system.accountNonce(nominateWith) as Observable<Index>)
     ])
-    .subscribe(([controllerReservedBalance, controllerVotingBalance, fees, nonce, validatorVotingBalance]) => {
-      // setControllerReservedBalance(controllerReservedBalance);
+    .subscribe(([controllerReservedBalance, controllerVotingBalance, fees, nonce]) => {
+      setControllerReservedBalance(controllerReservedBalance);
       setControllerVotingBalance(controllerVotingBalance);
       setFees(fees);
       setNonce(nonce);
-      // setValidatorVotingBalance(validatorVotingBalance);
     });
 
     return () => subscription.unsubscribe();
@@ -77,22 +74,19 @@ export function ConfirmNominationDialog (props: Props) {
   const onConfirm = () => {
     if (!nonce || !controllerVotingBalance || !fees) { return; }
 
-    setLoading(true);
-
     const extrinsic = api.tx.staking.nominate(nominatee);
 
     // @ts-ignore the extrinsic works when testing, not sure why tslint is getting the wrong type here
     const values = validateDerived({
       accountNonce: nonce,
-      amount: new Balance(controllerVotingBalance.votingBalance), // the bonded value of the Controller gets assigned to participate in the network security.
-      currentBalance: controllerVotingBalance,
+      amount: new Balance(controllerReservedBalance), // the bonded value of the Controller gets assigned to participate in the network security.
+      currentBalance: controllerReservedBalance,
       extrinsic,
       fees
     });
 
     values.fold(
       (errors: any) => {
-        setLoading(false);
         alert({ type: 'error', content: Object.values(errors) });
       },
       (allExtrinsicData: any) => {

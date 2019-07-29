@@ -4,11 +4,11 @@
 
 import { DerivedStaking } from '@polkadot/api-derive/types';
 import { formatBalance } from '@polkadot/util';
+import { AppContext } from '@substrate/ui-common';
 import { AddressSummary, FadedText, Grid, Stacked, SubHeader, WithSpace, StyledLinkButton } from '@substrate/ui-components';
 import H from 'history';
 import React, { useContext } from 'react';
 import { fromNullable, some } from 'fp-ts/lib/Option';
-import { AppContext } from '@substrate/ui-common';
 
 interface Props extends DerivedStaking {
   history: H.History;

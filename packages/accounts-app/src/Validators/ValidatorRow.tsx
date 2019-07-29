@@ -14,7 +14,7 @@ import { combineLatest, Observable, Subscription } from 'rxjs';
 import { first, switchMap } from 'rxjs/operators';
 import { Loader } from 'semantic-ui-react';
 
-import { OfflineStatus } from '../Accounts/types';
+import { OfflineStatus } from '../types';
 import { ConfirmNominationDialog } from './ConfirmNominationDialog';
 
 interface Props {

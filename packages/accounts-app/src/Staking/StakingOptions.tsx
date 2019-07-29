@@ -35,7 +35,8 @@ export function StakingOptions (props: Props) {
       </Stacked>
       <Margin bottom />
       <StackedHorizontal alignItems='center' justifyContent='center'>
-        <Card centered height='100%'>
+        <Card height='100%' style={{ minHeight: '100%' }}>
+          <Card.Content>
           <Step.Group vertical>
             <Step active={activeStep === 'setup'}>
               <Icon name='truck' />
@@ -65,9 +66,11 @@ export function StakingOptions (props: Props) {
               </Step.Content>
             </Step>
           </Step.Group>
+          </Card.Content>
         </Card>
         <Margin left/>
         <Card height='100%'>
+          <Card.Content>
           <WithSpaceAround margin='large'>
             <Switch>
               <Route path='/manageAccounts/:currentAccount/staking/setup' component={Setup} />
@@ -75,6 +78,7 @@ export function StakingOptions (props: Props) {
               <Redirect from='/manageAccounts/:currentAccount/staking/' to='/manageAccounts/:currentAccount/staking/setup' />
             </Switch>
           </WithSpaceAround>
+          </Card.Content>
         </Card>
       </StackedHorizontal>
     </WithSpaceAround>

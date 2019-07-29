@@ -15,7 +15,7 @@ import { first } from 'rxjs/operators';
 import Loader from 'semantic-ui-react/dist/commonjs/elements/Loader/Loader';
 import Progress from 'semantic-ui-react/dist/commonjs/modules/Progress/Progress';
 
-import { AccountOfflineStatusesMap, RecentlyOffline } from '../Accounts/types';
+import { AccountOfflineStatusesMap, RecentlyOffline } from '../types';
 import { ValidatorRow } from './ValidatorRow';
 
 interface MatchParams {
