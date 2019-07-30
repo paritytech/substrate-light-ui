@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 
 import { AccountsOverview } from './AccountsOverview';
-import { AccountsOverviewDetailed } from './AccountsOverviewDetailed';
+import { AccountOverviewDetailed } from './AccountOverviewDetailed';
 import { StakingOptions } from '../Staking';
 import { ValidatorsList } from '../Validators';
 
@@ -57,7 +57,7 @@ export function Accounts (props: Props) {
       <Route component={Options} />
       <Switch>
         <Route path='/manageAccounts/:currentAccount/overview' component={AccountsOverview} />
-        <Route path='/manageAccounts/:currentAccount/balances' component={AccountsOverviewDetailed} />
+        <Route path='/manageAccounts/:currentAccount/balances' component={AccountOverviewDetailed} />
         <Route path='/manageAccounts/:currentAccount/staking' component={StakingOptions} />
         <Route path='/manageAccounts/:currentAccount/validators' component={ValidatorsList} />
         <Redirect from='/manageAccounts/:currentAccount' to='/manageAccounts/:currentAccount/overview' />

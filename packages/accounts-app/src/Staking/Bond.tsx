@@ -6,12 +6,13 @@ import { DerivedFees, DerivedBalances } from '@polkadot/api-derive/types';
 import { Index } from '@polkadot/types';
 import { isUndefined } from '@polkadot/util';
 import { AppContext, AlertsContext, TxQueueContext, validate } from '@substrate/ui-common';
-import { Dropdown, DropdownProps, Header, Input, Stacked, SubHeader, WithSpaceAround, StyledNavButton } from '@substrate/ui-components';
+import { Dropdown, DropdownProps, Header, Input, Stacked, StackedHorizontal, StyledNavButton, SubHeader, WithSpaceAround, WrapperDiv } from '@substrate/ui-components';
 import BN from 'bn.js';
 import React, { useContext, useState, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Subscription, Observable, zip } from 'rxjs';
 import { take } from 'rxjs/operators';
+import Radio from 'semantic-ui-react/dist/commonjs/addons/Radio';
 
 interface MatchParams {
   currentAccount?: string;
@@ -38,6 +39,7 @@ export function Bond (props: Props) {
   const { enqueue: alert } = useContext(AlertsContext);
   const { enqueue } = useContext(TxQueueContext);
   const [bond, setBond] = useState<BN>(new BN(0));
+  const [bondFromPercent, setBondFrom] = useState(true);
   const [controllerBalance, setControllerBalance] = useState<DerivedBalances>();
   const [stashBalance, setStashBalance] = useState<DerivedBalances>();
   const [destination, setDestination] = useState<RewardDestinationOption>(rewardDestinationOptions[0]);
@@ -84,10 +86,19 @@ export function Bond (props: Props) {
       return;
     }
 
-    // @ts-ignore the extrinsic works when testing, not sure why tslint is getting the wrong type here
-    const extrinsic = api.tx.staking.bond(stash, bond, destination.value);
-    // @ts-ignore the extrinsic works when testing, not sure why tslint is getting the wrong type here
-    const values = validate({ amountAsString: bond.toString(), accountNonce: nonce, currentBalance: stashBalance, extrinsic, fees, recipientBalance: controllerBalance, currentAccount: stash, recipientAddress: controller }, api);
+    // WARNING: api on this changed v1 => v2 (before you stake with stash, now with controller)
+    const extrinsic = api.tx.staking.bond(controller, bond, destination.value);
+    const values = validate({
+      amountAsString: bond.toString(),
+      accountNonce: nonce,
+      currentBalance: stashBalance,
+      // @ts-ignore the extrinsic works when testing, not sure why tslint is getting the wrong type here
+      extrinsic,
+      fees,
+      recipientBalance: controllerBalance,
+      currentAccount: stash,
+      recipientAddress: controller
+    }, api);
 
     values.fold(
       (errors: any) => alert({ type: 'error', content: Object.values(errors) }),
@@ -103,24 +114,47 @@ export function Bond (props: Props) {
 
   const handleSetBond = ({ currentTarget: { value } }: React.SyntheticEvent<HTMLInputElement>) => !isUndefined(value) ? setBond(new BN(value)) : setBond(new BN(0));
 
+  const handleSetBondFromPercent = (value: number) => {
+    if (!controllerBalance || !value) { return; }
+
+    const bondAmount = controllerBalance.freeBalance.toNumber() * value;
+
+    setBond(new BN(bondAmount));
+  };
+
   const onSelect = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
     setDestination(rewardDestinationOptions[data.value as number]);
   };
 
-  // TODO: show the selected bond amount as percentage of total balance
+  const toggleBondFromPercent = () => {
+    setBondFrom(!bondFromPercent);
+  };
 
-  // TODO: allow to set bond amount in terms of percentage of total balance
   return (
     <Stacked>
       <Header>Bonding Preferences </Header>
       <WithSpaceAround>
         <SubHeader>How much do you wish to stake?</SubHeader>
-        <Input
-          label='Set Amount to Stake.'
-          onChange={handleSetBond}
-          placholder='The total amount of the Stash balance that will be at stake in any forthcoming eras (rewards are distributed in proportion to stake).'
-          value={bond.toNumber()}
-          />
+        {
+          <Stacked>
+            <WrapperDiv>
+              <Input
+                disabled={bondFromPercent}
+                label='Set Amount to Stake.'
+                onChange={handleSetBond}
+                placholder='The total amount of the Stash balance that will be at stake in any forthcoming eras (rewards are distributed in proportion to stake).'
+                value={bond.toString()}
+              />
+            </WrapperDiv>
+            <StackedHorizontal justifyContent='space-between'>
+              <button onClick={() => handleSetBondFromPercent(0.25)}>25%</button>
+              <button onClick={() => handleSetBondFromPercent(0.5)}>50%</button>
+              <button onClick={() => handleSetBondFromPercent(0.75)}>75%</button>
+              <button onClick={() => handleSetBondFromPercent(1)}>100%</button>
+            </StackedHorizontal>
+            <Radio checkbox fitted toggle onClick={toggleBondFromPercent}>As {bondFromPercent ? 'Amount' : '%'}</Radio>
+          </Stacked>
+        }
       </WithSpaceAround>
       <WithSpaceAround>
         <SubHeader> How would you like to have your share of the rewards deposited back to you?</SubHeader>

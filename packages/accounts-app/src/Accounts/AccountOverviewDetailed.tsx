@@ -24,10 +24,10 @@ interface Props extends RouteComponentProps<MatchParams> {
 
 export const rewardDestinationOptions = ['Send rewards to my Stash account and immediately use it to stake more.', 'Send rewards to my Stash account but do not stake any more.', 'Send rewards to my Controller account.'];
 
-export function AccountsOverviewDetailed (props: Props) {
+export function AccountOverviewDetailed (props: Props) {
   const { history, match: { params: { currentAccount } } } = props;
   const { api } = useContext(AppContext);
-  const { accountStakingMap } = useContext(StakingContext);
+  const { accountStakingMap, allStashes } = useContext(StakingContext);
   const [stakingInfo, setStakingInfo] = useState<DerivedStaking>();
 
   useEffect(() => {
@@ -92,10 +92,17 @@ export function AccountsOverviewDetailed (props: Props) {
       .map(nominators => nominators.length > 0)
       .getOrElse(false);
 
-    const isStashValidating = fromNullable(stakingInfo)
-      .mapNullable(({ validatorPrefs }) => validatorPrefs)
-      .map(validatorPrefs => !!validatorPrefs && !validatorPrefs.isEmpty && !isStashNominating)
+    const isStashValidating = fromNullable(allStashes)
+      .map(allStashes => allStashes.includes(new AccountId(currentAccount)))
       .getOrElse(false);
+
+    const accountType = fromNullable(stakingInfo).map(stakingInfo => new AccountId(currentAccount) === stakingInfo.controllerId ? 'controller' : 'stash');
+    const bondingPair = fromNullable(stakingInfo)
+      .map(stakingInfo => accountType.fold(
+        undefined,
+        (accountType) => accountType === 'controller' ? stakingInfo.stashId : stakingInfo.controllerId
+      ))
+      .getOrElse(undefined);
 
     return (
       <Card.Group centered doubling stackable>
@@ -103,6 +110,7 @@ export function AccountsOverviewDetailed (props: Props) {
           <Card.Content>
             <AddressSummary
               address={currentAccount}
+              bondingPair={bondingPair && bondingPair.toString()}
               detailed
               isNominator={isStashNominating}
               isValidator={isStashValidating}

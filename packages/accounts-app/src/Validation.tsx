@@ -6,7 +6,7 @@ import { ErrorText, Icon, Stacked, WithSpace } from '@substrate/ui-components';
 import { Either } from 'fp-ts/lib/Either';
 import React from 'react';
 
-import { Accounts, Errors } from '../types';
+import { Accounts, Errors } from './types';
 
 interface ValidationProps {
   value: Either<Errors, Accounts>;
