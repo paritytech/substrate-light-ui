@@ -90,7 +90,7 @@ export function ValidatorsList (props: Props) {
             <Stacked>
               Validators {`${currentValidatorsControllersV1OrStashesV2.length} / ${validatorCount ? validatorCount.toString() : <Loader active inline size='small' />}`}
               <FadedText> New Validator Set In: </FadedText>
-              <WrapperDiv margin='0rem' padding='0rem' width='15rem'>
+              <WrapperDiv margin='0rem' padding='0rem' width='13rem'>
                 {
                   fromNullable(sessionInfo)
                     .map(sessionInfo =>

@@ -17,7 +17,7 @@ export const StakingContext = createContext({
   allControllers: [] as AccountId[],
   allStashes: [] as AccountId[],
   allStashesAndControllers: [[], []] as [AccountId[], Option<AccountId>[]],
-  derivedBalanceFees: {},
+  derivedBalanceFees: {} as DerivedFees,
   onlyBondedAccounts: {} as AccountDerivedStakingMap
 });
 

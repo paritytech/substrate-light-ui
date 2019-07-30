@@ -16,7 +16,7 @@ should someone who goes to the staking tab from a stash already bonded, they sho
 
 import { DerivedFees, DerivedBalances } from '@polkadot/api-derive/types';
 import { AccountId, Balance, Index } from '@polkadot/types';
-import { AppContext, StakingContext, TxQueueContext, validateDerived, AlertsContext } from '@substrate/ui-common';
+import { AlertsContext, AppContext, StakingContext, TxQueueContext, validateDerived } from '@substrate/ui-common';
 import { Address, AddressSummary, FadedText, Header, Icon, Margin, Stacked, StackedHorizontal, StyledLinkButton, StyledNavButton, SubHeader, WithSpace, WithSpaceAround } from '@substrate/ui-components';
 import H from 'history';
 import { fromNullable, some } from 'fp-ts/lib/Option';
@@ -40,10 +40,10 @@ export function ConfirmNominationDialog (props: Props) {
   const { api, keyring } = useContext(AppContext);
   const { onlyBondedAccounts } = useContext(StakingContext);
   const { enqueue } = useContext(TxQueueContext);
+
   const [loading, setLoading] = useState(false);
   const [nominateWith, setNominateWith] = useState();
-
-  const [controllerReservedBalance, setControllerReservedBalance] = useState();
+  const [controllerReservedBalance, setControllerReservedBalance] = useState<Balance>();
   const [controllerVotingBalance, setControllerVotingBalance] = useState<DerivedBalances>();
   const [fees, setFees] = useState<DerivedFees>();
   const [nonce, setNonce] = useState<Index>();
@@ -72,15 +72,16 @@ export function ConfirmNominationDialog (props: Props) {
   };
 
   const onConfirm = () => {
-    if (!nonce || !controllerVotingBalance || !fees) { return; }
+    // do validation before confirm...
+    if (!nonce || !controllerReservedBalance || !controllerVotingBalance || !fees) { return; }
 
     const extrinsic = api.tx.staking.nominate(nominatee);
 
     // @ts-ignore the extrinsic works when testing, not sure why tslint is getting the wrong type here
     const values = validateDerived({
       accountNonce: nonce,
-      amount: new Balance(controllerReservedBalance), // the bonded value of the Controller gets assigned to participate in the network security.
-      currentBalance: controllerReservedBalance,
+      amount: controllerReservedBalance,
+      currentBalance: controllerVotingBalance,
       extrinsic,
       fees
     });
