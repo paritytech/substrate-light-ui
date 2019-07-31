@@ -2,8 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Balance, Index } from '@polkadot/types';
-import { DerivedStaking } from '@polkadot/api-derive/types';
+import { Balance, Nonce } from '@polkadot/types';
+import { DerivedStaking, DerivedBalances } from '@polkadot/api-derive/types';
 import { formatBalance } from '@polkadot/util';
 import { AlertsContext, AppContext, StakingContext, TxQueueContext, validate, AllExtrinsicData } from '@substrate/ui-common';
 import { AddressSummary, FadedText, Grid, Input, Stacked, SubHeader, WithSpace, StyledLinkButton } from '@substrate/ui-components';
@@ -28,31 +28,31 @@ export function BalanceOverview (props: Pick<Props, Exclude<keyof Props, keyof '
   const { api, keyring } = useContext(AppContext);
   const { derivedBalanceFees } = useContext(StakingContext);
   const { enqueue } = useContext(TxQueueContext);
-  const [controllerBalance, setControllerBalance] = useState();
-  const [controllerNonce, setControllerNonce] = useState();
+  const [controllerBalance, setControllerBalance] = useState<DerivedBalances>();
+  const [controllerNonce, setControllerNonce] = useState<Nonce>();
   const [unbondAmount, setUnbondAmount] = useState<BN>(new BN(0));
   const [status, setStatus] = useState<Either<Errors, AllExtrinsicData>>();
 
   useEffect(() => {
     if (!controllerId) { return; }
     const subscription: Subscription = combineLatest([
-      (api.query.balances.freeBalance(controllerId) as Observable<Balance>),
-      (api.query.system.accountNonce(controllerId) as Observable<Index>)
+      (api.derive.balances.votingBalance(controllerId) as Observable<DerivedBalances>),
+      (api.query.system.accountNonce(controllerId) as Observable<Nonce>)
     ])
-      .pipe(
-        take(1)
-      ).subscribe(([controllerBalance, controllerNonce]) => {
-        setControllerBalance(controllerBalance);
-        setControllerNonce(controllerNonce);
-      });
+    .pipe(
+      take(1)
+    )
+    .subscribe(([controllerBalance, controllerNonce]) => {
+      setControllerBalance(controllerBalance);
+      setControllerNonce(controllerNonce);
+    });
 
-    return subscription.unsubscribe();
-  }, []);
+    return () => subscription.unsubscribe();
+  }, [controllerId]);
 
   useEffect(() => {
-    if (!controllerId) { return; }
     setStatus(_validate());
-  }, [controllerBalance, controllerNonce, derivedBalanceFees]);
+  }, [controllerBalance, controllerId, controllerNonce, derivedBalanceFees]);
 
   const _validate = (): Either<Errors, AllExtrinsicData> => {
     let errors: Errors = [];
@@ -63,10 +63,12 @@ export function BalanceOverview (props: Pick<Props, Exclude<keyof Props, keyof '
 
     if (!derivedBalanceFees) { errors.push('Calculating fees...'); }
 
-    if (errors.length) { return left(errors); }
-
     const unBondAmountAsBalance = new Balance(unbondAmount);
     const extrinsic = api.tx.staking.unbond(unBondAmountAsBalance);
+
+    if (!extrinsic) { errors.push('There was an issue constructing the extrinsic...'); }
+
+    if (errors.length) { return left(errors); }
 
     const values = validate({
       amountAsString: unbondAmount.toString(),
@@ -95,13 +97,14 @@ export function BalanceOverview (props: Pick<Props, Exclude<keyof Props, keyof '
 
   // N.B. You can only unbond from controller
   const unbond = () => {
+    if (!controllerId) { return; }
     fromNullable(status)
       .map(_validate)
       .map(status => status.fold(
         (errors: any) => alert({ type: 'error', content: Object.values(errors) }),
         (allExtrinsicData: any) => {
           const { extrinsic, amount, allFees, allTotal } = allExtrinsicData;
-          const details = { amount, allFees, allTotal, methodCall: extrinsic.meta.name.toString(), senderPair: keyring.getPair(controllerId!) };
+          const details = { amount, allFees, allTotal, methodCall: extrinsic.meta.name.toString(), senderPair: keyring.getPair(controllerId.toString()) };
           enqueue(extrinsic, details);
         }
       ));
@@ -147,7 +150,7 @@ export function BalanceOverview (props: Pick<Props, Exclude<keyof Props, keyof '
         <WithSpace><SubHeader>Stakers Total:</SubHeader> <FadedText>{formatBalance(stakers && stakers.total)}</FadedText> </WithSpace>
         <WithSpace><SubHeader>Bonded:</SubHeader> <FadedText>{stakingLedger && formatBalance(stakingLedger.total)} </FadedText></WithSpace>
         <WithSpace>
-          <Stacked><Input disabled={controllerId !== accountId} onChange={handleSetUnbondAmount} value={unbondAmount} /> <StyledLinkButton disabled={controllerId !== accountId} onClick={unbond}>Unbond</StyledLinkButton></Stacked>
+          <Stacked><Input disabled={controllerId !== accountId} onChange={handleSetUnbondAmount} value={unbondAmount} /> <WithSpace><StyledLinkButton disabled={controllerId !== accountId} onClick={unbond}>Unbond</StyledLinkButton></WithSpace></Stacked>
           { controllerId !== accountId && <FadedText>You can only unbond funds through your controller account.</FadedText>}
         </WithSpace>
       </Stacked>

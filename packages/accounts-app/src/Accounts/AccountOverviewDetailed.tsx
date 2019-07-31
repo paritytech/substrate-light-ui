@@ -29,6 +29,8 @@ export function AccountOverviewDetailed (props: Props) {
   const [nominees, setNominees] = useState();
   const stakingInfo = accountStakingMap[currentAccount];
 
+  console.log(stakingInfo);
+
   useEffect(() => {
     setNominees(stakingInfo && stakingInfo.nominators && stakingInfo.nominators.map(nominator => nominator.toString()));
   }, []);

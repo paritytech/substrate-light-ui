@@ -42,6 +42,8 @@ function validateAmount (values: SubResults & UserInputs & WithExtrinsic): Eithe
 export function validateDerived (values: SubResults & UserInputs & WithExtrinsic & WithAmount): Either<Errors, AllExtrinsicData> {
   const { accountNonce, amount = new BN(0), currentBalance, extrinsic, fees, recipientBalance } = values;
 
+  debugger;
+
   const txLength = SIGNATURE_SIZE + compactToU8a(accountNonce).length + extrinsic.encodedLength;
   const allFees = fees.transactionBaseFee.add(fees.transactionByteFee.muln(txLength));
 
@@ -98,6 +100,8 @@ function validateExtrinsic (api: ApiRx) {
       left(errors);
     }
 
+    debugger;
+
     return right(values);
   };
 }
@@ -122,13 +126,13 @@ function validateSubResults (values: Partial<SubResults & WithExtrinsic & UserIn
   }
 
   // FIXME: check for more methods as necessary
-  if (!recipientBalance && extrinsic!.method.methodName === 'transfer') {
+  if (!recipientBalance && extrinsic && extrinsic.method.methodName === 'transfer') {
     errors.recipientBalance = "Please wait while we fetch the recipient's balance.";
   }
 
   return Object.keys(errors).length
     ? left(errors)
-    : right({ accountNonce, currentBalance, fees, recipientBalance, ...rest } as SubResults & WithExtrinsic & UserInputs);
+    : right({ accountNonce, currentBalance, extrinsic, fees, recipientBalance, ...rest } as SubResults & WithExtrinsic & UserInputs);
 }
 
 /**
@@ -143,7 +147,7 @@ function validateUserInputs (values: Partial<SubResults & UserInputs & WithExtri
   }
 
   // FIXME: check for more methods as necessary
-  if (!recipientAddress && extrinsic!.method.methodName === 'transfer') {
+  if (!recipientAddress && extrinsic && extrinsic.method.methodName === 'transfer') {
     errors.recipientAddress = 'Please enter a recipient address.';
   }
 
