@@ -3,14 +3,14 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { DerivedFees, DerivedBalances } from '@polkadot/api-derive/types';
-import { Index } from '@polkadot/types';
+import { Nonce } from '@polkadot/types';
 import { isUndefined } from '@polkadot/util';
-import { AppContext, AlertsContext, TxQueueContext, validate } from '@substrate/ui-common';
-import { Dropdown, DropdownProps, Header, Input, Stacked, StackedHorizontal, StyledNavButton, SubHeader, WithSpace, WithSpaceAround, WrapperDiv } from '@substrate/ui-components';
+import { AppContext, AlertsContext, StakingContext, TxQueueContext, validate } from '@substrate/ui-common';
+import { AddressSummary, Dropdown, DropdownProps, Header, Input, Stacked, StackedHorizontal, StyledNavButton, SubHeader, WithSpace, WithSpaceAround, WrapperDiv, FadedText, FlexItem } from '@substrate/ui-components';
 import BN from 'bn.js';
 import React, { useContext, useState, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { Subscription, Observable, zip } from 'rxjs';
+import { combineLatest, Subscription, Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 interface MatchParams {
@@ -36,13 +36,14 @@ export const rewardDestinationOptions = [
 export function Bond (props: Props) {
   const { api, keyring } = useContext(AppContext);
   const { enqueue: alert } = useContext(AlertsContext);
-  const { enqueue } = useContext(TxQueueContext);
+  const { derivedBalanceFees } = useContext(StakingContext);
+  const { enqueue, successObservable } = useContext(TxQueueContext);
   const [bond, setBond] = useState<BN>(new BN(0));
   const [controllerBalance, setControllerBalance] = useState<DerivedBalances>();
-  const [stashBalance, setStashBalance] = useState<DerivedBalances>();
   const [destination, setDestination] = useState<RewardDestinationOption>(rewardDestinationOptions[0]);
-  const [fees, setFees] = useState<DerivedFees>();
-  const [nonce, setNonce] = useState<Index>();
+  const [loading, setLoading] = useState(false);
+  const [nonce, setNonce] = useState<Nonce>();
+  const [stashBalance, setStashBalance] = useState<DerivedBalances>();
 
   const { history } = props;
   const { controller, stash } = history.location.state;
@@ -53,25 +54,31 @@ export function Bond (props: Props) {
       return;
     }
 
-    const subscription: Subscription = zip(
-      api.derive.balances.fees() as Observable<DerivedFees>,
+    const subscription: Subscription = combineLatest([
       api.derive.balances.votingBalance(stash) as Observable<DerivedBalances>,
       api.derive.balances.votingBalance(controller) as Observable<DerivedBalances>,
-      api.query.system.accountNonce(stash) as Observable<Index>
-    ).pipe(
+      api.query.system.accountNonce(stash) as Observable<Nonce>
+    ]).pipe(
       take(1)
-    ).subscribe(([fees, stashBalance, controllerBalance, nonce]) => {
+    ).subscribe(([stashBalance, controllerBalance, nonce]) => {
       setControllerBalance(controllerBalance);
       setStashBalance(stashBalance);
-      setFees(fees);
       setNonce(nonce);
     });
 
     return () => subscription.unsubscribe();
   }, [stash, controller]);
 
+  useEffect(() => {
+    successObservable.subscribe(onSuccess => {
+      setLoading(false);
+
+      history.push(`/manageAccounts/${controller}/balances`);
+    });
+  }, []);
+
   const handleConfirmBond = () => {
-    if (isUndefined(fees)) {
+    if (isUndefined(derivedBalanceFees)) {
       alert({ type: 'error', content: 'calculating fees...please try again in a bit.' });
       return;
     }
@@ -92,7 +99,7 @@ export function Bond (props: Props) {
       currentBalance: stashBalance,
       // @ts-ignore the extrinsic works when testing, not sure why tslint is getting the wrong type here
       extrinsic,
-      fees,
+      fees: derivedBalanceFees,
       recipientBalance: controllerBalance,
       currentAccount: stash,
       recipientAddress: controller
@@ -127,6 +134,10 @@ export function Bond (props: Props) {
   return (
     <Stacked>
       <Header>Bonding Preferences </Header>
+      <StackedHorizontal>
+        <WithSpace><FlexItem><FadedText> From: </FadedText><AddressSummary address={stash} noBalance noPlaceholderName size='small' /></FlexItem></WithSpace>
+        <WithSpace><FlexItem><FadedText> To: </FadedText><AddressSummary address={controller} noBalance noPlaceholderName size='small' /></FlexItem></WithSpace>
+      </StackedHorizontal>
       <WithSpaceAround>
         <SubHeader>How much do you wish to stake?</SubHeader>
         {
@@ -139,7 +150,7 @@ export function Bond (props: Props) {
                 value={bond.toString()}
               />
             </WrapperDiv>
-            <StackedHorizontal justifyContent='space-between'>
+            <StackedHorizontal alignItems='stretch'>
               <WithSpace><button onClick={() => handleSetBondFromPercent(0.25)}>25%</button></WithSpace>
               <WithSpace><button onClick={() => handleSetBondFromPercent(0.5)}>50%</button></WithSpace>
               <WithSpace><button onClick={() => handleSetBondFromPercent(0.75)}>75%</button></WithSpace>

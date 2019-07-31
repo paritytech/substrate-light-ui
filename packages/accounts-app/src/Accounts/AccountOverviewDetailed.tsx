@@ -105,7 +105,7 @@ export function AccountOverviewDetailed (props: Props) {
       .getOrElse(undefined);
 
     return (
-      <Card.Group centered doubling stackable>
+      <Card.Group doubling stackable>
         <Card>
           <Card.Content>
             <AddressSummary

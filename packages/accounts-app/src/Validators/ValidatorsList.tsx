@@ -4,13 +4,14 @@
 
 import { DerivedSessionInfo } from '@polkadot/api-derive/types';
 import { AccountId } from '@polkadot/types';
-import { Container, FadedText, StackedHorizontal, Table, WrapperDiv, WithSpace } from '@substrate/ui-components';
+import { Container, FadedText, StackedHorizontal, SubHeader, Table, WithSpace } from '@substrate/ui-components';
 import { AppContext } from '@substrate/ui-common';
 import BN from 'bn.js';
 import { fromNullable } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { combineLatest, Observable, Subscription } from 'rxjs';
+import Card from 'semantic-ui-react/dist/commonjs/views/Card';
 import Loader from 'semantic-ui-react/dist/commonjs/elements/Loader/Loader';
 import Progress from 'semantic-ui-react/dist/commonjs/modules/Progress/Progress';
 
@@ -67,17 +68,19 @@ export function ValidatorsList (props: Props) {
   const renderBody = () => (
     <Table.Body>
       {
-        recentlyOffline && currentValidatorsControllersV1OrStashesV2.length
-            ? currentValidatorsControllersV1OrStashesV2.map(validator => {
-              return <ValidatorRow
-                        key={validator.toString()}
-                        history={props.history}
-                        offlineStatuses={recentlyOffline[validator.toString()]}
-                        validator={validator} />;
-            })
-            : <Table.Row textAlign='center'><Loader active inline /></Table.Row>
+        fromNullable(currentValidatorsControllersV1OrStashesV2)
+          .map(validators => validators.map(renderValidatorRow))
+          .getOrElse([1].map(() => <Table.Row textAlign='center'><Loader active inline /></Table.Row>))
       }
     </Table.Body>
+  );
+
+  const renderValidatorRow = (validator: AccountId) => (
+    <ValidatorRow
+      key={validator.toString()}
+      history={props.history}
+      offlineStatuses={recentlyOffline && recentlyOffline[validator.toString()]}
+      validator={validator} />
   );
 
   const renderHeader = () => {
@@ -100,38 +103,44 @@ export function ValidatorsList (props: Props) {
     <Container fluid>
       <StackedHorizontal>
         <WithSpace>
-          <WrapperDiv>
-            <FadedText> New Validator Set In: </FadedText>
-            {
-              fromNullable(sessionInfo)
-                .map(sessionInfo =>
-                  <Progress
-                    color='pink'
-                    progress='ratio'
-                    size='small'
-                    total={sessionInfo.eraLength.toNumber()}
-                    value={sessionInfo.eraProgress.toNumber()} />
-                )
-                .getOrElse(<Loader active inline size='mini' />)
-            }
-          </WrapperDiv>
+          <Card>
+            <Card.Content>
+                <SubHeader> New Validator Set: </SubHeader>
+                {
+                  fromNullable(sessionInfo)
+                    .map(sessionInfo =>
+                      <Progress
+                        color='pink'
+                        progress='ratio'
+                        size='small'
+                        total={sessionInfo.eraLength.toNumber()}
+                        value={sessionInfo.eraProgress.toNumber()} />
+                    )
+                    .getOrElse(<Loader active inline size='mini' />)
+                }
+                <FadedText>A New Validator Set is Elected Every Era.</FadedText>
+            </Card.Content>
+          </Card>
         </WithSpace>
         <WithSpace>
-          <WrapperDiv>
-            <FadedText>Next Reward Payout In: </FadedText>
-            {
-              fromNullable(sessionInfo)
-                .map(sessionInfo =>
-                  <Progress
-                    color='teal'
-                    progress='ratio'
-                    size='small'
-                    total={sessionInfo.sessionLength.toNumber()}
-                    value={sessionInfo.sessionProgress.toNumber()} />
-                )
-                .getOrElse(<Loader active inline size='mini' />)
-            }
-          </WrapperDiv>
+          <Card height='100%'>
+            <Card.Content>
+                <SubHeader>Next Reward Payout: </SubHeader>
+                {
+                  fromNullable(sessionInfo)
+                    .map(sessionInfo =>
+                      <Progress
+                        color='teal'
+                        progress='ratio'
+                        size='small'
+                        total={sessionInfo.sessionLength.toNumber()}
+                        value={sessionInfo.sessionProgress.toNumber()} />
+                    )
+                    .getOrElse(<Loader active inline size='mini' />)
+                }
+                <FadedText>Validator Pool Block Rewards are Paid Out Every Session. </FadedText>
+            </Card.Content>
+          </Card>
         </WithSpace>
       </StackedHorizontal>
       <Table basic celled collapsing compact size='large' sortable stackable textAlign='center' width='16' verticalAlign='middle'>

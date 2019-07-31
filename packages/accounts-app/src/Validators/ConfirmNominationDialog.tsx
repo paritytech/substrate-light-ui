@@ -41,10 +41,10 @@ export const rewardDestinationOptions = ['Send rewards to my Stash account and i
 
 // TODO: p3 refactor all this to smaller components
 export function ConfirmNominationDialog (props: Props) {
-  const { disabled, nominatee } = props;
+  const { disabled, history, nominatee } = props;
   const { api, keyring } = useContext(AppContext);
   const { derivedBalanceFees, onlyBondedAccounts } = useContext(StakingContext);
-  const { enqueue } = useContext(TxQueueContext);
+  const { enqueue, successObservable } = useContext(TxQueueContext);
 
   const [nominateWith, setNominateWith] = useState();
   const [controllerVotingBalance, setControllerVotingBalance] = useState<DerivedBalances>();
@@ -74,6 +74,12 @@ export function ConfirmNominationDialog (props: Props) {
     if (!nominateWith) { return; }
     setStatus(_validate());
   }, [derivedBalanceFees, nominateWith, nonce, onlyBondedAccounts]);
+
+  useEffect(() => {
+    successObservable.subscribe(success => history.push(`/manageAccounts/${nominateWith}/balances`));
+
+    return () => successObservable.unsubscribe();
+  }, []);
 
   const _validate = (): Either<Errors, AllExtrinsicData> => {
     let errors: Errors = [];
@@ -118,7 +124,7 @@ export function ConfirmNominationDialog (props: Props) {
           (errors) => { console.error(errors); /* should be displayed by Validation */ },
           (allExtrinsicData) => {
             const { extrinsic, amount, allFees, allTotal } = allExtrinsicData;
-            const details = { amount, allFees, allTotal, methodCall: extrinsic.meta.name.toString(), senderPair: keyring.getPair(nominateWith), nominatee };
+            const details = { amount, allFees, allTotal, methodCall: extrinsic.meta.name.toString(), senderPair: keyring.getPair(nominateWith), recipientAddress: nominatee };
             enqueue(extrinsic, details);
           }
         )
