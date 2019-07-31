@@ -100,8 +100,6 @@ export function ConfirmNominationDialog (props: Props) {
       recipientAddress: nominatee
     }, api);
 
-    console.log(values);
-
     return values.fold(
       (e: any) => left(errors),
       (allExtrinsicData: any) => right(allExtrinsicData)

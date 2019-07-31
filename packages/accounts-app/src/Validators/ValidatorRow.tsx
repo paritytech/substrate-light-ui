@@ -97,9 +97,9 @@ export function ValidatorRow (props: Props) {
           noPlaceholderName
           size='medium' />
       </Table.Cell>
-      <Table.Cell width='1'>{offlineTotal.toString()}</Table.Cell>
-      <Table.Cell width='5'><div style={{ height: '200px', overflow: 'auto' }}>{renderNominators()}</div></Table.Cell>
-      <Table.Cell width='2'>
+      <Table.Cell width='1' verticalAlign='middle'>{offlineTotal.toString()}</Table.Cell>
+      <Table.Cell width='5' verticalAlign='middle'><div style={{ height: '200px', overflow: 'auto', verticalAlign: 'middle' }}>{renderNominators()}</div></Table.Cell>
+      <Table.Cell width='2' verticalAlign='middle'>
         {<ConfirmNominationDialog disabled={loading} history={props.history} nominatee={validator.toString()} />}
       </Table.Cell>
     </Table.Row>

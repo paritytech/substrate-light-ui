@@ -67,8 +67,7 @@ export function ValidatorsList (props: Props) {
   const renderBody = () => (
     <Table.Body>
       {
-        recentlyOffline
-          && currentValidatorsControllersV1OrStashesV2.length
+        recentlyOffline && currentValidatorsControllersV1OrStashesV2.length
             ? currentValidatorsControllersV1OrStashesV2.map(validator => {
               return <ValidatorRow
                         key={validator.toString()}
