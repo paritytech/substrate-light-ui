@@ -90,12 +90,27 @@ export function ValidatorsList (props: Props) {
             <Stacked>
               Validators {`${currentValidatorsControllersV1OrStashesV2.length} / ${validatorCount ? validatorCount.toString() : <Loader active inline size='small' />}`}
               <FadedText> New Validator Set In: </FadedText>
-              <WrapperDiv margin='0rem' padding='0rem' width='13rem'>
+              <WrapperDiv margin='0rem' padding='0rem' width='12rem'>
                 {
                   fromNullable(sessionInfo)
                     .map(sessionInfo =>
                       <Progress
                         color='pink'
+                        progress='ratio'
+                        size='small'
+                        total={sessionInfo.eraLength.toNumber()}
+                        value={sessionInfo.eraProgress.toNumber()} />
+                    )
+                    .getOrElse(<Loader active inline size='mini' />)
+                }
+              </WrapperDiv>
+              <FadedText>Next Reward Payout In: </FadedText>
+              <WrapperDiv margin='0rem' padding='0rem' width='12rem'>
+                {
+                  fromNullable(sessionInfo)
+                    .map(sessionInfo =>
+                      <Progress
+                        color='teal'
                         progress='ratio'
                         size='small'
                         total={sessionInfo.sessionLength.toNumber()}

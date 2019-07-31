@@ -161,7 +161,7 @@ export function ConfirmNominationDialog (props: Props) {
                           return accountType === 'controller';
                         }))
                         .map(accounts => accounts.map(renderBondedAccountOption))
-                        .getOrElse([].map(renderNoBondedAccounts))
+                        .getOrElse([1].map(renderNoBondedAccounts))
                     }
                   </Card.Group>
                 </Stacked>
@@ -255,7 +255,7 @@ export function ConfirmNominationDialog (props: Props) {
 
     return (
       <React.Fragment>
-        No bonded accounts in your keyring.
+        <Header>No bonded accounts in your keyring.</Header>
         <Margin top='large' />
         <StyledNavButton onClick={navToStakingOptions}>Bond</StyledNavButton>
       </React.Fragment>
