@@ -5,13 +5,18 @@
 import { Balance, Index } from '@polkadot/types';
 import { DerivedStaking } from '@polkadot/api-derive/types';
 import { formatBalance } from '@polkadot/util';
-import { AlertsContext, AppContext, StakingContext, TxQueueContext, validateDerived } from '@substrate/ui-common';
+import { AlertsContext, AppContext, StakingContext, TxQueueContext, validate, AllExtrinsicData } from '@substrate/ui-common';
 import { AddressSummary, FadedText, Grid, Input, Stacked, SubHeader, WithSpace, StyledLinkButton } from '@substrate/ui-components';
+import BN from 'bn.js';
+import { Either, left, right } from 'fp-ts/lib/Either';
 import { fromNullable, some } from 'fp-ts/lib/Option';
 import H from 'history';
 import React, { useContext, useEffect, useState } from 'react';
 import { combineLatest, Observable, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
+
+import { Errors } from '../types';
+import { Validation } from '../Validation';
 
 interface Props extends DerivedStaking {
   history: H.History;
@@ -25,7 +30,8 @@ export function BalanceOverview (props: Pick<Props, Exclude<keyof Props, keyof '
   const { enqueue } = useContext(TxQueueContext);
   const [controllerBalance, setControllerBalance] = useState();
   const [controllerNonce, setControllerNonce] = useState();
-  const [unbondAmount, setUnbondAmount] = useState(0);
+  const [unbondAmount, setUnbondAmount] = useState<BN>(new BN(0));
+  const [status, setStatus] = useState<Either<Errors, AllExtrinsicData>>();
 
   useEffect(() => {
     if (!controllerId) { return; }
@@ -41,7 +47,42 @@ export function BalanceOverview (props: Pick<Props, Exclude<keyof Props, keyof '
       });
 
     return subscription.unsubscribe();
-  }, [controllerId]);
+  }, []);
+
+  useEffect(() => {
+    if (!controllerId) { return; }
+    setStatus(_validate());
+  }, [controllerBalance, controllerNonce, derivedBalanceFees]);
+
+  const _validate = (): Either<Errors, AllExtrinsicData> => {
+    let errors: Errors = [];
+
+    if (!controllerNonce) { errors.push('Calculating account nonce...'); }
+
+    if (!controllerId) { errors.push('ControllerId was not defined. You can only unbond with your controllerId.'); }
+
+    if (!derivedBalanceFees) { errors.push('Calculating fees...'); }
+
+    if (errors.length) { return left(errors); }
+
+    const unBondAmountAsBalance = new Balance(unbondAmount);
+    const extrinsic = api.tx.staking.unbond(unBondAmountAsBalance);
+
+    const values = validate({
+      amountAsString: unbondAmount.toString(),
+      accountNonce: controllerNonce,
+      currentBalance: controllerBalance,
+      // @ts-ignore
+      extrinsic,
+      fees: derivedBalanceFees,
+      currentAccount: controllerId!.toString()
+    }, api);
+
+    return values.fold(
+      (e: any) => left(errors),
+      (allExtrinsicData: any) => right(allExtrinsicData)
+    );
+  };
 
   const renderUnBondedAccountOptions = () => {
     return (
@@ -54,36 +95,20 @@ export function BalanceOverview (props: Pick<Props, Exclude<keyof Props, keyof '
 
   // N.B. You can only unbond from controller
   const unbond = () => {
-    if (!controllerId) {
-      alert({ type: 'error', content: 'ControllerId was not defined. You can only unbond with your controllerId.' });
-      return;
-    }
+    fromNullable(status)
+      .map(_validate)
+      .map(status => status.fold(
+        (errors: any) => alert({ type: 'error', content: Object.values(errors) }),
+        (allExtrinsicData: any) => {
+          const { extrinsic, amount, allFees, allTotal } = allExtrinsicData;
+          const details = { amount, allFees, allTotal, methodCall: extrinsic.meta.name.toString(), senderPair: keyring.getPair(controllerId!) };
+          enqueue(extrinsic, details);
+        }
+      ));
+  };
 
-    if (!derivedBalanceFees) {
-      return;
-    }
-
-    const unBondAmountAsBalance = new Balance(unbondAmount);
-    const extrinsic = api.tx.staking.unbond(unBondAmountAsBalance);
-    const values = validateDerived({
-      accountNonce: controllerNonce,
-      amount: unBondAmountAsBalance,
-      currentBalance: controllerBalance,
-      // @ts-ignore
-      extrinsic,
-      fees: derivedBalanceFees
-    });
-
-    values.fold(
-      (errors: any) => alert({ type: 'error', content: Object.values(errors) }),
-      (allExtrinsicData: any) => {
-        const { extrinsic, amount, allFees, allTotal } = allExtrinsicData;
-
-        const details = { amount, allFees, allTotal, methodCall: extrinsic.meta.name.toString(), senderPair: keyring.getPair(controllerId) };
-
-        enqueue(extrinsic, details);
-      }
-    );
+  const handleSetUnbondAmount = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    setUnbondAmount(new BN(value));
   };
 
   return (
@@ -122,10 +147,11 @@ export function BalanceOverview (props: Pick<Props, Exclude<keyof Props, keyof '
         <WithSpace><SubHeader>Stakers Total:</SubHeader> <FadedText>{formatBalance(stakers && stakers.total)}</FadedText> </WithSpace>
         <WithSpace><SubHeader>Bonded:</SubHeader> <FadedText>{stakingLedger && formatBalance(stakingLedger.total)} </FadedText></WithSpace>
         <WithSpace>
-          <Stacked><Input disabled={controllerId !== accountId} onChange={setUnbondAmount} value={unbondAmount} /> <StyledLinkButton disabled={controllerId !== accountId} onClick={unbond}>Unbond</StyledLinkButton></Stacked>
+          <Stacked><Input disabled={controllerId !== accountId} onChange={handleSetUnbondAmount} value={unbondAmount} /> <StyledLinkButton disabled={controllerId !== accountId} onClick={unbond}>Unbond</StyledLinkButton></Stacked>
           { controllerId !== accountId && <FadedText>You can only unbond funds through your controller account.</FadedText>}
         </WithSpace>
       </Stacked>
+      {status && <Validation value={status} />}
     </Grid.Column>
   );
 }
