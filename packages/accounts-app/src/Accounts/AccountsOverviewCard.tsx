@@ -21,10 +21,12 @@ export function AccountsOverviewCard (props: Props) {
   const { address, history, name } = props;
   const { keyring } = useContext(AppContext);
   const { enqueue } = useContext(AlertsContext);
-  const { derivedStakingInfo } = useContext(StakingContext);
+  const { accountStakingMap } = useContext(StakingContext);
   const [bondingPair, setBondingPair] = useState<AccountId>();
   const [confirmScreen, setConfirmScreen] = useState();
   const [password, setPassword] = useState();
+
+  const derivedStakingInfo = accountStakingMap[address];
 
   useEffect(() => {
     const accountType = fromNullable(derivedStakingInfo).map(stakingInfo => new AccountId(address) === stakingInfo.controllerId ? 'controller' : 'stash');
@@ -34,7 +36,7 @@ export function AccountsOverviewCard (props: Props) {
         (accountType) => accountType === 'controller' ? stakingInfo.stashId : stakingInfo.controllerId
       ))
       .getOrElse(undefined);
-    
+
     setBondingPair(bondingPair);
   }, []);
 
