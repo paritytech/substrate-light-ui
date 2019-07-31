@@ -27,6 +27,7 @@ import Loader from 'semantic-ui-react/dist/commonjs/elements/Loader';
 import Modal from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
 
 interface Props {
+  disabled: boolean;
   history: H.History;
   nominatee: string;
 }
@@ -35,7 +36,7 @@ export const rewardDestinationOptions = ['Send rewards to my Stash account and i
 
 // TODO: p3 refactor all this to smaller components
 export function ConfirmNominationDialog (props: Props) {
-  const { nominatee } = props;
+  const { disabled, nominatee } = props;
   const { enqueue: alert } = useContext(AlertsContext);
   const { api, keyring } = useContext(AppContext);
   const { onlyBondedAccounts } = useContext(StakingContext);
@@ -266,7 +267,7 @@ export function ConfirmNominationDialog (props: Props) {
     <Modal
       closeOnDimmerClick
       closeOnEscape
-      trigger={<StyledNavButton> Nominate </StyledNavButton>}
+      trigger={<StyledNavButton disabled={disabled}> Nominate </StyledNavButton>}
     >
       <WithSpaceAround>
         {

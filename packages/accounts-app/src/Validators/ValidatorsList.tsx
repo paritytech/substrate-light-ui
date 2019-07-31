@@ -4,7 +4,7 @@
 
 import { DerivedSessionInfo } from '@polkadot/api-derive/types';
 import { AccountId } from '@polkadot/types';
-import { Container, FadedText, Stacked, Table, WrapperDiv } from '@substrate/ui-components';
+import { Container, FadedText, StackedHorizontal, Table, WrapperDiv, WithSpace } from '@substrate/ui-components';
 import { AppContext } from '@substrate/ui-common';
 import BN from 'bn.js';
 import { fromNullable } from 'fp-ts/lib/Option';
@@ -87,39 +87,7 @@ export function ValidatorsList (props: Props) {
         <Table.Row>
           <Table.HeaderCell>Am I Nominating?</Table.HeaderCell>
           <Table.HeaderCell>
-            <Stacked>
-              Validators {`${currentValidatorsControllersV1OrStashesV2.length} / ${validatorCount ? validatorCount.toString() : <Loader active inline size='small' />}`}
-              <FadedText> New Validator Set In: </FadedText>
-              <WrapperDiv margin='0rem' padding='0rem' width='12rem'>
-                {
-                  fromNullable(sessionInfo)
-                    .map(sessionInfo =>
-                      <Progress
-                        color='pink'
-                        progress='ratio'
-                        size='small'
-                        total={sessionInfo.eraLength.toNumber()}
-                        value={sessionInfo.eraProgress.toNumber()} />
-                    )
-                    .getOrElse(<Loader active inline size='mini' />)
-                }
-              </WrapperDiv>
-              <FadedText>Next Reward Payout In: </FadedText>
-              <WrapperDiv margin='0rem' padding='0rem' width='12rem'>
-                {
-                  fromNullable(sessionInfo)
-                    .map(sessionInfo =>
-                      <Progress
-                        color='teal'
-                        progress='ratio'
-                        size='small'
-                        total={sessionInfo.sessionLength.toNumber()}
-                        value={sessionInfo.sessionProgress.toNumber()} />
-                    )
-                    .getOrElse(<Loader active inline size='mini' />)
-                }
-              </WrapperDiv>
-            </Stacked>
+            Validators {`${currentValidatorsControllersV1OrStashesV2.length} / ${validatorCount ? validatorCount.toString() : <Loader active inline size='small' />}`}
           </Table.HeaderCell>
           <Table.HeaderCell>Times Reported Offline</Table.HeaderCell>
           <Table.HeaderCell>Nominators</Table.HeaderCell>
@@ -131,6 +99,42 @@ export function ValidatorsList (props: Props) {
 
   return (
     <Container fluid>
+      <StackedHorizontal>
+        <WithSpace>
+          <WrapperDiv margin='0rem' padding='0rem' width='12rem'>
+            <FadedText> New Validator Set In: </FadedText>
+            {
+              fromNullable(sessionInfo)
+                .map(sessionInfo =>
+                  <Progress
+                    color='pink'
+                    progress='ratio'
+                    size='small'
+                    total={sessionInfo.eraLength.toNumber()}
+                    value={sessionInfo.eraProgress.toNumber()} />
+                )
+                .getOrElse(<Loader active inline size='mini' />)
+            }
+          </WrapperDiv>
+        </WithSpace>
+        <WithSpace>
+          <WrapperDiv margin='0rem' padding='0rem' width='12rem'>
+            <FadedText>Next Reward Payout In: </FadedText>
+            {
+              fromNullable(sessionInfo)
+                .map(sessionInfo =>
+                  <Progress
+                    color='teal'
+                    progress='ratio'
+                    size='small'
+                    total={sessionInfo.sessionLength.toNumber()}
+                    value={sessionInfo.sessionProgress.toNumber()} />
+                )
+                .getOrElse(<Loader active inline size='mini' />)
+            }
+          </WrapperDiv>
+        </WithSpace>
+      </StackedHorizontal>
       <Table basic celled collapsing compact size='large' sortable stackable textAlign='center' width='16' verticalAlign='middle'>
         {renderHeader()}
         {renderBody()}

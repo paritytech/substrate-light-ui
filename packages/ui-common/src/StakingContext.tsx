@@ -83,6 +83,7 @@ export function StakingContextProvider (props: Props) {
     return () => controllersSub.unsubscribe();
   }, [api, isReady]);
 
+  // derived fees
   useEffect(() => {
     if (!isReady) { return; }
     const feeSub: Subscription = (api.derive.balances.fees() as Observable<DerivedFees>)

@@ -2,10 +2,9 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { DerivedStaking } from '@polkadot/api-derive/types';
 import { AccountId } from '@polkadot/types';
-import { AppContext, StakingContext } from '@substrate/ui-common';
-import { AddressSummary, Container, Grid, Loading, SubHeader, WithSpace } from '@substrate/ui-components';
+import { StakingContext } from '@substrate/ui-common';
+import { AddressSummary, Container, Grid, Loading, Stacked, StyledNavLink, SubHeader, WithSpace } from '@substrate/ui-components';
 import { fromNullable } from 'fp-ts/lib/Option';
 import React, { useEffect, useState, useContext } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -26,15 +25,13 @@ export const rewardDestinationOptions = ['Send rewards to my Stash account and i
 
 export function AccountOverviewDetailed (props: Props) {
   const { history, match: { params: { currentAccount } } } = props;
-  const { api } = useContext(AppContext);
   const { accountStakingMap, allStashes } = useContext(StakingContext);
-  const [stakingInfo, setStakingInfo] = useState<DerivedStaking>();
+  const [nominees, setNominees] = useState();
+  const stakingInfo = accountStakingMap[currentAccount];
 
   useEffect(() => {
-    fromNullable(accountStakingMap[currentAccount])
-      .map(setStakingInfo)
-      .getOrElse(/* do nothing */);
-  }, [api]);
+    setNominees(stakingInfo && stakingInfo.nominators && stakingInfo.nominators.map(nominator => nominator.toString()));
+  }, []);
 
   const renderBalanceDetails = () => {
     return (
@@ -57,17 +54,20 @@ export function AccountOverviewDetailed (props: Props) {
         <WithSpace>
           <SubHeader noMargin>Currently Nominating:</SubHeader>
             {
-              fromNullable(stakingInfo)
-                .mapNullable(stakingInfo => stakingInfo.nominators)
-                .map(nominators => nominators.map((address: AccountId) => {
-                  return <AddressSummary
-                    address={address.toString()}
-                    key={address.toString()}
+              fromNullable(nominees)
+                .map(nominees => nominees.map((nomineeId: string, index: string) =>
+                  <AddressSummary
+                    address={nomineeId}
+                    key={index}
                     orientation='horizontal'
                     size='small'
-                  />;
-                }))
-              .getOrElse([].map(() => <div>Not nominating anybody.</div>))
+                  />
+                ))
+              .getOrElse(
+                <Stacked>
+                    Not Nominating Anyone.
+                    <StyledNavLink to={`/manageAccounts/${currentAccount}/staking/validators`}>View Validators</StyledNavLink>
+                </Stacked>)
             }
         </WithSpace>
         <WithSpace>
