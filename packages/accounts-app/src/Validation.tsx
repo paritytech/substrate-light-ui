@@ -2,6 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { AllExtrinsicData } from '@substrate/ui-common';
 import { ErrorText, Icon, Stacked, WithSpace } from '@substrate/ui-components';
 import { Either } from 'fp-ts/lib/Either';
 import React from 'react';
@@ -9,7 +10,7 @@ import React from 'react';
 import { Accounts, Errors } from './types';
 
 interface ValidationProps {
-  value: Either<Errors, Accounts>;
+  value: Either<Errors, Accounts | AllExtrinsicData>;
 }
 
 export function Validation (props: ValidationProps) {
@@ -29,7 +30,7 @@ export function Validation (props: ValidationProps) {
     );
   }
 
-  function renderSuccess (accounts: Accounts) {
+  function renderSuccess () {
     return (
       <WithSpace>
         <Icon name='checkmark' />

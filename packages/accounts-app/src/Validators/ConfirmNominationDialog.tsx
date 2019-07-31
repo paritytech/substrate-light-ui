@@ -14,17 +14,22 @@ on confirm, redirect to the detailed balances page, which should now show the st
 should someone who goes to the staking tab from a stash already bonded, they should be directed straight to validator selection tab. You can nominate multiple validators from the same stash/controller pair
 */
 
-import { DerivedFees, DerivedBalances } from '@polkadot/api-derive/types';
-import { AccountId, Balance, Index } from '@polkadot/types';
-import { AlertsContext, AppContext, StakingContext, TxQueueContext, validateDerived } from '@substrate/ui-common';
+import { DerivedBalances } from '@polkadot/api-derive/types';
+import { AccountId, Index } from '@polkadot/types';
+import { AppContext, StakingContext, TxQueueContext, validate, AllExtrinsicData } from '@substrate/ui-common';
 import { Address, AddressSummary, FadedText, Header, Icon, Margin, Stacked, StackedHorizontal, StyledLinkButton, StyledNavButton, SubHeader, WithSpace, WithSpaceAround } from '@substrate/ui-components';
+import BN from 'bn.js';
 import H from 'history';
+import { Either, left, right } from 'fp-ts/lib/Either';
 import { fromNullable, some } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
-import { Observable, Subscription, combineLatest } from 'rxjs';
+import { combineLatest, Observable, Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 import Card from 'semantic-ui-react/dist/commonjs/views/Card';
-import Loader from 'semantic-ui-react/dist/commonjs/elements/Loader';
 import Modal from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
+
+import { Errors } from '../types';
+import { Validation } from '../Validation';
 
 interface Props {
   disabled: boolean;
@@ -37,67 +42,89 @@ export const rewardDestinationOptions = ['Send rewards to my Stash account and i
 // TODO: p3 refactor all this to smaller components
 export function ConfirmNominationDialog (props: Props) {
   const { disabled, nominatee } = props;
-  const { enqueue: alert } = useContext(AlertsContext);
   const { api, keyring } = useContext(AppContext);
-  const { onlyBondedAccounts } = useContext(StakingContext);
+  const { derivedBalanceFees, onlyBondedAccounts } = useContext(StakingContext);
   const { enqueue } = useContext(TxQueueContext);
 
-  const [loading, setLoading] = useState(false);
   const [nominateWith, setNominateWith] = useState();
-  const [controllerReservedBalance, setControllerReservedBalance] = useState<Balance>();
   const [controllerVotingBalance, setControllerVotingBalance] = useState<DerivedBalances>();
-  const [fees, setFees] = useState<DerivedFees>();
+  const [validatorBalance, setValidatorBalance] = useState<DerivedBalances>();
   const [nonce, setNonce] = useState<Index>();
+  const [status, setStatus] = useState<Either<Errors, AllExtrinsicData>>();
 
   useEffect(() => {
     if (!nominateWith) { return; }
 
     const subscription: Subscription = combineLatest([
-      (api.query.balances.reservedBalance(nominateWith) as Observable<Balance>),
       (api.derive.balances.votingBalance(nominateWith) as Observable<DerivedBalances>),
-      (api.derive.balances.fees() as Observable<DerivedFees>),
+      (api.derive.balances.votingBalance(nominatee) as Observable<DerivedBalances>),
       (api.query.system.accountNonce(nominateWith) as Observable<Index>)
     ])
-    .subscribe(([controllerReservedBalance, controllerVotingBalance, fees, nonce]) => {
-      setControllerReservedBalance(controllerReservedBalance);
+    .pipe(take(1))
+    .subscribe(([controllerVotingBalance, validatorBalance, nonce]) => {
       setControllerVotingBalance(controllerVotingBalance);
-      setFees(fees);
+      setValidatorBalance(validatorBalance);
       setNonce(nonce);
     });
 
     return () => subscription.unsubscribe();
   }, [nominateWith]);
 
+  useEffect(() => {
+    if (!nominateWith) { return; }
+    setStatus(_validate());
+  }, [derivedBalanceFees, nominateWith, nonce, onlyBondedAccounts]);
+
+  const _validate = (): Either<Errors, AllExtrinsicData> => {
+    let errors: Errors = [];
+
+    if (!nonce) { errors.push('Calculating account nonce...'); }
+
+    const stakingLedger = onlyBondedAccounts[nominateWith].stakingLedger;
+    const nominationAmount = stakingLedger && stakingLedger.total;
+
+    if (!stakingLedger) { errors.push('Staking ledger is undefined... Please refresh and try again or try with a different account.'); }
+    if (!nominationAmount || nominationAmount.lte(new BN(0))) { errors.push('Nomination amount must be greater than zero.'); }
+
+    if (errors.length) { return left(errors); }
+
+    const extrinsic = api.tx.staking.nominate(nominatee);
+    const values = validate({
+      amountAsString: nominationAmount!.toString(),
+      accountNonce: nonce,
+      currentBalance: controllerVotingBalance,
+      extrinsic,
+      fees: derivedBalanceFees,
+      currentAccount: nominateWith,
+      recipientBalance: validatorBalance,
+      recipientAddress: nominatee
+    }, api);
+
+    console.log(values);
+
+    return values.fold(
+      (e: any) => left(errors),
+      (allExtrinsicData: any) => right(allExtrinsicData)
+    );
+  };
+
   const handleAccountSelected = ({ currentTarget: { dataset: { account } } }: React.MouseEvent<HTMLElement>) => {
     setNominateWith(account);
   };
 
   const onConfirm = () => {
-    // do validation before confirm...
-    if (!nonce || !controllerReservedBalance || !controllerVotingBalance || !fees) { return; }
-
-    const extrinsic = api.tx.staking.nominate(nominatee);
-
-    // @ts-ignore the extrinsic works when testing, not sure why tslint is getting the wrong type here
-    const values = validateDerived({
-      accountNonce: nonce,
-      amount: controllerReservedBalance,
-      currentBalance: controllerVotingBalance,
-      extrinsic,
-      fees
-    });
-
-    values.fold(
-      (errors: any) => {
-        alert({ type: 'error', content: Object.values(errors) });
-      },
-      (allExtrinsicData: any) => {
-        const { extrinsic, amount, allFees, allTotal, recipientAddress: nominatee } = allExtrinsicData;
-        const details = { amount, allFees, allTotal, methodCall: extrinsic.meta.name.toString(), senderPair: keyring.getPair(nominateWith), recipientAddress: nominatee };
-        enqueue(extrinsic, details);
-        setLoading(false);
-      }
-    );
+    fromNullable(status)
+      .map(_validate)
+      .map(status =>
+        status.fold(
+          (errors) => { console.error(errors); /* should be displayed by Validation */ },
+          (allExtrinsicData) => {
+            const { extrinsic, amount, allFees, allTotal } = allExtrinsicData;
+            const details = { amount, allFees, allTotal, methodCall: extrinsic.meta.name.toString(), senderPair: keyring.getPair(nominateWith), nominatee };
+            enqueue(extrinsic, details);
+          }
+        )
+      );
   };
 
   // TODO for now only show controllers, later add ability to restore and unlock controller from stash in keyring
@@ -176,76 +203,72 @@ export function ConfirmNominationDialog (props: Props) {
   };
 
   const renderConfirmDetails = () => {
-    if (loading) {
-      return <Loader active inline />;
-    } else {
-      return (
-      <React.Fragment>
-        <Header>Confirm Details and Nominate!</Header>
-        <Stacked><SubHeader>Nominate With: </SubHeader> <Address address={nominateWith}></Address></Stacked>
-        <Margin top='huge' />
-        <Card.Group centered>
-          <Card>
-            <Card.Content>
-              <Stacked>
-                <FadedText> Nominator </FadedText>
-                <AddressSummary
-                  address={nominateWith}
-                  detailed
-                  name={
-                    fromNullable(keyring.getAccount(nominateWith.toString()))
-                      .chain(account => some(account.meta))
-                      .chain(meta => some(meta.name))
-                      .getOrElse(undefined)
-                  }
-                  orientation='vertical'
-                  size='small' />
-              </Stacked>
-            </Card.Content>
-            <Card.Content extra>
-                <SubHeader>Reward Destination: </SubHeader>
-                {
-                  fromNullable(onlyBondedAccounts)
-                    .mapNullable(onlyBondedAccounts => [onlyBondedAccounts, nominateWith])
-                    .map(([onlyBondedAccounts, nominateWith]) => rewardDestinationOptions[onlyBondedAccounts[nominateWith].rewardDestination.toNumber()])
-                    .getOrElse('Reward Destination Not Set...')
+    return (
+    <React.Fragment>
+      <Header>Confirm Details and Nominate!</Header>
+      <Stacked><SubHeader>Nominate With: </SubHeader> <Address address={nominateWith}></Address></Stacked>
+      <Margin top='huge' />
+      <Card.Group centered>
+        <Card>
+          <Card.Content>
+            <Stacked>
+              <FadedText> Nominator </FadedText>
+              <AddressSummary
+                address={nominateWith}
+                detailed
+                name={
+                  fromNullable(keyring.getAccount(nominateWith.toString()))
+                    .chain(account => some(account.meta))
+                    .chain(meta => some(meta.name))
+                    .getOrElse(undefined)
                 }
-            </Card.Content>
-          </Card>
-          <Margin left />
-          <Card>
-            <Card.Content>
-              <Stacked>
-                <FadedText> Validator </FadedText>
-                <AddressSummary
-                  address={nominatee}
-                  detailed
-                  name={
-                    fromNullable(keyring.getAddress(nominatee.toString()))
-                      .chain(account => some(account.meta))
-                      .chain(meta => some(meta.name))
-                      .getOrElse(undefined)
-                  }
-                  orientation='vertical'
-                  size='small' />
-              </Stacked>
-            </Card.Content>
-          </Card>
-        </Card.Group>
-        <WithSpace>
-          <Stacked>
-            <StackedHorizontal>
-              <StyledLinkButton onClick={close}><Icon name='remove' color='red' /> <FadedText>Cancel</FadedText></StyledLinkButton>
-              <Margin left />
-              <StyledNavButton onClick={onConfirm}><Icon name='checkmark' color='green' /> Confirm </StyledNavButton>
-            </StackedHorizontal>
-            <Margin bottom />
-            <StyledLinkButton onClick={() => setNominateWith(undefined)}>Change Account</StyledLinkButton>
-          </Stacked>
-        </WithSpace>
-      </React.Fragment>
-      );
-    }
+                orientation='vertical'
+                size='small' />
+            </Stacked>
+          </Card.Content>
+          <Card.Content extra>
+              <SubHeader>Reward Destination: </SubHeader>
+              {
+                fromNullable(onlyBondedAccounts)
+                  .mapNullable(onlyBondedAccounts => [onlyBondedAccounts, nominateWith])
+                  .map(([onlyBondedAccounts, nominateWith]) => rewardDestinationOptions[onlyBondedAccounts[nominateWith].rewardDestination.toNumber()])
+                  .getOrElse('Reward Destination Not Set...')
+              }
+          </Card.Content>
+        </Card>
+        <Margin left />
+        <Card>
+          <Card.Content>
+            <Stacked>
+              <FadedText> Validator </FadedText>
+              <AddressSummary
+                address={nominatee}
+                detailed
+                name={
+                  fromNullable(keyring.getAddress(nominatee.toString()))
+                    .chain(account => some(account.meta))
+                    .chain(meta => some(meta.name))
+                    .getOrElse(undefined)
+                }
+                orientation='vertical'
+                size='small' />
+            </Stacked>
+          </Card.Content>
+        </Card>
+      </Card.Group>
+      <WithSpace>
+        <Stacked>
+          <StackedHorizontal>
+            <StyledLinkButton onClick={close}><Icon name='remove' color='red' /> <FadedText>Cancel</FadedText></StyledLinkButton>
+            <Margin left />
+            <StyledNavButton onClick={onConfirm}><Icon name='checkmark' color='green' /> Confirm </StyledNavButton>
+          </StackedHorizontal>
+          <Margin bottom />
+          <StyledLinkButton onClick={() => setNominateWith(undefined)}>Change Account</StyledLinkButton>
+        </Stacked>
+      </WithSpace>
+    </React.Fragment>
+    );
   };
 
   const renderNoBondedAccounts = () => {
@@ -275,6 +298,7 @@ export function ConfirmNominationDialog (props: Props) {
             ? renderConfirmDetails()
             : renderChooseAccount()
         }
+        { status && <Validation value={status} /> }
       </WithSpaceAround>
     </Modal>
   );

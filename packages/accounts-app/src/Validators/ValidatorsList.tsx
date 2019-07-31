@@ -11,7 +11,6 @@ import { fromNullable } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { combineLatest, Observable, Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
 import Loader from 'semantic-ui-react/dist/commonjs/elements/Loader/Loader';
 import Progress from 'semantic-ui-react/dist/commonjs/modules/Progress/Progress';
 
@@ -38,28 +37,28 @@ export function ValidatorsList (props: Props) {
       (api.query.session.validators() as unknown as Observable<AccountId[]>),
       (api.query.staking.validatorCount() as unknown as Observable<BN>)
     ])
-    .pipe(first())
     .subscribe(([sessionInfo, stakingRecentlyOffline, validators, validatorCount]) => {
       setSessionInfo(sessionInfo);
       setCurrentValidatorsControllersV1OrStashesV2(validators);
       setValidatorCount(validatorCount);
-      setRecentlyOffline(
-        stakingRecentlyOffline.reduce(
-          (result, [accountId, blockNumber, count]): AccountOfflineStatusesMap => {
-            const account = accountId.toString();
 
-            if (!result[account]) {
-              result[account] = [];
-            }
+      const recentlyOffline = stakingRecentlyOffline.reduce(
+        (result, [accountId, blockNumber, count]): AccountOfflineStatusesMap => {
+          const account = accountId.toString();
 
-            result[account].push({
-              blockNumber,
-              count
-            });
+          if (!result[account]) {
+            result[account] = [];
+          }
 
-            return result;
-          }, {} as unknown as AccountOfflineStatusesMap)
-      );
+          result[account].push({
+            blockNumber,
+            count
+          });
+
+          return result;
+        }, {} as unknown as AccountOfflineStatusesMap);
+
+      setRecentlyOffline(recentlyOffline);
     });
 
     return () => subscription.unsubscribe();
@@ -68,15 +67,16 @@ export function ValidatorsList (props: Props) {
   const renderBody = () => (
     <Table.Body>
       {
-        currentValidatorsControllersV1OrStashesV2.length
-          ? currentValidatorsControllersV1OrStashesV2.map(validator => {
-            return <ValidatorRow
-                      key={validator.toString()}
-                      history={props.history}
-                      offlineStatuses={recentlyOffline && recentlyOffline[validator.toString()]}
-                      validator={validator} />;
-          })
-          : <Table.Row textAlign='center'><Loader active inline /></Table.Row>
+        recentlyOffline
+          && currentValidatorsControllersV1OrStashesV2.length
+            ? currentValidatorsControllersV1OrStashesV2.map(validator => {
+              return <ValidatorRow
+                        key={validator.toString()}
+                        history={props.history}
+                        offlineStatuses={recentlyOffline[validator.toString()]}
+                        validator={validator} />;
+            })
+            : <Table.Row textAlign='center'><Loader active inline /></Table.Row>
       }
     </Table.Body>
   );
@@ -101,7 +101,7 @@ export function ValidatorsList (props: Props) {
     <Container fluid>
       <StackedHorizontal>
         <WithSpace>
-          <WrapperDiv margin='0rem' padding='0rem' width='12rem'>
+          <WrapperDiv>
             <FadedText> New Validator Set In: </FadedText>
             {
               fromNullable(sessionInfo)
@@ -118,7 +118,7 @@ export function ValidatorsList (props: Props) {
           </WrapperDiv>
         </WithSpace>
         <WithSpace>
-          <WrapperDiv margin='0rem' padding='0rem' width='12rem'>
+          <WrapperDiv>
             <FadedText>Next Reward Payout In: </FadedText>
             {
               fromNullable(sessionInfo)

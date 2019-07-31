@@ -6,13 +6,12 @@ import { DerivedFees, DerivedBalances } from '@polkadot/api-derive/types';
 import { Index } from '@polkadot/types';
 import { isUndefined } from '@polkadot/util';
 import { AppContext, AlertsContext, TxQueueContext, validate } from '@substrate/ui-common';
-import { Dropdown, DropdownProps, Header, Input, Stacked, StackedHorizontal, StyledNavButton, SubHeader, WithSpaceAround, WrapperDiv } from '@substrate/ui-components';
+import { Dropdown, DropdownProps, Header, Input, Stacked, StackedHorizontal, StyledNavButton, SubHeader, WithSpace, WithSpaceAround, WrapperDiv } from '@substrate/ui-components';
 import BN from 'bn.js';
 import React, { useContext, useState, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Subscription, Observable, zip } from 'rxjs';
 import { take } from 'rxjs/operators';
-import Radio from 'semantic-ui-react/dist/commonjs/addons/Radio';
 
 interface MatchParams {
   currentAccount?: string;
@@ -39,7 +38,6 @@ export function Bond (props: Props) {
   const { enqueue: alert } = useContext(AlertsContext);
   const { enqueue } = useContext(TxQueueContext);
   const [bond, setBond] = useState<BN>(new BN(0));
-  const [bondFromPercent, setBondFrom] = useState(true);
   const [controllerBalance, setControllerBalance] = useState<DerivedBalances>();
   const [stashBalance, setStashBalance] = useState<DerivedBalances>();
   const [destination, setDestination] = useState<RewardDestinationOption>(rewardDestinationOptions[0]);
@@ -115,19 +113,15 @@ export function Bond (props: Props) {
   const handleSetBond = ({ currentTarget: { value } }: React.SyntheticEvent<HTMLInputElement>) => !isUndefined(value) ? setBond(new BN(value)) : setBond(new BN(0));
 
   const handleSetBondFromPercent = (value: number) => {
-    if (!controllerBalance || !value) { return; }
+    if (!stashBalance || !value) { return; }
 
-    const bondAmount = controllerBalance.freeBalance.toNumber() * value;
+    const bondAmount = stashBalance.freeBalance.toNumber() * value;
 
     setBond(new BN(bondAmount));
   };
 
   const onSelect = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
     setDestination(rewardDestinationOptions[data.value as number]);
-  };
-
-  const toggleBondFromPercent = () => {
-    setBondFrom(!bondFromPercent);
   };
 
   return (
@@ -139,7 +133,6 @@ export function Bond (props: Props) {
           <Stacked>
             <WrapperDiv>
               <Input
-                disabled={bondFromPercent}
                 label='Set Amount to Stake.'
                 onChange={handleSetBond}
                 placholder='The total amount of the Stash balance that will be at stake in any forthcoming eras (rewards are distributed in proportion to stake).'
@@ -147,12 +140,11 @@ export function Bond (props: Props) {
               />
             </WrapperDiv>
             <StackedHorizontal justifyContent='space-between'>
-              <button onClick={() => handleSetBondFromPercent(0.25)}>25%</button>
-              <button onClick={() => handleSetBondFromPercent(0.5)}>50%</button>
-              <button onClick={() => handleSetBondFromPercent(0.75)}>75%</button>
-              <button onClick={() => handleSetBondFromPercent(1)}>100%</button>
+              <WithSpace><button onClick={() => handleSetBondFromPercent(0.25)}>25%</button></WithSpace>
+              <WithSpace><button onClick={() => handleSetBondFromPercent(0.5)}>50%</button></WithSpace>
+              <WithSpace><button onClick={() => handleSetBondFromPercent(0.75)}>75%</button></WithSpace>
+              <WithSpace><button onClick={() => handleSetBondFromPercent(1)}>100%</button></WithSpace>
             </StackedHorizontal>
-            <Radio checkbox fitted toggle onClick={toggleBondFromPercent}>As {bondFromPercent ? 'Amount' : '%'}</Radio>
           </Stacked>
         }
       </WithSpaceAround>

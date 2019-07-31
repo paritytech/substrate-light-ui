@@ -28,12 +28,9 @@ export function ValidatorRow (props: Props) {
   const { api, keyring } = useContext(AppContext);
   const [nominators, setNominators] = useState<[AccountId, Balance][]>([]);
   const [offlineTotal, setOfflineTotal] = useState<BN>(new BN(0));
-  const [loading, setLoading] = useState<boolean>(false);
-
-  const currentAccount = location.pathname.split('/')[2];
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    setLoading(true);
     const subscription: Subscription = (
         api.queryMulti([
           [api.query.staking.bonded, validator], // try to map to controller
@@ -62,9 +59,10 @@ export function ValidatorRow (props: Props) {
   }, []);
 
   const renderAmINominating = () => {
+    const myAddresses = keyring.getAccounts().map(({ address }): string => address);
+
     return fromNullable(nominators)
-      .mapNullable(nominators => nominators[0])
-      .mapNullable(nominatorAccountIds => nominatorAccountIds.includes(new AccountId(currentAccount)))
+      .mapNullable(nominators => nominators.some(([who]) => myAddresses.includes(who.toString())))
       .mapNullable(amI => amI ? <Icon name='check' /> : <FadedText>You are not currently nominating this Validator.</FadedText>)
       .getOrElse(<FadedText>You are not currently nominating this Validator.</FadedText>);
   };
