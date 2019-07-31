@@ -67,12 +67,7 @@ export function BalanceDisplay (props: BalanceDisplayProps = defaultProps) {
       allStaking.unlocking &&
       allStaking.unlocking.map(({ remainingBlocks, value }, index) => (
         <div key={index}>
-          {formatBalance(value)}
-          <Icon
-            name='info circle'
-            data-tip
-            data-for={`unlocking-trigger-${index}`}
-          />
+          <FadedText>Unbonded Amount: {formatBalance(value)}</FadedText>
           <FadedText> Blocks remaining: {remainingBlocks.toNumber()}</FadedText>
         </div>
       ))

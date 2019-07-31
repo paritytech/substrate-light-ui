@@ -42,8 +42,6 @@ function validateAmount (values: SubResults & UserInputs & WithExtrinsic): Eithe
 export function validateDerived (values: SubResults & UserInputs & WithExtrinsic & WithAmount): Either<Errors, AllExtrinsicData> {
   const { accountNonce, amount = new BN(0), currentBalance, extrinsic, fees, recipientBalance } = values;
 
-  debugger;
-
   const txLength = SIGNATURE_SIZE + compactToU8a(accountNonce).length + extrinsic.encodedLength;
   const allFees = fees.transactionBaseFee.add(fees.transactionByteFee.muln(txLength));
 
@@ -99,8 +97,6 @@ function validateExtrinsic (api: ApiRx) {
       errors.extrinsic = 'Extrinsic was not defined. Please refresh and try again or raise an issue.';
       left(errors);
     }
-
-    debugger;
 
     return right(values);
   };
