@@ -4,7 +4,7 @@
 
 import { AccountId } from '@polkadot/types';
 import { StakingContext } from '@substrate/ui-common';
-import { AddressSummary, Container, Grid, Loading, Stacked, StyledNavLink, SubHeader, WithSpace } from '@substrate/ui-components';
+import { AddressSummary, Container, Grid, Loading, Margin, Stacked, StyledNavLink, SubHeader, WithSpace } from '@substrate/ui-components';
 import { fromNullable } from 'fp-ts/lib/Option';
 import React, { useEffect, useState, useContext } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -51,8 +51,8 @@ export function AccountOverviewDetailed (props: Props) {
     return (
       <Card>
         <Card.Content>
-        <WithSpace>
           <SubHeader noMargin>Currently Nominating:</SubHeader>
+          <WithSpace style={{ height: '30rem', overflow: 'auto' }}>
             {
               fromNullable(nominees)
                 .map(nominees => nominees.map((nomineeId: string, index: string) =>
@@ -69,18 +69,18 @@ export function AccountOverviewDetailed (props: Props) {
                     <StyledNavLink to={`/manageAccounts/${currentAccount}/staking/validators`}>View Validators</StyledNavLink>
                 </Stacked>)
             }
-        </WithSpace>
-        <WithSpace>
-          <Grid.Row>
-            <SubHeader>Reward Destination: </SubHeader>
-            {
-              fromNullable(stakingInfo)
-                .mapNullable(({ rewardDestination }) => rewardDestination)
-                .map(rewardDestination => rewardDestinationOptions[rewardDestination.toNumber()])
-                .getOrElse('Reward Destination Not Set...')
-            }
-          </Grid.Row>
-        </WithSpace>
+          </WithSpace>
+          <WithSpace>
+            <Grid.Row>
+              <SubHeader>Reward Destination: </SubHeader>
+              {
+                fromNullable(stakingInfo)
+                  .mapNullable(({ rewardDestination }) => rewardDestination)
+                  .map(rewardDestination => rewardDestinationOptions[rewardDestination.toNumber()])
+                  .getOrElse('Reward Destination Not Set...')
+              }
+            </Grid.Row>
+          </WithSpace>
         </Card.Content>
       </Card>
     );
@@ -106,6 +106,7 @@ export function AccountOverviewDetailed (props: Props) {
 
     return (
       <Card.Group doubling stackable>
+        <Margin left='huge' />
         <Card>
           <Card.Content>
             <AddressSummary
@@ -118,7 +119,9 @@ export function AccountOverviewDetailed (props: Props) {
               size='small' />
           </Card.Content>
         </Card>
+        <Margin left />
         {renderBalanceDetails()}
+        <Margin left />
         {renderNominationDetails()}
       </Card.Group>
     );

@@ -94,11 +94,11 @@ export function Bond (props: Props) {
       (e: any) => left(errors),
       (allExtrinsicData: any) => right(allExtrinsicData)
     );
-  }
+  };
 
   // use api.consts when it is availabe in @polkadot/api
   useEffect(() => {
-    if (!stash) {
+    if (!stash || !controller) {
       return;
     }
 

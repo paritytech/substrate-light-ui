@@ -95,7 +95,8 @@ export function ValidatorRow (props: Props) {
                   .chain(meta => some(meta.name))
                   .getOrElse(undefined)}
           noPlaceholderName
-          size='medium' />
+          size='small'
+          withShortAddress />
       </Table.Cell>
       <Table.Cell width='1' verticalAlign='middle'>{offlineTotal.toString()}</Table.Cell>
       <Table.Cell width='5' verticalAlign='middle'><div style={{ height: '200px', overflow: 'auto', verticalAlign: 'middle' }}>{renderNominators()}</div></Table.Cell>

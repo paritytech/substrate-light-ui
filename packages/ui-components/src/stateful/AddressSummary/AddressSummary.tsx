@@ -6,6 +6,7 @@ import IdentityIcon from '@polkadot/ui-identicon';
 import { fromNullable } from 'fp-ts/lib/Option';
 import React from 'react';
 
+import { Address } from '../../Address';
 import { Balance } from '../Balance';
 import { Margin } from '../../Margin';
 import { DynamicSizeText, FadedText, SubHeader, Stacked, StackedHorizontal } from '../../Shared.styles';
@@ -24,7 +25,8 @@ type AddressSummaryProps = {
   noBalance?: boolean,
   orientation?: OrientationType,
   type?: 'stash' | 'controller',
-  size?: SizeType
+  size?: SizeType,
+  withShortAddress?: boolean;
 };
 
 const PLACEHOLDER_NAME = 'No Name';
@@ -41,9 +43,9 @@ export function AddressSummary (props: AddressSummaryProps) {
     .map((address: string) => {
       return orientation === 'vertical'
           ? (
-            <Stacked>
+            <Stacked justifyContent={justifyContent}>
               {renderIcon(address, size)}
-              {renderDetails(props)}
+              {renderDetails(address, props)}
             </Stacked>
           )
           : (
@@ -51,7 +53,7 @@ export function AddressSummary (props: AddressSummaryProps) {
               {renderIcon(address, size)}
               <Margin left />
               <Stacked>
-                {renderDetails(props)}
+                {renderDetails(address, props)}
               </Stacked>
             </StackedHorizontal>
           );
@@ -82,13 +84,13 @@ function renderBadge (type: string) {
   return type === 'nominator' ? <SubHeader>nominator</SubHeader> : <SubHeader>validator</SubHeader>;
 }
 
-function renderDetails (props: AddressSummaryProps) {
-  const { address, bondingPair, detailed, isNominator, isValidator, name = PLACEHOLDER_NAME, noBalance, noPlaceholderName, size = 'medium', type } = props;
+function renderDetails (address: string, props: Exclude<AddressSummaryProps, keyof 'address'>) {
+  const { bondingPair, detailed, isNominator, isValidator, name = PLACEHOLDER_NAME, noBalance, noPlaceholderName, size = 'medium', type, withShortAddress } = props;
 
-  // FIXME bonding pair has stupidly large margin
   return (
     <Stacked>
       <DynamicSizeText fontSize={FONT_SIZES[size] as FontSize}> {noPlaceholderName ? null : name} </DynamicSizeText>
+      { withShortAddress && <Address address={address} shortened />}
       { type && <FadedText> Account Type: {type} </FadedText>}
       { bondingPair && <StackedHorizontal><FadedText> Bonding Pair: </FadedText> {renderIcon(bondingPair, 'tiny')} </StackedHorizontal> }
       { isNominator && renderBadge('nominator') }

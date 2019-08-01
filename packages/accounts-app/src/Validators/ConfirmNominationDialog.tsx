@@ -53,7 +53,7 @@ export function ConfirmNominationDialog (props: Props) {
   const [status, setStatus] = useState<Either<Errors, AllExtrinsicData>>();
 
   useEffect(() => {
-    if (!nominateWith) { return; }
+    if (!nominateWith || !nominatee) { return; }
 
     const subscription: Subscription = combineLatest([
       (api.derive.balances.votingBalance(nominateWith) as Observable<DerivedBalances>),
@@ -107,7 +107,7 @@ export function ConfirmNominationDialog (props: Props) {
     }, api);
 
     return values.fold(
-      (e: any) => left(errors),
+      (e: any) => left(e),
       (allExtrinsicData: any) => right(allExtrinsicData)
     );
   };

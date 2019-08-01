@@ -2,19 +2,18 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { DerivedSessionInfo } from '@polkadot/api-derive/types';
 import { AccountId } from '@polkadot/types';
-import { Container, FadedText, StackedHorizontal, SubHeader, Table, WithSpace } from '@substrate/ui-components';
+import { Container, Table, FadedText, FlexItem } from '@substrate/ui-components';
 import { AppContext } from '@substrate/ui-common';
 import BN from 'bn.js';
 import { fromNullable } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { combineLatest, Observable, Subscription } from 'rxjs';
-import Card from 'semantic-ui-react/dist/commonjs/views/Card';
+import { take } from 'rxjs/operators';
 import Loader from 'semantic-ui-react/dist/commonjs/elements/Loader/Loader';
-import Progress from 'semantic-ui-react/dist/commonjs/modules/Progress/Progress';
 
+import { SessionInfo } from './SessionInfo';
 import { AccountOfflineStatusesMap, RecentlyOffline } from '../types';
 import { ValidatorRow } from './ValidatorRow';
 
@@ -27,19 +26,17 @@ interface Props extends RouteComponentProps<MatchParams> {}
 export function ValidatorsList (props: Props) {
   const { api } = useContext(AppContext);
   const [currentValidatorsControllersV1OrStashesV2, setCurrentValidatorsControllersV1OrStashesV2] = useState<AccountId[]>([]);
-  const [sessionInfo, setSessionInfo] = useState<DerivedSessionInfo>();
   const [validatorCount, setValidatorCount] = useState<BN>(new BN(0));
   const [recentlyOffline, setRecentlyOffline] = useState();
 
   useEffect(() => {
     const subscription: Subscription = combineLatest([
-      (api.derive.session.info() as Observable<DerivedSessionInfo>),
       (api.query.staking.recentlyOffline() as unknown as Observable<RecentlyOffline>),
       (api.query.session.validators() as unknown as Observable<AccountId[]>),
       (api.query.staking.validatorCount() as unknown as Observable<BN>)
     ])
-    .subscribe(([sessionInfo, stakingRecentlyOffline, validators, validatorCount]) => {
-      setSessionInfo(sessionInfo);
+    .pipe(take(1))
+    .subscribe(([stakingRecentlyOffline, validators, validatorCount]) => {
       setCurrentValidatorsControllersV1OrStashesV2(validators);
       setValidatorCount(validatorCount);
 
@@ -89,7 +86,7 @@ export function ValidatorsList (props: Props) {
         <Table.Row>
           <Table.HeaderCell>Am I Nominating?</Table.HeaderCell>
           <Table.HeaderCell>
-            Validators {`${currentValidatorsControllersV1OrStashesV2.length} / ${validatorCount ? validatorCount.toString() : <Loader active inline size='small' />}`}
+            Validators {`${currentValidatorsControllersV1OrStashesV2.length} / ${validatorCount.toString()}`}
           </Table.HeaderCell>
           <Table.HeaderCell>Times Reported Offline</Table.HeaderCell>
           <Table.HeaderCell>Nominators</Table.HeaderCell>
@@ -99,54 +96,27 @@ export function ValidatorsList (props: Props) {
     );
   };
 
-  return (
-    <Container fluid>
-      <StackedHorizontal>
-        <WithSpace>
-          <Card>
-            <Card.Content>
-                <SubHeader> New Validator Set: </SubHeader>
-                {
-                  fromNullable(sessionInfo)
-                    .map(sessionInfo =>
-                      <Progress
-                        color='pink'
-                        progress='ratio'
-                        size='small'
-                        total={sessionInfo.eraLength.toNumber()}
-                        value={sessionInfo.eraProgress.toNumber()} />
-                    )
-                    .getOrElse(<Loader active inline size='mini' />)
-                }
-                <FadedText>A New Validator Set is Elected Every Era.</FadedText>
-            </Card.Content>
-          </Card>
-        </WithSpace>
-        <WithSpace>
-          <Card height='100%'>
-            <Card.Content>
-                <SubHeader>Next Reward Payout: </SubHeader>
-                {
-                  fromNullable(sessionInfo)
-                    .map(sessionInfo =>
-                      <Progress
-                        color='teal'
-                        progress='ratio'
-                        size='small'
-                        total={sessionInfo.sessionLength.toNumber()}
-                        value={sessionInfo.sessionProgress.toNumber()} />
-                    )
-                    .getOrElse(<Loader active inline size='mini' />)
-                }
-                <FadedText>Validator Pool Block Rewards are Paid Out Every Session. </FadedText>
-            </Card.Content>
-          </Card>
-        </WithSpace>
-      </StackedHorizontal>
-      <Table basic celled collapsing compact size='large' sortable stackable textAlign='center' width='16' verticalAlign='middle'>
+  const renderContent = () => {
+    return (
+      <React.Fragment>
         {renderHeader()}
         {renderBody()}
-      </Table>
+      </React.Fragment>
+    );
+  };
+
+  return (
+    <Container fluid>
+      <SessionInfo />
+        {
+          currentValidatorsControllersV1OrStashesV2.length
+            ? (
+              <Table basic celled collapsing compact size='large' sortable stackable textAlign='center' width='16' verticalAlign='middle'>
+                {renderContent()}
+              </Table>
+            )
+          : <FlexItem><FadedText>Loading current validator set... <Loader inline active /></FadedText></FlexItem>
+        }
     </Container>
   );
 }
