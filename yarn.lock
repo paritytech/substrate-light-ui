@@ -2438,12 +2438,12 @@
     url-template "^2.0.8"
 
 "@polkadot/api-contract@^0.82.0-beta.30", "@polkadot/api-contract@^0.82.0-beta.74":
-  version "0.82.0-beta.90"
-  resolved "https://registry.yarnpkg.com/@polkadot/api-contract/-/api-contract-0.82.0-beta.90.tgz#c448e35505a7d741c0ec82eaee3c3aaf07af6f2e"
-  integrity sha512-c4NODF4KRAtgp1S3vObsDS8lKR5Urb+TW6k6T0/Gbx0QKM2D6vL1lUBseeifxHzMzhjEz1qLHIlik2quYH8OOA==
+  version "0.82.0-beta.96"
+  resolved "https://registry.yarnpkg.com/@polkadot/api-contract/-/api-contract-0.82.0-beta.96.tgz#84bd747401d8cdfda6b8cdc786800b98ec1d0250"
+  integrity sha512-fQmW/lBqn0Qibk4gTByH021VBkTlRoeF9JzhviXJvncsBDXCT0ddHMx6jfH/LaS5n+3s1DOtC3SnSSHdZ1GCcQ==
   dependencies:
     "@babel/runtime" "^7.5.5"
-    "@polkadot/types" "^0.82.0-beta.90"
+    "@polkadot/types" "^0.82.0-beta.96"
 
 "@polkadot/api-derive@^0.82.0-beta.90":
   version "0.82.0-beta.90"
@@ -2581,14 +2581,16 @@
     isomorphic-fetch "^2.2.1"
     websocket "^1.0.29"
 
-"@polkadot/types@^0.82.0-beta.74", "@polkadot/types@^0.82.0-beta.90":
-  version "0.82.0-beta.90"
-  resolved "https://registry.yarnpkg.com/@polkadot/types/-/types-0.82.0-beta.90.tgz#08bbe9d8da838befed96eeb34bbf1a22ffe46d33"
-  integrity sha512-jY0Gr22Y6+UDleCu1Pe1BCUioa5JmeVshiK4XOzy5I5vJ9anoPqmi58oZN9KjNDZ3VdzCcG2kW4cEQvGju3Jzg==
+"@polkadot/types@^0.82.0-beta.74", "@polkadot/types@^0.82.0-beta.90", "@polkadot/types@^0.82.0-beta.96":
+  version "0.82.0-beta.96"
+  resolved "https://registry.yarnpkg.com/@polkadot/types/-/types-0.82.0-beta.96.tgz#46bad53ce8486cabbb14896e1221994b6670be90"
+  integrity sha512-2iFkcmm1DtEGCcAPMbGPLXJnIFKZxisMRGb/ARU50B1pfHSRsKaKC0tiUM/XFVJ5A0IP2/y2YuBYa0PVSrvqTA==
   dependencies:
     "@babel/runtime" "^7.5.5"
     "@polkadot/util" "^0.94.1"
     "@polkadot/util-crypto" "^0.94.1"
+    "@types/memoizee" "^0.4.2"
+    memoizee "^0.4.14"
 
 "@polkadot/ui-api@^0.34.0-beta.85":
   version "0.34.0-beta.85"
@@ -8064,10 +8066,10 @@ electron-webpack@^2.6.2:
     webpack-merge "^4.2.1"
     yargs "^13.2.4"
 
-electron@^5.0.1:
-  version "5.0.7"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-5.0.7.tgz#a48fcbd13d30f16f7d7887908b68e52156e90259"
-  integrity sha512-OMMz8DhatxLuBFbnW7KYcAUjflGYFn0IQEtKR0iZhMAm89FgNOd9SVbxXWAGNxvRR6C0gORXwhTh6BCqqqcR6Q==
+electron@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-6.0.0.tgz#03712d461ac73cdf920b2336d6560d6c6b7f19cc"
+  integrity sha512-JVHj0dYtvVFrzVk1TgvrdXJSyLpdvlWNLhtG8ItYZsyg9XbCOQ9OoPfgLm04FjMzKMzEl4YIN0PfGC02MTx3PQ==
   dependencies:
     "@types/node" "^10.12.18"
     electron-download "^4.1.0"
