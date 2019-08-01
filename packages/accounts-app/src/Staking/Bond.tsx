@@ -122,25 +122,18 @@ export function Bond (props: Props) {
   }, [bond, controllerBalance, nonce, stashBalance]);
 
   useEffect(() => {
-    successObservable.subscribe(onSuccess => {
+    const txStatusSubscription: Subscription = combineLatest([
+      errorObservable,
+      successObservable
+    ]).subscribe(([error, success]) => {
       setLoading(false);
-
       history.push(`/manageAccounts/${controller}/balances`);
     });
 
-    errorObservable.subscribe(onError => {
-      setLoading(false);
-    });
-
-    return () => {
-      errorObservable.unsubscribe();
-      successObservable.unsubscribe();
-    };
+    return () => txStatusSubscription.unsubscribe();
   }, []);
 
   const handleConfirmBond = () => {
-    if (isUndefined(controller) || isUndefined(stash)) { return; }
-
     fromNullable(status)
       .map(_validate)
       .map(status => status.fold(

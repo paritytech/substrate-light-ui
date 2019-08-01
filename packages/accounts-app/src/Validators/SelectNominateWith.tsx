@@ -111,4 +111,4 @@ export function SelectNominateWith (props: Props) {
       </Modal.Actions>
     </React.Fragment>
   );
-};
+}

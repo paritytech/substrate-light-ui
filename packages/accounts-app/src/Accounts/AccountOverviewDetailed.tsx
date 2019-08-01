@@ -11,6 +11,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import Card from 'semantic-ui-react/dist/commonjs/views/Card';
 
 import { BalanceOverview } from './BalanceOverview';
+import { rewardDestinationOptions } from '../constants';
 
 interface MatchParams {
   currentAccount: string;
@@ -20,8 +21,6 @@ interface Props extends RouteComponentProps<MatchParams> {
   address: string;
   name: string;
 }
-
-export const rewardDestinationOptions = ['Send rewards to my Stash account and immediately use it to stake more.', 'Send rewards to my Stash account but do not stake any more.', 'Send rewards to my Controller account.'];
 
 export function AccountOverviewDetailed (props: Props) {
   const { history, match: { params: { currentAccount } } } = props;
@@ -66,7 +65,7 @@ export function AccountOverviewDetailed (props: Props) {
               .getOrElse(
                 <Stacked>
                     Not Nominating Anyone.
-                    <StyledNavLink to={`/manageAccounts/${currentAccount}/staking/validators`}>View Validators</StyledNavLink>
+                    <StyledNavLink to={`/manageAccounts/${currentAccount}/validators`}>View Validators</StyledNavLink>
                 </Stacked>)
             }
           </WithSpace>

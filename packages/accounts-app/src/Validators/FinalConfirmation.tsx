@@ -85,8 +85,8 @@ export function FinalConfirmation (props: Props) {
   }, [derivedBalanceFees, nominateWith, nonce, onlyBondedAccounts]);
 
   useEffect(() => {
-    errorObservable.subscribe(error => alert({ type: 'error', content: 'Uh oh, something went wrong. Please try again later or raise an issue.' }));
-    successObservable.subscribe(success => history.push(`/manageAccounts/${nominateWith}/balances`));
+    errorObservable.subscribe(() => alert({ type: 'error', content: 'Uh oh, something went wrong. Please try again later or raise an issue.' }));
+    successObservable.subscribe(() => history.push(`/manageAccounts/${nominateWith}/balances`));
 
     return () => {
       errorObservable.unsubscribe();
@@ -136,9 +136,10 @@ export function FinalConfirmation (props: Props) {
             <Card.Content extra>
               <SubHeader>Reward Destination: </SubHeader>
               {
-                onlyBondedAccounts && nominateWith && onlyBondedAccounts[nominateWith] && onlyBondedAccounts[nominateWith].rewardDestination
-                  ? rewardDestinationOptions[onlyBondedAccounts[nominateWith].rewardDestination.toNumber()]
-                  : 'Reward Destination Not Set...'
+                fromNullable(onlyBondedAccounts)
+                  .mapNullable(onlyBondedAccounts => onlyBondedAccounts[nominateWith].rewardDestination)
+                  .map(rewardDestinationIndex => rewardDestinationOptions[rewardDestinationIndex.toNumber()])
+                  .getOrElse('Reward Destination Not Set...')
               }
             </Card.Content>
           </Card>
@@ -184,5 +185,5 @@ export function FinalConfirmation (props: Props) {
       </WithSpace>
       {status && <Validation value={status} />}
     </React.Fragment>
-  )
+  );
 }
