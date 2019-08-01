@@ -88,17 +88,13 @@ export function ValidatorListHeader (props: Props) {
   const renderNomineesList = () => {
     const nomineesList = [...nominees];
 
-    console.log('nominees -> ', nomineesList);
-
     return (
       <WithSpace>
         <Card height='20rem'>
           <Card.Content>
             <SubHeader>Nominees: {nominees.size}</SubHeader>
             <StackedHorizontal>
-              {
-                nomineesList.map(nomineeId => <FlexItem><AddressSummary address={nomineeId} noBalance noPlaceholderName size='small' /></FlexItem>)
-              }
+              {nomineesList.map(nomineeId => <FlexItem><AddressSummary address={nomineeId} noBalance noPlaceholderName size='small' /></FlexItem>)}
             </StackedHorizontal>
             { nomineesList.length ? <ConfirmNominationDialog history={history} nominees={[...nominees]} /> : <FadedText>You have not yet added any Validators to your Nominees list. You can browse Validators to add from the table below.</FadedText>}
           </Card.Content>

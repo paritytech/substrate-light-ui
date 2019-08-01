@@ -44,13 +44,11 @@ export function ValidatorsList (props: Props) {
   }, []);
 
   const addToNomineeList = ({ currentTarget: { dataset: { nominee } } }: React.MouseEvent<HTMLElement>) => {
-    if (!nominee) { return; } // nominee should always be defined..
-
-    if (nominees.has(nominee)) {
+    if (nominees.has(nominee!)) {
       alert({ type: 'warning', content: 'You have already added this Validator to your nominee list' });
     }
 
-    let newNominees = nominees.add(nominee.toString());
+    let newNominees = nominees.add(nominee!);
     setNominees(newNominees);
   };
 

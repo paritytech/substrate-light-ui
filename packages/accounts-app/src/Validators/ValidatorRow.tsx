@@ -25,6 +25,7 @@ export function ValidatorRow (props: Props) {
 
   useEffect(() => {
     const subscription: Subscription = (
+      //  FIXME: this stuff ought to be in BalanceDisplay: https://github.com/paritytech/substrate-light-ui/issues/471
         api.queryMulti([
           [api.query.staking.bonded, validator], // try to map to controller
           [api.query.staking.ledger, validator] // try to map to stash
@@ -63,16 +64,16 @@ export function ValidatorRow (props: Props) {
           ? (
             <React.Fragment>
               <SubHeader>{nominators.length} nominators</SubHeader>
-              <WithSpaceAround>
                 {
                   nominators.map(([who, bonded]) => (
-                    <Stacked key={who.toString()}>
-                      <AddressSummary address={who.toString()} orientation='horizontal' noPlaceholderName size='tiny' />
-                      <DynamicSizeText fontSize='small' fontWeight='200'><FadedText>Bonded Amount: {formatBalance(bonded)}</FadedText></DynamicSizeText>
-                    </Stacked>
+                    <WithSpaceAround key={who.toString()}>
+                      <Stacked>
+                        <AddressSummary address={who.toString()} orientation='horizontal' noPlaceholderName size='tiny' />
+                        <DynamicSizeText fontSize='small' fontWeight='200'><FadedText>Bonded Amount: {formatBalance(bonded)}</FadedText></DynamicSizeText>
+                      </Stacked>
+                    </WithSpaceAround>
                   ))
                 }
-              </WithSpaceAround>
             </React.Fragment>
           )
           : <FadedText> No nominators </FadedText>
