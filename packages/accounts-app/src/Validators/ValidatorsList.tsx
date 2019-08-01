@@ -4,7 +4,7 @@
 
 import { AccountId } from '@polkadot/types';
 import { Container, FadedText, FlexItem, Stacked, Table } from '@substrate/ui-components';
-import { AppContext } from '@substrate/ui-common';
+import { AlertsContext, AppContext } from '@substrate/ui-common';
 import BN from 'bn.js';
 import { fromNullable } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
@@ -13,7 +13,6 @@ import { combineLatest, Observable, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import Loader from 'semantic-ui-react/dist/commonjs/elements/Loader/Loader';
 
-import { AccountOfflineStatusesMap, RecentlyOffline } from '../types';
 import { ValidatorListHeader } from './ValidatorListHeader';
 import { ValidatorRow } from './ValidatorRow';
 
@@ -24,47 +23,34 @@ interface MatchParams {
 interface Props extends RouteComponentProps<MatchParams> {}
 
 export function ValidatorsList (props: Props) {
+  const { enqueue: alert } = useContext(AlertsContext);
   const { api } = useContext(AppContext);
   const [currentValidatorsControllersV1OrStashesV2, setCurrentValidatorsControllersV1OrStashesV2] = useState<AccountId[]>([]);
-  const [nominees, setNominees] = useState<string[]>([]);
+  const [nominees, setNominees] = useState<Set<string>>(new Set());
   const [validatorCount, setValidatorCount] = useState<BN>(new BN(0));
-  const [recentlyOffline, setRecentlyOffline] = useState();
 
   useEffect(() => {
     const subscription: Subscription = combineLatest([
-      (api.query.staking.recentlyOffline() as unknown as Observable<RecentlyOffline>),
       (api.query.session.validators() as unknown as Observable<AccountId[]>),
       (api.query.staking.validatorCount() as unknown as Observable<BN>)
     ])
     .pipe(take(1))
-    .subscribe(([stakingRecentlyOffline, validators, validatorCount]) => {
+    .subscribe(([validators, validatorCount]) => {
       setCurrentValidatorsControllersV1OrStashesV2(validators);
       setValidatorCount(validatorCount);
-
-      const recentlyOffline = stakingRecentlyOffline.reduce(
-        (result, [accountId, blockNumber, count]): AccountOfflineStatusesMap => {
-          const account = accountId.toString();
-
-          if (!result[account]) {
-            result[account] = [];
-          }
-
-          result[account].push({
-            blockNumber,
-            count
-          });
-
-          return result;
-        }, {} as unknown as AccountOfflineStatusesMap);
-
-      setRecentlyOffline(recentlyOffline);
     });
 
     return () => subscription.unsubscribe();
   }, []);
 
-  const addToNomineeList = (nomineeId: AccountId | string) => {
-    const newNominees = nominees.concat(nomineeId.toString());
+  const addToNomineeList = ({ currentTarget: { dataset: { nominee } } }: React.MouseEvent<HTMLElement>) => {
+    if (!nominee) { return; } // nominee should always be defined..
+
+    if (nominees.has(nominee)) {
+      alert({ type: 'warning', content: 'You have already added this Validator to your nominee list' });
+    }
+
+    let newNominees = nominees.add(nominee.toString());
     setNominees(newNominees);
   };
 
@@ -82,7 +68,6 @@ export function ValidatorsList (props: Props) {
     <ValidatorRow
       addToNomineeList={addToNomineeList}
       key={validator.toString()}
-      offlineStatuses={recentlyOffline && recentlyOffline[validator.toString()]}
       validator={validator} />
   );
 
@@ -94,7 +79,6 @@ export function ValidatorsList (props: Props) {
           <Table.HeaderCell>
             Validators {`${currentValidatorsControllersV1OrStashesV2.length} / ${validatorCount.toString()}`}
           </Table.HeaderCell>
-          <Table.HeaderCell>Times Reported Offline</Table.HeaderCell>
           <Table.HeaderCell>Nominators</Table.HeaderCell>
           <Table.HeaderCell>Actions</Table.HeaderCell>
         </Table.Row>
@@ -112,21 +96,19 @@ export function ValidatorsList (props: Props) {
   };
 
   return (
-    <Container fluid>
-      <Stacked>
-        <ValidatorListHeader history={props.history} nominees={nominees} />
-        <FlexItem>
-          {
-            currentValidatorsControllersV1OrStashesV2.length
-              ? (
-                <Table basic celled collapsing compact size='large' sortable stackable textAlign='center' width='16' verticalAlign='middle'>
-                  {renderContent()}
-                </Table>
-              )
-            : <FlexItem><FadedText>Loading current validator set... <Loader inline active /></FadedText></FlexItem>
-          }
-        </FlexItem>
-      </Stacked>
-    </Container>
+    <Stacked>
+      <ValidatorListHeader history={props.history} nominees={nominees} />
+      <FlexItem>
+        {
+          currentValidatorsControllersV1OrStashesV2.length
+            ? (
+              <Table basic celled collapsing compact size='large' sortable stackable textAlign='center' width='16' verticalAlign='middle'>
+                {renderContent()}
+              </Table>
+            )
+          : <FlexItem><FadedText>Loading current validator set... <Loader inline active /></FadedText></FlexItem>
+        }
+      </FlexItem>
+    </Stacked>
   );
 }

@@ -5,27 +5,22 @@
 import { AccountId, Balance, Exposure, Option, StakingLedger } from '@polkadot/types';
 import { formatBalance } from '@polkadot/util';
 import { AppContext } from '@substrate/ui-common';
-import { AddressSummary, FadedText, Stacked, Table, Icon, StyledLinkButton } from '@substrate/ui-components';
-import BN from 'bn.js';
+import { AddressSummary, FadedText, Icon, Margin, Stacked, StyledLinkButton, Table } from '@substrate/ui-components';
 import { fromNullable, some } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
 import { Observable, Subscription } from 'rxjs';
 import { first, switchMap } from 'rxjs/operators';
 import { Loader } from 'semantic-ui-react';
 
-import { OfflineStatus } from '../types';
-
 interface Props {
-  addToNomineeList: (nomineeId: AccountId | string) => void;
-  offlineStatuses?: OfflineStatus[];
+  addToNomineeList: (event: React.MouseEvent<HTMLElement>) => void;
   validator: AccountId;
 }
 
 export function ValidatorRow (props: Props) {
-  const { offlineStatuses, validator } = props;
+  const { validator } = props;
   const { api, keyring } = useContext(AppContext);
   const [nominators, setNominators] = useState<[AccountId, Balance][]>([]);
-  const [offlineTotal, setOfflineTotal] = useState<BN>(new BN(0));
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -47,11 +42,6 @@ export function ValidatorRow (props: Props) {
         setNominators(nominators); // the list of accounts that nominated this account
         setLoading(false);
       });
-
-    fromNullable(offlineStatuses)
-      .map(offlineStatuses => offlineStatuses.reduce((total, { count }) => total.add(count), new BN(0)))
-      .map(setOfflineTotal)
-      .getOrElse(undefined);
 
     return () => subscription.unsubscribe();
   }, []);
@@ -82,7 +72,13 @@ export function ValidatorRow (props: Props) {
 
   return (
     <Table.Row key={validator.toString()} style={{ display: 'table-row' }}>
-      <Table.Cell>{renderAmINominating()}</Table.Cell>
+      <Table.Cell>
+       {
+        loading
+          ? <FadedText>Please wait while we fetch validator data...</FadedText>
+          : renderAmINominating()
+        }
+      </Table.Cell>
       <Table.Cell width='5'>
         <AddressSummary
           address={validator.toString()}
@@ -96,10 +92,20 @@ export function ValidatorRow (props: Props) {
           size='small'
           withShortAddress />
       </Table.Cell>
-      <Table.Cell width='1' verticalAlign='middle'>{offlineTotal.toString()}</Table.Cell>
       <Table.Cell width='5' verticalAlign='middle'><div style={{ height: '200px', overflow: 'auto', verticalAlign: 'middle' }}>{renderNominators()}</div></Table.Cell>
       <Table.Cell width='2' verticalAlign='middle'>
-          <StyledLinkButton onClick={() => props.addToNomineeList(validator)}>Add To Nominee List </StyledLinkButton>
+        {
+         loading
+          ? <FadedText>Please wait while we fetch validator data...</FadedText>
+          : (
+            /* TODO see comment in index.tsx */
+          <Stacked>
+            <StyledLinkButton> View Details </StyledLinkButton>
+            <Margin top />
+            <StyledLinkButton onClick={props.addToNomineeList} data-nominee={validator.toString()}>Add To Cart </StyledLinkButton>
+          </Stacked>
+          )
+        }
       </Table.Cell>
     </Table.Row>
   );

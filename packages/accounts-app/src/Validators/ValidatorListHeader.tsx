@@ -18,7 +18,7 @@ import { ConfirmNominationDialog } from './ConfirmNominationDialog';
 
 interface Props {
   history: H.History;
-  nominees: string[];
+  nominees: Set<string>;
 }
 
 export function ValidatorListHeader (props: Props) {
@@ -27,17 +27,16 @@ export function ValidatorListHeader (props: Props) {
   const [sessionInfo, setSessionInfo] = useState<DerivedSessionInfo>();
 
   useEffect(() => {
+    // TODO p3: maybe even move this to a Session Context
     const subscription: Subscription = (api.derive.session.info() as Observable<DerivedSessionInfo>)
-      .pipe(
-        take(1)
-      )
+      .pipe(take(1))
       .subscribe(setSessionInfo);
 
     return () => subscription.unsubscribe();
   }, []);
 
-  return (
-    <StackedHorizontal alignItems='stretch' justifyContent='space-around'>
+  const renderEraProgress = () => {
+    return (
       <WithSpace>
         <Card height='20rem'>
           <Card.Content>
@@ -58,7 +57,11 @@ export function ValidatorListHeader (props: Props) {
           </Card.Content>
         </Card>
       </WithSpace>
-      <Margin left='huge' />
+    );
+  };
+
+  const renderSessionProgress = () => {
+    return (
       <WithSpace>
         <Card height='20rem'>
           <Card.Content>
@@ -79,20 +82,38 @@ export function ValidatorListHeader (props: Props) {
           </Card.Content>
         </Card>
       </WithSpace>
-      <Margin left='huge' />
+    );
+  };
+
+  const renderNomineesList = () => {
+    const nomineesList = [...nominees];
+
+    console.log('nominees -> ', nomineesList);
+
+    return (
       <WithSpace>
         <Card height='20rem'>
           <Card.Content>
-            <SubHeader>Nominees: {nominees.length}</SubHeader>
+            <SubHeader>Nominees: {nominees.size}</SubHeader>
             <StackedHorizontal>
-            {
-                nominees.map(nomineeId => <FlexItem><AddressSummary address={nomineeId} noBalance noPlaceholderName size='small' /></FlexItem>)
-            }
+              {
+                nomineesList.map(nomineeId => <FlexItem><AddressSummary address={nomineeId} noBalance noPlaceholderName size='small' /></FlexItem>)
+              }
             </StackedHorizontal>
-            <ConfirmNominationDialog history={history} nominees={nominees} />
+            { nomineesList.length ? <ConfirmNominationDialog history={history} nominees={[...nominees]} /> : <FadedText>You have not yet added any Validators to your Nominees list. You can browse Validators to add from the table below.</FadedText>}
           </Card.Content>
         </Card>
       </WithSpace>
+    );
+  };
+
+  return (
+    <StackedHorizontal alignItems='stretch' justifyContent='space-around'>
+     {renderEraProgress()}
+      <Margin left='huge' />
+      {renderSessionProgress()}
+      <Margin left='huge' />
+      {renderNomineesList()}
     </StackedHorizontal>
   );
 }

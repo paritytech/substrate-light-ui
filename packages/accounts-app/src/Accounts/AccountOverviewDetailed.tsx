@@ -128,14 +128,12 @@ export function AccountOverviewDetailed (props: Props) {
   };
 
   return (
-    <Container>
-      <Grid columns='16'>
-        {
-          fromNullable(stakingInfo)
-            .map(stakingInfo => renderGeneral())
-            .getOrElse(<div></div>)
-        }
-      </Grid>
-    </Container>
+    <Grid columns='16'>
+      {
+        fromNullable(stakingInfo)
+          .map(stakingInfo => renderGeneral())
+          .getOrElse(<div></div>)
+      }
+    </Grid>
   );
 }

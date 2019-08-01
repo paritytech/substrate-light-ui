@@ -2,21 +2,9 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-/*
-Show a list of current validators with ability to sort by times reported offline.
-
-Explain that validators get slashed when they misbehave. Misbehaving is characterized by:
-1. Reported offline
-2. Running malicious code
-
-on confirm, redirect to the detailed balances page, which should now show the stash and controllers as "linked" with the correct bond, plus nominating the correct validator
-
-should someone who goes to the staking tab from a stash already bonded, they should be directed straight to validator selection tab. You can nominate multiple validators from the same stash/controller pair
-*/
-
 import { DerivedBalances } from '@polkadot/api-derive/types';
 import { AccountId, Index } from '@polkadot/types';
-import { AppContext, StakingContext, TxQueueContext, validate, AllExtrinsicData } from '@substrate/ui-common';
+import { AllExtrinsicData, AppContext, StakingContext, TxQueueContext, validate } from '@substrate/ui-common';
 import { Address, AddressSummary, FadedText, Header, Icon, Margin, Stacked, StackedHorizontal, StyledLinkButton, StyledNavButton, SubHeader, WithSpace, WithSpaceAround } from '@substrate/ui-components';
 import BN from 'bn.js';
 import H from 'history';
@@ -236,27 +224,30 @@ export function ConfirmNominationDialog (props: Props) {
           </Card.Content>
         </Card>
         <Margin left />
-        <Card>
-          <Card.Content>
             <Stacked>
               <FadedText> Nominees </FadedText>
+              <Card.Group>
               {
                 nominees.map(nominee =>
-                  <AddressSummary
-                    address={nominee.toString()}
-                    detailed
-                    name={
-                      fromNullable(keyring.getAddress(nominee.toString()))
-                        .chain(account => some(account.meta))
-                        .chain(meta => some(meta.name))
-                        .getOrElse(undefined)
-                    }
-                    orientation='vertical'
-                    size='small' />)
+                  <Card>
+                    <Card.Content>
+                      <AddressSummary
+                        address={nominee.toString()}
+                        name={
+                          fromNullable(keyring.getAddress(nominee.toString()))
+                            .chain(account => some(account.meta))
+                            .chain(meta => some(meta.name))
+                            .getOrElse(undefined)
+                        }
+                        noPlaceholderName
+                        orientation='vertical'
+                        size='small' />
+                    </Card.Content>
+                  </Card>
+                )
               }
+              </Card.Group>
             </Stacked>
-          </Card.Content>
-        </Card>
       </Card.Group>
       <WithSpace>
         <Stacked>

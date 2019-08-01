@@ -52,7 +52,7 @@ export function Content () {
         ))
         .getOrElse(<Route component={Onboarding} />)
       }
-      < Signer />
+      <Signer />
     </React.Fragment>
   );
 }

@@ -36,7 +36,7 @@ export interface StyledNavLinkProps extends LinkProps {
 }
 
 export interface SubHeaderProps {
-  color?: string;
+  color?: Color;
   margin?: MarginSize;
   noMargin?: boolean;
   textAlign?: string;
