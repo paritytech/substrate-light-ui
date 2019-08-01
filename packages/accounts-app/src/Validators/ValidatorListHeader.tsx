@@ -3,8 +3,9 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { AppContext } from '@substrate/ui-common';
-import { FadedText, StackedHorizontal, SubHeader, WithSpace } from '@substrate/ui-components';
+import { AddressSummary, FadedText, FlexItem, Margin, StackedHorizontal, SubHeader, WithSpace } from '@substrate/ui-components';
 import { DerivedSessionInfo } from '@polkadot/api-derive/types';
+import H from 'history';
 import { fromNullable } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
 import { Observable, Subscription } from 'rxjs';
@@ -13,7 +14,15 @@ import Card from 'semantic-ui-react/dist/commonjs/views/Card';
 import Loader from 'semantic-ui-react/dist/commonjs/elements/Loader/Loader';
 import Progress from 'semantic-ui-react/dist/commonjs/modules/Progress/Progress';
 
-export function SessionInfo () {
+import { ConfirmNominationDialog } from './ConfirmNominationDialog';
+
+interface Props {
+  history: H.History;
+  nominees: string[];
+}
+
+export function ValidatorListHeader (props: Props) {
+  const { history, nominees } = props;
   const { api } = useContext(AppContext);
   const [sessionInfo, setSessionInfo] = useState<DerivedSessionInfo>();
 
@@ -28,9 +37,9 @@ export function SessionInfo () {
   }, []);
 
   return (
-    <StackedHorizontal>
+    <StackedHorizontal alignItems='stretch' justifyContent='space-around'>
       <WithSpace>
-        <Card>
+        <Card height='20rem'>
           <Card.Content>
             <SubHeader> New Validator Set: </SubHeader>
             {
@@ -49,8 +58,9 @@ export function SessionInfo () {
           </Card.Content>
         </Card>
       </WithSpace>
+      <Margin left='huge' />
       <WithSpace>
-        <Card height='100%'>
+        <Card height='20rem'>
           <Card.Content>
             <SubHeader>Next Reward Payout: </SubHeader>
             {
@@ -66,6 +76,20 @@ export function SessionInfo () {
                 .getOrElse(<Loader active inline size='mini' />)
             }
             <FadedText>Validator Pool Block Rewards are Paid Out Every Session. </FadedText>
+          </Card.Content>
+        </Card>
+      </WithSpace>
+      <Margin left='huge' />
+      <WithSpace>
+        <Card height='20rem'>
+          <Card.Content>
+            <SubHeader>Nominees: {nominees.length}</SubHeader>
+            <StackedHorizontal>
+            {
+                nominees.map(nomineeId => <FlexItem><AddressSummary address={nomineeId} noBalance noPlaceholderName size='small' /></FlexItem>)
+            }
+            </StackedHorizontal>
+            <ConfirmNominationDialog history={history} nominees={nominees} />
           </Card.Content>
         </Card>
       </WithSpace>

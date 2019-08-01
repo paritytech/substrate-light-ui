@@ -5,9 +5,8 @@
 import { AccountId, Balance, Exposure, Option, StakingLedger } from '@polkadot/types';
 import { formatBalance } from '@polkadot/util';
 import { AppContext } from '@substrate/ui-common';
-import { AddressSummary, FadedText, Stacked, Table, Icon } from '@substrate/ui-components';
+import { AddressSummary, FadedText, Stacked, Table, Icon, StyledLinkButton } from '@substrate/ui-components';
 import BN from 'bn.js';
-import H from 'history';
 import { fromNullable, some } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
 import { Observable, Subscription } from 'rxjs';
@@ -15,10 +14,9 @@ import { first, switchMap } from 'rxjs/operators';
 import { Loader } from 'semantic-ui-react';
 
 import { OfflineStatus } from '../types';
-import { ConfirmNominationDialog } from './ConfirmNominationDialog';
 
 interface Props {
-  history: H.History;
+  addToNomineeList: (nomineeId: AccountId | string) => void;
   offlineStatuses?: OfflineStatus[];
   validator: AccountId;
 }
@@ -101,7 +99,7 @@ export function ValidatorRow (props: Props) {
       <Table.Cell width='1' verticalAlign='middle'>{offlineTotal.toString()}</Table.Cell>
       <Table.Cell width='5' verticalAlign='middle'><div style={{ height: '200px', overflow: 'auto', verticalAlign: 'middle' }}>{renderNominators()}</div></Table.Cell>
       <Table.Cell width='2' verticalAlign='middle'>
-        {<ConfirmNominationDialog disabled={loading} history={props.history} nominatee={validator.toString()} />}
+          <StyledLinkButton onClick={() => props.addToNomineeList(validator)}>Add To Nominee List </StyledLinkButton>
       </Table.Cell>
     </Table.Row>
   );

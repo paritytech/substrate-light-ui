@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { AccountId } from '@polkadot/types';
-import { Container, Table, FadedText, FlexItem } from '@substrate/ui-components';
+import { Container, FadedText, FlexItem, Stacked, Table } from '@substrate/ui-components';
 import { AppContext } from '@substrate/ui-common';
 import BN from 'bn.js';
 import { fromNullable } from 'fp-ts/lib/Option';
@@ -13,8 +13,8 @@ import { combineLatest, Observable, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import Loader from 'semantic-ui-react/dist/commonjs/elements/Loader/Loader';
 
-import { SessionInfo } from './SessionInfo';
 import { AccountOfflineStatusesMap, RecentlyOffline } from '../types';
+import { ValidatorListHeader } from './ValidatorListHeader';
 import { ValidatorRow } from './ValidatorRow';
 
 interface MatchParams {
@@ -26,6 +26,7 @@ interface Props extends RouteComponentProps<MatchParams> {}
 export function ValidatorsList (props: Props) {
   const { api } = useContext(AppContext);
   const [currentValidatorsControllersV1OrStashesV2, setCurrentValidatorsControllersV1OrStashesV2] = useState<AccountId[]>([]);
+  const [nominees, setNominees] = useState<string[]>([]);
   const [validatorCount, setValidatorCount] = useState<BN>(new BN(0));
   const [recentlyOffline, setRecentlyOffline] = useState();
 
@@ -62,6 +63,11 @@ export function ValidatorsList (props: Props) {
     return () => subscription.unsubscribe();
   }, []);
 
+  const addToNomineeList = (nomineeId: AccountId | string) => {
+    const newNominees = nominees.concat(nomineeId.toString());
+    setNominees(newNominees);
+  };
+
   const renderBody = () => (
     <Table.Body>
       {
@@ -74,8 +80,8 @@ export function ValidatorsList (props: Props) {
 
   const renderValidatorRow = (validator: AccountId) => (
     <ValidatorRow
+      addToNomineeList={addToNomineeList}
       key={validator.toString()}
-      history={props.history}
       offlineStatuses={recentlyOffline && recentlyOffline[validator.toString()]}
       validator={validator} />
   );
@@ -107,16 +113,20 @@ export function ValidatorsList (props: Props) {
 
   return (
     <Container fluid>
-      <SessionInfo />
-        {
-          currentValidatorsControllersV1OrStashesV2.length
-            ? (
-              <Table basic celled collapsing compact size='large' sortable stackable textAlign='center' width='16' verticalAlign='middle'>
-                {renderContent()}
-              </Table>
-            )
-          : <FlexItem><FadedText>Loading current validator set... <Loader inline active /></FadedText></FlexItem>
-        }
+      <Stacked>
+        <ValidatorListHeader history={props.history} nominees={nominees} />
+        <FlexItem>
+          {
+            currentValidatorsControllersV1OrStashesV2.length
+              ? (
+                <Table basic celled collapsing compact size='large' sortable stackable textAlign='center' width='16' verticalAlign='middle'>
+                  {renderContent()}
+                </Table>
+              )
+            : <FlexItem><FadedText>Loading current validator set... <Loader inline active /></FadedText></FlexItem>
+          }
+        </FlexItem>
+      </Stacked>
     </Container>
   );
 }

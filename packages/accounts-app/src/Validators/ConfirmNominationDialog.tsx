@@ -32,38 +32,35 @@ import { Errors } from '../types';
 import { Validation } from '../Validation';
 
 interface Props {
-  disabled: boolean;
+  disabled?: boolean;
   history: H.History;
-  nominatee: string;
+  nominees: string[];
 }
 
 export const rewardDestinationOptions = ['Send rewards to my Stash account and immediately use it to stake more.', 'Send rewards to my Stash account but do not stake any more.', 'Send rewards to my Controller account.'];
 
 // TODO: p3 refactor all this to smaller components
 export function ConfirmNominationDialog (props: Props) {
-  const { disabled, history, nominatee } = props;
+  const { disabled, history, nominees } = props;
   const { api, keyring } = useContext(AppContext);
   const { derivedBalanceFees, onlyBondedAccounts } = useContext(StakingContext);
   const { enqueue, successObservable } = useContext(TxQueueContext);
 
   const [nominateWith, setNominateWith] = useState();
   const [controllerVotingBalance, setControllerVotingBalance] = useState<DerivedBalances>();
-  const [validatorBalance, setValidatorBalance] = useState<DerivedBalances>();
   const [nonce, setNonce] = useState<Index>();
   const [status, setStatus] = useState<Either<Errors, AllExtrinsicData>>();
 
   useEffect(() => {
-    if (!nominateWith || !nominatee) { return; }
+    if (!nominateWith || !nominees) { return; }
 
     const subscription: Subscription = combineLatest([
       (api.derive.balances.votingBalance(nominateWith) as Observable<DerivedBalances>),
-      (api.derive.balances.votingBalance(nominatee) as Observable<DerivedBalances>),
       (api.query.system.accountNonce(nominateWith) as Observable<Index>)
     ])
     .pipe(take(1))
-    .subscribe(([controllerVotingBalance, validatorBalance, nonce]) => {
+    .subscribe(([controllerVotingBalance, validatorBalance]) => {
       setControllerVotingBalance(controllerVotingBalance);
-      setValidatorBalance(validatorBalance);
       setNonce(nonce);
     });
 
@@ -94,16 +91,14 @@ export function ConfirmNominationDialog (props: Props) {
 
     if (errors.length) { return left(errors); }
 
-    const extrinsic = api.tx.staking.nominate(nominatee);
+    const extrinsic = api.tx.staking.nominate(nominees);
     const values = validate({
-      amountAsString: nominationAmount!.toString(),
+      amountAsString: nominationAmount!.toString(), // Nomination amount is equalized amongst nominees a la Phragmens
       accountNonce: nonce,
       currentBalance: controllerVotingBalance,
       extrinsic,
       fees: derivedBalanceFees,
-      currentAccount: nominateWith,
-      recipientBalance: validatorBalance,
-      recipientAddress: nominatee
+      currentAccount: nominateWith
     }, api);
 
     return values.fold(
@@ -124,7 +119,7 @@ export function ConfirmNominationDialog (props: Props) {
           (errors) => { console.error(errors); /* should be displayed by Validation */ },
           (allExtrinsicData) => {
             const { extrinsic, amount, allFees, allTotal } = allExtrinsicData;
-            const details = { amount, allFees, allTotal, methodCall: extrinsic.meta.name.toString(), senderPair: keyring.getPair(nominateWith), recipientAddress: nominatee };
+            const details = { amount, allFees, allTotal, methodCall: extrinsic.meta.name.toString(), senderPair: keyring.getPair(nominateWith) };
             enqueue(extrinsic, details);
           }
         )
@@ -244,18 +239,21 @@ export function ConfirmNominationDialog (props: Props) {
         <Card>
           <Card.Content>
             <Stacked>
-              <FadedText> Validator </FadedText>
-              <AddressSummary
-                address={nominatee}
-                detailed
-                name={
-                  fromNullable(keyring.getAddress(nominatee.toString()))
-                    .chain(account => some(account.meta))
-                    .chain(meta => some(meta.name))
-                    .getOrElse(undefined)
-                }
-                orientation='vertical'
-                size='small' />
+              <FadedText> Nominees </FadedText>
+              {
+                nominees.map(nominee =>
+                  <AddressSummary
+                    address={nominee.toString()}
+                    detailed
+                    name={
+                      fromNullable(keyring.getAddress(nominee.toString()))
+                        .chain(account => some(account.meta))
+                        .chain(meta => some(meta.name))
+                        .getOrElse(undefined)
+                    }
+                    orientation='vertical'
+                    size='small' />)
+              }
             </Stacked>
           </Card.Content>
         </Card>
