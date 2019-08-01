@@ -5,7 +5,7 @@
 import { AccountId, Balance, Exposure, Option, StakingLedger } from '@polkadot/types';
 import { formatBalance } from '@polkadot/util';
 import { AppContext } from '@substrate/ui-common';
-import { AddressSummary, FadedText, Icon, Margin, Stacked, StyledLinkButton, Table } from '@substrate/ui-components';
+import { AddressSummary, DynamicSizeText, FadedText, Icon, Margin, Stacked, StyledLinkButton, SubHeader, Table, WithSpaceAround } from '@substrate/ui-components';
 import { fromNullable, some } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
 import { Observable, Subscription } from 'rxjs';
@@ -60,19 +60,28 @@ export function ValidatorRow (props: Props) {
       loading
         ? <Loader active inline />
         : nominators.length > 0
-          ? nominators.map(([who, bonded]) => (
-            <Stacked key={who.toString()}>
-              <AddressSummary address={who.toString()} orientation='horizontal' noPlaceholderName size='tiny' />
-              <FadedText>Bonded Amount: {formatBalance(bonded)}</FadedText>
-            </Stacked>
-          ))
+          ? (
+            <React.Fragment>
+              <SubHeader>{nominators.length} nominators</SubHeader>
+              <WithSpaceAround>
+                {
+                  nominators.map(([who, bonded]) => (
+                    <Stacked key={who.toString()}>
+                      <AddressSummary address={who.toString()} orientation='horizontal' noPlaceholderName size='tiny' />
+                      <DynamicSizeText fontSize='small' fontWeight='200'><FadedText>Bonded Amount: {formatBalance(bonded)}</FadedText></DynamicSizeText>
+                    </Stacked>
+                  ))
+                }
+              </WithSpaceAround>
+            </React.Fragment>
+          )
           : <FadedText> No nominators </FadedText>
     );
   };
 
   return (
     <Table.Row key={validator.toString()} style={{ display: 'table-row' }}>
-      <Table.Cell>
+      <Table.Cell width='2'>
        {
         loading
           ? <FadedText>Please wait while we fetch validator data...</FadedText>
@@ -92,8 +101,8 @@ export function ValidatorRow (props: Props) {
           size='small'
           withShortAddress />
       </Table.Cell>
-      <Table.Cell width='5' verticalAlign='middle'><div style={{ height: '200px', overflow: 'auto', verticalAlign: 'middle' }}>{renderNominators()}</div></Table.Cell>
-      <Table.Cell width='2' verticalAlign='middle'>
+      <Table.Cell width='6' verticalAlign='middle'><div style={{ height: '200px', overflow: 'auto', verticalAlign: 'middle' }}>{renderNominators()}</div></Table.Cell>
+      <Table.Cell width='3' verticalAlign='middle'>
         {
          loading
           ? <FadedText>Please wait while we fetch validator data...</FadedText>

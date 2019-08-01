@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { AccountId } from '@polkadot/types';
-import { Container, FadedText, FlexItem, Stacked, Table } from '@substrate/ui-components';
+import { FadedText, FlexItem, Stacked, Table } from '@substrate/ui-components';
 import { AlertsContext, AppContext } from '@substrate/ui-common';
 import BN from 'bn.js';
 import { fromNullable } from 'fp-ts/lib/Option';
@@ -98,17 +98,15 @@ export function ValidatorsList (props: Props) {
   return (
     <Stacked>
       <ValidatorListHeader history={props.history} nominees={nominees} />
-      <FlexItem>
-        {
-          currentValidatorsControllersV1OrStashesV2.length
-            ? (
-              <Table basic celled collapsing compact size='large' sortable stackable textAlign='center' width='16' verticalAlign='middle'>
-                {renderContent()}
-              </Table>
-            )
-          : <FlexItem><FadedText>Loading current validator set... <Loader inline active /></FadedText></FlexItem>
-        }
-      </FlexItem>
+      {
+        currentValidatorsControllersV1OrStashesV2.length
+          ? (
+            <Table basic celled sortable stackable textAlign='center' width='16'>
+              {renderContent()}
+            </Table>
+          )
+        : <FlexItem><FadedText>Loading current validator set... <Loader inline active /></FadedText></FlexItem>
+      }
     </Stacked>
   );
 }

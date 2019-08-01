@@ -4,7 +4,7 @@
 
 import { AccountId } from '@polkadot/types';
 import { StakingContext } from '@substrate/ui-common';
-import { AddressSummary, Container, Grid, Loading, Margin, Stacked, StyledNavLink, SubHeader, WithSpace } from '@substrate/ui-components';
+import { AddressSummary, Grid, Loading, Margin, Stacked, StyledNavLink, SubHeader, WithSpace } from '@substrate/ui-components';
 import { fromNullable } from 'fp-ts/lib/Option';
 import React, { useEffect, useState, useContext } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
