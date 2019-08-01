@@ -9,7 +9,7 @@ import React, { Dispatch, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Validation } from './Validation';
+import { Validation } from '../Validation';
 import { Accounts, Errors } from '../types';
 
 export const InputAddress = styled(PolkadotInputAddress)`

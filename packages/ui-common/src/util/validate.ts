@@ -106,7 +106,7 @@ function validateExtrinsic (api: ApiRx) {
  * Make sure the subscription results are here.
  */
 function validateSubResults (values: Partial<SubResults & WithExtrinsic & UserInputs>): Either<Errors, SubResults & WithExtrinsic & UserInputs> {
-  const { accountNonce, currentBalance, fees, recipientBalance, ...rest } = values;
+  const { accountNonce, currentBalance, extrinsic, fees, recipientBalance, ...rest } = values;
   const errors = {} as Errors;
 
   if (!accountNonce) {
@@ -121,13 +121,14 @@ function validateSubResults (values: Partial<SubResults & WithExtrinsic & UserIn
     errors.currentBalance = 'Please wait while we fetch your voting balance.';
   }
 
-  if (!recipientBalance) {
+  // FIXME: check for more methods as necessary
+  if (!recipientBalance && extrinsic && extrinsic.method.methodName === 'transfer') {
     errors.recipientBalance = "Please wait while we fetch the recipient's balance.";
   }
 
   return Object.keys(errors).length
     ? left(errors)
-    : right({ accountNonce, currentBalance, fees, recipientBalance, ...rest } as SubResults & WithExtrinsic & UserInputs);
+    : right({ accountNonce, currentBalance, extrinsic, fees, recipientBalance, ...rest } as SubResults & WithExtrinsic & UserInputs);
 }
 
 /**
@@ -141,7 +142,8 @@ function validateUserInputs (values: Partial<SubResults & UserInputs & WithExtri
     errors.currentAccount = 'Please enter a sender account.';
   }
 
-  if (!recipientAddress) {
+  // FIXME: check for more methods as necessary
+  if (!recipientAddress && extrinsic && extrinsic.method.methodName === 'transfer') {
     errors.recipientAddress = 'Please enter a recipient address.';
   }
 

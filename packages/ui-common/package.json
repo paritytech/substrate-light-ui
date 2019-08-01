@@ -13,7 +13,7 @@
     "test": "echo skipped"
   },
   "dependencies": {
-    "@polkadot/api": "^0.82.0-beta.53"
+    "@polkadot/api": "^0.82.0-beta.74"
   },
   "peerDependencies": {
     "react": "^16.8"

@@ -2,11 +2,13 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AppContext, handler, AlertsContext } from '@substrate/ui-common';
+import { AccountId } from '@polkadot/types';
+import { AlertsContext, AppContext, handler, StakingContext } from '@substrate/ui-common';
 import { AddressSummary, FadedText, Icon, Input, Margin, Stacked, StackedHorizontal, StyledLinkButton, SubHeader, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
 import H from 'history';
 import FileSaver from 'file-saver';
-import React, { useContext, useState } from 'react';
+import { fromNullable } from 'fp-ts/lib/Option';
+import React, { useContext, useEffect, useState } from 'react';
 import Card from 'semantic-ui-react/dist/commonjs/views/Card';
 
 interface Props {
@@ -19,8 +21,24 @@ export function AccountsOverviewCard (props: Props) {
   const { address, history, name } = props;
   const { keyring } = useContext(AppContext);
   const { enqueue } = useContext(AlertsContext);
+  const { accountStakingMap } = useContext(StakingContext);
+  const [bondingPair, setBondingPair] = useState<AccountId>();
   const [confirmScreen, setConfirmScreen] = useState();
   const [password, setPassword] = useState();
+
+  const derivedStakingInfo = accountStakingMap[address];
+
+  useEffect(() => {
+    const accountType = fromNullable(derivedStakingInfo).map(stakingInfo => new AccountId(address) === stakingInfo.controllerId ? 'controller' : 'stash');
+    const bondingPair = fromNullable(derivedStakingInfo)
+      .map(stakingInfo => accountType.fold(
+        undefined,
+        (accountType) => accountType === 'controller' ? stakingInfo.stashId : stakingInfo.controllerId
+      ))
+      .getOrElse(undefined);
+
+    setBondingPair(bondingPair);
+  }, []);
 
   const handleBackup = () => {
     if (confirmScreen !== 'backup') {
@@ -128,7 +146,7 @@ export function AccountsOverviewCard (props: Props) {
             </React.Fragment>
             : <React.Fragment>
               <Card.Content>
-                <AddressSummary address={address} detailed name={name} size='small' />
+                <AddressSummary address={address} bondingPair={bondingPair && bondingPair.toString()} detailed name={name} size='small' />
                 <Margin bottom />
                 <StackedHorizontal><StyledLinkButton onClick={navToBalances}>Show More</StyledLinkButton></StackedHorizontal>
                 <WithSpaceAround>

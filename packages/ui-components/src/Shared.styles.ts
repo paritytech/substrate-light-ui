@@ -191,6 +191,7 @@ export const StackedHorizontal = styled.div<StackProps>`
   display: flex;
   flex: 1;
   flex-direction: row;
+  margin: ${props => props.margin || 0}
   justify-content: ${props => props.justifyContent || 'center'};
   text-align: ${props => props.textAlign || 'center'};
 `;
@@ -208,6 +209,7 @@ export const InlineSubHeader = styled(SubHeader)`
 `;
 
 export const WrapperDiv = styled.div<WrapperDivProps>`
+  margin: ${props => props.margin || '1rem'};
   padding: ${props => props.padding || '1rem'};
   width: ${props => props.width || '30rem'};
   height: ${props => props.height || '100%'};

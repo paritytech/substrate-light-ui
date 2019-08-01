@@ -2,10 +2,10 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Balance } from '@polkadot/types';
 import { DerivedBalances, DerivedStaking } from '@polkadot/api-derive/types';
 import { formatBalance, formatNumber } from '@polkadot/util';
 import React from 'react';
+import Loader from 'semantic-ui-react/dist/commonjs/elements/Loader';
 
 import { FontSize, FontWeight } from './types';
 import { DynamicSizeText, FadedText, Stacked, StyledLinkButton } from './Shared.styles';
@@ -20,12 +20,12 @@ export type BalanceDisplayProps = {
   handleRedeem?: (address: string) => void
 };
 
-const PLACEHOLDER_BALANCE = new Balance(0);
 const defaultProps = {
   detailed: false,
   fontSize: 'large' as FontSize
 };
 
+/* FIXME: https://github.com/paritytech/substrate-light-ui/issues/471 */
 export function BalanceDisplay (props: BalanceDisplayProps = defaultProps) {
   const { allBalances, allStaking, detailed, fontSize, fontWeight, handleRedeem } = props;
 
@@ -34,16 +34,19 @@ export function BalanceDisplay (props: BalanceDisplayProps = defaultProps) {
 
     return (
       <React.Fragment>
-        <span><b>Available:</b> <FadedText>{formatBalance(availableBalance) || PLACEHOLDER_BALANCE.toString()}</FadedText></span>
+        <span><b>Available:</b> <FadedText>{formatBalance(availableBalance)}</FadedText></span>
         <span>
-          <b>Redeemable:</b>
-          <FadedText>
-            {allStaking && allStaking.redeemable && formatBalance(allStaking.redeemable) || PLACEHOLDER_BALANCE.toString()}
-          </FadedText>
-          {allStaking && allStaking.redeemable && allStaking.redeemable.gtn(0) && renderRedeemButton()}
+          {
+            allStaking && allStaking.redeemable &&
+            <Stacked>
+              <b>Redeemable:</b>
+              <FadedText>{formatBalance(allStaking.redeemable)}</FadedText>
+              {allStaking.redeemable.gtn(0) && renderRedeemButton()}
+            </Stacked>
+          }
         </span>
-        <span><b>Reserved:</b><FadedText>{formatBalance(reservedBalance) || PLACEHOLDER_BALANCE.toString()}</FadedText></span>
-        <span><b>Locked:</b><FadedText>{formatBalance(lockedBalance) || PLACEHOLDER_BALANCE.toString()}</FadedText></span>
+        <span><b>Reserved:</b>{ reservedBalance && <FadedText>{formatBalance(reservedBalance)}</FadedText>}</span>
+        <span><b>Locked:</b>{ lockedBalance && <FadedText>{formatBalance(lockedBalance)}</FadedText>}</span>
         {renderUnlocking()}
       </React.Fragment>
     );
@@ -64,13 +67,8 @@ export function BalanceDisplay (props: BalanceDisplayProps = defaultProps) {
       allStaking.unlocking &&
       allStaking.unlocking.map(({ remainingBlocks, value }, index) => (
         <div key={index}>
-          {formatBalance(value)}
-          <Icon
-            name='info circle'
-            data-tip
-            data-for={`unlocking-trigger-${index}`}
-          />
-          <FadedText> Blocks remaining: {remainingBlocks}</FadedText>
+          <FadedText>Unbonded Amount: {formatBalance(value)}</FadedText>
+          <FadedText> Blocks remaining: {remainingBlocks.toNumber()}</FadedText>
         </div>
       ))
     );
@@ -79,8 +77,14 @@ export function BalanceDisplay (props: BalanceDisplayProps = defaultProps) {
   return (
     <Stacked>
       <DynamicSizeText fontSize={fontSize} fontWeight={fontWeight}>
-        <span><b>Total Balance:</b> {(allBalances && allBalances.freeBalance && formatBalance(allBalances.freeBalance))}</span>
-        <FadedText>Transactions: {allBalances && formatNumber(allBalances.accountNonce)}</FadedText>
+        {
+          allBalances
+            ? <React.Fragment>
+                <span><b>Total Balance:</b> {allBalances.freeBalance && formatBalance(allBalances.freeBalance)}</span>
+                <FadedText>Transactions: {formatNumber(allBalances.accountNonce)} </FadedText>
+              </React.Fragment>
+            : <Loader active inline />
+        }
       </DynamicSizeText>
       {
         detailed

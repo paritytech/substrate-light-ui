@@ -6,22 +6,27 @@ import IdentityIcon from '@polkadot/ui-identicon';
 import { fromNullable } from 'fp-ts/lib/Option';
 import React from 'react';
 
+import { Address } from '../../Address';
 import { Balance } from '../Balance';
 import { Margin } from '../../Margin';
-import { DynamicSizeText, SubHeader, Stacked, StackedHorizontal } from '../../Shared.styles';
+import { DynamicSizeText, FadedText, SubHeader, Stacked, StackedHorizontal } from '../../Shared.styles';
 import { OrientationType, SizeType } from './types';
 import { FlexJustify, FontSize } from '../../types';
 
 type AddressSummaryProps = {
-  address?: string,
+  address?: string, // TODO support AccountId
+  bondingPair?: string, // TODO support AccountId
   detailed?: boolean,
   isNominator?: boolean,
   isValidator?: boolean,
   justifyContent?: FlexJustify,
   name?: string,
+  noPlaceholderName?: boolean,
   noBalance?: boolean,
   orientation?: OrientationType,
-  size?: SizeType
+  type?: 'stash' | 'controller',
+  size?: SizeType,
+  withShortAddress?: boolean;
 };
 
 const PLACEHOLDER_NAME = 'No Name';
@@ -38,9 +43,9 @@ export function AddressSummary (props: AddressSummaryProps) {
     .map((address: string) => {
       return orientation === 'vertical'
           ? (
-            <Stacked>
+            <Stacked justifyContent={justifyContent}>
               {renderIcon(address, size)}
-              {renderDetails(props)}
+              {renderDetails(address, props)}
             </Stacked>
           )
           : (
@@ -48,7 +53,7 @@ export function AddressSummary (props: AddressSummaryProps) {
               {renderIcon(address, size)}
               <Margin left />
               <Stacked>
-                {renderDetails(props)}
+                {renderDetails(address, props)}
               </Stacked>
             </StackedHorizontal>
           );
@@ -75,18 +80,22 @@ const FONT_SIZES: any = {
 };
 
 function renderBadge (type: string) {
+  // FIXME make it an actual badge
   return type === 'nominator' ? <SubHeader>nominator</SubHeader> : <SubHeader>validator</SubHeader>;
 }
 
-function renderDetails (props: AddressSummaryProps) {
-  const { address, detailed, isNominator, isValidator, name = PLACEHOLDER_NAME, noBalance, size = 'medium' } = props;
+function renderDetails (address: string, props: Exclude<AddressSummaryProps, keyof 'address'>) {
+  const { bondingPair, detailed, isNominator, isValidator, name = PLACEHOLDER_NAME, noBalance, noPlaceholderName, size = 'medium', type, withShortAddress } = props;
 
   return (
-    <React.Fragment>
-      <DynamicSizeText fontSize={FONT_SIZES[size] as FontSize}> {name} </DynamicSizeText>
+    <Stacked>
+      <DynamicSizeText fontSize={FONT_SIZES[size] as FontSize}> {noPlaceholderName ? null : name} </DynamicSizeText>
+      { withShortAddress && <Address address={address} shortened />}
+      { type && <FadedText> Account Type: {type} </FadedText>}
+      { bondingPair && <StackedHorizontal><FadedText> Bonding Pair: </FadedText> {renderIcon(bondingPair, 'tiny')} </StackedHorizontal> }
       { isNominator && renderBadge('nominator') }
       { isValidator && renderBadge('validator') }
       {!noBalance && <Balance address={address} detailed={detailed} fontSize={FONT_SIZES[size] as FontSize} />}
-    </React.Fragment>
+    </Stacked>
   );
 }

@@ -26,6 +26,7 @@ export interface FlexItemProps {
 export interface StackProps {
   alignItems?: FlexAlign;
   justifyContent?: FlexJustify;
+  margin?: string;
   textAlign?: string; // FIXME Use union of possible string
   width?: string;
 }
@@ -35,7 +36,7 @@ export interface StyledNavLinkProps extends LinkProps {
 }
 
 export interface SubHeaderProps {
-  color?: string;
+  color?: Color;
   margin?: MarginSize;
   noMargin?: boolean;
   textAlign?: string;
@@ -51,6 +52,7 @@ export interface WithSpaceBetweenProps {
 }
 
 export interface WrapperDivProps {
+  margin?: string;
   padding?: string;
   width?: string;
   height?: string;
