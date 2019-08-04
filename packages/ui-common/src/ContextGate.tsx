@@ -3,7 +3,8 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { ApiRx, WsProvider } from '@polkadot/api';
-import { ChainProperties, Health, Text } from '@polkadot/types';
+import { Text } from '@polkadot/types';
+import { ChainProperties, Health } from '@polkadot/types/interfaces';
 import keyring from '@polkadot/ui-keyring';
 import settings from '@polkadot/ui-settings';
 import { logger } from '@polkadot/util';
@@ -16,6 +17,7 @@ import { isTestChain } from './util';
 import { AlertsContextProvider } from './AlertsContext';
 import { StakingContextProvider } from './StakingContext';
 import { TxQueueContextProvider } from './TxQueueContext';
+import { Prefix } from '@polkadot/util-crypto/address/types';
 
 interface State {
   isReady: boolean;
@@ -90,9 +92,15 @@ export function ContextGate (props: { children: React.ReactNode }) {
       )
       .subscribe(([chain, health, name, properties, version]) => {
         if (!keyringInitialized) {
+          const addressPrefix = (
+            settings.prefix === -1
+              ? 42
+              : settings.prefix
+          ) as Prefix;
           // keyring with Schnorrkel support
           keyring.loadAll({
-            addressPrefix: properties.get('networkId'),
+            addressPrefix,
+            genesisHash: api.genesisHash,
             isDevelopment: isTestChain(chain.toString()),
             type: 'ed25519'
           });

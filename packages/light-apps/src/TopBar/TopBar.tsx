@@ -2,11 +2,9 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Header } from '@polkadot/types';
 import { AppContext } from '@substrate/ui-common';
 import { FadedText, FlexItem, NavLink, StackedHorizontal, Margin } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';
-import { Observable } from 'rxjs';
 
 import { BlockCounter, NodeStatus } from './TopBar.styles';
 import substrateLogo from '@polkadot/ui-assets/parity-substrate.svg';
@@ -18,8 +16,7 @@ export function TopBar (props: Props) {
 
   const [blockNumber, setBlockNumber] = useState();
   useEffect(() => {
-    const chainHeadSub = (api.rpc.chain.subscribeNewHead() as Observable<Header>)
-      .subscribe((header) => setBlockNumber(header.blockNumber));
+    const chainHeadSub = api.rpc.chain.subscribeNewHead().subscribe((header) => setBlockNumber(header.number));
 
     return () => {
       chainHeadSub.unsubscribe();

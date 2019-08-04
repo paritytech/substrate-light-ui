@@ -2,7 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Balance, Nonce } from '@polkadot/types';
+import { createType } from '@polkadot/types';
+import { Index } from '@polkadot/types/interfaces';
 import { DerivedStaking, DerivedBalances } from '@polkadot/api-derive/types';
 import { formatBalance } from '@polkadot/util';
 import { AlertsContext, AppContext, StakingContext, TxQueueContext, validate, AllExtrinsicData } from '@substrate/ui-common';
@@ -29,7 +30,7 @@ export function BalanceOverview (props: Pick<Props, Exclude<keyof Props, keyof '
   const { derivedBalanceFees } = useContext(StakingContext);
   const { enqueue } = useContext(TxQueueContext);
   const [controllerBalance, setControllerBalance] = useState<DerivedBalances>();
-  const [controllerNonce, setControllerNonce] = useState<Nonce>();
+  const [controllerNonce, setControllerNonce] = useState<Index>();
   const [unbondAmount, setUnbondAmount] = useState<BN>(new BN(0));
   const [status, setStatus] = useState<Either<Errors, AllExtrinsicData>>();
 
@@ -37,7 +38,7 @@ export function BalanceOverview (props: Pick<Props, Exclude<keyof Props, keyof '
     if (!controllerId) { return; }
     const subscription: Subscription = combineLatest([
       (api.derive.balances.votingBalance(controllerId) as Observable<DerivedBalances>),
-      (api.query.system.accountNonce(controllerId) as Observable<Nonce>)
+      (api.query.system.accountNonce(controllerId) as Observable<Index>)
     ])
     .pipe(
       take(1)
@@ -63,7 +64,7 @@ export function BalanceOverview (props: Pick<Props, Exclude<keyof Props, keyof '
 
     if (!derivedBalanceFees) { errors.push('Calculating fees...'); }
 
-    const unBondAmountAsBalance = new Balance(unbondAmount);
+    const unBondAmountAsBalance = createType('Balance', unbondAmount);
     const extrinsic = api.tx.staking.unbond(unBondAmountAsBalance);
 
     if (!extrinsic) { errors.push('There was an issue constructing the extrinsic...'); }
@@ -146,9 +147,9 @@ export function BalanceOverview (props: Pick<Props, Exclude<keyof Props, keyof '
                 </WithSpace>
               : renderUnBondedAccountOptions()
         }
-        <WithSpace><SubHeader>Stash Active:</SubHeader> <FadedText>{stakingLedger && formatBalance(stakingLedger.active)}</FadedText> </WithSpace>
-        <WithSpace><SubHeader>Stakers Total:</SubHeader> <FadedText>{formatBalance(stakers && stakers.total)}</FadedText> </WithSpace>
-        <WithSpace><SubHeader>Bonded:</SubHeader> <FadedText>{stakingLedger && formatBalance(stakingLedger.total)} </FadedText></WithSpace>
+        <WithSpace><SubHeader>Stash Active:</SubHeader> <FadedText>{stakingLedger && formatBalance(stakingLedger.active.toBn())}</FadedText> </WithSpace>
+        <WithSpace><SubHeader>Stakers Total:</SubHeader> <FadedText>{formatBalance(stakers && stakers.total.toBn())}</FadedText> </WithSpace>
+        <WithSpace><SubHeader>Bonded:</SubHeader> <FadedText>{stakingLedger && formatBalance(stakingLedger.total.toBn())} </FadedText></WithSpace>
         <WithSpace>
           <Stacked><Input disabled={controllerId !== accountId} onChange={handleSetUnbondAmount} value={unbondAmount} /> <WithSpace><StyledLinkButton disabled={controllerId !== accountId} onClick={unbond}>Unbond</StyledLinkButton></WithSpace></Stacked>
           { controllerId !== accountId && <FadedText>You can only unbond funds through your controller account.</FadedText>}

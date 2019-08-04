@@ -2,7 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AccountId, BlockNumber, Tuple, Vector } from '@polkadot/types';
+import { Tuple, Vec } from '@polkadot/types';
+import { AccountId, BlockNumber } from '@polkadot/types/interfaces';
 import { isUndefined } from '@polkadot/util';
 import { AppContext } from '@substrate/ui-common';
 import { AddressSummary, FadedText, Header, StackedHorizontal } from '@substrate/ui-components';
@@ -17,7 +18,7 @@ export function CouncilMembers () {
 
   useEffect(() => {
     const subscription =
-      (api.query.council.activeCouncil() as unknown as Observable<Vector<Tuple>>)
+      (api.query.council.members() as unknown as Observable<Vec<Tuple>>)
         .subscribe((activeCouncil) => {
           setActiveCouncil(activeCouncil);
         });

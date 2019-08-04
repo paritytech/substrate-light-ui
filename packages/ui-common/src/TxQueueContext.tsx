@@ -4,7 +4,7 @@
 
 import { SubmittableExtrinsic, SubmittableResult } from '@polkadot/api/SubmittableExtrinsic';
 import { KeyringPair } from '@polkadot/keyring/types';
-import { Balance } from '@polkadot/types';
+import { Balance } from '@polkadot/types/interfaces';
 import BN from 'bn.js';
 import React, { createContext, useState } from 'react';
 import { Subject } from 'rxjs';

@@ -3,7 +3,8 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { DerivedReferendumVote, DerivedFees, DerivedBalances } from '@polkadot/api-derive/types';
-import { BlockNumber, Method, Nonce } from '@polkadot/types';
+import { u64 } from '@polkadot/types';
+import { BlockNumber } from '@polkadot/types/interfaces';
 import { AppContext, TxQueueContext, validateDerived } from '@substrate/ui-common';
 import { FadedText, Margin, Stacked, SubHeader, Table, VoteNayButton, VoteYayButton, YayNay } from '@substrate/ui-components';
 import BN from 'bn.js';
@@ -51,7 +52,7 @@ export function ReferendumRow (props: IProps) {
   const { api, keyring } = useContext(AppContext);
   const { enqueue } = useContext(TxQueueContext);
   const [accountNonce, setNonce] = useState();
-  const [latestBlockNumber, setLatestBlockNumber] = useState(new BlockNumber());
+  const [latestBlockNumber, setLatestBlockNumber] = useState();
   const [fees, setFees] = useState();
   const [votesForRef, setVotesFor] = useState();
   const [votingBalance, setVotingBalance] = useState();
@@ -63,7 +64,7 @@ export function ReferendumRow (props: IProps) {
     totalVoteBalance: new BN(0)
   });
 
-  const { method, section } = Method.findFunction(referendum.proposal.callIndex);
+  const { method, section } = api.findCall(referendum.proposal.callIndex);
 
   const currentAccount = location.pathname.split('/')[2];
 
@@ -71,7 +72,7 @@ export function ReferendumRow (props: IProps) {
     const subscription = combineLatest([
       (api.derive.chain.bestNumber() as unknown as Observable<BlockNumber>),
       (api.derive.balances.fees() as Observable<DerivedFees>),
-      (api.query.system.accountNonce(currentAccount) as Observable<Nonce>),
+      (api.query.system.accountNonce(currentAccount) as Observable<u64>),
       (api.derive.democracy.referendumVotesFor(idNumber) as unknown as Observable<Array<DerivedReferendumVote>>),
       (api.derive.balances.votingBalance(currentAccount) as Observable<DerivedBalances>)
     ])

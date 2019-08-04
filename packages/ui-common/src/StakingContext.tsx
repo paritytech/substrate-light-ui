@@ -2,7 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AccountId, Option } from '@polkadot/types';
+import { Option } from '@polkadot/types';
+import { AccountId } from '@polkadot/types/interfaces';
 import { DerivedFees, DerivedStaking } from '@polkadot/api-derive/types';
 import { KeyringAddress } from '@polkadot/ui-keyring/types';
 import React, { createContext, useContext, useEffect, useReducer, useState } from 'react';

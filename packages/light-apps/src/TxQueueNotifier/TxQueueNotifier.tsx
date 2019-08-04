@@ -25,7 +25,7 @@ export function TxQueueNotifier () {
               methodCall={methodCall}
               recipientAddress={recipientAddress}
               senderAddress={senderPair.address}
-              tokenSymbol={tokenSymbol}
+              tokenSymbol={tokenSymbol.toString()}
             />
           </StackedHorizontal>
         </Message.Content>

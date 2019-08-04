@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AccountId } from '@polkadot/types';
+import { createType } from '@polkadot/types';
 import { StakingContext } from '@substrate/ui-common';
 import { AddressSummary, Grid, Loading, Margin, Stacked, StyledNavLink, SubHeader, WithSpace } from '@substrate/ui-components';
 import { fromNullable } from 'fp-ts/lib/Option';
@@ -92,10 +92,10 @@ export function AccountOverviewDetailed (props: Props) {
       .getOrElse(false);
 
     const isStashValidating = fromNullable(allStashes)
-      .map(allStashes => allStashes.includes(new AccountId(currentAccount)))
+      .map(allStashes => allStashes.includes(createType('AccountId', currentAccount)))
       .getOrElse(false);
 
-    const accountType = fromNullable(stakingInfo).map(stakingInfo => new AccountId(currentAccount) === stakingInfo.controllerId ? 'controller' : 'stash');
+    const accountType = fromNullable(stakingInfo).map(stakingInfo => createType('AccountId', currentAccount) === stakingInfo.controllerId ? 'controller' : 'stash');
     const bondingPair = fromNullable(stakingInfo)
       .map(stakingInfo => accountType.fold(
         undefined,

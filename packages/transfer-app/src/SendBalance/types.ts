@@ -4,7 +4,7 @@
 
 import { SubmittableExtrinsic } from '@polkadot/api/SubmittableExtrinsic';
 import { DerivedBalances, DerivedFees } from '@polkadot/api-derive/types';
-import { Balance, Index } from '@polkadot/types';
+import { Balance, Index } from '@polkadot/types/interfaces';
 import BN from 'bn.js';
 
 /**

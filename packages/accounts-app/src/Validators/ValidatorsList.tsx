@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AccountId } from '@polkadot/types';
+import { AccountId } from '@polkadot/types/interfaces';
 import { FadedText, FlexItem, Stacked, Table } from '@substrate/ui-components';
 import { AlertsContext, AppContext } from '@substrate/ui-common';
 import BN from 'bn.js';

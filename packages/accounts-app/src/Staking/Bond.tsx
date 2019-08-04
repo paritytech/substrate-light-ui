@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { DerivedBalances } from '@polkadot/api-derive/types';
-import { Nonce } from '@polkadot/types';
+import { Index } from '@polkadot/types/interfaces';
 import { isUndefined } from '@polkadot/util';
 import { AppContext, AlertsContext, StakingContext, TxQueueContext, validate, AllExtrinsicData } from '@substrate/ui-common';
 import { AddressSummary, Dropdown, DropdownProps, FadedText, Header, Input, Margin, Stacked, StackedHorizontal, StyledNavButton, SubHeader, WithSpace, WithSpaceAround, WrapperDiv } from '@substrate/ui-components';
@@ -48,7 +48,7 @@ export function Bond (props: Props) {
   const [controllerBalance, setControllerBalance] = useState<DerivedBalances>();
   const [destination, setDestination] = useState<RewardDestinationOption>(rewardDestinationOptions[0]);
   const [loading, setLoading] = useState(false);
-  const [nonce, setNonce] = useState<Nonce>();
+  const [nonce, setNonce] = useState<Index>();
   const [stashBalance, setStashBalance] = useState<DerivedBalances>();
   const [status, setStatus] = useState<Either<Errors, AllExtrinsicData>>();
 
@@ -105,7 +105,7 @@ export function Bond (props: Props) {
     const subscription: Subscription = combineLatest([
       api.derive.balances.votingBalance(stash) as Observable<DerivedBalances>,
       api.derive.balances.votingBalance(controller) as Observable<DerivedBalances>,
-      api.query.system.accountNonce(stash) as Observable<Nonce>
+      api.query.system.accountNonce(stash) as Observable<Index>
     ]).pipe(
       take(1)
     ).subscribe(([stashBalance, controllerBalance, nonce]) => {

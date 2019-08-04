@@ -2,7 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AccountId, Balance, Exposure, Option, StakingLedger } from '@polkadot/types';
+import { Compact, Option } from '@polkadot/types';
+import { AccountId, Balance, Exposure, IndividualExposure, StakingLedger } from '@polkadot/types/interfaces';
 import { formatBalance } from '@polkadot/util';
 import { AppContext } from '@substrate/ui-common';
 import { AddressSummary, DynamicSizeText, FadedText, Icon, Margin, Stacked, StyledLinkButton, SubHeader, Table, WithSpaceAround } from '@substrate/ui-components';
@@ -20,7 +21,7 @@ interface Props {
 export function ValidatorRow (props: Props) {
   const { validator } = props;
   const { api, keyring } = useContext(AppContext);
-  const [nominators, setNominators] = useState<[AccountId, Balance][]>([]);
+  const [nominators, setNominators] = useState<[AccountId, Compact<Balance>][]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -39,7 +40,7 @@ export function ValidatorRow (props: Props) {
         first()
       )
       .subscribe((stakers) => {
-        const nominators = stakers ? stakers.others.map(({ who, value }): [AccountId, Balance] => [who, value]) : [];
+        const nominators = stakers ? stakers.others.map(({ who, value }: IndividualExposure): [AccountId, Compact<Balance>] => [who, value]) : [];
         setNominators(nominators); // the list of accounts that nominated this account
         setLoading(false);
       });
@@ -69,7 +70,7 @@ export function ValidatorRow (props: Props) {
                     <WithSpaceAround key={who.toString()}>
                       <Stacked>
                         <AddressSummary address={who.toString()} orientation='horizontal' noPlaceholderName size='tiny' />
-                        <DynamicSizeText fontSize='small' fontWeight='200'><FadedText>Bonded Amount: {formatBalance(bonded)}</FadedText></DynamicSizeText>
+                        <DynamicSizeText fontSize='small' fontWeight='200'><FadedText>Bonded Amount: {formatBalance(bonded.toNumber())}</FadedText></DynamicSizeText>
                       </Stacked>
                     </WithSpaceAround>
                   ))

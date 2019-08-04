@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { BlockNumber } from '@polkadot/types';
+import { BlockNumber } from '@polkadot/types/interfaces';
 import { AppContext } from '@substrate/ui-common';
 import { FadedText, Menu, Stacked, WrapperDiv } from '@substrate/ui-components';
 import BN from 'bn.js';
@@ -39,9 +39,9 @@ export function Governance (props: IProps) {
 
   useEffect(() => {
     const subscription = combineLatest([
-      api.query.democracy.launchPeriod() as unknown as Observable<BlockNumber>,
+      api.consts.democracy.launchPeriod as unknown as Observable<BlockNumber>,
       api.query.democracy.publicPropCount() as unknown as Observable<BN>,
-      api.query.councilMotions.proposalCount() as unknown as Observable<BN>,
+      api.query.council.proposalCount() as unknown as Observable<BN>,
       api.query.democracy.referendumCount() as unknown as Observable<BN>
     ])
     .pipe(

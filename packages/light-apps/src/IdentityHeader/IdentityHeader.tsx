@@ -22,12 +22,21 @@ interface MatchParams {
 interface Props extends RouteComponentProps<MatchParams> { }
 
 const nodeOptions: Array<any> = [];
+const prefixOptions: Array<any> = [];
 
 uiSettings.availableNodes.forEach(availNode => {
   nodeOptions.push({
     key: `${KEY_PREFIX}${availNode.value}`,
     value: availNode.value,
     text: availNode.text
+  });
+});
+
+uiSettings.availablePrefixes.forEach(prefix => {
+  prefixOptions.push({
+    key: `${KEY_PREFIX}${prefix.value}`,
+    value: prefix.value,
+    text: prefix.text
   });
 });
 
@@ -125,6 +134,14 @@ export function IdentityHeader (props: Props) {
     }
   };
 
+  const onSelectPrefix = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
+    const prefix = data.value as number;
+
+    uiSettings.set({ prefix });
+
+    window.location.reload();
+  };
+
   const renderSecondaryMenu = () => {
     const navToAccounts = () => {
       history.push(`/manageAccounts/${currentAccount}`);
@@ -166,6 +183,7 @@ export function IdentityHeader (props: Props) {
             <Icon color='black' name='address book' />
           </Menu.Item>
           <Dropdown icon='setting' item onChange={onSelectNode} options={nodeOptions} position='right' pointing selection text='Select a Node' />
+          <Dropdown icon='' item onChange={onSelectPrefix} options={prefixOptions} position='right' pointing selection text='Select Prefix' />
         </Menu>
       </StackedHorizontal>
     );
