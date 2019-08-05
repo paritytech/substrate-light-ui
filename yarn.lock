@@ -2699,28 +2699,10 @@
     "@babel/runtime" "^7.5.5"
     rxjs-compat "^6.4.0"
 
-"@polkadot/ui-settings@^0.42.0-beta.11":
-  version "0.42.0-beta.16"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-0.42.0-beta.16.tgz#f126334444dabc9281b79525259c9868d404fda1"
-  integrity sha512-88s33bUEGCvZ8c7oQOuHzP1u+wNjXQEyIp4oC+kW3UB+3N+WDxOL92uUuQfF7+NJTh5WUVoKQ7hvVBtzSbLwCA==
-  dependencies:
-    "@babel/runtime" "^7.5.5"
-    "@types/store" "^2.0.2"
-    store "^2.0.12"
-
-"@polkadot/ui-settings@^0.42.0-beta.18":
-  version "0.42.0-beta.21"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-0.42.0-beta.21.tgz#8f1327fe5cab567bb1d5d44b7bcbcfe56ad20b7c"
-  integrity sha512-9AyarwGUMSVc5U7PBnVYO97MyUvx0mwU+JJb00qa0jP1wtzfig+JW5fyHDXU3pPpvRBqiLIzuaMBQON2yP5oYA==
-  dependencies:
-    "@babel/runtime" "^7.5.5"
-    "@types/store" "^2.0.2"
-    store "^2.0.12"
-
-"@polkadot/ui-settings@^0.42.0-beta.23", "@polkadot/ui-settings@^0.42.0-beta.24":
-  version "0.42.0-beta.24"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-0.42.0-beta.24.tgz#ccab080a614c823d5f14f3fa856cead24483b687"
-  integrity sha512-8Zsz0wN1xJHiOQbplRjcPj5v4hoHT1Ev+9LZBxdae5g27IcHBAaYMHG6KUM2ZtJOSbXpjfnoGnZiHHiv6MtgWw==
+"@polkadot/ui-settings@^0.42.0-beta.11", "@polkadot/ui-settings@^0.42.0-beta.18", "@polkadot/ui-settings@^0.42.0-beta.23", "@polkadot/ui-settings@^0.42.0-beta.24":
+  version "0.42.0-beta.28"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-0.42.0-beta.28.tgz#347928fc75192786ae5f9f9caaa0d192c51a5cca"
+  integrity sha512-4UpHNEFFjqa03FXeOMEIAHkDmpSPxETzIr8FE/8y24K5hWoX0WSlIF6tICYMp8xXDKzThHZj2MdsN9GlMcyvUw==
   dependencies:
     "@babel/runtime" "^7.5.5"
     "@types/store" "^2.0.2"
