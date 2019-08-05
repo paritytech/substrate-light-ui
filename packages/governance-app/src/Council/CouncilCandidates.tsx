@@ -4,6 +4,7 @@
 
 import { Vec } from '@polkadot/types';
 import { AccountId } from '@polkadot/types/interfaces';
+import settings from '@polkadot/ui-settings';
 import { AppContext } from '@substrate/ui-common';
 import { FadedText, Header, Stacked } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';
@@ -14,8 +15,10 @@ export function CouncilCandidates () {
   const [councilCandidates, setCouncilCandidates] = useState();
 
   useEffect(() => {
+    const subscribable = settings.prefix === 42 ? api.query.elections.candidates() : api.query.council.candidates();
+
     const subscription =
-      (api.query.elections.candidates() as Observable<Vec<AccountId>>)
+      (subscribable as Observable<Vec<AccountId>>)
       .subscribe((councilCandidates) => {
         setCouncilCandidates(councilCandidates);
       });

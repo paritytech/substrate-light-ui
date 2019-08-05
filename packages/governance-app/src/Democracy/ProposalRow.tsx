@@ -2,8 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Option, Tuple, u32 } from '@polkadot/types';
-import { AccountId, PropIndex, Proposal } from '@polkadot/types/interfaces';
+import { Option, Tuple } from '@polkadot/types';
+import { AccountId, Index, PropIndex, Proposal } from '@polkadot/types/interfaces';
 import { AppContext, TxQueueContext, validateDerived } from '@substrate/ui-common';
 import { AddressSummary, Dropdown, FadedText, StackedHorizontal, StyledNavButton, SubHeader, Table } from '@substrate/ui-components';
 import BN from 'bn.js';
@@ -35,7 +35,7 @@ export function ProposalRow (props: IProps) {
     const subscription: Subscription = combineLatest([
       (api.query.democracy.depositOf(propIndex) as Observable<Option<Tuple>>),
       (api.derive.balances.fees() as Observable<DerivedFees>),
-      (api.query.system.accountNonce(currentAccount) as Observable<u32>),
+      (api.query.system.accountNonce(currentAccount) as Observable<Index>),
       (api.derive.balances.votingBalance(currentAccount) as Observable<DerivedBalances>)
     ])
     .pipe(

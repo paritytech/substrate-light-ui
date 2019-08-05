@@ -147,9 +147,9 @@ export function BalanceOverview (props: Pick<Props, Exclude<keyof Props, keyof '
                 </WithSpace>
               : renderUnBondedAccountOptions()
         }
-        <WithSpace><SubHeader>Stash Active:</SubHeader> <FadedText>{stakingLedger && formatBalance(stakingLedger.active.toBn())}</FadedText> </WithSpace>
-        <WithSpace><SubHeader>Stakers Total:</SubHeader> <FadedText>{formatBalance(stakers && stakers.total.toBn())}</FadedText> </WithSpace>
-        <WithSpace><SubHeader>Bonded:</SubHeader> <FadedText>{stakingLedger && formatBalance(stakingLedger.total.toBn())} </FadedText></WithSpace>
+        <WithSpace><SubHeader>Stash Active:</SubHeader> <FadedText>{stakingLedger && formatBalance(stakingLedger.active)}</FadedText> </WithSpace>
+        <WithSpace><SubHeader>Stakers Total:</SubHeader> <FadedText>{formatBalance(stakers && stakers.total)}</FadedText> </WithSpace>
+        <WithSpace><SubHeader>Bonded:</SubHeader> <FadedText>{stakingLedger && formatBalance(stakingLedger.total)} </FadedText></WithSpace>
         <WithSpace>
           <Stacked><Input disabled={controllerId !== accountId} onChange={handleSetUnbondAmount} value={unbondAmount} /> <WithSpace><StyledLinkButton disabled={controllerId !== accountId} onClick={unbond}>Unbond</StyledLinkButton></WithSpace></Stacked>
           { controllerId !== accountId && <FadedText>You can only unbond funds through your controller account.</FadedText>}

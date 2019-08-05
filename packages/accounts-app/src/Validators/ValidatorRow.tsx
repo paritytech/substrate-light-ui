@@ -11,7 +11,7 @@ import { fromNullable, some } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
 import { Observable, Subscription } from 'rxjs';
 import { first, switchMap } from 'rxjs/operators';
-import { Loader } from 'semantic-ui-react';
+import Loader from 'semantic-ui-react/dist/commonjs/elements/Loader';
 
 interface Props {
   addToNomineeList: (event: React.MouseEvent<HTMLElement>) => void;
@@ -70,7 +70,7 @@ export function ValidatorRow (props: Props) {
                     <WithSpaceAround key={who.toString()}>
                       <Stacked>
                         <AddressSummary address={who.toString()} orientation='horizontal' noPlaceholderName size='tiny' />
-                        <DynamicSizeText fontSize='small' fontWeight='200'><FadedText>Bonded Amount: {formatBalance(bonded.toNumber())}</FadedText></DynamicSizeText>
+                        <DynamicSizeText fontSize='small' fontWeight='200'><FadedText>Bonded Amount: {formatBalance(bonded)}</FadedText></DynamicSizeText>
                       </Stacked>
                     </WithSpaceAround>
                   ))

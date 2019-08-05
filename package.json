@@ -45,10 +45,10 @@
   "resolutions": {
     "@polkadot/api": "^0.90.0-beta.22",
     "@polkadot/api-contract": "^0.90.0-beta.22",
-    "@polkadot/keyring": "^0.94.0-beta.14",
+    "@polkadot/keyring": "^1.1.0-beta.1",
     "@polkadot/types": "^0.90.0-beta.22",
-    "@polkadot/util": "^0.94.0-beta.14",
-    "@polkadot/util-crypto": "^0.94.0-beta.14",
+    "@polkadot/util": "^1.1.0-beta.1",
+    "@polkadot/util-crypto": "^1.1.0-beta.1",
     "@types/styled-components": "4.1.8",
     "babel-core": "^7.0.0-bridge.0",
     "typescript": "^3.5.3"

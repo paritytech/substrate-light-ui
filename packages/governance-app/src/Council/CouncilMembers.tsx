@@ -5,6 +5,7 @@
 import { Tuple, Vec } from '@polkadot/types';
 import { AccountId, BlockNumber } from '@polkadot/types/interfaces';
 import { isUndefined } from '@polkadot/util';
+import settings from '@polkadot/ui-settings';
 import { AppContext } from '@substrate/ui-common';
 import { AddressSummary, FadedText, Header, StackedHorizontal } from '@substrate/ui-components';
 import { tryCatch2v } from 'fp-ts/lib/Either';
@@ -17,8 +18,9 @@ export function CouncilMembers () {
   const [activeCouncil, setActiveCouncil] = useState();
 
   useEffect(() => {
+    const subscribable = settings.prefix === 42 ? api.query.council.members() : api.query.council.activeCouncil();
     const subscription =
-      (api.query.council.members() as unknown as Observable<Vec<Tuple>>)
+      (subscribable as unknown as Observable<Vec<Tuple>>)
         .subscribe((activeCouncil) => {
           setActiveCouncil(activeCouncil);
         });

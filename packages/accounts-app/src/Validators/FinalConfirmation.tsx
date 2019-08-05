@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { DerivedBalances } from '@polkadot/api-derive/types';
-import { u64 } from '@polkadot/types';
+import { Index } from '@polkadot/types/interfaces';
 import { AppContext, AlertsContext, AllExtrinsicData, StakingContext, TxQueueContext, validate } from '@substrate/ui-common';
 import { Address, AddressSummary, FadedText, Header, Icon, Margin, Stacked, StackedHorizontal, StyledNavButton, StyledLinkButton, SubHeader, WithSpace } from '@substrate/ui-components';
 import BN from 'bn.js';
@@ -65,7 +65,7 @@ export function FinalConfirmation (props: Props) {
   useEffect(() => {
     const subscription: Subscription = combineLatest([
       (api.derive.balances.votingBalance(nominateWith) as Observable<DerivedBalances>),
-      (api.query.system.accountNonce(nominateWith) as Observable<u64>)
+      (api.query.system.accountNonce(nominateWith) as Observable<Index>)
     ])
       .pipe(take(1))
       .subscribe(([controllerVotingBalance, nonce]) => {
@@ -77,7 +77,7 @@ export function FinalConfirmation (props: Props) {
   }, [nominateWith]);
 
   const [controllerVotingBalance, setControllerVotingBalance] = useState<DerivedBalances>();
-  const [nonce, setNonce] = useState<u64>();
+  const [nonce, setNonce] = useState<Index>();
   const [status, setStatus] = useState<Either<Errors, AllExtrinsicData>>();
 
   useEffect(() => {

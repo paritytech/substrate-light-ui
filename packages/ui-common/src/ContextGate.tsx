@@ -77,8 +77,6 @@ export function ContextGate (props: { children: React.ReactNode }) {
           api.isReady
         ),
         switchMap(_ =>
-          // Get info about the current chain
-          // FIXME Correct types should come from @polkadot/api to avoid type assertion
           combineLatest([
             api.rpc.system.chain(),
             api.rpc.system.health(),
