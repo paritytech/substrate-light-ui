@@ -2658,9 +2658,9 @@
     styled-theming "^2.2.0"
 
 "@polkadot/ui-assets@^0.42.0-beta.11":
-  version "0.42.0-beta.16"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-assets/-/ui-assets-0.42.0-beta.16.tgz#409d55583a15ef4d3316cb2822c1c359e7fe1c72"
-  integrity sha512-DbxCgt8vddNOx5N/4rz6qEYq2Vih4zyq1nXnJNypHuLLZDRVFtibAoe7FazOrrRwb5gW8+p7jdRIzpJ7FSxruQ==
+  version "0.42.0-beta.28"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-assets/-/ui-assets-0.42.0-beta.28.tgz#8077c366e2c325d750c5bcc48994ec0bcb9a8e01"
+  integrity sha512-l43hojohaMLOTX3nfI5kyVGw0tTegCXStgB9jfgm129YZ6xIZVSgue4MpqfrgS6kbP1HnvEMieHijjW9cDtcbA==
   dependencies:
     "@babel/runtime" "^7.5.5"
 
