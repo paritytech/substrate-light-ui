@@ -29,7 +29,7 @@ export function CouncilSummary () {
 
       const subscription = combineLatest([
         (api.query.council.termDuration() as unknown as Observable<BlockNumber>),
-        (api.query.council.voteCount() as unknown as Observable<VoteIndex>),
+        (api.query.council.voteCount() as unknown as Observable<VoteIndex>)
       ]).pipe(take(1))
         .subscribe(([termDuration, voteCount]) => {
           setTermDuration(termDuration);

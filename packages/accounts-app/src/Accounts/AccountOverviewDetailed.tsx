@@ -94,7 +94,7 @@ export function AccountOverviewDetailed (props: Props) {
       .getOrElse(false);
 
     const isStashValidating = fromNullable(allStashes)
-      .map(allStashes => allStashes.includes(currentAccount)
+      .map(allStashes => allStashes.includes(createType('AccountId', currentAccount)))
       .getOrElse(false);
 
     const accountType = fromNullable(stakingInfo).map(stakingInfo => createType('AccountId', currentAccount).eq(stakingInfo.controllerId) ? 'controller' : 'stash');
