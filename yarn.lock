@@ -2555,21 +2555,7 @@
     "@polkadot/util" "^1.1.0-beta.1"
     "@polkadot/util-crypto" "^1.1.0-beta.1"
 
-"@polkadot/react-identicon@^0.42.0-beta.15":
-  version "0.42.0-beta.19"
-  resolved "https://registry.yarnpkg.com/@polkadot/react-identicon/-/react-identicon-0.42.0-beta.19.tgz#1d148bc1c6175c5f7a8d1f7d5920856f70342a28"
-  integrity sha512-To5G8lDYserSghCKEc+p24i218F9KFViuRTezi6F4KppS10/EOyLelTx2jfOX1AaUEaWnqFHnEytWuKQX0l9tA==
-  dependencies:
-    "@babel/runtime" "^7.5.5"
-    "@polkadot/ui-settings" "^0.42.0-beta.19"
-    "@types/color" "^3.0.0"
-    "@types/react-copy-to-clipboard" "^4.2.6"
-    color "^3.1.2"
-    jdenticon "2.1.1"
-    react-copy-to-clipboard "^5.0.1"
-    styled-components "^4.3.1"
-
-"@polkadot/react-identicon@^0.42.0-beta.27":
+"@polkadot/react-identicon@^0.42.0-beta.15", "@polkadot/react-identicon@^0.42.0-beta.27":
   version "0.42.0-beta.28"
   resolved "https://registry.yarnpkg.com/@polkadot/react-identicon/-/react-identicon-0.42.0-beta.28.tgz#875cf690544d687441c2aa77d4d7bddbe27e8b48"
   integrity sha512-fxargMJfUxEQCTpS8KijldiK21WKTqppi2hwJKj7SWJ+Ua9sfGuggi5qdgXuoLjotNu08Ctau3eXJ3kdhO2C5A==
@@ -2621,10 +2607,10 @@
     "@types/memoizee" "^0.4.2"
     memoizee "^0.4.14"
 
-"@polkadot/ui-api@^0.34.0-beta.107":
-  version "0.34.0-beta.107"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-api/-/ui-api-0.34.0-beta.107.tgz#8c7541de3388b584de28853104b677e57683a6e1"
-  integrity sha512-Nh7+uKXTpsVXLrGY6d+v5/TPDmNnUqSNyujzPyR+IyL6M0UIU6NqjqdEa2wAgafAsGlMFOjycpUJbU/GThRS0w==
+"@polkadot/ui-api@^0.34.0-beta.108":
+  version "0.34.0-beta.108"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-api/-/ui-api-0.34.0-beta.108.tgz#d23d77a306d539d25b339ff1fbb2e34371443f85"
+  integrity sha512-dzg6A24ZdN9hneJ1FiJkiod+y5obtvY5qp82sIdV/KMF0bRGnL9hL3eWALv3+VNpU7tC0zPxcsLmliueZ4x8xQ==
   dependencies:
     "@babel/runtime" "^7.5.5"
     "@polkadot/api" "^0.90.0-beta.22"
@@ -2632,16 +2618,16 @@
     rxjs-compat "^6.4.0"
 
 "@polkadot/ui-app@^0.34.0-beta.107":
-  version "0.34.0-beta.107"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-app/-/ui-app-0.34.0-beta.107.tgz#aff3e07f47a9abcf8b142a5a894ff110986275d2"
-  integrity sha512-/ZQq6mhjGUk2WVV0wc73JhDcOvgYBR65KQP3ow70mPXJ9n/1fIRgc2G0lLn0Osonm4cJzu6cAgAx8OD+O3NTVA==
+  version "0.34.0-beta.108"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-app/-/ui-app-0.34.0-beta.108.tgz#d4ac987fd9a2197d71d25b94b96bc6d5585fa6d3"
+  integrity sha512-LVf1YJlLTbSzBPCkGqx8Llu32zfswQu4pK9hjfDZ3fO7+VCi2ayqXePiLmsujpEK22ggTV5pZWU5QUZorXlLwA==
   dependencies:
     "@babel/runtime" "^7.5.5"
     "@polkadot/keyring" "^1.0.1"
     "@polkadot/react-identicon" "^0.42.0-beta.27"
-    "@polkadot/ui-api" "^0.34.0-beta.107"
+    "@polkadot/ui-api" "^0.34.0-beta.108"
     "@polkadot/ui-keyring" "^0.42.0-beta.27"
-    "@polkadot/ui-reactive" "^0.34.0-beta.107"
+    "@polkadot/ui-reactive" "^0.34.0-beta.108"
     "@polkadot/ui-settings" "^0.42.0-beta.27"
     "@types/chart.js" "^2.7.56"
     "@types/i18next" "^12.1.0"
@@ -2691,15 +2677,15 @@
     store "^2.0.12"
     styled-components "^4.3.1"
 
-"@polkadot/ui-reactive@^0.34.0-beta.107":
-  version "0.34.0-beta.107"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-reactive/-/ui-reactive-0.34.0-beta.107.tgz#f1d1fbbe3903dd6c4a0c4dc63472de7ae8bc59b8"
-  integrity sha512-bkDDYC8nWcmq+a4OJkYJ9GASyByGYGk2f5LE5zeLJDFzVIRqv1mxPaoYh28eoqnwnJaGcqPNFDuqtdQcNfxtiw==
+"@polkadot/ui-reactive@^0.34.0-beta.108":
+  version "0.34.0-beta.108"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-reactive/-/ui-reactive-0.34.0-beta.108.tgz#39a9e70c7a1638aabccc52e670fc1f1250bbf973"
+  integrity sha512-/dcxc1Yzia/o/xRtW92hgtpfUW0+52NU7498G4J5KCEHR0tJ8Opr4iB2IbgF64uuUH+O1H/kFowuXOhRzcjXJg==
   dependencies:
     "@babel/runtime" "^7.5.5"
     rxjs-compat "^6.4.0"
 
-"@polkadot/ui-settings@^0.42.0-beta.19", "@polkadot/ui-settings@^0.42.0-beta.27", "@polkadot/ui-settings@^0.42.0-beta.28":
+"@polkadot/ui-settings@^0.42.0-beta.27", "@polkadot/ui-settings@^0.42.0-beta.28":
   version "0.42.0-beta.28"
   resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-0.42.0-beta.28.tgz#347928fc75192786ae5f9f9caaa0d192c51a5cca"
   integrity sha512-4UpHNEFFjqa03FXeOMEIAHkDmpSPxETzIr8FE/8y24K5hWoX0WSlIF6tICYMp8xXDKzThHZj2MdsN9GlMcyvUw==
@@ -11269,13 +11255,6 @@ javascript-stringify@^1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/javascript-stringify/-/javascript-stringify-1.6.0.tgz#142d111f3a6e3dae8f4a9afd77d45855b5a9cce3"
   integrity sha1-FC0RHzpuPa6PSpr9d9RYVbWpzOM=
-
-jdenticon@2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/jdenticon/-/jdenticon-2.1.1.tgz#f9288e87b3466e2c5f05948c68db58e1c9e1b800"
-  integrity sha512-bFD210JMaK2RMHGSkdDXqdQzasMrVIGDfxUMXD/Uwq2t7g9Njb4T6kms5TrocsLU0CDmQCoB0laGJ6JETiprsg==
-  dependencies:
-    canvas-renderer "~2.1.1"
 
 jdenticon@2.2.0:
   version "2.2.0"
