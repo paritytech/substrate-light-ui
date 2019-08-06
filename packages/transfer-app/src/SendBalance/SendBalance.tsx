@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { DerivedBalances, DerivedFees } from '@polkadot/api-derive/types';
-import { Index } from '@polkadot/types';
+import { Index } from '@polkadot/types/interfaces';
 import { AppContext, handler, TxQueueContext, validate, AllExtrinsicData } from '@substrate/ui-common';
 import { Balance, Form, Input, NavButton, StackedHorizontal, SubHeader } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';

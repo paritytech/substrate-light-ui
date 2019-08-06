@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import ApiRx from '@polkadot/api/rx';
-import { Balance, getTypeRegistry } from '@polkadot/types';
+import { getTypeRegistry } from '@polkadot/types';
 import { MAX_SIZE_BYTES, MAX_SIZE_MB } from '@polkadot/ui-signer/Checks/constants';
 import { compactToU8a } from '@polkadot/util';
 import BN from 'bn.js';
@@ -23,7 +23,7 @@ const SIGNATURE_SIZE = LENGTH_PUBLICKEY + LENGTH_SIGNATURE + LENGTH_ERA;
  */
 function validateAmount (values: SubResults & UserInputs): Either<Errors, SubResults & UserInputs & WithAmount> {
   const { amountAsString, ...rest } = values;
-  const amount = new Balance(amountAsString);
+  const amount = new BN(amountAsString);
 
   if (amount.isNeg()) {
     return left({ amount: 'Please enter a positive amount to transfer.' });

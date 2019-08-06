@@ -2,7 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AccountId, Method, Option, PropIndex, Proposal, Tuple, Nonce } from '@polkadot/types';
+import { Option, Tuple } from '@polkadot/types';
+import { AccountId, Index, PropIndex, Proposal } from '@polkadot/types/interfaces';
 import { AppContext, TxQueueContext, validateDerived } from '@substrate/ui-common';
 import { AddressSummary, Dropdown, FadedText, StackedHorizontal, StyledNavButton, SubHeader, Table } from '@substrate/ui-components';
 import BN from 'bn.js';
@@ -26,7 +27,7 @@ export function ProposalRow (props: IProps) {
   const [depositedBalance, setDepositedBalance] = useState();
   const [depositorAccountIds, setDepositorAccountIds] = useState();
   const [votingBalance, setVotingBalance] = useState();
-  const { meta, method, section } = Method.findFunction(proposal.callIndex);
+  const { meta, method, section } = api.findCall(proposal.callIndex);
 
   const currentAccount = location.pathname.split('/')[2];
 
@@ -34,7 +35,7 @@ export function ProposalRow (props: IProps) {
     const subscription: Subscription = combineLatest([
       (api.query.democracy.depositOf(propIndex) as Observable<Option<Tuple>>),
       (api.derive.balances.fees() as Observable<DerivedFees>),
-      (api.query.system.accountNonce(currentAccount) as Observable<Nonce>),
+      (api.query.system.accountNonce(currentAccount) as Observable<Index>),
       (api.derive.balances.votingBalance(currentAccount) as Observable<DerivedBalances>)
     ])
     .pipe(

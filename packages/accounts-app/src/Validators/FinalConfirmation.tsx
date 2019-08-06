@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { DerivedBalances } from '@polkadot/api-derive/types';
-import { Nonce } from '@polkadot/types';
+import { Index } from '@polkadot/types/interfaces';
 import { AppContext, AlertsContext, AllExtrinsicData, StakingContext, TxQueueContext, validate } from '@substrate/ui-common';
 import { Address, AddressSummary, FadedText, Header, Icon, Margin, Stacked, StackedHorizontal, StyledNavButton, StyledLinkButton, SubHeader, WithSpace } from '@substrate/ui-components';
 import BN from 'bn.js';
@@ -42,7 +42,7 @@ export function FinalConfirmation (props: Props) {
     const nominationAmount = stakingLedger && stakingLedger.total;
 
     if (!stakingLedger) { errors.push('Staking ledger is undefined... Please refresh and try again or try with a different account.'); }
-    if (!nominationAmount || nominationAmount.lte(new BN(0))) { errors.push('Nomination amount must be greater than zero.'); }
+    if (!nominationAmount || nominationAmount.unwrap().lte(new BN(0))) { errors.push('Nomination amount must be greater than zero.'); }
 
     if (errors.length) { return left(errors); }
 
@@ -65,7 +65,7 @@ export function FinalConfirmation (props: Props) {
   useEffect(() => {
     const subscription: Subscription = combineLatest([
       (api.derive.balances.votingBalance(nominateWith) as Observable<DerivedBalances>),
-      (api.query.system.accountNonce(nominateWith) as Observable<Nonce>)
+      (api.query.system.accountNonce(nominateWith) as Observable<Index>)
     ])
       .pipe(take(1))
       .subscribe(([controllerVotingBalance, nonce]) => {
@@ -77,7 +77,7 @@ export function FinalConfirmation (props: Props) {
   }, [nominateWith]);
 
   const [controllerVotingBalance, setControllerVotingBalance] = useState<DerivedBalances>();
-  const [nonce, setNonce] = useState<Nonce>();
+  const [nonce, setNonce] = useState<Index>();
   const [status, setStatus] = useState<Either<Errors, AllExtrinsicData>>();
 
   useEffect(() => {

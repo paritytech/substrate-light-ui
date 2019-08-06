@@ -2,7 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AccountId } from '@polkadot/types';
+import { createType } from '@polkadot/types';
+import { AccountId } from '@polkadot/types/interfaces';
 import { AlertsContext, AppContext, handler, StakingContext } from '@substrate/ui-common';
 import { AddressSummary, FadedText, Icon, Input, Margin, Stacked, StackedHorizontal, StyledLinkButton, SubHeader, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
 import H from 'history';
@@ -29,7 +30,7 @@ export function AccountsOverviewCard (props: Props) {
   const derivedStakingInfo = accountStakingMap[address];
 
   useEffect(() => {
-    const accountType = fromNullable(derivedStakingInfo).map(stakingInfo => new AccountId(address) === stakingInfo.controllerId ? 'controller' : 'stash');
+    const accountType = fromNullable(derivedStakingInfo).map(stakingInfo => createType('AccountId', address) === stakingInfo.controllerId ? 'controller' : 'stash');
     const bondingPair = fromNullable(derivedStakingInfo)
       .map(stakingInfo => accountType.fold(
         undefined,

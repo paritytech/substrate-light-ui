@@ -2,13 +2,13 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { BlockNumber } from '@polkadot/types';
+import { BlockNumber } from '@polkadot/types/interfaces';
 import { AppContext } from '@substrate/ui-common';
 import { FadedText, Menu, Stacked, WrapperDiv } from '@substrate/ui-components';
 import BN from 'bn.js';
 import React, { useEffect, useContext, useState } from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest, Observable, of, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import Card from 'semantic-ui-react/dist/commonjs/views/Card';
 import Progress from 'semantic-ui-react/dist/commonjs/modules/Progress/Progress';
@@ -24,7 +24,6 @@ interface IProps extends RouteComponentProps<MatchParams> {}
 
 export function Governance (props: IProps) {
   const { api } = useContext(AppContext);
-  const [propCount, setPropCount] = useState();
   const [refCount, setRefCount] = useState();
   const [launchPeriod, setLaunchPeriod] = useState();
   const [latestBlockNumber, setLatestBlockNumber] = useState();
@@ -38,21 +37,29 @@ export function Governance (props: IProps) {
   }, []);
 
   useEffect(() => {
-    const subscription = combineLatest([
-      api.query.democracy.launchPeriod() as unknown as Observable<BlockNumber>,
+    let launchPeriodObs: Observable<BN>;
+
+    try {
+      launchPeriodObs = of(api.consts.democracy.launchPeriod) as unknown as Observable<BN>;
+    } catch (e) {
+      try {
+        launchPeriodObs = api.query.democracy.launchPeriod() as unknown as Observable<BN>;
+      } catch (e) {
+        launchPeriodObs = of(new BN(-1));
+      }
+    }
+
+    const subscription: Subscription = combineLatest([
+      launchPeriodObs,
       api.query.democracy.publicPropCount() as unknown as Observable<BN>,
-      api.query.councilMotions.proposalCount() as unknown as Observable<BN>,
       api.query.democracy.referendumCount() as unknown as Observable<BN>
-    ])
-    .pipe(
-      take(1)
-    )
-    .subscribe(([launchPeriod, propCount, motionsCount, refCount]) => {
+    ]).pipe(take(1))
+    .subscribe(([launchPeriod, motionsCount, refCount]) => {
       setLaunchPeriod(launchPeriod);
-      setPropCount(propCount);
       setCouncilMotionsCount(motionsCount);
       setRefCount(refCount);
     });
+
     return () => subscription.unsubscribe();
   }, []);
 
@@ -78,7 +85,7 @@ export function Governance (props: IProps) {
         <Menu.Item onClick={navToDemocracy}>
           Democracy
           <Stacked justifyContent='flex-end' alignItems='center'>
-            <FadedText>Proposals ({propCount && propCount.toString()})</FadedText>
+            <FadedText>Proposals ()</FadedText>
             <FadedText>Referenda ({refCount && refCount.toString()})</FadedText>
           </Stacked>
         </Menu.Item>

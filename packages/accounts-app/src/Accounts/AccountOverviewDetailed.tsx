@@ -2,13 +2,14 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AccountId } from '@polkadot/types';
+import { createType } from '@polkadot/types';
 import { StakingContext } from '@substrate/ui-common';
-import { AddressSummary, Grid, Loading, Margin, Stacked, StyledNavLink, SubHeader, WithSpace } from '@substrate/ui-components';
+import { AddressSummary, Grid, Margin, Stacked, StyledNavLink, SubHeader, WithSpace } from '@substrate/ui-components';
 import { fromNullable } from 'fp-ts/lib/Option';
 import React, { useEffect, useState, useContext } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import Card from 'semantic-ui-react/dist/commonjs/views/Card';
+import Loader from 'semantic-ui-react/dist/commonjs/elements/Loader';
 
 import { BalanceOverview } from './BalanceOverview';
 import { rewardDestinationOptions } from '../constants';
@@ -26,6 +27,7 @@ export function AccountOverviewDetailed (props: Props) {
   const { history, match: { params: { currentAccount } } } = props;
   const { accountStakingMap, allStashes } = useContext(StakingContext);
   const [nominees, setNominees] = useState();
+
   const stakingInfo = accountStakingMap[currentAccount];
 
   useEffect(() => {
@@ -39,7 +41,7 @@ export function AccountOverviewDetailed (props: Props) {
         {
           fromNullable(stakingInfo)
             .map((stakingInfo) => <BalanceOverview history={history} {...stakingInfo} />)
-            .getOrElse(<Loading active />)
+            .getOrElse(<Loader active inline />)
         }
         </Card.Content>
       </Card>
@@ -92,10 +94,11 @@ export function AccountOverviewDetailed (props: Props) {
       .getOrElse(false);
 
     const isStashValidating = fromNullable(allStashes)
-      .map(allStashes => allStashes.includes(new AccountId(currentAccount)))
+      .map(allStashes => allStashes.includes(createType('AccountId', currentAccount)))
       .getOrElse(false);
 
-    const accountType = fromNullable(stakingInfo).map(stakingInfo => new AccountId(currentAccount) === stakingInfo.controllerId ? 'controller' : 'stash');
+    const accountType = fromNullable(stakingInfo).map(stakingInfo => createType('AccountId', currentAccount).eq(stakingInfo.controllerId) ? 'controller' : 'stash');
+
     const bondingPair = fromNullable(stakingInfo)
       .map(stakingInfo => accountType.fold(
         undefined,
@@ -129,9 +132,7 @@ export function AccountOverviewDetailed (props: Props) {
   return (
     <Grid columns='16'>
       {
-        fromNullable(stakingInfo)
-          .map(stakingInfo => renderGeneral())
-          .getOrElse(<div></div>)
+        renderGeneral()
       }
     </Grid>
   );
