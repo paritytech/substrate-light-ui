@@ -2547,13 +2547,13 @@
     "@babel/runtime" "^7.5.5"
 
 "@polkadot/keyring@^1.0.1", "@polkadot/keyring@^1.1.0-beta.1":
-  version "1.1.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/keyring/-/keyring-1.1.0-beta.1.tgz#4699fb5e34f9b22c04ea8dd0a397a1e881f3e561"
-  integrity sha512-mtaBua9erkvSQ9C+8UTgNsZkIb3viaL4IZZNTeYuxoDBnKbDeA3WNPBLG8FOqBh351vjB1dV+ka3rwcFf3DWKw==
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/keyring/-/keyring-1.1.1.tgz#397f0f3bf154fa64d818765bee721f6b4c64eacb"
+  integrity sha512-1mEXzQoh0jfuDunOZF7YcCRsgaUucYoXz3KoKjVcyGH4oREL6GJvc0nXAIVK/e/6mnANIysUYq4Aa8/MDKQgQw==
   dependencies:
     "@babel/runtime" "^7.5.5"
-    "@polkadot/util" "^1.1.0-beta.1"
-    "@polkadot/util-crypto" "^1.1.0-beta.1"
+    "@polkadot/util" "^1.1.1"
+    "@polkadot/util-crypto" "^1.1.1"
 
 "@polkadot/react-identicon@^0.42.0-beta.15", "@polkadot/react-identicon@^0.42.0-beta.27":
   version "0.42.0-beta.28"
@@ -2711,13 +2711,13 @@
     "@babel/runtime" "^7.5.5"
     "@polkadot/ui-app" "^0.34.0-beta.107"
 
-"@polkadot/util-crypto@^1.0.1", "@polkadot/util-crypto@^1.1.0-beta.1":
-  version "1.1.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/util-crypto/-/util-crypto-1.1.0-beta.1.tgz#eb103b6d7c276c6d3a0b846d948fc93cc7f8b021"
-  integrity sha512-wS3/KgIRQqa3UeRGEwiEEiGDnxVkshj1O36WBLBH9R11EO1pcEXICk/cZBxCTvaoiIznnB/pKknZhWdzGK/NZw==
+"@polkadot/util-crypto@^1.0.1", "@polkadot/util-crypto@^1.1.0-beta.1", "@polkadot/util-crypto@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/util-crypto/-/util-crypto-1.1.1.tgz#c9735058e46f55043feeadf88a9e3476739ff959"
+  integrity sha512-TxfLP4egz4sD/xP4nN0kTyls042HMTwkz2V1WPiB1aSPbBwfWUgKQkDXQcSYFIqsI7iCx4cV98Yx9oLz9NXBOw==
   dependencies:
     "@babel/runtime" "^7.5.5"
-    "@polkadot/util" "^1.1.0-beta.1"
+    "@polkadot/util" "^1.1.1"
     "@polkadot/wasm-crypto" "^0.13.1"
     "@types/bip39" "^2.4.2"
     "@types/bs58" "^4.0.0"
@@ -2733,10 +2733,10 @@
     tweetnacl "^1.0.1"
     xxhashjs "^0.2.2"
 
-"@polkadot/util@^1.0.1", "@polkadot/util@^1.1.0-beta.1":
-  version "1.1.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/util/-/util-1.1.0-beta.1.tgz#27e0a5dd1503d21b49507fae352872105db3ac7a"
-  integrity sha512-DXc9ErGkJ0QUm6AIZgVcCRo/ttVnBhb9aroQf7UatdDbhD7noHsxnqMUGSsX2ob4mG7Z/IufREiVZlANmo8L/g==
+"@polkadot/util@^1.0.1", "@polkadot/util@^1.1.0-beta.1", "@polkadot/util@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/util/-/util-1.1.1.tgz#44461fe75edab2156e6699bf1cfcc5007a603707"
+  integrity sha512-53yRPNMTYvyG5gde6sgNAA4QVjacAcupPqqDygJD4rytetOU5tmGGSnrs005FtG149pmGgV1rDUHm1R+3ogE4w==
   dependencies:
     "@babel/runtime" "^7.5.5"
     "@types/bn.js" "^4.11.5"
@@ -15676,14 +15676,14 @@ react-docgen@^3.0.0:
     recast "^0.16.0"
 
 react-dom@^16.6.3, react-dom@^16.7.0, react-dom@^16.8.2:
-  version "16.8.6"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.8.6.tgz#71d6303f631e8b0097f56165ef608f051ff6e10f"
-  integrity sha512-1nL7PIq9LTL3fthPqwkvr2zY7phIPjYrT0jp4HjyEQrEROnw4dG41VVwi/wfoCneoleqrNX7iAD+pXebJZwrwA==
+  version "16.9.0"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.9.0.tgz#5e65527a5e26f22ae3701131bcccaee9fb0d3962"
+  integrity sha512-YFT2rxO9hM70ewk9jq0y6sQk8cL02xm4+IzYBz75CQGlClQQ1Bxq0nhHF6OtSbit+AIahujJgb/CPRibFkMNJQ==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     prop-types "^15.6.2"
-    scheduler "^0.13.6"
+    scheduler "^0.15.0"
 
 react-dropzone@10.1.3:
   version "10.1.3"
@@ -16785,6 +16785,14 @@ scheduler@^0.13.6:
   version "0.13.6"
   resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.13.6.tgz#466a4ec332467b31a91b9bf74e5347072e4cd889"
   integrity sha512-IWnObHt413ucAYKsD9J1QShUKkbKLQQHdxRyw73sw4FN26iWr3DY/H34xGPe4nmL1DwXyWmSWmMrA9TfQbE/XQ==
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+
+scheduler@^0.15.0:
+  version "0.15.0"
+  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.15.0.tgz#6bfcf80ff850b280fed4aeecc6513bc0b4f17f8e"
+  integrity sha512-xAefmSfN6jqAa7Kuq7LIJY0bwAPG3xlCj0HMEBQk1lxYiDKZscY2xJ5U/61ZTrYbmNQbXa+gc7czPkVo11tnCg==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
