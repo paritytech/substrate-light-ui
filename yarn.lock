@@ -2547,13 +2547,13 @@
     "@babel/runtime" "^7.5.5"
 
 "@polkadot/keyring@^1.0.1", "@polkadot/keyring@^1.1.0-beta.1":
-  version "1.1.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/keyring/-/keyring-1.1.0-beta.1.tgz#4699fb5e34f9b22c04ea8dd0a397a1e881f3e561"
-  integrity sha512-mtaBua9erkvSQ9C+8UTgNsZkIb3viaL4IZZNTeYuxoDBnKbDeA3WNPBLG8FOqBh351vjB1dV+ka3rwcFf3DWKw==
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/keyring/-/keyring-1.1.1.tgz#397f0f3bf154fa64d818765bee721f6b4c64eacb"
+  integrity sha512-1mEXzQoh0jfuDunOZF7YcCRsgaUucYoXz3KoKjVcyGH4oREL6GJvc0nXAIVK/e/6mnANIysUYq4Aa8/MDKQgQw==
   dependencies:
     "@babel/runtime" "^7.5.5"
-    "@polkadot/util" "^1.1.0-beta.1"
-    "@polkadot/util-crypto" "^1.1.0-beta.1"
+    "@polkadot/util" "^1.1.1"
+    "@polkadot/util-crypto" "^1.1.1"
 
 "@polkadot/react-identicon@^0.42.0-beta.15", "@polkadot/react-identicon@^0.42.0-beta.27":
   version "0.42.0-beta.28"
@@ -2711,13 +2711,13 @@
     "@babel/runtime" "^7.5.5"
     "@polkadot/ui-app" "^0.34.0-beta.107"
 
-"@polkadot/util-crypto@^1.0.1", "@polkadot/util-crypto@^1.1.0-beta.1":
-  version "1.1.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/util-crypto/-/util-crypto-1.1.0-beta.1.tgz#eb103b6d7c276c6d3a0b846d948fc93cc7f8b021"
-  integrity sha512-wS3/KgIRQqa3UeRGEwiEEiGDnxVkshj1O36WBLBH9R11EO1pcEXICk/cZBxCTvaoiIznnB/pKknZhWdzGK/NZw==
+"@polkadot/util-crypto@^1.0.1", "@polkadot/util-crypto@^1.1.0-beta.1", "@polkadot/util-crypto@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/util-crypto/-/util-crypto-1.1.1.tgz#c9735058e46f55043feeadf88a9e3476739ff959"
+  integrity sha512-TxfLP4egz4sD/xP4nN0kTyls042HMTwkz2V1WPiB1aSPbBwfWUgKQkDXQcSYFIqsI7iCx4cV98Yx9oLz9NXBOw==
   dependencies:
     "@babel/runtime" "^7.5.5"
-    "@polkadot/util" "^1.1.0-beta.1"
+    "@polkadot/util" "^1.1.1"
     "@polkadot/wasm-crypto" "^0.13.1"
     "@types/bip39" "^2.4.2"
     "@types/bs58" "^4.0.0"
@@ -2733,10 +2733,10 @@
     tweetnacl "^1.0.1"
     xxhashjs "^0.2.2"
 
-"@polkadot/util@^1.0.1", "@polkadot/util@^1.1.0-beta.1":
-  version "1.1.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/util/-/util-1.1.0-beta.1.tgz#27e0a5dd1503d21b49507fae352872105db3ac7a"
-  integrity sha512-DXc9ErGkJ0QUm6AIZgVcCRo/ttVnBhb9aroQf7UatdDbhD7noHsxnqMUGSsX2ob4mG7Z/IufREiVZlANmo8L/g==
+"@polkadot/util@^1.0.1", "@polkadot/util@^1.1.0-beta.1", "@polkadot/util@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/util/-/util-1.1.1.tgz#44461fe75edab2156e6699bf1cfcc5007a603707"
+  integrity sha512-53yRPNMTYvyG5gde6sgNAA4QVjacAcupPqqDygJD4rytetOU5tmGGSnrs005FtG149pmGgV1rDUHm1R+3ogE4w==
   dependencies:
     "@babel/runtime" "^7.5.5"
     "@types/bn.js" "^4.11.5"
@@ -8023,9 +8023,9 @@ electron-webpack@^2.6.2:
     yargs "^13.2.4"
 
 electron@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-6.0.0.tgz#03712d461ac73cdf920b2336d6560d6c6b7f19cc"
-  integrity sha512-JVHj0dYtvVFrzVk1TgvrdXJSyLpdvlWNLhtG8ItYZsyg9XbCOQ9OoPfgLm04FjMzKMzEl4YIN0PfGC02MTx3PQ==
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-6.0.1.tgz#9dcdb3773e933890f432403f2ff5851cffbea126"
+  integrity sha512-XY69rI5IThIxsOS2BD+1ZkHE9hqkm4xN5a3WQFSmFRr2by4q5CnIe9vXmptlouGPTLs3tb7ySX/+K9CvH3szvg==
   dependencies:
     "@types/node" "^10.12.18"
     electron-download "^4.1.0"
