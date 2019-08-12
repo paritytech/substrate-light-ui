@@ -2438,12 +2438,12 @@
     url-template "^2.0.8"
 
 "@polkadot/api-contract@^0.90.0-beta.22":
-  version "0.90.0-beta.22"
-  resolved "https://registry.yarnpkg.com/@polkadot/api-contract/-/api-contract-0.90.0-beta.22.tgz#4d3cdd84ce93e934c8e04b244e474331c7b69753"
-  integrity sha512-QaCvf7zG8CKUhP0OBkuZNDzZMSDbT8nxg87czISGr4KugwBZFIVEhOgyexVZGX6ZhKBLyo+9zVzrlPICamkdjQ==
+  version "0.90.0-beta.43"
+  resolved "https://registry.yarnpkg.com/@polkadot/api-contract/-/api-contract-0.90.0-beta.43.tgz#1b34f1d6125b79daaca49194dc8abcb0f26dccde"
+  integrity sha512-zWRokR2nHxeIcVifmyQmJBWfoiQsabDf31bn5a5n0vSbTnL+jYSDkrflG0p7OboXolNemj/ksTUPocCUYXkJqA==
   dependencies:
     "@babel/runtime" "^7.5.5"
-    "@polkadot/types" "^0.90.0-beta.22"
+    "@polkadot/types" "^0.90.0-beta.43"
 
 "@polkadot/api-derive@^0.90.0-beta.22":
   version "0.90.0-beta.22"
@@ -2596,14 +2596,14 @@
     isomorphic-fetch "^2.2.1"
     websocket "^1.0.29"
 
-"@polkadot/types@^0.90.0-beta.22":
-  version "0.90.0-beta.22"
-  resolved "https://registry.yarnpkg.com/@polkadot/types/-/types-0.90.0-beta.22.tgz#a73278af48b0cf70f4b5124ace128e2f4a0f4681"
-  integrity sha512-lwITJyGweigRAP9U5FlWvaFO9dxqGxPoCg0dHYpHtcRC65zX0QnYPgTMUZbg7mtDchRGxXf17Ew+pZ+sSQq9Ug==
+"@polkadot/types@^0.90.0-beta.22", "@polkadot/types@^0.90.0-beta.43":
+  version "0.90.0-beta.43"
+  resolved "https://registry.yarnpkg.com/@polkadot/types/-/types-0.90.0-beta.43.tgz#92006a78c183785a2849817fc7848d757448ebd0"
+  integrity sha512-F6pVN+FP672oao/x5MYicorxM92QUaW6xjJ47dzhLEZEcPpEFmEyALZQEl+5E45AXDn0Ad4nE9VpZwHcpJnrAg==
   dependencies:
     "@babel/runtime" "^7.5.5"
-    "@polkadot/util" "^1.0.1"
-    "@polkadot/util-crypto" "^1.0.1"
+    "@polkadot/util" "^1.1.1"
+    "@polkadot/util-crypto" "^1.1.1"
     "@types/memoizee" "^0.4.2"
     memoizee "^0.4.14"
 
