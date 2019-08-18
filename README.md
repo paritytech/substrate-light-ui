@@ -73,7 +73,7 @@ yarn start
 
 > Troubleshooting: If it hangs on a white screen in Electron even though it has compiled and has been syncing for a long time, then simply choose 'View > Reload' (CMD + R on macOS) from the Electron menu.
 
-### Run Substrate Locally (https://docs.substrate.dev/)
+### Run Substrate Locally (https://substrate.dev/docs/)
 
 In development it can be useful to have a local dev instance of Substrate running. You can do this by running:
 ```
