@@ -40,7 +40,7 @@ And finally, here are some mid/long-term ideas we would like to explore with Lig
 Make sure you have [yarn >= 1.13.0](http://yarnpkg.com/) and [nodejs >= 10.10.0](https://nodejs.org/en/).
 
 For now, you also need to have a Substrate node on your local machine. Before running the commands below, you need to:
-- either run the substrate node beforehand (see [Run Substrate Locally](https://github.com/paritytech/substrate-light-ui#run-substrate-locally-httpsdocssubstratedev)),
+- either run the substrate node beforehand (see [Run Substrate Locally](#run-substrate-locally-httpsdocssubstratedev)),
 - or copy it into `./packages/electron-app/static`, and Electron will take care of running it.
 
 ### Clone this repo
