@@ -2555,29 +2555,14 @@
     "@polkadot/util" "^1.1.1"
     "@polkadot/util-crypto" "^1.1.1"
 
-"@polkadot/react-identicon@^0.42.0-beta.15":
-  version "0.42.0-beta.28"
-  resolved "https://registry.yarnpkg.com/@polkadot/react-identicon/-/react-identicon-0.42.0-beta.28.tgz#875cf690544d687441c2aa77d4d7bddbe27e8b48"
-  integrity sha512-fxargMJfUxEQCTpS8KijldiK21WKTqppi2hwJKj7SWJ+Ua9sfGuggi5qdgXuoLjotNu08Ctau3eXJ3kdhO2C5A==
+"@polkadot/react-identicon@^0.42.0-beta.15", "@polkadot/react-identicon@^0.42.0-beta.31":
+  version "0.42.0-beta.34"
+  resolved "https://registry.yarnpkg.com/@polkadot/react-identicon/-/react-identicon-0.42.0-beta.34.tgz#95ca7b591beab2ce3ebbc81bb1c3008c41a63533"
+  integrity sha512-G8JamzWIS4sVa5VtsMvhLd0Z8HknfudLoocvFD33QzozfMFzvM9l/Rq98tS0UT9mMx42KZxVBc6+vMlZKP+gWQ==
   dependencies:
     "@babel/runtime" "^7.5.5"
-    "@polkadot/ui-settings" "^0.42.0-beta.28"
-    "@polkadot/ui-shared" "^0.42.0-beta.28"
-    "@types/color" "^3.0.0"
-    "@types/react-copy-to-clipboard" "^4.2.6"
-    color "^3.1.2"
-    jdenticon "2.2.0"
-    react-copy-to-clipboard "^5.0.1"
-    styled-components "^4.3.1"
-
-"@polkadot/react-identicon@^0.42.0-beta.31":
-  version "0.42.0-beta.31"
-  resolved "https://registry.yarnpkg.com/@polkadot/react-identicon/-/react-identicon-0.42.0-beta.31.tgz#faf49d184bfa66b6d468bda348fbacfb2fc32f64"
-  integrity sha512-CN5xJJKB8jbNzGxVP90UblcPtazwNrqRrsXbFouxqrApeEpVMY0lrtw7EaqdVoSpec0PQ6y9Cyu2O6iT7lafwA==
-  dependencies:
-    "@babel/runtime" "^7.5.5"
-    "@polkadot/ui-settings" "^0.42.0-beta.31"
-    "@polkadot/ui-shared" "^0.42.0-beta.31"
+    "@polkadot/ui-settings" "^0.42.0-beta.34"
+    "@polkadot/ui-shared" "^0.42.0-beta.34"
     "@types/color" "^3.0.0"
     "@types/react-copy-to-clipboard" "^4.2.6"
     color "^3.1.2"
@@ -2700,37 +2685,19 @@
     "@babel/runtime" "^7.5.5"
     rxjs-compat "^6.4.0"
 
-"@polkadot/ui-settings@^0.42.0-beta.27", "@polkadot/ui-settings@^0.42.0-beta.28":
-  version "0.42.0-beta.31"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-0.42.0-beta.31.tgz#1f0f3bbe59155dbbc36238d69354ca074adcb7b4"
-  integrity sha512-n0kKpA9tNPGDpTHZB3O0tKJ8jwFGVLg3XKc+UbaEhyA4iHfIG/m5oidgtTmYs6Amh7F6f9g6sI9qFK5ryJ8Tzg==
+"@polkadot/ui-settings@^0.42.0-beta.27", "@polkadot/ui-settings@^0.42.0-beta.31", "@polkadot/ui-settings@^0.42.0-beta.34":
+  version "0.42.0-beta.34"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-0.42.0-beta.34.tgz#1d38bcb96871caa2a21098a9f11ccb256eee6afc"
+  integrity sha512-i1WzoM++J+2hKtduEsWEuQrNdjzZ9sWBZbqzO109jsy5a4UHxu1+/SSDTikd2e7gPOx38LzS9Ld3yOV00wqF6w==
   dependencies:
     "@babel/runtime" "^7.5.5"
     "@types/store" "^2.0.2"
     store "^2.0.12"
 
-"@polkadot/ui-settings@^0.42.0-beta.31":
-  version "0.42.0-beta.31"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-0.42.0-beta.31.tgz#1f0f3bbe59155dbbc36238d69354ca074adcb7b4"
-  integrity sha512-n0kKpA9tNPGDpTHZB3O0tKJ8jwFGVLg3XKc+UbaEhyA4iHfIG/m5oidgtTmYs6Amh7F6f9g6sI9qFK5ryJ8Tzg==
-  dependencies:
-    "@babel/runtime" "^7.5.5"
-    "@types/store" "^2.0.2"
-    store "^2.0.12"
-
-"@polkadot/ui-shared@^0.42.0-beta.28":
-  version "0.42.0-beta.28"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-shared/-/ui-shared-0.42.0-beta.28.tgz#da7f06b89288cd23b250b456c2b912190e374071"
-  integrity sha512-U6OeFkTFlVWn/04iG4oN3mVePK5WjhA8kZCvfoEu2Adkqv9Axs1vAHQTdPR87CRasd1WKRysg4SiXbEFboBlLw==
-  dependencies:
-    "@babel/runtime" "^7.5.5"
-    "@types/color" "^3.0.0"
-    color "^3.1.2"
-
-"@polkadot/ui-shared@^0.42.0-beta.31":
-  version "0.42.0-beta.31"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-shared/-/ui-shared-0.42.0-beta.31.tgz#35960999e8731317bd9157b336db31589e7e894a"
-  integrity sha512-VWjWl3XaGQYSIWGLSLRC/XPhSM54A0GG6T+Np1s8Kpvll7MPCNr+hek1ekUnAIjjgZZieVC8+nrbFgy9ZYkwrg==
+"@polkadot/ui-shared@^0.42.0-beta.34":
+  version "0.42.0-beta.34"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-shared/-/ui-shared-0.42.0-beta.34.tgz#013bfa9deb50144a10474f80cca1f417b1ea5239"
+  integrity sha512-qbBXmmdzcDz/O5TY3HbhYv4SXqhYoaXRQLl0CvutfLl4wG4VhUrlZrOwGwpO3c+2jUn/ClICGNd6r8aVRMrLMQ==
   dependencies:
     "@babel/runtime" "^7.5.5"
     "@types/color" "^3.0.0"
@@ -16812,14 +16779,6 @@ saxes@^3.1.9:
   integrity sha512-Ydydq3zC+WYDJK1+gRxRapLIED9PWeSuuS41wqyoRmzvhhh9nc+QQrVMKJYzJFULazeGhzSV0QleN2wD3boh2g==
   dependencies:
     xmlchars "^2.1.1"
-
-scheduler@^0.13.6:
-  version "0.13.6"
-  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.13.6.tgz#466a4ec332467b31a91b9bf74e5347072e4cd889"
-  integrity sha512-IWnObHt413ucAYKsD9J1QShUKkbKLQQHdxRyw73sw4FN26iWr3DY/H34xGPe4nmL1DwXyWmSWmMrA9TfQbE/XQ==
-  dependencies:
-    loose-envify "^1.1.0"
-    object-assign "^4.1.1"
 
 scheduler@^0.15.0:
   version "0.15.0"
