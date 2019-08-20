@@ -3,11 +3,13 @@
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=paritytech/substrate-light-ui)](https://dependabot.com)
 <a href="https://codeclimate.com/github/paritytech/substrate-light-ui/maintainability"><img src="https://api.codeclimate.com/v1/badges/bdff9a9d1f154523d3b9/maintainability" /></a>
 
-# Substrate Light UI
+# ~Substrate Light UI~ Polkadot Nominator Wallet
 
-Light client focused user interface for the Polkadot and Substrate networks.
+~Light client focused user interface for the Polkadot and Substrate networks.~
 
-The Light UI is meant to be **an intuitive interface for beginner users** to easily interact with the main components of various Substrate chains.
+~The Light UI is meant to be **an intuitive interface for beginner users** to easily interact with the main components of various Substrate chains.~
+
+Pivot: This is a wallet optimized for Polkadot Nominators. Polkadot's security is roughly proportional to the ratio of DOTs that are staked, and our wallet strives to make this process as seamless and dummy proof as possible.
 
 ## [» Download the latest release (macOS only) «](https://github.com/paritytech/substrate-light-ui/releases/latest)
 
@@ -23,7 +25,7 @@ As of v0.1.0, the main functions are as follows:
 
 And here is a rough roadmap of what's coming next (see the [0.2.0 milestone](https://github.com/paritytech/substrate-light-ui/milestone/1) for details):
 
-- [ ] Staking/Nominating/Voting democracy - stake tokens, nominate validators, and vote for proposals regarding the the current chain (see [#62](https://github.com/paritytech/substrate-light-ui/issues/62)).
+- [x] Staking/Nominating/Voting democracy - stake tokens, nominate validators, and vote for proposals regarding the the current chain (see [#62](https://github.com/paritytech/substrate-light-ui/issues/62)).
 
 - [ ] Light UI will be bundled with a light client - it won't rely on a remote node.
 
