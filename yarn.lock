@@ -2438,12 +2438,12 @@
     url-template "^2.0.8"
 
 "@polkadot/api-contract@^0.90.0-beta.22":
-  version "0.90.0-beta.43"
-  resolved "https://registry.yarnpkg.com/@polkadot/api-contract/-/api-contract-0.90.0-beta.43.tgz#1b34f1d6125b79daaca49194dc8abcb0f26dccde"
-  integrity sha512-zWRokR2nHxeIcVifmyQmJBWfoiQsabDf31bn5a5n0vSbTnL+jYSDkrflG0p7OboXolNemj/ksTUPocCUYXkJqA==
+  version "0.90.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/api-contract/-/api-contract-0.90.1.tgz#1cb63e20c37dcb8ba86f3ca5d15a4c68cf1c5e30"
+  integrity sha512-VX1p6LDRNgZLaGGK5kHkU8sg0kAHN4OoPDnPhvOzdoPZJXrhLjYktZwgobFqciVc26XncuLJ4aPsqdt7h8BMlQ==
   dependencies:
     "@babel/runtime" "^7.5.5"
-    "@polkadot/types" "^0.90.0-beta.43"
+    "@polkadot/types" "^0.90.1"
 
 "@polkadot/api-derive@^0.90.0-beta.22":
   version "0.90.0-beta.22"
@@ -2611,10 +2611,10 @@
     isomorphic-fetch "^2.2.1"
     websocket "^1.0.29"
 
-"@polkadot/types@^0.90.0-beta.22", "@polkadot/types@^0.90.0-beta.43":
-  version "0.90.0-beta.43"
-  resolved "https://registry.yarnpkg.com/@polkadot/types/-/types-0.90.0-beta.43.tgz#92006a78c183785a2849817fc7848d757448ebd0"
-  integrity sha512-F6pVN+FP672oao/x5MYicorxM92QUaW6xjJ47dzhLEZEcPpEFmEyALZQEl+5E45AXDn0Ad4nE9VpZwHcpJnrAg==
+"@polkadot/types@^0.90.0-beta.22", "@polkadot/types@^0.90.1":
+  version "0.90.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/types/-/types-0.90.1.tgz#61face0421f7f1eea7e219bdc3df2c0aae6278fd"
+  integrity sha512-VOHQeq7mLqsnfbfQcOV05w+LQVtssho4Q2xPmwjePx8O9hMI+57WIu5yFG1dadso8WMTSHP+6PnQ92tozdmgkg==
   dependencies:
     "@babel/runtime" "^7.5.5"
     "@polkadot/util" "^1.1.1"
@@ -2700,16 +2700,7 @@
     "@babel/runtime" "^7.5.5"
     rxjs-compat "^6.4.0"
 
-"@polkadot/ui-settings@^0.42.0-beta.27", "@polkadot/ui-settings@^0.42.0-beta.28":
-  version "0.42.0-beta.31"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-0.42.0-beta.31.tgz#1f0f3bbe59155dbbc36238d69354ca074adcb7b4"
-  integrity sha512-n0kKpA9tNPGDpTHZB3O0tKJ8jwFGVLg3XKc+UbaEhyA4iHfIG/m5oidgtTmYs6Amh7F6f9g6sI9qFK5ryJ8Tzg==
-  dependencies:
-    "@babel/runtime" "^7.5.5"
-    "@types/store" "^2.0.2"
-    store "^2.0.12"
-
-"@polkadot/ui-settings@^0.42.0-beta.31":
+"@polkadot/ui-settings@^0.42.0-beta.27", "@polkadot/ui-settings@^0.42.0-beta.28", "@polkadot/ui-settings@^0.42.0-beta.31":
   version "0.42.0-beta.31"
   resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-0.42.0-beta.31.tgz#1f0f3bbe59155dbbc36238d69354ca074adcb7b4"
   integrity sha512-n0kKpA9tNPGDpTHZB3O0tKJ8jwFGVLg3XKc+UbaEhyA4iHfIG/m5oidgtTmYs6Amh7F6f9g6sI9qFK5ryJ8Tzg==
@@ -16812,14 +16803,6 @@ saxes@^3.1.9:
   integrity sha512-Ydydq3zC+WYDJK1+gRxRapLIED9PWeSuuS41wqyoRmzvhhh9nc+QQrVMKJYzJFULazeGhzSV0QleN2wD3boh2g==
   dependencies:
     xmlchars "^2.1.1"
-
-scheduler@^0.13.6:
-  version "0.13.6"
-  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.13.6.tgz#466a4ec332467b31a91b9bf74e5347072e4cd889"
-  integrity sha512-IWnObHt413ucAYKsD9J1QShUKkbKLQQHdxRyw73sw4FN26iWr3DY/H34xGPe4nmL1DwXyWmSWmMrA9TfQbE/XQ==
-  dependencies:
-    loose-envify "^1.1.0"
-    object-assign "^4.1.1"
 
 scheduler@^0.15.0:
   version "0.15.0"
