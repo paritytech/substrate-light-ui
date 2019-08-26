@@ -19,7 +19,7 @@
     "@polkadot/app-staking": "^0.35.0-beta.6",
     "@polkadot/react-components": "^0.35.0-beta.6",
     "@polkadot/react-identicon": "^0.43.0-beta.0",
-    "@polkadot/react-params": "^0.34.1",
+    "@polkadot/react-params": "^0.35.0-beta.6",
     "@polkadot/react-signer": "^0.35.0-beta.6",
     "@types/recharts": "^1.1.16",
     "@types/styled-components": "4.1.3",
