@@ -41,5 +41,9 @@
     "ncp": "^2.0.0",
     "node-fetch": "^2.5.0",
     "semver": "^6.0.0"
+  },
+  "resolutions": {
+    "@polkadot/api": "^0.91.0-beta.1",
+    "@types/styled-components": "4.1.8"
   }
 }

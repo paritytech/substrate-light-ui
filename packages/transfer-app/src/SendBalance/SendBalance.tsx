@@ -119,7 +119,7 @@ export function SendBalance (props: Props) {
             value={recipientAddress}
             withLabel={false}
           />
-          <Balance address={recipientAddress} />
+          {recipientAddress && <Balance address={recipientAddress} />}
         </RightDiv>
       </StackedHorizontal>
       <StackedHorizontal>

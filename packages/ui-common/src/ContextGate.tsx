@@ -51,7 +51,7 @@ let keyringInitialized = false;
 
 const l = logger('ui-common');
 
-const api = new ApiRx(new WsProvider(wsUrl));
+const api = new ApiRx({ provider: new WsProvider(wsUrl) });
 
 export function ContextGate (props: { children: React.ReactNode }) {
   const { children } = props;
@@ -62,7 +62,7 @@ export function ContextGate (props: { children: React.ReactNode }) {
     // Block the UI when disconnected
     api.isConnected.pipe(
       filter(isConnected => !isConnected)
-    ).subscribe((_) => {
+    ).subscribe(() => {
       setState(DISCONNECTED_STATE_PROPERTIES);
     });
 
@@ -71,7 +71,7 @@ export function ContextGate (props: { children: React.ReactNode }) {
     // settings.
     api.isConnected
       .pipe(
-        filter(isConnected => isConnected),
+        filter(isConnected => !!isConnected),
         // API needs to be ready to be able to use RPCs; connected isn't enough
         switchMap(_ =>
           api.isReady

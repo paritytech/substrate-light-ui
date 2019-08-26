@@ -15,8 +15,8 @@
     "test": "echo skipped"
   },
   "dependencies": {
-    "@polkadot/react-identicon": "^0.42.1",
-    "@polkadot/ui-app": "^0.33.1",
+    "@polkadot/react-identicon": "^0.43.0-beta.0",
+    "@polkadot/ui-app": "^0.34.0-beta.119",
     "@types/recharts": "^1.1.16",
     "@types/styled-components": "4.1.3",
     "babel-loader": "8.0.5",
