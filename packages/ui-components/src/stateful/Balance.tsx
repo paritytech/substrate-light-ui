@@ -10,7 +10,7 @@ import { combineLatest, Observable, of, Subscription } from 'rxjs';
 import { BalanceDisplay, BalanceDisplayProps } from '../BalanceDisplay';
 
 interface BalanceProps extends Pick<BalanceDisplayProps, Exclude<keyof BalanceDisplayProps, 'balance'>> {
-  address?: string;
+  address: string;
   detailed?: boolean;
 }
 
@@ -22,12 +22,12 @@ export function Balance (props: BalanceProps) {
 
   useEffect(() => {
     let balanceSub: Subscription = combineLatest([
-        (api.derive.balances.all(address) as Observable<DerivedBalances>),
-        (api.derive.staking.info(address) as Observable<DerivedStaking>)
-      ]).subscribe(([allBalances, allStaking]) => {
-        setAllBalances(allBalances);
-        setAllStaking(allStaking);
-      });
+      (api.derive.balances.all(address) as Observable<DerivedBalances>),
+      (api.derive.staking.info(address) as Observable<DerivedStaking>)
+    ]).subscribe(([allBalances, allStaking]) => {
+      setAllBalances(allBalances);
+      setAllStaking(allStaking);
+    });
 
     return () => balanceSub.unsubscribe();
   }, [api, address]);

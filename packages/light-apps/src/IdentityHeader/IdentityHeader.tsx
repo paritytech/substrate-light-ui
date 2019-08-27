@@ -71,7 +71,7 @@ export function IdentityHeader (props: Props) {
             <Menu.Item fitted>
               <StackedHorizontal>
                 <InputAddress
-                  label={null}
+                  label={undefined}
                   onChange={changeCurrentAccount}
                   type='account'
                   value={currentAccount}
