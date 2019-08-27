@@ -5,9 +5,9 @@
 import { KeyringItemType } from '@polkadot/ui-keyring/types';
 
 import getAddressMeta from './getAddressMeta';
-import toShortAddress from './toShortAddress';
+import toShortAddress from '../../util/toShortAddress';
 
-export default function getAddressName (address: string, type: KeyringItemType | null = null, withShort?: boolean, defaultName?: string): string | undefined {
+export default function getAddressName(address: string, type: KeyringItemType | null = null, withShort?: boolean, defaultName?: string): string | undefined {
   const meta = getAddressMeta(address, type);
   const name = meta.name || defaultName;
 
