@@ -113,13 +113,13 @@ export function SendBalance (props: Props) {
         <RightDiv>
           <SubHeader textAlign='left'>Recipient Address:</SubHeader>
           <InputAddress
-            label={null}
+            label={undefined}
             onChange={changeRecipientAddress}
             type='all'
             value={recipientAddress}
             withLabel={false}
           />
-          <Balance address={recipientAddress} />
+          {recipientAddress && <Balance address={recipientAddress} />}
         </RightDiv>
       </StackedHorizontal>
       <StackedHorizontal>
