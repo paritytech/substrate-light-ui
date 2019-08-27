@@ -11,7 +11,7 @@ import substrateLogo from '@polkadot/ui-assets/polkadot-circle.svg';
 
 interface Props { }
 
-export function TopBar (props: Props) {
+export function TopBar(props: Props) {
   const { api, system: { chain, health: { isSyncing }, name, version } } = useContext(AppContext);
 
   const [blockNumber, setBlockNumber] = useState();
@@ -31,7 +31,7 @@ export function TopBar (props: Props) {
           <NodeStatus isSyncing={isSyncing} />
         </FlexItem>
         <FlexItem>
-          <NavLink to='/'> <img alt='Parity Substrate Logo' src={substrateLogo} width={150} /> </NavLink>
+          <NavLink to='/'> <img alt='Parity Substrate Logo' src={substrateLogo} width={50} /> </NavLink>
           <FadedText> {name} {version} </FadedText>
         </FlexItem>
         <FlexItem>
