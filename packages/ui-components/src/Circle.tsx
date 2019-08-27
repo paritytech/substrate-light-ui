@@ -4,6 +4,7 @@
 
 import React from 'react';
 import styled from 'styled-components';
+
 import { substrateLightTheme } from './globalStyle';
 
 interface CircleProps {
