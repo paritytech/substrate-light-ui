@@ -11,7 +11,7 @@ import substrateLogo from '@polkadot/ui-assets/polkadot-circle.svg';
 
 interface Props { }
 
-export function TopBar(props: Props) {
+export function TopBar (props: Props) {
   const { api, system: { chain, health: { isSyncing }, name, version } } = useContext(AppContext);
 
   const [blockNumber, setBlockNumber] = useState();
