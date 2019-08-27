@@ -2,8 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { InputAddress as PolkadotInputAddress } from '@polkadot/react-components';
-import { Balance, FlexItem, Header, Margin, Stacked, StyledNavButton, SubHeader } from '@substrate/ui-components';
+import { Balance, FlexItem, Header, InputAddress as PolkadotInputAddress, Margin, Stacked, StyledNavButton, SubHeader } from '@substrate/ui-components';
 import { Either, left, right } from 'fp-ts/lib/Either';
 import React, { Dispatch, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -73,7 +72,7 @@ export function Setup (props: Props) {
       <FlexItem>
         <SubHeader> Select your Stash Account </SubHeader>
         <InputAddress
-          label={null}
+          label={undefined}
           onChange={setStash}
           type='account'
           value={stash}
@@ -85,7 +84,7 @@ export function Setup (props: Props) {
       <FlexItem>
         <SubHeader> Select your Controller Account </SubHeader>
         <InputAddress
-          label={null}
+          label={undefined}
           onChange={setController}
           type='account'
           value={controller}

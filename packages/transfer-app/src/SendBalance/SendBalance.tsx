@@ -113,7 +113,7 @@ export function SendBalance (props: Props) {
         <RightDiv>
           <SubHeader textAlign='left'>Recipient Address:</SubHeader>
           <InputAddress
-            label={null}
+            label={undefined}
             onChange={changeRecipientAddress}
             type='all'
             value={recipientAddress}

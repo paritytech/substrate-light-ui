@@ -38,7 +38,7 @@ interface Props<Option> extends BareProps {
   withLabel?: boolean;
 }
 
-export class Dropdown<Option> extends React.PureComponent<Props<Option>> {
+export default class Dropdown<Option> extends React.PureComponent<Props<Option>> {
   // Trigger the update on mount - ensuring that the onChange (as described below)
   // is trigerred.
   public componentDidMount (): void {

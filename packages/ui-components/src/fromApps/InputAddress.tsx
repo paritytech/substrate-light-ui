@@ -3,143 +3,317 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { BareProps } from './types';
+import { Subscription } from 'rxjs';
+import { KeyringOptions, KeyringSectionOption, KeyringSectionOptions, KeyringOption$Type } from '@polkadot/ui-keyring/options/types';
 
 import React from 'react';
-import SUIButton from 'semantic-ui-react/dist/commonjs/elements/Button/Button';
-import SUIDropdown, { DropdownProps } from 'semantic-ui-react/dist/commonjs/modules/Dropdown/Dropdown';
-import { isUndefined } from '@polkadot/util';
+import store from 'store';
+import styled from 'styled-components';
+import createItem from '@polkadot/ui-keyring/options/item';
+import keyring from '@polkadot/ui-keyring';
+import keyringOption from '@polkadot/ui-keyring/options';
 
-import { classes } from './util';
-import Labelled from './Labelled';
+import { classes, getAddressName } from './util';
+import addressToAddress from './util/toAddress';
+import Dropdown from './Dropdown';
 
-interface Props<Option> extends BareProps {
-  allowAdd?: boolean;
-  defaultValue?: any;
-  dropdownClassName?: string;
+interface Props extends BareProps {
+  defaultValue?: string | null;
   help?: React.ReactNode;
-  isButton?: boolean;
+  hideAddress?: boolean;
   isDisabled?: boolean;
   isError?: boolean;
+  isInput?: boolean;
   isMultiple?: boolean;
-  label?: React.ReactNode;
+  label?: string;
   labelExtra?: React.ReactNode;
-  onAdd?: (value: any) => void;
-  onBlur?: () => void;
-  onChange?: (value: any) => void;
-  onClose?: () => void;
-  onSearch?: (filteredOptions: any[], query: string) => Option[];
-  options: Option[];
+  onChange?: (value: string) => void;
+  onChangeMulti?: (value: string[]) => void;
+  options?: KeyringSectionOption[];
   placeholder?: string;
-  renderLabel?: (item: any) => any;
-  searchInput?: { autoFocus: boolean };
-  transform?: (value: any) => any;
-  value?: any;
+  type?: KeyringOption$Type;
+  value?: string | Uint8Array | string[];
   withEllipsis?: boolean;
   withLabel?: boolean;
 }
 
-export default class Dropdown<Option> extends React.PureComponent<Props<Option>> {
-  // Trigger the update on mount - ensuring that the onChange (as described below)
-  // is trigerred.
-  public componentDidMount (): void {
-    this.componentDidUpdate({} as unknown as Props<Option>);
+interface State {
+  optionsAll?: KeyringOptions;
+  value?: string;
+}
+
+const STORAGE_KEY = 'options:InputAddress';
+const DEFAULT_TYPE = 'all';
+
+const transformToAddress = (value: string | Uint8Array): string | null => {
+  try {
+    return addressToAddress(value) || null;
+  } catch (error) {
+    console.error('Unable to transform address', value);
   }
 
-  // Here we update the component user with the initial value of the dropdown. In a number of
-  // these (e.g. Accounts) the list of available values are managed by the component itself,
-  // and there are defaults set (i.e. for accounts the last one used)
-  public componentDidUpdate (prevProps: Props<Option>): void {
-    const { defaultValue, value } = this.props;
-    const startValue = isUndefined(value)
-      ? defaultValue
-      : value;
-    const prevStart = isUndefined(prevProps.value)
-      ? prevProps.defaultValue
-      : prevProps.value;
+  return null;
+};
 
-    if (startValue !== prevStart) {
-      this.onChange(null as any, {
-        value: startValue
-      });
+const transformToAccountId = (value: string): string | null => {
+  if (!value) {
+    return '';
+  }
+
+  const accountId = transformToAddress(value);
+
+  return !accountId
+    ? null
+    : accountId;
+};
+
+const createOption = (address: string): KeyringSectionOption => {
+  let isRecent: boolean | undefined;
+  const pair = keyring.getAccount(address);
+  let name: string | undefined;
+
+  if (pair) {
+    name = pair.meta.name;
+  } else {
+    const addr = keyring.getAddress(address);
+
+    if (addr) {
+      name = addr.meta.name;
+      isRecent = addr.meta.isRecent;
+    } else {
+      isRecent = true;
     }
   }
 
+  return createItem(address, name, !isRecent);
+};
+
+class InputAddress extends React.PureComponent<Props, State> {
+  private keyringSub?: Subscription;
+  public state: State = {};
+
+  public componentDidMount () {
+    this.keyringSub = keyringOption.optionsSubject.subscribe((optionsAll) => this.setState({ optionsAll }));
+  }
+
+  public componentWillUnmount () {
+    this.keyringSub && this.keyringSub.unsubscribe();
+  }
+
+  public static getDerivedStateFromProps ({ value }: Props): Pick<State, never> | null {
+    try {
+      return {
+        value: Array.isArray(value)
+          ? value.map(addressToAddress)
+          : (addressToAddress(value) || undefined)
+
+      };
+    } catch (error) {
+      return null;
+    }
+  }
+
+  public static readOptions (): Record<string, any> {
+    return store.get(STORAGE_KEY) || { defaults: {} };
+  }
+
+  public static getLastValue (type: KeyringOption$Type = DEFAULT_TYPE): any {
+    const options = InputAddress.readOptions();
+
+    return options.defaults[type];
+  }
+
+  public static setLastValue (type: KeyringOption$Type = DEFAULT_TYPE, value: string): void {
+    const options = InputAddress.readOptions();
+
+    options.defaults[type] = value;
+    store.set(STORAGE_KEY, options);
+  }
+
   public render (): React.ReactNode {
-    const { allowAdd = false, className, defaultValue, dropdownClassName, help, isButton, isDisabled, isError, isMultiple, label, labelExtra, onSearch, options, placeholder, renderLabel, searchInput, style, withEllipsis, withLabel, value } = this.props;
-    const dropdown = (
-      <SUIDropdown
-        allowAdditions={allowAdd}
-        className={dropdownClassName}
-        button={isButton}
-        compact={isButton}
-        disabled={isDisabled}
-        error={isError}
-        floating={isButton}
-        multiple={isMultiple}
-        onAddItem={this.onAddItem}
-        onBlur={this.onBlur}
-        onChange={this.onChange}
-        onClose={this.onClose}
-        options={options}
+    const { className, defaultValue, help, hideAddress = false, isDisabled = false, isError, isMultiple, label, labelExtra, options, placeholder, type = DEFAULT_TYPE, style, withEllipsis, withLabel } = this.props;
+    const { optionsAll, value } = this.state;
+    const hasOptions = (options && options.length !== 0) || (optionsAll && Object.keys(optionsAll[type]).length !== 0);
+
+    if (!hasOptions && !isDisabled) {
+      return null;
+    }
+
+    const lastValue = InputAddress.getLastValue(type);
+    const lastOption = this.getLastOptionValue();
+    const actualValue = transformToAddress(
+      isDisabled || (defaultValue && this.hasValue(defaultValue))
+        ? defaultValue
+        : (
+          this.hasValue(lastValue)
+            ? lastValue
+            : (lastOption && lastOption.value)
+        )
+    );
+    const actualOptions = options || (
+      isDisabled && actualValue
+        ? [createOption(actualValue)]
+        : optionsAll
+          ? optionsAll[type]
+          : []
+    );
+    let _defaultValue;
+
+    if (value !== undefined) {
+      _defaultValue = undefined;
+    } else if (isMultiple) {
+      _defaultValue = undefined;
+    } else {
+      _defaultValue = actualValue;
+    }
+
+    return (
+      <Dropdown
+        className={classes('ui--InputAddress', hideAddress && 'hideAddress', className)}
+        defaultValue={_defaultValue}
+        help={help}
+        isDisabled={isDisabled}
+        isError={isError}
+        isMultiple={isMultiple}
+        label={label}
+        labelExtra={labelExtra}
+        onChange={
+          isMultiple
+            ? this.onChangeMulti
+            : this.onChange
+        }
+        onSearch={this.onSearch}
+        options={actualOptions}
         placeholder={placeholder}
-        renderLabel={renderLabel}
-        search={onSearch || allowAdd}
-        searchInput={searchInput}
-        selection
+        renderLabel={
+          isMultiple
+            ? this.renderLabel
+            : undefined
+        }
+        style={style}
         value={
-          isUndefined(value)
-            ? defaultValue
+          isMultiple
+            ? undefined
             : value
         }
+        withEllipsis={withEllipsis}
+        withLabel={withLabel}
       />
     );
+  }
 
-    return isButton
-      ? (
-        <SUIButton.Group primary>
-          {dropdown}
-        </SUIButton.Group>
-      )
-      : (
-        <Labelled
-          className={classes('ui--Dropdown', className)}
-          help={help}
-          label={label}
-          labelExtra={labelExtra}
-          style={style}
-          withEllipsis={withEllipsis}
-          withLabel={withLabel}
-        >
-          {dropdown}
-        </Labelled>
+  private renderLabel = ({ value }: KeyringSectionOption): string | undefined => {
+    if (!value) {
+      return undefined;
+    }
+
+    return getAddressName(value, null, true);
+  }
+
+  private getLastOptionValue (): KeyringSectionOption | undefined {
+    const { type = DEFAULT_TYPE } = this.props;
+    const { optionsAll } = this.state;
+
+    if (!optionsAll) {
+      return;
+    }
+
+    const available = optionsAll[type].filter(({ value }): boolean => !!value);
+
+    return available.length
+      ? available[available.length - 1]
+      : undefined;
+  }
+
+  private hasValue (test?: string): boolean {
+    const { type = DEFAULT_TYPE } = this.props;
+    const { optionsAll } = this.state;
+
+    if (!optionsAll) {
+      return false;
+    }
+
+    return !!optionsAll[type].find(({ value }): boolean => test === value);
+  }
+
+  private onChange = (address: string): void => {
+    const { onChange, type } = this.props;
+
+    InputAddress.setLastValue(type, address);
+
+    onChange && onChange(transformToAccountId(address) || '');
+  }
+
+  private onChangeMulti = (addresses: string[]): void => {
+    const { onChangeMulti } = this.props;
+
+    if (onChangeMulti) {
+      onChangeMulti(
+        addresses
+          .map(transformToAccountId)
+          .filter((address): string => address as string) as string[]
       );
+    }
   }
 
-  private onAddItem = (_: React.SyntheticEvent<HTMLElement>, { value }: DropdownProps): void => {
-    const { onAdd } = this.props;
-
-    onAdd && onAdd(value);
-  }
-
-  private onBlur = (): void => {
-    const { onBlur } = this.props;
-
-    onBlur && onBlur();
-  }
-
-  private onChange = (_: React.SyntheticEvent<HTMLElement>, { value }: DropdownProps): void => {
-    const { onChange, transform } = this.props;
-
-    onChange && onChange(
-      transform
-        ? transform(value)
-        : value
+  private onSearch = (filteredOptions: KeyringSectionOptions, _query: string): KeyringSectionOptions => {
+    const { isInput = true } = this.props;
+    const query = _query.trim();
+    const queryLower = query.toLowerCase();
+    const matches = filteredOptions.filter((item): boolean =>
+      item.value !== null && (
+        item.name.toLowerCase().indexOf(queryLower) !== -1 ||
+        item.value.toLowerCase().indexOf(queryLower) !== -1
+      )
     );
-  }
 
-  private onClose = (): void => {
-    const { onClose } = this.props;
+    const valueMatches = matches.filter((item): boolean =>
+      item.value !== null
+    );
 
-    onClose && onClose();
+    if (isInput && valueMatches.length === 0) {
+      const accountId = transformToAccountId(query);
+
+      if (accountId) {
+        matches.push(
+          keyring.saveRecent(
+            accountId.toString()
+          ).option
+        );
+      }
+    }
+
+    return matches.filter((item, index): boolean => {
+      const isLast = index === matches.length - 1;
+      const nextItem = matches[index + 1];
+      const hasNext = nextItem && nextItem.value;
+
+      return item.value !== null || (!isLast && !!hasNext);
+    });
   }
 }
+
+export { InputAddress };
+
+export default styled(InputAddress)`
+.ui.dropdown .text {
+  width: 100%;
+}
+.ui.search.selection.dropdown {
+  > .text > .ui--KeyPair {
+    .ui--IdentityIcon {
+      border: 1px solid #888;
+      border-radius: 50%;
+      left: -2.75rem;
+      top: -1.2rem;
+    }
+    .name {
+      margin-left: 0;
+    }
+  }
+}
+&.hideAddress .ui--KeyPair .address {
+  flex: 0;
+  max-width: 0;
+}
+`;
