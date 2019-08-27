@@ -9,33 +9,33 @@ import { substrateLightTheme } from './globalStyle';
 import { Circle, FadedText, Margin, Stacked, StackedHorizontal } from './index';
 
 interface BreadcrumbProps {
-    activeLabel: string;
-    sectionLabels: Array<string>;
+  activeLabel: string;
+  sectionLabels: Array<string>;
 };
 
 export function Breadcrumbs (props: BreadcrumbProps) {
-    const { activeLabel, sectionLabels } = props;
+  const { activeLabel, sectionLabels } = props;
 
-    return (
-        <SUIBreadcrumb>
-            <StackedHorizontal>
-            {
-                sectionLabels.map((label, idx) => {
-                    const active = activeLabel === label;
-                    return (
-                        <Margin left='big'>
-                            <SUIBreadcrumb.Section active={active}>
-                                <Stacked>
-                                    <Circle fill={substrateLightTheme.lightBlue1} label={idx.toString()} radius={32} withShadow={active}/>
-                                    <Margin top />
-                                    <FadedText>{label}</FadedText>
-                                </Stacked>
-                            </SUIBreadcrumb.Section>
-                        </Margin>
-                    )
-                })
-            }
-            </StackedHorizontal>
-        </SUIBreadcrumb>
-    );
+  return (
+    <SUIBreadcrumb>
+      <StackedHorizontal>
+      {
+        sectionLabels.map((label, idx) => {
+          const active = activeLabel === label;
+          return (
+            <Margin left='big'>
+              <SUIBreadcrumb.Section active={active}>
+                <Stacked>
+                  <Circle fill={substrateLightTheme.lightBlue1} label={idx.toString()} radius={32} withShadow={active}/>
+                  <Margin top />
+                  <FadedText>{label}</FadedText>
+                </Stacked>
+              </SUIBreadcrumb.Section>
+            </Margin>
+          )
+        })
+      }
+      </StackedHorizontal>
+    </SUIBreadcrumb>
+  );
 }
