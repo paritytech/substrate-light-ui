@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import ApiRx from '@polkadot/api/rx';
-import { Balance } from '@polkadot/types';
+import { getTypeRegistry } from '@polkadot/types';
 import { MAX_SIZE_BYTES, MAX_SIZE_MB } from '@polkadot/ui-signer/Checks/constants';
 import { compactToU8a } from '@polkadot/util';
 import BN from 'bn.js';
@@ -11,6 +11,7 @@ import { Either, left, right } from 'fp-ts/lib/Either';
 import { none, some } from 'fp-ts/lib/Option';
 
 import { AllExtrinsicData, Errors, SubResults, UserInputs, WithAmount, WithAmountExtrinsic } from './types';
+import { SubmittableExtrinsic } from '@polkadot/api/SubmittableExtrinsic';
 
 const LENGTH_PUBLICKEY = 32 + 1; // publicKey + prefix
 const LENGTH_SIGNATURE = 64;
@@ -22,7 +23,7 @@ const SIGNATURE_SIZE = LENGTH_PUBLICKEY + LENGTH_SIGNATURE + LENGTH_ERA;
  */
 function validateAmount (values: SubResults & UserInputs): Either<Errors, SubResults & UserInputs & WithAmount> {
   const { amountAsString, ...rest } = values;
-  const amount = new Balance(amountAsString);
+  const amount = new BN(amountAsString);
 
   if (amount.isNeg()) {
     return left({ amount: 'Please enter a positive amount to transfer.' });
@@ -45,8 +46,13 @@ function validateDerived (values: SubResults & UserInputs & WithAmountExtrinsic)
   const txLength = SIGNATURE_SIZE + compactToU8a(accountNonce).length + extrinsic.encodedLength;
   const allFees = fees.transactionBaseFee.add(fees.transactionByteFee.muln(txLength));
 
-  const isCreation = recipientBalance.votingBalance.isZero() && fees.creationFee.gtn(0);
-  const isNoEffect = amount.add(recipientBalance.votingBalance).lte(fees.existentialDeposit);
+  let isCreation = false;
+  let isNoEffect = false;
+
+  if (recipientBalance !== undefined) {
+    isCreation = recipientBalance.votingBalance.isZero() && fees.creationFee.gtn(0);
+    isNoEffect = amount.add(recipientBalance.votingBalance).lte(fees.existentialDeposit);
+  }
 
   const allTotal = amount.add(allFees).add(isCreation ? fees.creationFee : new BN(0));
 
@@ -85,7 +91,9 @@ function validateDerived (values: SubResults & UserInputs & WithAmountExtrinsic)
 function validateExtrinsic (api: ApiRx) {
   return function (values: SubResults & UserInputs & WithAmount): Either<Errors, SubResults & UserInputs & WithAmountExtrinsic> {
     const { amount, recipientAddress } = values;
-    const extrinsic = api.tx.balances.transfer(recipientAddress, amount);
+    const method = api.tx.balances.transfer(recipientAddress, amount);
+    // FIXME this can't possibly the best way to do this? maybe use createSubmittableExtrinsic?
+    const extrinsic = new (getTypeRegistry().getOrThrow('Extrinsic'))(method) as SubmittableExtrinsic<'rxjs'>;
 
     return right({ ...values, extrinsic } as SubResults & UserInputs & WithAmountExtrinsic);
   };

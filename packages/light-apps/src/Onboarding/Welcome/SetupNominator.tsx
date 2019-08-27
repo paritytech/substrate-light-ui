@@ -4,9 +4,11 @@
 
 import { mnemonicGenerate, mnemonicToSeed, schnorrkelKeypairFromSeed } from '@polkadot/util-crypto';
 import { AppContext } from '@substrate/ui-common';
-import { Card, FadedText, FlexItem, Icon, Input, Margin, MnemonicSegment, Modal, Stacked, StackedHorizontal, StyledNavButton, SubHeader, WithSpaceAround } from '@substrate/ui-components';
+import { FadedText, FlexItem, Icon, Input, Margin, MnemonicSegment, Stacked, StackedHorizontal, StyledNavButton, SubHeader, WithSpaceAround } from '@substrate/ui-components';
 import React, { useContext, useState, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
+import Card from 'semantic-ui-react/dist/commonjs/views/Card';
+import Modal from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
 
 const DEFAULT_ACCOUNT_TYPE = 'sr25519';
 
@@ -44,7 +46,7 @@ export function SetupNominator (props: Props) {
     keyring.addUri(`${stashMnemonic.trim()}`, stashPassword, { name: 'Stash', type: 'stash' }, DEFAULT_ACCOUNT_TYPE);
     const controllerResult = keyring.addUri(`${controllerMnemonic.trim()}`, controllerPassword, { name: 'Controller', type: 'controller' }, DEFAULT_ACCOUNT_TYPE);
 
-    props.history.push(`/transfer/${controllerResult.pair.address()}`);
+    props.history.push(`/transfer/${controllerResult.pair.address}`);
   };
 
   const handleChangeControllerPassword = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {

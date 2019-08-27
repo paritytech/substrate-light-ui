@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Margin, WrapperDiv } from '@substrate/ui-components';
+import { Margin } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
@@ -13,10 +13,10 @@ interface IProps extends RouteComponentProps {}
 
 export function Democracy (props: IProps) {
   return (
-    <WrapperDiv width='100%'>
+    <React.Fragment>
       <Referenda />
       <Margin top='big' />
       <Proposals />
-    </WrapperDiv>
+    </React.Fragment>
   );
 }

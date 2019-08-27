@@ -10,6 +10,6 @@ import styled from 'styled-components';
 export const InputAddress = styled(PolkadotInputAddress)`
   .dropdown {
     min-width: 0;
-    width: '25%;
+    width: '25%';
   }
 `;

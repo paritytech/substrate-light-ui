@@ -24,9 +24,9 @@ const Router: any =
 export function App () {
   return (
     <ContextGate>
-      <ThemeProvider theme={substrateLightTheme}>
-        <Router>
-          <Container>
+      <Router>
+        <ThemeProvider theme={substrateLightTheme}>
+          <Container fluid>
             <GlobalStyle />
             <AppContext.Consumer>
               {({ isReady }) => isReady
@@ -41,8 +41,8 @@ export function App () {
             </AppContext.Consumer>
             <Alerts />
           </Container>
-        </Router>
-      </ThemeProvider>
+        </ThemeProvider>
+      </Router>
     </ContextGate>
   );
 }

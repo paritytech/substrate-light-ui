@@ -9,7 +9,7 @@ import SUIDropdown from 'semantic-ui-react/dist/commonjs/modules/Dropdown';
 import SUIInput from 'semantic-ui-react/dist/commonjs/elements/Input';
 
 import { FONT_SIZES, MARGIN_SIZES } from './constants';
-import { DynamicSizeTextProps, HeaderProps, FlexItemProps, StackProps, StyledNavLinkProps, SubHeaderProps, WithSpaceAroundProps, WrapperDivProps } from './StyleProps';
+import { DynamicSizeTextProps, HeaderProps, FlexItemProps, StackProps, StyledNavLinkProps, SubHeaderProps, WithSpaceAroundProps, WithSpaceBetweenProps, WrapperDivProps } from './StyleProps';
 
 // FIXME: customize as needed
 export const Dropdown = styled<any>(SUIDropdown)`
@@ -55,9 +55,10 @@ export const WithSpaceAround = styled.div<WithSpaceAroundProps>`
   padding: ${props => MARGIN_SIZES[props.padding || 'medium']};
 `;
 
-export const WithSpaceBetween = styled.div`
-  display: flex;
+export const WithSpaceBetween = styled.div<WithSpaceBetweenProps>`
+  display: flex ${props => props.flexDirection || 'row'};
   justify-content: space-between;
+  align-items: space-between;
 `;
 
 export const WithPadding = styled.div`
@@ -190,6 +191,7 @@ export const StackedHorizontal = styled.div<StackProps>`
   display: flex;
   flex: 1;
   flex-direction: row;
+  margin: ${props => props.margin || 0}
   justify-content: ${props => props.justifyContent || 'center'};
   text-align: ${props => props.textAlign || 'center'};
 `;
@@ -207,6 +209,7 @@ export const InlineSubHeader = styled(SubHeader)`
 `;
 
 export const WrapperDiv = styled.div<WrapperDivProps>`
+  margin: ${props => props.margin || '1rem'};
   padding: ${props => props.padding || '1rem'};
   width: ${props => props.width || '30rem'};
   height: ${props => props.height || '100%'};
