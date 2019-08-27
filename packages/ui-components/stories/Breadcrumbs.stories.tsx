@@ -25,4 +25,4 @@ storiesOf('Breadcrumbs', module)
     <WrapperDiv width='100%'>
         <Breadcrumbs activeLabel={select('activeLabel', sectionLabels, 'T&C')} sectionLabels={sectionLabels} />
     </WrapperDiv>
-  ))
+  ));

@@ -15,7 +15,7 @@ interface CircleProps {
 }
 
 export function Circle (props: CircleProps) {
-  const { fill, label, radius=20, withShadow=false } = props;
+  const { fill, label, radius = 20, withShadow = false } = props;
 
   const StyledCircle = styled.span`
     height: ${radius}px;
@@ -43,5 +43,5 @@ export function Circle (props: CircleProps) {
     <StyledCircle>
       <WhiteText>{label}</WhiteText>
     </StyledCircle>
-  )
+  );
 }

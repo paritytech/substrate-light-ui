@@ -11,7 +11,7 @@ import { Circle, FadedText, Margin, Stacked, StackedHorizontal } from './index';
 interface BreadcrumbProps {
   activeLabel: string;
   sectionLabels: Array<string>;
-};
+}
 
 export function Breadcrumbs (props: BreadcrumbProps) {
   const { activeLabel, sectionLabels } = props;
@@ -32,7 +32,7 @@ export function Breadcrumbs (props: BreadcrumbProps) {
                 </Stacked>
               </SUIBreadcrumb.Section>
             </Margin>
-          )
+          );
         })
       }
       </StackedHorizontal>
