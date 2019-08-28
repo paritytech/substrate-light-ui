@@ -2,30 +2,24 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { Circle, Margin, StackedHorizontal, SubHeader } from '@substrate/ui-components';
 import React from 'react';
-import { Margin, StackedHorizontal } from '@substrate/ui-components';
 
 import { BlockCounterProps, NodeStatusProps } from './types';
 
-const RedCircle = () => (
-  <svg height='10' width='10'>
-    <circle cx='5' cy='5' r='5' fill='#ff0000' />
-  </svg>
-);
-
-const GreenCircle = () => (
-  <svg height='10' width='10'>
-    <circle cx='5' cy='5' r='5' fill='#79c879' />
-  </svg>
-);
+const GREEN = '#79c879';
+const RED = '#ff0000';
 
 export const BlockCounter = ({ blockNumber, chainName }: BlockCounterProps) => (
-  <p> {chainName && chainName.toString()} #: {blockNumber && blockNumber.toString()} </p>
+  <React.Fragment>
+    <SubHeader noMargin> {chainName && chainName.toString()} </SubHeader>
+    <p> Block #: {blockNumber && blockNumber.toString()} </p>
+  </React.Fragment>
 );
 
 export const NodeStatus = ({ isSyncing }: NodeStatusProps) => (
   <StackedHorizontal>
-    {isSyncing.eq(true) ? <RedCircle /> : <GreenCircle />}
+    {isSyncing.eq(true) ? <Circle fill={GREEN} /> : <Circle fill={RED} />}
     <Margin left='small' />
     <p> Status: {isSyncing.eq(true) ? 'Syncing' : 'Synced'} </p>
   </StackedHorizontal>

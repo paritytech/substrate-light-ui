@@ -5,22 +5,22 @@
 import React from 'react';
 import { Dimmer, Loader } from 'semantic-ui-react';
 
-type Props = {
+type LoadingProps = {
   active: boolean,
-  children?: React.ReactNode | string
+  children?: React.ReactNode | string,
+  inline?: boolean,
+  inverted?: boolean
 };
 
-export class Loading extends React.PureComponent<Props> {
-  render () {
-    const { active, children } = this.props;
-    return (
-      <React.Fragment>
-        <Dimmer active={active}>
-          <Loader>
+export function Loading (props: LoadingProps) {
+  const { active, children, inline = false, inverted = false } = props;
+  return (
+    <React.Fragment>
+      <Dimmer active={active}>
+        <Loader active={active} inline={inline} inverted={inverted}>
           {children}
-          </Loader>
-        </Dimmer>
-      </React.Fragment>
-    );
-  }
+        </Loader>
+      </Dimmer>
+    </React.Fragment>
+  );
 }

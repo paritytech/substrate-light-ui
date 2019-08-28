@@ -9,7 +9,7 @@ import SUIDropdown from 'semantic-ui-react/dist/commonjs/modules/Dropdown';
 import SUIInput from 'semantic-ui-react/dist/commonjs/elements/Input';
 
 import { FONT_SIZES, MARGIN_SIZES } from './constants';
-import { DynamicSizeTextProps, HeaderProps, FlexItemProps, StackProps, StyledNavLinkProps, SubHeaderProps, WithSpaceAroundProps, WrapperDivProps } from './StyleProps';
+import { DynamicSizeTextProps, HeaderProps, FlexItemProps, StackProps, StyledNavLinkProps, SubHeaderProps, WithSpaceAroundProps, WithSpaceBetweenProps, WrapperDivProps } from './StyleProps';
 
 // FIXME: customize as needed
 export const Dropdown = styled<any>(SUIDropdown)`
@@ -55,9 +55,10 @@ export const WithSpaceAround = styled.div<WithSpaceAroundProps>`
   padding: ${props => MARGIN_SIZES[props.padding || 'medium']};
 `;
 
-export const WithSpaceBetween = styled.div`
-  display: flex;
+export const WithSpaceBetween = styled.div<WithSpaceBetweenProps>`
+  display: flex ${props => props.flexDirection || 'row'};
   justify-content: space-between;
+  align-items: space-between;
 `;
 
 export const WithPadding = styled.div`
@@ -70,7 +71,7 @@ export const Header = styled.h2<HeaderProps>`
   font-size: ${FONT_SIZES.big};
   margin: ${props => props.margin ? MARGIN_SIZES[props.margin] : `${MARGIN_SIZES.big} 0`};
   padding: ${MARGIN_SIZES.small} ${MARGIN_SIZES.medium};
-  text-align: center;
+  text-align: ${props => props.textAlign || 'center'};
 `;
 
 export const DynamicSizeText = styled.p<DynamicSizeTextProps>`
@@ -138,6 +139,44 @@ export const StyledNavButton = styled.button`
   }
 `;
 
+export const VoteNayButton = styled.button`
+background-image: linear-gradient(
+    107deg,
+    ${props => props.theme.hotPink},
+    ${props => props.theme.electricPurple}
+  );
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px 0 rgba(${props => props.theme.black}, 0.3);
+  color: ${props => props.theme.white};
+  fontSize: ${FONT_SIZES.large};
+  height: 21px;
+  width: 51px;
+
+  :hover {
+    cursor: pointer;
+  }
+`;
+
+export const VoteYayButton = styled.button`
+background-image: linear-gradient(
+    107deg,
+    ${props => props.theme.lightBlue1},
+    ${props => props.theme.lightBlue2}
+  );
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px 0 rgba(${props => props.theme.black}, 0.3);
+  color: ${props => props.theme.white};
+  fontSize: ${FONT_SIZES.large};
+  height: 21px;
+  width: 51px;
+
+  :hover {
+    cursor: pointer;
+  }
+`;
+
 export const Stacked = styled.div<StackProps>`
   align-items: ${props => props.alignItems || 'center'};
   display: flex;
@@ -152,6 +191,7 @@ export const StackedHorizontal = styled.div<StackProps>`
   display: flex;
   flex: 1;
   flex-direction: row;
+  margin: ${props => props.margin || 0}
   justify-content: ${props => props.justifyContent || 'center'};
   text-align: ${props => props.textAlign || 'center'};
 `;
@@ -169,6 +209,7 @@ export const InlineSubHeader = styled(SubHeader)`
 `;
 
 export const WrapperDiv = styled.div<WrapperDivProps>`
+  margin: ${props => props.margin || '1rem'};
   padding: ${props => props.padding || '1rem'};
   width: ${props => props.width || '30rem'};
   height: ${props => props.height || '100%'};

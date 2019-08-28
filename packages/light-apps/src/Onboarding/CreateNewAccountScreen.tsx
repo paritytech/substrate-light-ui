@@ -4,10 +4,11 @@
 
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
 import { AppContext } from '@substrate/ui-common';
-import { AddressSummary, ErrorText, FadedText, Input, Margin, MnemonicSegment, Modal, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SubHeader, WithSpaceAround } from '@substrate/ui-components';
+import { AddressSummary, ErrorText, FadedText, Icon, Input, Margin, MnemonicSegment, NavButton, Stacked, StackedHorizontal, StyledLinkButton, SubHeader, WithSpaceAround } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
+import Modal from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
 
 interface Props extends RouteComponentProps { }
 
@@ -38,10 +39,7 @@ export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
   };
 
   componentDidMount () {
-    const mnemonic = mnemonicGenerate();
-    const address = this.generateAddressFromMnemonic(mnemonic);
-
-    this.setState({ address, mnemonic });
+    this.newMnemonic();
   }
 
   createNewAccount = () => {
@@ -50,15 +48,15 @@ export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
     const { mnemonic, name, password } = this.state;
 
     if (this.validateFields()) {
-      let pair = keyring.createAccountMnemonic(mnemonic, password, { name });
+      const result = keyring.addUri(mnemonic.trim(), password, { name });
 
-      const address = pair.address();
-      const json = pair.toJson(password);
+      const address = result.pair.address;
+      const json = result.json;
       const blob = new Blob([JSON.stringify(json)], { type: 'application/json; charset=utf-8' });
 
       FileSaver.saveAs(blob, `${address}.json`);
 
-      history.push(`/identity/${address}`);
+      history.push(`/transfer/${address}`);
     } else {
       this.onError('Please make sure all the fields are set');
     }
@@ -109,6 +107,7 @@ export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
       error: value
     });
   }
+
   toggleStep = () => {
     const { address, password, step } = this.state;
 
@@ -131,6 +130,7 @@ export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
 
     return (
       <React.Fragment>
+        <Icon name='arrow left' onClick={this.props.history.goBack} />
         <Modal.Header> Create New Account </Modal.Header>
         <Modal.Content>
           {
@@ -150,7 +150,7 @@ export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
       <Stacked>
         <AddressSummary address={address} name={name} />
         {this.renderSetName()}
-        <Modal.SubHeader> Create from the following mnemonic phrase </Modal.SubHeader>
+        <SubHeader> Create from the following mnemonic phrase </SubHeader>
         <MnemonicSegment onClick={this.newMnemonic} mnemonic={mnemonic} />
         {this.renderSetPassword()}
         {this.renderError()}
@@ -173,7 +173,7 @@ export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
     return (
       <React.Fragment>
         <Modal.Actions>
-            <NavButton onClick={this.toggleStep}> Next </NavButton>
+          <NavButton onClick={this.toggleStep}> Next </NavButton>
         </Modal.Actions>
       </React.Fragment>
     );
@@ -212,7 +212,7 @@ export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
 
     return (
       <React.Fragment>
-        <Modal.SubHeader> Give it a name </Modal.SubHeader>
+        <SubHeader> Give it a name </SubHeader>
         <Input
           autoFocus
           min={1}
@@ -229,7 +229,7 @@ export class CreateNewAccountScreen extends React.PureComponent<Props, State> {
 
     return (
       <React.Fragment>
-        <Modal.SubHeader> Encrypt it with a passphrase </Modal.SubHeader>
+        <SubHeader> Encrypt it with a passphrase </SubHeader>
         <Input
           min={8}
           onChange={this.onChangePassword}

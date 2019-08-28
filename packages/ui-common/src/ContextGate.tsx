@@ -2,21 +2,22 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import ApiRx from '@polkadot/api/rx';
-import { ChainProperties, Health, Text } from '@polkadot/types';
+import { ApiRx, WsProvider } from '@polkadot/api';
 import keyring from '@polkadot/ui-keyring';
+import settings from '@polkadot/ui-settings';
 import { logger } from '@polkadot/util';
-import React from 'react';
-import { combineLatest, Observable } from 'rxjs';
+import React, { useState, useEffect } from 'react';
+import { combineLatest } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
 
-import { Alert, AlertStore, AlertWithoutId, dequeue, enqueue } from './alerts';
 import { AppContext, System } from './AppContext';
 import { isTestChain } from './util';
+import { AlertsContextProvider } from './AlertsContext';
+import { StakingContextProvider } from './StakingContext';
+import { TxQueueContextProvider } from './TxQueueContext';
+import { Prefix } from '@polkadot/util-crypto/address/types';
 
-// Holds the state for all the contexts
 interface State {
-  alertStore: AlertStore;
   isReady: boolean;
   system: System;
 }
@@ -42,70 +43,60 @@ const DISCONNECTED_STATE_PROPERTIES = {
   }
 };
 
+const wsUrl = settings.apiUrl;
+
 const INIT_ERROR = new Error('Please wait for `isReady` before fetching this property');
 
 let keyringInitialized = false;
 
 const l = logger('ui-common');
 
-// The reasons why we regroup all contexts in one big context is:
-// 1. I don't like the render props syntax with the context consumer. -Amaury
-// 2. We want to access Context in lifecycle methods like componentDidMount.
-// It's either adding a wrapper and passing as props, like:
-// https://github.com/facebook/react/issues/12397#issuecomment-375501574
-// or use one context for everything:
-// https://github.com/facebook/react/issues/12397#issuecomment-462142714
-// FIXME we could probably split this out into small modular contexts once we
-// use https://reactjs.org/docs/hooks-reference.html#usecontext
-export class ContextGate extends React.PureComponent<{}, State> {
-  /**
-   * Hold an internal counter of alerts, see:
-   * https://github.com/paritytech/substrate-light-ui/pull/253#discussion_r272556331
-   */
-  alertStoreCount = 0;
+const api = new ApiRx({ provider: new WsProvider(wsUrl) });
 
-  api = new ApiRx();
+export function ContextGate (props: { children: React.ReactNode }) {
+  const { children } = props;
+  const [state, setState] = useState<State>(DISCONNECTED_STATE_PROPERTIES);
+  const { isReady, system } = state;
 
-  state: State = {
-    alertStore: this.alertStoreCreate([]),
-    ...DISCONNECTED_STATE_PROPERTIES
-  };
-
-  componentDidMount () {
+  useEffect(() => {
     // Block the UI when disconnected
-    this.api.isConnected.pipe(
+    api.isConnected.pipe(
       filter(isConnected => !isConnected)
-    ).subscribe((_) => {
-      this.setState(DISCONNECTED_STATE_PROPERTIES);
+    ).subscribe(() => {
+      setState(DISCONNECTED_STATE_PROPERTIES);
     });
 
     // We want to fetch all the information again each time we reconnect. We
     // might be connecting to a different node, or the node might have changed
     // settings.
-    this.api.isConnected
+    api.isConnected
       .pipe(
-        filter(isConnected => isConnected),
+        filter(isConnected => !!isConnected),
         // API needs to be ready to be able to use RPCs; connected isn't enough
         switchMap(_ =>
-          this.api.isReady
+          api.isReady
         ),
         switchMap(_ =>
-          // Get info about the current chain
-          // FIXME Correct types should come from @polkadot/api to avoid type assertion
-          combineLatest(
-            (this.api.rpc.system.chain() as Observable<Text>),
-            (this.api.rpc.system.health() as Observable<Health>),
-            (this.api.rpc.system.name() as Observable<Text>),
-            (this.api.rpc.system.properties() as Observable<ChainProperties>),
-            (this.api.rpc.system.version() as Observable<Text>)
-          )
+          combineLatest([
+            api.rpc.system.chain(),
+            api.rpc.system.health(),
+            api.rpc.system.name(),
+            api.rpc.system.properties(),
+            api.rpc.system.version()
+          ])
         )
       )
       .subscribe(([chain, health, name, properties, version]) => {
         if (!keyringInitialized) {
+          const addressPrefix = (
+            settings.prefix === -1
+              ? 42
+              : settings.prefix
+          ) as Prefix;
           // keyring with Schnorrkel support
           keyring.loadAll({
-            addressPrefix: properties.get('networkId'),
+            addressPrefix,
+            genesisHash: api.genesisHash,
             isDevelopment: isTestChain(chain.toString()),
             type: 'ed25519'
           });
@@ -118,10 +109,10 @@ export class ContextGate extends React.PureComponent<{}, State> {
           return;
         }
 
+        l.log(`Api connected to ${wsUrl}`);
         l.log(`Api ready, connected to chain "${chain}" with properties ${JSON.stringify(properties)}`);
 
-        this.setState(state => ({
-          ...state,
+        setState({
           isReady: true,
           system: {
             chain: chain.toString(),
@@ -130,49 +121,24 @@ export class ContextGate extends React.PureComponent<{}, State> {
             properties,
             version: version.toString()
           }
-        }));
+        });
       });
-  }
+  }, []);
 
-  alertStoreCreate (alerts: Alert[]): AlertStore {
-    return {
-      alerts,
-      dequeue: () => this.alertStoreDequeue(),
-      enqueue: (newItem: Alert) => this.alertStoreEnqueue(newItem)
-    };
-  }
-
-  alertStoreDequeue = () => {
-    this.setState((state) => ({
-      ...state,
-      alertStore: this.alertStoreCreate(dequeue(state.alertStore.alerts))
-    }));
-  }
-
-  alertStoreEnqueue = (newItem: AlertWithoutId) => {
-    ++this.alertStoreCount;
-
-    this.setState((state) => ({
-      ...state,
-      alertStore: this.alertStoreCreate(enqueue(state.alertStore.alerts, {
-        ...newItem,
-        id: this.alertStoreCount
-      }))
-    }));
-  }
-
-  render () {
-    const { children } = this.props;
-    const { alertStore, isReady, system } = this.state;
-
-    return <AppContext.Provider value={{
-      alertStore,
-      api: this.api,
-      isReady,
-      keyring,
-      system
-    }}>
-      {children}
-    </AppContext.Provider>;
-  }
+  return (
+    <AlertsContextProvider>
+      <TxQueueContextProvider>
+        <AppContext.Provider value={{
+          api: api,
+          isReady,
+          keyring,
+          system
+        }}>
+          <StakingContextProvider>
+            {children}
+          </StakingContextProvider>
+        </AppContext.Provider>
+      </TxQueueContextProvider>
+    </AlertsContextProvider>
+  );
 }

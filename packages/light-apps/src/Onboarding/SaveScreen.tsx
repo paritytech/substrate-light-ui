@@ -3,9 +3,10 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { AppContext } from '@substrate/ui-common';
-import { AddressSummary, ErrorText, Input, Modal, NavButton, NavLink, Stacked } from '@substrate/ui-components';
+import { AddressSummary, ErrorText, FadedText, Input, NavButton, NavLink, Stacked, SubHeader } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
+import Modal from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
 
 interface MatchParams {
   importMethod: string;
@@ -75,10 +76,10 @@ export class SaveScreen extends React.PureComponent<Props, State> {
 
         pair = keyring.restoreAccount(json, password);
       } else {
-        pair = keyring.createAccountMnemonic(recoveryPhrase, password, { name });
+        pair = keyring.addUri(recoveryPhrase.trim(), password, { name }).pair;
       }
 
-      history.push(`/identity/${pair.address()}`);
+      history.push(`/transfer/${pair.address}`);
     } catch (e) {
       this.onError(e.message);
     }
@@ -136,7 +137,7 @@ export class SaveScreen extends React.PureComponent<Props, State> {
 
     return (
       <React.Fragment>
-        <Modal.SubHeader> Give it a name </Modal.SubHeader>
+        <SubHeader> Give it a name </SubHeader>
         <Input
           autoFocus
           onChange={this.onChangeName}
@@ -152,7 +153,7 @@ export class SaveScreen extends React.PureComponent<Props, State> {
 
     return (
       <React.Fragment>
-        <Modal.SubHeader> Encrypt it with a passphrase </Modal.SubHeader>
+        <SubHeader> Encrypt it with a passphrase </SubHeader>
         <Input
           onChange={this.onChangePassword}
           type='password'
@@ -168,7 +169,7 @@ export class SaveScreen extends React.PureComponent<Props, State> {
         <Modal.Actions>
           <Stacked>
             <NavButton onClick={this.saveToWallet}> Save </NavButton>
-            <Modal.FadedText>or</Modal.FadedText>
+            <FadedText>or</FadedText>
             <NavLink to='/import/withJson'> Import an existing account </NavLink>
           </Stacked>
         </Modal.Actions>

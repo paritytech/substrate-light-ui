@@ -2,70 +2,100 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import IdentityIcon from '@polkadot/ui-identicon';
+import IdentityIcon from '@polkadot/react-identicon';
+import { fromNullable } from 'fp-ts/lib/Option';
 import React from 'react';
 
+import { Address } from '../../Address';
 import { Balance } from '../Balance';
 import { Margin } from '../../Margin';
-import { DynamicSizeText, Stacked, StackedHorizontal } from '../../Shared.styles';
+import { DynamicSizeText, FadedText, SubHeader, Stacked, StackedHorizontal } from '../../Shared.styles';
 import { OrientationType, SizeType } from './types';
-import { FontSize } from '../../types';
+import { FlexJustify, FontSize } from '../../types';
 
-type SummaryStyles = {
-  identiconSize: number,
-  fontSize: FontSize
-};
-
-type Props = {
-  address?: string,
-  name?: string | React.ReactNode,
+type AddressSummaryProps = {
+  address?: string, // TODO support AccountId
+  bondingPair?: string, // TODO support AccountId
+  detailed?: boolean,
+  isNominator?: boolean,
+  isValidator?: boolean,
+  justifyContent?: FlexJustify,
+  name?: string,
+  noPlaceholderName?: boolean,
+  noBalance?: boolean,
   orientation?: OrientationType,
-  size?: SizeType
+  type?: 'stash' | 'controller',
+  size?: SizeType,
+  withShortAddress?: boolean;
 };
 
 const PLACEHOLDER_NAME = 'No Name';
-const PLACEHOLDER_ADDRESS = '5'.padEnd(16, 'x');
 
-export class AddressSummary extends React.PureComponent<Props> {
-  render () {
-    const { address, name, orientation = 'vertical', size = 'medium' } = this.props;
-    let styles: SummaryStyles = { identiconSize: 16, fontSize: 'medium' };
+export function AddressSummary (props: AddressSummaryProps) {
+  const {
+    address,
+    justifyContent = 'space-around',
+    orientation = 'vertical',
+    size = 'medium'
+  } = props;
 
-    switch (size) {
-      case 'tiny':
-        styles = { identiconSize: 16, fontSize: 'small' };
-        break;
-      case 'small':
-        styles = { identiconSize: 32, fontSize: 'medium' };
-        break;
-      case 'medium':
-        styles = { identiconSize: 64, fontSize: 'large' };
-        break;
-      case 'large':
-        styles = { identiconSize: 128, fontSize: 'big' };
-        break;
-      default:
-    }
+  return fromNullable(address)
+    .map((address: string) => {
+      return orientation === 'vertical'
+          ? (
+            <Stacked justifyContent={justifyContent}>
+              {renderIcon(address, size)}
+              {renderDetails(address, props)}
+            </Stacked>
+          )
+          : (
+            <StackedHorizontal justifyContent={justifyContent}>
+              {renderIcon(address, size)}
+              <Margin left />
+              <Stacked>
+                {renderDetails(address, props)}
+              </Stacked>
+            </StackedHorizontal>
+          );
+    })
+    .getOrElse(<div>No Address Provided</div>);
+}
 
-    if (orientation === 'vertical') {
-      return (
-        <Stacked>
-          <IdentityIcon value={address as string || PLACEHOLDER_ADDRESS} theme={'substrate'} size={styles.identiconSize} />
-          <DynamicSizeText fontSize={styles.fontSize}> {name || PLACEHOLDER_NAME} </DynamicSizeText>
-          <Balance address={address} fontSize={styles.fontSize} />
-        </Stacked>
-      );
-    } else {
-      return (
-        <StackedHorizontal justifyContent='space-around'>
-          <IdentityIcon value={address as string || PLACEHOLDER_ADDRESS} theme={'substrate'} size={styles.identiconSize} />
-          <Margin left />
-          <Stacked>
-            <DynamicSizeText fontSize={styles.fontSize}> {name || PLACEHOLDER_NAME} </DynamicSizeText>
-            <Balance address={address} fontSize={styles.fontSize} />
-          </Stacked>
-        </StackedHorizontal>
-      );
-    }
-  }
+const ICON_SIZES = {
+  tiny: 16,
+  small: 32,
+  medium: 64,
+  large: 128
+};
+
+function renderIcon (address: string, size: SizeType) {
+  return <IdentityIcon value={address} theme={'substrate'} size={ICON_SIZES[size]} />;
+}
+
+const FONT_SIZES: any = {
+  tiny: 'small',
+  small: 'medium',
+  medium: 'large',
+  large: 'big'
+};
+
+function renderBadge (type: string) {
+  // FIXME make it an actual badge
+  return type === 'nominator' ? <SubHeader>nominator</SubHeader> : <SubHeader>validator</SubHeader>;
+}
+
+function renderDetails (address: string, props: Exclude<AddressSummaryProps, keyof 'address'>) {
+  const { bondingPair, detailed, isNominator, isValidator, name = PLACEHOLDER_NAME, noBalance, noPlaceholderName, size = 'medium', type, withShortAddress } = props;
+
+  return (
+    <Stacked>
+      <DynamicSizeText fontSize={FONT_SIZES[size] as FontSize}> {noPlaceholderName ? null : name} </DynamicSizeText>
+      { withShortAddress && <Address address={address} shortened />}
+      { type && <FadedText> Account Type: {type} </FadedText>}
+      { bondingPair && <StackedHorizontal><FadedText> Bonding Pair: </FadedText> {renderIcon(bondingPair, 'tiny')} </StackedHorizontal> }
+      { isNominator && renderBadge('nominator') }
+      { isValidator && renderBadge('validator') }
+      {!noBalance && <Balance address={address} detailed={detailed} fontSize={FONT_SIZES[size] as FontSize} />}
+    </Stacked>
+  );
 }

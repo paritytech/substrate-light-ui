@@ -6,22 +6,27 @@
 export {
   Dropdown, DropdownProps,
   Form, FormProps,
+  Grid, GridProps,
   List, ListProps,
   Menu, MenuProps,
   Message, MessageProps,
   Segment, SegmentProps,
-  Step, StepProps
+  Step, StepProps,
+  Table, TableProps
 } from 'semantic-ui-react';
 
 export * from './Accordion';
 export * from './Address';
 export * from './Alert';
 export * from './BalanceDisplay';
+export * from './Breadcrumbs';
 export * from './Card';
+export * from './Circle';
+export * from './CopyButton';
 export * from './constants';
 export * from './FlexSegment';
+export * from './fromApps';
 export * from './globalStyle';
-export * from './Grid';
 export * from './Icon';
 export * from './InputFile';
 export * from './Loading';
@@ -31,8 +36,12 @@ export * from './MnemonicSegment';
 export * from './Modal';
 export * from './NavButton';
 export * from './NavLink';
+export * from './Progress';
 export * from './Shared.styles';
 export * from './stateful';
 export * from './TextArea';
+export * from './TxDetails';
+export * from './TxSummary';
 export * from './types';
 export * from './WalletCard';
+export * from './YayNay';

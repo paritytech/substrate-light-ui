@@ -5,11 +5,13 @@
 import { LinkProps } from 'react-router-dom';
 
 import { Color } from './globalStyle';
-import { FlexAlign, FlexJustify, FontSize, MarginSize } from './types';
+import { FlexAlign, FlexDirection, FlexJustify, FontSize, MarginSize } from './types';
 
 export interface HeaderProps {
   color?: Color;
   margin?: MarginSize;
+  noMargin?: boolean;
+  textAlign?: string;
 }
 
 export interface DynamicSizeTextProps {
@@ -24,6 +26,7 @@ export interface FlexItemProps {
 export interface StackProps {
   alignItems?: FlexAlign;
   justifyContent?: FlexJustify;
+  margin?: string;
   textAlign?: string; // FIXME Use union of possible string
   width?: string;
 }
@@ -33,7 +36,7 @@ export interface StyledNavLinkProps extends LinkProps {
 }
 
 export interface SubHeaderProps {
-  color?: string;
+  color?: Color;
   margin?: MarginSize;
   noMargin?: boolean;
   textAlign?: string;
@@ -44,7 +47,12 @@ export interface WithSpaceAroundProps {
   padding?: MarginSize;
 }
 
+export interface WithSpaceBetweenProps {
+  flexDirection?: FlexDirection;
+}
+
 export interface WrapperDivProps {
+  margin?: string;
   padding?: string;
   width?: string;
   height?: string;

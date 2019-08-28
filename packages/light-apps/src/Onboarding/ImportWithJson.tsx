@@ -1,21 +1,23 @@
 // Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
-import { AppContext } from '@substrate/ui-common';
-import { InputFile, Modal, NavLink, Stacked } from '@substrate/ui-components';
+
+import { AlertsContext } from '@substrate/ui-common';
+import { FadedText, InputFile, NavLink, Stacked, SubHeader } from '@substrate/ui-components';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
+import Modal from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
 
 interface Props extends RouteComponentProps { }
 
 export class ImportWithJson extends React.PureComponent<Props> {
-  static contextType = AppContext;
+  static contextType = AlertsContext;
 
-  context!: React.ContextType<typeof AppContext>;
+  context!: React.ContextType<typeof AlertsContext>;
 
   handleFileUploaded = async (file: string | null) => {
     const { history } = this.props;
-    const { alertStore } = this.context;
+    const { enqueue } = this.context;
 
     try {
       if (!file) {
@@ -24,7 +26,7 @@ export class ImportWithJson extends React.PureComponent<Props> {
 
       history.push('/save/withJson/', { jsonString: file });
     } catch (e) {
-      alertStore.enqueue({
+      enqueue({
         content: e.message,
         type: 'error'
       });
@@ -35,12 +37,12 @@ export class ImportWithJson extends React.PureComponent<Props> {
     return (
       <React.Fragment>
         <Stacked>
-          <Modal.SubHeader> Restore Account from JSON Backup File </Modal.SubHeader>
+          <SubHeader> Restore Account from JSON Backup File </SubHeader>
           <InputFile onChange={this.handleFileUploaded} />
           <Modal.Actions>
             <Stacked>
               <NavLink to='/import/withPhrase'> Import with Phrase Instead </NavLink>
-              <Modal.FadedText>or</Modal.FadedText>
+              <FadedText>or</FadedText>
               <NavLink to='/create'> Create New Account </NavLink>
             </Stacked>
           </Modal.Actions>

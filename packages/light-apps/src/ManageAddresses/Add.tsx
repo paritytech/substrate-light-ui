@@ -2,23 +2,17 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Margin, WalletCard } from '@substrate/ui-components';
+import { Margin, Stacked, SubHeader } from '@substrate/ui-components';
 import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
 
 import { SaveAddress } from './SaveAddress';
 
-interface Props extends RouteComponentProps<{}> { }
-
-export class Add extends React.PureComponent<Props> {
-  render () {
-    return (
-      <WalletCard
-        header='Add Address'
-        subheader='Inspect the status of any identity and name it for later use' >
-        <Margin top />
-        <SaveAddress />
-      </WalletCard>
-    );
-  }
+export function Add () {
+  return (
+    <Stacked>
+      <SubHeader> Enter an ddress and save it with a name for later use. </SubHeader>
+      <Margin top />
+      <SaveAddress />
+    </Stacked>
+  );
 }

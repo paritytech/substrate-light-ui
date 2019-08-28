@@ -30,6 +30,8 @@ export const substrateLightTheme = {
   coral: '#ff5d3e',
   tangerine: '#f68a04',
   orangeYellow: '#ffae00',
+  hotPink: '#ff008d',
+  electricPurple: '#a030ec',
   purple: '#8479f3',
   darkBlue: '#5c53fc',
   lightBlue2: '#51a0ec',

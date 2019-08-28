@@ -2,25 +2,23 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Modal } from '@substrate/ui-components';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import Modal from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
 
 import { ImportWithJson } from './ImportWithJson';
 import { ImportWithPhrase } from './ImportWithPhrase';
 
-export class ImportOptionsScreen extends React.PureComponent {
-  render () {
-    return (
-      <React.Fragment>
-        <Modal.Header> Unlock Account </Modal.Header>
-        <Modal.Content>
-          <Switch>
-            <Route path='/import/withJson' component={ImportWithJson} />
-            <Route path='/import/withPhrase' component={ImportWithPhrase} />
-          </Switch>
-        </Modal.Content>
-      </React.Fragment>
-    );
-  }
+export function ImportOptionsScreen () {
+  return (
+    <React.Fragment>
+      <Modal.Header> Unlock Account </Modal.Header>
+      <Modal.Content>
+        <Switch>
+          <Route path='/import/withJson' component={ImportWithJson} />
+          <Route path='/import/withPhrase' component={ImportWithPhrase} />
+        </Switch>
+      </Modal.Content>
+    </React.Fragment>
+  );
 }

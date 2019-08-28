@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import ApiRx from '@polkadot/api/rx';
-import { Balance } from '@polkadot/types';
+import { getTypeRegistry } from '@polkadot/types';
 import { MAX_SIZE_BYTES, MAX_SIZE_MB } from '@polkadot/ui-signer/Checks/constants';
 import { compactToU8a } from '@polkadot/util';
 import BN from 'bn.js';
@@ -11,6 +11,7 @@ import { Either, left, right } from 'fp-ts/lib/Either';
 import { none, some } from 'fp-ts/lib/Option';
 
 import { AllExtrinsicData, Errors, SubResults, UserInputs, WithAmount, WithAmountExtrinsic } from './types';
+import { SubmittableExtrinsic } from '@polkadot/api/SubmittableExtrinsic';
 
 const LENGTH_PUBLICKEY = 32 + 1; // publicKey + prefix
 const LENGTH_SIGNATURE = 64;
@@ -22,7 +23,7 @@ const SIGNATURE_SIZE = LENGTH_PUBLICKEY + LENGTH_SIGNATURE + LENGTH_ERA;
  */
 function validateAmount (values: SubResults & UserInputs): Either<Errors, SubResults & UserInputs & WithAmount> {
   const { amountAsString, ...rest } = values;
-  const amount = new Balance(amountAsString);
+  const amount = new BN(amountAsString);
 
   if (amount.isNeg()) {
     return left({ amount: 'Please enter a positive amount to transfer.' });
@@ -45,8 +46,13 @@ function validateDerived (values: SubResults & UserInputs & WithAmountExtrinsic)
   const txLength = SIGNATURE_SIZE + compactToU8a(accountNonce).length + extrinsic.encodedLength;
   const allFees = fees.transactionBaseFee.add(fees.transactionByteFee.muln(txLength));
 
-  const isCreation = recipientBalance.votingBalance.isZero() && fees.creationFee.gtn(0);
-  const isNoEffect = amount.add(recipientBalance.votingBalance).lte(fees.existentialDeposit);
+  let isCreation = false;
+  let isNoEffect = false;
+
+  if (recipientBalance !== undefined) {
+    isCreation = recipientBalance.votingBalance.isZero() && fees.creationFee.gtn(0);
+    isNoEffect = amount.add(recipientBalance.votingBalance).lte(fees.existentialDeposit);
+  }
 
   const allTotal = amount.add(allFees).add(isCreation ? fees.creationFee : new BN(0));
 
@@ -55,24 +61,28 @@ function validateDerived (values: SubResults & UserInputs & WithAmountExtrinsic)
   const isReserved = currentBalance.freeBalance.isZero() && currentBalance.reservedBalance.gtn(0);
   const overLimit = txLength >= MAX_SIZE_BYTES;
 
+  const errors = {} as Errors;
+
   if (!hasAvailable) {
-    return left({ amount: 'The selected account does not have the required balance available for this transaction.' });
+    errors.amount = 'The selected account does not have the required balance available for this transaction.';
   }
   if (overLimit) {
-    return left({ amount: `This transaction will be rejected by the node as it is greater than the maximum size of ${MAX_SIZE_MB}MB.` });
+    errors.amount = `This transaction will be rejected by the node as it is greater than the maximum size of ${MAX_SIZE_MB}MB.`;
   }
 
-  return right({
-    ...values,
-    allFees,
-    allTotal,
-    hasAvailable,
-    isCreation,
-    isNoEffect,
-    isRemovable,
-    isReserved,
-    overLimit
-  });
+  return Object.keys(errors).length
+    ? left(errors)
+    : right({
+      ...values,
+      allFees,
+      allTotal,
+      hasAvailable,
+      isCreation,
+      isNoEffect,
+      isRemovable,
+      isReserved,
+      overLimit
+    });
 }
 
 /**
@@ -81,7 +91,9 @@ function validateDerived (values: SubResults & UserInputs & WithAmountExtrinsic)
 function validateExtrinsic (api: ApiRx) {
   return function (values: SubResults & UserInputs & WithAmount): Either<Errors, SubResults & UserInputs & WithAmountExtrinsic> {
     const { amount, recipientAddress } = values;
-    const extrinsic = api.tx.balances.transfer(recipientAddress, amount);
+    const method = api.tx.balances.transfer(recipientAddress, amount);
+    // FIXME this can't possibly the best way to do this? maybe use createSubmittableExtrinsic?
+    const extrinsic = new (getTypeRegistry().getOrThrow('Extrinsic'))(method) as SubmittableExtrinsic<'rxjs'>;
 
     return right({ ...values, extrinsic } as SubResults & UserInputs & WithAmountExtrinsic);
   };
@@ -92,24 +104,27 @@ function validateExtrinsic (api: ApiRx) {
  */
 function validateSubResults (values: Partial<SubResults & UserInputs>): Either<Errors, SubResults & UserInputs> {
   const { accountNonce, currentBalance, fees, recipientBalance, ...rest } = values;
+  const errors = {} as Errors;
 
   if (!accountNonce) {
-    return left({ accountNonce: 'Please wait while we fetch your account nonce.' });
+    errors.accountNonce = 'Please wait while we fetch your account nonce.';
   }
 
   if (!fees) {
-    return left({ fees: 'Please wait while we fetch transfer fees.' });
+    errors.fees = 'Please wait while we fetch transfer fees.';
   }
 
   if (!currentBalance) {
-    return left({ currentBalance: 'Please wait while we fetch your voting balance.' });
+    errors.currentBalance = 'Please wait while we fetch your voting balance.';
   }
 
   if (!recipientBalance) {
-    return left({ recipientBalance: "Please wait while we fetch the recipient's balance." });
+    errors.recipientBalance = "Please wait while we fetch the recipient's balance.";
   }
 
-  return right({ accountNonce, currentBalance, fees, recipientBalance, ...rest } as SubResults & UserInputs);
+  return Object.keys(errors).length
+    ? left(errors)
+    : right({ accountNonce, currentBalance, fees, recipientBalance, ...rest } as SubResults & UserInputs);
 }
 
 /**
@@ -117,22 +132,27 @@ function validateSubResults (values: Partial<SubResults & UserInputs>): Either<E
  */
 function validateUserInputs (values: Partial<SubResults & UserInputs>): Either<Errors, Partial<SubResults> & UserInputs> {
   const { amountAsString, currentAccount, recipientAddress, ...rest } = values;
+  const errors = {} as Errors;
 
   if (!currentAccount) {
-    return left({ currentAccount: 'Please enter a sender account.' });
+    errors.currentAccount = 'Please enter a sender account.';
   }
+
   if (!recipientAddress) {
-    return left({ recipientAddress: 'Please enter a recipient address.' });
+    errors.recipientAddress = 'Please enter a recipient address.';
   }
+
   if (currentAccount === recipientAddress) {
-    return left({ currentAccount: 'You cannot send balance to yourself.' });
+    errors.currentAccount = 'You cannot send balance to yourself.';
   }
 
   if (!amountAsString) {
-    return left({ amount: 'Please enter an amount' });
+    errors.amount = 'Please enter an amount';
   }
 
-  return right({ amountAsString, currentAccount, recipientAddress, ...rest } as Partial<SubResults> & UserInputs);
+  return Object.keys(errors).length
+    ? left(errors)
+    : right({ amountAsString, currentAccount, recipientAddress, ...rest } as Partial<SubResults> & UserInputs);
 }
 
 /**

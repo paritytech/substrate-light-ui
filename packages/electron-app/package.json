@@ -1,6 +1,6 @@
 {
   "name": "@substrate/electron-app",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "Parity Technologies <admin@parity.io>",
   "description": "Substrate Light UI",
   "license": "Apache-2.0",
@@ -11,22 +11,24 @@
     "build": "electron-webpack",
     "electron": "electron dist/main/main.js",
     "package": "electron-builder",
-    "start": "cross-env ELECTRON_START_URL=http://localhost:3000 electron-webpack dev",
+    "start": "electron-webpack dev",
     "test": "echo Skipped."
   },
   "devDependencies": {
-    "@substrate/light-apps": "0.1.0",
+    "@substrate/light-apps": "^0.2.0",
     "copyfiles": "^2.0.0",
-    "cross-env": "^5.2.0",
-    "electron": "^4.0.0",
-    "electron-builder": "^20.38.5",
+    "electron": "^6.0.0",
+    "electron-builder": "^21.0.15",
     "electron-webpack": "^2.6.2",
     "electron-webpack-ts": "^3.1.1",
     "webpack": "^4.28.3"
   },
   "dependencies": {
-    "@types/electron-devtools-installer": "^2.2.0",
-    "electron-devtools-installer": "^2.2.4",
-    "source-map-support": "^0.5.10"
+    "axios": "^0.19.0",
+    "source-map-support": "^0.5.10",
+    "winston": "^3.2.1"
+  },
+  "substrate": {
+    "version": "~1.0.0"
   }
 }

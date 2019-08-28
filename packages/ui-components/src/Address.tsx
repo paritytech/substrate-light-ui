@@ -7,21 +7,23 @@ import React from 'react';
 import { CopyButton } from './CopyButton';
 import { FlexSegment } from './FlexSegment';
 
-type Props = {
-  address?: string
+type AddressProps = {
+  address: string,
+  shortened?: boolean,
+  zIndex?: number
 };
 
-const PLACEHOLDER_ADDRESS = '5'.padEnd(16, 'x');
+export function Address (props: AddressProps) {
+  const { address, shortened, zIndex = 0 } = props;
 
-export class Address extends React.PureComponent<Props> {
-  render () {
-    const { address } = this.props;
-
-    return (
-      <FlexSegment>
-        {address || PLACEHOLDER_ADDRESS}
-        <CopyButton value={address} />
-      </FlexSegment>
-    );
-  }
+  return (
+    <FlexSegment style={{ zIndex: zIndex }}>
+      {
+        shortened
+          ? address.slice(0, 8).concat('......').concat(address.slice(address.length - 8, address.length))
+          : address
+      }
+      <CopyButton value={address} />
+    </FlexSegment>
+  );
 }

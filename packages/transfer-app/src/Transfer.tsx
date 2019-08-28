@@ -2,17 +2,19 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import accounts from '@polkadot/ui-keyring/observable/accounts';
+import accountObservable from '@polkadot/ui-keyring/observable/accounts';
 import addressObservable from '@polkadot/ui-keyring/observable/addresses';
-import { combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Subscribe } from '@substrate/ui-common';
+import { SingleAddress } from '@polkadot/ui-keyring/observable/types';
+import { PendingExtrinsic, TxQueueContext } from '@substrate/ui-common';
 import { WalletCard } from '@substrate/ui-components';
-import React from 'react';
+import { findFirst, flatten } from 'fp-ts/lib/Array';
+import React, { useContext, useEffect, useState } from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
+import { combineLatest, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { SendBalance } from './SendBalance';
-import { SentBalance } from './SentBalance';
+import { TxQueue } from './TxQueue';
 
 interface MatchParams {
   currentAccount: string;
@@ -20,35 +22,51 @@ interface MatchParams {
 
 interface Props extends RouteComponentProps<MatchParams> { }
 
-export class Transfer extends React.PureComponent<Props> {
-  render () {
-    return (
+export function Transfer (props: Props) {
+  const { match: { params: { currentAccount } } } = props;
+  const { txQueue } = useContext(TxQueueContext);
+  const [allAddresses, setAllAddresses] = useState<SingleAddress[]>([]);
+  useEffect(() => {
+    const allAddressessub = combineLatest([
+      accountObservable.subject.pipe(map(Object.values)) as Observable<SingleAddress[]>,
+      addressObservable.subject.pipe(map(Object.values)) as Observable<SingleAddress[]>
+    ])
+      .pipe(map(flatten))
+      .subscribe(setAllAddresses);
+
+    return () => allAddressessub.unsubscribe();
+  }, []);
+
+  return (
+    <React.Fragment>
       <WalletCard header='Transfer Balance' height='100%'>
-        <Switch>
-          <Route component={SentBalance} path='/transfer/:currentAccount/sent'></Route>
-          <Route exact path='/transfer/:currentAccount/' render={({ match: { params: { currentAccount } } }) => (
-            <Subscribe>
-              {
-                combineLatest(
-                  accounts.subject,
-                  addressObservable.subject
-                )
-                  .pipe(
-                    map(([accounts, addresses]) => [
-                      ...Object.values(accounts).map(account => account.json.address),
-                      ...Object.values(addresses).map(address => address.json.address)]),
-                    map(addresses => addresses.filter(address => address !== currentAccount)),
-                    map(([firstDifferentAddress, ...rest]) => {
-                      return <Redirect to={`/transfer/${currentAccount}/${firstDifferentAddress || currentAccount}`} />;
-                    })
-                  )
-              }
-            </Subscribe>
-          )} />
-          <Route component={SendBalance} path='/transfer/:currentAccount/:recipientAddress'></Route>
-          <Route component={SendBalance}></Route>
-        </Switch>
-      </WalletCard>
-    );
-  }
+        {allAddresses.length && renderContent(allAddresses, currentAccount, txQueue)}
+      </WalletCard >
+    </React.Fragment>
+  );
+}
+
+function renderContent (
+  allAddresses: SingleAddress[],
+  currentAccount: string,
+  txQueue: PendingExtrinsic[]
+) {
+  // Find, inside `allAddresses`, the first one that's different than
+  // currentAccount. If not found, then take currentAccount
+  const firstDifferentAddress = findFirst(
+    allAddresses,
+    (singleAddress: SingleAddress) => singleAddress.json.address !== currentAccount
+  )
+    .map(({ json: { address } }) => address)
+    .getOrElse(currentAccount);
+
+  return (
+    <Switch>
+      {txQueue.length
+        ? <Route path='/transfer/:currentAccount/:recipientAddress' component={TxQueue} />
+        : <Route path='/transfer/:currentAccount/:recipientAddress' component={SendBalance} />
+      }
+      <Redirect exact from='/transfer/:currentAccount/' to={`/transfer/${currentAccount}/${firstDifferentAddress}`} />
+    </Switch>
+  );
 }

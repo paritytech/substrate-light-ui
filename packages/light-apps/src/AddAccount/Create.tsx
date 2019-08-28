@@ -2,256 +2,232 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { Keyring } from '@polkadot/ui-keyring';
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
-import { AppContext } from '@substrate/ui-common';
+import { AppContext, handler } from '@substrate/ui-common';
 import { AddressSummary, ErrorText, FadedText, Input, Margin, MnemonicSegment, NavButton, Stacked, StyledLinkButton, SubHeader, WrapperDiv, WithSpaceAround } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
-import React from 'react';
+import { Either, left, right } from 'fp-ts/lib/Either';
+import { none, Option, some } from 'fp-ts/lib/Option';
+import React, { useContext, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
 interface Props extends RouteComponentProps { }
-
-type Steps = 'create' | 'rewrite';
-
-type State = {
-  address?: string;
-  error: string | null;
+interface UserInput {
   mnemonic: string;
   name: string;
   password: string;
-  rewritePhrase?: string;
-  step: Steps;
-};
+  rewritePhrase: string;
+}
+interface UserInputError extends Partial<UserInput> { }
 
-export class Create extends React.PureComponent<Props, State> {
-  static contextType = AppContext;
+type Steps = 'create' | 'rewrite';
 
-  context!: React.ContextType<typeof AppContext>; // http://bit.ly/typescript-and-react-context
+/**
+ * Derive public address from mnemonic key
+ */
+function generateAddressFromMnemonic (keyring: Keyring, mnemonic: string): string {
+  const keypair = naclKeypairFromSeed(mnemonicToSeed(mnemonic));
 
-  state: State = {
-    error: null,
-    mnemonic: '',
-    name: '',
-    password: '',
-    step: 'create'
+  return keyring.encodeAddress(
+    keypair.publicKey
+  );
+}
+
+/**
+ * Validate user inputs
+ */
+function validate (values: UserInput): Either<UserInputError, UserInput> {
+  const errors = {} as UserInputError;
+
+  (['name', 'password', 'rewritePhrase'] as (keyof UserInput)[])
+    .filter((key) => !values[key])
+    .forEach((key) => {
+      errors[key] = `Field "${key}" cannot be empty`;
+    });
+
+  if (values.mnemonic !== values.rewritePhrase) {
+    errors.rewritePhrase = 'Mnemonic does not match rewrite';
+  }
+
+  return Object.keys(errors).length ? left(errors) : right(values);
+}
+
+export function Create (props: Props) {
+  const { keyring } = useContext(AppContext);
+
+  const [error, setError] = useState<Option<string>>(none);
+  const [mnemonic, setMnemonic] = useState(mnemonicGenerate());
+  const [name, setName] = useState('');
+  const [password, setPassword] = useState('');
+  const [rewritePhrase, setRewritePhrase] = useState('');
+  const [step, setStep] = useState<Steps>('create');
+
+  const address = generateAddressFromMnemonic(keyring, mnemonic);
+  const validation = validate({ mnemonic, name, password, rewritePhrase });
+
+  const createNewAccount = () => {
+    const { history } = props;
+
+    validation.fold(
+      (err) => { onError(err); },
+      (values) => {
+        // keyring.createFromUri(`${phrase.trim()}${derivePath}`, {}, pairType).address;
+        // keyring.addUri(`${seed}${derivePath}`, password, { name, tags }, pairType);
+        const result = keyring.addUri(values.mnemonic.trim(), values.password, { name: values.name });
+
+        const json = result.json;
+        const blob = new Blob([JSON.stringify(json)], { type: 'application/json; charset=utf-8' });
+
+        FileSaver.saveAs(blob, `${values.name}-${result.pair.address}.json`);
+
+        history.push(`/transfer/${result.pair.address}`);
+      }
+    );
   };
 
-  componentDidMount () {
-    this.newMnemonic();
-  }
+  const onError = (err: UserInputError) => {
+    setError(some(Object.values(err)[0]));
+  };
 
-  clearFields = () => {
-    const mnemonic = mnemonicGenerate();
+  const goToNextStep = () => {
+    setError(none);
 
-    this.setState({
-      address: this.generateAddressFromMnemonic(mnemonic),
-      error: null,
-      mnemonic,
-      name: '',
-      password: ''
-    });
-  }
-
-  createNewAccount = () => {
-    const { keyring } = this.context;
-    const { history } = this.props;
-    const { mnemonic, name, password } = this.state;
-
-    if (this.validateFields()) {
-      let pair = keyring.createAccountMnemonic(mnemonic, password, { name });
-
-      const address = pair.address();
-      const json = pair.toJson(password);
-      const blob = new Blob([JSON.stringify(json)], { type: 'application/json; charset=utf-8' });
-
-      FileSaver.saveAs(blob, `${address}.json`);
-
-      history.push(`/identity/${address}`);
-
-      this.clearFields();
-    } else {
-      this.onError('Please make sure all the fields are set');
-    }
-  }
-
-  generateAddressFromMnemonic (mnemonic: string): string {
-    const { keyring } = this.context;
-    const keypair = naclKeypairFromSeed(mnemonicToSeed(mnemonic));
-
-    return keyring.encodeAddress(
-      keypair.publicKey
+    validation.fold(
+      (err) => (err.name || err.password) ? onError(err) : setStep('rewrite'),
+      () => setStep('rewrite')
     );
-  }
+  };
 
-  newMnemonic = () => {
-    const mnemonic = mnemonicGenerate();
-    const address = this.generateAddressFromMnemonic(mnemonic);
+  const goToPreviousStep = () => {
+    setError(none);
+    setStep('create');
+  };
 
-    this.setState({ address, mnemonic });
-  }
+  return (
+    <Stacked>
+      <AddressSummary address={address} name={name} />
+      <Margin top />
+      {step === 'create'
+        ? renderCreateStep({ mnemonic, name, password }, { setMnemonic, setName, setPassword }, goToNextStep)
+        : renderRewriteStep({ mnemonic, rewritePhrase }, { setRewritePhrase }, createNewAccount, goToPreviousStep)
+      }
+      {renderError(error)}
+    </Stacked>
+  );
 
-  onChangeName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      name: value
-    });
-  }
+}
 
-  onChangePassword = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      password: value
-    });
-  }
+function renderCreateStep (
+  values: {
+    mnemonic: string,
+    name: string,
+    password: string
+  },
+  setters: {
+    setMnemonic: React.Dispatch<React.SetStateAction<string>>,
+    setName: React.Dispatch<React.SetStateAction<string>>,
+    setPassword: React.Dispatch<React.SetStateAction<string>>
+  },
+  goToNextStep: () => void
+) {
+  const { mnemonic, name, password } = values;
+  const { setMnemonic, setName, setPassword } = setters;
 
-  onChangeRewritePhrase = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      rewritePhrase: value
-    });
-
-    if (value === this.state.mnemonic) {
-      this.onError('');
-    } else {
-      this.onError('Mnemonic does not match rewrite');
-    }
-  }
-
-  onError = (value: string | null) => {
-    this.setState({
-      error: value
-    });
-  }
-
-  toggleStep = () => {
-    const { address, password, step } = this.state;
-
-    if (address && password) {
-      this.setState({
-        step: step === 'create' ? 'rewrite' : 'create'
-      });
-    } else {
-      this.onError('Please make sure all fields are set.');
-    }
-  }
-
-  validateFields = () => {
-    const { mnemonic, name, password, rewritePhrase } = this.state;
-    return mnemonic.length && name && password.length && rewritePhrase === mnemonic;
-  }
-
-  render () {
-    const { address, name, step } = this.state;
-
-    return (
+  return (
+    <React.Fragment>
       <Stacked>
-        <AddressSummary address={address} name={name} />
+        <SubHeader> Create from the following mnemonic phrase </SubHeader>
+        <MnemonicSegment onClick={() => setMnemonic(mnemonicGenerate())} mnemonic={mnemonic} />
         <Margin top />
-        {
-          step === 'create'
-            ? this.renderCreateStep()
-            : this.renderRewriteStep()
-        }
-        {this.renderError()}
+        <Stacked>
+          {renderSetName(name, setName)}
+          <Margin top />
+          {renderSetPassword(password, setPassword)}
+        </Stacked>
+        <NavButton onClick={goToNextStep}> Next </NavButton>
       </Stacked>
-    );
-  }
+    </React.Fragment>
+  );
+}
 
-  renderCreateStep () {
-    const { mnemonic } = this.state;
+function renderError (error: Option<string>) {
+  return error.fold(null, (err) => <ErrorText>{err}</ErrorText>);
+}
 
-    return (
-      <React.Fragment>
-        <Stacked>
-          <SubHeader> Create from the following mnemonic phrase </SubHeader>
-          <MnemonicSegment onClick={this.newMnemonic} mnemonic={mnemonic} />
-          <Margin top />
-          <Stacked>
-            {this.renderSetName()}
-            <Margin top />
-            {this.renderSetPassword()}
-          </Stacked>
-          <NavButton onClick={this.toggleStep}> Next </NavButton>
-        </Stacked>
-      </React.Fragment>
-    );
-  }
+function renderRewriteStep (
+  values: {
+    mnemonic: string,
+    rewritePhrase: string
+  },
+  setters: {
+    setRewritePhrase: React.Dispatch<React.SetStateAction<string>>
+  },
+  createNewAccount: () => void,
+  goToPreviousStep: () => void
+) {
+  const { mnemonic, rewritePhrase } = values;
+  const { setRewritePhrase } = setters;
 
-  renderError () {
-    const { error } = this.state;
-
-    return (
-      <ErrorText>
-        {error || null}
-      </ErrorText>
-    );
-  }
-
-  renderRewriteStep () {
-    const { mnemonic, rewritePhrase } = this.state;
-
-    return (
-      <React.Fragment>
-        <Stacked>
-          <SubHeader> Copy Your Mnemonic Somewhere Safe </SubHeader>
-          <FadedText> If someone gets hold of this mnemonic they could drain your account</FadedText>
-          <MnemonicSegment onClick={this.newMnemonic} mnemonic={mnemonic} />
-          <Margin top />
-          <FadedText> Rewrite Mnemonic Below </FadedText>
-          <WrapperDiv>
-            <Input
-              autoFocus
-              fluid
-              onChange={this.onChangeRewritePhrase}
-              type='text'
-              value={rewritePhrase} />
-          </WrapperDiv>
-          <WithSpaceAround>
-            <Stacked>
-              <StyledLinkButton onClick={this.toggleStep}> Back </StyledLinkButton>
-              <Margin top />
-              <NavButton onClick={this.createNewAccount}> Save </NavButton>
-            </Stacked>
-          </WithSpaceAround>
-        </Stacked>
-      </React.Fragment>
-    );
-  }
-
-  renderSetName () {
-    const { name } = this.state;
-
-    return (
+  return (
+    <React.Fragment>
       <Stacked>
-        <SubHeader> Give it a name </SubHeader>
+        <SubHeader> Copy Your Mnemonic Somewhere Safe </SubHeader>
+        <FadedText> If someone gets hold of this mnemonic they could drain your account</FadedText>
+        <MnemonicSegment mnemonic={mnemonic} />
+        <Margin top />
+        <FadedText> Rewrite Mnemonic Below </FadedText>
         <WrapperDiv>
           <Input
             autoFocus
             fluid
-            min={1}
-            onChange={this.onChangeName}
+            onChange={handler(setRewritePhrase)}
             type='text'
-            value={name}
-          />
+            value={rewritePhrase} />
         </WrapperDiv>
+        <WithSpaceAround>
+          <Stacked>
+            <StyledLinkButton onClick={goToPreviousStep}> Back </StyledLinkButton>
+            <Margin top />
+            <NavButton onClick={createNewAccount}> Save </NavButton>
+          </Stacked>
+        </WithSpaceAround>
       </Stacked>
-    );
-  }
+    </React.Fragment>
+  );
+}
 
-  renderSetPassword () {
-    const { password } = this.state;
+function renderSetName (name: string, setName: React.Dispatch<React.SetStateAction<string>>) {
+  return (
+    <Stacked>
+      <SubHeader> Give it a name </SubHeader>
+      <WrapperDiv>
+        <Input
+          autoFocus
+          fluid
+          min={1}
+          onChange={handler(setName)}
+          type='text'
+          value={name}
+        />
+      </WrapperDiv>
+    </Stacked>
+  );
+}
 
-    return (
-      <Stacked>
-        <SubHeader> Encrypt it with a passphrase </SubHeader>
-        <WrapperDiv>
-          <Input
-            fluid
-            min={8}
-            onChange={this.onChangePassword}
-            type='password'
-            value={password}
-          />
-        </WrapperDiv>
-      </Stacked>
-    );
-  }
-
+function renderSetPassword (password: string, setPassword: React.Dispatch<React.SetStateAction<string>>) {
+  return (
+    <Stacked>
+      <SubHeader> Encrypt it with a passphrase </SubHeader>
+      <WrapperDiv>
+        <Input
+          fluid
+          min={8}
+          onChange={handler(setPassword)}
+          type='password'
+          value={password}
+        />
+      </WrapperDiv>
+    </Stacked>
+  );
 }

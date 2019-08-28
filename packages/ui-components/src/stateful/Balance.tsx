@@ -2,47 +2,46 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Balance as BalanceType } from '@polkadot/types';
-import { AppContext, Subscribe } from '@substrate/ui-common';
-import React from 'react';
-import { map } from 'rxjs/operators';
+import { DerivedBalances, DerivedStaking } from '@polkadot/api-derive/types';
+import { AppContext } from '@substrate/ui-common';
+import React, { useContext, useEffect, useState } from 'react';
+import { combineLatest, Observable, of, Subscription } from 'rxjs';
 
 import { BalanceDisplay, BalanceDisplayProps } from '../BalanceDisplay';
 
 interface BalanceProps extends Pick<BalanceDisplayProps, Exclude<keyof BalanceDisplayProps, 'balance'>> {
-  address?: string;
+  address: string;
+  detailed?: boolean;
 }
 
-const ZERO_BALANCE = new BalanceType(0);
+export function Balance (props: BalanceProps) {
+  const { address, detailed = false, ...rest } = props;
+  const { api } = useContext(AppContext);
+  const [allBalances, setAllBalances] = useState();
+  const [allStaking, setAllStaking] = useState();
 
-export class Balance extends React.PureComponent<BalanceProps> {
-  static contextType = AppContext;
+  useEffect(() => {
+    let balanceSub: Subscription = combineLatest([
+      (api.derive.balances.all(address) as Observable<DerivedBalances>),
+      (api.derive.staking.info(address) as Observable<DerivedStaking>)
+    ]).subscribe(([allBalances, allStaking]) => {
+      setAllBalances(allBalances);
+      setAllStaking(allStaking);
+    });
 
-  context!: React.ContextType<typeof AppContext>; // http://bit.ly/typescript-and-react-context
+    return () => balanceSub.unsubscribe();
+  }, [api, address]);
 
-  render () {
-    const { api, system: { properties } } = this.context;
-    const { address, ...rest } = this.props;
+  const handleRedeem = async (address: string) => {
+    of(api.tx.staking.withdrawUnbonded(address)).subscribe();
+  };
 
-    if (!address) {
-      return <BalanceDisplay balance={ZERO_BALANCE} tokenSymbol={properties.tokenSymbol} {...rest} />;
-    }
-
-    return (
-      <Subscribe>
-        {
-          // FIXME using any because freeBalance gives a Codec here, not a Balance
-          // Wait for @polkadot/api to have TS support for all query.*
-          api.query.balances.freeBalance(address).pipe(map(this.renderBalance as any))
-        }
-      </Subscribe>
-    );
-  }
-
-  renderBalance = (balance: BalanceType) => {
-    const { system: { properties } } = this.context;
-    const { address, ...rest } = this.props;
-
-    return <BalanceDisplay balance={balance} tokenSymbol={properties.tokenSymbol} {...rest} />;
-  }
+  return (
+    <BalanceDisplay
+      allBalances={allBalances}
+      allStaking={allStaking}
+      detailed={detailed}
+      handleRedeem={handleRedeem}
+      {...rest} />
+  );
 }
