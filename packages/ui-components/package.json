@@ -28,13 +28,13 @@
     "react": "^16.8"
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^4.1.13",
-    "@storybook/addon-knobs": "^4.1.13",
-    "@storybook/addon-links": "^4.1.13",
-    "@storybook/react": "^4.1.4",
+    "@storybook/addon-actions": "^5.1.11",
+    "@storybook/addon-knobs": "^5.1.11",
+    "@storybook/addon-links": "^5.1.11",
+    "@storybook/react": "^5.1.11",
     "@substrate/ui-common": "^0.2.0",
     "@types/storybook__addon-actions": "^3.4.2",
-    "@types/storybook__addon-knobs": "^4.0.2",
+    "@types/storybook__addon-knobs": "^5.0.3",
     "@types/storybook__addon-links": "^3.3.4",
     "@types/storybook__react": "^4.0.0"
   }
