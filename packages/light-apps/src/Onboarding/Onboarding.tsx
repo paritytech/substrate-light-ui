@@ -2,29 +2,37 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Container } from '@substrate/ui-components';
+import { Breadcrumbs, Header, Modal, WithSpaceAround } from '@substrate/ui-components';
 import React from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
-import Modal from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
+import { Route, Switch, RouteComponentProps } from 'react-router-dom';
 
-import { CreateNewAccountScreen, ImportOptionsScreen, SaveScreen, WelcomeScreen } from './index';
+import { ONBOARDING_STEPS } from '../constants';
+import { StashCreate } from './StashCreate';
+import { TermsAndConditions } from './TermsAndConditions';
 
-export function Onboarding () {
+interface MatchParams {
+  activeOnboardingStep: string;
+}
+
+interface Props extends RouteComponentProps<MatchParams> { }
+
+export function Onboarding (props: Props) {
+  const { match: { params: { activeOnboardingStep } } } = props;
+
   return (
     <Modal
       dimmer='inverted'
       open
       size='large'
     >
-      <Container>
-        <Switch>
-          <Route path='/welcome' component={WelcomeScreen} />
-          <Route path='/create' component={CreateNewAccountScreen} />
-          <Route path='/import' component={ImportOptionsScreen} />
-          <Route path='/save/:importMethod' component={SaveScreen} />
-          <Redirect to='/welcome' />
-        </Switch>
-      </Container>
+      <Modal.Header>
+        <WithSpaceAround><Breadcrumbs activeLabel={activeOnboardingStep.toUpperCase()} sectionLabels={ONBOARDING_STEPS} /></WithSpaceAround>
+        <Header margin='small'>Welcome to the Kusama Nominator Community.</Header>
+      </Modal.Header>
+      <Switch>
+        <Route path={`/onboarding/${'T&C'}`} component={TermsAndConditions} />
+        <Route path={'/onboarding/stash'} component={StashCreate} />
+      </Switch>
     </Modal>
   );
 }

@@ -44,7 +44,7 @@ export function SetupNominator (props: Props) {
     keyring.addUri(`${stashMnemonic.trim()}`, stashPassword, { name: 'Stash', type: 'stash' }, DEFAULT_ACCOUNT_TYPE);
     const controllerResult = keyring.addUri(`${controllerMnemonic.trim()}`, controllerPassword, { name: 'Controller', type: 'controller' }, DEFAULT_ACCOUNT_TYPE);
 
-    props.history.push(`/transfer/${controllerResult.pair.address()}`);
+    props.history.push(`/transfer/${controllerResult.pair.address}`);
   };
 
   const handleChangeControllerPassword = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {

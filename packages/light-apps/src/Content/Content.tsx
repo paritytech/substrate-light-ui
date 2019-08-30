@@ -15,6 +15,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { map } from 'rxjs/operators';
 
 import { AddAccount } from '../AddAccount';
+import { ONBOARDING_STEPS } from '../constants';
 import { IdentityHeader } from '../IdentityHeader';
 import { ManageAddresses } from '../ManageAddresses';
 import { Onboarding } from '../Onboarding';
@@ -50,7 +51,11 @@ export function Content () {
             </Switch>
           </React.Fragment>
         ))
-        .getOrElse(<Route component={Onboarding} />)
+        .getOrElse(
+          <React.Fragment>
+            <Route path={`/onboarding/:activeOnboardingStep`} component={Onboarding} />
+            <Redirect exact from='/' to={`/onboarding/${ONBOARDING_STEPS[1]}`} />
+          </React.Fragment>)
       }
       <Signer />
     </React.Fragment>
