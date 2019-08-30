@@ -2,32 +2,46 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Balance as BalanceType } from '@polkadot/types';
+import { DerivedBalances, DerivedStaking } from '@polkadot/api-derive/types';
 import { AppContext } from '@substrate/ui-common';
 import React, { useContext, useEffect, useState } from 'react';
-import { Observable, of } from 'rxjs';
+import { combineLatest, Observable, of, Subscription } from 'rxjs';
 
 import { BalanceDisplay, BalanceDisplayProps } from '../BalanceDisplay';
 
 interface BalanceProps extends Pick<BalanceDisplayProps, Exclude<keyof BalanceDisplayProps, 'balance'>> {
-  address?: string;
+  address: string;
+  detailed?: boolean;
 }
 
-const ZERO_BALANCE = new BalanceType(0);
-
 export function Balance (props: BalanceProps) {
-  const { address, ...rest } = props;
-  const { api, system: { properties } } = useContext(AppContext);
-  const [balance, setBalance] = useState<BalanceType>(ZERO_BALANCE);
-  useEffect(() => {
-    const balance$ = address
-      ? (api.query.balances.freeBalance(address) as Observable<BalanceType>)
-      : of(ZERO_BALANCE);
+  const { address, detailed = false, ...rest } = props;
+  const { api } = useContext(AppContext);
+  const [allBalances, setAllBalances] = useState();
+  const [allStaking, setAllStaking] = useState();
 
-    const balanceSub = balance$.subscribe(setBalance);
+  useEffect(() => {
+    let balanceSub: Subscription = combineLatest([
+      (api.derive.balances.all(address) as Observable<DerivedBalances>),
+      (api.derive.staking.info(address) as Observable<DerivedStaking>)
+    ]).subscribe(([allBalances, allStaking]) => {
+      setAllBalances(allBalances);
+      setAllStaking(allStaking);
+    });
 
     return () => balanceSub.unsubscribe();
   }, [api, address]);
 
-  return <BalanceDisplay balance={balance} tokenSymbol={properties.tokenSymbol} {...rest} />;
+  const handleRedeem = async (address: string) => {
+    of(api.tx.staking.withdrawUnbonded(address)).subscribe();
+  };
+
+  return (
+    <BalanceDisplay
+      allBalances={allBalances}
+      allStaking={allStaking}
+      detailed={detailed}
+      handleRedeem={handleRedeem}
+      {...rest} />
+  );
 }

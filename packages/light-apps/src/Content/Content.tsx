@@ -3,6 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import accounts from '@polkadot/ui-keyring/observable/accounts';
+import { Accounts } from '@substrate/accounts-app';
 import { Governance } from '@substrate/governance-app';
 import { SingleAddress } from '@polkadot/ui-keyring/observable/types';
 import { Transfer } from '@substrate/transfer-app';
@@ -35,12 +36,13 @@ export function Content () {
       {defaultAccount
         .map(({ json }) => (
           <React.Fragment>
-            <Route path={['/accounts/:currentAccount/add', '/addresses/:currentAccount', '/governance/:currentAccount', '/transfer/:currentAccount']} component={IdentityHeader} />
+            <Route path={['/accounts/:currentAccount/add', '/addresses/:currentAccount', '/governance/:currentAccount', '/manageAccounts/:currentAccount', '/transfer/:currentAccount']} component={IdentityHeader} />
             <Switch>
-              <Redirect exact from='/' to={`/governance/${json.address}`} />
+              <Redirect exact from='/' to={`/manageAccounts/${json.address}`} />
               <Redirect exact from='/governance' to={`/governance/${json.address}`} />
               <Redirect exact from='/transfer' to={`/transfer/${json.address}`} />
               <Route path='/addresses/:currentAccount' component={ManageAddresses} />
+              <Route path='/manageAccounts/:currentAccount' component={Accounts} />
               <Route path='/accounts/:currentAccount/add/' component={AddAccount} />
               <Route path='/governance/:currentAccount' component={Governance} />
               <Route path='/transfer/:currentAccount' component={Transfer} />
@@ -50,7 +52,7 @@ export function Content () {
         ))
         .getOrElse(<Route component={Onboarding} />)
       }
-      < Signer />
+      <Signer />
     </React.Fragment>
   );
 }

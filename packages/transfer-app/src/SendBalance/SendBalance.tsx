@@ -3,8 +3,8 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { DerivedBalances, DerivedFees } from '@polkadot/api-derive/types';
-import { Index } from '@polkadot/types';
-import { AppContext, handler, TxQueueContext } from '@substrate/ui-common';
+import { Index } from '@polkadot/types/interfaces';
+import { AppContext, handler, TxQueueContext, validate, AllExtrinsicData } from '@substrate/ui-common';
 import { Balance, Form, Input, NavButton, StackedHorizontal, SubHeader } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -13,7 +13,6 @@ import { take } from 'rxjs/operators';
 
 import { CenterDiv, InputAddress, LeftDiv, RightDiv } from '../Transfer.styles';
 import { MatchParams } from '../types';
-import { validate } from './validate';
 import { Validation } from './Validation';
 
 interface SendMatchParams extends MatchParams {
@@ -34,7 +33,8 @@ export function SendBalance (props: Props) {
   const [fees, setFees] = useState();
   const [recipientBalance, setRecipientBalance] = useState();
 
-  const values = validate({ amountAsString, accountNonce, currentBalance, fees, recipientBalance, currentAccount, recipientAddress }, api);
+  const extrinsic = api.tx.balances.transfer(recipientAddress, amountAsString);
+  const values = validate({ amountAsString, accountNonce, currentBalance, extrinsic, fees, recipientBalance, currentAccount, recipientAddress }, api);
 
   const changeCurrentAccount = (newCurrentAccount: string) => {
     history.push(`/transfer/${newCurrentAccount}/${recipientAddress}`);
@@ -69,16 +69,15 @@ export function SendBalance (props: Props) {
   }, [currentAccount, recipientAddress]);
 
   const handleSubmit = () => {
-    const values = validate({ amountAsString, accountNonce, currentBalance, fees, recipientBalance, currentAccount, recipientAddress }, api);
+    const values = validate({ amountAsString, accountNonce, currentBalance, extrinsic, fees, recipientBalance, currentAccount, recipientAddress }, api);
 
     values.fold(
-      () => {/* Do nothing if error */ },
-      (allExtrinsicData) => {
+      (error) => { console.error(error); },
+      (allExtrinsicData: AllExtrinsicData) => {
         // If everything is correct, then submit the extrinsic
-
         const { extrinsic, amount, allFees, allTotal, recipientAddress: rcptAddress } = allExtrinsicData;
 
-        enqueue(extrinsic, { amount, allFees, allTotal, senderPair: keyring.getPair(currentAccount), recipientAddress: rcptAddress });
+        enqueue(extrinsic, { amount, allFees, allTotal, methodCall: extrinsic.meta.name.toString(), senderPair: keyring.getPair(currentAccount), recipientAddress: rcptAddress });
       });
   };
 
@@ -114,13 +113,13 @@ export function SendBalance (props: Props) {
         <RightDiv>
           <SubHeader textAlign='left'>Recipient Address:</SubHeader>
           <InputAddress
-            label={null}
+            label={undefined}
             onChange={changeRecipientAddress}
             type='all'
             value={recipientAddress}
             withLabel={false}
           />
-          <Balance address={recipientAddress} />
+          {recipientAddress && <Balance address={recipientAddress} />}
         </RightDiv>
       </StackedHorizontal>
       <StackedHorizontal>

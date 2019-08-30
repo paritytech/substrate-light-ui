@@ -4,9 +4,10 @@
 
 import { KeyringPair } from '@polkadot/keyring/types';
 import { TxQueueContext } from '@substrate/ui-common';
-import { ErrorText, Form, Input, Margin, Modal, NavButton, Stacked, StyledLinkButton, TxDetails, TxSummary, StackedHorizontal } from '@substrate/ui-components';
+import { ErrorText, Form, Input, Margin, NavButton, Stacked, StyledLinkButton, TxDetails, TxSummary, StackedHorizontal } from '@substrate/ui-components';
 import { Either, left, right } from 'fp-ts/lib/Either';
 import React, { useContext, useState } from 'react';
+import Modal from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
 
 /**
  * Unlock a pair using a password, keeping the secret key in memory.
@@ -15,7 +16,7 @@ import React, { useContext, useState } from 'react';
  * @param password - The password to use to unlock
  */
 function unlockAccount (keyringPair: KeyringPair, password: string): Either<Error, KeyringPair> {
-  if (!keyringPair.isLocked()) {
+  if (!keyringPair.isLocked) {
     return right(keyringPair);
   }
 
@@ -62,13 +63,14 @@ export function Signer () {
         <Modal.Header color='lightBlue1' textAlign='left'>Sign transaction</Modal.Header>
         <Modal.Content>
           <Stacked alignItems='flex-start'>
-            <p>By signing this transaction you are confirming that you wish to transfer</p>
+            <p>By signing this transaction you are confirming that you wish to: </p>
             <TxSummary
               amount={pendingTx.details.amount}
+              methodCall={pendingTx.extrinsic.method.meta.name.toString()}
               recipientAddress={pendingTx.details.recipientAddress}
-              senderAddress={senderPair.address()}
+              senderAddress={senderPair.address}
             />
-            {senderPair.isLocked() && <React.Fragment>
+            {senderPair.isLocked && <React.Fragment>
               <Margin top />
               <Input
                 fluid
@@ -85,7 +87,7 @@ export function Signer () {
               allTotal={pendingTx.details.allTotal}
               amount={pendingTx.details.amount}
               recipientAddress={pendingTx.details.recipientAddress}
-              senderAddress={senderPair.address()}
+              senderAddress={senderPair.address}
             />
           </Stacked>
         </Modal.Content>
@@ -95,7 +97,7 @@ export function Signer () {
               Cancel
           </StyledLinkButton>
             <Margin left='small' />
-            <NavButton disabled={senderPair.isLocked() && !inputPassword}>
+            <NavButton disabled={senderPair.isLocked && !inputPassword}>
               OK
         </NavButton>
           </StackedHorizontal>

@@ -2,7 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { BalanceOf, BlockNumber, U32, VoteIndex } from '@polkadot/types';
+import { u32 } from '@polkadot/types';
+import { BalanceOf, BlockNumber, VoteIndex } from '@polkadot/types/interfaces';
 import { AppContext } from '@substrate/ui-common';
 import { FadedText, Grid, SubHeader } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';
@@ -20,27 +21,43 @@ export function CouncilSummary () {
   const [votingPeriod, setVotingPeriod] = useState();
 
   useEffect(() => {
-    const subscription = combineLatest([
-      (api.query.council.carryCount() as unknown as Observable<U32>),
-      (api.query.council.desiredSeats() as unknown as Observable<U32>),
-      (api.query.council.termDuration() as unknown as Observable<BlockNumber>),
-      (api.query.council.voteCount() as unknown as Observable<VoteIndex>),
-      (api.query.council.votingBond() as unknown as Observable<BalanceOf>),
-      (api.query.council.votingPeriod() as unknown as Observable<BlockNumber>)
-    ])
-    .pipe(
-      take(1)
-    )
-    .subscribe(([carryCount, desiredSeats, termDuration, voteCount, votingBond, votingPeriod]) => {
-      setCarryCount(carryCount);
-      setDesiredSeats(desiredSeats);
-      setTermDuration(termDuration);
-      setVoteCount(voteCount);
-      setVotingBond(votingBond);
-      setVotingPeriod(votingPeriod);
-    });
+    try {
+      setCarryCount(api.consts.elections.carryCount);
+      setDesiredSeats(api.consts.elections.desiredSeats);
+      setVotingBond(api.consts.elections.votingBond);
+      setVotingPeriod(api.consts.elections.votingPeriod);
 
-    return () => subscription.unsubscribe();
+      const subscription = combineLatest([
+        (api.query.council.termDuration() as unknown as Observable<BlockNumber>),
+        (api.query.council.voteCount() as unknown as Observable<VoteIndex>)
+      ]).pipe(take(1))
+        .subscribe(([termDuration, voteCount]) => {
+          setTermDuration(termDuration);
+          setVoteCount(voteCount);
+        });
+      return () => subscription.unsubscribe();
+    } catch (e) {
+      const subscription = combineLatest([
+        (api.query.council.carryCount() as unknown as Observable<u32>),
+        (api.query.council.desiredSeats() as unknown as Observable<u32>),
+        (api.query.council.termDuration() as unknown as Observable<BlockNumber>),
+        (api.query.council.voteCount() as unknown as Observable<VoteIndex>),
+        (api.query.council.votingBond() as unknown as Observable<BalanceOf>),
+        (api.query.council.votingPeriod() as unknown as Observable<BlockNumber>)
+      ])
+        .pipe(
+          take(1)
+        )
+        .subscribe(([carryCount, desiredSeats, termDuration, voteCount, votingBond, votingPeriod]) => {
+          setCarryCount(carryCount);
+          setDesiredSeats(desiredSeats);
+          setTermDuration(termDuration);
+          setVoteCount(voteCount);
+          setVotingBond(votingBond);
+          setVotingPeriod(votingPeriod);
+        });
+      return () => subscription.unsubscribe();
+    }
   }, []);
 
   return (

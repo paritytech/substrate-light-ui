@@ -16,6 +16,8 @@ export type SUIPosition = 'bottom' | 'left' | 'right' | 'top';
 
 export type FlexAlign = 'flex-start' | 'flex-end' | 'center' | 'stretch' | 'baseline';
 
+export type FlexDirection = 'row' | 'column';
+
 export type FlexJustify = 'flex-start' | 'flex-end' | 'center' | 'space-around' | 'space-between';
 
 /**

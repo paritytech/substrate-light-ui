@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import ApiRx from '@polkadot/api/rx';
-import { ChainProperties, Health } from '@polkadot/types';
+import { ChainProperties, Health } from '@polkadot/types/interfaces';
 import keyring from '@polkadot/ui-keyring';
 import React from 'react';
 

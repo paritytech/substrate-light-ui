@@ -4,7 +4,8 @@
 
 import { AppContext } from '@substrate/ui-common';
 import { FadedText, Header, Stacked, Table } from '@substrate/ui-components';
-import { PropIndex, Proposal, Tuple, Vector } from '@polkadot/types';
+import { Tuple, Vec } from '@polkadot/types';
+import { PropIndex, Proposal } from '@polkadot/types/interfaces';
 import React, { useContext, useEffect, useState } from 'react';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -19,7 +20,7 @@ export function Proposals (props: IProps) {
   useEffect(() => {
     // FIXME Tuple doesn't take generic types
     // More accurate type is Vector<(PropIndex, Proposal, AccountId)>
-    const subscription = (api.query.democracy.publicProps() as unknown as Observable<Vector<Tuple>>)
+    const subscription = (api.query.democracy.publicProps() as unknown as Observable<Vec<Tuple>>)
       .pipe(
         take(1)
       )
@@ -58,7 +59,7 @@ export function Proposals (props: IProps) {
   const renderProposalsTable = () => {
     // FIXME More accurate type is Vector<(PropIndex, Proposal, AccountId)>
     return (
-      publicProposals.map((proposal: Vector<any>) => {
+      publicProposals.map((proposal: Vec<any>) => {
         return renderProposalRow(proposal);
       })
     );
