@@ -2414,9 +2414,9 @@
     store "^2.0.12"
 
 "@polkadot/ui-settings@^0.43.0-beta.0", "@polkadot/ui-settings@^0.43.0-beta.2":
-  version "0.43.0-beta.2"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-0.43.0-beta.2.tgz#ce4cc8d2cc0582896446d47a19ad9d807778548a"
-  integrity sha512-2emxpQmOOEGzteBWW/uqFgOzKumVHKGJ/OXhkCPC903s1C6P+c14BUJF6y7r6ldSNEHWWOwPoean88FY8I7Jlg==
+  version "0.43.0-beta.7"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-0.43.0-beta.7.tgz#b10bdf84592d859d5c60a24bbdf591dbb76321c2"
+  integrity sha512-BmqEfvKQsJ0MOJsM0Qt9ehXI+uewqaufcBIM3tyHyC42U0TV+F2VN0IJ6EPg3MUEbaUMxbYuMcR4ICBKmNPORw==
   dependencies:
     "@babel/runtime" "^7.5.5"
     "@types/store" "^2.0.2"
