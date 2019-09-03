@@ -11,7 +11,7 @@ import { Either, left, right } from 'fp-ts/lib/Either';
 import { none, some } from 'fp-ts/lib/Option';
 
 import { AllExtrinsicData, Errors, SubResults, UserInputs, WithAmount, WithAmountExtrinsic } from './types';
-import { SubmittableExtrinsic } from '@polkadot/api/SubmittableExtrinsic';
+import { SubmittableExtrinsic } from '@polkadot/api/types';
 
 const LENGTH_PUBLICKEY = 32 + 1; // publicKey + prefix
 const LENGTH_SIGNATURE = 64;

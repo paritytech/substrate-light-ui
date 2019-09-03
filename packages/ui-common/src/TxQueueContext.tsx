@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { SubmittableExtrinsic, SubmittableResult } from '@polkadot/api/SubmittableExtrinsic';
+import { SubmittableExtrinsic, SubmittableResultImpl } from '@polkadot/api/types';
 import { KeyringPair } from '@polkadot/keyring/types';
 import { Balance } from '@polkadot/types/interfaces';
 import BN from 'bn.js';
@@ -139,7 +139,7 @@ export function TxQueueContextProvider (props: Props) {
     const subscription = extrinsic
       .signAndSend(senderPair) // send the extrinsic
       .subscribe(
-        (txResult: SubmittableResult) => {
+        (txResult: SubmittableResultImpl) => {
           const { status: { isFinalized, isDropped, isUsurped } } = txResult;
 
           l.log(`Extrinsic #${extrinsicId} has new status:`, txResult);
