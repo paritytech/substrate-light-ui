@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { SubmittableExtrinsic } from '@polkadot/api/types';
+import { SubmittableExtrinsic } from '@polkadot/api/submittable/types';
 import { DerivedBalances, DerivedFees, DerivedStaking } from '@polkadot/api-derive/types';
 import { Balance, Index } from '@polkadot/types/interfaces';
 import BN from 'bn.js';
