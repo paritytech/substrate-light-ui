@@ -24,38 +24,49 @@ import { Signer } from '../Signer';
 export function Content () {
   const { api } = useContext(AppContext);
   const [defaultAccount, setDefaultAccount] = useState<Option<SingleAddress>>(none);
+  const [isOnboarding, setIsOnboarding] = useState();
+
+  useEffect(() => {
+    setIsOnboarding(localStorage.getItem('isOnboarding'));
+  }, []);
+
   useEffect(() => {
     const accountsSub = accounts.subject
-      .pipe(map(Object.values), map(head))
-      .subscribe(setDefaultAccount);
+        .pipe(map(Object.values), map(head))
+        .subscribe(setDefaultAccount);
 
     return () => accountsSub.unsubscribe();
   }, [api]);
 
+  const renderOnboarding = () => (
+    <React.Fragment>
+      <Route path={`/onboarding/:activeOnboardingStep`} component={Onboarding} />
+      <Redirect exact from='/' to={`/onboarding/${ONBOARDING_STEPS[1]}`} />
+    </React.Fragment>
+  );
+
   return (
     <React.Fragment>
-      {defaultAccount
-        .map(({ json }) => (
-          <React.Fragment>
-            <Route path={['/accounts/:currentAccount/add', '/addresses/:currentAccount', '/governance/:currentAccount', '/manageAccounts/:currentAccount', '/transfer/:currentAccount']} component={IdentityHeader} />
-            <Switch>
-              <Redirect exact from='/' to={`/manageAccounts/${json.address}`} />
-              <Redirect exact from='/governance' to={`/governance/${json.address}`} />
-              <Redirect exact from='/transfer' to={`/transfer/${json.address}`} />
-              <Route path='/addresses/:currentAccount' component={ManageAddresses} />
-              <Route path='/manageAccounts/:currentAccount' component={Accounts} />
-              <Route path='/accounts/:currentAccount/add/' component={AddAccount} />
-              <Route path='/governance/:currentAccount' component={Governance} />
-              <Route path='/transfer/:currentAccount' component={Transfer} />
-              <Redirect to='/' />
-            </Switch>
-          </React.Fragment>
-        ))
-        .getOrElse(
-          <React.Fragment>
-            <Route path={`/onboarding/:activeOnboardingStep`} component={Onboarding} />
-            <Redirect exact from='/' to={`/onboarding/${ONBOARDING_STEPS[1]}`} />
-          </React.Fragment>)
+      {
+        !isOnboarding
+          ? defaultAccount
+                  .map(({ json }) => (
+                    <React.Fragment>
+                      <Route path={['/accounts/:currentAccount/add', '/addresses/:currentAccount', '/governance/:currentAccount', '/manageAccounts/:currentAccount', '/transfer/:currentAccount']} component={IdentityHeader} />
+                      <Switch>
+                        <Redirect exact from='/' to={`/manageAccounts/${json.address}`} />
+                        <Redirect exact from='/governance' to={`/governance/${json.address}`} />
+                        <Redirect exact from='/transfer' to={`/transfer/${json.address}`} />
+                        <Route path='/addresses/:currentAccount' component={ManageAddresses} />
+                        <Route path='/manageAccounts/:currentAccount' component={Accounts} />
+                        <Route path='/accounts/:currentAccount/add/' component={AddAccount} />
+                        <Route path='/governance/:currentAccount' component={Governance} />
+                        <Route path='/transfer/:currentAccount' component={Transfer} />
+                        <Redirect to='/' />
+                      </Switch>
+                    </React.Fragment>
+                  )).getOrElse(renderOnboarding())
+          : renderOnboarding()
       }
       <Signer />
     </React.Fragment>

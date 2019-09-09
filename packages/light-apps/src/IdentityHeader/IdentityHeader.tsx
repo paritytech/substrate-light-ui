@@ -6,12 +6,14 @@ import uiSettings from '@polkadot/ui-settings';
 import { AlertsContext } from '@substrate/ui-common';
 import { Balance, CopyButton, Dropdown, DropdownProps, FadedText, Icon, Margin, Menu, NavLink, StackedHorizontal, SubHeader } from '@substrate/ui-components';
 import React, { useContext } from 'react';
+import Joyride from 'react-joyride';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 
 import { Backup } from './Backup';
 import { Forget } from './Forget';
 import { InputAddress } from './IdentityHeader.styles';
 import { Rename } from './Rename';
+import { tutorialSteps } from '../constants';
 
 const KEY_PREFIX = '__dropdown_option_';
 
@@ -82,7 +84,7 @@ export function IdentityHeader (props: Props) {
             </Menu.Item>
             <Menu.Item><Balance address={currentAccount} fontSize='medium' /></Menu.Item>
             <Menu.Item>
-              <NavLink to={`/accounts/${currentAccount}/add`}>
+              <NavLink to={`/accounts/${currentAccount}/add`} className='.add-account'>
                 Add an Account <Icon name='plus' />
               </NavLink>
             </Menu.Item>
@@ -162,7 +164,7 @@ export function IdentityHeader (props: Props) {
     return (
       <StackedHorizontal justifyContent='flex-start' alignItems='flex-start'>
         <Menu stackable secondary>
-          <Menu.Item onClick={navToAccounts}>
+          <Menu.Item onClick={navToAccounts} className='.accounts-overview'>
             Accounts
             <Margin left='small' />
             <Icon color='black' name='id card' />
@@ -191,6 +193,7 @@ export function IdentityHeader (props: Props) {
 
   const renderHeader = () => (
     <React.Fragment>
+      <Joyride run={true} steps={tutorialSteps} />
       <Margin top='big' />
       {renderSecondaryMenu()}
       {renderPrimaryMenu()}

@@ -4,6 +4,8 @@
 
 import { FONT_SIZES, FONT_WEIGHTS, MARGIN_SIZES } from './constants';
 
+export * from './stateful/AddressSummary/types';
+
 export type FontSize = keyof typeof FONT_SIZES;
 
 export type FontWeight = keyof typeof FONT_WEIGHTS;

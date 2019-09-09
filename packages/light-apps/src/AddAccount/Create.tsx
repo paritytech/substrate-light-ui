@@ -5,14 +5,16 @@
 import { Keyring } from '@polkadot/ui-keyring';
 import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
 import { AppContext, handler } from '@substrate/ui-common';
-import { AddressSummary, ErrorText, FadedText, Input, Margin, MnemonicSegment, NavButton, Stacked, StyledLinkButton, SubHeader, WrapperDiv, WithSpaceAround } from '@substrate/ui-components';
+import { AddressSummary, ErrorText, FadedText, Input, Margin, MnemonicSegment, NavButton, SizeType, Stacked, StyledLinkButton, SubHeader, WrapperDiv, WithSpaceAround } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
 import { Either, left, right } from 'fp-ts/lib/Either';
 import { none, Option, some } from 'fp-ts/lib/Option';
 import React, { useContext, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-interface Props extends RouteComponentProps { }
+interface Props extends RouteComponentProps {
+  identiconSize?: SizeType;
+}
 interface UserInput {
   mnemonic: string;
   name: string;
@@ -67,8 +69,6 @@ export function Create (props: Props) {
   const validation = validate({ mnemonic, name, password, rewritePhrase });
 
   const createNewAccount = () => {
-    const { history } = props;
-
     validation.fold(
       (err) => { onError(err); },
       (values) => {
@@ -80,8 +80,6 @@ export function Create (props: Props) {
         const blob = new Blob([JSON.stringify(json)], { type: 'application/json; charset=utf-8' });
 
         FileSaver.saveAs(blob, `${values.name}-${result.pair.address}.json`);
-
-        history.push(`/transfer/${result.pair.address}`);
       }
     );
   };
@@ -106,7 +104,7 @@ export function Create (props: Props) {
 
   return (
     <Stacked>
-      <AddressSummary address={address} name={name} />
+      <AddressSummary address={address} name={name} size={props.identiconSize} />
       <Margin top />
       {step === 'create'
         ? renderCreateStep({ mnemonic, name, password }, { setMnemonic, setName, setPassword }, goToNextStep)
@@ -115,7 +113,6 @@ export function Create (props: Props) {
       {renderError(error)}
     </Stacked>
   );
-
 }
 
 function renderCreateStep (
@@ -138,12 +135,13 @@ function renderCreateStep (
     <React.Fragment>
       <Stacked>
         <SubHeader> Create from the following mnemonic phrase </SubHeader>
-        <MnemonicSegment onClick={() => setMnemonic(mnemonicGenerate())} mnemonic={mnemonic} />
-        <Margin top />
         <Stacked>
-          {renderSetName(name, setName)}
-          <Margin top />
-          {renderSetPassword(password, setPassword)}
+          <MnemonicSegment onClick={() => setMnemonic(mnemonicGenerate())} mnemonic={mnemonic} />
+          <WrapperDiv margin='0'>
+            {renderSetName(name, setName)}
+            <Margin top />
+            {renderSetPassword(password, setPassword)}
+          </WrapperDiv>
         </Stacked>
         <NavButton onClick={goToNextStep}> Next </NavButton>
       </Stacked>
@@ -166,7 +164,7 @@ function renderRewriteStep (
   createNewAccount: () => void,
   goToPreviousStep: () => void
 ) {
-  const { mnemonic, rewritePhrase } = values;
+  const { rewritePhrase } = values;
   const { setRewritePhrase } = setters;
 
   return (
@@ -174,17 +172,14 @@ function renderRewriteStep (
       <Stacked>
         <SubHeader> Copy Your Mnemonic Somewhere Safe </SubHeader>
         <FadedText> If someone gets hold of this mnemonic they could drain your account</FadedText>
-        <MnemonicSegment mnemonic={mnemonic} />
         <Margin top />
         <FadedText> Rewrite Mnemonic Below </FadedText>
-        <WrapperDiv>
-          <Input
-            autoFocus
-            fluid
-            onChange={handler(setRewritePhrase)}
-            type='text'
-            value={rewritePhrase} />
-        </WrapperDiv>
+        <Input
+          autoFocus
+          fluid
+          onChange={handler(setRewritePhrase)}
+          type='text'
+          value={rewritePhrase} />
         <WithSpaceAround>
           <Stacked>
             <StyledLinkButton onClick={goToPreviousStep}> Back </StyledLinkButton>
@@ -199,9 +194,9 @@ function renderRewriteStep (
 
 function renderSetName (name: string, setName: React.Dispatch<React.SetStateAction<string>>) {
   return (
-    <Stacked>
-      <SubHeader> Give it a name </SubHeader>
-      <WrapperDiv>
+    <WithSpaceAround>
+      <Stacked>
+        <SubHeader noMargin> Give it a name </SubHeader>
         <Input
           autoFocus
           fluid
@@ -210,24 +205,24 @@ function renderSetName (name: string, setName: React.Dispatch<React.SetStateActi
           type='text'
           value={name}
         />
-      </WrapperDiv>
-    </Stacked>
+      </Stacked>
+    </WithSpaceAround>
   );
 }
 
 function renderSetPassword (password: string, setPassword: React.Dispatch<React.SetStateAction<string>>) {
   return (
-    <Stacked>
-      <SubHeader> Encrypt it with a passphrase </SubHeader>
-      <WrapperDiv>
-        <Input
-          fluid
-          min={8}
-          onChange={handler(setPassword)}
-          type='password'
-          value={password}
-        />
-      </WrapperDiv>
-    </Stacked>
+    <WithSpaceAround>
+      <Stacked>
+        <SubHeader noMargin> Encrypt it with a passphrase </SubHeader>
+          <Input
+            fluid
+            min={8}
+            onChange={handler(setPassword)}
+            type='password'
+            value={password}
+          />
+      </Stacked>
+    </WithSpaceAround>
   );
 }

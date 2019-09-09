@@ -3,11 +3,11 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { Breadcrumbs, Header, Modal, WithSpaceAround } from '@substrate/ui-components';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Switch, RouteComponentProps } from 'react-router-dom';
 
 import { ONBOARDING_STEPS } from '../constants';
-import { StashCreate } from './StashCreate';
+import { AccountsSetup } from './AccountsSetup';
 import { TermsAndConditions } from './TermsAndConditions';
 
 interface MatchParams {
@@ -19,9 +19,14 @@ interface Props extends RouteComponentProps<MatchParams> { }
 export function Onboarding (props: Props) {
   const { match: { params: { activeOnboardingStep } } } = props;
 
+  useEffect(() => {
+    localStorage.setItem('isOnboarding', 'y');
+  }, []);
+
   return (
     <Modal
       dimmer='inverted'
+      maxHeight={'50%'}
       open
       size='large'
     >
@@ -31,7 +36,8 @@ export function Onboarding (props: Props) {
       </Modal.Header>
       <Switch>
         <Route path={`/onboarding/${'T&C'}`} component={TermsAndConditions} />
-        <Route path={'/onboarding/stash'} component={StashCreate} />
+        <Route path={'/onboarding/stash'} component={AccountsSetup} />
+        <Route path={'/onboarding/controller'} component={AccountsSetup} />
       </Switch>
     </Modal>
   );

@@ -12,7 +12,8 @@ export {
   Message, MessageProps,
   Segment, SegmentProps,
   Step, StepProps,
-  Table, TableProps
+  Table, TableProps,
+  Transition, TransitionGroup, TransitionGroupProps, TransitionPropDuration, TransitionProps
 } from 'semantic-ui-react';
 
 export * from './Accordion';
