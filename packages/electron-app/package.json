@@ -17,7 +17,7 @@
   "devDependencies": {
     "@substrate/light-apps": "^0.2.0",
     "copyfiles": "^2.0.0",
-    "electron": "^6.0.0",
+    "electron": "^6.0.8",
     "electron-builder": "^21.0.15",
     "electron-webpack": "^2.6.2",
     "electron-webpack-ts": "^3.1.1",
