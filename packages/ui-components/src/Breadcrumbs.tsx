@@ -7,17 +7,19 @@ import SUIBreadcrumb from 'semantic-ui-react/dist/commonjs/collections/Breadcrum
 
 import { substrateLightTheme } from './globalStyle';
 import { Circle, FadedText, Margin, Stacked, StackedHorizontal } from './index';
+import { SUIBreadcrumbSize } from './types';
 
 interface BreadcrumbProps {
   activeLabel: string;
   sectionLabels: Array<string>;
+  size?: SUIBreadcrumbSize;
 }
 
 export function Breadcrumbs (props: BreadcrumbProps) {
-  const { activeLabel, sectionLabels } = props;
+  const { activeLabel, sectionLabels, size } = props;
 
   return (
-    <SUIBreadcrumb>
+    <SUIBreadcrumb size={size}>
       <StackedHorizontal>
       {
         sectionLabels.map((label, idx) => {

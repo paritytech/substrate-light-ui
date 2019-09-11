@@ -26,6 +26,7 @@ export type FlexJustify = 'flex-start' | 'flex-end' | 'center' | 'space-around' 
  * Size for <Input />
  */
 export type SUIInputSize = 'mini' | 'small' | 'large' | 'big' | 'huge' | 'massive';
+export type SUIBreadcrumbSize = SUIInputSize;
 
 export type SUISize = 'mini' | 'tiny' | 'small' | 'medium' | 'large' | 'big' | 'huge' | 'massive';
 

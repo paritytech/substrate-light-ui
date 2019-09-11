@@ -132,20 +132,18 @@ function renderCreateStep (
   const { setMnemonic, setName, setPassword } = setters;
 
   return (
-    <React.Fragment>
+    <Stacked>
+      <SubHeader> Create from the following mnemonic phrase </SubHeader>
       <Stacked>
-        <SubHeader> Create from the following mnemonic phrase </SubHeader>
-        <Stacked>
-          <MnemonicSegment onClick={() => setMnemonic(mnemonicGenerate())} mnemonic={mnemonic} />
-          <WrapperDiv margin='0'>
-            {renderSetName(name, setName)}
-            <Margin top />
-            {renderSetPassword(password, setPassword)}
-          </WrapperDiv>
-        </Stacked>
-        <NavButton onClick={goToNextStep}> Next </NavButton>
+        <MnemonicSegment onClick={() => setMnemonic(mnemonicGenerate())} mnemonic={mnemonic} />
+        <WrapperDiv margin='0'>
+          {renderSetName(name, setName)}
+          <Margin top='small' />
+          {renderSetPassword(password, setPassword)}
+        </WrapperDiv>
       </Stacked>
-    </React.Fragment>
+      <NavButton onClick={goToNextStep}> Next </NavButton>
+    </Stacked>
   );
 }
 
@@ -168,61 +166,55 @@ function renderRewriteStep (
   const { setRewritePhrase } = setters;
 
   return (
-    <React.Fragment>
-      <Stacked>
-        <SubHeader> Copy Your Mnemonic Somewhere Safe </SubHeader>
-        <FadedText> If someone gets hold of this mnemonic they could drain your account</FadedText>
-        <Margin top />
-        <FadedText> Rewrite Mnemonic Below </FadedText>
-        <Input
-          autoFocus
-          fluid
-          onChange={handler(setRewritePhrase)}
-          type='text'
-          value={rewritePhrase} />
-        <WithSpaceAround>
-          <Stacked>
-            <StyledLinkButton onClick={goToPreviousStep}> Back </StyledLinkButton>
-            <Margin top />
-            <NavButton onClick={createNewAccount}> Save </NavButton>
-          </Stacked>
-        </WithSpaceAround>
-      </Stacked>
-    </React.Fragment>
+    <Stacked>
+      <SubHeader> Copy Your Mnemonic Somewhere Safe </SubHeader>
+      <FadedText> If someone gets hold of this mnemonic they could drain your account</FadedText>
+      <Margin top />
+      <FadedText> Rewrite Mnemonic Below </FadedText>
+      <Input
+        autoFocus
+        fluid
+        onChange={handler(setRewritePhrase)}
+        type='text'
+        value={rewritePhrase} />
+      <WithSpaceAround>
+        <Stacked>
+          <StyledLinkButton onClick={goToPreviousStep}> Back </StyledLinkButton>
+          <Margin top />
+          <NavButton onClick={createNewAccount}> Save </NavButton>
+        </Stacked>
+      </WithSpaceAround>
+    </Stacked>
   );
 }
 
 function renderSetName (name: string, setName: React.Dispatch<React.SetStateAction<string>>) {
   return (
-    <WithSpaceAround>
-      <Stacked>
-        <SubHeader noMargin> Give it a name </SubHeader>
-        <Input
-          autoFocus
-          fluid
-          min={1}
-          onChange={handler(setName)}
-          type='text'
-          value={name}
-        />
-      </Stacked>
-    </WithSpaceAround>
+    <Stacked>
+      <SubHeader noMargin> Give it a name </SubHeader>
+      <Input
+        autoFocus
+        fluid
+        min={1}
+        onChange={handler(setName)}
+        type='text'
+        value={name}
+      />
+    </Stacked>
   );
 }
 
 function renderSetPassword (password: string, setPassword: React.Dispatch<React.SetStateAction<string>>) {
   return (
-    <WithSpaceAround>
-      <Stacked>
-        <SubHeader noMargin> Encrypt it with a passphrase </SubHeader>
-          <Input
-            fluid
-            min={8}
-            onChange={handler(setPassword)}
-            type='password'
-            value={password}
-          />
-      </Stacked>
-    </WithSpaceAround>
+    <Stacked>
+      <SubHeader noMargin> Encrypt it with a passphrase </SubHeader>
+        <Input
+          fluid
+          min={8}
+          onChange={handler(setPassword)}
+          type='password'
+          value={password}
+        />
+    </Stacked>
   );
 }

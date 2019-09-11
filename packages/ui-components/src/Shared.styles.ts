@@ -123,8 +123,8 @@ export const StyledLinkButton = styled.button`
 export const StyledNavButton = styled.button`
   background-image: linear-gradient(
     107deg,
-    ${substrateLightTheme.lightBlue1},
-    ${substrateLightTheme.neonBlue}
+    ${props => props.disabled ? substrateLightTheme.grey : substrateLightTheme.lightBlue1},
+    ${props => props.disabled ? substrateLightTheme.grey : substrateLightTheme.neonBlue}
   );
   border: none;
   border-radius: 15px;
