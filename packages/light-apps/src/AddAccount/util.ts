@@ -35,5 +35,15 @@ export function validate (values: UserInput): Either<UserInputError, UserInput> 
     errors.rewritePhrase = 'Mnemonic does not match rewrite';
   }
 
+  // @ts-ignore
+  values.tags = values.tags.map(tag => tag.toLowerCase());
+
+  // Should not tag an account as both a stash and controller
+  if (values.tags.includes('stash') && values.tags.includes('controller')) {
+    errors.tags = 'Each account should be either a Stash or a Controller, not both.';
+  }
+
+  console.log('errors => ', errors);
+
   return Object.keys(errors).length ? left(errors) : right(values);
 }

@@ -3,7 +3,8 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import accounts from '@polkadot/ui-keyring/observable/accounts';
-import { Card, DynamicSizeText, FadedText, FlexItem, Menu, Modal, Transition, StackedHorizontal, WithSpaceAround, StyledNavButton } from '@substrate/ui-components';
+import { CreateResult } from '@polkadot/ui-keyring/types';
+import { AddressSummary, Card, DynamicSizeText, FadedText, FlexItem, Margin, Menu, Modal, Stacked, StackedHorizontal, StyledNavButton, SubHeader, Transition, WithSpaceAround } from '@substrate/ui-components';
 import React, { useState, useEffect } from 'react';
 import { Route, RouteComponentProps, Switch, Redirect } from 'react-router-dom';
 import { map } from 'rxjs/operators';
@@ -55,20 +56,30 @@ export function AccountsSetup (props: Props) {
           </FadedText>
           {
             (
-              ((whichAccount === 'stash' && keyringAccounts.length === 1)
+              ((whichAccount === 'stash' && keyringAccounts.length > 0)
                 || (whichAccount === 'controller' && keyringAccounts.length > 1))
                 && (
-                  <StyledNavButton
-                    onClick={ keyringAccounts.length === 1
-                          ? () => navToCreateController()
-                          : () => navToClaim()
-                    }>
+                  <Stacked justifyContent='space-around'>
+                    <SubHeader>We found the following account(s) in your local Keyring: </SubHeader>
+                    <Margin top />
+                    <StackedHorizontal>
                       {
-                        whichAccount === 'stash'
-                          ? 'Create Controller'
-                          : 'Claim KSM'
+                        keyringAccounts.map((account: CreateResult) => <AddressSummary address={account.json.address} name={account.json.meta.name} size='tiny' />)
                       }
-                  </StyledNavButton>
+                    </StackedHorizontal>
+                    <Margin top />
+                    <StyledNavButton
+                      onClick={ keyringAccounts.length === 1
+                            ? () => navToCreateController()
+                            : () => navToClaim()
+                      }>
+                        {
+                          whichAccount === 'stash'
+                            ? 'Create Controller'
+                            : 'Claim KSM'
+                        }
+                    </StyledNavButton>
+                  </Stacked>
                 )
             )
           }

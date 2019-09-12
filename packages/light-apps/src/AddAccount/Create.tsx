@@ -20,7 +20,7 @@ interface Props extends RouteComponentProps {
 export function Create (props: Props) {
   const { keyring } = useContext(AppContext);
 
-  const [error, setError] = useState<Option<string>>(none);
+  const [errors, setErrors] = useState<Option<Array<string>>>(none);
   const [mnemonic, setMnemonic] = useState(mnemonicGenerate());
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
@@ -57,26 +57,25 @@ export function Create (props: Props) {
   };
 
   const onError = (err: UserInputError) => {
-    setError(some(Object.values(err)[0]));
+    setErrors(some(Object.values(err)));
   };
 
   const goToNextStep = () => {
-    setError(none);
+    setErrors(none);
 
     validation.fold(
-      (err) => (err.name || err.password) ? onError(err) : setStep('rewrite'),
+      (err) => (err.name || err.password || err.tags) ? onError(err) : setStep('rewrite'),
       () => setStep('rewrite')
     );
   };
 
   const goToPreviousStep = () => {
-    setError(none);
+    setErrors(none);
     setStep('create');
   };
 
   const handleOnChange = (event: React.SyntheticEvent, { value }: any) => {
     setTags(value);
-    console.log(value);
   };
 
   const handleAddTag = (e: React.SyntheticEvent, { value }: any) => {
@@ -91,7 +90,7 @@ export function Create (props: Props) {
         ? renderCreateStep({ mnemonic, name, password, tagOptions, tags }, { setMnemonic, setName, setPassword, handleAddTag, handleOnChange }, goToNextStep)
         : renderRewriteStep({ mnemonic, rewritePhrase }, { setRewritePhrase }, createNewAccount, goToPreviousStep)
       }
-      {renderError(error)}
+      {renderErrors(errors)}
     </Stacked>
   );
 }
@@ -152,8 +151,8 @@ function renderCreateStep (
   );
 }
 
-function renderError (error: Option<string>) {
-  return error.fold(null, (err) => <ErrorText>{err}</ErrorText>);
+function renderErrors (errors: Option<Array<string>>) {
+  return errors.fold(null, errStrings => errStrings.map(err => <ErrorText>{err}</ErrorText>));
 }
 
 function renderRewriteStep (
