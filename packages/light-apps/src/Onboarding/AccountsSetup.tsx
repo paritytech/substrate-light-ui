@@ -30,7 +30,7 @@ export function AccountsSetup (props: Props) {
     const whichAccount = location.pathname.split('/')[2];
 
     setWhichAccount(whichAccount.toLowerCase());
-  }, [props]);
+  }, [location]);
 
   const navToClaim = () => {
     history.push('/onboarding/claim');
@@ -48,22 +48,26 @@ export function AccountsSetup (props: Props) {
             <DynamicSizeText fontSize='large'>
               {
                 whichAccount === 'stash'
-                  ? 'You should use your Stash Account(s) as a cold store for the majority of your funds.'
-                  : 'Your Controller Account will be for day to day usage, like paying tx fees, and nominating new validators.'
+                  ? 'Your Stash Account(s) will hold the majority of your funds so it should ideally remain disconnected from the network, and only used to bond funds to your controller.'
+                  : 'Your Controller Account will be for day to day needs, such as paying tx fees, and nominating new validators.'
               }
               </DynamicSizeText>
           </FadedText>
           {
             (
               ((whichAccount === 'stash' && keyringAccounts.length === 1)
-                || (whichAccount === 'controller' && keyringAccounts.length === 2))
+                || (whichAccount === 'controller' && keyringAccounts.length > 1))
                 && (
                   <StyledNavButton
                     onClick={ keyringAccounts.length === 1
                           ? () => navToCreateController()
                           : () => navToClaim()
                     }>
-                    Next
+                      {
+                        whichAccount === 'stash'
+                          ? 'Create Controller'
+                          : 'Claim KSM'
+                      }
                   </StyledNavButton>
                 )
             )
@@ -79,7 +83,7 @@ export function AccountsSetup (props: Props) {
     const activeTab = location.pathname.split('/')[2];
 
     return (
-      <Transition animation={'bounce'} duration={1000} transitionOnMount={true}>
+      <Transition animation={'scale'} duration={1000} transitionOnMount={true}>
         <FlexItem flex={3}>
           <WithSpaceAround>
             <Card style={{ height: '100%' }}>

@@ -6,8 +6,9 @@ import { Breadcrumbs, Header, Margin, Modal, Stacked } from '@substrate/ui-compo
 import React, { useEffect } from 'react';
 import { Route, Switch, RouteComponentProps } from 'react-router-dom';
 
-import { ONBOARDING_STEPS } from '../constants';
 import { AccountsSetup } from './AccountsSetup';
+import { ONBOARDING_STEPS } from '../constants';
+import { Claim } from './Claim';
 import { TermsAndConditions } from './TermsAndConditions';
 
 interface MatchParams {
@@ -28,7 +29,6 @@ export function Onboarding (props: Props) {
       dimmer='inverted'
       open
       size='large'
-      style={{ maxHeight: '88%' }}
     >
       <Margin top />
       <Stacked>
@@ -39,6 +39,7 @@ export function Onboarding (props: Props) {
         <Route path={`/onboarding/${'T&C'}`} component={TermsAndConditions} />
         <Route path={'/onboarding/stash'} component={AccountsSetup} />
         <Route path={'/onboarding/controller'} component={AccountsSetup} />
+        <Route path={'/onboarding/claim'} component={Claim} />
       </Switch>
     </Modal>
   );

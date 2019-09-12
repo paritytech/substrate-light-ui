@@ -5,15 +5,17 @@
 import SUISegment from 'semantic-ui-react/dist/commonjs/elements/Segment';
 import styled from 'styled-components';
 
+import { substrateLightTheme } from './globalStyle';
+
 export const FlexSegment = styled<any>(SUISegment)`
   &&& {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 3rem;
+    height: ${props => props.height || '3rem'};
     width: ${props => props.width || '80%'};
     margin: 0.3rem auto;
-    box-shadow: 0 2px 2px 0 rgba(${props => props.theme.black}, 0.3);
-    background-color: ${props => props.theme.babyBlueLight};
+    box-shadow: 0 2px 2px 0 rgba(${substrateLightTheme.black}, 0.3);
+    background-color: ${props => props.backgroundColor || substrateLightTheme.eggShell};
   }
 `;

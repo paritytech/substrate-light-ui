@@ -22,6 +22,7 @@ export type FlexDirection = 'row' | 'column';
 
 export type FlexJustify = 'flex-start' | 'flex-end' | 'center' | 'space-around' | 'space-between';
 
+export type SizeType = 'tiny' | 'small' | 'medium' | 'large';
 /**
  * Size for <Input />
  */

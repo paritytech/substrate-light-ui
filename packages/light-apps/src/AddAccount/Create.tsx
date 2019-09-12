@@ -2,57 +2,19 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Keyring } from '@polkadot/ui-keyring';
-import { mnemonicGenerate, mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
+import { mnemonicGenerate } from '@polkadot/util-crypto';
 import { AppContext, handler } from '@substrate/ui-common';
-import { AddressSummary, ErrorText, FadedText, Input, Margin, MnemonicSegment, NavButton, SizeType, Stacked, StyledLinkButton, SubHeader, WrapperDiv, WithSpaceAround } from '@substrate/ui-components';
+import { AddressSummary, Dropdown, ErrorText, FadedText, Input, Margin, MnemonicSegment, NavButton, SizeType, Stacked, StyledLinkButton, SubHeader, WrapperDiv, WithSpaceAround } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
-import { Either, left, right } from 'fp-ts/lib/Either';
 import { none, Option, some } from 'fp-ts/lib/Option';
 import React, { useContext, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
+import { Steps, Tags, TagOptions, UserInputError } from './types';
+import { generateAddressFromMnemonic, validate } from './util';
+
 interface Props extends RouteComponentProps {
   identiconSize?: SizeType;
-}
-interface UserInput {
-  mnemonic: string;
-  name: string;
-  password: string;
-  rewritePhrase: string;
-}
-interface UserInputError extends Partial<UserInput> { }
-
-type Steps = 'create' | 'rewrite';
-
-/**
- * Derive public address from mnemonic key
- */
-function generateAddressFromMnemonic (keyring: Keyring, mnemonic: string): string {
-  const keypair = naclKeypairFromSeed(mnemonicToSeed(mnemonic));
-
-  return keyring.encodeAddress(
-    keypair.publicKey
-  );
-}
-
-/**
- * Validate user inputs
- */
-function validate (values: UserInput): Either<UserInputError, UserInput> {
-  const errors = {} as UserInputError;
-
-  (['name', 'password', 'rewritePhrase'] as (keyof UserInput)[])
-    .filter((key) => !values[key])
-    .forEach((key) => {
-      errors[key] = `Field "${key}" cannot be empty`;
-    });
-
-  if (values.mnemonic !== values.rewritePhrase) {
-    errors.rewritePhrase = 'Mnemonic does not match rewrite';
-  }
-
-  return Object.keys(errors).length ? left(errors) : right(values);
 }
 
 export function Create (props: Props) {
@@ -65,8 +27,14 @@ export function Create (props: Props) {
   const [rewritePhrase, setRewritePhrase] = useState('');
   const [step, setStep] = useState<Steps>('create');
 
+  const [tagOptions, setTagOptions] = useState<TagOptions>([
+    { key: '0', text: 'stash', value: 'Stash' },
+    { key: '1', text: 'controller', value: 'Controller' }
+  ]);
+  const [tags, setTags] = useState<Tags>([]);
+
   const address = generateAddressFromMnemonic(keyring, mnemonic);
-  const validation = validate({ mnemonic, name, password, rewritePhrase });
+  const validation = validate({ mnemonic, name, password, rewritePhrase, tags });
 
   const createNewAccount = () => {
     validation.fold(
@@ -74,7 +42,11 @@ export function Create (props: Props) {
       (values) => {
         // keyring.createFromUri(`${phrase.trim()}${derivePath}`, {}, pairType).address;
         // keyring.addUri(`${seed}${derivePath}`, password, { name, tags }, pairType);
-        const result = keyring.addUri(values.mnemonic.trim(), values.password, { name: values.name });
+        const result = keyring.addUri(values.mnemonic.trim(), values.password,
+          {
+            name: values.name,
+            tags: values.tags
+          });
 
         const json = result.json;
         const blob = new Blob([JSON.stringify(json)], { type: 'application/json; charset=utf-8' });
@@ -102,12 +74,21 @@ export function Create (props: Props) {
     setStep('create');
   };
 
+  const handleOnChange = (event: React.SyntheticEvent, { value }: any) => {
+    setTags(value);
+    console.log(value);
+  };
+
+  const handleAddTag = (e: React.SyntheticEvent, { value }: any) => {
+    setTagOptions([...tagOptions, { key: value, text: value, value }]);
+  };
+
   return (
     <Stacked>
       <AddressSummary address={address} name={name} size={props.identiconSize} />
       <Margin top />
       {step === 'create'
-        ? renderCreateStep({ mnemonic, name, password }, { setMnemonic, setName, setPassword }, goToNextStep)
+        ? renderCreateStep({ mnemonic, name, password, tagOptions, tags }, { setMnemonic, setName, setPassword, handleAddTag, handleOnChange }, goToNextStep)
         : renderRewriteStep({ mnemonic, rewritePhrase }, { setRewritePhrase }, createNewAccount, goToPreviousStep)
       }
       {renderError(error)}
@@ -119,17 +100,39 @@ function renderCreateStep (
   values: {
     mnemonic: string,
     name: string,
-    password: string
+    password: string,
+    tags: Tags,
+    tagOptions: TagOptions
   },
   setters: {
     setMnemonic: React.Dispatch<React.SetStateAction<string>>,
     setName: React.Dispatch<React.SetStateAction<string>>,
     setPassword: React.Dispatch<React.SetStateAction<string>>
+    handleAddTag: (event: React.SyntheticEvent, data: any) => void // FIXME any
+    handleOnChange: (event: React.SyntheticEvent, data: any) => void // FIXME any
   },
   goToNextStep: () => void
 ) {
-  const { mnemonic, name, password } = values;
-  const { setMnemonic, setName, setPassword } = setters;
+  const { mnemonic, name, password, tagOptions, tags } = values;
+  const { handleAddTag, handleOnChange, setMnemonic, setName, setPassword } = setters;
+
+  const renderSetTags = () => {
+    return (
+      <Stacked>
+        <SubHeader noMargin>Add Tags:</SubHeader>
+        <Dropdown
+          allowAdditions
+          fluid
+          multiple
+          onAddItem={handleAddTag}
+          onChange={handleOnChange}
+          options={tagOptions}
+          search
+          selection
+          value={tags} />
+      </Stacked>
+    );
+  };
 
   return (
     <Stacked>
@@ -140,6 +143,8 @@ function renderCreateStep (
           {renderSetName(name, setName)}
           <Margin top='small' />
           {renderSetPassword(password, setPassword)}
+          <Margin top='small' />
+          {renderSetTags()}
         </WrapperDiv>
       </Stacked>
       <NavButton onClick={goToNextStep}> Next </NavButton>
