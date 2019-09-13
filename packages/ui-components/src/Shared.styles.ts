@@ -25,6 +25,10 @@ export const Container = styled(SUIContainer)`
   padding: ${MARGIN_SIZES.large};
 `;
 
+export const BoldText = styled.b`
+  color: ${substrateLightTheme.black};
+`;
+
 export const FadedText = styled.p`
   color: ${substrateLightTheme.black};
   opacity: 0.5;

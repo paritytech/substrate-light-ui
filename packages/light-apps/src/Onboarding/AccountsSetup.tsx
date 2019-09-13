@@ -93,7 +93,7 @@ export function AccountsSetup (props: Props) {
     const activeTab = location.pathname.split('/')[2];
 
     return (
-      <Transition animation={'scale'} duration={1000} transitionOnMount={true}>
+      <Transition animation={'scale'} duration={1000} visible>
         <FlexItem flex={3}>
           <WithSpaceAround>
             <Card style={{ height: '100%' }}>

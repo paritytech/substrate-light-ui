@@ -2,6 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { StakingOptions } from '@substrate/accounts-app';
 import { Breadcrumbs, Header, Margin, Modal, Stacked } from '@substrate/ui-components';
 import React, { useEffect } from 'react';
 import { Route, Switch, RouteComponentProps } from 'react-router-dom';
@@ -40,6 +41,7 @@ export function Onboarding (props: Props) {
         <Route path={'/onboarding/stash'} component={AccountsSetup} />
         <Route path={'/onboarding/controller'} component={AccountsSetup} />
         <Route path={'/onboarding/claim'} component={Claim} />
+        <Route path={'/onboarding/bond'} component={StakingOptions} />
       </Switch>
     </Modal>
   );
