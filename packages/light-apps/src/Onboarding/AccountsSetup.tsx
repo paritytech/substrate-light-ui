@@ -61,15 +61,14 @@ export function AccountsSetup (props: Props) {
                 && (
                   <Stacked justifyContent='space-around'>
                     <SubHeader>We found the following account(s) in your local Keyring: </SubHeader>
-                    <Margin top />
-                    <StackedHorizontal>
+                    <StackedHorizontal alignItems='stretch'>
                       {
-                        keyringAccounts.map((account: CreateResult) => <AddressSummary address={account.json.address} name={account.json.meta.name} size='tiny' />)
+                        keyringAccounts.map((account: CreateResult) => <WithSpaceAround margin='small' padding='small'><AddressSummary address={account.json.address} name={account.json.meta.name} size='tiny' /></WithSpaceAround>)
                       }
                     </StackedHorizontal>
                     <Margin top />
                     <StyledNavButton
-                      onClick={ keyringAccounts.length === 1
+                      onClick={ whichAccount === 'stash'
                             ? () => navToCreateController()
                             : () => navToClaim()
                       }>
