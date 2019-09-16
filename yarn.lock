@@ -996,7 +996,7 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.3.1", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.0", "@babel/runtime@^7.4.2", "@babel/runtime@^7.4.5", "@babel/runtime@^7.5.0", "@babel/runtime@^7.5.5":
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.3.1", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.0", "@babel/runtime@^7.4.2", "@babel/runtime@^7.4.5", "@babel/runtime@^7.5.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.0":
   version "7.6.0"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.6.0.tgz#4fc1d642a9fd0299754e8b5de62c631cf5568205"
   integrity sha512-89eSBLJsxNxOERC0Op4vd+0Bqm6wRMqMbFtV3i0/fbaWw/mJ8Q3eBvgX0G4SyrOOLCtbu98HspF8o09MRT+KzQ==
@@ -2338,14 +2338,14 @@
     react-copy-to-clipboard "^5.0.1"
     styled-components "^4.3.1"
 
-"@polkadot/react-identicon@^0.43.1":
-  version "0.43.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/react-identicon/-/react-identicon-0.43.1.tgz#32cedf7c5a9aa7b578ba87431536c47c82b46126"
-  integrity sha512-5xbeQSxORLEdnl6rMq9k4xc8rlucLH7R+ZWNWuhtq17kjovFbNbkDSF3xHgsRrJHarRZsvg564HMqJfdrYxzrQ==
+"@polkadot/react-identicon@^0.44.1":
+  version "0.44.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/react-identicon/-/react-identicon-0.44.1.tgz#0abf772aaf91c385b24a3aabd12beecef59cca71"
+  integrity sha512-qz5Jtv6JCALIEWj3dr0AroGD2CNwkHcw8Cm2TKlLmzMoWDY/LA0JRQhBqoLQOVlK8lnFmO4x5sRGWjiGSsL8Bg==
   dependencies:
-    "@babel/runtime" "^7.5.5"
-    "@polkadot/ui-settings" "^0.43.1"
-    "@polkadot/ui-shared" "^0.43.1"
+    "@babel/runtime" "^7.6.0"
+    "@polkadot/ui-settings" "^0.44.1"
+    "@polkadot/ui-shared" "^0.44.1"
     "@types/color" "^3.0.0"
     "@types/react-copy-to-clipboard" "^4.2.6"
     color "^3.1.2"
@@ -2486,6 +2486,15 @@
     "@types/store" "^2.0.2"
     store "^2.0.12"
 
+"@polkadot/ui-settings@^0.44.1":
+  version "0.44.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-0.44.1.tgz#e6c11146428af6a99fbdb60bbbf8ddf7a70b529c"
+  integrity sha512-ibjXKJZFKhTTLNH5TPDVVQMXf6jUh69uBDntk73sk+tJ394UaqMOYyfbpxb3xsnVOBUt9SvJ1y8RtAggpISlpw==
+  dependencies:
+    "@babel/runtime" "^7.6.0"
+    "@types/store" "^2.0.2"
+    store "^2.0.12"
+
 "@polkadot/ui-shared@^0.42.1":
   version "0.42.1"
   resolved "https://registry.yarnpkg.com/@polkadot/ui-shared/-/ui-shared-0.42.1.tgz#e62024b9db3c17786c2a4cde8264c676fd2db297"
@@ -2495,12 +2504,12 @@
     "@types/color" "^3.0.0"
     color "^3.1.2"
 
-"@polkadot/ui-shared@^0.43.1":
-  version "0.43.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-shared/-/ui-shared-0.43.1.tgz#6fd873d5cf1de1698c367b99c7d46f7bb485d4e7"
-  integrity sha512-d4oqvefVPrhYxar3BsgXIxecXoUP0+2rTcFz5p1uGLenYiU3ejpje34Nn8H7Pwlyyg0e7m6Vv9VcD2ZzqJrZmQ==
+"@polkadot/ui-shared@^0.44.1":
+  version "0.44.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-shared/-/ui-shared-0.44.1.tgz#a4e6ea78528790e134ee86c71ab45b3ca0d679cb"
+  integrity sha512-v0ygtHHaQWCWZbKGqHSUnKzqIb652Nz4MRglX1AzBkJjax7SpPKm90ewSpn+vOiRVuuBx2DBRtBootDrnxCunQ==
   dependencies:
-    "@babel/runtime" "^7.5.5"
+    "@babel/runtime" "^7.6.0"
     "@types/color" "^3.0.0"
     color "^3.1.2"
 
