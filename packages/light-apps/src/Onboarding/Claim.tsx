@@ -8,23 +8,47 @@ import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { map } from 'rxjs/operators';
 import Card from 'semantic-ui-react/dist/commonjs/views/Card';
-import { fromNullable } from 'fp-ts/lib/Option';
 
 interface Props extends RouteComponentProps {}
 
 export function Claim (props: Props) {
   const { history } = props;
 
-  const [stash, setStash] = useState();
+  const [messageToSign, setMessageToSign] = useState<string>('');
 
   useEffect(() => {
     const accountsSub = accounts.subject.pipe(map(Object.values)).subscribe(values => {
       const stash = values.filter(value => value.json.meta.tags.includes('stash'))[0];
-      setStash(stash);
+
+      const messageToSign = `Pay KSMs to the Kusama account: ${stash.json.address}`;
+      setMessageToSign(messageToSign);
     });
 
     return () => accountsSub.unsubscribe();
   }, []);
+
+  const handleSubmitClaim = (event: React.MouseEvent<HTMLElement>) => {
+    console.log(event);
+  };
+
+  const renderWithRaw = () => {
+    return (
+      <Card.Content>
+        <SubHeader>Copy the below string and sign an Ethereum transaction with the account you used during the pre-sale.</SubHeader>
+        <Margin top />
+        <FlexSegment width={'100%'}>
+          {
+            messageToSign && (
+                <React.Fragment>
+                  <BoldText>{messageToSign}</BoldText>
+                  <CopyButton value={messageToSign} />
+                </React.Fragment>
+              )
+          }
+        </FlexSegment>
+      </Card.Content>
+    );
+  };
 
   return (
     <React.Fragment>
@@ -34,24 +58,7 @@ export function Claim (props: Props) {
             <Card.Header>
               <Header>SIGN ETH TRANSACTION</Header>
             </Card.Header>
-            <Card.Content>
-            <SubHeader>Copy the below string and sign an Ethereum transaction with the account you used during the pre-sale.</SubHeader>
-              <Margin top />
-              <FlexSegment width={'100%'}>
-                {
-                  fromNullable(stash)
-                    .map(stash => stash.json)
-                    .map(json => json.address)
-                    .map(address => (
-                      <React.Fragment>
-                        <BoldText>Pay KSMs to the Kusama account: {address}</BoldText>
-                        <CopyButton value={`Pay KSMs to the Kusama account: ${address}`} />
-                      </React.Fragment>
-                    ))
-                    .getOrElse(<div></div>)
-                }
-              </FlexSegment>
-            </Card.Content>
+            { renderWithRaw() }
           </Card>
           <Card>
             <Card.Header>
@@ -67,7 +74,7 @@ export function Claim (props: Props) {
       <Modal.Actions>
         <StackedHorizontal>
           <StyledLinkButton onClick={() => history.push('/onboarding/bond')}>Skip</StyledLinkButton>
-          <StyledNavButton >Next</StyledNavButton>
+          <StyledNavButton onClick={handleSubmitClaim}>Next</StyledNavButton>
         </StackedHorizontal>
       </Modal.Actions>
     </React.Fragment>

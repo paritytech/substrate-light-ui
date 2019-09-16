@@ -90,7 +90,7 @@ export function AccountsSetup (props: Props) {
   const renderSetupCard = () => {
     const { location } = props;
     const path = location.pathname.split('/').slice(0, 3).join('/');
-    const activeTab = location.pathname.split('/')[2];
+    const activeTab = location.pathname.split('/')[3];
 
     return (
       <Transition animation={'scale'} duration={1000} visible>
@@ -98,9 +98,9 @@ export function AccountsSetup (props: Props) {
           <WithSpaceAround>
             <Card style={{ height: '100%' }}>
               <Card.Header>
-                <Menu>
-                  <Menu.Item active={activeTab === 'Restore' } onClick={() => history.push(`${path}/restore`)}>Restore</Menu.Item>
-                  <Menu.Item active={activeTab === 'Create' } onClick={() => history.push(`${path}/create`)}>Create</Menu.Item>
+                <Menu fluid secondary widths={2}>
+                  <Menu.Item active={activeTab === 'create'} onClick={() => history.push(`${path}/create`)}>Create</Menu.Item>
+                  <Menu.Item active={activeTab === 'restore'} onClick={() => history.push(`${path}/restore`)}>Restore</Menu.Item>
                 </Menu>
               </Card.Header>
               <Card.Content>

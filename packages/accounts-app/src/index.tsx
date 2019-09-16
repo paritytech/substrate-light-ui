@@ -66,3 +66,4 @@ export function Accounts (props: Props) {
 }
 
 export * from './Staking';
+export const Validators = ValidatorsList;

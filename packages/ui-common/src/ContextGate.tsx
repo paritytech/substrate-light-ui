@@ -43,6 +43,11 @@ const DISCONNECTED_STATE_PROPERTIES = {
   }
 };
 
+// Default to Kusama
+settings.set({
+  apiUrl: 'wss://canary-5.kusama.network/'
+});
+
 const wsUrl = settings.apiUrl;
 
 const INIT_ERROR = new Error('Please wait for `isReady` before fetching this property');
