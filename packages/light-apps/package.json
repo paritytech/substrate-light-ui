@@ -19,7 +19,7 @@
   ],
   "homepage": "./",
   "dependencies": {
-    "@polkadot/ui-assets": "^0.43.1",
+    "@polkadot/ui-assets": "^0.44.1",
     "@polkadot/ui-settings": "^0.43.1",
     "@substrate/accounts-app": "^0.2.0",
     "@substrate/governance-app": "^0.2.0",
