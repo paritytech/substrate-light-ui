@@ -2477,15 +2477,6 @@
     "@types/store" "^2.0.2"
     store "^2.0.12"
 
-"@polkadot/ui-settings@^0.43.1":
-  version "0.43.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-0.43.1.tgz#47ecdaa6e3a043b7812864ed6b2662a102e3545e"
-  integrity sha512-FqGh54WFVUbMN/ByP6bP1BLoBHG/DdLtpFmqvae8HTyh9vw1Ouaqdl8PlCyCeQbINEX7794VwQnGXjnDwZac+w==
-  dependencies:
-    "@babel/runtime" "^7.5.5"
-    "@types/store" "^2.0.2"
-    store "^2.0.12"
-
 "@polkadot/ui-settings@^0.44.1":
   version "0.44.1"
   resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-0.44.1.tgz#e6c11146428af6a99fbdb60bbbf8ddf7a70b529c"
