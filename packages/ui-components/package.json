@@ -15,7 +15,7 @@
     "test": "echo skipped"
   },
   "dependencies": {
-    "@polkadot/react-identicon": "^0.43.1",
+    "@polkadot/react-identicon": "^0.44.1",
     "@types/recharts": "^1.1.16",
     "@types/styled-components": "4.1.19",
     "babel-loader": "^8.0.6",
@@ -28,10 +28,10 @@
     "react": "^16.9"
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^5.1.11",
-    "@storybook/addon-knobs": "^5.1.11",
-    "@storybook/addon-links": "^5.1.11",
-    "@storybook/react": "^5.1.11",
+    "@storybook/addon-actions": "^5.2.0",
+    "@storybook/addon-knobs": "^5.2.0",
+    "@storybook/addon-links": "^5.2.0",
+    "@storybook/react": "^5.2.0",
     "@substrate/ui-common": "^0.2.0",
     "@types/storybook__addon-actions": "^3.4.2",
     "@types/storybook__addon-knobs": "^5.0.3",
