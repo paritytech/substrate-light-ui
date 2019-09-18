@@ -12,8 +12,6 @@ type Step = 'upload' | 'password';
 interface Props extends RouteComponentProps { }
 
 export function ImportWithJson (props: Props) {
-  const { history } = props;
-
   const { enqueue } = useContext(AlertsContext);
   const { keyring } = useContext(AppContext);
 
@@ -42,9 +40,7 @@ export function ImportWithJson (props: Props) {
     try {
       const json = JSON.parse(jsonString);
 
-      let pair = keyring.restoreAccount(json, inputPassword);
-
-      history.push(`/transfer/${pair.address}`);
+      keyring.restoreAccount(json, inputPassword);
     } catch (e) {
       enqueue({
         content: e.message,

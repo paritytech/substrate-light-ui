@@ -11,12 +11,13 @@ import { SUIBreadcrumbSize } from './types';
 
 interface BreadcrumbProps {
   activeLabel: string;
+  onClick: (event: React.MouseEvent<HTMLElement>, data: any) => void;
   sectionLabels: Array<string>;
   size?: SUIBreadcrumbSize;
 }
 
 export function Breadcrumbs (props: BreadcrumbProps) {
-  const { activeLabel, sectionLabels, size } = props;
+  const { activeLabel, onClick, sectionLabels, size } = props;
 
   return (
     <SUIBreadcrumb size={size}>
@@ -26,7 +27,7 @@ export function Breadcrumbs (props: BreadcrumbProps) {
           const active = activeLabel === label;
           return (
             <Margin left='big'>
-              <SUIBreadcrumb.Section active={active}>
+              <SUIBreadcrumb.Section active={active} onClick={onClick}>
                 <Stacked>
                   <Circle fill={substrateLightTheme.lightBlue1} label={idx.toString()} radius={32} withShadow={active}/>
                   <Margin top />

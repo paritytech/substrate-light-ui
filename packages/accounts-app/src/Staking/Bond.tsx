@@ -52,8 +52,8 @@ export function Bond (props: Props) {
   const [stashBalance, setStashBalance] = useState<DerivedBalances>();
   const [status, setStatus] = useState<Either<Errors, AllExtrinsicData>>();
 
-  const { history } = props;
-  const { controller, stash } = history.location.state;
+  const { history, controller, stash } = props;
+  // const { controller, stash } = history.location.state;
 
   const _validate = (): Either<Errors, AllExtrinsicData> => {
     let errors: Errors = [];

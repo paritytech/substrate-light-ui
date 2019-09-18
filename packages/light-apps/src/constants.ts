@@ -3,12 +3,12 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 export const ONBOARDING_STEPS = [
-  'T&C',
-  'STASH',
-  'CONTROLLER',
-  'CLAIM',
-  'BOND',
-  'NOMINATE'
+  't&c',
+  'stash',
+  'controller',
+  'claim',
+  'bond',
+  'nominate'
 ];
 
 export const tutorialSteps = [

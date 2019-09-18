@@ -4,6 +4,7 @@
 
 import accounts from '@polkadot/ui-keyring/observable/accounts';
 import { BoldText, CopyButton, FlexSegment, Header, Margin, Modal, SubHeader, TextArea, StyledNavButton, StyledLinkButton, StackedHorizontal } from '@substrate/ui-components';
+import { fromNullable } from 'fp-ts/lib/Option';
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { map } from 'rxjs/operators';
@@ -18,9 +19,15 @@ export function Claim (props: Props) {
 
   useEffect(() => {
     const accountsSub = accounts.subject.pipe(map(Object.values)).subscribe(values => {
-      const stash = values.filter(value => value.json.meta.tags.includes('stash'))[0];
+      const stash = values.filter(value =>
+        fromNullable(value.json.meta.tags)
+          .map(tags => tags.includes('stash'))
+          .getOrElse(undefined)
+      )[0];
 
-      const messageToSign = `Pay KSMs to the Kusama account: ${stash.json.address}`;
+      const messageToSign = fromNullable(stash)
+                            .map(stash => `Pay KSMs to the Kusama account: ${stash.json.address}`)
+                            .getOrElse('');
       setMessageToSign(messageToSign);
     });
 

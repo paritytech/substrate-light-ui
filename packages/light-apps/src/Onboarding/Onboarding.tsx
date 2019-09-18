@@ -2,12 +2,13 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { StakingOptions, Validators } from '@substrate/accounts-app/';
+import { Validators } from '@substrate/accounts-app/';
 import { Breadcrumbs, Header, Margin, Modal, Stacked, StyledLinkButton } from '@substrate/ui-components';
 import React, { useEffect } from 'react';
 import { Route, Switch, RouteComponentProps } from 'react-router-dom';
 
 import { AccountsSetup } from './AccountsSetup';
+import { BondingSetup } from './BondingSetup';
 import { ONBOARDING_STEPS } from '../constants';
 import { Claim } from './Claim';
 import { TermsAndConditions } from './TermsAndConditions';
@@ -19,7 +20,7 @@ interface MatchParams {
 interface Props extends RouteComponentProps<MatchParams> { }
 
 export function Onboarding (props: Props) {
-  const { match: { params: { activeOnboardingStep } } } = props;
+  const { history, match: { params: { activeOnboardingStep } } } = props;
 
   useEffect(() => {
     if (!localStorage.getItem('skipOnboarding')) {
@@ -33,6 +34,14 @@ export function Onboarding (props: Props) {
     localStorage.setItem('skipOnboaring', 'y');
   };
 
+  const navToBreadcrumb = (event: React.MouseEvent<HTMLElement>, data: any) => {
+    // @ts-ignore
+    let text = event.currentTarget.childNodes[0].innerText;
+    let to = text.slice(2).replace(/\r?\n|\r/, '').trim();
+
+    history.replace(`/onboarding/${to}`);
+  };
+
   return (
     <Modal
       dimmer='inverted'
@@ -41,7 +50,7 @@ export function Onboarding (props: Props) {
     >
       <Margin top />
       <Stacked>
-        <Breadcrumbs activeLabel={activeOnboardingStep.toUpperCase()} sectionLabels={ONBOARDING_STEPS} size='mini' />
+        <Breadcrumbs activeLabel={activeOnboardingStep.toUpperCase()} onClick={navToBreadcrumb} sectionLabels={ONBOARDING_STEPS} size='mini' />
         <Header margin='small'>Welcome to the Kusama Nominator Community.</Header>
         <StyledLinkButton onClick={handleSkipOnboarding}>Skip Onboarding</StyledLinkButton>
       </Stacked>
@@ -50,7 +59,7 @@ export function Onboarding (props: Props) {
         <Route path={'/onboarding/stash'} component={AccountsSetup} />
         <Route path={'/onboarding/controller'} component={AccountsSetup} />
         <Route path={'/onboarding/claim'} component={Claim} />
-        <Route path={'/onboarding/bond'} component={StakingOptions} />
+        <Route path={'/onboarding/bond'} component={BondingSetup} />
         <Route path={'/onboarding/nominate'} component={Validators} />
       </Switch>
     </Modal>
