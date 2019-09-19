@@ -7,7 +7,7 @@ import accounts from '@polkadot/ui-keyring/observable/accounts';
 import { Option, H160 } from '@polkadot/types';
 import { BalanceOf, EthereumAddress } from '@polkadot/types/interfaces';
 import { AppContext } from '@substrate/ui-common';
-import { BoldText, CopyButton, ErrorText, FlexSegment, Header, Input, Margin, Modal, SubHeader, TextArea, StyledNavButton, StyledLinkButton, StackedHorizontal, FadedText } from '@substrate/ui-components';
+import { BoldText, CopyButton, ErrorText, FadedText, FlexSegment, Header, Input, Margin, Message, Modal, SubHeader, StyledNavButton, StyledLinkButton, Stacked, StackedHorizontal, TextArea } from '@substrate/ui-components';
 import { Either, left, right } from 'fp-ts/lib/Either';
 import { fromNullable } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
@@ -36,7 +36,6 @@ export function Claim (props: Props) {
   const [ethereumAddress, setEthereumAddress] = useState<EthereumAddress>();
   const [messageToSign, setMessageToSign] = useState<string>('');
   const [renderQr, setRenderQr] = useState<boolean>(true);
-  const [rlp, setRlp] = useState('');
   // const [signature, setSignature] = useState();
 
   useEffect(() => {
@@ -47,10 +46,10 @@ export function Claim (props: Props) {
           .getOrElse(undefined)
       )[0];
 
-      const messageToSign = fromNullable(stash)
+      const _messageToSign = fromNullable(stash)
                             .map(stash => `Pay KSMs to the Kusama account: ${stash.json.address}`)
                             .getOrElse('');
-      setMessageToSign(messageToSign);
+      setMessageToSign(_messageToSign);
     });
 
     return () => accountsSub.unsubscribe();
@@ -78,8 +77,11 @@ export function Claim (props: Props) {
     const validate = validateEthereumAddress(value);
 
     validate.fold(
-      (err: string) => console.error(err),
-      (validAddress: EthereumAddress) => setEthereumAddress(validAddress)
+      (err: string) => setClaimError(err),
+      (validAddress: EthereumAddress) => {
+        setEthereumAddress(validAddress);
+        setClaimError(undefined);
+      }
     );
   };
 
@@ -117,24 +119,30 @@ export function Claim (props: Props) {
   const renderWithQr = () => {
     return (
       <Card.Content centered>
-        <Input
-          fluid
-          label='Ethereum Address'
-          onChange={handleSetEthereumAddress}
-          placeholder='0x....'
-          withLabel
-        />
-        <FadedText>Scan the QR Code below to sign the following message.</FadedText>
-        <BoldText>{messageToSign}</BoldText>
-        {
-          ethereumAddress
-            && <QrSigner
-                  account={ethereumAddress.toHex()}
-                  rlp={rlp}
-                  scan={false}
-                  size={300}
-                />
-        }
+        <Stacked>
+          <Input
+            fluid
+            label='Ethereum Address'
+            onChange={handleSetEthereumAddress}
+            placeholder='0x....'
+            withLabel
+          />
+          <Message floating>
+            <FadedText>Scan the QR Code below to sign the following message.</FadedText>
+            <BoldText>{messageToSign}</BoldText>
+          </Message>
+          {
+            ethereumAddress
+              && messageToSign
+                && <QrSigner
+                      account={ethereumAddress.toHex()}
+                      data={messageToSign}
+                      onScan={() => console.log('QrSigner onScan callback')}
+                      scan={false}
+                      size={300}
+                    />
+          }
+        </Stacked>
       </Card.Content>
     );
   };
@@ -148,9 +156,7 @@ export function Claim (props: Props) {
               ? renderWithQr()
               : renderWithRaw()
           }
-      </Modal.Content>
-      <Modal.Content extra>
-        <ErrorText>{ claimError }</ErrorText>
+          <ErrorText>{ claimError }</ErrorText>
       </Modal.Content>
       <Modal.Actions>
         <StackedHorizontal justifyContent='space-around'>
