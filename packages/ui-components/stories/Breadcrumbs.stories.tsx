@@ -4,6 +4,7 @@
 
 import React from 'react';
 import { storiesOf } from '@storybook/react';
+import { action } from '@storybook/addon-actions';
 import { withKnobs, select } from '@storybook/addon-knobs';
 
 import { Breadcrumbs, WrapperDiv } from '../src';
@@ -23,6 +24,6 @@ storiesOf('Breadcrumbs', module)
   .addDecorator(withTheme)
   .add('3 sections', () => (
     <WrapperDiv width='100%'>
-        <Breadcrumbs activeLabel={select('activeLabel', sectionLabels, 'T&C')} sectionLabels={sectionLabels} />
+        <Breadcrumbs activeLabel={select('activeLabel', sectionLabels, 'T&C')} onClick={action('clicked')} sectionLabels={sectionLabels} />
     </WrapperDiv>
   ));
