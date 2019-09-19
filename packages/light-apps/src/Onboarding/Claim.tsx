@@ -7,7 +7,7 @@ import accounts from '@polkadot/ui-keyring/observable/accounts';
 import { Option, H160 } from '@polkadot/types';
 import { BalanceOf, EthereumAddress } from '@polkadot/types/interfaces';
 import { AppContext } from '@substrate/ui-common';
-import { BoldText, CopyButton, ErrorText, FadedText, FlexSegment, Header, Input, Margin, Message, Modal, SubHeader, StyledNavButton, StyledLinkButton, Stacked, StackedHorizontal, TextArea } from '@substrate/ui-components';
+import { BoldText, CopyButton, ErrorText, FadedText, FlexSegment, Header, Loading, Margin, Message, Modal, SubHeader, StyledNavButton, StyledLinkButton, Stacked, StackedHorizontal, TextArea } from '@substrate/ui-components';
 import { Either, left, right } from 'fp-ts/lib/Either';
 import { fromNullable } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
@@ -16,6 +16,11 @@ import { map, take } from 'rxjs/operators';
 import Card from 'semantic-ui-react/dist/commonjs/views/Card';
 
 interface Props extends RouteComponentProps {}
+
+interface EthereumAddressPayload {
+  address: string;
+  chainId: number;
+}
 
 const validateEthereumAddress = (addr: string): Either<string, EthereumAddress> => {
   if (!addr || addr.length !== 42) {
@@ -37,7 +42,7 @@ export function Claim (props: Props) {
   const [messageToSign, setMessageToSign] = useState<string>('');
   const [renderQr, setRenderQr] = useState<boolean>(true);
   const [scanSignature, setScanSignature] = useState<boolean>(false);
-  // const [signature, setSignature] = useState();
+  const [signature, setSignature] = useState();
 
   useEffect(() => {
     const accountsSub = accounts.subject.pipe(map(Object.values)).subscribe(values => {
@@ -74,8 +79,21 @@ export function Claim (props: Props) {
     console.log('found claim => ', claim);
   };
 
-  const handleSetEthereumAddress = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-    const validate = validateEthereumAddress(value);
+  const handleScanSignature = (signature: any) => {
+    debugger;
+    setSignature(signature);
+  };
+
+  const handleSetEthereumAddress = (data: EthereumAddressPayload) => {
+    if (!data) {
+      setClaimError('invalid payload.');
+      return;
+    } else if (data.chainId !== 1) {
+      setClaimError('You can only sign a claims transaction on the Ethereum Mainnet.');
+      return;
+    }
+
+    const validate = validateEthereumAddress(data.address);
 
     validate.fold(
       (err: string) => setClaimError(err),
@@ -86,9 +104,35 @@ export function Claim (props: Props) {
     );
   };
 
+  const renderCheckingClaim = () => {
+    return (
+      <Stacked>
+        {
+          claim
+            ? <FadedText>Got claim!</FadedText>
+            : <StackedHorizontal><FadedText>Checking claim... </FadedText><Loading active inline /></StackedHorizontal>
+        }
+      </Stacked>
+    );
+  };
+
+  const renderStartClaim = () => {
+    return (
+      <React.Fragment>
+        <StyledLinkButton onClick={() => setRenderQr(!renderQr)}>{renderQr ? 'Raw' : 'QR'} </StyledLinkButton>
+          {
+            renderQr
+              ? renderWithQr()
+              : renderWithRaw()
+          }
+          <ErrorText>{ claimError }</ErrorText>
+      </React.Fragment>
+    );
+  };
+
   const renderWithRaw = () => {
     return (
-      <Card.Group itemsPerRow={1} stackable>
+      <Card.Group itemsPerRow={2} stackable>
         <Card raised>
           <Card.Header><Header>Sign Eth Transaction</Header></Card.Header>
           <Card.Content>
@@ -121,27 +165,30 @@ export function Claim (props: Props) {
     return (
       <Card.Content centered>
         <Stacked>
-          <Input
-            fluid
-            label='Ethereum Address'
-            onChange={handleSetEthereumAddress}
-            placeholder='0x....'
-            withLabel
-          />
-          <Message floating>
-            <FadedText>Scan the QR Code below to sign the following message.</FadedText>
-            <BoldText>{messageToSign}</BoldText>
-          </Message>
           {
-            ethereumAddress
-              && messageToSign
-                && <QrSigner
-                      account={ethereumAddress.toHex()}
-                      data={messageToSign}
-                      onScan={() => console.log('QrSigner onScan callback')}
-                      scan={scanSignature}
-                      size={300}
-                    />
+            !ethereumAddress
+              ? <Stacked>
+                  <FadedText> Scan your Ethereum account address below to unlock it. </FadedText>
+                  <QrSigner scan={true} onScan={handleSetEthereumAddress} />
+                </Stacked>
+              : <React.Fragment>
+                {
+                  messageToSign &&
+                    <React.Fragment>
+                      <Message floating>
+                          <FadedText>Scan the QR Code below to sign the following message.</FadedText>
+                          <BoldText>{messageToSign}</BoldText>
+                        </Message>
+                        <QrSigner
+                              account={ethereumAddress.toHex()}
+                              data={messageToSign}
+                              onScan={handleScanSignature}
+                              scan={scanSignature}
+                              size={300}
+                            />
+                      </React.Fragment>
+                }
+                </React.Fragment>
           }
           <StyledLinkButton onClick={() => setScanSignature(!scanSignature)}>{ scanSignature ? 'Show QR' : 'Scan Signature' }</StyledLinkButton>
         </Stacked>
@@ -152,13 +199,11 @@ export function Claim (props: Props) {
   return (
     <React.Fragment>
       <Modal.Content>
-        <StyledLinkButton onClick={() => setRenderQr(!renderQr)}>{renderQr ? 'Raw' : 'QR'} </StyledLinkButton>
-          {
-            renderQr
-              ? renderWithQr()
-              : renderWithRaw()
-          }
-          <ErrorText>{ claimError }</ErrorText>
+        {
+          signature
+            ? renderCheckingClaim()
+            : renderStartClaim()
+        }
       </Modal.Content>
       <Modal.Actions>
         <StackedHorizontal justifyContent='space-around'>
