@@ -11,7 +11,7 @@ import { Breadcrumbs, WrapperDiv } from '../src';
 import { withTheme } from './customDecorators';
 
 const sectionLabels = [
-  'T&C',
+  'Welcome',
   'Stash',
   'Controller',
   'Confirm',
@@ -24,6 +24,6 @@ storiesOf('Breadcrumbs', module)
   .addDecorator(withTheme)
   .add('3 sections', () => (
     <WrapperDiv width='100%'>
-        <Breadcrumbs activeLabel={select('activeLabel', sectionLabels, 'T&C')} onClick={action('clicked')} sectionLabels={sectionLabels} />
+        <Breadcrumbs activeLabel={select('activeLabel', sectionLabels, 'Welcome')} onClick={action('clicked')} sectionLabels={sectionLabels} />
     </WrapperDiv>
   ));

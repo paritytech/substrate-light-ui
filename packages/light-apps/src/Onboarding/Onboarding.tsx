@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { Validators } from '@substrate/accounts-app/';
-import { Breadcrumbs, Modal, Stacked, Transition, WithSpaceAround } from '@substrate/ui-components';
+import { Breadcrumbs, Margin, Modal, Stacked, Transition } from '@substrate/ui-components';
 import React from 'react';
 import { Route, Switch, RouteComponentProps } from 'react-router-dom';
 
@@ -39,6 +39,10 @@ export function Onboarding (props: Props) {
         fitted
         open
       >
+        <Stacked margin='tiny'>
+          <Margin top />
+          <Breadcrumbs activeLabel={activeOnboardingStep.toLowerCase()} onClick={navToBreadcrumb} sectionLabels={ONBOARDING_STEPS} size='mini' />
+        </Stacked>
         <Switch>
           <Route path={`/onboarding/welcome`} component={Welcome} />
           <Route path={'/onboarding/stash'} component={AccountsSetup} />
@@ -47,11 +51,6 @@ export function Onboarding (props: Props) {
           <Route path={'/onboarding/bond'} component={BondingSetup} />
           <Route path={'/onboarding/nominate'} component={Validators} />
         </Switch>
-        <WithSpaceAround>
-          <Stacked>
-            <Breadcrumbs activeLabel={activeOnboardingStep.toLowerCase()} onClick={navToBreadcrumb} sectionLabels={ONBOARDING_STEPS} size='mini' />
-          </Stacked>
-          </WithSpaceAround>
       </Modal>
     </Transition.Group>
   );
