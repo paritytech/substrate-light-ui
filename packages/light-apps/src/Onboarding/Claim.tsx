@@ -36,6 +36,7 @@ export function Claim (props: Props) {
   const [ethereumAddress, setEthereumAddress] = useState<EthereumAddress>();
   const [messageToSign, setMessageToSign] = useState<string>('');
   const [renderQr, setRenderQr] = useState<boolean>(true);
+  const [scanSignature, setScanSignature] = useState<boolean>(false);
   // const [signature, setSignature] = useState();
 
   useEffect(() => {
@@ -138,10 +139,11 @@ export function Claim (props: Props) {
                       account={ethereumAddress.toHex()}
                       data={messageToSign}
                       onScan={() => console.log('QrSigner onScan callback')}
-                      scan={false}
+                      scan={scanSignature}
                       size={300}
                     />
           }
+          <StyledLinkButton onClick={() => setScanSignature(!scanSignature)}>{ scanSignature ? 'Show QR' : 'Scan Signature' }</StyledLinkButton>
         </Stacked>
       </Card.Content>
     );
