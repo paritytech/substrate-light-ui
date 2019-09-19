@@ -3,15 +3,15 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { Validators } from '@substrate/accounts-app/';
-import { Breadcrumbs, Header, Margin, Modal, Stacked, StyledLinkButton } from '@substrate/ui-components';
-import React, { useEffect } from 'react';
+import { Breadcrumbs, Modal, Stacked, Transition, WithSpaceAround } from '@substrate/ui-components';
+import React from 'react';
 import { Route, Switch, RouteComponentProps } from 'react-router-dom';
 
 import { AccountsSetup } from './AccountsSetup';
 import { BondingSetup } from './BondingSetup';
 import { ONBOARDING_STEPS } from '../constants';
 import { Claim } from './Claim';
-import { TermsAndConditions } from './TermsAndConditions';
+import { Welcome } from './Welcome';
 
 interface MatchParams {
   activeOnboardingStep: string;
@@ -22,20 +22,9 @@ interface Props extends RouteComponentProps<MatchParams> { }
 export function Onboarding (props: Props) {
   const { history, match: { params: { activeOnboardingStep } } } = props;
 
-  useEffect(() => {
-    if (!localStorage.getItem('skipOnboarding')) {
-      localStorage.setItem('isOnboarding', 'y');
-    }
-  }, []);
-
-  const handleSkipOnboarding = (event: React.MouseEvent<HTMLElement>) => {
-    console.log(event);
-    localStorage.removeItem('isOnboarding');
-    localStorage.setItem('skipOnboaring', 'y');
-  };
-
   const navToBreadcrumb = (event: React.MouseEvent<HTMLElement>, data: any) => {
     // @ts-ignore
+    // FIXME: apparently type ChildNode from MouseEvent does not have innerText, but in practice it does. Maybe needs to be more specific than React.MouseEvent<HTMLElement>?
     let text = event.currentTarget.childNodes[0].innerText;
     let to = text.slice(2).replace(/\r?\n|\r/, '').trim();
 
@@ -43,25 +32,27 @@ export function Onboarding (props: Props) {
   };
 
   return (
-    <Modal
-      dimmer='inverted'
-      open
-      size='large'
-    >
-      <Margin top />
-      <Stacked>
-        <Breadcrumbs activeLabel={activeOnboardingStep.toUpperCase()} onClick={navToBreadcrumb} sectionLabels={ONBOARDING_STEPS} size='mini' />
-        <Header margin='small'>Welcome to the Kusama Nominator Community.</Header>
-        <StyledLinkButton onClick={handleSkipOnboarding}>Skip Onboarding</StyledLinkButton>
-      </Stacked>
-      <Switch>
-        <Route path={`/onboarding/${'T&C'}`} component={TermsAndConditions} />
-        <Route path={'/onboarding/stash'} component={AccountsSetup} />
-        <Route path={'/onboarding/controller'} component={AccountsSetup} />
-        <Route path={'/onboarding/claim'} component={Claim} />
-        <Route path={'/onboarding/bond'} component={BondingSetup} />
-        <Route path={'/onboarding/nominate'} component={Validators} />
-      </Switch>
-    </Modal>
+    <Transition.Group>
+      <Modal
+        centered
+        dimmer='inverted'
+        fitted
+        open
+      >
+        <Switch>
+          <Route path={`/onboarding/welcome`} component={Welcome} />
+          <Route path={'/onboarding/stash'} component={AccountsSetup} />
+          <Route path={'/onboarding/controller'} component={AccountsSetup} />
+          <Route path={'/onboarding/claim'} component={Claim} />
+          <Route path={'/onboarding/bond'} component={BondingSetup} />
+          <Route path={'/onboarding/nominate'} component={Validators} />
+        </Switch>
+        <WithSpaceAround>
+          <Stacked>
+            <Breadcrumbs activeLabel={activeOnboardingStep.toLowerCase()} onClick={navToBreadcrumb} sectionLabels={ONBOARDING_STEPS} size='mini' />
+          </Stacked>
+          </WithSpaceAround>
+      </Modal>
+    </Transition.Group>
   );
 }

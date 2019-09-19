@@ -4,7 +4,8 @@
 
 import { Bond } from '@substrate/accounts-app';
 import accounts from '@polkadot/ui-keyring/observable/accounts';
-import { Card, Modal } from '@substrate/ui-components';
+// import { CreateResult } from '@polkadot/ui-keyring/types'
+import { FadedText, Header, Icon, Message, Modal, Stacked, substrateLightTheme } from '@substrate/ui-components';
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { map } from 'rxjs/operators';
@@ -17,8 +18,8 @@ export function BondingSetup (props: Props) {
 
   useEffect(() => {
     const accountsSub = accounts.subject.pipe(map(Object.values)).subscribe(values => {
-      const _controller = values.filter(value => value.json.meta.tags.includes('controller'))[0];
-      const _stash = values.filter(value => value.json.meta.tags.includes('stash'))[0];
+      const _controller = values.filter(value => value.json.meta.tags && value.json.meta.tags.includes('controller'))[0];
+      const _stash = values.filter(value => value.json.meta.tags && value.json.meta.tags.includes('stash'))[0];
 
       setController(_controller);
       setStash(_stash);
@@ -27,13 +28,37 @@ export function BondingSetup (props: Props) {
     return () => accountsSub.unsubscribe();
   }, []);
 
+  const renderControllerNotFound = () => {
+    return (
+      <Stacked>
+        <Header>Uh oh...</Header>
+        <Icon color={substrateLightTheme.robinEggBlue} name='qq' size='massive' />
+        <Message error>We could not find a suitable account to use as a Controller. Please go back and create one before bonding.</Message>
+        <FadedText> You can also skip this step and finish bonding later. </FadedText>
+      </Stacked>
+    );
+  };
+
+  const renderStashNotFound = () => {
+    return (
+      <Stacked>
+        <Header>Uh oh...</Header>
+        <Icon color={substrateLightTheme.grey} name='qq' size='massive' />
+        <Message>We could not find a suitable account to use as a Stash. Please go back and create one before bonding.</Message>
+        <FadedText> You can also skip this step and finish bonding later. </FadedText>
+      </Stacked>
+    );
+  };
+
   return (
     <Modal.Content>
-      <Card>
-        {
-          stash && controller && <Bond controller={controller.json.address} stash={stash.json.address} {...props} />
-        }
-      </Card>
+    {
+      !stash
+        ? renderStashNotFound()
+        : !controller
+          ? renderControllerNotFound()
+            : <Bond controller={controller.json.address} stash={stash.json.address} {...props} />
+    }
     </Modal.Content>
   );
 }

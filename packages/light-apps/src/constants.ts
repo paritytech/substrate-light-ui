@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 export const ONBOARDING_STEPS = [
-  't&c',
+  'welcome',
   'stash',
   'controller',
   'claim',

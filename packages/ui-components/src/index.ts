@@ -8,12 +8,13 @@ export {
   Form, FormProps,
   Grid, GridProps,
   List, ListProps,
+  Image, ImageProps,
   Menu, MenuProps,
   Message, MessageProps,
   Segment, SegmentProps,
   Step, StepProps,
   Table, TableProps,
-  Transition, TransitionGroup, TransitionGroupProps, TransitionPropDuration, TransitionProps
+  Transition, TransitionGroup, TransitionProps, TransitionGroupProps, TransitionPropDuration
 } from 'semantic-ui-react';
 
 export * from './Accordion';

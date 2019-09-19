@@ -18,6 +18,8 @@ interface Props extends RouteComponentProps {
 }
 
 export function Create (props: Props) {
+  const { identiconSize } = props;
+
   const { keyring } = useContext(AppContext);
 
   const [errors, setErrors] = useState<Option<Array<string>>>(none);
@@ -84,7 +86,7 @@ export function Create (props: Props) {
 
   return (
     <Stacked>
-      <AddressSummary address={address} name={name} size={props.identiconSize} />
+      <AddressSummary address={address} name={name} size={identiconSize} />
       <Margin top />
       {step === 'create'
         ? renderCreateStep({ mnemonic, name, password, tagOptions, tags }, { setMnemonic, setName, setPassword, handleAddTag, handleOnChange }, goToNextStep)
@@ -116,6 +118,7 @@ function renderCreateStep (
   const { handleAddTag, handleOnChange, setMnemonic, setName, setPassword } = setters;
 
   const renderSetTags = () => {
+
     return (
       <Stacked>
         <SubHeader noMargin>Add Tags:</SubHeader>
