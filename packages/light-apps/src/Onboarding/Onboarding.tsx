@@ -3,8 +3,8 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { Validators } from '@substrate/accounts-app/';
-import { Breadcrumbs, Margin, Modal, Stacked, Transition } from '@substrate/ui-components';
-import React from 'react';
+import { Breadcrumbs, FadedText, Header, Margin, Modal, Stacked, StyledLinkButton, StyledNavButton, Transition, StackedHorizontal, WrapperDiv } from '@substrate/ui-components';
+import React, { useState } from 'react';
 import { Route, Switch, RouteComponentProps } from 'react-router-dom';
 
 import { AccountsSetup } from './AccountsSetup';
@@ -21,6 +21,18 @@ interface Props extends RouteComponentProps<MatchParams> { }
 
 export function Onboarding (props: Props) {
   const { history, match: { params: { activeOnboardingStep } } } = props;
+  const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
+
+  const confirmSkipOnboarding = (e: React.MouseEvent<HTMLElement>) => {
+    setShowConfirmationDialog(true);
+  };
+
+  const skipOnboarding = () => {
+    localStorage.setItem('skipOnboarding', 'y');
+
+    history.replace('/');
+    window.location.reload();
+  };
 
   const navToBreadcrumb = (event: React.MouseEvent<HTMLElement>, data: any) => {
     // @ts-ignore
@@ -29,6 +41,32 @@ export function Onboarding (props: Props) {
     let to = text.slice(2).replace(/\r?\n|\r/, '').trim();
 
     history.replace(`/onboarding/${to}`);
+  };
+
+  const renderSkipOnboardingOption = () => {
+    return (
+      <Modal
+        centered
+        dimmer='blurring'
+        fitted
+        open={showConfirmationDialog}
+        size='mini'
+        trigger={<StyledLinkButton onClick={confirmSkipOnboarding}>Skip Onboarding</StyledLinkButton>
+      }
+      >
+        <Stacked>
+          <Header>Are you sure?</Header>
+          <FadedText>You should only skip the onboarding if you really know what you are doing.</FadedText>
+
+          <WrapperDiv width='90%'>
+            <StackedHorizontal justifyContent='space-between'>
+              <StyledNavButton negative onClick={() => setShowConfirmationDialog(false)}>No</StyledNavButton>
+              <StyledNavButton onClick={skipOnboarding}>Yes</StyledNavButton>
+            </StackedHorizontal>
+          </WrapperDiv>
+        </Stacked>
+      </Modal>
+    );
   };
 
   return (
@@ -42,6 +80,8 @@ export function Onboarding (props: Props) {
         <Stacked margin='tiny'>
           <Margin top />
           <Breadcrumbs activeLabel={activeOnboardingStep.toLowerCase()} onClick={navToBreadcrumb} sectionLabels={ONBOARDING_STEPS} size='mini' />
+          <Margin top />
+          { renderSkipOnboardingOption() }
         </Stacked>
         <Switch>
           <Route path={`/onboarding/welcome`} component={Welcome} />

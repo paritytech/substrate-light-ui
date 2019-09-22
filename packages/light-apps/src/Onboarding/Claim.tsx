@@ -80,7 +80,6 @@ export function Claim (props: Props) {
   };
 
   const handleScanSignature = (signature: any) => {
-    debugger;
     setSignature(signature);
   };
 

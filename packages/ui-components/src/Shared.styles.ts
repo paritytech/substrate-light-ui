@@ -10,6 +10,7 @@ import SUIInput from 'semantic-ui-react/dist/commonjs/elements/Input';
 
 import { FONT_SIZES, MARGIN_SIZES } from './constants';
 import { substrateLightTheme } from './globalStyle';
+import { ButtonProps } from './index';
 import { DynamicSizeTextProps, HeaderProps, FlexItemProps, StackProps, StyledNavLinkProps, SubHeaderProps, WithSpaceAroundProps, WithSpaceBetweenProps, WrapperDivProps } from './StyleProps';
 
 // FIXME: customize as needed
@@ -124,11 +125,15 @@ export const StyledLinkButton = styled.button`
   }
 `;
 
-export const StyledNavButton = styled.button`
+interface NavButtonProps extends ButtonProps {
+  negative?: boolean;
+}
+
+export const StyledNavButton = styled.button<NavButtonProps>`
   background-image: linear-gradient(
     107deg,
-    ${props => props.disabled ? substrateLightTheme.grey : substrateLightTheme.lightBlue1},
-    ${props => props.disabled ? substrateLightTheme.grey : substrateLightTheme.neonBlue}
+    ${props => props.negative ? substrateLightTheme.orangeYellow : substrateLightTheme.lightBlue1},
+    ${props => props.negative ? substrateLightTheme.redOrange : substrateLightTheme.neonBlue}
   );
   border: none;
   border-radius: 15px;

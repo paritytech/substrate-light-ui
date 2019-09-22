@@ -95,7 +95,7 @@ export function ContextGate (props: { children: React.ReactNode }) {
         if (!keyringInitialized) {
           const addressPrefix = (
             settings.prefix === -1
-              ? 42
+              ? 2 // default to Kusama
               : settings.prefix
           ) as Prefix;
           // keyring with Schnorrkel support
