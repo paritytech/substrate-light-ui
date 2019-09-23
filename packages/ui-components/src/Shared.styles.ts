@@ -127,8 +127,8 @@ export const StyledLinkButton = styled.button`
 export const StyledNavButton = styled.button<NavButtonProps>`
   background-image: linear-gradient(
     107deg,
-    ${props => props.negative ? substrateLightTheme.orangeYellow : substrateLightTheme.lightBlue1},
-    ${props => props.negative ? substrateLightTheme.redOrange : substrateLightTheme.neonBlue}
+    ${props => props.disabled ? substrateLightTheme.grey : props.negative ? substrateLightTheme.orangeYellow : substrateLightTheme.lightBlue1},
+    ${props => props.disabled ? substrateLightTheme.grey : props.negative ? substrateLightTheme.redOrange : substrateLightTheme.neonBlue}
   );
   border: none;
   border-radius: 15px;
@@ -139,7 +139,7 @@ export const StyledNavButton = styled.button<NavButtonProps>`
   width: 134px;
 
   :hover {
-    cursor: pointer;
+    cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
   }
 `;
 

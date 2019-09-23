@@ -79,9 +79,9 @@ export function Onboarding (props: Props) {
       >
         <Stacked margin='tiny'>
           <Margin top />
-          <Breadcrumbs activeLabel={activeOnboardingStep.toLowerCase()} onClick={navToBreadcrumb} sectionLabels={ONBOARDING_STEPS} size='mini' />
-          <Margin top />
           { renderSkipOnboardingOption() }
+          <Margin top />
+          <Breadcrumbs activeLabel={activeOnboardingStep.toLowerCase()} onClick={navToBreadcrumb} sectionLabels={ONBOARDING_STEPS} size='mini' />
         </Stacked>
         <Switch>
           <Route path={`/onboarding/welcome`} component={Welcome} />
