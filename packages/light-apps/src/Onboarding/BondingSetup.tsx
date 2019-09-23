@@ -2,22 +2,26 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Bond } from '@substrate/accounts-app';
 import accounts from '@polkadot/ui-keyring/observable/accounts';
-// import { CreateResult } from '@polkadot/ui-keyring/types'
+import { Bond } from '@substrate/accounts-app';
+import { AppContext } from '@substrate/ui-common';
 import { FadedText, Header, Icon, Message, Modal, Stacked, substrateLightTheme } from '@substrate/ui-components';
-import React, { useEffect, useState } from 'react';
+import BN from 'bn.js';
+import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { map } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 
 interface Props extends RouteComponentProps { }
 
 export function BondingSetup (props: Props) {
+  const { api } = useContext(AppContext);
   const [controller, setController] = useState();
   const [stash, setStash] = useState();
+  const [stashNoBalance, setStashNoBalance] = useState<boolean>(true);
 
   useEffect(() => {
-    const accountsSub = accounts.subject.pipe(map(Object.values)).subscribe(values => {
+    const accountsSub: Subscription = accounts.subject.pipe(map(Object.values)).subscribe(values => {
       const _controller = values.filter(value => value.json.meta.tags && value.json.meta.tags.includes('controller'))[0];
       const _stash = values.filter(value => value.json.meta.tags && value.json.meta.tags.includes('stash'))[0];
 
@@ -27,6 +31,23 @@ export function BondingSetup (props: Props) {
 
     return () => accountsSub.unsubscribe();
   }, []);
+
+  useEffect(() => {
+    if (!stash) {
+      return;
+    }
+
+    const stashBalSub: Subscription = (api.query.balances.freeBalance(stash.json.address) as Observable<any>)
+      .pipe(
+        take(1)
+      ).subscribe((balance: BN) => {
+        if (balance.gt(new BN(0))) {
+          setStashNoBalance(false);
+        }
+      });
+
+    return () => stashBalSub.unsubscribe();
+  }, [stash]);
 
   const renderControllerNotFound = () => {
     return (
@@ -50,6 +71,16 @@ export function BondingSetup (props: Props) {
     );
   };
 
+  const renderStashNoBalance = () => {
+    return (
+      <Stacked>
+        <Header>Your Stash account has no balance!</Header>
+        <Icon color={substrateLightTheme.grey} name='qq' size='massive' />
+        <Message>You will need to some funds before bonding. Please go back and claim some or skip this step and try again later after refreshing your funds.</Message>
+      </Stacked>
+    );
+  };
+
   return (
     <Modal.Content>
     {
@@ -57,7 +88,9 @@ export function BondingSetup (props: Props) {
         ? renderStashNotFound()
         : !controller
           ? renderControllerNotFound()
-            : <Bond controller={controller.json.address} stash={stash.json.address} {...props} />
+            : stashNoBalance
+              ? renderStashNoBalance()
+              : <Bond controller={controller.json.address} stash={stash.json.address} {...props} />
     }
     </Modal.Content>
   );
