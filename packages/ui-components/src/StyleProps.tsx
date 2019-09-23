@@ -5,6 +5,7 @@
 import { LinkProps } from 'react-router-dom';
 
 import { Color } from './globalStyle';
+import { ButtonProps } from './index';
 import { FlexAlign, FlexDirection, FlexJustify, FontSize, MarginSize } from './types';
 
 export interface HeaderProps {
@@ -21,6 +22,10 @@ export interface DynamicSizeTextProps {
 
 export interface FlexItemProps {
   flex?: number;
+}
+
+export interface NavButtonProps extends ButtonProps {
+  negative?: boolean;
 }
 
 export interface StackProps {

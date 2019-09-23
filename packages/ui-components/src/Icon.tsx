@@ -9,5 +9,6 @@ import { substrateLightTheme } from './globalStyle';
 
 export const Icon = styled(SUIIcon)`
   &&& {
-    color: ${props => props.color || substrateLightTheme.lightBlue2}
+    color: ${substrateLightTheme.neonBlue}
+    )
   }`;

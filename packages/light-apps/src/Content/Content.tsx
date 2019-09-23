@@ -46,7 +46,7 @@ export function Content () {
   const renderOnboarding = () => (
     <React.Fragment>
       <Route path={`/onboarding/:activeOnboardingStep`} component={Onboarding} />
-      <Redirect exact from='/' to={`/onboarding/${ONBOARDING_STEPS[3]}`} />
+      <Redirect exact from='/' to={`/onboarding/${ONBOARDING_STEPS[1]}`} />
     </React.Fragment>
   );
 

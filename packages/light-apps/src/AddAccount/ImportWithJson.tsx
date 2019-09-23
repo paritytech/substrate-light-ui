@@ -70,10 +70,8 @@ export function ImportWithJson (props: Props) {
       const json = JSON.parse(jsonString);
 
       if (tags) {
-        json.meta.tags.push(tags);
+        json.meta.tags = json.meta.tags.concat(tags);
       }
-
-      debugger;
 
       keyring.restoreAccount(json, inputPassword);
     } catch (e) {
@@ -85,7 +83,6 @@ export function ImportWithJson (props: Props) {
   };
 
   const renderSetTags = () => {
-    console.log('tags =>', tags);
     return (
       <Stacked>
         <SubHeader noMargin>Add Tags:</SubHeader>
