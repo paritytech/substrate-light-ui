@@ -144,8 +144,7 @@ export function AccountsSetup (props: Props) {
           </React.Fragment>
         );
       }
-
-    }
+    };
 
     return (
       <Transition animation={'scale'} duration={1000}>
