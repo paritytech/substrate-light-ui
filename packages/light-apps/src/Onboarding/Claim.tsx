@@ -27,7 +27,6 @@ const validateEthereumAddress = (addr: string): Either<string, EthereumAddress> 
     return left('Invalid Ethereum address.');
   } else {
     const eAddress = new H160(addr);
-
     return right(eAddress);
   }
 };
@@ -55,6 +54,7 @@ export function Claim (props: Props) {
       const _messageToSign = fromNullable(stash)
                             .map(stash => `Pay KSMs to the Kusama account: ${stash.json.address}`)
                             .getOrElse('');
+
       setMessageToSign(_messageToSign);
     });
 
@@ -75,8 +75,6 @@ export function Claim (props: Props) {
 
         claimsSub.unsubscribe();
       });
-
-    console.log('found claim => ', claim);
   };
 
   const handleScanSignature = (signature: any) => {
@@ -179,12 +177,12 @@ export function Claim (props: Props) {
                           <BoldText>{messageToSign}</BoldText>
                         </Message>
                         <QrSigner
-                              account={ethereumAddress.toHex()}
-                              data={messageToSign}
-                              onScan={handleScanSignature}
-                              scan={scanSignature}
-                              size={300}
-                            />
+                            account={ethereumAddress.toHex()}
+                            data={messageToSign}
+                            onScan={handleScanSignature}
+                            scan={scanSignature}
+                            size={300}
+                          />
                       </React.Fragment>
                 }
                 </React.Fragment>

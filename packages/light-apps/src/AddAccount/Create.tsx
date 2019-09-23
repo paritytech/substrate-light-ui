@@ -124,6 +124,7 @@ function renderCreateStep (
         <SubHeader noMargin>Add Tags:</SubHeader>
         <Dropdown
           allowAdditions
+          closeOnChange
           fluid
           multiple
           onAddItem={handleAddTag}
