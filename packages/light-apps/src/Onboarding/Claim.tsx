@@ -4,6 +4,7 @@
 
 import QrSigner from '@parity/qr-signer';
 import accounts from '@polkadot/ui-keyring/observable/accounts';
+import { stringToHex } from '@polkadot/util';
 import { Option, H160 } from '@polkadot/types';
 import { BalanceOf, EthereumAddress } from '@polkadot/types/interfaces';
 import { AppContext } from '@substrate/ui-common';
@@ -159,6 +160,8 @@ export function Claim (props: Props) {
   };
 
   const renderWithQr = () => {
+    console.log('message to sign => ', messageToSign);
+    console.log('address => ', ethereumAddress);
     return (
       <Card.Content centered>
         <Stacked>
@@ -173,17 +176,15 @@ export function Claim (props: Props) {
                   messageToSign &&
                     <React.Fragment>
                       <Message floating>
-                          <FadedText>Scan the QR Code below to sign the following message.</FadedText>
-                          <BoldText>{messageToSign}</BoldText>
-                        </Message>
-                        <QrSigner
-                            account={ethereumAddress.toHex()}
-                            data={messageToSign}
-                            onScan={handleScanSignature}
-                            scan={scanSignature}
-                            size={300}
-                          />
-                      </React.Fragment>
+                        <FadedText>Scan the QR Code below to sign the following message.</FadedText>
+                        <BoldText>{messageToSign}</BoldText>
+                      </Message>
+                      {
+                        scanSignature
+                          ? (<QrSigner onScan={handleScanSignature} scan={true} size={300}/>)
+                          : (<QrSigner account={ethereumAddress.toHex()} data={stringToHex(messageToSign)} scan={false} size={300} />)
+                      }
+                    </React.Fragment>
                 }
                 </React.Fragment>
           }
