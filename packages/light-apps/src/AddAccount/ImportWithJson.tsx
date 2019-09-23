@@ -31,7 +31,7 @@ export function ImportWithJson (props: Props) {
 
   const checkAndAddTags = (json: KeyringJson) => {
     if (json.meta.tags) {
-      json.meta.tags.map((tag: string) => {
+      json.meta.tags.map((tag: string): void => {
         setTagOptions([...tagOptions, { key: tag, text: tag, value: tag }]);
       });
 

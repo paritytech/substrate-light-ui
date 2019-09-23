@@ -39,6 +39,7 @@ export function Claim (props: Props) {
   const [claim, setClaim] = useState();
   const [claimError, setClaimError] = useState();
   const [ethereumAddress, setEthereumAddress] = useState<EthereumAddress>();
+  const [loading, setLoading] = useState<boolean>(false);
   const [messageToSign, setMessageToSign] = useState<string>('');
   const [renderQr, setRenderQr] = useState<boolean>(true);
   const [scanSignature, setScanSignature] = useState<boolean>(false);
@@ -68,8 +69,12 @@ export function Claim (props: Props) {
       return;
     }
 
+    setLoading(true);
+
     const claimsSub = api.query.claims.claims<Option<BalanceOf>>(ethereumAddress.toHex())
       .pipe(take(1)).subscribe((claim) => {
+        console.log('claim => ', claim);
+        setLoading(false);
         claim.isSome
           ? setClaim(claim.unwrap())
           : setClaimError('There is no claim associated with the provided Ethereum address. Please make sure you signed the above message with the same account as when you purchased your KSM and try again. If this problem persists, please raise an issue at https://riot.im/app/#/room/#KSMAClaims:polkadot.builders');
@@ -106,9 +111,16 @@ export function Claim (props: Props) {
     return (
       <Stacked>
         {
-          claim
-            ? <FadedText>Got claim!</FadedText>
-            : <StackedHorizontal><FadedText>Checking claim... </FadedText><Loading active inline /></StackedHorizontal>
+          loading
+            ? <Loading active inline />
+            : (
+              <Stacked>
+                <Header>Signature valid!</Header>
+                <FadedText>Press the button below to claim your KSM!</FadedText>
+                <StyledNavButton negative onClick={handleSubmitClaim}>Check Claim</StyledNavButton>
+                <ErrorText>{ claimError }</ErrorText>
+              </Stacked>
+            )
         }
       </Stacked>
     );
@@ -160,8 +172,6 @@ export function Claim (props: Props) {
   };
 
   const renderWithQr = () => {
-    console.log('message to sign => ', messageToSign);
-    console.log('address => ', ethereumAddress);
     return (
       <Card.Content centered>
         <Stacked>
@@ -198,15 +208,17 @@ export function Claim (props: Props) {
     <React.Fragment>
       <Modal.Content>
         {
-          signature
-            ? renderCheckingClaim()
-            : renderStartClaim()
+          claim
+            ? claim.toString()
+            : signature
+              ? renderCheckingClaim()
+              : renderStartClaim()
         }
       </Modal.Content>
       <Modal.Actions>
         <StackedHorizontal justifyContent='space-around'>
           <StyledLinkButton onClick={() => history.push('/onboarding/bond')}>Skip</StyledLinkButton>
-          <StyledNavButton onClick={handleSubmitClaim}>Next</StyledNavButton>
+          <StyledNavButton disabled={!claim} onClick={() => history.push('/onboarding/bond')}>Next</StyledNavButton>
         </StackedHorizontal>
       </Modal.Actions>
     </React.Fragment>
