@@ -4,7 +4,7 @@
 
 import { KeyringJson } from '@polkadot/ui-keyring/types';
 import { AlertsContext, AppContext, handler } from '@substrate/ui-common';
-import { Dropdown, Input, InputFile, Margin, NavButton, Stacked, SubHeader, WrapperDiv } from '@substrate/ui-components';
+import { Dropdown, ErrorText, Input, InputFile, Margin, NavButton, Stacked, SubHeader, WrapperDiv } from '@substrate/ui-components';
 import React, { useState, useContext } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
@@ -18,6 +18,7 @@ export function ImportWithJson (props: Props) {
   const { enqueue } = useContext(AlertsContext);
   const { keyring } = useContext(AppContext);
 
+  const [errorText, setErrorText] = useState();
   const [step, setStep] = useState('upload' as Step);
   const [inputPassword, setInputPassword] = useState('');
   const [jsonString, setJsonString] = useState('');
@@ -69,6 +70,13 @@ export function ImportWithJson (props: Props) {
     try {
       const json = JSON.parse(jsonString);
 
+      const isAlreadyInKeyring = keyring.getAccounts().filter(account => account.address === json.address).length > 0;
+
+      if (isAlreadyInKeyring) {
+        setErrorText('You have already unlocked this account in your keyring!');
+        return;
+      }
+
       if (tags) {
         json.meta.tags = json.meta.tags.concat(tags);
       }
@@ -119,6 +127,7 @@ export function ImportWithJson (props: Props) {
                 { renderSetTags() }
               </WrapperDiv>
               <Margin top />
+              <ErrorText>{ errorText }</ErrorText>
               <NavButton onClick={handleRestoreWithJson} value='Restore' />
             </React.Fragment>
           )

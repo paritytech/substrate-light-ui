@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { AppContext } from '@substrate/ui-common';
-import { AddressSummary, FadedText, FlexItem, Margin, StackedHorizontal, SubHeader, WithSpace } from '@substrate/ui-components';
+import { AddressSummary, FadedText, FlexItem, Margin, StackedHorizontal, SubHeader, WithSpace, WrapperDiv } from '@substrate/ui-components';
 import { DerivedSessionInfo } from '@polkadot/api-derive/types';
 import H from 'history';
 import { fromNullable } from 'fp-ts/lib/Option';
@@ -104,12 +104,14 @@ export function ValidatorListHeader (props: Props) {
   };
 
   return (
-    <StackedHorizontal alignItems='stretch' justifyContent='space-around'>
-     {renderEraProgress()}
-      <Margin left='huge' />
-      {renderSessionProgress()}
-      <Margin left='huge' />
-      {renderNomineesList()}
-    </StackedHorizontal>
+    <WrapperDiv width='90%'>
+      <StackedHorizontal alignItems='stretch' justifyContent='space-around'>
+      {renderEraProgress()}
+        <Margin left='huge' />
+        {renderSessionProgress()}
+        <Margin left='huge' />
+        {renderNomineesList()}
+      </StackedHorizontal>
+    </WrapperDiv>
   );
 }

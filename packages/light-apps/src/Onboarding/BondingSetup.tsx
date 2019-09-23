@@ -47,7 +47,7 @@ export function BondingSetup (props: Props) {
       });
 
     return () => stashBalSub.unsubscribe();
-  }, [stash]);
+  }, [api, stash]);
 
   const renderControllerNotFound = () => {
     return (
