@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { AppContext } from '@substrate/ui-common';
-import { AddressSummary, FadedText, FlexItem, Margin, StackedHorizontal, SubHeader, WithSpace, WrapperDiv } from '@substrate/ui-components';
+import { AddressSummary, FadedText, FlexItem, Margin, StackedHorizontal, SubHeader, WithSpace } from '@substrate/ui-components';
 import { DerivedSessionInfo } from '@polkadot/api-derive/types';
 import H from 'history';
 import { fromNullable } from 'fp-ts/lib/Option';
@@ -38,7 +38,7 @@ export function ValidatorListHeader (props: Props) {
   const renderEraProgress = () => {
     return (
       <WithSpace>
-        <Card height='20rem'>
+        <Card height='20rem' width='30%'>
           <Card.Content>
             <SubHeader> New Validator Set: </SubHeader>
             {
@@ -63,7 +63,7 @@ export function ValidatorListHeader (props: Props) {
   const renderSessionProgress = () => {
     return (
       <WithSpace>
-        <Card height='20rem'>
+        <Card height='20rem' width='30%'>
           <Card.Content>
             <SubHeader>Next Reward Payout: </SubHeader>
             {
@@ -90,7 +90,7 @@ export function ValidatorListHeader (props: Props) {
 
     return (
       <WithSpace>
-        <Card height='20rem'>
+        <Card height='20rem' width='30%'>
           <Card.Content>
             <SubHeader>Nominees: {nominees.size}</SubHeader>
             <StackedHorizontal>
@@ -104,14 +104,12 @@ export function ValidatorListHeader (props: Props) {
   };
 
   return (
-    <WrapperDiv width='90%'>
-      <StackedHorizontal alignItems='stretch' justifyContent='space-around'>
+    <StackedHorizontal alignItems='stretch' justifyContent='space-around'>
       {renderEraProgress()}
-        <Margin left='huge' />
-        {renderSessionProgress()}
-        <Margin left='huge' />
-        {renderNomineesList()}
-      </StackedHorizontal>
-    </WrapperDiv>
+      <Margin left='tiny' />
+      {renderSessionProgress()}
+      <Margin left='tiny' />
+      {renderNomineesList()}
+    </StackedHorizontal>
   );
 }

@@ -2,7 +2,6 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Validators } from '@substrate/accounts-app/';
 import { Breadcrumbs, FadedText, Header, Margin, Modal, Stacked, StyledLinkButton, StyledNavButton, Transition, StackedHorizontal, WrapperDiv } from '@substrate/ui-components';
 import React, { useState } from 'react';
 import { Route, Switch, RouteComponentProps } from 'react-router-dom';
@@ -11,6 +10,7 @@ import { AccountsSetup } from './AccountsSetup';
 import { BondingSetup } from './BondingSetup';
 import { ONBOARDING_STEPS } from '../constants';
 import { Claim } from './Claim';
+import { ShowValidators } from './ShowValidators';
 import { Welcome } from './Welcome';
 
 interface MatchParams {
@@ -89,7 +89,7 @@ export function Onboarding (props: Props) {
           <Route path={'/onboarding/controller'} component={AccountsSetup} />
           <Route path={'/onboarding/claim'} component={Claim} />
           <Route path={'/onboarding/bond'} component={BondingSetup} />
-          <Route path={'/onboarding/nominate'} component={Validators} />
+          <Route path={'/onboarding/nominate'} component={ShowValidators} />
         </Switch>
       </Modal>
     </Transition.Group>

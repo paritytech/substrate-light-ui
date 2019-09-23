@@ -147,7 +147,7 @@ export function AccountsSetup (props: Props) {
     };
 
     return (
-      <Transition animation={'scale'} duration={1000}>
+      <Transition animation={'scale'} duration={1000} mountOnShow>
         {
           isReadyForNextStep()
             ? (
