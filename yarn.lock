@@ -881,6 +881,13 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
+"@babel/runtime@^7.6.2":
+  version "7.6.2"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.6.2.tgz#c3d6e41b304ef10dcf13777a33e7694ec4a9a6dd"
+  integrity sha512-EXxN64agfUqqIGeEjI5dL5z0Sw0ZwWo1mLTi4mQowCZ42O59b7DRpZAnTC6OqdF28wMBMFKNb/4uFGrVaigSpg==
+  dependencies:
+    regenerator-runtime "^0.13.2"
+
 "@babel/template@^7.1.0", "@babel/template@^7.4.0", "@babel/template@^7.4.4", "@babel/template@^7.6.0":
   version "7.6.0"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.6.0.tgz#7f0159c7f5012230dad64cca42ec9bdb5c9536e6"
@@ -2357,7 +2364,29 @@
     "@babel/runtime" "^7.5.5"
     "@polkadot/ui-app" "^0.34.0-beta.119"
 
-"@polkadot/util-crypto@^1.2.1", "@polkadot/util-crypto@^1.4.1":
+"@polkadot/util-crypto@^1.2.1":
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/util-crypto/-/util-crypto-1.5.1.tgz#18de631265b5cf13ff8b9a00b747de56b72eb38d"
+  integrity sha512-m7pzRW1ltmgTMyFnpnDq0SIaE+2pyT0yzzjswNLJzo8r1MAI7eT7N5s89KoPLmbsi37Nxuc0T/JKs1Du6KvMrg==
+  dependencies:
+    "@babel/runtime" "^7.6.2"
+    "@polkadot/util" "^1.5.1"
+    "@polkadot/wasm-crypto" "^0.14.1"
+    "@types/bip39" "^2.4.2"
+    "@types/bs58" "^4.0.0"
+    "@types/pbkdf2" "^3.0.0"
+    "@types/secp256k1" "^3.5.0"
+    "@types/xxhashjs" "^0.2.1"
+    base-x "3.0.5"
+    bip39 "^2.5.0"
+    blakejs "^1.1.0"
+    bs58 "^4.0.1"
+    js-sha3 "^0.8.0"
+    secp256k1 "^3.7.0"
+    tweetnacl "^1.0.1"
+    xxhashjs "^0.2.2"
+
+"@polkadot/util-crypto@^1.4.1":
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/@polkadot/util-crypto/-/util-crypto-1.4.1.tgz#d49acf2820b714ac3149122a904a26bcc4cd469a"
   integrity sha512-swcQR8gmcI4/CkJVpJ8m07HLFLvmcKgr59S6JWVtGTCf5BPA8/Ha5jlWrF7tYF6WXhhD9MD3XSW2F5YlRe4bgA==
@@ -2379,7 +2408,20 @@
     tweetnacl "^1.0.1"
     xxhashjs "^0.2.2"
 
-"@polkadot/util@^1.2.1", "@polkadot/util@^1.4.1":
+"@polkadot/util@^1.2.1", "@polkadot/util@^1.5.1":
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/util/-/util-1.5.1.tgz#acc6d1fd041959a1a781ee2a4d0fc8dae99d4e1a"
+  integrity sha512-eK0FT251GZ/pZY4HjVm4E14w02cLzJLriY8FAqM+hKoNkkqN/0CIijZWMS89e91emAxQxFbQnJqFQyA6e8e3Rw==
+  dependencies:
+    "@babel/runtime" "^7.6.2"
+    "@types/bn.js" "^4.11.5"
+    bn.js "^4.11.8"
+    camelcase "^5.3.1"
+    chalk "^2.4.2"
+    ip-regex "^4.1.0"
+    moment "^2.24.0"
+
+"@polkadot/util@^1.4.1":
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/@polkadot/util/-/util-1.4.1.tgz#0c10fc1cc60111ffc9fd63fd7e3c07c8ebf28b37"
   integrity sha512-ERrWL6ADG7F7xRKr0Hb0oMDuDbYBStgD4jniu+6w58DizvMrzlKNyatxuXtXAQEB/G+AO4Vodp7UI0OnVclS9g==
@@ -2506,14 +2548,14 @@
     react-lifecycles-compat "^3.0.4"
     react-select "^3.0.0"
 
-"@storybook/addon-links@^v5.2.0-rc.10":
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/@storybook/addon-links/-/addon-links-5.2.0.tgz#0e747319e0e48f1082cbd7ccee32d4c7ad4aa02a"
-  integrity sha512-eWq9XLmu4Nssd6Lkb1gndOo2frGf6bRK1RGRL8SP7RRced9jARY9UvkipRA9/UTWFttraDMHeDIzxt4eqK7qEQ==
+"@storybook/addon-links@^v5.2.1":
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-links/-/addon-links-5.2.1.tgz#ec1fc92ed4d840ba758f40167c752f48562a906f"
+  integrity sha512-N5f+lzai+ctHfzHoYWECYsg3lKGJuqhkVctro46fHSW7s/GB8+l78nDcV7hDjNEXDES8QN5C1fPYihatdgpSJA==
   dependencies:
-    "@storybook/addons" "5.2.0"
-    "@storybook/core-events" "5.2.0"
-    "@storybook/router" "5.2.0"
+    "@storybook/addons" "5.2.1"
+    "@storybook/core-events" "5.2.1"
+    "@storybook/router" "5.2.1"
     common-tags "^1.8.0"
     core-js "^3.0.1"
     global "^4.3.2"
