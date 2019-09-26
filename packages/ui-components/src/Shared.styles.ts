@@ -9,11 +9,12 @@ import SUIDropdown from 'semantic-ui-react/dist/commonjs/modules/Dropdown';
 import SUIInput from 'semantic-ui-react/dist/commonjs/elements/Input';
 
 import { FONT_SIZES, MARGIN_SIZES } from './constants';
-import { DynamicSizeTextProps, HeaderProps, FlexItemProps, StackProps, StyledNavLinkProps, SubHeaderProps, WithSpaceAroundProps, WithSpaceBetweenProps, WrapperDivProps } from './StyleProps';
+import { substrateLightTheme } from './globalStyle';
+import { DynamicSizeTextProps, HeaderProps, FlexItemProps, NavButtonProps, StackProps, StyledNavLinkProps, SubHeaderProps, WithSpaceAroundProps, WithSpaceBetweenProps, WrapperDivProps } from './StyleProps';
 
 // FIXME: customize as needed
 export const Dropdown = styled<any>(SUIDropdown)`
-  color: ${props => props.theme.black};
+  color: ${substrateLightTheme.black};
 `;
 
 export const Input = styled<any>(SUIInput)`
@@ -24,8 +25,12 @@ export const Container = styled(SUIContainer)`
   padding: ${MARGIN_SIZES.large};
 `;
 
+export const BoldText = styled.b`
+  color: ${substrateLightTheme.black};
+`;
+
 export const FadedText = styled.p`
-  color: ${props => props.theme.black};
+  color: ${substrateLightTheme.black};
   opacity: 0.5;
   text-align: center;
 `;
@@ -66,7 +71,7 @@ export const WithPadding = styled.div`
 `;
 
 export const Header = styled.h2<HeaderProps>`
-  color: ${props => props.color ? props.theme[props.color] : props.theme.grey};
+  color: ${props => props.color ? substrateLightTheme[props.color] : substrateLightTheme.grey};
   font-weight: 300;
   font-size: ${FONT_SIZES.big};
   margin: ${props => props.margin ? MARGIN_SIZES[props.margin] : `${MARGIN_SIZES.big} 0`};
@@ -84,18 +89,18 @@ export const DynamicSizeText = styled.p<DynamicSizeTextProps>`
 export const RefreshButton = styled.button`
   border: none;
   background-color: inherit;
-  color: ${props => props.theme.lightBlue1};
+  color: ${substrateLightTheme.lightBlue1};
 
   :hover {
     cursor: pointer;
-    color: ${props => props.theme.darkBlue};
+    color: ${substrateLightTheme.darkBlue};
   }
 `;
 
 export const StyledNavLink = styled(Link) <StyledNavLinkProps>`
   background: none;
   border: none;
-  color: ${props => props.inverted ? props.theme.white : props.theme.lightBlue2};
+  color: ${props => props.inverted ? substrateLightTheme.white : substrateLightTheme.lightBlue2};
   font-size: ${FONT_SIZES.medium};
   font-weight: 300;
 
@@ -108,7 +113,7 @@ export const StyledLinkButton = styled.button`
   align-items: space-between;
   background: none;
   border: none;
-  color: ${props => props.color || props.theme.lightBlue2};
+  color: ${props => props.color || substrateLightTheme.lightBlue2};
   display: flex;
   font-size: ${FONT_SIZES.medium};
   font-weight: 300;
@@ -119,36 +124,35 @@ export const StyledLinkButton = styled.button`
   }
 `;
 
-export const StyledNavButton = styled.button`
+export const StyledNavButton = styled.button<NavButtonProps>`
   background-image: linear-gradient(
     107deg,
-    ${props => props.theme.purple},
-    ${props => props.theme.lightBlue1} 71%,
-    ${props => props.theme.lightBlue2}
+    ${props => props.disabled ? substrateLightTheme.grey : props.negative ? substrateLightTheme.orangeYellow : substrateLightTheme.lightBlue1},
+    ${props => props.disabled ? substrateLightTheme.grey : props.negative ? substrateLightTheme.redOrange : substrateLightTheme.neonBlue}
   );
   border: none;
   border-radius: 15px;
-  box-shadow: 0 4px 6px 0 rgba(${props => props.theme.black}, 0.3);
-  color: ${props => props.theme.white};
+  box-shadow: 0 4px 6px 0 rgba(${substrateLightTheme.black}, 0.3);
+  color: ${substrateLightTheme.white};
   fontSize: ${FONT_SIZES.large};
   height: 42px;
   width: 134px;
 
   :hover {
-    cursor: pointer;
+    cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
   }
 `;
 
 export const VoteNayButton = styled.button`
 background-image: linear-gradient(
     107deg,
-    ${props => props.theme.hotPink},
-    ${props => props.theme.electricPurple}
+    ${substrateLightTheme.hotPink},
+    ${substrateLightTheme.electricPurple}
   );
   border: none;
   border-radius: 8px;
-  box-shadow: 0 4px 6px 0 rgba(${props => props.theme.black}, 0.3);
-  color: ${props => props.theme.white};
+  box-shadow: 0 4px 6px 0 rgba(${substrateLightTheme.black}, 0.3);
+  color: ${substrateLightTheme.white};
   fontSize: ${FONT_SIZES.large};
   height: 21px;
   width: 51px;
@@ -161,13 +165,13 @@ background-image: linear-gradient(
 export const VoteYayButton = styled.button`
 background-image: linear-gradient(
     107deg,
-    ${props => props.theme.lightBlue1},
-    ${props => props.theme.lightBlue2}
+    ${substrateLightTheme.lightBlue1},
+    ${substrateLightTheme.lightBlue2}
   );
   border: none;
   border-radius: 8px;
-  box-shadow: 0 4px 6px 0 rgba(${props => props.theme.black}, 0.3);
-  color: ${props => props.theme.white};
+  box-shadow: 0 4px 6px 0 rgba(${substrateLightTheme.black}, 0.3);
+  color: ${substrateLightTheme.white};
   fontSize: ${FONT_SIZES.large};
   height: 21px;
   width: 51px;
@@ -197,7 +201,7 @@ export const StackedHorizontal = styled.div<StackProps>`
 `;
 
 export const SubHeader = styled.h3<SubHeaderProps>`
-  color: ${props => props.theme.lightBlue2};
+  color: ${substrateLightTheme.lightBlue2};
   font-weight: 600;
   font-size: ${FONT_SIZES.medium};
   margin: ${props => props.noMargin ? `0 0` : `1rem auto 0.3rem auto`};

@@ -2,6 +2,12 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-export * from './Intro';
-export * from './SetupNominator';
-export * from './WelcomeScreen';
+import React from 'react';
+import { Link } from 'react-router-dom';
+
+export function ShowValidators () {
+  return <div>
+    <p>TODO</p>
+    <Link to='/'>Go to dashboard</Link>
+  </div>;
+}

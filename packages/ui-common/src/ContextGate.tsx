@@ -43,6 +43,11 @@ const DISCONNECTED_STATE_PROPERTIES = {
   }
 };
 
+// Default to Kusama
+settings.set({
+  apiUrl: 'wss://canary-5.kusama.network/'
+});
+
 const wsUrl = settings.apiUrl;
 
 const INIT_ERROR = new Error('Please wait for `isReady` before fetching this property');
@@ -90,7 +95,7 @@ export function ContextGate (props: { children: React.ReactNode }) {
         if (!keyringInitialized) {
           const addressPrefix = (
             settings.prefix === -1
-              ? 42
+              ? 2 // default to Kusama
               : settings.prefix
           ) as Prefix;
           // keyring with Schnorrkel support

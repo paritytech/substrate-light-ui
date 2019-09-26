@@ -38,7 +38,7 @@ export function ValidatorListHeader (props: Props) {
   const renderEraProgress = () => {
     return (
       <WithSpace>
-        <Card height='20rem'>
+        <Card height='20rem' width='30%'>
           <Card.Content>
             <SubHeader> New Validator Set: </SubHeader>
             {
@@ -63,7 +63,7 @@ export function ValidatorListHeader (props: Props) {
   const renderSessionProgress = () => {
     return (
       <WithSpace>
-        <Card height='20rem'>
+        <Card height='20rem' width='30%'>
           <Card.Content>
             <SubHeader>Next Reward Payout: </SubHeader>
             {
@@ -90,7 +90,7 @@ export function ValidatorListHeader (props: Props) {
 
     return (
       <WithSpace>
-        <Card height='20rem'>
+        <Card height='20rem' width='30%'>
           <Card.Content>
             <SubHeader>Nominees: {nominees.size}</SubHeader>
             <StackedHorizontal>
@@ -105,10 +105,10 @@ export function ValidatorListHeader (props: Props) {
 
   return (
     <StackedHorizontal alignItems='stretch' justifyContent='space-around'>
-     {renderEraProgress()}
-      <Margin left='huge' />
+      {renderEraProgress()}
+      <Margin left='tiny' />
       {renderSessionProgress()}
-      <Margin left='huge' />
+      <Margin left='tiny' />
       {renderNomineesList()}
     </StackedHorizontal>
   );

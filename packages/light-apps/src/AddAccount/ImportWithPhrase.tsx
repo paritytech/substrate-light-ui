@@ -66,14 +66,15 @@ export function ImportWithPhrase (props: Props) {
   return (
     <Stacked justifyContent='space-between'>
       <SubHeader> Import Account from Mnemonic Recovery Phrase </SubHeader>
-      <WrapperDiv width='40rem'>
+      <WrapperDiv width='95%'>
+        <SubHeader>Phrase</SubHeader>
         <Input
           fluid
-          label='Phrase'
           onChange={handler(setRecoveryPhrase)}
           type='text'
           value={recoveryPhrase} />
         <Margin top />
+        <SubHeader>Name</SubHeader>
         <Input
           fluid
           label='Name'
@@ -81,6 +82,7 @@ export function ImportWithPhrase (props: Props) {
           type='text'
           value={name} />
         <Margin top />
+        <SubHeader>Password</SubHeader>
         <Input
           fluid
           label='Password'

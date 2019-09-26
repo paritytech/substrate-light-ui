@@ -4,6 +4,8 @@
 
 import { FONT_SIZES, FONT_WEIGHTS, MARGIN_SIZES } from './constants';
 
+export * from './stateful/AddressSummary/types';
+
 export type FontSize = keyof typeof FONT_SIZES;
 
 export type FontWeight = keyof typeof FONT_WEIGHTS;
@@ -20,10 +22,12 @@ export type FlexDirection = 'row' | 'column';
 
 export type FlexJustify = 'flex-start' | 'flex-end' | 'center' | 'space-around' | 'space-between';
 
+export type SizeType = 'tiny' | 'small' | 'medium' | 'large';
 /**
  * Size for <Input />
  */
 export type SUIInputSize = 'mini' | 'small' | 'large' | 'big' | 'huge' | 'massive';
+export type SUIBreadcrumbSize = SUIInputSize;
 
 export type SUISize = 'mini' | 'tiny' | 'small' | 'medium' | 'large' | 'big' | 'huge' | 'massive';
 

@@ -64,3 +64,6 @@ export function Accounts (props: Props) {
     </React.Fragment>
   );
 }
+
+export * from './Staking';
+export const Validators = ValidatorsList;

@@ -20,12 +20,13 @@ const StyledCard = styled<any>(SUICard)`
  }
 `;
 
+Card.Content = SUICard.Content;
+Card.Description = SUICard.Description;
+Card.Group = SUICard.Group;
+Card.Header = SUICard.Header;
+
 export function Card (props: CardProps) {
   return (
     <StyledCard {...props} />
   );
 }
-
-Card.Header = SUICard.Header;
-Card.Description = SUICard.Description;
-Card.Content = SUICard.Content;

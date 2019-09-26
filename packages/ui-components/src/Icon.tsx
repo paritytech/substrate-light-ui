@@ -5,7 +5,10 @@
 import styled from 'styled-components';
 import SUIIcon from 'semantic-ui-react/dist/commonjs/elements/Icon/Icon';
 
+import { substrateLightTheme } from './globalStyle';
+
 export const Icon = styled(SUIIcon)`
   &&& {
-    color: ${props => props.theme.lightBlue2}
+    color: ${substrateLightTheme.neonBlue}
+    )
   }`;

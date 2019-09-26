@@ -102,8 +102,13 @@ export function FinalConfirmation (props: Props) {
           (errors) => { console.error(errors); /* should be displayed by Validation */ },
           (allExtrinsicData) => {
             const { extrinsic, amount, allFees, allTotal } = allExtrinsicData;
-            const details = { amount, allFees, allTotal, methodCall: extrinsic.meta.name.toString(), senderPair: keyring.getPair(nominateWith) };
+            const details = { amount, allFees, allTotal, methodCall: extrinsic.meta.name.toString(), senderPair:  keyring.getPair(nominateWith) };
             enqueue(extrinsic, details);
+
+            if (localStorage.getItem('isOnboarding')) {
+              localStorage.setItem('skipOnboarding', 'y');
+              window.location.reload();
+            }
           }
         )
       );
