@@ -32,7 +32,7 @@ export function ImportWithJson (props: Props) {
 
   const checkAndAddTags = (json: KeyringJson) => {
     if (json.meta.tags) {
-      json.meta.tags.map((tag: string): void => {
+      json.meta.tags.forEach((tag: string): void => {
         setTagOptions([...tagOptions, { key: tag, text: tag, value: tag }]);
       });
 
@@ -124,10 +124,10 @@ export function ImportWithJson (props: Props) {
                   onChange={handler(setInputPassword)}
                   type='password' />
                 <Margin top />
-                { renderSetTags() }
+                {renderSetTags()}
               </WrapperDiv>
               <Margin top />
-              <ErrorText>{ errorText }</ErrorText>
+              <ErrorText>{errorText}</ErrorText>
               <NavButton onClick={handleRestoreWithJson} value='Restore' />
             </React.Fragment>
           )
