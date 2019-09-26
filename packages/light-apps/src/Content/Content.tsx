@@ -37,8 +37,8 @@ export function Content () {
 
   useEffect(() => {
     const accountsSub = accounts.subject
-        .pipe(map(Object.values), map(head))
-        .subscribe(setDefaultAccount);
+      .pipe(map(Object.values), map(head))
+      .subscribe(setDefaultAccount);
 
     return () => accountsSub.unsubscribe();
   }, [api]);
@@ -55,22 +55,22 @@ export function Content () {
       {
         !isOnboarding
           ? defaultAccount
-                  .map(({ json }) => (
-                    <React.Fragment>
-                      <Route path={['/accounts/:currentAccount/add', '/addresses/:currentAccount', '/governance/:currentAccount', '/manageAccounts/:currentAccount', '/transfer/:currentAccount']} component={IdentityHeader} />
-                      <Switch>
-                        <Redirect exact from='/' to={`/manageAccounts/${json.address}`} />
-                        <Redirect exact from='/governance' to={`/governance/${json.address}`} />
-                        <Redirect exact from='/transfer' to={`/transfer/${json.address}`} />
-                        <Route path='/addresses/:currentAccount' component={ManageAddresses} />
-                        <Route path='/manageAccounts/:currentAccount' component={Accounts} />
-                        <Route path='/accounts/:currentAccount/add/' component={AddAccount} />
-                        <Route path='/governance/:currentAccount' component={Governance} />
-                        <Route path='/transfer/:currentAccount' component={Transfer} />
-                        <Redirect to='/' />
-                      </Switch>
-                    </React.Fragment>
-                  )).getOrElse(renderOnboarding())
+            .map(({ json }) => (
+              <React.Fragment>
+                <Route path={['/accounts/:currentAccount/add', '/addresses/:currentAccount', '/governance/:currentAccount', '/manageAccounts/:currentAccount', '/transfer/:currentAccount']} component={IdentityHeader} />
+                <Switch>
+                  <Redirect exact from='/' to={`/manageAccounts/${json.address}`} />
+                  <Redirect exact from='/governance' to={`/governance/${json.address}`} />
+                  <Redirect exact from='/transfer' to={`/transfer/${json.address}`} />
+                  <Route path='/addresses/:currentAccount' component={ManageAddresses} />
+                  <Route path='/manageAccounts/:currentAccount' component={Accounts} />
+                  <Route path='/accounts/:currentAccount/add/' component={AddAccount} />
+                  <Route path='/governance/:currentAccount' component={Governance} />
+                  <Route path='/transfer/:currentAccount' component={Transfer} />
+                  <Redirect to='/' />
+                </Switch>
+              </React.Fragment>
+            )).getOrElse(renderOnboarding())
           : renderOnboarding()
       }
       <Signer />
