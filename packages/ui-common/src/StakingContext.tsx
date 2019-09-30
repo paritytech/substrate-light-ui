@@ -7,7 +7,6 @@ import { AccountId } from '@polkadot/types/interfaces';
 import { DerivedFees, DerivedStaking } from '@polkadot/api-derive/types';
 import { KeyringAddress } from '@polkadot/ui-keyring/types';
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { Subscription, Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { AppContext } from './AppContext';
@@ -41,7 +40,7 @@ export function StakingContextProvider (props: Props) {
     if (!isReady) { return; }
     const accounts: KeyringAddress[] = keyring.getAccounts();
     accounts.map(({ address }: KeyringAddress) => {
-      const subscription: Subscription = (api.derive.staking.info(address) as Observable<DerivedStaking>)
+      const subscription = api.derive.staking.info<DerivedStaking>(address)
         .pipe(take(1))
         .subscribe((derivedStaking: DerivedStaking) => {
           const newAccountStakingMap = accountStakingMap;
@@ -59,12 +58,12 @@ export function StakingContextProvider (props: Props) {
   // get allStashesAndControllers
   useEffect(() => {
     if (!isReady) { return; }
-    const controllersSub: Subscription = (api.derive.staking.controllers() as Observable<[AccountId[], Option<AccountId>[]]>)
+    const controllersSub = api.derive.staking.controllers<[AccountId[], Option<AccountId>[]]>()
       .pipe(take(1))
-      .subscribe((allStashesAndControllers: [AccountId[], Option<AccountId>[]]) => {
+      .subscribe((allStashesAndControllers) => {
         setAllStashesAndControllers(allStashesAndControllers);
         const allControllers = allStashesAndControllers[1].filter((optional: Option<AccountId>): boolean => optional.isSome)
-          .map((accountId: Option<AccountId>): AccountId => accountId.unwrap());
+          .map((accountId): AccountId => accountId.unwrap());
         const allStashes = allStashesAndControllers[0];
 
         setAllControllers(allControllers);
@@ -77,7 +76,7 @@ export function StakingContextProvider (props: Props) {
   // derived fees
   useEffect(() => {
     if (!isReady) { return; }
-    const feeSub: Subscription = (api.derive.balances.fees() as Observable<DerivedFees>)
+    const feeSub = api.derive.balances.fees<DerivedFees>()
       .pipe(take(1))
       .subscribe(setDerivedBalanceFees);
     return () => feeSub.unsubscribe();

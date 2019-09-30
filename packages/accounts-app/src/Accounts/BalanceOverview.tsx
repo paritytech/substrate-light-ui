@@ -13,7 +13,7 @@ import { Either, left, right } from 'fp-ts/lib/Either';
 import { fromNullable, some } from 'fp-ts/lib/Option';
 import H from 'history';
 import React, { useContext, useEffect, useState } from 'react';
-import { combineLatest, Observable, Subscription } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { Errors } from '../types';
@@ -36,17 +36,17 @@ export function BalanceOverview (props: Pick<Props, Exclude<keyof Props, keyof '
 
   useEffect(() => {
     if (!controllerId) { return; }
-    const subscription: Subscription = combineLatest([
-      (api.derive.balances.votingBalance(controllerId) as Observable<DerivedBalances>),
-      (api.query.system.accountNonce(controllerId) as Observable<Index>)
+    const subscription = combineLatest([
+      api.derive.balances.votingBalance<DerivedBalances>(controllerId),
+      api.query.system.accountNonce<Index>(controllerId)
     ])
-    .pipe(
-      take(1)
-    )
-    .subscribe(([controllerBalance, controllerNonce]) => {
-      setControllerBalance(controllerBalance);
-      setControllerNonce(controllerNonce);
-    });
+      .pipe(
+        take(1)
+      )
+      .subscribe(([controllerBalance, controllerNonce]) => {
+        setControllerBalance(controllerBalance);
+        setControllerNonce(controllerNonce);
+      });
 
     return () => subscription.unsubscribe();
   }, [controllerId]);
@@ -121,30 +121,30 @@ export function BalanceOverview (props: Pick<Props, Exclude<keyof Props, keyof '
         {
           controllerId === accountId
             ? <WithSpace>
-                <SubHeader>Stash:</SubHeader>
+              <SubHeader>Stash:</SubHeader>
+              <AddressSummary
+                address={stashId && stashId.toString()}
+                name={fromNullable(keyring.getAccount(accountId.toString()))
+                  .chain(account => some(account.meta))
+                  .chain(meta => some(meta.name))
+                  .getOrElse(undefined)}
+                orientation='horizontal'
+                size='small'
+              />
+            </WithSpace>
+            : stashId === accountId
+              ? <WithSpace>
+                <SubHeader>Controller:</SubHeader>
                 <AddressSummary
-                  address={stashId && stashId.toString()}
+                  address={controllerId && controllerId.toString()}
                   name={fromNullable(keyring.getAccount(accountId.toString()))
-                        .chain(account => some(account.meta))
-                        .chain(meta => some(meta.name))
-                        .getOrElse(undefined)}
+                    .chain(account => some(account.meta))
+                    .chain(meta => some(meta.name))
+                    .getOrElse(undefined)}
                   orientation='horizontal'
                   size='small'
                 />
               </WithSpace>
-            : stashId === accountId
-              ? <WithSpace>
-                  <SubHeader>Controller:</SubHeader>
-                  <AddressSummary
-                    address={controllerId && controllerId.toString()}
-                    name={fromNullable(keyring.getAccount(accountId.toString()))
-                      .chain(account => some(account.meta))
-                      .chain(meta => some(meta.name))
-                      .getOrElse(undefined)}
-                    orientation='horizontal'
-                    size='small'
-                  />
-                </WithSpace>
               : renderUnBondedAccountOptions()
         }
         <WithSpace><SubHeader>Stash Active:</SubHeader> <FadedText>{stakingLedger && formatBalance(stakingLedger.active)}</FadedText> </WithSpace>
@@ -152,7 +152,7 @@ export function BalanceOverview (props: Pick<Props, Exclude<keyof Props, keyof '
         <WithSpace><SubHeader>Bonded:</SubHeader> <FadedText>{stakingLedger && formatBalance(stakingLedger.total)} </FadedText></WithSpace>
         <WithSpace>
           <Stacked><Input disabled={controllerId !== accountId} onChange={handleSetUnbondAmount} value={unbondAmount} /> <WithSpace><StyledLinkButton disabled={controllerId !== accountId} onClick={unbond}>Unbond</StyledLinkButton></WithSpace></Stacked>
-          { controllerId !== accountId && <FadedText>You can only unbond funds through your controller account.</FadedText>}
+          {controllerId !== accountId && <FadedText>You can only unbond funds through your controller account.</FadedText>}
         </WithSpace>
       </Stacked>
       {status && <Validation value={status} />}

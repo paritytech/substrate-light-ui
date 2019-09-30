@@ -9,7 +9,7 @@ import { AppContext } from '@substrate/ui-common';
 import { AddressSummary, DynamicSizeText, FadedText, Icon, Margin, Stacked, StyledLinkButton, SubHeader, Table, WithSpaceAround } from '@substrate/ui-components';
 import { fromNullable, some } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { first, switchMap } from 'rxjs/operators';
 import Loader from 'semantic-ui-react/dist/commonjs/elements/Loader';
 
@@ -27,15 +27,15 @@ export function ValidatorRow (props: Props) {
   useEffect(() => {
     const subscription: Subscription = (
       //  FIXME: this stuff ought to be in BalanceDisplay: https://github.com/paritytech/substrate-light-ui/issues/471
-        api.queryMulti([
-          [api.query.staking.bonded, validator], // try to map to controller
-          [api.query.staking.ledger, validator] // try to map to stash
-        ]) as Observable<[Option<AccountId>, Option<StakingLedger>]>
-      )
+      api.queryMulti<[Option<AccountId>, Option<StakingLedger>]>([
+        [api.query.staking.bonded, validator], // try to map to controller
+        [api.query.staking.ledger, validator] // try to map to stash
+      ])
+    )
       .pipe(
         switchMap(([controllerId, stakingLedger]) => {
           const stashId = controllerId.isSome ? controllerId.unwrap() : stakingLedger.isSome ? stakingLedger.unwrap().stash : validator;
-          return (api.query.staking.stakers(stashId) as Observable<Exposure>);
+          return api.query.staking.stakers<Exposure>(stashId);
         }),
         first()
       )
@@ -65,16 +65,16 @@ export function ValidatorRow (props: Props) {
           ? (
             <React.Fragment>
               <SubHeader>{nominators.length} nominators</SubHeader>
-                {
-                  nominators.map(([who, bonded]) => (
-                    <WithSpaceAround key={who.toString()}>
-                      <Stacked>
-                        <AddressSummary address={who.toString()} orientation='horizontal' noPlaceholderName size='tiny' />
-                        <DynamicSizeText fontSize='small' fontWeight='200'><FadedText>Bonded Amount: {formatBalance(bonded)}</FadedText></DynamicSizeText>
-                      </Stacked>
-                    </WithSpaceAround>
-                  ))
-                }
+              {
+                nominators.map(([who, bonded]) => (
+                  <WithSpaceAround key={who.toString()}>
+                    <Stacked>
+                      <AddressSummary address={who.toString()} orientation='horizontal' noPlaceholderName size='tiny' />
+                      <DynamicSizeText fontSize='small' fontWeight='200'><FadedText>Bonded Amount: {formatBalance(bonded)}</FadedText></DynamicSizeText>
+                    </Stacked>
+                  </WithSpaceAround>
+                ))
+              }
             </React.Fragment>
           )
           : <FadedText> No nominators </FadedText>
@@ -84,10 +84,10 @@ export function ValidatorRow (props: Props) {
   return (
     <Table.Row key={validator.toString()} style={{ display: 'table-row' }}>
       <Table.Cell width='2'>
-       {
-        loading
-          ? <FadedText>Please wait while we fetch validator data...</FadedText>
-          : renderAmINominating()
+        {
+          loading
+            ? <FadedText>Please wait while we fetch validator data...</FadedText>
+            : renderAmINominating()
         }
       </Table.Cell>
       <Table.Cell width='5'>
@@ -96,9 +96,9 @@ export function ValidatorRow (props: Props) {
           justifyContent='center'
           orientation='vertical'
           name={fromNullable(keyring.getAddress(validator.toString()))
-                  .chain(account => some(account.meta))
-                  .chain(meta => some(meta.name))
-                  .getOrElse(undefined)}
+            .chain(account => some(account.meta))
+            .chain(meta => some(meta.name))
+            .getOrElse(undefined)}
           noPlaceholderName
           size='small'
           withShortAddress />
@@ -106,16 +106,16 @@ export function ValidatorRow (props: Props) {
       <Table.Cell width='6' verticalAlign='middle'><div style={{ height: '200px', overflow: 'auto', verticalAlign: 'middle' }}>{renderNominators()}</div></Table.Cell>
       <Table.Cell width='3' verticalAlign='middle'>
         {
-         loading
-          ? <FadedText>Please wait while we fetch validator data...</FadedText>
-          : (
-            /* TODO see comment in index.tsx */
-          <Stacked>
-            <StyledLinkButton> View Details </StyledLinkButton>
-            <Margin top />
-            <StyledLinkButton onClick={props.addToNomineeList} data-nominee={validator.toString()}>Add To Cart </StyledLinkButton>
-          </Stacked>
-          )
+          loading
+            ? <FadedText>Please wait while we fetch validator data...</FadedText>
+            : (
+              /* TODO see comment in index.tsx */
+              <Stacked>
+                <StyledLinkButton> View Details </StyledLinkButton>
+                <Margin top />
+                <StyledLinkButton onClick={props.addToNomineeList} data-nominee={validator.toString()}>Add To Cart </StyledLinkButton>
+              </Stacked>
+            )
         }
       </Table.Cell>
     </Table.Row>

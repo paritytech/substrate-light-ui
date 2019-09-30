@@ -12,7 +12,7 @@ import { Either, left, right } from 'fp-ts/lib/Either';
 import { fromNullable } from 'fp-ts/lib/Option';
 import React, { useContext, useState, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { combineLatest, Subscription, Observable } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import Loader from 'semantic-ui-react/dist/commonjs/elements/Loader';
 
@@ -103,9 +103,9 @@ export function Bond (props: Props) {
     }
 
     const subscription: Subscription = combineLatest([
-      api.derive.balances.votingBalance(stash) as Observable<DerivedBalances>,
-      api.derive.balances.votingBalance(controller) as Observable<DerivedBalances>,
-      api.query.system.accountNonce(stash) as Observable<Index>
+      api.derive.balances.votingBalance<DerivedBalances>(stash),
+      api.derive.balances.votingBalance<DerivedBalances>(controller),
+      api.query.system.accountNonce<Index>(stash)
     ]).pipe(
       take(1)
     ).subscribe(([stashBalance, controllerBalance, nonce]) => {

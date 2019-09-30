@@ -11,7 +11,7 @@ import { Either, left, right } from 'fp-ts/lib/Either';
 import { fromNullable, some } from 'fp-ts/lib/Option';
 import H from 'history';
 import React, { useContext, useEffect, useState } from 'react';
-import { combineLatest, Observable, Subscription } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 import Card from 'semantic-ui-react/dist/commonjs/views/Card';
 
@@ -63,9 +63,9 @@ export function FinalConfirmation (props: Props) {
   };
 
   useEffect(() => {
-    const subscription: Subscription = combineLatest([
-      (api.derive.balances.votingBalance(nominateWith) as Observable<DerivedBalances>),
-      (api.query.system.accountNonce(nominateWith) as Observable<Index>)
+    const subscription = combineLatest([
+      api.derive.balances.votingBalance<DerivedBalances>(nominateWith),
+      api.query.system.accountNonce<Index>(nominateWith)
     ])
       .pipe(take(1))
       .subscribe(([controllerVotingBalance, nonce]) => {
@@ -102,7 +102,7 @@ export function FinalConfirmation (props: Props) {
           (errors) => { console.error(errors); /* should be displayed by Validation */ },
           (allExtrinsicData) => {
             const { extrinsic, amount, allFees, allTotal } = allExtrinsicData;
-            const details = { amount, allFees, allTotal, methodCall: extrinsic.meta.name.toString(), senderPair:  keyring.getPair(nominateWith) };
+            const details = { amount, allFees, allTotal, methodCall: extrinsic.meta.name.toString(), senderPair: keyring.getPair(nominateWith) };
             enqueue(extrinsic, details);
 
             if (localStorage.getItem('isOnboarding')) {
