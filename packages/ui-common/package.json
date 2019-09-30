@@ -13,8 +13,8 @@
     "test": "echo skipped"
   },
   "dependencies": {
-    "@polkadot/api": "^0.92.1",
-    "@polkadot/ui-signer": "^0.34.0-beta.119"
+    "@polkadot/api": "^0.94.0-beta.3",
+    "@polkadot/react-signer": "^0.35.1"
   },
   "peerDependencies": {
     "react": "^16.9"
