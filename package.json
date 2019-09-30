@@ -37,7 +37,7 @@
     "test": "CI=true lerna run test --parallel"
   },
   "devDependencies": {
-    "@polkadot/dev": "^0.29.1",
+    "@polkadot/dev": "^0.31.1",
     "ncp": "^2.0.0",
     "node-fetch": "^2.5.0",
     "semver": "^6.0.0",
