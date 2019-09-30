@@ -3,19 +3,18 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { ApiRx, WsProvider } from '@polkadot/api';
+import { u8 } from '@polkadot/types/primitive';
 import keyring from '@polkadot/ui-keyring';
-import settings from '@polkadot/ui-settings';
 import { logger } from '@polkadot/util';
 import React, { useState, useEffect } from 'react';
 import { combineLatest } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
 
-import { AppContext, System } from './AppContext';
-import { isTestChain } from './util';
 import { AlertsContextProvider } from './AlertsContext';
+import { AppContext, System } from './AppContext';
 import { StakingContextProvider } from './StakingContext';
 import { TxQueueContextProvider } from './TxQueueContext';
-import { Prefix } from '@polkadot/util-crypto/address/types';
+import { isTestChain } from './util';
 
 interface State {
   isReady: boolean;
@@ -43,12 +42,12 @@ const DISCONNECTED_STATE_PROPERTIES = {
   }
 };
 
-// Default to Kusama
-settings.set({
-  apiUrl: 'wss://canary-5.kusama.network/'
-});
+// Hardcode default to Kusama
+const WS_URL = 'wss://kusama-rpc.polkadot.io/'; // FIXME Change to localhost when light client ready
 
-const wsUrl = settings.apiUrl;
+// Most chains (including Kusama) put the ss58 prefix in the chain properties.
+// Just in case, we default to 42
+const SS58_PREFIX = 42;
 
 const INIT_ERROR = new Error('Please wait for `isReady` before fetching this property');
 
@@ -56,7 +55,7 @@ let keyringInitialized = false;
 
 const l = logger('ui-common');
 
-const api = new ApiRx({ provider: new WsProvider(wsUrl) });
+const api = new ApiRx({ provider: new WsProvider(WS_URL) });
 
 export function ContextGate (props: { children: React.ReactNode }) {
   const { children } = props;
@@ -93,14 +92,9 @@ export function ContextGate (props: { children: React.ReactNode }) {
       )
       .subscribe(([chain, health, name, properties, version]) => {
         if (!keyringInitialized) {
-          const addressPrefix = (
-            settings.prefix === -1
-              ? 2 // default to Kusama
-              : settings.prefix
-          ) as Prefix;
           // keyring with Schnorrkel support
           keyring.loadAll({
-            addressPrefix,
+            ss58Format: properties.ss58Format.unwrapOr(new u8(SS58_PREFIX)).toNumber(),
             genesisHash: api.genesisHash,
             isDevelopment: isTestChain(chain.toString()),
             type: 'ed25519'
@@ -114,7 +108,7 @@ export function ContextGate (props: { children: React.ReactNode }) {
           return;
         }
 
-        l.log(`Api connected to ${wsUrl}`);
+        l.log(`Api connected to ${WS_URL}`);
         l.log(`Api ready, connected to chain "${chain}" with properties ${JSON.stringify(properties)}`);
 
         setState({

@@ -2,6 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { Balance } from '@polkadot/types/interfaces';
 import accounts from '@polkadot/ui-keyring/observable/accounts';
 import { Bond } from '@substrate/accounts-app';
 import { AppContext } from '@substrate/ui-common';
@@ -9,7 +10,6 @@ import { FadedText, Header, Icon, Message, Modal, Stacked, substrateLightTheme }
 import BN from 'bn.js';
 import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { Observable, Subscription } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
 interface Props extends RouteComponentProps { }
@@ -21,7 +21,7 @@ export function BondingSetup (props: Props) {
   const [stashNoBalance, setStashNoBalance] = useState<boolean>(true);
 
   useEffect(() => {
-    const accountsSub: Subscription = accounts.subject.pipe(map(Object.values)).subscribe(values => {
+    const accountsSub = accounts.subject.pipe(map(Object.values)).subscribe(values => {
       const _controller = values.filter(value => value.json.meta.tags && value.json.meta.tags.includes('controller'))[0];
       const _stash = values.filter(value => value.json.meta.tags && value.json.meta.tags.includes('stash'))[0];
 
@@ -37,7 +37,7 @@ export function BondingSetup (props: Props) {
       return;
     }
 
-    const stashBalSub: Subscription = (api.query.balances.freeBalance(stash.json.address) as Observable<any>)
+    const stashBalSub = api.query.balances.freeBalance<Balance>(stash.json.address)
       .pipe(
         take(1)
       ).subscribe((balance: BN) => {
@@ -83,15 +83,15 @@ export function BondingSetup (props: Props) {
 
   return (
     <Modal.Content>
-    {
-      !stash
-        ? renderStashNotFound()
-        : !controller
-          ? renderControllerNotFound()
+      {
+        !stash
+          ? renderStashNotFound()
+          : !controller
+            ? renderControllerNotFound()
             : stashNoBalance
               ? renderStashNoBalance()
               : <Bond controller={controller.json.address} stash={stash.json.address} {...props} />
-    }
+      }
     </Modal.Content>
   );
 }

@@ -10,7 +10,7 @@ import { WalletCard } from '@substrate/ui-components';
 import { findFirst, flatten } from 'fp-ts/lib/Array';
 import React, { useContext, useEffect, useState } from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { SendBalance } from './SendBalance';
@@ -28,8 +28,8 @@ export function Transfer (props: Props) {
   const [allAddresses, setAllAddresses] = useState<SingleAddress[]>([]);
   useEffect(() => {
     const allAddressessub = combineLatest([
-      accountObservable.subject.pipe(map(Object.values)) as Observable<SingleAddress[]>,
-      addressObservable.subject.pipe(map(Object.values)) as Observable<SingleAddress[]>
+      accountObservable.subject.pipe(map(Object.values)),
+      addressObservable.subject.pipe(map(Object.values))
     ])
       .pipe(map(flatten))
       .subscribe(setAllAddresses);

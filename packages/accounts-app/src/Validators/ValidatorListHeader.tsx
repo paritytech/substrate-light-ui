@@ -8,7 +8,6 @@ import { DerivedSessionInfo } from '@polkadot/api-derive/types';
 import H from 'history';
 import { fromNullable } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
-import { Observable, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import Card from 'semantic-ui-react/dist/commonjs/views/Card';
 import Loader from 'semantic-ui-react/dist/commonjs/elements/Loader/Loader';
@@ -28,7 +27,7 @@ export function ValidatorListHeader (props: Props) {
 
   useEffect(() => {
     // TODO p3: maybe even move this to a Session Context
-    const subscription: Subscription = (api.derive.session.info() as Observable<DerivedSessionInfo>)
+    const subscription = api.derive.session.info<DerivedSessionInfo>()
       .pipe(take(1))
       .subscribe(setSessionInfo);
 
@@ -96,7 +95,7 @@ export function ValidatorListHeader (props: Props) {
             <StackedHorizontal>
               {nomineesList.map(nomineeId => <FlexItem><AddressSummary address={nomineeId} noBalance noPlaceholderName size='small' /></FlexItem>)}
             </StackedHorizontal>
-            { nomineesList.length ? <ConfirmNominationDialog history={history} nominees={[...nominees]} /> : <FadedText>You have not yet added any Validators to your Nominees list. You can browse Validators to add from the table below.</FadedText>}
+            {nomineesList.length ? <ConfirmNominationDialog history={history} nominees={[...nominees]} /> : <FadedText>You have not yet added any Validators to your Nominees list. You can browse Validators to add from the table below.</FadedText>}
           </Card.Content>
         </Card>
       </WithSpace>

@@ -7,17 +7,15 @@ import { Option } from '@polkadot/types';
 import { AppContext } from '@substrate/ui-common';
 import { FadedText, Header, Stacked, Table } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';
-import { Observable } from 'rxjs';
 
 import { ReferendumRow } from './ReferendumRow';
-interface IProps { }
 
-export function Referenda (props: IProps) {
+export function Referenda () {
   const { api } = useContext(AppContext);
   const [referenda, setReferenda] = useState();
 
   useEffect(() => {
-    const subscription = (api.derive.democracy.referendums() as unknown as Observable<Array<Option<ReferendumInfoExtended>>>)
+    const subscription = api.derive.democracy.referendums<Option<ReferendumInfoExtended>[]>()
       .subscribe((referenda) => {
         setReferenda(referenda);
       });
@@ -41,7 +39,7 @@ export function Referenda (props: IProps) {
 
         return (
           referendum
-            && <ReferendumRow idNumber={referendum.index} key={referendum.index.toString()} referendum={referendum}/>
+          && <ReferendumRow idNumber={referendum.index} key={referendum.index.toString()} referendum={referendum} />
         );
       })
     );

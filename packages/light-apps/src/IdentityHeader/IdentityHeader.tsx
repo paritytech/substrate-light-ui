@@ -2,10 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import uiSettings from '@polkadot/ui-settings';
-import { AlertsContext } from '@substrate/ui-common';
-import { Balance, CopyButton, Dropdown, DropdownProps, FadedText, Icon, Margin, Menu, NavLink, StackedHorizontal, SubHeader } from '@substrate/ui-components';
-import React, { useContext } from 'react';
+import { Balance, CopyButton, Dropdown, FadedText, Icon, Margin, Menu, NavLink, StackedHorizontal, SubHeader } from '@substrate/ui-components';
+import React from 'react';
 import Joyride from 'react-joyride';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 
@@ -15,48 +13,14 @@ import { InputAddress } from './IdentityHeader.styles';
 import { Rename } from './Rename';
 import { tutorialSteps } from '../constants';
 
-const KEY_PREFIX = '__dropdown_option_';
-
 interface MatchParams {
   currentAccount: string;
 }
 
 interface Props extends RouteComponentProps<MatchParams> { }
 
-const nodeOptions: Array<any> = [];
-const prefixOptions: Array<any> = [];
-
-uiSettings.availableNodes.forEach(availNode => {
-  nodeOptions.push({
-    key: `${KEY_PREFIX}${availNode.value}`,
-    value: availNode.value,
-    text: availNode.text
-  });
-});
-
-uiSettings.availablePrefixes.forEach(prefix => {
-  prefixOptions.push({
-    key: `${KEY_PREFIX}${prefix.value}`,
-    value: prefix.value,
-    text: prefix.text
-  });
-});
-
-const isValidUrl = (apiUrl: string): boolean => {
-  return (
-    (apiUrl.length > 5) &&
-    // check that it starts with a valid ws identifier
-    (apiUrl.startsWith('ws://') || apiUrl.startsWith('wss://'))
-  );
-};
-
-const urlChanged = (selectedUrl: string): boolean => {
-  return uiSettings.get().apiUrl !== selectedUrl;
-};
-
 export function IdentityHeader (props: Props) {
   const { history, location, match: { params: { currentAccount } } } = props;
-  const { enqueue } = useContext(AlertsContext);
 
   const currentPath = location.pathname.split('/')[1];
 
@@ -121,29 +85,6 @@ export function IdentityHeader (props: Props) {
     );
   };
 
-  const onSelectNode = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
-    const wsUrl = data.value as string;
-
-    if (isValidUrl(wsUrl) && urlChanged(wsUrl)) {
-      uiSettings.set({ apiUrl: wsUrl });
-
-      window.location.reload();
-    } else {
-      enqueue({
-        content: 'The Websocket endpoint you selected is invalid.',
-        type: 'error'
-      });
-    }
-  };
-
-  const onSelectPrefix = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
-    const prefix = data.value as number;
-
-    uiSettings.set({ prefix });
-
-    window.location.reload();
-  };
-
   const renderSecondaryMenu = () => {
     const navToAccounts = () => {
       history.push(`/manageAccounts/${currentAccount}`);
@@ -184,8 +125,6 @@ export function IdentityHeader (props: Props) {
             <Margin left='small' />
             <Icon color='black' name='address book' />
           </Menu.Item>
-          <Dropdown icon='setting' item onChange={onSelectNode} options={nodeOptions} position='right' pointing selection text='Select a Node' />
-          <Dropdown icon='' item onChange={onSelectPrefix} options={prefixOptions} position='right' pointing selection text='Select Prefix' />
         </Menu>
       </StackedHorizontal>
     );

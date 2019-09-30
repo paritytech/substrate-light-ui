@@ -4,23 +4,22 @@
 
 import { AppContext } from '@substrate/ui-common';
 import { FadedText, Header, Stacked, Table } from '@substrate/ui-components';
-import { Tuple, Vec } from '@polkadot/types';
-import { PropIndex, Proposal } from '@polkadot/types/interfaces';
+import { Vec } from '@polkadot/types';
+import { ITuple } from '@polkadot/types/types';
+import { AccountId, PropIndex, Proposal } from '@polkadot/types/interfaces';
 import React, { useContext, useEffect, useState } from 'react';
-import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { ProposalRow } from './ProposalRow';
-interface IProps {}
 
-export function Proposals (props: IProps) {
+export function Proposals () {
   const { api } = useContext(AppContext);
   const [publicProposals, setProposals] = useState();
 
   useEffect(() => {
     // FIXME Tuple doesn't take generic types
     // More accurate type is Vector<(PropIndex, Proposal, AccountId)>
-    const subscription = (api.query.democracy.publicProps() as unknown as Observable<Vec<Tuple>>)
+    const subscription = api.query.democracy.publicProps<Vec<ITuple<[PropIndex, Proposal, AccountId]>>>()
       .pipe(
         take(1)
       )
@@ -30,12 +29,7 @@ export function Proposals (props: IProps) {
     return () => subscription.unsubscribe();
   });
 
-  // FIXME: More accurate type is Vector<(PropIndex, Proposal, AccountId)>
-  const renderProposalRow = (_proposal: any) => {
-    const propIndex: PropIndex = _proposal[0];
-    const proposal: Proposal = _proposal[1];
-    const proposer = _proposal[2];
-
+  const renderProposalRow = ([propIndex, proposal, proposer]: ITuple<[PropIndex, Proposal, AccountId]>) => {
     return (
       <ProposalRow
         key={propIndex.toString()}
@@ -59,7 +53,7 @@ export function Proposals (props: IProps) {
   const renderProposalsTable = () => {
     // FIXME More accurate type is Vector<(PropIndex, Proposal, AccountId)>
     return (
-      publicProposals.map((proposal: Vec<any>) => {
+      publicProposals.map((proposal: ITuple<[PropIndex, Proposal, AccountId]>) => {
         return renderProposalRow(proposal);
       })
     );
@@ -85,13 +79,13 @@ export function Proposals (props: IProps) {
     <Stacked alignItems='flex-start'>
       <Header margin='small'> Public Proposals </Header>
       <Table striped>
-        { renderProposalsTableHeaderRow() }
+        {renderProposalsTableHeaderRow()}
         <Table.Body>
-        {
-          publicProposals && publicProposals[0]
-            ? renderProposalsTable()
-            : renderEmptyTable()
-        }
+          {
+            publicProposals && publicProposals[0]
+              ? renderProposalsTable()
+              : renderEmptyTable()
+          }
         </Table.Body>
       </Table>
     </Stacked>

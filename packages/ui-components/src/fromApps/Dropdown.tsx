@@ -42,7 +42,7 @@ export default class Dropdown<Option> extends React.PureComponent<Props<Option>>
   // Trigger the update on mount - ensuring that the onChange (as described below)
   // is trigerred.
   public componentDidMount (): void {
-    this.componentDidUpdate({} as unknown as Props<Option>);
+    this.componentDidUpdate({} as Props<Option>);
   }
 
   // Here we update the component user with the initial value of the dropdown. In a number of

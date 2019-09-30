@@ -5,7 +5,7 @@
 import { DerivedBalances, DerivedStaking } from '@polkadot/api-derive/types';
 import { AppContext } from '@substrate/ui-common';
 import React, { useContext, useEffect, useState } from 'react';
-import { combineLatest, Observable, of, Subscription } from 'rxjs';
+import { combineLatest, of } from 'rxjs';
 
 import { BalanceDisplay, BalanceDisplayProps } from '../BalanceDisplay';
 
@@ -21,9 +21,9 @@ export function Balance (props: BalanceProps) {
   const [allStaking, setAllStaking] = useState();
 
   useEffect(() => {
-    let balanceSub: Subscription = combineLatest([
-      (api.derive.balances.all(address) as Observable<DerivedBalances>),
-      (api.derive.staking.info(address) as Observable<DerivedStaking>)
+    let balanceSub = combineLatest([
+      api.derive.balances.all<DerivedBalances>(address),
+      api.derive.staking.info<DerivedStaking>(address)
     ]).subscribe(([allBalances, allStaking]) => {
       setAllBalances(allBalances);
       setAllStaking(allStaking);

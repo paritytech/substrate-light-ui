@@ -2,15 +2,16 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Option, Tuple } from '@polkadot/types';
-import { AccountId, Index, PropIndex, Proposal } from '@polkadot/types/interfaces';
+import { DerivedFees, DerivedBalances } from '@polkadot/api-derive/types';
+import { Vec } from '@polkadot/types/codec';
+import { AccountId, BalanceOf, Index, PropIndex, Proposal } from '@polkadot/types/interfaces';
+import { ITuple } from '@polkadot/types/types';
 import { AppContext, TxQueueContext, validateDerived } from '@substrate/ui-common';
 import { AddressSummary, Dropdown, FadedText, StackedHorizontal, StyledNavButton, SubHeader, Table } from '@substrate/ui-components';
 import BN from 'bn.js';
 import React, { useEffect, useContext, useState } from 'react';
-import { Observable, Subscription, combineLatest } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { DerivedFees, DerivedBalances } from '@polkadot/api-derive/types';
 
 interface IProps {
   key: string;
@@ -18,6 +19,7 @@ interface IProps {
   proposal: Proposal;
   proposer: AccountId;
 }
+
 export function ProposalRow (props: IProps) {
   const { propIndex, proposal, proposer } = props;
   const { api, keyring } = useContext(AppContext);
@@ -32,26 +34,22 @@ export function ProposalRow (props: IProps) {
   const currentAccount = location.pathname.split('/')[2];
 
   useEffect(() => {
-    const subscription: Subscription = combineLatest([
-      (api.query.democracy.depositOf(propIndex) as Observable<Option<Tuple>>),
-      (api.derive.balances.fees() as Observable<DerivedFees>),
-      (api.query.system.accountNonce(currentAccount) as Observable<Index>),
-      (api.derive.balances.votingBalance(currentAccount) as Observable<DerivedBalances>)
+    const subscription = combineLatest([
+      api.query.democracy.depositOf<ITuple<[BalanceOf, Vec<AccountId>]>>(propIndex),
+      api.derive.balances.fees<DerivedFees>(),
+      api.query.system.accountNonce<Index>(currentAccount),
+      api.derive.balances.votingBalance<DerivedBalances>(currentAccount)
     ])
-    .pipe(
-      take(1)
-    )
-    .subscribe(([deposit, fees, nonce, votingBalance]) => {
-      // @type deposit: Option<(BalanceOf,Vec<AccountId>)>
-      let d = deposit.unwrapOr(null);
-      if (d) {
-        setDepositedBalance(d[0].toString());
-        setDepositorAccountIds(d[1]);
-      }
-      setCurrentNonce(nonce);
-      setFees(fees);
-      setVotingBalance(votingBalance);
-    });
+      .pipe(
+        take(1)
+      )
+      .subscribe(([deposit, fees, nonce, votingBalance]) => {
+        setDepositedBalance(deposit[0].toString());
+        setDepositorAccountIds(deposit[1]);
+        setCurrentNonce(nonce);
+        setFees(fees);
+        setVotingBalance(votingBalance);
+      });
     return () => subscription.unsubscribe();
   });
 

@@ -7,7 +7,6 @@ import { SingleAddress } from '@polkadot/ui-keyring/observable/types';
 import { Grid } from '@substrate/ui-components';
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { AccountsOverviewCard } from './AccountsOverviewCard';
@@ -20,7 +19,7 @@ export function AccountsOverview (props: IProps) {
 
   useEffect(() => {
     const accountsSub =
-      (accountObservable.subject.pipe(map(Object.values)) as Observable<SingleAddress[]>)
+      accountObservable.subject.pipe(map(Object.values))
         .subscribe(setAllUnlocked);
 
     return () => accountsSub.unsubscribe();
@@ -28,15 +27,15 @@ export function AccountsOverview (props: IProps) {
 
   return (
     <Grid columns={16}>
-       {
-          allUnlockedAccounts.map((account) => {
-            return (
-              <Grid.Column key={account.json.address} stretched width='4'>
-                <AccountsOverviewCard address={account.json.address} name={account.json.meta.name} history={history} />
-              </Grid.Column>
-            );
-          })
-       }
+      {
+        allUnlockedAccounts.map((account) => {
+          return (
+            <Grid.Column key={account.json.address} stretched width='4'>
+              <AccountsOverviewCard address={account.json.address} name={account.json.meta.name} history={history} />
+            </Grid.Column>
+          );
+        })
+      }
     </Grid>
   );
 }
