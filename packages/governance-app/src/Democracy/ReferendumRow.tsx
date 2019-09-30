@@ -46,7 +46,7 @@ const votesReducer = (state: any, action: any) => {
   }
 };
 
-export function ReferendumRow(props: IProps) {
+export function ReferendumRow (props: IProps) {
   const { idNumber, referendum } = props;
   const { api, keyring } = useContext(AppContext);
   const { enqueue } = useContext(TxQueueContext);
