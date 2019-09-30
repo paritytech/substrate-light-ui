@@ -2,14 +2,14 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { u32 } from '@polkadot/types';
 import { AccountId } from '@polkadot/types/interfaces';
 import { FadedText, FlexItem, Stacked, Table, WrapperDiv } from '@substrate/ui-components';
 import { AlertsContext, AppContext } from '@substrate/ui-common';
-import BN from 'bn.js';
 import { fromNullable } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { combineLatest, Observable, Subscription } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import Loader from 'semantic-ui-react/dist/commonjs/elements/Loader/Loader';
 
@@ -20,25 +20,25 @@ interface MatchParams {
   currentAccount: string;
 }
 
-interface Props extends RouteComponentProps<MatchParams> {}
+interface Props extends RouteComponentProps<MatchParams> { }
 
 export function ValidatorsList (props: Props) {
   const { enqueue: alert } = useContext(AlertsContext);
   const { api } = useContext(AppContext);
   const [currentValidatorsControllersV1OrStashesV2, setCurrentValidatorsControllersV1OrStashesV2] = useState<AccountId[]>([]);
   const [nominees, setNominees] = useState<Set<string>>(new Set());
-  const [validatorCount, setValidatorCount] = useState<BN>(new BN(0));
+  const [validatorCount, setValidatorCount] = useState<u32>(new u32(0));
 
   useEffect(() => {
     const subscription: Subscription = combineLatest([
-      (api.query.session.validators() as unknown as Observable<AccountId[]>),
-      (api.query.staking.validatorCount() as unknown as Observable<BN>)
+      api.query.session.validators<AccountId[]>(),
+      api.query.staking.validatorCount<u32>()
     ])
-    .pipe(take(1))
-    .subscribe(([validators, validatorCount]) => {
-      setCurrentValidatorsControllersV1OrStashesV2(validators);
-      setValidatorCount(validatorCount);
-    });
+      .pipe(take(1))
+      .subscribe(([validators, validatorCount]) => {
+        setCurrentValidatorsControllersV1OrStashesV2(validators);
+        setValidatorCount(validatorCount);
+      });
 
     return () => subscription.unsubscribe();
   }, []);
@@ -103,7 +103,7 @@ export function ValidatorsList (props: Props) {
               {renderContent()}
             </Table>
           )
-        : <FlexItem><FadedText>Loading current validator set... <Loader inline active /></FadedText></FlexItem>
+          : <FlexItem><FadedText>Loading current validator set... <Loader inline active /></FadedText></FlexItem>
       }
     </Stacked>
   );

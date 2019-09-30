@@ -8,7 +8,7 @@ import { AppContext, handler, TxQueueContext, validate, AllExtrinsicData } from 
 import { Balance, Form, Input, NavButton, StackedHorizontal, SubHeader } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { Observable, zip } from 'rxjs';
+import { zip } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { CenterDiv, InputAddress, LeftDiv, RightDiv } from '../Transfer.styles';
@@ -51,10 +51,10 @@ export function SendBalance (props: Props) {
     }
 
     const subscription = zip(
-      api.derive.balances.fees() as unknown as Observable<DerivedFees>,
-      api.derive.balances.votingBalance(currentAccount) as unknown as Observable<DerivedBalances>,
-      api.derive.balances.votingBalance(recipientAddress) as unknown as Observable<DerivedBalances>,
-      api.query.system.accountNonce(currentAccount) as unknown as Observable<Index>
+      api.derive.balances.fees<DerivedFees>(),
+      api.derive.balances.votingBalance<DerivedBalances>(currentAccount),
+      api.derive.balances.votingBalance<DerivedBalances>(recipientAddress),
+      api.query.system.accountNonce<Index>(currentAccount)
     )
       .pipe(
         take(1)
