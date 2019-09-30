@@ -3,6 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { ApiRx, WsProvider } from '@polkadot/api';
+import { u8 } from '@polkadot/types/primitive';
 import keyring from '@polkadot/ui-keyring';
 import { logger } from '@polkadot/util';
 import React, { useState, useEffect } from 'react';
@@ -41,8 +42,8 @@ const DISCONNECTED_STATE_PROPERTIES = {
   }
 };
 
-// Default to Kusama
-const WS_URL = 'wss://canary-5.kusama.network/'; // FIXME Change to localhost when light client ready
+// Hardcode default to Kusama
+const WS_URL = 'wss://kusama-rpc.polkadot.io/'; // FIXME Change to localhost when light client ready
 const PREFIX = 2;
 
 const INIT_ERROR = new Error('Please wait for `isReady` before fetching this property');
@@ -90,7 +91,7 @@ export function ContextGate (props: { children: React.ReactNode }) {
         if (!keyringInitialized) {
           // keyring with Schnorrkel support
           keyring.loadAll({
-            addressPrefix: PREFIX,
+            addressPrefix: properties.ss58Format.unwrapOr(new u8(PREFIX)).toNumber(),
             genesisHash: api.genesisHash,
             isDevelopment: isTestChain(chain.toString()),
             type: 'ed25519'
