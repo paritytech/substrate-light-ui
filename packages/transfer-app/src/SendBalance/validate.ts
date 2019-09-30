@@ -5,7 +5,7 @@
 import ApiRx from '@polkadot/api/rx';
 import { SubmittableExtrinsic } from '@polkadot/api/submittable/types';
 import { getTypeRegistry } from '@polkadot/types';
-import { MAX_SIZE_BYTES, MAX_SIZE_MB } from '@polkadot/ui-signer/Checks/constants';
+import { MAX_SIZE_BYTES, MAX_SIZE_MB } from '@polkadot/react-signer/Checks/constants';
 import { compactToU8a } from '@polkadot/util';
 import BN from 'bn.js';
 import { Either, left, right } from 'fp-ts/lib/Either';

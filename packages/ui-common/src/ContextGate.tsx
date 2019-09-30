@@ -4,18 +4,16 @@
 
 import { ApiRx, WsProvider } from '@polkadot/api';
 import keyring from '@polkadot/ui-keyring';
-import settings from '@polkadot/ui-settings';
 import { logger } from '@polkadot/util';
 import React, { useState, useEffect } from 'react';
 import { combineLatest } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
 
-import { AppContext, System } from './AppContext';
-import { isTestChain } from './util';
 import { AlertsContextProvider } from './AlertsContext';
+import { AppContext, System } from './AppContext';
 import { StakingContextProvider } from './StakingContext';
 import { TxQueueContextProvider } from './TxQueueContext';
-import { Prefix } from '@polkadot/util-crypto/address/types';
+import { isTestChain } from './util';
 
 interface State {
   isReady: boolean;
@@ -44,11 +42,8 @@ const DISCONNECTED_STATE_PROPERTIES = {
 };
 
 // Default to Kusama
-settings.set({
-  apiUrl: 'wss://canary-5.kusama.network/'
-});
-
-const wsUrl = settings.apiUrl;
+const WS_URL = 'wss://canary-5.kusama.network/'; // FIXME Change to localhost when light client ready
+const PREFIX = 2;
 
 const INIT_ERROR = new Error('Please wait for `isReady` before fetching this property');
 
@@ -56,7 +51,7 @@ let keyringInitialized = false;
 
 const l = logger('ui-common');
 
-const api = new ApiRx({ provider: new WsProvider(wsUrl) });
+const api = new ApiRx({ provider: new WsProvider(WS_URL) });
 
 export function ContextGate (props: { children: React.ReactNode }) {
   const { children } = props;
@@ -93,14 +88,9 @@ export function ContextGate (props: { children: React.ReactNode }) {
       )
       .subscribe(([chain, health, name, properties, version]) => {
         if (!keyringInitialized) {
-          const addressPrefix = (
-            settings.prefix === -1
-              ? 2 // default to Kusama
-              : settings.prefix
-          ) as Prefix;
           // keyring with Schnorrkel support
           keyring.loadAll({
-            addressPrefix,
+            addressPrefix: PREFIX,
             genesisHash: api.genesisHash,
             isDevelopment: isTestChain(chain.toString()),
             type: 'ed25519'
@@ -114,7 +104,7 @@ export function ContextGate (props: { children: React.ReactNode }) {
           return;
         }
 
-        l.log(`Api connected to ${wsUrl}`);
+        l.log(`Api connected to ${WS_URL}`);
         l.log(`Api ready, connected to chain "${chain}" with properties ${JSON.stringify(properties)}`);
 
         setState({
