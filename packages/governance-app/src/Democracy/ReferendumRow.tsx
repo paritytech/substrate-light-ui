@@ -3,13 +3,12 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { DerivedReferendumVote, DerivedFees, DerivedBalances } from '@polkadot/api-derive/types';
-import { u64 } from '@polkadot/types';
-import { BlockNumber } from '@polkadot/types/interfaces';
+import { Index } from '@polkadot/types/interfaces';
 import { AppContext, TxQueueContext, validateDerived } from '@substrate/ui-common';
 import { FadedText, Margin, Stacked, SubHeader, Table, VoteNayButton, VoteYayButton, YayNay } from '@substrate/ui-components';
 import BN from 'bn.js';
 import React, { useEffect, useContext, useReducer, useState } from 'react';
-import { Observable, combineLatest } from 'rxjs';
+import { combineLatest } from 'rxjs';
 
 interface IProps {
   idNumber: any;
@@ -47,7 +46,7 @@ const votesReducer = (state: any, action: any) => {
   }
 };
 
-export function ReferendumRow (props: IProps) {
+export function ReferendumRow(props: IProps) {
   const { idNumber, referendum } = props;
   const { api, keyring } = useContext(AppContext);
   const { enqueue } = useContext(TxQueueContext);
@@ -70,19 +69,19 @@ export function ReferendumRow (props: IProps) {
 
   useEffect(() => {
     const subscription = combineLatest([
-      (api.derive.chain.bestNumber() as unknown as Observable<BlockNumber>),
-      (api.derive.balances.fees() as Observable<DerivedFees>),
-      (api.query.system.accountNonce(currentAccount) as Observable<u64>),
-      (api.derive.democracy.referendumVotesFor(idNumber) as unknown as Observable<Array<DerivedReferendumVote>>),
-      (api.derive.balances.votingBalance(currentAccount) as Observable<DerivedBalances>)
+      api.derive.chain.bestNumber(),
+      api.derive.balances.fees<DerivedFees>(),
+      api.query.system.accountNonce<Index>(currentAccount),
+      api.derive.democracy.referendumVotesFor<DerivedReferendumVote[]>(idNumber),
+      api.derive.balances.votingBalance<DerivedBalances>(currentAccount)
     ])
-    .subscribe(([latestBlockNumber, fees, nonce, votesForRef, votingBalance]) => {
-      setLatestBlockNumber(latestBlockNumber);
-      setFees(fees);
-      setNonce(nonce);
-      setVotesFor(votesForRef);
-      setVotingBalance(votingBalance);
-    });
+      .subscribe(([latestBlockNumber, fees, nonce, votesForRef, votingBalance]) => {
+        setLatestBlockNumber(latestBlockNumber);
+        setFees(fees);
+        setNonce(nonce);
+        setVotesFor(votesForRef);
+        setVotingBalance(votingBalance);
+      });
 
     return () => subscription.unsubscribe();
   }, []);
