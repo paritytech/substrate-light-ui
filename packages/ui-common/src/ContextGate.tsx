@@ -94,7 +94,7 @@ export function ContextGate (props: { children: React.ReactNode }) {
         if (!keyringInitialized) {
           // keyring with Schnorrkel support
           keyring.loadAll({
-            addressPrefix: properties.ss58Format.unwrapOr(new u8(SS58_PREFIX)).toNumber(),
+            ss58Format: properties.ss58Format.unwrapOr(new u8(SS58_PREFIX)).toNumber(),
             genesisHash: api.genesisHash,
             isDevelopment: isTestChain(chain.toString()),
             type: 'ed25519'
