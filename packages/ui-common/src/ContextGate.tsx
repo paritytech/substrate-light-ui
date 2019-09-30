@@ -44,7 +44,10 @@ const DISCONNECTED_STATE_PROPERTIES = {
 
 // Hardcode default to Kusama
 const WS_URL = 'wss://kusama-rpc.polkadot.io/'; // FIXME Change to localhost when light client ready
-const PREFIX = 2;
+
+// Most chains (including Kusama) put the ss58 prefix in the chain properties.
+// Just in case, we default to 42
+const SS58_PREFIX = 42;
 
 const INIT_ERROR = new Error('Please wait for `isReady` before fetching this property');
 
@@ -91,7 +94,7 @@ export function ContextGate (props: { children: React.ReactNode }) {
         if (!keyringInitialized) {
           // keyring with Schnorrkel support
           keyring.loadAll({
-            addressPrefix: properties.ss58Format.unwrapOr(new u8(PREFIX)).toNumber(),
+            addressPrefix: properties.ss58Format.unwrapOr(new u8(SS58_PREFIX)).toNumber(),
             genesisHash: api.genesisHash,
             isDevelopment: isTestChain(chain.toString()),
             type: 'ed25519'
