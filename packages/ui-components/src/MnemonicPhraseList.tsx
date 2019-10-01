@@ -36,7 +36,7 @@ export function MnemonicPhraseList (props: Props) {
           })
         }
         </ol>
-        <ol start={phrase.length / 2}>
+        <ol start={phrase.length / 2 + 1}>
         {
           secondHalf.map((word: string) => {
             return (

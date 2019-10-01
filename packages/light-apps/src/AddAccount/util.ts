@@ -7,6 +7,32 @@ import { mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
 import { Either, left, right } from 'fp-ts/lib/Either';
 
 import { UserInput, UserInputError, PhrasePartialRewrite, PhrasePartialRewriteError } from './types';
+
+/**
+ * Fischer Yates shuffle numbers between 0 and @max
+ * @param max highest number the random number should be
+ */
+export function getRandomInts (max: number) {
+  let temp;
+  let j = 0;
+
+  let scratch = [];
+
+  // populate with the range of possible numbers
+  for (let i = 1; i <= max; i++) {
+    scratch.push(i);
+  }
+
+  for (let i = max; i > 0; i -= 1) {
+    j = Math.floor(Math.random() * Math.floor((i + 1)));
+    temp = scratch[i];
+    scratch[i] = scratch[j];
+    scratch[j] = temp;
+  }
+
+  return scratch;
+}
+
 /**
  * Derive public address from mnemonic key
  */
@@ -25,7 +51,7 @@ export function validateMeta (values: UserInput, step: string): Either<UserInput
   const errors = {} as UserInputError;
 
   if (step === 'meta') {
-    (['name', 'password', 'rewritePhrase'] as (Exclude<keyof UserInput, 'tags'>)[])
+    (['name', 'password'] as (Exclude<keyof UserInput, 'tags'>)[])
     .filter((key) => !values[key])
     .forEach((key) => {
       errors[key] = `Field "${key}" cannot be empty`;
@@ -40,11 +66,16 @@ export function validateMeta (values: UserInput, step: string): Either<UserInput
     errors.tags = 'Each account should be either a Stash or a Controller, not both.';
   }
 
+  // if creating stash tag should be stash
+
   console.log('errors => ', errors);
 
   return Object.keys(errors).length ? left(errors) : right(values);
 }
 
+/**
+ * Validate phrase rewrite
+ */
 export function validateRewrite (values: PhrasePartialRewrite, randomFourWords: Array<Array<string>>): Either<PhrasePartialRewriteError, PhrasePartialRewrite> {
   let errors = {} as PhrasePartialRewriteError;
 
@@ -53,6 +84,8 @@ export function validateRewrite (values: PhrasePartialRewrite, randomFourWords: 
   if (!firstWord || !secondWord || !thirdWord || !fourthWord) {
     errors.emptyFields = 'All fields must be set to be sure you copied the phrase correctly.';
   }
+
+  debugger;
 
   if (
       firstWord === randomFourWords[0][1]

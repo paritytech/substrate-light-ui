@@ -4,14 +4,14 @@
 
 import { mnemonicGenerate } from '@polkadot/util-crypto';
 import { AppContext, handler } from '@substrate/ui-common';
-import { AddressSummary, Dropdown, ErrorText, FadedText, Input, Margin, MnemonicPhraseList, MnemonicRewriteParts, NavButton, SizeType, Stacked, StyledLinkButton, SubHeader, WrapperDiv, WithSpaceAround, StyledNavButton } from '@substrate/ui-components';
+import { AddressSummary, Dropdown, ErrorText, FadedText, Input, Margin, MnemonicPhraseList, MnemonicRewriteParts, NavButton, SizeType, Stacked, StyledLinkButton, SubHeader, WrapperDiv, WithSpaceAround, StyledNavButton, StackedHorizontal } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
 import { none, Option, some } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
 import { Steps, Tags, TagOptions, UserInputError, PhrasePartialRewriteError } from './types';
-import { generateAddressFromMnemonic, validateMeta, validateRewrite } from './util';
+import { generateAddressFromMnemonic, getRandomInts, validateMeta, validateRewrite } from './util';
 
 interface Props extends RouteComponentProps {
   identiconSize?: SizeType;
@@ -42,43 +42,29 @@ export function Create (props: Props) {
   const [randomFourWords, setRandomFourWords] = useState();
 
   useEffect(() => {
-    setRandomFourWords(randomlyPickFour(mnemonic));
+    // pick random four from the mnemonic to make sure user copied it right
+    const randomFour = randomlyPickFour(mnemonic);
+
+    setRandomFourWords(randomFour);
   }, []);
-
-  useEffect(() => {
-    if (!randomFourWords) { return; }
-
-    const validation = validateRewrite({ firstWord, secondWord, thirdWord, fourthWord }, randomFourWords);
-
-    validation.fold(
-      (error) => onError(error),
-      () => { /* do nothing */ }
-    );
-  }, [firstWord, secondWord, thirdWord, fourthWord, randomFourWords]);
 
   const address = generateAddressFromMnemonic(keyring, mnemonic);
   const validation = validateMeta({ name, password, tags }, step);
 
-  function randomlyPickFour (phrase: string) {
+  function randomlyPickFour (phrase: string): Array<Array<string>> {
     const phraseArray = phrase.split(' ');
+    const ceil = phraseArray.length;
 
-    const first = getRandomInt();
-    const second = getRandomInt();
-    const third = getRandomInt();
-    const fourth = getRandomInt();
+    const [first, second, third, fourth] = getRandomInts(ceil);
 
     const randomFour = [
-      [first, phraseArray[first]],
-      [second, phraseArray[second]],
-      [third, phraseArray[third]],
-      [fourth, phraseArray[fourth]]
-    ];
+      [first, phraseArray[first - 1]],
+      [second, phraseArray[second - 1]],
+      [third, phraseArray[third - 1]],
+      [fourth, phraseArray[fourth - 1]]
+    ] as Array<Array<string>>;
 
-    setRandomFourWords(randomFour);
-  }
-
-  function getRandomInt () {
-    return Math.floor(Math.random() * Math.floor(mnemonic.length));
+    return randomFour;
   }
 
   const handleSetFirstWord = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
@@ -123,14 +109,19 @@ export function Create (props: Props) {
   const goToNextStep = () => {
     setErrors(none);
 
-    validation.fold(
-      (err) => onError(err),
-      () => step === 'copy'
-              ? setStep('rewrite')
-              : step === 'rewrite'
-                ? setStep('meta')
-                : setErrors(none)
-    );
+    if (step === 'copy') {
+      validateMeta({ name, password, tags }, step).fold(
+        (err) => onError(err),
+        () => setStep('rewrite')
+      );
+    }
+
+    if (step === 'rewrite') {
+      validateRewrite({ firstWord, secondWord, thirdWord, fourthWord }, randomFourWords).fold(
+        (err) => onError(err),
+        () => setStep('meta')
+      );
+    }
   };
 
   const goToPreviousStep = () => {
@@ -151,7 +142,7 @@ export function Create (props: Props) {
       <AddressSummary address={address} name={name} size={identiconSize} />
       <Margin top />
       {step === 'copy'
-        ? renderCreateStep({ mnemonic }, { goToNextStep })
+        ? renderCopyStep({ mnemonic }, { goToNextStep })
         : step === 'rewrite'
           ? renderRewriteStep({ randomFourWords, firstWord, secondWord, thirdWord, fourthWord }, { handleSetFirstWord, handleSetSecondWord, handleSetThirdWord, handleSetFourthWord, goToPreviousStep, goToNextStep })
           : renderMetaStep({ name, password, tags, tagOptions }, { setName, setPassword, handleAddTag, handleOnChange, createNewAccount, goToPreviousStep })
@@ -217,7 +208,7 @@ function renderMetaStep (
   );
 }
 
-function renderCreateStep (
+function renderCopyStep (
   values: {
     mnemonic: string
   },
@@ -286,11 +277,10 @@ function renderRewriteStep (
         handleSetFourthWord={handleSetFourthWord}
          />
       <WithSpaceAround>
-        <Stacked>
+        <StackedHorizontal>
           <StyledLinkButton onClick={goToPreviousStep}> Back </StyledLinkButton>
-          <Margin top />
           <StyledNavButton onClick={goToNextStep}>Next</StyledNavButton>
-        </Stacked>
+        </StackedHorizontal>
       </WithSpaceAround>
     </Stacked>
   );

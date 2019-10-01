@@ -4,7 +4,7 @@
 
 import React from 'react';
 
-import { Labelled, Input, Stacked, StackedHorizontal, WrapperDiv } from './index';
+import { Input, Labelled, Margin, Stacked, StackedHorizontal, WrapperDiv } from './index';
 
 interface Props {
   firstWord: string;
@@ -32,30 +32,28 @@ export function MnemonicRewriteParts (props: Props) {
   } = props;
 
   return (
-    randomFourWords && (
-      <WrapperDiv margin='0' padding='0'>
+    <WrapperDiv margin='0' padding='0'>
         <StackedHorizontal>
           <Stacked>
-            <Labelled label={randomFourWords[0][0]}>
+            <Labelled label={randomFourWords[0][0]} withLabel>
               <Input onChange={handleSetFirstWord} value={firstWord} />
             </Labelled>
-
-            <Labelled label={randomFourWords[1][0]}>
+            <Margin top />
+            <Labelled label={randomFourWords[1][0]} withLabel>
               <Input onChange={handleSetSecondWord} value={secondWord} />
             </Labelled>
           </Stacked>
 
           <Stacked>
-            <Labelled label={randomFourWords[2][0]}>
+            <Labelled label={randomFourWords[2][0]} withLabel>
               <Input onChange={handleSetThirdWord} value={thirdWord} />
             </Labelled>
-
-            <Labelled label={randomFourWords[3][0]}>
+            <Margin top />
+            <Labelled label={randomFourWords[3][0]} withLabel>
               <Input onChange={handleSetFourthWord} value={fourthWord} />
             </Labelled>
           </Stacked>
         </StackedHorizontal>
       </WrapperDiv>
-    )
   );
 }
