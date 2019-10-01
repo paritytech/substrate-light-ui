@@ -47,8 +47,11 @@ export function generateAddressFromMnemonic (keyring: Keyring, mnemonic: string)
 /**
  * Validate user inputs
  */
-export function validateMeta (values: UserInput, step: string): Either<UserInputError, UserInput> {
+export function validateMeta (values: UserInput, step: string, whichAccount: string): Either<UserInputError, UserInput> {
   const errors = {} as UserInputError;
+
+  // @ts-ignore
+  values.tags = values.tags.map(tag => tag.toLowerCase());
 
   if (step === 'meta') {
     (['name', 'password'] as (Exclude<keyof UserInput, 'tags'>)[])
@@ -56,17 +59,19 @@ export function validateMeta (values: UserInput, step: string): Either<UserInput
     .forEach((key) => {
       errors[key] = `Field "${key}" cannot be empty`;
     });
+    debugger;
+    // if creating stash tag should be stash
+    if (whichAccount === 'stash' && !values.tags.includes('stash')) {
+      errors.tags = `The stash/controller difference is not enforced onchain. To avoid confusion, we require that you tag this account as a "${whichAccount}".`;
+    } else if (whichAccount === 'controller' && !values.tags.includes('controller')) {
+      errors.tags = `The stash/controller difference is not enforced onchain. To avoid confusion, we require that you tag this account as a "${whichAccount}".`;
+      debugger;
+    }
   }
-
-  // @ts-ignore
-  values.tags = values.tags.map(tag => tag.toLowerCase());
-
   // Should not tag an account as both a stash and controller
   if (values.tags.includes('stash') && values.tags.includes('controller')) {
     errors.tags = 'Each account should be either a Stash or a Controller, not both.';
   }
-
-  // if creating stash tag should be stash
 
   console.log('errors => ', errors);
 
@@ -84,8 +89,6 @@ export function validateRewrite (values: PhrasePartialRewrite, randomFourWords: 
   if (!firstWord || !secondWord || !thirdWord || !fourthWord) {
     errors.emptyFields = 'All fields must be set to be sure you copied the phrase correctly.';
   }
-
-  debugger;
 
   if (
       firstWord === randomFourWords[0][1]

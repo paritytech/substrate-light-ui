@@ -18,7 +18,7 @@ interface Props extends RouteComponentProps {
 }
 
 export function Create (props: Props) {
-  const { identiconSize } = props;
+  const { identiconSize, location } = props;
 
   const { keyring } = useContext(AppContext);
 
@@ -40,16 +40,22 @@ export function Create (props: Props) {
   const [fourthWord, setFourthWord] = useState();
 
   const [randomFourWords, setRandomFourWords] = useState();
+  const [whichAccount, setWhichAccount] = useState();
 
   useEffect(() => {
     // pick random four from the mnemonic to make sure user copied it right
     const randomFour = randomlyPickFour(mnemonic);
+    const whichAccount = location.pathname.split('/')[2];
+
+    if (whichAccount === 'stash' || whichAccount === 'controller') {
+      setWhichAccount(whichAccount);
+    }
 
     setRandomFourWords(randomFour);
   }, []);
 
   const address = generateAddressFromMnemonic(keyring, mnemonic);
-  const validation = validateMeta({ name, password, tags }, step);
+  const validation = validateMeta({ name, password, tags }, step, whichAccount);
 
   function randomlyPickFour (phrase: string): Array<Array<string>> {
     const phraseArray = phrase.split(' ');
@@ -110,7 +116,7 @@ export function Create (props: Props) {
     setErrors(none);
 
     if (step === 'copy') {
-      validateMeta({ name, password, tags }, step).fold(
+      validateMeta({ name, password, tags }, step, whichAccount).fold(
         (err) => onError(err),
         () => setStep('rewrite')
       );
@@ -126,7 +132,14 @@ export function Create (props: Props) {
 
   const goToPreviousStep = () => {
     setErrors(none);
-    setStep('copy');
+
+    if (step === 'rewrite') {
+      setStep('copy');
+    }
+
+    if (step === 'meta') {
+      setStep('rewrite');
+    }
   };
 
   const handleOnChange = (event: React.SyntheticEvent, { value }: any) => {
@@ -187,11 +200,10 @@ function renderMetaStep (
           selection
           value={tags} />
         <WithSpaceAround>
-        <Stacked>
+        <StackedHorizontal justifyContent='space-between'>
           <StyledLinkButton onClick={goToPreviousStep}> Back </StyledLinkButton>
-          <Margin top />
-          <NavButton onClick={createNewAccount}> Save </NavButton>
-        </Stacked>
+          <StyledNavButton onClick={createNewAccount}> Save </StyledNavButton>
+        </StackedHorizontal>
       </WithSpaceAround>
       </Stacked>
     );
