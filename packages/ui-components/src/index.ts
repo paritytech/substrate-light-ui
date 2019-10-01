@@ -36,6 +36,7 @@ export * from './Loading';
 export * from './Margin';
 export * from './Menu';
 export * from './MnemonicSegment';
+export * from './MnemonicPhraseList';
 export * from './Modal';
 export * from './NavButton';
 export * from './NavLink';

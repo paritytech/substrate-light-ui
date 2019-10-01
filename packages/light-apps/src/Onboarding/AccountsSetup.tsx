@@ -107,7 +107,7 @@ export function AccountsSetup (props: Props) {
             <FadedText>You've created your first Stash account.</FadedText>
             <WithSpaceAround>
             {
-              keyringAccounts.filter((account: CreateResult) => account.json.meta.tags.includes('stash'))
+              keyringAccounts.filter((account: CreateResult) => account.json.meta.tags && account.json.meta.tags.includes('stash'))
                               .map((account: CreateResult) =>
                                 <AddressSummary address={account.json.address} name={account.json.meta.name} size='small' />
                               )

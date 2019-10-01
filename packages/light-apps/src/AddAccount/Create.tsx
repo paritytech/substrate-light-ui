@@ -4,7 +4,7 @@
 
 import { mnemonicGenerate } from '@polkadot/util-crypto';
 import { AppContext, handler } from '@substrate/ui-common';
-import { AddressSummary, Dropdown, ErrorText, FadedText, Input, Margin, MnemonicSegment, NavButton, SizeType, Stacked, StyledLinkButton, SubHeader, WrapperDiv, WithSpaceAround } from '@substrate/ui-components';
+import { AddressSummary, Dropdown, ErrorText, FadedText, Input, Margin, MnemonicSegment, NavButton, SizeType, Stacked, StyledLinkButton, SubHeader, WrapperDiv, WithSpaceAround, StyledNavButton } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
 import { none, Option, some } from 'fp-ts/lib/Option';
 import React, { useContext, useState } from 'react';
@@ -27,7 +27,7 @@ export function Create (props: Props) {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [rewritePhrase, setRewritePhrase] = useState('');
-  const [step, setStep] = useState<Steps>('create');
+  const [step, setStep] = useState<Steps>('copy');
 
   const [tagOptions, setTagOptions] = useState<TagOptions>([
     { key: '0', text: 'stash', value: 'Stash' },
@@ -36,7 +36,7 @@ export function Create (props: Props) {
   const [tags, setTags] = useState<Tags>([]);
 
   const address = generateAddressFromMnemonic(keyring, mnemonic);
-  const validation = validate({ mnemonic, name, password, rewritePhrase, tags });
+  const validation = validate({ mnemonic, name, password, rewritePhrase, tags }, step);
 
   const createNewAccount = () => {
     validation.fold(
@@ -66,14 +66,18 @@ export function Create (props: Props) {
     setErrors(none);
 
     validation.fold(
-      (err) => (err.name || err.password || err.tags) ? onError(err) : setStep('rewrite'),
-      () => setStep('rewrite')
+      (err) => onError(err),
+      () => step === 'copy'
+              ? setStep('rewrite')
+              : step === 'rewrite'
+                ? setStep('meta')
+                : setErrors(none)
     );
   };
 
   const goToPreviousStep = () => {
     setErrors(none);
-    setStep('create');
+    setStep('copy');
   };
 
   const handleOnChange = (event: React.SyntheticEvent, { value }: any) => {
@@ -88,37 +92,37 @@ export function Create (props: Props) {
     <Stacked>
       <AddressSummary address={address} name={name} size={identiconSize} />
       <Margin top />
-      {step === 'create'
-        ? renderCreateStep({ mnemonic, name, password, tagOptions, tags }, { setMnemonic, setName, setPassword, handleAddTag, handleOnChange }, goToNextStep)
-        : renderRewriteStep({ mnemonic, rewritePhrase }, { setRewritePhrase }, createNewAccount, goToPreviousStep)
+      {step === 'copy'
+        ? renderCreateStep({ mnemonic }, { setMnemonic }, goToNextStep)
+        : step === 'rewrite'
+          ? renderRewriteStep({ mnemonic, rewritePhrase }, { setRewritePhrase, goToPreviousStep, goToNextStep })
+          : renderMetaStep({ name, password, tags, tagOptions }, { setName, setPassword, handleAddTag, handleOnChange, createNewAccount, goToPreviousStep })
       }
       {renderErrors(errors)}
     </Stacked>
   );
 }
 
-function renderCreateStep (
+function renderMetaStep (
   values: {
-    mnemonic: string,
     name: string,
     password: string,
     tags: Tags,
     tagOptions: TagOptions
   },
   setters: {
-    setMnemonic: React.Dispatch<React.SetStateAction<string>>,
     setName: React.Dispatch<React.SetStateAction<string>>,
-    setPassword: React.Dispatch<React.SetStateAction<string>>
-    handleAddTag: (event: React.SyntheticEvent, data: any) => void // FIXME any
-    handleOnChange: (event: React.SyntheticEvent, data: any) => void // FIXME any
-  },
-  goToNextStep: () => void
-) {
-  const { mnemonic, name, password, tagOptions, tags } = values;
-  const { handleAddTag, handleOnChange, setMnemonic, setName, setPassword } = setters;
+    setPassword: React.Dispatch<React.SetStateAction<string>>,
+    handleAddTag: (event: React.SyntheticEvent, data: any) => void, // FIXME any
+    handleOnChange: (event: React.SyntheticEvent, data: any) => void, // FIXME any
+    createNewAccount: () => void,
+    goToPreviousStep: () => void
+  }) {
+  const { name, password, tags, tagOptions } = values;
+  const { handleAddTag, handleOnChange, setName, setPassword } = setters;
+  const { createNewAccount, goToPreviousStep } = setters;
 
   const renderSetTags = () => {
-
     return (
       <Stacked>
         <SubHeader noMargin>Add Tags:</SubHeader>
@@ -133,22 +137,51 @@ function renderCreateStep (
           search
           selection
           value={tags} />
+        <WithSpaceAround>
+        <Stacked>
+          <StyledLinkButton onClick={goToPreviousStep}> Back </StyledLinkButton>
+          <Margin top />
+          <NavButton onClick={createNewAccount}> Save </NavButton>
+        </Stacked>
+      </WithSpaceAround>
       </Stacked>
     );
   };
 
   return (
+    <WrapperDiv margin='0'>
+        {renderSetName(name, setName)}
+        <Margin top='small' />
+        {renderSetPassword(password, setPassword)}
+        <Margin top='small' />
+        {renderSetTags()}
+      </WrapperDiv>
+  );
+}
+
+function renderCreateStep (
+  values: {
+    mnemonic: string
+  },
+  setters: {
+    setMnemonic: React.Dispatch<React.SetStateAction<string>>
+  },
+  goToNextStep: () => void
+) {
+  const { mnemonic } = values;
+  const { setMnemonic } = setters;
+
+  /*
+    3 steps:
+      1 - copy mnemonic
+      2 - rewrite mnemonic
+      3 - meta and password
+  */
+  return (
     <Stacked>
-      <SubHeader> Create from the following mnemonic phrase </SubHeader>
+      <SubHeader> Create from the following mnemonic phrase `</SubHeader>
       <Stacked>
         <MnemonicSegment onClick={() => setMnemonic(mnemonicGenerate())} mnemonic={mnemonic} />
-        <WrapperDiv margin='0'>
-          {renderSetName(name, setName)}
-          <Margin top='small' />
-          {renderSetPassword(password, setPassword)}
-          <Margin top='small' />
-          {renderSetTags()}
-        </WrapperDiv>
       </Stacked>
       <NavButton onClick={goToNextStep}> Next </NavButton>
     </Stacked>
@@ -165,13 +198,14 @@ function renderRewriteStep (
     rewritePhrase: string
   },
   setters: {
-    setRewritePhrase: React.Dispatch<React.SetStateAction<string>>
-  },
-  createNewAccount: () => void,
-  goToPreviousStep: () => void
+    setRewritePhrase: React.Dispatch<React.SetStateAction<string>>,
+    goToPreviousStep: () => void,
+    goToNextStep: () => void
+  }
+
 ) {
   const { rewritePhrase } = values;
-  const { setRewritePhrase } = setters;
+  const { goToNextStep, goToPreviousStep, setRewritePhrase } = setters;
 
   return (
     <Stacked>
@@ -189,7 +223,7 @@ function renderRewriteStep (
         <Stacked>
           <StyledLinkButton onClick={goToPreviousStep}> Back </StyledLinkButton>
           <Margin top />
-          <NavButton onClick={createNewAccount}> Save </NavButton>
+          <StyledNavButton onClick={goToNextStep}>Next</StyledNavButton>
         </Stacked>
       </WithSpaceAround>
     </Stacked>

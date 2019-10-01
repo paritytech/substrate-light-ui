@@ -22,17 +22,21 @@ export function generateAddressFromMnemonic (keyring: Keyring, mnemonic: string)
 /**
  * Validate user inputs
  */
-export function validate (values: UserInput): Either<UserInputError, UserInput> {
+export function validate (values: UserInput, step: string): Either<UserInputError, UserInput> {
   const errors = {} as UserInputError;
 
-  (['name', 'password', 'rewritePhrase'] as (Exclude<keyof UserInput, 'tags'>)[])
+  if (step === 'rewrite') {
+    if (values.mnemonic !== values.rewritePhrase) {
+      errors.rewritePhrase = 'Mnemonic does not match rewrite';
+    }
+  }
+
+  if (step === 'meta') {
+    (['name', 'password', 'rewritePhrase'] as (Exclude<keyof UserInput, 'tags'>)[])
     .filter((key) => !values[key])
     .forEach((key) => {
       errors[key] = `Field "${key}" cannot be empty`;
     });
-
-  if (values.mnemonic !== values.rewritePhrase) {
-    errors.rewritePhrase = 'Mnemonic does not match rewrite';
   }
 
   // @ts-ignore
