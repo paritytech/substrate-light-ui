@@ -4,7 +4,7 @@
 
 import { mnemonicGenerate } from '@polkadot/util-crypto';
 import { AppContext, handler } from '@substrate/ui-common';
-import { AddressSummary, Dropdown, ErrorText, FadedText, Input, Margin, MnemonicSegment, NavButton, SizeType, Stacked, StyledLinkButton, SubHeader, WrapperDiv, WithSpaceAround, StyledNavButton } from '@substrate/ui-components';
+import { AddressSummary, Dropdown, ErrorText, FadedText, Input, Margin, MnemonicPhraseList, NavButton, SizeType, Stacked, StyledLinkButton, SubHeader, WrapperDiv, WithSpaceAround, StyledNavButton } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
 import { none, Option, some } from 'fp-ts/lib/Option';
 import React, { useContext, useState } from 'react';
@@ -23,7 +23,7 @@ export function Create (props: Props) {
   const { keyring } = useContext(AppContext);
 
   const [errors, setErrors] = useState<Option<Array<string>>>(none);
-  const [mnemonic, setMnemonic] = useState(mnemonicGenerate());
+  const [mnemonic] = useState(mnemonicGenerate());
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [rewritePhrase, setRewritePhrase] = useState('');
@@ -93,7 +93,7 @@ export function Create (props: Props) {
       <AddressSummary address={address} name={name} size={identiconSize} />
       <Margin top />
       {step === 'copy'
-        ? renderCreateStep({ mnemonic }, { setMnemonic }, goToNextStep)
+        ? renderCreateStep({ mnemonic }, { goToNextStep })
         : step === 'rewrite'
           ? renderRewriteStep({ mnemonic, rewritePhrase }, { setRewritePhrase, goToPreviousStep, goToNextStep })
           : renderMetaStep({ name, password, tags, tagOptions }, { setName, setPassword, handleAddTag, handleOnChange, createNewAccount, goToPreviousStep })
@@ -164,12 +164,11 @@ function renderCreateStep (
     mnemonic: string
   },
   setters: {
-    setMnemonic: React.Dispatch<React.SetStateAction<string>>
-  },
-  goToNextStep: () => void
+    goToNextStep: () => void
+  }
 ) {
   const { mnemonic } = values;
-  const { setMnemonic } = setters;
+  const { goToNextStep } = setters;
 
   /*
     3 steps:
@@ -179,10 +178,9 @@ function renderCreateStep (
   */
   return (
     <Stacked>
-      <SubHeader> Create from the following mnemonic phrase `</SubHeader>
-      <Stacked>
-        <MnemonicSegment onClick={() => setMnemonic(mnemonicGenerate())} mnemonic={mnemonic} />
-      </Stacked>
+      <SubHeader> Copy the following mnemonic phrase</SubHeader>
+      <FadedText> Your private key will be generated from this phrase. Anyone with access to this phrase can have full control your funds so make sure to keep it a secure and secret. </FadedText>
+      <MnemonicPhraseList phrase={mnemonic} />
       <NavButton onClick={goToNextStep}> Next </NavButton>
     </Stacked>
   );
