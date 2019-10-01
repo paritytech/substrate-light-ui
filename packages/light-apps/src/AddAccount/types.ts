@@ -14,12 +14,21 @@ export type Tags = Array<string>;
 
 export type TagOptions = Array<TagOption>;
 
+export interface PhrasePartialRewrite {
+  firstWord: string; // from rewrite
+  secondWord: string; // from rewrite
+  thirdWord: string; // from rewrite
+  fourthWord: string; // from rewrite
+}
+
 export interface UserInput {
-  mnemonic: string;
   name: string;
   password: string;
-  rewritePhrase: string;
   tags: Tags | string;
 }
 
 export interface UserInputError extends Partial<UserInput> { }
+export interface PhrasePartialRewriteError {
+  emptyFields: string;
+  incorrectFields: string;
+}

@@ -4,14 +4,14 @@
 
 import { mnemonicGenerate } from '@polkadot/util-crypto';
 import { AppContext, handler } from '@substrate/ui-common';
-import { AddressSummary, Dropdown, ErrorText, FadedText, Input, Margin, MnemonicPhraseList, NavButton, SizeType, Stacked, StyledLinkButton, SubHeader, WrapperDiv, WithSpaceAround, StyledNavButton } from '@substrate/ui-components';
+import { AddressSummary, Dropdown, ErrorText, FadedText, Input, Margin, MnemonicPhraseList, MnemonicRewriteParts, NavButton, SizeType, Stacked, StyledLinkButton, SubHeader, WrapperDiv, WithSpaceAround, StyledNavButton } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
 import { none, Option, some } from 'fp-ts/lib/Option';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { Steps, Tags, TagOptions, UserInputError } from './types';
-import { generateAddressFromMnemonic, validate } from './util';
+import { Steps, Tags, TagOptions, UserInputError, PhrasePartialRewriteError } from './types';
+import { generateAddressFromMnemonic, validateMeta, validateRewrite } from './util';
 
 interface Props extends RouteComponentProps {
   identiconSize?: SizeType;
@@ -26,7 +26,6 @@ export function Create (props: Props) {
   const [mnemonic] = useState(mnemonicGenerate());
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
-  const [rewritePhrase, setRewritePhrase] = useState('');
   const [step, setStep] = useState<Steps>('copy');
 
   const [tagOptions, setTagOptions] = useState<TagOptions>([
@@ -35,8 +34,67 @@ export function Create (props: Props) {
   ]);
   const [tags, setTags] = useState<Tags>([]);
 
+  const [firstWord, setFirstWord] = useState();
+  const [secondWord, setSecondWord] = useState();
+  const [thirdWord, setThirdWord] = useState();
+  const [fourthWord, setFourthWord] = useState();
+
+  const [randomFourWords, setRandomFourWords] = useState();
+
+  useEffect(() => {
+    setRandomFourWords(randomlyPickFour(mnemonic));
+  }, []);
+
+  useEffect(() => {
+    if (!randomFourWords) { return; }
+
+    const validation = validateRewrite({ firstWord, secondWord, thirdWord, fourthWord }, randomFourWords);
+
+    validation.fold(
+      (error) => onError(error),
+      () => { /* do nothing */ }
+    );
+  }, [firstWord, secondWord, thirdWord, fourthWord, randomFourWords]);
+
   const address = generateAddressFromMnemonic(keyring, mnemonic);
-  const validation = validate({ mnemonic, name, password, rewritePhrase, tags }, step);
+  const validation = validateMeta({ name, password, tags }, step);
+
+  function randomlyPickFour (phrase: string) {
+    const phraseArray = phrase.split(' ');
+
+    const first = getRandomInt();
+    const second = getRandomInt();
+    const third = getRandomInt();
+    const fourth = getRandomInt();
+
+    const randomFour = [
+      [first, phraseArray[first]],
+      [second, phraseArray[second]],
+      [third, phraseArray[third]],
+      [fourth, phraseArray[fourth]]
+    ];
+
+    setRandomFourWords(randomFour);
+  }
+
+  function getRandomInt () {
+    return Math.floor(Math.random() * Math.floor(mnemonic.length));
+  }
+
+  const handleSetFirstWord = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    setFirstWord(value);
+  };
+
+  const handleSetSecondWord = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    setSecondWord(value);
+  };
+  const handleSetThirdWord = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    setThirdWord(value);
+  };
+
+  const handleSetFourthWord = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    setFourthWord(value);
+  };
 
   const createNewAccount = () => {
     validation.fold(
@@ -44,7 +102,7 @@ export function Create (props: Props) {
       (values) => {
         // keyring.createFromUri(`${phrase.trim()}${derivePath}`, {}, pairType).address;
         // keyring.addUri(`${seed}${derivePath}`, password, { name, tags }, pairType);
-        const result = keyring.addUri(values.mnemonic.trim(), values.password,
+        const result = keyring.addUri(mnemonic.trim(), values.password,
           {
             name: values.name,
             tags: values.tags
@@ -58,7 +116,7 @@ export function Create (props: Props) {
     );
   };
 
-  const onError = (err: UserInputError) => {
+  const onError = (err: UserInputError | PhrasePartialRewriteError) => {
     setErrors(some(Object.values(err)));
   };
 
@@ -95,7 +153,7 @@ export function Create (props: Props) {
       {step === 'copy'
         ? renderCreateStep({ mnemonic }, { goToNextStep })
         : step === 'rewrite'
-          ? renderRewriteStep({ mnemonic, rewritePhrase }, { setRewritePhrase, goToPreviousStep, goToNextStep })
+          ? renderRewriteStep({ randomFourWords, firstWord, secondWord, thirdWord, fourthWord }, { handleSetFirstWord, handleSetSecondWord, handleSetThirdWord, handleSetFourthWord, goToPreviousStep, goToNextStep })
           : renderMetaStep({ name, password, tags, tagOptions }, { setName, setPassword, handleAddTag, handleOnChange, createNewAccount, goToPreviousStep })
       }
       {renderErrors(errors)}
@@ -192,18 +250,23 @@ function renderErrors (errors: Option<Array<string>>) {
 
 function renderRewriteStep (
   values: {
-    mnemonic: string,
-    rewritePhrase: string
+    firstWord: string,
+    secondWord: string,
+    thirdWord: string,
+    fourthWord: string,
+    randomFourWords: Array<Array<string>>
   },
   setters: {
-    setRewritePhrase: React.Dispatch<React.SetStateAction<string>>,
+    handleSetFirstWord: (e: React.ChangeEvent<HTMLInputElement>) => void,
+    handleSetSecondWord: (e: React.ChangeEvent<HTMLInputElement>) => void,
+    handleSetThirdWord: (e: React.ChangeEvent<HTMLInputElement>) => void,
+    handleSetFourthWord: (e: React.ChangeEvent<HTMLInputElement>) => void,
     goToPreviousStep: () => void,
     goToNextStep: () => void
   }
-
 ) {
-  const { rewritePhrase } = values;
-  const { goToNextStep, goToPreviousStep, setRewritePhrase } = setters;
+  const { randomFourWords, firstWord, secondWord, thirdWord, fourthWord } = values;
+  const { goToNextStep, goToPreviousStep, handleSetFirstWord, handleSetSecondWord, handleSetThirdWord, handleSetFourthWord } = setters;
 
   return (
     <Stacked>
@@ -211,12 +274,17 @@ function renderRewriteStep (
       <FadedText> If someone gets hold of this mnemonic they could drain your account</FadedText>
       <Margin top />
       <FadedText> Rewrite Mnemonic Below </FadedText>
-      <Input
-        autoFocus
-        fluid
-        onChange={handler(setRewritePhrase)}
-        type='text'
-        value={rewritePhrase} />
+      <MnemonicRewriteParts
+        randomFourWords={randomFourWords}
+        firstWord={firstWord}
+        secondWord={secondWord}
+        thirdWord={thirdWord}
+        fourthWord={fourthWord}
+        handleSetFirstWord={handleSetFirstWord}
+        handleSetSecondWord={handleSetSecondWord}
+        handleSetThirdWord={handleSetThirdWord}
+        handleSetFourthWord={handleSetFourthWord}
+         />
       <WithSpaceAround>
         <Stacked>
           <StyledLinkButton onClick={goToPreviousStep}> Back </StyledLinkButton>
