@@ -103,8 +103,8 @@ export function Bond (props: Props) {
     }
 
     const subscription: Subscription = combineLatest([
-      api.derive.balances.votingBalance<DerivedBalances>(stash),
-      api.derive.balances.votingBalance<DerivedBalances>(controller),
+      api.derive.balances.votingBalance(stash),
+      api.derive.balances.votingBalance(controller),
       api.query.system.accountNonce<Index>(stash)
     ]).pipe(
       take(1)

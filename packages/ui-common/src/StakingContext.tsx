@@ -40,7 +40,7 @@ export function StakingContextProvider (props: Props) {
     if (!isReady) { return; }
     const accounts: KeyringAddress[] = keyring.getAccounts();
     accounts.map(({ address }: KeyringAddress) => {
-      const subscription = api.derive.staking.info<DerivedStaking>(address)
+      const subscription = api.derive.staking.info(address)
         .pipe(take(1))
         .subscribe((derivedStaking: DerivedStaking) => {
           const newAccountStakingMap = accountStakingMap;
@@ -58,7 +58,7 @@ export function StakingContextProvider (props: Props) {
   // get allStashesAndControllers
   useEffect(() => {
     if (!isReady) { return; }
-    const controllersSub = api.derive.staking.controllers<[AccountId[], Option<AccountId>[]]>()
+    const controllersSub = api.derive.staking.controllers()
       .pipe(take(1))
       .subscribe((allStashesAndControllers) => {
         setAllStashesAndControllers(allStashesAndControllers);
@@ -76,7 +76,7 @@ export function StakingContextProvider (props: Props) {
   // derived fees
   useEffect(() => {
     if (!isReady) { return; }
-    const feeSub = api.derive.balances.fees<DerivedFees>()
+    const feeSub = api.derive.balances.fees()
       .pipe(take(1))
       .subscribe(setDerivedBalanceFees);
     return () => feeSub.unsubscribe();

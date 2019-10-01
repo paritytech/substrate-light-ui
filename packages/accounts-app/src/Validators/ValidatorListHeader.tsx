@@ -27,7 +27,7 @@ export function ValidatorListHeader (props: Props) {
 
   useEffect(() => {
     // TODO p3: maybe even move this to a Session Context
-    const subscription = api.derive.session.info<DerivedSessionInfo>()
+    const subscription = api.derive.session.info()
       .pipe(take(1))
       .subscribe(setSessionInfo);
 

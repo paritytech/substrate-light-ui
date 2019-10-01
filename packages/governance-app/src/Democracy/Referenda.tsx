@@ -12,13 +12,11 @@ import { ReferendumRow } from './ReferendumRow';
 
 export function Referenda () {
   const { api } = useContext(AppContext);
-  const [referenda, setReferenda] = useState();
+  const [referenda, setReferenda] = useState<Option<ReferendumInfoExtended>[]>();
 
   useEffect(() => {
-    const subscription = api.derive.democracy.referendums<Option<ReferendumInfoExtended>[]>()
-      .subscribe((referenda) => {
-        setReferenda(referenda);
-      });
+    const subscription = api.derive.democracy.referendums()
+      .subscribe(setReferenda);
     return () => subscription.unsubscribe();
   }, []);
 
@@ -32,9 +30,9 @@ export function Referenda () {
     );
   };
 
-  const renderReferendaTable = () => {
+  const renderReferendaTable = (_referenda: Option<ReferendumInfoExtended>[]) => {
     return (
-      referenda.map((_referendum: Option<ReferendumInfoExtended>) => {
+      _referenda.map((_referendum: Option<ReferendumInfoExtended>) => {
         const referendum = _referendum.unwrapOr(null);
 
         return (
@@ -69,7 +67,7 @@ export function Referenda () {
         <Table.Body>
           {
             referenda && referenda.length
-              ? renderReferendaTable()
+              ? renderReferendaTable(referenda)
               : renderEmptyTable()
           }
         </Table.Body>

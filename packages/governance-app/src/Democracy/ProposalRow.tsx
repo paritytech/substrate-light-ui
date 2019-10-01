@@ -36,9 +36,9 @@ export function ProposalRow (props: IProps) {
   useEffect(() => {
     const subscription = combineLatest([
       api.query.democracy.depositOf<ITuple<[BalanceOf, Vec<AccountId>]>>(propIndex),
-      api.derive.balances.fees<DerivedFees>(),
+      api.derive.balances.fees(),
       api.query.system.accountNonce<Index>(currentAccount),
-      api.derive.balances.votingBalance<DerivedBalances>(currentAccount)
+      api.derive.balances.votingBalance(currentAccount)
     ])
       .pipe(
         take(1)
