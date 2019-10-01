@@ -9,7 +9,7 @@ import React, { useState, useEffect } from 'react';
 import { Route, RouteComponentProps, Switch, Redirect } from 'react-router-dom';
 import { map } from 'rxjs/operators';
 
-import { Create } from '../AddAccount/Create';
+import { Create } from '../AddAccount/Create/CreateAccount';
 import { Restore } from '../AddAccount/Restore';
 
 interface Props extends RouteComponentProps { }

@@ -7,7 +7,7 @@ import React from 'react';
 import { RouteComponentProps, Link, Switch, Route, Redirect } from 'react-router-dom';
 import { Container } from 'semantic-ui-react';
 
-import { Create } from './Create';
+import { Create } from '../AddAccount/Create/CreateAccount';
 import { ImportWithJson } from './ImportWithJson';
 import { ImportWithPhrase } from './ImportWithPhrase';
 
