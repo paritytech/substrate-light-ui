@@ -19,7 +19,7 @@ function unlockAccount (keyringPair: KeyringPair, password: string): Either<Erro
   if (!keyringPair.isLocked) {
     return right(keyringPair);
   }
-
+  
   try {
     keyringPair.decodePkcs8(password);
   } catch (err) {
