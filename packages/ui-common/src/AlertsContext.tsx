@@ -13,6 +13,7 @@ export interface AlertWithoutId {
 
 export interface Alert extends AlertWithoutId {
   id: number;
+  timerCb: NodeJS.Timeout;
 }
 
 export const AlertsContext = createContext({
@@ -26,12 +27,17 @@ interface Props {
 }
 
 export function AlertsContextProvider (props: Props) {
-
   const [{ alerts, nextAlertId }, setAlerts] = useState({ alerts: [] as Alert[], nextAlertId: 0 });
 
   const enqueue = (newAlertWithoutId: AlertWithoutId) => {
     setAlerts({
-      alerts: [...alerts, { ...newAlertWithoutId, id: nextAlertId }],
+      alerts: [
+        ...alerts, {
+          ...newAlertWithoutId,
+          id: nextAlertId,
+          timerCb: setTimeout(() => { remove(nextAlertId); }, 3000)
+        }
+      ],
       nextAlertId: nextAlertId + 1
     });
   };
