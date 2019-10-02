@@ -28,7 +28,6 @@ export * from './Circle';
 export * from './CopyButton';
 export * from './constants';
 export * from './FlexSegment';
-export * from './fromApps';
 export * from './globalStyle';
 export * from './Icon';
 export * from './InputFile';
