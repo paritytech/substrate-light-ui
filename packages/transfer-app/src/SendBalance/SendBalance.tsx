@@ -128,11 +128,9 @@ export function SendBalance (props: Props) {
           <Validation values={values} />
         </CenterDiv>
         <RightDiv>
-          <NavButton >Submit</NavButton>
+          <NavButton disabled={values.isLeft()}>Submit</NavButton>
         </RightDiv>
       </StackedHorizontal>
     </Form>
   );
 }
-
-// disabled={values.isLeft()}
