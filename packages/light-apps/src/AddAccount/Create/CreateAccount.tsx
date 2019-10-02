@@ -53,7 +53,7 @@ export function Create (props: Props) {
     }
 
     setRandomFourWords(randomFour);
-  }, [location.pathname, mnemonic]);
+  }, [location, mnemonic]);
 
   const address = generateAddressFromMnemonic(keyring, mnemonic);
   const validation = validateMeta({ name, password, tags }, step, whichAccount);
