@@ -12,7 +12,6 @@ import 'semantic-ui-css/semantic.min.css';
 import { Alerts } from './Alerts';
 import { Content } from './Content';
 import { TopBar } from './TopBar';
-import { TxQueueNotifier } from './TxQueueNotifier';
 
 // Use MemoryRouter for production viewing in file:// protocol
 // https://github.com/facebook/create-react-app/issues/3591
@@ -33,7 +32,6 @@ export function App () {
                 ? <React.Fragment>
                   <TopBar />
                   <Content />
-                  <TxQueueNotifier />
                 </React.Fragment>
                 : <Loading active>
                   Connecting to the node...

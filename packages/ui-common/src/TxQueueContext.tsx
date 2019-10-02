@@ -52,6 +52,7 @@ interface Props {
   children: React.ReactNode;
 }
 
+const cancelObservable = new Subject<{ msg: string }>();
 const successObservable = new Subject<ExtrinsicDetails>();
 const errorObservable = new Subject<{ error: string }>();
 
@@ -60,6 +61,7 @@ export const TxQueueContext = createContext({
   txQueue: [] as PendingExtrinsic[],
   submit: (extrinsicId: number) => { console.error(INIT_ERROR); },
   clear: () => { console.error(INIT_ERROR); },
+  cancelObservable,
   successObservable,
   errorObservable
 });
@@ -189,9 +191,14 @@ export function TxQueueContextProvider (props: Props) {
    * Clear the txQueue.
    */
   const clear = () => {
-    txQueue.forEach(({ unsubscribe }) => { unsubscribe(); });
+    let msg: string[] = [];
+    txQueue.forEach(({ extrinsic: { method }, unsubscribe }) => {
+      msg.push(`${method.sectionName}.${method.methodName}`);
+      unsubscribe();
+    });
     setTxQueue([]);
     l.log('Cleared all extrinsics');
+    cancelObservable.next({ msg: `cleared the following extrinsic(s): ${msg.join(' ')}` });
   };
 
   return (
@@ -201,7 +208,8 @@ export function TxQueueContextProvider (props: Props) {
       submit,
       txQueue,
       successObservable,
-      errorObservable
+      errorObservable,
+      cancelObservable
     }}>
       {props.children}
     </TxQueueContext.Provider>
