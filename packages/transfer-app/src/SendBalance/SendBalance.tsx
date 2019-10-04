@@ -5,7 +5,7 @@
 import { DerivedBalances, DerivedFees } from '@polkadot/api-derive/types';
 import { Index } from '@polkadot/types/interfaces';
 import { AppContext, handler, TxQueueContext, validate, AllExtrinsicData } from '@substrate/ui-common';
-import { Balance, Form, Input, NavButton, Stacked, SubHeader, WrapperDiv } from '@substrate/ui-components';
+import { Balance, Form, Input, NavButton, Stacked, SubHeader, WrapperDiv, WithSpaceAround } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';
 import { zip } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -124,7 +124,9 @@ export function SendBalance (props: Props) {
             />
             {recipientAddress && <Balance address={recipientAddress} />}
           </WrapperDiv>
-          <Validation values={values} />
+          <WithSpaceAround>
+            <Validation values={values} />
+          </WithSpaceAround>
           <NavButton disabled={values.isLeft()}>Submit</NavButton>
         </Stacked>
       </Form>

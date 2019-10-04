@@ -28,6 +28,7 @@ export * from './Card';
 export * from './Circle';
 export * from './CopyButton';
 export * from './constants';
+export * from './Fab';
 export * from './FlexSegment';
 export * from './fromApps';
 export * from './globalStyle';

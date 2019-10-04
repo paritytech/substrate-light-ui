@@ -6,7 +6,7 @@ import accountObservable from '@polkadot/ui-keyring/observable/accounts';
 import addressObservable from '@polkadot/ui-keyring/observable/addresses';
 import { SingleAddress } from '@polkadot/ui-keyring/observable/types';
 import { TxQueueContext } from '@substrate/ui-common';
-import { Menu, Sidebar } from '@substrate/ui-components';
+import { Header, Menu, Sidebar, WithSpaceAround } from '@substrate/ui-components';
 import { findFirst, flatten } from 'fp-ts/lib/Array';
 import React, { useContext, useEffect, useState } from 'react';
 import { combineLatest } from 'rxjs';
@@ -61,10 +61,13 @@ export function Transfer (props: Props) {
       visible={visible}
       width='very wide'
     >
-      {txQueue.length
-        ? <TxQueue currentAccount={currentAccount} />
-        : <SendBalance currentAccount={currentAccount} recipientAddress={firstDifferentAddress} />
-      }
+      <WithSpaceAround>
+        <Header>Send Funds</Header>
+        {txQueue.length
+          ? <TxQueue currentAccount={currentAccount} />
+          : <SendBalance currentAccount={currentAccount} recipientAddress={firstDifferentAddress} />
+        }
+      </WithSpaceAround>
     </Sidebar>
   );
 }
