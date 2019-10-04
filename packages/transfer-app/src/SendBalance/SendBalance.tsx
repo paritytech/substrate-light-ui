@@ -5,30 +5,29 @@
 import { DerivedBalances, DerivedFees } from '@polkadot/api-derive/types';
 import { Index } from '@polkadot/types/interfaces';
 import { AppContext, handler, TxQueueContext, validate, AllExtrinsicData } from '@substrate/ui-common';
-import { Balance, Form, Input, NavButton, StackedHorizontal, SubHeader } from '@substrate/ui-components';
+import { Balance, Form, Input, NavButton, Stacked, SubHeader, WrapperDiv } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
 import { zip } from 'rxjs';
 import { take } from 'rxjs/operators';
 
-import { CenterDiv, InputAddress, LeftDiv, RightDiv } from '../Transfer.styles';
-import { MatchParams } from '../types';
+import { InputAddress } from '../Transfer.styles';
 import { Validation } from './Validation';
 
-interface SendMatchParams extends MatchParams {
-  recipientAddress?: string;
+interface Props {
+  currentAccount: string;
+  recipientAddress: string;
 }
-
-interface Props extends RouteComponentProps<SendMatchParams> { }
 
 export function SendBalance (props: Props) {
   const { api, keyring } = useContext(AppContext);
   const { enqueue } = useContext(TxQueueContext);
 
-  const { history, match: { params: { currentAccount, recipientAddress } } } = props;
+  const { currentAccount, recipientAddress } = props;
 
   const [amountAsString, setAmountAsString] = useState('');
   const [accountNonce, setAccountNonce] = useState();
+  const [sender, setSender] = useState();
+  const [receiver, setReceiver] = useState();
   const [currentBalance, setCurrentBalance] = useState();
   const [fees, setFees] = useState();
   const [recipientBalance, setRecipientBalance] = useState();
@@ -36,19 +35,14 @@ export function SendBalance (props: Props) {
   const extrinsic = api.tx.balances.transfer(recipientAddress, amountAsString);
   const values = validate({ amountAsString, accountNonce, currentBalance, extrinsic, fees, recipientBalance, currentAccount, recipientAddress }, api);
 
-  const changeCurrentAccount = (newCurrentAccount: string) => {
-    history.push(`/transfer/${newCurrentAccount}/${recipientAddress}`);
-  };
-
-  const changeRecipientAddress = (newRecipientAddress: string) => {
-    history.push(`/transfer/${currentAccount}/${newRecipientAddress}`);
-  };
-
   // Subscribe to sender's & receivers's balances, nonce and some fees
   useEffect(() => {
     if (!recipientAddress) {
       return;
     }
+
+    setSender(currentAccount);
+    setReceiver(recipientAddress);
 
     const subscription = zip(
       api.derive.balances.fees<DerivedFees>(),
@@ -68,6 +62,14 @@ export function SendBalance (props: Props) {
     return () => subscription.unsubscribe();
   }, [currentAccount, recipientAddress]);
 
+  const changeCurrentAccount = (newCurrentAccount: string) => {
+    setSender(newCurrentAccount);
+  };
+
+  const changeRecipientAddress = (newRecipientAddress: string) => {
+    setReceiver(newRecipientAddress);
+  };
+
   const handleSubmit = () => {
     const values = validate({ amountAsString, accountNonce, currentBalance, extrinsic, fees, recipientBalance, currentAccount, recipientAddress }, api);
 
@@ -82,55 +84,50 @@ export function SendBalance (props: Props) {
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <StackedHorizontal alignItems='flex-start'>
-        <LeftDiv>
-          <SubHeader textAlign='left'>Sender Account:</SubHeader>
-          <InputAddress
-            isDisabled
-            onChange={changeCurrentAccount}
-            type='account'
-            value={currentAccount}
-            withLabel={false}
-          />
-          <Balance address={currentAccount} />
-        </LeftDiv>
+    <WrapperDiv>
+      <Form onSubmit={handleSubmit}>
+        <Stacked justifyContent='flex-start'>
+          <WrapperDiv>
+            <SubHeader textAlign='left'>Sender Account:</SubHeader>
+            <InputAddress
+              isDisabled
+              onChange={changeCurrentAccount}
+              type='account'
+              value={sender}
+              withLabel={false}
+            />
+            <Balance address={currentAccount} />
+          </WrapperDiv>
 
-        <CenterDiv>
-          <SubHeader textAlign='left'>Amount:</SubHeader>
-          <Input
-            fluid
-            label='UNIT'
-            labelPosition='right'
-            min={0}
-            onChange={handler(setAmountAsString)}
-            placeholder='e.g. 1.00'
-            type='number'
-            value={amountAsString}
-          />
-        </CenterDiv>
+          <WrapperDiv>
+            <SubHeader textAlign='left'>Amount:</SubHeader>
+            <Input
+              fluid
+              label='UNIT'
+              labelPosition='right'
+              min={0}
+              onChange={handler(setAmountAsString)}
+              placeholder='e.g. 1.00'
+              type='number'
+              value={amountAsString}
+            />
+          </WrapperDiv>
 
-        <RightDiv>
-          <SubHeader textAlign='left'>Recipient Address:</SubHeader>
-          <InputAddress
-            label={undefined}
-            onChange={changeRecipientAddress}
-            type='all'
-            value={recipientAddress}
-            withLabel={false}
-          />
-          {recipientAddress && <Balance address={recipientAddress} />}
-        </RightDiv>
-      </StackedHorizontal>
-      <StackedHorizontal>
-        <LeftDiv />
-        <CenterDiv>
+          <WrapperDiv>
+            <SubHeader textAlign='left'>Recipient Address:</SubHeader>
+            <InputAddress
+              label={undefined}
+              onChange={changeRecipientAddress}
+              type='all'
+              value={receiver}
+              withLabel={false}
+            />
+            {recipientAddress && <Balance address={recipientAddress} />}
+          </WrapperDiv>
           <Validation values={values} />
-        </CenterDiv>
-        <RightDiv>
           <NavButton disabled={values.isLeft()}>Submit</NavButton>
-        </RightDiv>
-      </StackedHorizontal>
-    </Form>
+        </Stacked>
+      </Form>
+    </WrapperDiv>
   );
 }

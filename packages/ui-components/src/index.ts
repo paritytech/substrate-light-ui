@@ -13,6 +13,7 @@ export {
   Menu, MenuProps,
   Message, MessageProps,
   Segment, SegmentProps,
+  Sidebar, SidebarProps,
   Step, StepProps,
   Table, TableProps,
   Transition, TransitionGroup, TransitionProps, TransitionGroupProps, TransitionPropDuration

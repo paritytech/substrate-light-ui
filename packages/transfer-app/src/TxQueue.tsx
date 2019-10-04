@@ -3,42 +3,38 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { PendingExtrinsic, TxQueueContext } from '@substrate/ui-common';
-import { Icon, NavButton, Stacked, StackedHorizontal, SubHeader, TxDetails, TxSummary } from '@substrate/ui-components';
+import { FlexItem, Icon, NavButton, Stacked, SubHeader, TxDetails, TxSummary } from '@substrate/ui-components';
 import React, { useContext } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
 
-import { CenterDiv, LeftDiv, RightDiv } from './Transfer.styles';
-import { MatchParams } from './types';
 import { AllExtrinsicData } from './SendBalance/types';
 
-interface Props extends RouteComponentProps<MatchParams, {}, Partial<AllExtrinsicData> | undefined> { }
+interface Props extends Partial<AllExtrinsicData> {
+  currentAccount: string;
+}
 
 export function TxQueue (props: Props) {
-  const { match: { params: { currentAccount } } } = props;
+  const { currentAccount } = props;
   const { clear, txQueue } = useContext(TxQueueContext);
 
   // The parent component will redirect to SendBalance if empty txQueue
   if (!txQueue.length) return null;
 
   return (
-    <StackedHorizontal alignItems='flex-start'>
+    <Stacked>
+      {renderTxStatus(txQueue)}
 
-      <LeftDiv>
-        {renderTxStatus(txQueue)}
-      </LeftDiv>
-
-      <CenterDiv>
+      <FlexItem>
         <SubHeader>Summary:</SubHeader>
         {renderSummary(currentAccount, txQueue)}
-      </CenterDiv>
+      </FlexItem>
 
-      <RightDiv>
+      <FlexItem>
         {renderDetails(currentAccount, txQueue)}
         {txQueue[0].status.isFinalized ? (
           <NavButton onClick={clear}>New Transfer</NavButton>
         ) : <p>Please wait until the transaction is validated before making a new transfer..</p>}
-      </RightDiv>
-    </StackedHorizontal>
+      </FlexItem>
+    </Stacked>
   );
 }
 

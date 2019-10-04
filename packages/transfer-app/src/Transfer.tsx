@@ -5,27 +5,26 @@
 import accountObservable from '@polkadot/ui-keyring/observable/accounts';
 import addressObservable from '@polkadot/ui-keyring/observable/addresses';
 import { SingleAddress } from '@polkadot/ui-keyring/observable/types';
-import { PendingExtrinsic, TxQueueContext } from '@substrate/ui-common';
-import { WalletCard } from '@substrate/ui-components';
+import { TxQueueContext } from '@substrate/ui-common';
+import { Menu, Sidebar } from '@substrate/ui-components';
 import { findFirst, flatten } from 'fp-ts/lib/Array';
 import React, { useContext, useEffect, useState } from 'react';
-import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { SendBalance } from './SendBalance';
 import { TxQueue } from './TxQueue';
 
-interface MatchParams {
+interface Props {
   currentAccount: string;
 }
 
-interface Props extends RouteComponentProps<MatchParams> { }
-
 export function Transfer (props: Props) {
-  const { match: { params: { currentAccount } } } = props;
+  const { currentAccount } = props;
   const { txQueue } = useContext(TxQueueContext);
   const [allAddresses, setAllAddresses] = useState<SingleAddress[]>([]);
+  const [visible, setVisible] = useState(false);
+
   useEffect(() => {
     const allAddressessub = combineLatest([
       accountObservable.subject.pipe(map(Object.values)),
@@ -34,23 +33,14 @@ export function Transfer (props: Props) {
       .pipe(map(flatten))
       .subscribe(setAllAddresses);
 
-    return () => allAddressessub.unsubscribe();
+    setVisible(true);
+
+    return () => {
+      allAddressessub.unsubscribe();
+      setVisible(false);
+    };
   }, []);
 
-  return (
-    <React.Fragment>
-      <WalletCard header='Transfer Balance' height='100%'>
-        {allAddresses.length && renderContent(allAddresses, currentAccount, txQueue)}
-      </WalletCard >
-    </React.Fragment>
-  );
-}
-
-function renderContent (
-  allAddresses: SingleAddress[],
-  currentAccount: string,
-  txQueue: PendingExtrinsic[]
-) {
   // Find inside `allAddresses`, the first one that's different than
   // currentAccount. If not found, then take the currentAccount
   const firstDifferentAddress = findFirst(
@@ -61,12 +51,20 @@ function renderContent (
     .getOrElse(currentAccount);
 
   return (
-    <Switch>
+    <Sidebar
+      as={Menu}
+      animation='slide along'
+      direction='right'
+      icon='labeled'
+      onHide={() => setVisible(false)}
+      vertical
+      visible={visible}
+      width='very wide'
+    >
       {txQueue.length
-        ? <Route path='/transfer/:currentAccount/:recipientAddress' component={TxQueue} />
-        : <Route path='/transfer/:currentAccount/:recipientAddress' component={SendBalance} />
+        ? <TxQueue currentAccount={currentAccount} />
+        : <SendBalance currentAccount={currentAccount} recipientAddress={firstDifferentAddress} />
       }
-      <Redirect exact from='/transfer/:currentAccount/' to={`/transfer/${currentAccount}/${firstDifferentAddress}`} />
-    </Switch>
+    </Sidebar>
   );
 }
