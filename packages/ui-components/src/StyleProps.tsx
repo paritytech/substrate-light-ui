@@ -22,6 +22,8 @@ export interface DynamicSizeTextProps {
 
 export interface FlexItemProps {
   flex?: number;
+  margin?: MarginSize;
+  padding?: MarginSize;
 }
 
 export interface NavButtonProps extends ButtonProps {

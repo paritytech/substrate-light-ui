@@ -37,6 +37,8 @@ export const FadedText = styled.p`
 
 export const FlexItem = styled.div<FlexItemProps>`
   flex: ${props => props.flex || 1};
+  margin: ${props => props.margin || 0};
+  padding: ${props => props.padding || 0};
 `;
 
 export const ErrorText = styled.p`
