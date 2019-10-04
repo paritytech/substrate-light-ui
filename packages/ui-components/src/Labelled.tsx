@@ -5,6 +5,8 @@
 import React from 'react';
 import Label from 'semantic-ui-react/dist/commonjs/elements/Label/Label';
 
+import { StackedHorizontal } from './index';
+
 type LabelledProps = {
   children: React.ReactNode,
   isHidden?: boolean,
@@ -20,9 +22,9 @@ export function Labelled (props: LabelledProps) {
   }
 
   return (
-    <div>
+    <StackedHorizontal justifyContent='space-around'>
       {withLabel && <Label>{label}</Label>}
       {children}
-    </div>
+    </StackedHorizontal>
   );
 }
