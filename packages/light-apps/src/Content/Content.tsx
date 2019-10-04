@@ -7,7 +7,7 @@ import { Accounts } from '@substrate/accounts-app';
 import { Governance } from '@substrate/governance-app';
 import { SingleAddress } from '@polkadot/ui-keyring/observable/types';
 import { Transfer } from '@substrate/transfer-app';
-import { AppContext } from '@substrate/ui-common';
+import { AppContext, TxQueueContext } from '@substrate/ui-common';
 import { Fab, Sidebar } from '@substrate/ui-components';
 import { head } from 'fp-ts/lib/Array';
 import { none, Option } from 'fp-ts/lib/Option';
@@ -25,9 +25,14 @@ import { TxQueueNotifier } from '../TxQueueNotifier';
 
 export function Content () {
   const { api } = useContext(AppContext);
+  const { txQueue } = useContext(TxQueueContext);
   const [defaultAccount, setDefaultAccount] = useState<Option<SingleAddress>>(none);
   const [isOnboarding, setIsOnboarding] = useState();
   const [showTransfer, setShowTransfer] = useState();
+
+  useEffect(() => {
+    txQueue.length ? setShowTransfer(true) : setShowTransfer(false);
+  }, [txQueue]);
 
   useEffect(() => {
     if (!localStorage.getItem('skipOnboarding')) {

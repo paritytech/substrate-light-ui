@@ -51,7 +51,7 @@ export function Transfer (props: Props) {
   return (
     <Sidebar
       as={Menu}
-      animation='overlay'
+      animation='slide along'
       direction='right'
       icon='labeled'
       onHide={onHide}

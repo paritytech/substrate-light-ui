@@ -86,10 +86,6 @@ export function AccountsOverviewCard (props: Props) {
     history.push(`/manageAccounts/${address}/balances`);
   };
 
-  const navToTransfer = () => {
-    history.push(`/transfer/${address}`);
-  };
-
   const renderConfirmBackup = () => {
     return (
       <WithSpaceAround>
@@ -151,13 +147,6 @@ export function AccountsOverviewCard (props: Props) {
                 <Margin bottom />
                 <StackedHorizontal><StyledLinkButton onClick={navToBalances}>Show More</StyledLinkButton></StackedHorizontal>
                 <WithSpaceAround>
-                  <StackedHorizontal>
-                    <StyledLinkButton onClick={navToTransfer}>
-                      <Icon name='send' />
-                      Send From
-                      </StyledLinkButton>
-                  </StackedHorizontal>
-                  <Margin bottom />
                   <StackedHorizontal>
                     <StyledLinkButton onClick={handleForget}>
                       <Icon name='remove' />

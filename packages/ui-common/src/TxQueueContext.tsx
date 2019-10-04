@@ -87,7 +87,10 @@ export function TxQueueContextProvider (props: Props) {
    */
   const closeTxSubscription = (extrinsicId: number) => {
     const tx = txQueue.find((tx) => tx.id === extrinsicId);
-    if (tx) tx.unsubscribe();
+    if (tx) {
+      tx.unsubscribe();
+      setTxQueue(txQueue.splice(txQueue.indexOf(tx), 1));
+    }
   };
 
   /**
