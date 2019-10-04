@@ -159,7 +159,7 @@ export function Create (props: Props) {
         ? renderCopyStep({ mnemonic }, { goToNextStep })
         : step === 'rewrite'
           ? renderRewriteStep({ randomFourWords, firstWord, secondWord, thirdWord, fourthWord }, { handleSetFirstWord, handleSetSecondWord, handleSetThirdWord, handleSetFourthWord, goToPreviousStep, goToNextStep })
-          : renderMetaStep({ name, password, tags, tagOptions }, { setName, setPassword, handleAddTag, handleOnChange, createNewAccount, goToPreviousStep })
+          : renderMetaStep({ name, password, tags, tagOptions, whichAccount }, { setName, setPassword, handleAddTag, handleOnChange, createNewAccount, goToPreviousStep })
       }
       {renderErrors(errors)}
     </Stacked>

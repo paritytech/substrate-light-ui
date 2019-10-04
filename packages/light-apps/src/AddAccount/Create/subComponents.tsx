@@ -92,7 +92,8 @@ export function renderMetaStep (
     name: string,
     password: string,
     tags: Tags,
-    tagOptions: TagOptions
+    tagOptions: TagOptions,
+    whichAccount?: string
   },
   setters: {
     setName: React.Dispatch<React.SetStateAction<string>>,
@@ -102,7 +103,7 @@ export function renderMetaStep (
     createNewAccount: () => void,
     goToPreviousStep: () => void
   }) {
-  const { name, password, tags, tagOptions } = values;
+  const { name, password, tags, tagOptions, whichAccount } = values;
   const { handleAddTag, handleOnChange, setName, setPassword } = setters;
   const { createNewAccount, goToPreviousStep } = setters;
 
@@ -110,23 +111,32 @@ export function renderMetaStep (
     return (
       <Stacked>
         <SubHeader noMargin>Add Tags:</SubHeader>
-        <Dropdown
-          allowAdditions
-          closeOnChange
-          fluid
-          multiple
-          onAddItem={handleAddTag}
-          onChange={handleOnChange}
-          options={tagOptions}
-          search
-          selection
-          value={tags} />
+
+        {
+          whichAccount
+            ? (
+              <Input disabled fluid value={whichAccount} />
+            )
+            : (
+              <Dropdown
+                allowAdditions
+                closeOnChange
+                fluid
+                multiple
+                onAddItem={handleAddTag}
+                onChange={handleOnChange}
+                options={tagOptions}
+                search
+                selection
+                value={tags} />
+            )
+        }
         <WithSpaceAround>
-        <StackedHorizontal justifyContent='space-between'>
-          <StyledLinkButton onClick={goToPreviousStep}> Back </StyledLinkButton>
-          <StyledNavButton onClick={createNewAccount}> Save </StyledNavButton>
-        </StackedHorizontal>
-      </WithSpaceAround>
+          <StackedHorizontal justifyContent='space-between'>
+            <StyledLinkButton onClick={goToPreviousStep}> Back </StyledLinkButton>
+            <StyledNavButton onClick={createNewAccount}> Save </StyledNavButton>
+          </StackedHorizontal>
+        </WithSpaceAround>
       </Stacked>
     );
   };

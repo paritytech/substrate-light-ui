@@ -50,6 +50,10 @@ export function generateAddressFromMnemonic (keyring: Keyring, mnemonic: string)
 export function validateMeta (values: UserInput, step: string, whichAccount: string): Either<UserInputError, UserInput> {
   const errors = {} as UserInputError;
 
+  if (whichAccount) {
+    values.tags = [whichAccount];
+  }
+
   // @ts-ignore
   values.tags = values.tags.map(tag => tag.toLowerCase());
 
@@ -59,21 +63,11 @@ export function validateMeta (values: UserInput, step: string, whichAccount: str
     .forEach((key) => {
       errors[key] = `Field "${key}" cannot be empty`;
     });
-    debugger;
-    // if creating stash tag should be stash
-    if (whichAccount === 'stash' && !values.tags.includes('stash')) {
-      errors.tags = `The stash/controller difference is not enforced onchain. To avoid confusion, we require that you tag this account as a "${whichAccount}".`;
-    } else if (whichAccount === 'controller' && !values.tags.includes('controller')) {
-      errors.tags = `The stash/controller difference is not enforced onchain. To avoid confusion, we require that you tag this account as a "${whichAccount}".`;
-      debugger;
-    }
   }
   // Should not tag an account as both a stash and controller
   if (values.tags.includes('stash') && values.tags.includes('controller')) {
     errors.tags = 'Each account should be either a Stash or a Controller, not both.';
   }
-
-  console.log('errors => ', errors);
 
   return Object.keys(errors).length ? left(errors) : right(values);
 }
