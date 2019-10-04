@@ -39,12 +39,14 @@ export const Alert = styled<any>(SUIMessage)`
       ${gradientColor(0)},
       ${gradientColor(1)} 71%
     );
+    bottom: 0;
+    left: 0;
     box-shadow: none;
     color: ${props => props.theme.white};
     padding-bottom: 3rem;
     padding-left: 4rem;
     padding-right: 6rem;
-    position: fixed;
-    bottom: 0;
+    position: absolute;
+    width: 100%;
   }
 `;

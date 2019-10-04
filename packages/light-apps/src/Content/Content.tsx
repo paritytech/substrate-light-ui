@@ -20,6 +20,7 @@ import { IdentityHeader } from '../IdentityHeader';
 import { ManageAddresses } from '../ManageAddresses';
 import { Onboarding } from '../Onboarding';
 import { Signer } from '../Signer';
+import { TxQueueNotifier } from '../TxQueueNotifier';
 
 export function Content () {
   const { api } = useContext(AppContext);
@@ -69,6 +70,7 @@ export function Content () {
                   <Route path='/transfer/:currentAccount' component={Transfer} />
                   <Redirect to='/' />
                 </Switch>
+                <TxQueueNotifier />
               </React.Fragment>
             )).getOrElse(renderOnboarding())
           : renderOnboarding()

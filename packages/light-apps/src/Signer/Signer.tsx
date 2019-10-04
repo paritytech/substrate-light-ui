@@ -95,11 +95,11 @@ export function Signer () {
           <StackedHorizontal justifyContent='flex-end'>
             <StyledLinkButton onClick={clear} type='button'>
               Cancel
-          </StyledLinkButton>
+            </StyledLinkButton>
             <Margin left='small' />
             <NavButton disabled={senderPair.isLocked && !inputPassword}>
               OK
-        </NavButton>
+            </NavButton>
           </StackedHorizontal>
         </Modal.Actions>
       </React.Fragment>

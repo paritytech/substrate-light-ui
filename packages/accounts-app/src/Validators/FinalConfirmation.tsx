@@ -4,7 +4,7 @@
 
 import { DerivedBalances } from '@polkadot/api-derive/types';
 import { Index } from '@polkadot/types/interfaces';
-import { AppContext, AlertsContext, AllExtrinsicData, StakingContext, TxQueueContext, validate } from '@substrate/ui-common';
+import { AppContext, AllExtrinsicData, StakingContext, TxQueueContext, validate } from '@substrate/ui-common';
 import { Address, AddressSummary, FadedText, Header, Icon, Margin, Stacked, StackedHorizontal, StyledNavButton, StyledLinkButton, SubHeader, WithSpace } from '@substrate/ui-components';
 import BN from 'bn.js';
 import { Either, left, right } from 'fp-ts/lib/Either';
@@ -29,9 +29,8 @@ interface Props {
 export function FinalConfirmation (props: Props) {
   const { handleSelectNominateWith, history, nominees, nominateWith } = props;
   const { api, keyring } = useContext(AppContext);
-  const { enqueue: alert } = useContext(AlertsContext);
   const { derivedBalanceFees, onlyBondedAccounts } = useContext(StakingContext);
-  const { enqueue, errorObservable, successObservable } = useContext(TxQueueContext);
+  const { enqueue, successObservable } = useContext(TxQueueContext);
 
   const _validate = (): Either<Errors, AllExtrinsicData> => {
     let errors: Errors = [];
@@ -85,13 +84,7 @@ export function FinalConfirmation (props: Props) {
   }, [derivedBalanceFees, nominateWith, nonce, onlyBondedAccounts]);
 
   useEffect(() => {
-    errorObservable.subscribe(() => alert({ type: 'error', content: 'Uh oh, something went wrong. Please try again later or raise an issue.' }));
     successObservable.subscribe(() => history.push(`/manageAccounts/${nominateWith}/balances`));
-
-    return () => {
-      errorObservable.unsubscribe();
-      successObservable.unsubscribe();
-    };
   }, []);
 
   const onConfirm = () => {
