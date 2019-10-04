@@ -17,13 +17,14 @@ import { TxQueue } from './TxQueue';
 
 interface Props {
   currentAccount: string;
+  onHide: () => void;
+  visible: boolean;
 }
 
 export function Transfer (props: Props) {
-  const { currentAccount } = props;
+  const { currentAccount, onHide, visible } = props;
   const { txQueue } = useContext(TxQueueContext);
   const [allAddresses, setAllAddresses] = useState<SingleAddress[]>([]);
-  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const allAddressessub = combineLatest([
@@ -33,11 +34,8 @@ export function Transfer (props: Props) {
       .pipe(map(flatten))
       .subscribe(setAllAddresses);
 
-    setVisible(true);
-
     return () => {
       allAddressessub.unsubscribe();
-      setVisible(false);
     };
   }, []);
 
@@ -53,10 +51,10 @@ export function Transfer (props: Props) {
   return (
     <Sidebar
       as={Menu}
-      animation='slide along'
+      animation='overlay'
       direction='right'
       icon='labeled'
-      onHide={() => setVisible(false)}
+      onHide={onHide}
       vertical
       visible={visible}
       width='very wide'

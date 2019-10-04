@@ -8,7 +8,7 @@ import { Governance } from '@substrate/governance-app';
 import { SingleAddress } from '@polkadot/ui-keyring/observable/types';
 import { Transfer } from '@substrate/transfer-app';
 import { AppContext } from '@substrate/ui-common';
-import { Sidebar } from '@substrate/ui-components';
+import { Fab, Sidebar } from '@substrate/ui-components';
 import { head } from 'fp-ts/lib/Array';
 import { none, Option } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
@@ -27,6 +27,7 @@ export function Content () {
   const { api } = useContext(AppContext);
   const [defaultAccount, setDefaultAccount] = useState<Option<SingleAddress>>(none);
   const [isOnboarding, setIsOnboarding] = useState();
+  const [showTransfer, setShowTransfer] = useState();
 
   useEffect(() => {
     if (!localStorage.getItem('skipOnboarding')) {
@@ -52,6 +53,14 @@ export function Content () {
     </React.Fragment>
   );
 
+  const hideTransferMenu = () => {
+    setShowTransfer(false);
+  };
+
+  const showTransferMenu = () => {
+    setShowTransfer(true);
+  };
+
   return (
     <React.Fragment>
       {
@@ -71,7 +80,11 @@ export function Content () {
                     <Redirect to='/' />
                   </Switch>
                   <TxQueueNotifier />
-                  <Transfer currentAccount={json.address} />
+                  {
+                    showTransfer
+                      ? <Transfer currentAccount={json.address} onHide={hideTransferMenu} visible={showTransfer} />
+                      : <Fab onClick={showTransferMenu} />
+                  }
                 </Sidebar.Pusher>
               </Sidebar.Pushable>
             )).getOrElse(renderOnboarding())
