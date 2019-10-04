@@ -13,21 +13,21 @@ import { UserInput, UserInputError, PhrasePartialRewrite, PhrasePartialRewriteEr
  * @param max highest number the random number should be
  */
 export function getRandomInts (max: number) {
-  let temp;
-  let j = 0;
-
   let scratch = [];
 
   // populate with the range of possible numbers
-  for (let i = 1; i <= max; i++) {
+  for (let i = 1; i <= max; ++i) {
     scratch.push(i);
   }
 
-  for (let i = max; i > 0; i -= 1) {
-    j = Math.floor(Math.random() * Math.floor((i + 1)));
+  let temp;
+  let randIndex;
+
+  for (let i = max - 1; i >= 0; i -= 1) {
+    randIndex = Math.floor(Math.random() * Math.floor((i)));
     temp = scratch[i];
-    scratch[i] = scratch[j];
-    scratch[j] = temp;
+    scratch[i] = scratch[randIndex];
+    scratch[randIndex] = temp;
   }
 
   return scratch;
