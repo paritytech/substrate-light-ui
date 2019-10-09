@@ -91,7 +91,8 @@ export function InputAddress (props: InputAddressProps) {
   return (
     <Dropdown
       labeled
-      // @ts-ignore
+      // @ts-ignore This works. I think typings need to be updated on the
+      // SUI React side
       text={renderDropdownText()}
       value={value}
       {...rest}
