@@ -48,10 +48,10 @@ function renderDropdownText (allAccounts: SubjectInfo, allAddresses: SubjectInfo
   }
 
   return (
-    <span>
+    <>
       <IdentityIcon value={address} size={20} />
       {renderDropdownItemText(currentAddress)}
-    </span>
+    </>
   );
 }
 
@@ -93,7 +93,7 @@ export function InputAddress (props: InputAddressProps) {
       labeled
       // @ts-ignore This works. I think typings need to be updated on the
       // SUI React side
-      text={renderDropdownText()}
+      text={renderDropdownText(accounts, addresses, value)}
       value={value}
       {...rest}
     >
