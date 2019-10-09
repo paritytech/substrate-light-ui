@@ -88,8 +88,7 @@ export function SendBalance (props: Props) {
           <SubHeader textAlign='left'>Sender Account:</SubHeader>
           <InputAddress
             isDisabled
-            onChange={changeCurrentAccount}
-            type='account'
+            onChangeAddress={changeCurrentAccount}
             value={currentAccount}
             withLabel={false}
           />
@@ -103,7 +102,7 @@ export function SendBalance (props: Props) {
             label='UNIT'
             labelPosition='right'
             min={0}
-            onChange={handler(setAmountAsString)}
+            onChangeAddress={handler(setAmountAsString)}
             placeholder='e.g. 1.00'
             type='number'
             value={amountAsString}
@@ -114,8 +113,8 @@ export function SendBalance (props: Props) {
           <SubHeader textAlign='left'>Recipient Address:</SubHeader>
           <InputAddress
             label={undefined}
-            onChange={changeRecipientAddress}
-            type='all'
+            onChangeAddress={changeRecipientAddress}
+            types={['accounts', 'addresses']}
             value={recipientAddress}
             withLabel={false}
           />

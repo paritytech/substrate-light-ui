@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Balance, CopyButton, Dropdown, FadedText, Icon, InputAddress, InputAddressProps, Margin, Menu, NavLink, StackedHorizontal, SubHeader } from '@substrate/ui-components';
+import { Balance, CopyButton, Dropdown, FadedText, Icon, InputAddress, Margin, Menu, NavLink, StackedHorizontal, SubHeader } from '@substrate/ui-components';
 import React from 'react';
 import Joyride from 'react-joyride';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
@@ -24,13 +24,7 @@ export function IdentityHeader (props: Props) {
   const currentPath = location.pathname.split('/')[1];
 
   // Change account
-  const changeCurrentAccount = (_event: React.SyntheticEvent<HTMLElement, Event>, data: InputAddressProps) => {
-    const account = data.value;
-
-    if (!account) {
-      return;
-    }
-
+  const changeCurrentAccount = (account: string) => {
     history.push(`/${currentPath}/${account}`);
   };
 
@@ -43,7 +37,7 @@ export function IdentityHeader (props: Props) {
               <StackedHorizontal>
                 <InputAddress
                   fluid
-                  onChange={changeCurrentAccount}
+                  onChangeAddress={changeCurrentAccount}
                   value={currentAccount}
                 />
                 <CopyButton value={currentAccount} />

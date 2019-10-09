@@ -73,8 +73,7 @@ export function Setup (props: Props) {
         <SubHeader> Select your Stash Account </SubHeader>
         <InputAddress
           label={undefined}
-          onChange={setStash}
-          type='account'
+          onChangeAddress={setStash}
           value={stash}
           withLabel={false}
         />
@@ -85,8 +84,7 @@ export function Setup (props: Props) {
         <SubHeader> Select your Controller Account </SubHeader>
         <InputAddress
           label={undefined}
-          onChange={setController}
-          type='account'
+          onChangeAddress={setController}
           value={controller}
           withLabel={false}
         />
