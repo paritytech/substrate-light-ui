@@ -40,6 +40,21 @@ function renderDropdownItemText (address: SingleAddress) {
   );
 }
 
+function renderDropdownText (allAccounts: SubjectInfo, allAddresses: SubjectInfo, address: string) {
+  const currentAddress = getAddressFromString(allAccounts, allAddresses, address);
+
+  if (!allAccounts || !allAddresses || !currentAddress) {
+    return 'Loading...';
+  }
+
+  return (
+    <span>
+      <IdentityIcon value={address} size={20} />
+      {renderDropdownItemText(currentAddress)}
+    </span>
+  );
+}
+
 export function InputAddress (props: InputAddressProps) {
   const { children, onChangeAddress, types = ['accounts'], value, ...rest } = props;
   const [accounts, setAccounts] = useState<SubjectInfo>({});
@@ -71,21 +86,6 @@ export function InputAddress (props: InputAddressProps) {
       value={address.json.address}
       text={renderDropdownItemText(address)}
     />;
-  }
-
-  function renderDropdownText () {
-    const currentAddress = getAddressFromString(accounts, addresses, value);
-
-    if (!accounts || !addresses || !currentAddress) {
-      return 'Loading...';
-    }
-
-    return (
-      <span>
-        <IdentityIcon value={value} size={20} />
-        {renderDropdownItemText(currentAddress)}
-      </span>
-    );
   }
 
   return (
