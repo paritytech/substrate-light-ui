@@ -46,7 +46,7 @@ export const Alert = styled<any>(SUIMessage)`
     padding-bottom: 2rem;
     padding-left: 4rem;
     padding-right: 6rem;
-    position: absolute;
+    position: fixed;
     width: 100%;
   }
 `;
