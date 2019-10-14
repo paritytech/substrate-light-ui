@@ -5,11 +5,12 @@
 import accounts from '@polkadot/ui-keyring/observable/accounts';
 import { CreateResult } from '@polkadot/ui-keyring/types';
 import { AddressSummary, Card, DynamicSizeText, FadedText, FlexItem, Menu, Modal, Stacked, StackedHorizontal, StyledNavButton, SubHeader, Transition, WithSpaceAround } from '@substrate/ui-components';
+import { fromNullable } from 'fp-ts/lib/Option';
 import React, { useState, useEffect } from 'react';
 import { Route, RouteComponentProps, Switch, Redirect } from 'react-router-dom';
 import { map } from 'rxjs/operators';
 
-import { Create } from '../AddAccount/Create';
+import { Create } from '../AddAccount/Create/CreateAccount';
 import { Restore } from '../AddAccount/Restore';
 
 interface Props extends RouteComponentProps { }
@@ -107,10 +108,14 @@ export function AccountsSetup (props: Props) {
             <FadedText>You've created your first Stash account.</FadedText>
             <WithSpaceAround>
             {
-              keyringAccounts.filter((account: CreateResult) => account.json.meta.tags.includes('stash'))
-                              .map((account: CreateResult) =>
-                                <AddressSummary address={account.json.address} name={account.json.meta.name} size='small' />
-                              )
+              keyringAccounts.filter((account: CreateResult) => {
+                return fromNullable(account.json.meta.tags)
+                  .map(tags => tags.map((tag: string) => tag.toLowerCase()))
+                  .map(lowercaseTags => lowercaseTags.includes('stash'))
+                  .getOrElse(undefined);
+              }).map((account: CreateResult) =>
+                <AddressSummary address={account.json.address} name={account.json.meta.name} size='small' />
+              )
             }
             </WithSpaceAround>
           </Stacked>

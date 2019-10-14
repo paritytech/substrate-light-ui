@@ -51,8 +51,8 @@ function renderContent (
   currentAccount: string,
   txQueue: PendingExtrinsic[]
 ) {
-  // Find, inside `allAddresses`, the first one that's different than
-  // currentAccount. If not found, then take currentAccount
+  // Find inside `allAddresses`, the first one that's different than
+  // currentAccount. If not found, then take the currentAccount
   const firstDifferentAddress = findFirst(
     allAddresses,
     (singleAddress: SingleAddress) => singleAddress.json.address !== currentAccount

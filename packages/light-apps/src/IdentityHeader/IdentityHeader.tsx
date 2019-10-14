@@ -83,6 +83,8 @@ export function IdentityHeader (props: Props) {
   };
 
   const renderSecondaryMenu = () => {
+    const activeTab = location.pathname.split('/')[1];
+
     const navToAccounts = () => {
       history.push(`/manageAccounts/${currentAccount}`);
     };
@@ -102,12 +104,12 @@ export function IdentityHeader (props: Props) {
     return (
       <StackedHorizontal justifyContent='flex-start' alignItems='flex-start'>
         <Menu stackable secondary>
-          <Menu.Item onClick={navToAccounts} className='.accounts-overview'>
+          <Menu.Item active={activeTab === 'manageAccounts'} onClick={navToAccounts} className='.accounts-overview'>
             Accounts
             <Margin left='small' />
             <Icon color='black' name='id card' />
           </Menu.Item>
-          <Menu.Item onClick={navToGovernance}>
+          <Menu.Item active={activeTab === 'governance'} onClick={navToGovernance}>
             Governance
             <Margin left='small' />
             <Icon color='black' name='hand paper outline' />
@@ -117,7 +119,7 @@ export function IdentityHeader (props: Props) {
             <Margin left='small' />
             <Icon color='black' name='send' />
           </Menu.Item>
-          <Menu.Item onClick={navToManageAddressBook}>
+          <Menu.Item active={activeTab === 'addresses'} onClick={navToManageAddressBook}>
             Manage Address Book
             <Margin left='small' />
             <Icon color='black' name='address book' />

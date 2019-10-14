@@ -3,13 +3,13 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { AlertsContext, AppContext, TxQueueContext } from '@substrate/ui-common';
-import { Message, StackedHorizontal, TxSummary } from '@substrate/ui-components';
+import { Alert, Message, StackedHorizontal, TxSummary } from '@substrate/ui-components';
 import React, { useContext, useEffect } from 'react';
 
 export function TxQueueNotifier () {
   const { enqueue } = useContext(AlertsContext);
   const { system: { properties: { tokenSymbol } } } = useContext(AppContext);
-  const { errorObservable, successObservable } = useContext(TxQueueContext);
+  const { cancelObservable, errorObservable, successObservable } = useContext(TxQueueContext);
 
   // Display notification on success
   useEffect(() => {
@@ -17,9 +17,9 @@ export function TxQueueNotifier () {
       const { amount, methodCall, recipientAddress, senderPair } = details;
 
       const content = (
-        <Message.Content>
+        <Alert success>
           <StackedHorizontal justifyContent='space-around'>
-            <span>Transaction Completed!</span>
+            <Message.Header>Transaction Completed!</Message.Header>
             <TxSummary
               amount={amount}
               methodCall={methodCall}
@@ -28,7 +28,7 @@ export function TxQueueNotifier () {
               tokenSymbol={tokenSymbol.toString()}
             />
           </StackedHorizontal>
-        </Message.Content>
+        </Alert>
       );
 
       enqueue({
@@ -46,10 +46,10 @@ export function TxQueueNotifier () {
       const { error } = details;
 
       const content = (
-        <Message.Content>
+        <Alert error>
           <Message.Header>Error! </Message.Header>
           <Message.Content > {error} </Message.Content>
-        </Message.Content>
+        </Alert>
       );
 
       enqueue({
@@ -58,8 +58,28 @@ export function TxQueueNotifier () {
       });
     });
 
-    return subscription.unsubscribe();
+    return () => subscription.unsubscribe();
   }, [errorObservable, enqueue]);
+
+  useEffect(() => {
+    const subscription = cancelObservable.subscribe((details: any) => {
+      const { msg } = details;
+
+      const content = (
+        <Alert warning>
+          <Message.Header>Extrinsic cancelled.</Message.Header>
+          <Message.Content>{msg}</Message.Content>
+        </Alert>
+      );
+
+      enqueue({
+        content: content,
+        type: 'warning'
+      });
+    });
+
+    return () => subscription.unsubscribe();
+  }, [cancelObservable, enqueue]);
 
   return null;
 }

@@ -43,7 +43,7 @@ export function Bond (props: Props) {
   const { api, keyring } = useContext(AppContext);
   const { enqueue: alert } = useContext(AlertsContext);
   const { derivedBalanceFees } = useContext(StakingContext);
-  const { enqueue, errorObservable, successObservable } = useContext(TxQueueContext);
+  const { enqueue, successObservable } = useContext(TxQueueContext);
   const [bond, setBond] = useState<BN>(new BN(0));
   const [controllerBalance, setControllerBalance] = useState<DerivedBalances>();
   const [destination, setDestination] = useState<RewardDestinationOption>(rewardDestinationOptions[0]);
@@ -52,8 +52,15 @@ export function Bond (props: Props) {
   const [stashBalance, setStashBalance] = useState<DerivedBalances>();
   const [status, setStatus] = useState<Either<Errors, AllExtrinsicData>>();
 
-  const { history, controller, stash } = props;
-  // const { controller, stash } = history.location.state;
+  const { history } = props;
+
+  let controller = props.controller;
+  let stash = props.stash;
+
+  if (!stash || !controller) {
+    controller = history.location.state.controller;
+    stash = history.location.state.stash;
+  }
 
   const _validate = (): Either<Errors, AllExtrinsicData> => {
     let errors: Errors = [];
@@ -122,15 +129,12 @@ export function Bond (props: Props) {
   }, [bond, controllerBalance, nonce, stashBalance]);
 
   useEffect(() => {
-    const txStatusSubscription: Subscription = combineLatest([
-      errorObservable,
-      successObservable
-    ]).subscribe(([error, success]) => {
+    successObservable.subscribe((success) => {
       setLoading(false);
       history.push(`/manageAccounts/${controller}/balances`);
     });
 
-    return () => txStatusSubscription.unsubscribe();
+    return () => successObservable.unsubscribe();
   }, []);
 
   const handleConfirmBond = () => {
