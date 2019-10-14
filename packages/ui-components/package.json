@@ -28,7 +28,7 @@
     "react": "^16.9"
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^v5.2.1",
+    "@storybook/addon-actions": "^v5.2.4",
     "@storybook/addon-knobs": "^v5.2.0-rc.10",
     "@storybook/addon-links": "^v5.2.0-rc.10",
     "@storybook/react": "^v5.2.0-rc.10",
