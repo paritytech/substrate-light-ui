@@ -10,8 +10,9 @@ import React, { useEffect, useState } from 'react';
 import { combineLatest } from 'rxjs';
 import Dropdown, { DropdownProps } from 'semantic-ui-react/dist/commonjs/modules/Dropdown';
 import { DropdownItemProps } from 'semantic-ui-react/dist/commonjs/modules/Dropdown/DropdownItem';
-
 import styled from 'styled-components';
+
+import { MARGIN_SIZES } from '../constants';
 
 type AddressType = 'accounts' | 'addresses';
 
@@ -32,10 +33,14 @@ function getAddressFromString (allAccounts: SubjectInfo, allAddresses: SubjectIn
   return allAccounts[address] || allAddresses[address];
 }
 
+const StrongWithMargin = styled.strong`
+  margin-right: ${MARGIN_SIZES.medium};
+`;
+
 function renderDropdownItemText (address: SingleAddress) {
   return (
     <DropdownItemText>
-      <strong>{address.json.meta.name}</strong> ({address.json.address.substr(0, 3)}..{address.json.address.slice(-3)})
+      <StrongWithMargin>{address.json.meta.name}</StrongWithMargin> ({address.json.address.substr(0, 3)}..{address.json.address.slice(-3)})
     </DropdownItemText>
   );
 }
