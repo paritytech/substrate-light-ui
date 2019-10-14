@@ -129,7 +129,7 @@ export function AccountsSetup (props: Props) {
               <Stacked>
                 <SubHeader>Stash:</SubHeader>
                 {
-                  keyringAccounts.filter((account: CreateResult) => account.json.meta.tags.includes('stash'))
+                  keyringAccounts.filter((account: CreateResult) => account.json.meta.tags && account.json.meta.tags.includes('stash'))
                                   .map((account: CreateResult) =>
                                     <AddressSummary address={account.json.address} name={account.json.meta.name} size='small' />
                                   )
@@ -139,7 +139,7 @@ export function AccountsSetup (props: Props) {
               <Stacked>
                 <SubHeader>Controller:</SubHeader>
                 {
-                  keyringAccounts.filter((account: CreateResult) => account.json.meta.tags.includes('controller'))
+                  keyringAccounts.filter((account: CreateResult) => account.json.meta.tags && account.json.meta.tags.includes('controller'))
                                   .map((account: CreateResult) =>
                                     <AddressSummary address={account.json.address} name={account.json.meta.name} size='small' />
                                   )
