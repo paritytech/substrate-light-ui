@@ -24,11 +24,11 @@ export function ProposalRow (props: IProps) {
   const { propIndex, proposal, proposer } = props;
   const { api, keyring } = useContext(AppContext);
   const { enqueue } = useContext(TxQueueContext);
-  const [accountNonce, setCurrentNonce] = useState();
-  const [fees, setFees] = useState();
-  const [depositedBalance, setDepositedBalance] = useState();
-  const [depositorAccountIds, setDepositorAccountIds] = useState();
-  const [votingBalance, setVotingBalance] = useState();
+  const [accountNonce, setCurrentNonce] = useState<Index>();
+  const [fees, setFees] = useState<DerivedFees>();
+  const [depositedBalance, setDepositedBalance] = useState<string>();
+  const [depositorAccountIds, setDepositorAccountIds] = useState<Vec<AccountId>>();
+  const [votingBalance, setVotingBalance] = useState<DerivedBalances>();
   const { meta, method, section } = api.findCall(proposal.callIndex);
 
   const currentAccount = location.pathname.split('/')[2];
@@ -36,9 +36,9 @@ export function ProposalRow (props: IProps) {
   useEffect(() => {
     const subscription = combineLatest([
       api.query.democracy.depositOf<ITuple<[BalanceOf, Vec<AccountId>]>>(propIndex),
-      api.derive.balances.fees<DerivedFees>(),
+      api.derive.balances.fees(),
       api.query.system.accountNonce<Index>(currentAccount),
-      api.derive.balances.votingBalance<DerivedBalances>(currentAccount)
+      api.derive.balances.votingBalance(currentAccount)
     ])
       .pipe(
         take(1)
@@ -108,7 +108,7 @@ export function ProposalRow (props: IProps) {
   );
 }
 
-function renderSecondersList (accountIds: Array<AccountId>) {
+function renderSecondersList (accountIds?: Vec<AccountId>) {
   if (accountIds && accountIds.length) {
     return accountIds.map((accountId: AccountId) => {
       return (

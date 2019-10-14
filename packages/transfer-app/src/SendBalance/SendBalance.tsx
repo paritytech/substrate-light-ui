@@ -28,10 +28,10 @@ export function SendBalance (props: Props) {
   const { history, match: { params: { currentAccount, recipientAddress } } } = props;
 
   const [amountAsString, setAmountAsString] = useState('');
-  const [accountNonce, setAccountNonce] = useState();
-  const [currentBalance, setCurrentBalance] = useState();
-  const [fees, setFees] = useState();
-  const [recipientBalance, setRecipientBalance] = useState();
+  const [accountNonce, setAccountNonce] = useState<Index>();
+  const [currentBalance, setCurrentBalance] = useState<DerivedBalances>();
+  const [fees, setFees] = useState<DerivedFees>();
+  const [recipientBalance, setRecipientBalance] = useState<DerivedBalances>();
 
   const extrinsic = api.tx.balances.transfer(recipientAddress, amountAsString);
   const values = validate({ amountAsString, accountNonce, currentBalance, extrinsic, fees, recipientBalance, currentAccount, recipientAddress }, api);
@@ -51,9 +51,9 @@ export function SendBalance (props: Props) {
     }
 
     const subscription = zip(
-      api.derive.balances.fees<DerivedFees>(),
-      api.derive.balances.votingBalance<DerivedBalances>(currentAccount),
-      api.derive.balances.votingBalance<DerivedBalances>(recipientAddress),
+      api.derive.balances.fees(),
+      api.derive.balances.votingBalance(currentAccount),
+      api.derive.balances.votingBalance(recipientAddress),
       api.query.system.accountNonce<Index>(currentAccount)
     )
       .pipe(
@@ -88,8 +88,7 @@ export function SendBalance (props: Props) {
           <SubHeader textAlign='left'>Sender Account:</SubHeader>
           <InputAddress
             isDisabled
-            onChange={changeCurrentAccount}
-            type='account'
+            onChangeAddress={changeCurrentAccount}
             value={currentAccount}
             withLabel={false}
           />
@@ -103,7 +102,7 @@ export function SendBalance (props: Props) {
             label='UNIT'
             labelPosition='right'
             min={0}
-            onChange={handler(setAmountAsString)}
+            onChangeAddress={handler(setAmountAsString)}
             placeholder='e.g. 1.00'
             type='number'
             value={amountAsString}
@@ -114,8 +113,8 @@ export function SendBalance (props: Props) {
           <SubHeader textAlign='left'>Recipient Address:</SubHeader>
           <InputAddress
             label={undefined}
-            onChange={changeRecipientAddress}
-            type='all'
+            onChangeAddress={changeRecipientAddress}
+            types={['accounts', 'addresses']}
             value={recipientAddress}
             withLabel={false}
           />

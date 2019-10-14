@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { AppContext, ContextGate } from '@substrate/ui-common';
-import { Container, GlobalStyle, Loading, substrateLightTheme } from '@substrate/ui-components';
+import { FixedWidthContainer, GlobalStyle, Loading, substrateLightTheme } from '@substrate/ui-components';
 import React from 'react';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
@@ -25,7 +25,7 @@ export function App () {
     <ContextGate>
       <Router>
         <ThemeProvider theme={substrateLightTheme}>
-          <Container fluid>
+          <FixedWidthContainer>
             <GlobalStyle />
             <AppContext.Consumer>
               {({ isReady }) => isReady
@@ -39,7 +39,7 @@ export function App () {
               }
             </AppContext.Consumer>
             <Alerts />
-          </Container>
+          </FixedWidthContainer>
         </ThemeProvider>
       </Router>
     </ContextGate>

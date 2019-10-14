@@ -3,7 +3,6 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import ApiRx from '@polkadot/api/rx';
-import { MAX_SIZE_BYTES, MAX_SIZE_MB } from '@polkadot/react-signer/Checks/constants';
 import { compactToU8a } from '@polkadot/util';
 import BN from 'bn.js';
 import { Either, left, right } from 'fp-ts/lib/Either';
@@ -11,6 +10,8 @@ import { none, some } from 'fp-ts/lib/Option';
 
 import { AllExtrinsicData, Errors, SubResults, UserInputs, WithAmount, WithExtrinsic } from '../types';
 
+const MAX_SIZE_MB = 10;
+const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024;
 const LENGTH_PUBLICKEY = 32 + 1; // publicKey + prefix
 const LENGTH_SIGNATURE = 64;
 const LENGTH_ERA = 1;
