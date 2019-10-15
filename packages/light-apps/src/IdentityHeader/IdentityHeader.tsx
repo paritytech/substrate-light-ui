@@ -2,14 +2,13 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Balance, CopyButton, Dropdown, FadedText, Icon, Margin, Menu, NavLink, StackedHorizontal, SubHeader } from '@substrate/ui-components';
+import { Balance, CopyButton, Dropdown, FadedText, Icon, InputAddress, Margin, Menu, NavLink, StackedHorizontal, SubHeader } from '@substrate/ui-components';
 import React from 'react';
 import Joyride from 'react-joyride';
 import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 
 import { Backup } from './Backup';
 import { Forget } from './Forget';
-import { InputAddress } from './IdentityHeader.styles';
 import { Rename } from './Rename';
 import { tutorialSteps } from '../constants';
 
@@ -37,11 +36,9 @@ export function IdentityHeader (props: Props) {
             <Menu.Item fitted>
               <StackedHorizontal>
                 <InputAddress
-                  label={undefined}
-                  onChange={changeCurrentAccount}
-                  type='account'
+                  fluid
+                  onChangeAddress={changeCurrentAccount}
                   value={currentAccount}
-                  withLabel={false}
                 />
                 <CopyButton value={currentAccount} />
               </StackedHorizontal>

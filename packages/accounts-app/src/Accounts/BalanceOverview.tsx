@@ -37,7 +37,7 @@ export function BalanceOverview (props: Pick<Props, Exclude<keyof Props, keyof '
   useEffect(() => {
     if (!controllerId) { return; }
     const subscription = combineLatest([
-      api.derive.balances.votingBalance<DerivedBalances>(controllerId),
+      api.derive.balances.votingBalance(controllerId),
       api.query.system.accountNonce<Index>(controllerId)
     ])
       .pipe(

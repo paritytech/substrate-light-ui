@@ -17,13 +17,13 @@ interface BalanceProps extends Pick<BalanceDisplayProps, Exclude<keyof BalanceDi
 export function Balance (props: BalanceProps) {
   const { address, detailed = false, ...rest } = props;
   const { api } = useContext(AppContext);
-  const [allBalances, setAllBalances] = useState();
-  const [allStaking, setAllStaking] = useState();
+  const [allBalances, setAllBalances] = useState<DerivedBalances>();
+  const [allStaking, setAllStaking] = useState<DerivedStaking>();
 
   useEffect(() => {
     let balanceSub = combineLatest([
-      api.derive.balances.all<DerivedBalances>(address),
-      api.derive.staking.info<DerivedStaking>(address)
+      api.derive.balances.all(address),
+      api.derive.staking.info(address)
     ]).subscribe(([allBalances, allStaking]) => {
       setAllBalances(allBalances);
       setAllStaking(allStaking);

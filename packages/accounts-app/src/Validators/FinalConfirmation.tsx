@@ -63,7 +63,7 @@ export function FinalConfirmation (props: Props) {
 
   useEffect(() => {
     const subscription = combineLatest([
-      api.derive.balances.votingBalance<DerivedBalances>(nominateWith),
+      api.derive.balances.votingBalance(nominateWith),
       api.query.system.accountNonce<Index>(nominateWith)
     ])
       .pipe(take(1))

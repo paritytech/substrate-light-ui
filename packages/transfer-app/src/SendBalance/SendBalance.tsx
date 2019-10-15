@@ -25,12 +25,12 @@ export function SendBalance (props: Props) {
   const { currentAccount, recipientAddress } = props;
 
   const [amountAsString, setAmountAsString] = useState('');
-  const [accountNonce, setAccountNonce] = useState();
-  const [sender, setSender] = useState();
-  const [receiver, setReceiver] = useState();
-  const [currentBalance, setCurrentBalance] = useState();
-  const [fees, setFees] = useState();
-  const [recipientBalance, setRecipientBalance] = useState();
+  const [accountNonce, setAccountNonce] = useState<Index>();
+  const [currentBalance, setCurrentBalance] = useState<DerivedBalances>();
+  const [fees, setFees] = useState<DerivedFees>();
+  const [receiver, setReceiver] = useState<string>();
+  const [recipientBalance, setRecipientBalance] = useState<DerivedBalances>();
+  const [sender, setSender] = useState<string>();
 
   const extrinsic = api.tx.balances.transfer(recipientAddress, amountAsString);
   const values = validate({ amountAsString, accountNonce, currentBalance, extrinsic, fees, recipientBalance, currentAccount, recipientAddress }, api);
@@ -45,9 +45,9 @@ export function SendBalance (props: Props) {
     setReceiver(recipientAddress);
 
     const subscription = zip(
-      api.derive.balances.fees<DerivedFees>(),
-      api.derive.balances.votingBalance<DerivedBalances>(currentAccount),
-      api.derive.balances.votingBalance<DerivedBalances>(recipientAddress),
+      api.derive.balances.fees(),
+      api.derive.balances.votingBalance(currentAccount),
+      api.derive.balances.votingBalance(recipientAddress),
       api.query.system.accountNonce<Index>(currentAccount)
     )
       .pipe(
@@ -86,8 +86,8 @@ export function SendBalance (props: Props) {
   return (
     <WrapperDiv>
       <Form onSubmit={handleSubmit}>
-        <Stacked justifyContent='flex-start'>
-          <WrapperDiv>
+        <WrapperDiv>
+          <Stacked alignItems='flex-start' justifyContent='flex-start'>
             <SubHeader textAlign='left'>Sender Account:</SubHeader>
             <InputAddress
               isDisabled
@@ -97,9 +97,11 @@ export function SendBalance (props: Props) {
               withLabel={false}
             />
             <Balance address={currentAccount} />
-          </WrapperDiv>
+          </Stacked>
+        </WrapperDiv>
 
-          <WrapperDiv>
+        <WrapperDiv>
+          <Stacked alignItems='flex-start' justifyContent='flex-start'>
             <SubHeader textAlign='left'>Amount:</SubHeader>
             <Input
               fluid
@@ -111,9 +113,11 @@ export function SendBalance (props: Props) {
               type='number'
               value={amountAsString}
             />
-          </WrapperDiv>
+          </Stacked>
+        </WrapperDiv>
 
-          <WrapperDiv>
+        <WrapperDiv>
+          <Stacked alignItems='flex-start' justifyContent='flex-start'>
             <SubHeader textAlign='left'>Recipient Address:</SubHeader>
             <InputAddress
               label={undefined}
@@ -123,12 +127,14 @@ export function SendBalance (props: Props) {
               withLabel={false}
             />
             {recipientAddress && <Balance address={recipientAddress} />}
-          </WrapperDiv>
-          <WithSpaceAround>
-            <Validation values={values} />
-          </WithSpaceAround>
-          <NavButton disabled={values.isLeft()}>Submit</NavButton>
-        </Stacked>
+          </Stacked>
+        </WrapperDiv>
+
+        <WithSpaceAround>
+          <Validation values={values} />
+        </WithSpaceAround>
+        <NavButton disabled={values.isLeft()}>Submit</NavButton>
+
       </Form>
     </WrapperDiv>
   );

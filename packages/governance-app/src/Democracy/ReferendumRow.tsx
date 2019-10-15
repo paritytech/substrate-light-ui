@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { DerivedReferendumVote, DerivedFees, DerivedBalances } from '@polkadot/api-derive/types';
-import { Index } from '@polkadot/types/interfaces';
+import { BlockNumber, Index } from '@polkadot/types/interfaces';
 import { AppContext, TxQueueContext, validateDerived } from '@substrate/ui-common';
 import { FadedText, Margin, Stacked, SubHeader, Table, VoteNayButton, VoteYayButton, YayNay } from '@substrate/ui-components';
 import BN from 'bn.js';
@@ -50,11 +50,11 @@ export function ReferendumRow (props: IProps) {
   const { idNumber, referendum } = props;
   const { api, keyring } = useContext(AppContext);
   const { enqueue } = useContext(TxQueueContext);
-  const [accountNonce, setNonce] = useState();
-  const [latestBlockNumber, setLatestBlockNumber] = useState();
-  const [fees, setFees] = useState();
-  const [votesForRef, setVotesFor] = useState();
-  const [votingBalance, setVotingBalance] = useState();
+  const [accountNonce, setNonce] = useState<Index>();
+  const [latestBlockNumber, setLatestBlockNumber] = useState<BlockNumber>();
+  const [fees, setFees] = useState<DerivedFees>();
+  const [votesForRef, setVotesFor] = useState<DerivedReferendumVote[]>();
+  const [votingBalance, setVotingBalance] = useState<DerivedBalances>();
   const [votes, dispatch] = useReducer(votesReducer, {
     nayVoteBalance: new BN(0),
     nayVoteCount: 0,
@@ -70,10 +70,10 @@ export function ReferendumRow (props: IProps) {
   useEffect(() => {
     const subscription = combineLatest([
       api.derive.chain.bestNumber(),
-      api.derive.balances.fees<DerivedFees>(),
+      api.derive.balances.fees(),
       api.query.system.accountNonce<Index>(currentAccount),
-      api.derive.democracy.referendumVotesFor<DerivedReferendumVote[]>(idNumber),
-      api.derive.balances.votingBalance<DerivedBalances>(currentAccount)
+      api.derive.democracy.referendumVotesFor(idNumber),
+      api.derive.balances.votingBalance(currentAccount)
     ])
       .subscribe(([latestBlockNumber, fees, nonce, votesForRef, votingBalance]) => {
         setLatestBlockNumber(latestBlockNumber);
@@ -122,7 +122,7 @@ export function ReferendumRow (props: IProps) {
           <b>Balance:</b><FadedText>{votes.totalVoteBalance.toNumber()}</FadedText>
         </Stacked>
       </Table.Cell>
-      <Table.Cell>{referendum.end - latestBlockNumber.toNumber()} Blocks Remaining</Table.Cell>
+      <Table.Cell>{latestBlockNumber ? referendum.end - latestBlockNumber.toNumber() : 0} Blocks Remaining</Table.Cell>
       <Table.Cell>
         <Stacked justifyContent='flex-start'>
           <SubHeader>{referendum.threshold.toString()}</SubHeader>

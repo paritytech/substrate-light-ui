@@ -25,6 +25,27 @@ export const Container = styled(SUIContainer)`
   padding: ${MARGIN_SIZES.large};
 `;
 
+/**
+ * Fixed-width container
+ */
+export const FixedWidthContainer = styled(Container)`
+  @media only screen and (min-width: 320px) and (max-width: 479px){
+    width: 300px;
+  }
+
+  @media only screen and (min-width: 480px) and (max-width: 767px){
+    width: 400px;
+  }
+
+  @media only screen and (min-width: 768px) and (max-width: 991px){
+    width: 700px;
+  }
+
+  @media only screen and (min-width: 992px){
+    width: 950px;
+  }
+`;
+
 export const BoldText = styled.b`
   color: ${substrateLightTheme.black};
 `;
@@ -37,8 +58,6 @@ export const FadedText = styled.p`
 
 export const FlexItem = styled.div<FlexItemProps>`
   flex: ${props => props.flex || 1};
-  margin: ${props => props.margin || 0};
-  padding: ${props => props.padding || 0};
 `;
 
 export const ErrorText = styled.p`
