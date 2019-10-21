@@ -77,14 +77,13 @@ export function BalanceDisplay (props: BalanceDisplayProps = defaultProps) {
   return (
     <Stacked>
       {allBalances
-        ? <DynamicSizeText fontSize={fontSize} fontWeight={fontWeight}>
-
-          <React.Fragment>
-            <span><b>Total Balance:</b> {allBalances.freeBalance && formatBalance(allBalances.freeBalance)}</span>
-            <FadedText>Transactions: {formatNumber(allBalances.accountNonce)} </FadedText>
-          </React.Fragment>
-
-        </DynamicSizeText>
+        ?
+        <React.Fragment>
+          <DynamicSizeText fontSize={fontSize} fontWeight={fontWeight}>
+            <strong>Total Balance:</strong> {allBalances.freeBalance && formatBalance(allBalances.freeBalance)}
+          </DynamicSizeText>
+          <FadedText>Transactions: {formatNumber(allBalances.accountNonce)} </FadedText>
+        </React.Fragment>
         : <Loader active inline />
       }
       {
@@ -92,6 +91,6 @@ export function BalanceDisplay (props: BalanceDisplayProps = defaultProps) {
         && allBalances
         && renderDetailedBalances()
       }
-    </Stacked>
+    </Stacked >
   );
 }
