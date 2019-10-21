@@ -13,6 +13,7 @@ import { DropdownItemProps } from 'semantic-ui-react/dist/commonjs/modules/Dropd
 import styled from 'styled-components';
 
 import { MARGIN_SIZES } from '../constants';
+import { Margin } from '../Margin';
 
 type AddressType = 'accounts' | 'addresses';
 
@@ -23,7 +24,7 @@ export interface InputAddressProps extends DropdownProps {
 }
 
 const DropdownItemText = styled.span`
-  margin-left: 5px;
+  margin-left: ${MARGIN_SIZES.small};
 `;
 
 /**
@@ -33,30 +34,13 @@ function getAddressFromString (allAccounts: SubjectInfo, allAddresses: SubjectIn
   return allAccounts[address] || allAddresses[address];
 }
 
-const StrongWithMargin = styled.strong`
-  margin-right: ${MARGIN_SIZES.medium};
-`;
-
 function renderDropdownItemText (address: SingleAddress) {
   return (
     <DropdownItemText>
-      <StrongWithMargin>{address.json.meta.name}</StrongWithMargin> ({address.json.address.substr(0, 3)}..{address.json.address.slice(-3)})
+      <strong>{address.json.meta.name}</strong>
+      <Margin as='span' right='small' />
+      ({address.json.address.substr(0, 3)}..{address.json.address.slice(-3)})
     </DropdownItemText>
-  );
-}
-
-function renderDropdownText (allAccounts: SubjectInfo, allAddresses: SubjectInfo, address: string) {
-  const currentAddress = getAddressFromString(allAccounts, allAddresses, address);
-
-  if (!allAccounts || !allAddresses || !currentAddress) {
-    return 'Loading...';
-  }
-
-  return (
-    <>
-      <IdentityIcon value={address} size={20} />
-      {renderDropdownItemText(currentAddress)}
-    </>
   );
 }
 
@@ -64,6 +48,8 @@ export function InputAddress (props: InputAddressProps) {
   const { children, onChangeAddress, types = ['accounts'], value, ...rest } = props;
   const [accounts, setAccounts] = useState<SubjectInfo>({});
   const [addresses, setAddresses] = useState<SubjectInfo>({});
+
+  const currentAddress = getAddressFromString(accounts, addresses, value);
 
   useEffect(() => {
     const subscription = combineLatest([
@@ -94,20 +80,22 @@ export function InputAddress (props: InputAddressProps) {
   }
 
   return (
-    <Dropdown
-      labeled
-      // @ts-ignore This works. I think typings need to be updated on the
-      // SUI React side
-      text={renderDropdownText(accounts, addresses, value)}
-      value={value}
-      {...rest}
-    >
-      <Dropdown.Menu>
-        {types.includes('accounts') && Object.keys(accounts).length > 0 && <Dropdown.Header>My accounts</Dropdown.Header>}
-        {types.includes('accounts') && Object.values(accounts).map(renderDropdownItem)}
-        {types.includes('addresses') && Object.keys(addresses).length > 0 && <Dropdown.Header>My addresses</Dropdown.Header>}
-        {types.includes('addresses') && Object.values(addresses).map(renderDropdownItem)}
-      </Dropdown.Menu>
-    </Dropdown>
+    <>
+      <IdentityIcon value={value} size={20} />
+      <Margin right='small' />
+      <Dropdown
+        labeled
+        text={currentAddress ? currentAddress.json.meta.name : 'Loading...'}
+        value={value}
+        {...rest}
+      >
+        <Dropdown.Menu>
+          {types.includes('accounts') && Object.keys(accounts).length > 0 && <Dropdown.Header>My accounts</Dropdown.Header>}
+          {types.includes('accounts') && Object.values(accounts).map(renderDropdownItem)}
+          {types.includes('addresses') && Object.keys(addresses).length > 0 && <Dropdown.Header>My addresses</Dropdown.Header>}
+          {types.includes('addresses') && Object.values(addresses).map(renderDropdownItem)}
+        </Dropdown.Menu>
+      </Dropdown>
+    </>
   );
 }
