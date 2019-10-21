@@ -4,8 +4,9 @@
 
 import { DerivedBalances, DerivedFees } from '@polkadot/api-derive/types';
 import { Index } from '@polkadot/types/interfaces';
-import { AppContext, handler, TxQueueContext, validate, AllExtrinsicData } from '@substrate/ui-common';
+import { AppContext, handler, TxQueueContext, validate, AllExtrinsicData, Errors } from '@substrate/ui-common';
 import { Balance, Form, Input, NavButton, Stacked, SubHeader, WrapperDiv, WithSpaceAround } from '@substrate/ui-components';
+import { Either, left } from 'fp-ts/lib/Either';
 import React, { useContext, useEffect, useState } from 'react';
 import { zip } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -31,9 +32,9 @@ export function SendBalance (props: Props) {
   const [receiver, setReceiver] = useState<string>();
   const [recipientBalance, setRecipientBalance] = useState<DerivedBalances>();
   const [sender, setSender] = useState<string>();
+  const [validationResult, setValidationResult] = useState<Either<Errors, AllExtrinsicData>>(left({ fees: 'fetching fees...' }));
 
   const extrinsic = api.tx.balances.transfer(recipientAddress, amountAsString);
-  const values = validate({ amountAsString, accountNonce, currentBalance, extrinsic, fees, recipientBalance, currentAccount, recipientAddress }, api);
 
   // Subscribe to sender's & receivers's balances, nonce and some fees
   useEffect(() => {
@@ -62,6 +63,12 @@ export function SendBalance (props: Props) {
     return () => subscription.unsubscribe();
   }, [currentAccount, recipientAddress]);
 
+  useEffect(() => {
+    const values = validate({ amountAsString, accountNonce, currentBalance, extrinsic, fees, recipientBalance, currentAccount, recipientAddress }, api);
+
+    setValidationResult(values);
+  }, [amountAsString, accountNonce, currentBalance, fees, recipientBalance, currentAccount, recipientAddress]);
+
   const changeCurrentAccount = (newCurrentAccount: string) => {
     setSender(newCurrentAccount);
   };
@@ -71,9 +78,7 @@ export function SendBalance (props: Props) {
   };
 
   const handleSubmit = () => {
-    const values = validate({ amountAsString, accountNonce, currentBalance, extrinsic, fees, recipientBalance, currentAccount, recipientAddress }, api);
-
-    values.fold(
+    validationResult.fold(
       (error) => { console.error(error); },
       (allExtrinsicData: AllExtrinsicData) => {
         // If everything is correct, then submit the extrinsic
@@ -130,9 +135,9 @@ export function SendBalance (props: Props) {
       </WrapperDiv>
 
       <WithSpaceAround>
-        <Validation values={values} />
+        <Validation values={validationResult} />
       </WithSpaceAround>
-      <NavButton disabled={values.isLeft()}>Submit</NavButton>
+      <NavButton disabled={validationResult.isLeft()}>Submit</NavButton>
     </Form>
   );
 }
