@@ -103,7 +103,7 @@ export function ValidatorsList (props: Props) {
               {renderContent()}
             </Table>
           )
-          : <FlexItem><FadedText>Loading current validator set... <Loader inline active /></FadedText></FlexItem>
+          : <FlexItem><FadedText>Loading current validator set... </FadedText><Loader inline active /></FlexItem>
       }
     </Stacked>
   );

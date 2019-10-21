@@ -45,8 +45,8 @@ export function BalanceDisplay (props: BalanceDisplayProps = defaultProps) {
             </Stacked>
           }
         </span>
-        <span><b>Reserved:</b>{ reservedBalance && <FadedText>{formatBalance(reservedBalance)}</FadedText>}</span>
-        <span><b>Locked:</b>{ lockedBalance && <FadedText>{formatBalance(lockedBalance)}</FadedText>}</span>
+        <span><b>Reserved:</b>{reservedBalance && <FadedText>{formatBalance(reservedBalance)}</FadedText>}</span>
+        <span><b>Locked:</b>{lockedBalance && <FadedText>{formatBalance(lockedBalance)}</FadedText>}</span>
         {renderUnlocking()}
       </React.Fragment>
     );
@@ -76,21 +76,21 @@ export function BalanceDisplay (props: BalanceDisplayProps = defaultProps) {
 
   return (
     <Stacked>
-      <DynamicSizeText fontSize={fontSize} fontWeight={fontWeight}>
-        {
-          allBalances
-            ? <React.Fragment>
-                <span><b>Total Balance:</b> {allBalances.freeBalance && formatBalance(allBalances.freeBalance)}</span>
-                <FadedText>Transactions: {formatNumber(allBalances.accountNonce)} </FadedText>
-              </React.Fragment>
-            : <Loader active inline />
-        }
-      </DynamicSizeText>
+      {allBalances
+        ?
+        <React.Fragment>
+          <DynamicSizeText fontSize={fontSize} fontWeight={fontWeight}>
+            <strong>Total Balance:</strong> {allBalances.freeBalance && formatBalance(allBalances.freeBalance)}
+          </DynamicSizeText>
+          <FadedText>Transactions: {formatNumber(allBalances.accountNonce)} </FadedText>
+        </React.Fragment>
+        : <Loader active inline />
+      }
       {
         detailed
-          && allBalances
-          && renderDetailedBalances()
+        && allBalances
+        && renderDetailedBalances()
       }
-    </Stacked>
+    </Stacked >
   );
 }
