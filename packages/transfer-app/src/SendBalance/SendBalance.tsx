@@ -133,7 +133,6 @@ export function SendBalance (props: Props) {
         <Validation values={values} />
       </WithSpaceAround>
       <NavButton disabled={values.isLeft()}>Submit</NavButton>
-
     </Form>
   );
 }
