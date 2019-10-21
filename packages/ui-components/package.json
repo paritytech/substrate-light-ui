@@ -30,7 +30,7 @@
   "devDependencies": {
     "@storybook/addon-actions": "^v5.2.1",
     "@storybook/addon-knobs": "^v5.2.0-rc.10",
-    "@storybook/addon-links": "^v5.2.0-rc.10",
+    "@storybook/addon-links": "^v5.2.4",
     "@storybook/react": "^v5.2.0-rc.10",
     "@substrate/ui-common": "^0.2.0",
     "@types/react-color": "^3.0.1",
