@@ -8,6 +8,7 @@ import { Governance } from '@substrate/governance-app';
 import { SingleAddress } from '@polkadot/ui-keyring/observable/types';
 import { Transfer } from '@substrate/transfer-app';
 import { AppContext } from '@substrate/ui-common';
+import { Sidebar, Container } from '@substrate/ui-components';
 import { head } from 'fp-ts/lib/Array';
 import { none, Option } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
@@ -24,6 +25,7 @@ import { TxQueueNotifier } from '../TxQueueNotifier';
 
 export function Content () {
   const { api } = useContext(AppContext);
+
   const [defaultAccount, setDefaultAccount] = useState<Option<SingleAddress>>(none);
   const [isOnboarding, setIsOnboarding] = useState();
 
@@ -57,21 +59,22 @@ export function Content () {
         !isOnboarding
           ? defaultAccount
             .map(({ json }) => (
-              <React.Fragment>
-                <Route path={['/accounts/:currentAccount/add', '/addresses/:currentAccount', '/governance/:currentAccount', '/manageAccounts/:currentAccount', '/transfer/:currentAccount']} component={IdentityHeader} />
-                <Switch>
-                  <Redirect exact from='/' to={`/manageAccounts/${json.address}`} />
-                  <Redirect exact from='/governance' to={`/governance/${json.address}`} />
-                  <Redirect exact from='/transfer' to={`/transfer/${json.address}`} />
-                  <Route path='/addresses/:currentAccount' component={ManageAddresses} />
-                  <Route path='/manageAccounts/:currentAccount' component={Accounts} />
-                  <Route path='/accounts/:currentAccount/add/' component={AddAccount} />
-                  <Route path='/governance/:currentAccount' component={Governance} />
-                  <Route path='/transfer/:currentAccount' component={Transfer} />
-                  <Redirect to='/' />
-                </Switch>
-                <TxQueueNotifier />
-              </React.Fragment>
+              <Sidebar.Pushable as={Container} raised>
+                <Sidebar.Pusher>
+                  <Route path={['/accounts/:currentAccount/add', '/addresses/:currentAccount', '/governance/:currentAccount', '/manageAccounts/:currentAccount']} component={IdentityHeader} />
+                  <Switch>
+                    <Redirect exact from='/' to={`/manageAccounts/${json.address}`} />
+                    <Redirect exact from='/governance' to={`/governance/${json.address}`} />
+                    <Route path='/addresses/:currentAccount' component={ManageAddresses} />
+                    <Route path='/manageAccounts/:currentAccount' component={Accounts} />
+                    <Route path='/accounts/:currentAccount/add/' component={AddAccount} />
+                    <Route path='/governance/:currentAccount' component={Governance} />
+                    <Redirect to='/' />
+                  </Switch>
+                  <TxQueueNotifier />
+                  <Transfer currentAccount={json.address} />
+                </Sidebar.Pusher>
+              </Sidebar.Pushable>
             )).getOrElse(renderOnboarding())
           : renderOnboarding()
       }

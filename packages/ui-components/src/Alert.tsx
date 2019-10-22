@@ -42,7 +42,7 @@ export const Alert = styled<any>(SUIMessage)`
     left: 0;
     box-shadow: none;
     color: ${props => props.theme.white};
-    padding-bottom: 3rem;
+    padding-bottom: 2rem;
     padding-left: 4rem;
     padding-right: 6rem;
     position: fixed;

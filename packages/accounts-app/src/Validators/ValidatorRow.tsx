@@ -18,6 +18,7 @@ interface Props {
   validator: AccountId;
 }
 
+// TODO: show validator preferences, i.e. commissions and times reported offline
 export function ValidatorRow (props: Props) {
   const { validator } = props;
   const { api, keyring } = useContext(AppContext);

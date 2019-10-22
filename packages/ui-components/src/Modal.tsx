@@ -10,11 +10,19 @@ import { Header, FadedText, SubHeader } from './Shared.styles';
 
 type ModalProps = SUIModalProps;
 
+const StyledModal = styled(SUIModal)`
+  &&& {
+    position: ${props => props.position || 'relative'};
+    bottom: ${props => props.bottom || undefined};
+    right: ${props => props.right || undefined};
+  }
+`;
+
 const StyledContent = styled(SUIModal.Content)`
   &&& {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: ${props => props.alignItems || 'center'};
+    justify-content: ${props => props.justifyContent || 'center'};
     min-width: 100%;
   }
 `;
@@ -26,7 +34,7 @@ const StyledActions = styled(StyledContent)`
 // FIXME: this component is reused here and in @polkadot/apps - should be moved to @polkadot/ui
 export function Modal (props: ModalProps) {
   return (
-    <SUIModal {...props} />
+    <StyledModal {...props} />
   );
 }
 

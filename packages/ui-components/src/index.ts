@@ -13,6 +13,7 @@ export {
   Menu, MenuProps,
   Message, MessageProps,
   Segment, SegmentProps,
+  Sidebar, SidebarProps,
   Step, StepProps,
   Table, TableProps,
   Transition, TransitionGroup, TransitionProps, TransitionGroupProps, TransitionPropDuration
@@ -27,6 +28,7 @@ export * from './Card';
 export * from './Circle';
 export * from './CopyButton';
 export * from './constants';
+export * from './Fab';
 export * from './FlexSegment';
 export * from './globalStyle';
 export * from './Icon';

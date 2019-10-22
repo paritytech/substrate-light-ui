@@ -4,51 +4,46 @@
 
 import { DerivedBalances, DerivedFees } from '@polkadot/api-derive/types';
 import { Index } from '@polkadot/types/interfaces';
-import { AppContext, handler, TxQueueContext, validate, AllExtrinsicData } from '@substrate/ui-common';
-import { Balance, Form, Input, NavButton, StackedHorizontal, SubHeader } from '@substrate/ui-components';
+import { AppContext, handler, TxQueueContext, validate, AllExtrinsicData, Errors } from '@substrate/ui-common';
+import { Balance, Form, Input, NavButton, Stacked, SubHeader, WrapperDiv, WithSpaceAround } from '@substrate/ui-components';
+import { Either, left } from 'fp-ts/lib/Either';
 import React, { useContext, useEffect, useState } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
 import { zip } from 'rxjs';
 import { take } from 'rxjs/operators';
 
-import { CenterDiv, InputAddress, LeftDiv, RightDiv } from '../Transfer.styles';
-import { MatchParams } from '../types';
+import { InputAddress } from '../Transfer.styles';
 import { Validation } from './Validation';
 
-interface SendMatchParams extends MatchParams {
-  recipientAddress?: string;
+interface Props {
+  currentAccount: string;
+  recipientAddress: string;
 }
-
-interface Props extends RouteComponentProps<SendMatchParams> { }
 
 export function SendBalance (props: Props) {
   const { api, keyring } = useContext(AppContext);
   const { enqueue } = useContext(TxQueueContext);
 
-  const { history, match: { params: { currentAccount, recipientAddress } } } = props;
+  const { currentAccount, recipientAddress } = props;
 
   const [amountAsString, setAmountAsString] = useState('');
   const [accountNonce, setAccountNonce] = useState<Index>();
   const [currentBalance, setCurrentBalance] = useState<DerivedBalances>();
   const [fees, setFees] = useState<DerivedFees>();
+  const [receiver, setReceiver] = useState<string>();
   const [recipientBalance, setRecipientBalance] = useState<DerivedBalances>();
+  const [sender, setSender] = useState<string>();
+  const [validationResult, setValidationResult] = useState<Either<Errors, AllExtrinsicData>>(left({ fees: 'fetching fees...' }));
 
   const extrinsic = api.tx.balances.transfer(recipientAddress, amountAsString);
-  const values = validate({ amountAsString, accountNonce, currentBalance, extrinsic, fees, recipientBalance, currentAccount, recipientAddress }, api);
-
-  const changeCurrentAccount = (newCurrentAccount: string) => {
-    history.push(`/transfer/${newCurrentAccount}/${recipientAddress}`);
-  };
-
-  const changeRecipientAddress = (newRecipientAddress: string) => {
-    history.push(`/transfer/${currentAccount}/${newRecipientAddress}`);
-  };
 
   // Subscribe to sender's & receivers's balances, nonce and some fees
   useEffect(() => {
     if (!recipientAddress) {
       return;
     }
+
+    setSender(currentAccount);
+    setReceiver(recipientAddress);
 
     const subscription = zip(
       api.derive.balances.fees(),
@@ -68,10 +63,22 @@ export function SendBalance (props: Props) {
     return () => subscription.unsubscribe();
   }, [currentAccount, recipientAddress]);
 
-  const handleSubmit = () => {
+  useEffect(() => {
     const values = validate({ amountAsString, accountNonce, currentBalance, extrinsic, fees, recipientBalance, currentAccount, recipientAddress }, api);
 
-    values.fold(
+    setValidationResult(values);
+  }, [amountAsString, accountNonce, currentBalance, fees, recipientBalance, currentAccount, recipientAddress]);
+
+  const changeCurrentAccount = (newCurrentAccount: string) => {
+    setSender(newCurrentAccount);
+  };
+
+  const changeRecipientAddress = (newRecipientAddress: string) => {
+    setReceiver(newRecipientAddress);
+  };
+
+  const handleSubmit = () => {
+    validationResult.fold(
       (error) => { console.error(error); },
       (allExtrinsicData: AllExtrinsicData) => {
         // If everything is correct, then submit the extrinsic
@@ -83,53 +90,54 @@ export function SendBalance (props: Props) {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <StackedHorizontal alignItems='flex-start'>
-        <LeftDiv>
+      <WrapperDiv>
+        <Stacked alignItems='flex-start' justifyContent='flex-start'>
           <SubHeader textAlign='left'>Sender Account:</SubHeader>
           <InputAddress
             isDisabled
             onChangeAddress={changeCurrentAccount}
-            value={currentAccount}
+            type='account'
+            value={sender}
             withLabel={false}
           />
           <Balance address={currentAccount} />
-        </LeftDiv>
+        </Stacked>
+      </WrapperDiv>
 
-        <CenterDiv>
+      <WrapperDiv>
+        <Stacked alignItems='flex-start' justifyContent='flex-start'>
           <SubHeader textAlign='left'>Amount:</SubHeader>
           <Input
             fluid
             label='UNIT'
             labelPosition='right'
             min={0}
-            onChangeAddress={handler(setAmountAsString)}
+            onChange={handler(setAmountAsString)}
             placeholder='e.g. 1.00'
             type='number'
             value={amountAsString}
           />
-        </CenterDiv>
+        </Stacked>
+      </WrapperDiv>
 
-        <RightDiv>
+      <WrapperDiv>
+        <Stacked alignItems='flex-start' justifyContent='flex-start'>
           <SubHeader textAlign='left'>Recipient Address:</SubHeader>
           <InputAddress
             label={undefined}
             onChangeAddress={changeRecipientAddress}
-            types={['accounts', 'addresses']}
-            value={recipientAddress}
+            type='all'
+            value={receiver}
             withLabel={false}
           />
           {recipientAddress && <Balance address={recipientAddress} />}
-        </RightDiv>
-      </StackedHorizontal>
-      <StackedHorizontal>
-        <LeftDiv />
-        <CenterDiv>
-          <Validation values={values} />
-        </CenterDiv>
-        <RightDiv>
-          <NavButton disabled={values.isLeft()}>Submit</NavButton>
-        </RightDiv>
-      </StackedHorizontal>
+        </Stacked>
+      </WrapperDiv>
+
+      <WithSpaceAround>
+        <Validation values={validationResult} />
+      </WithSpaceAround>
+      <NavButton disabled={validationResult.isLeft()}>Submit</NavButton>
     </Form>
   );
 }
