@@ -7,7 +7,7 @@ import { useDropzone } from 'react-dropzone';
 import styled from 'styled-components';
 
 type Props = {
-  onChange?: (data: string | null) => void
+  onChange?: (data: string | null) => void;
 };
 
 const defaultAccept = ['application/json, text/plain'].join(',');

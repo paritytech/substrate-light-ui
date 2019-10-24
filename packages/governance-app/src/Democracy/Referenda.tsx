@@ -36,8 +36,8 @@ export function Referenda () {
         const referendum = _referendum.unwrapOr(null);
 
         return (
-          referendum
-          && <ReferendumRow idNumber={referendum.index} key={referendum.index.toString()} referendum={referendum} />
+          referendum &&
+          <ReferendumRow idNumber={referendum.index} key={referendum.index.toString()} referendum={referendum} />
         );
       })
     );

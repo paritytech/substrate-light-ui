@@ -13,7 +13,6 @@ export function CouncilCandidates () {
   const [councilCandidates, setCouncilCandidates] = useState();
 
   useEffect(() => {
-
     const subscription = api.query.elections.candidates<Vec<AccountId>>()
       .subscribe((councilCandidates) => {
         setCouncilCandidates(councilCandidates);
@@ -45,7 +44,7 @@ export function CouncilCandidates () {
           target='_blank'
         >
           Click here to learn more about the Council
-          </a>
+        </a>
       </Stacked>
     );
   }

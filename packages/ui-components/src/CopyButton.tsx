@@ -10,7 +10,7 @@ import { Icon } from './Icon';
 import { Stacked } from './Shared.styles';
 
 type CopyButtonProps = {
-  value?: string
+  value?: string;
 };
 
 const StyledCopyButton = styled.button`

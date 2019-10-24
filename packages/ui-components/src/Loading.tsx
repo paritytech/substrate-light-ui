@@ -6,10 +6,10 @@ import React from 'react';
 import { Dimmer, Loader } from 'semantic-ui-react';
 
 type LoadingProps = {
-  active: boolean,
-  children?: React.ReactNode | string,
-  inline?: boolean,
-  inverted?: boolean
+  active: boolean;
+  children?: React.ReactNode | string;
+  inline?: boolean;
+  inverted?: boolean;
 };
 
 export function Loading (props: LoadingProps) {

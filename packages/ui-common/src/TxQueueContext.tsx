@@ -39,7 +39,7 @@ export interface PendingExtrinsic {
     isFinalized: boolean; // comes from node
     isDropped: boolean; // comes from node
     isPending: boolean; // created for light-ui
-    isUsurped: boolean;  // comes from node
+    isUsurped: boolean; // comes from node
   };
   unsubscribe: () => void;
 }
@@ -67,7 +67,6 @@ export const TxQueueContext = createContext({
 });
 
 export function TxQueueContextProvider (props: Props) {
-
   const [txCounter, setTxCounter] = useState(0); // Number of tx sent in total
   const [txQueue, setTxQueue] = useState([] as PendingExtrinsic[]);
 
@@ -151,7 +150,8 @@ export function TxQueueContextProvider (props: Props) {
           l.log(`Extrinsic #${extrinsicId} has new status:`, txResult);
 
           replaceTx(extrinsicId, {
-            ...pendingExtrinsic, status: {
+            ...pendingExtrinsic,
+            status: {
               isAskingForConfirm: false,
               isDropped,
               isFinalized,
@@ -194,7 +194,7 @@ export function TxQueueContextProvider (props: Props) {
    * Clear the txQueue.
    */
   const clear = () => {
-    let msg: string[] = [];
+    const msg: string[] = [];
     txQueue.forEach(({ extrinsic: { method }, unsubscribe }) => {
       msg.push(`${method.sectionName}.${method.methodName}`);
       unsubscribe();

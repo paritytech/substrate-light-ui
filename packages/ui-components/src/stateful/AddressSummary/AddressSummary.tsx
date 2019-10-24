@@ -14,18 +14,18 @@ import { OrientationType, SizeType } from './types';
 import { FlexJustify, FontSize } from '../../types';
 
 type AddressSummaryProps = {
-  address?: string, // TODO support AccountId
-  bondingPair?: string, // TODO support AccountId
-  detailed?: boolean,
-  isNominator?: boolean,
-  isValidator?: boolean,
-  justifyContent?: FlexJustify,
-  name?: string,
-  noPlaceholderName?: boolean,
-  noBalance?: boolean,
-  orientation?: OrientationType,
-  type?: 'stash' | 'controller',
-  size?: SizeType,
+  address?: string; // TODO support AccountId
+  bondingPair?: string; // TODO support AccountId
+  detailed?: boolean;
+  isNominator?: boolean;
+  isValidator?: boolean;
+  justifyContent?: FlexJustify;
+  name?: string;
+  noPlaceholderName?: boolean;
+  noBalance?: boolean;
+  orientation?: OrientationType;
+  type?: 'stash' | 'controller';
+  size?: SizeType;
   withShortAddress?: boolean;
 };
 
@@ -42,21 +42,21 @@ export function AddressSummary (props: AddressSummaryProps) {
   return fromNullable(address)
     .map((address: string) => {
       return orientation === 'vertical'
-          ? (
-            <Stacked justifyContent={justifyContent}>
-              {renderIcon(address, size)}
+        ? (
+          <Stacked justifyContent={justifyContent}>
+            {renderIcon(address, size)}
+            {renderDetails(address, props)}
+          </Stacked>
+        )
+        : (
+          <StackedHorizontal justifyContent={justifyContent}>
+            {renderIcon(address, size)}
+            <Margin left />
+            <Stacked>
               {renderDetails(address, props)}
             </Stacked>
-          )
-          : (
-            <StackedHorizontal justifyContent={justifyContent}>
-              {renderIcon(address, size)}
-              <Margin left />
-              <Stacked>
-                {renderDetails(address, props)}
-              </Stacked>
-            </StackedHorizontal>
-          );
+          </StackedHorizontal>
+        );
     })
     .getOrElse(<div>No Address Provided</div>);
 }

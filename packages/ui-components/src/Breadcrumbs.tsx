@@ -22,22 +22,22 @@ export function Breadcrumbs (props: BreadcrumbProps) {
   return (
     <SUIBreadcrumb size={size}>
       <StackedHorizontal>
-      {
-        sectionLabels.map((label, idx) => {
-          const active = activeLabel === label;
-          return (
-            <Margin left='big'>
-              <SUIBreadcrumb.Section active={active} onClick={onClick}>
-                <Stacked>
-                  <Circle fill={substrateLightTheme.lightBlue1} label={idx.toString()} radius={32} withShadow={active}/>
-                  <Margin top />
-                  <FadedText>{label}</FadedText>
-                </Stacked>
-              </SUIBreadcrumb.Section>
-            </Margin>
-          );
-        })
-      }
+        {
+          sectionLabels.map((label, idx) => {
+            const active = activeLabel === label;
+            return (
+              <Margin left='big'>
+                <SUIBreadcrumb.Section active={active} onClick={onClick}>
+                  <Stacked>
+                    <Circle fill={substrateLightTheme.lightBlue1} label={idx.toString()} radius={32} withShadow={active}/>
+                    <Margin top />
+                    <FadedText>{label}</FadedText>
+                  </Stacked>
+                </SUIBreadcrumb.Section>
+              </Margin>
+            );
+          })
+        }
       </StackedHorizontal>
     </SUIBreadcrumb>
   );

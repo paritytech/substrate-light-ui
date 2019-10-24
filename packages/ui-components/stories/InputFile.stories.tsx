@@ -19,4 +19,4 @@ storiesOf('Input File', module)
   .add('with props', () => (
     <InputFile
       onChange={action('file dropped')} />
-    ));
+  ));

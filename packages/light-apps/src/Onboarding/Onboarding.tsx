@@ -37,8 +37,8 @@ export function Onboarding (props: Props) {
   const navToBreadcrumb = (event: React.MouseEvent<HTMLElement>, data: any) => {
     // @ts-ignore
     // FIXME: apparently type ChildNode from MouseEvent does not have innerText, but in practice it does. Maybe needs to be more specific than React.MouseEvent<HTMLElement>?
-    let text = event.currentTarget.childNodes[0].innerText;
-    let to = text.slice(2).replace(/\r?\n|\r/, '').trim();
+    const text = event.currentTarget.childNodes[0].innerText;
+    const to = text.slice(2).replace(/\r?\n|\r/, '').trim();
 
     history.replace(`/onboarding/${to}`);
   };
@@ -52,7 +52,7 @@ export function Onboarding (props: Props) {
         open={showConfirmationDialog}
         size='mini'
         trigger={<StyledLinkButton onClick={confirmSkipOnboarding}>Skip Onboarding</StyledLinkButton>
-      }
+        }
       >
         <Stacked>
           <Header>Are you sure?</Header>
@@ -84,7 +84,7 @@ export function Onboarding (props: Props) {
           <Breadcrumbs activeLabel={activeOnboardingStep.toLowerCase()} onClick={navToBreadcrumb} sectionLabels={ONBOARDING_STEPS} size='mini' />
         </Stacked>
         <Switch>
-          <Route path={`/onboarding/welcome`} component={Welcome} />
+          <Route path={'/onboarding/welcome'} component={Welcome} />
           <Route path={'/onboarding/stash'} component={AccountsSetup} />
           <Route path={'/onboarding/controller'} component={AccountsSetup} />
           <Route path={'/onboarding/claim'} component={Claim} />

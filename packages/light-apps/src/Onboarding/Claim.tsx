@@ -54,8 +54,8 @@ export function Claim (props: Props) {
       )[0];
 
       const _messageToSign = fromNullable(stash)
-                            .map(stash => `Pay KSMs to the Kusama account: ${stash.json.address}`)
-                            .getOrElse('');
+        .map(stash => `Pay KSMs to the Kusama account: ${stash.json.address}`)
+        .getOrElse('');
 
       setMessageToSign(_messageToSign);
     });
@@ -130,12 +130,12 @@ export function Claim (props: Props) {
     return (
       <React.Fragment>
         <StyledLinkButton onClick={() => setRenderQr(!renderQr)}>{renderQr ? 'Raw' : 'QR'} </StyledLinkButton>
-          {
-            renderQr
-              ? renderWithQr()
-              : renderWithRaw()
-          }
-          <ErrorText>{ claimError }</ErrorText>
+        {
+          renderQr
+            ? renderWithQr()
+            : renderWithRaw()
+        }
+        <ErrorText>{ claimError }</ErrorText>
       </React.Fragment>
     );
   };
@@ -151,21 +151,21 @@ export function Claim (props: Props) {
             <FlexSegment width={'100%'}>
               {
                 messageToSign && (
-                    <React.Fragment>
-                      <BoldText>{messageToSign}</BoldText>
-                      <CopyButton value={messageToSign} />
-                    </React.Fragment>
-                  )
+                  <React.Fragment>
+                    <BoldText>{messageToSign}</BoldText>
+                    <CopyButton value={messageToSign} />
+                  </React.Fragment>
+                )
               }
             </FlexSegment>
           </Card.Content>
         </Card>
         <Card>
           <Card.Header><Header>Transaction Signature</Header></Card.Header>
-            <Card.Content>
-              <SubHeader>Paste the resulting signature object from the above transaction below:</SubHeader>
-              <TextArea />
-            </Card.Content>
+          <Card.Content>
+            <SubHeader>Paste the resulting signature object from the above transaction below:</SubHeader>
+            <TextArea />
+          </Card.Content>
         </Card>
       </Card.Group>
     );
@@ -178,9 +178,9 @@ export function Claim (props: Props) {
           {
             !ethereumAddress
               ? <Stacked>
-                  <FadedText> Scan your Ethereum account address below to unlock it. </FadedText>
-                  <QrSigner scan={true} onScan={handleSetEthereumAddress} />
-                </Stacked>
+                <FadedText> Scan your Ethereum account address below to unlock it. </FadedText>
+                <QrSigner scan={true} onScan={handleSetEthereumAddress} />
+              </Stacked>
               : <React.Fragment>
                 {
                   messageToSign &&
@@ -196,7 +196,7 @@ export function Claim (props: Props) {
                       }
                     </React.Fragment>
                 }
-                </React.Fragment>
+              </React.Fragment>
           }
           <StyledLinkButton onClick={() => setScanSignature(!scanSignature)}>{ scanSignature ? 'Show QR' : 'Scan Signature' }</StyledLinkButton>
         </Stacked>

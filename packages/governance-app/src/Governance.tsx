@@ -50,16 +50,16 @@ export function Governance (props: IProps) {
   }, []);
 
   const navToDemocracy = () => {
-    let { history, location, match } = props;
-    let currentPath = location.pathname.split('/')[3];
+    const { history, location, match } = props;
+    const currentPath = location.pathname.split('/')[3];
     if (currentPath !== 'democracy') {
       history.push(`/governance/${match.params.currentAccount}/democracy`);
     }
   };
 
   const navToCouncil = () => {
-    let { history, location, match } = props;
-    let currentPath = location.pathname.split('/')[3];
+    const { history, location, match } = props;
+    const currentPath = location.pathname.split('/')[3];
     if (currentPath !== 'council') {
       history.push(`/governance/${match.params.currentAccount}/council`);
     }

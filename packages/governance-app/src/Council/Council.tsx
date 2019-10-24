@@ -13,7 +13,6 @@ import { CouncilSummary } from './CouncilSummary';
 interface IProps extends RouteComponentProps {}
 
 export function Council (props: IProps) {
-
   return (
     <Grid>
       <Margin top />

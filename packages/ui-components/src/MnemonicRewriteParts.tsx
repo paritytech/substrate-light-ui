@@ -33,27 +33,27 @@ export function MnemonicRewriteParts (props: Props) {
 
   return (
     <WrapperDiv margin='0' padding='0'>
-        <StackedHorizontal>
-          <Stacked>
-            <Labelled label={randomFourWords[0][0]} withLabel>
-              <Input onChange={handleSetFirstWord} value={firstWord} />
-            </Labelled>
-            <Margin top />
-            <Labelled label={randomFourWords[1][0]} withLabel>
-              <Input onChange={handleSetSecondWord} value={secondWord} />
-            </Labelled>
-          </Stacked>
+      <StackedHorizontal>
+        <Stacked>
+          <Labelled label={randomFourWords[0][0]} withLabel>
+            <Input onChange={handleSetFirstWord} value={firstWord} />
+          </Labelled>
+          <Margin top />
+          <Labelled label={randomFourWords[1][0]} withLabel>
+            <Input onChange={handleSetSecondWord} value={secondWord} />
+          </Labelled>
+        </Stacked>
 
-          <Stacked>
-            <Labelled label={randomFourWords[2][0]} withLabel>
-              <Input onChange={handleSetThirdWord} value={thirdWord} />
-            </Labelled>
-            <Margin top />
-            <Labelled label={randomFourWords[3][0]} withLabel>
-              <Input onChange={handleSetFourthWord} value={fourthWord} />
-            </Labelled>
-          </Stacked>
-        </StackedHorizontal>
-      </WrapperDiv>
+        <Stacked>
+          <Labelled label={randomFourWords[2][0]} withLabel>
+            <Input onChange={handleSetThirdWord} value={thirdWord} />
+          </Labelled>
+          <Margin top />
+          <Labelled label={randomFourWords[3][0]} withLabel>
+            <Input onChange={handleSetFourthWord} value={fourthWord} />
+          </Labelled>
+        </Stacked>
+      </StackedHorizontal>
+    </WrapperDiv>
   );
 }

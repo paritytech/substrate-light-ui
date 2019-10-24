@@ -33,13 +33,13 @@ const votesReducer = (state: any, action: any) => {
 
         return state;
       },
-        {
-          nayVoteBalance: new BN(0),
-          nayVoteCount: 0,
-          yayVoteBalance: new BN(0),
-          yayVoteCount: 0,
-          totalVoteBalance: new BN(0)
-        });
+      {
+        nayVoteBalance: new BN(0),
+        nayVoteCount: 0,
+        yayVoteBalance: new BN(0),
+        yayVoteCount: 0,
+        totalVoteBalance: new BN(0)
+      });
       return newState;
     default:
       throw new Error();

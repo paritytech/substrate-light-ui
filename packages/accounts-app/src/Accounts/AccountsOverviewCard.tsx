@@ -151,7 +151,7 @@ export function AccountsOverviewCard (props: Props) {
                     <StyledLinkButton onClick={handleForget}>
                       <Icon name='remove' />
                       Forget
-                      </StyledLinkButton>
+                    </StyledLinkButton>
                     <StyledLinkButton onClick={handleBackup}>
                       <Icon name='arrow alternate circle down' />
                       Backup

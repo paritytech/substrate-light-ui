@@ -24,6 +24,6 @@ storiesOf('Breadcrumbs', module)
   .addDecorator(withTheme)
   .add('3 sections', () => (
     <WrapperDiv width='100%'>
-        <Breadcrumbs activeLabel={select('activeLabel', sectionLabels, 'Welcome')} onClick={action('clicked')} sectionLabels={sectionLabels} />
+      <Breadcrumbs activeLabel={select('activeLabel', sectionLabels, 'Welcome')} onClick={action('clicked')} sectionLabels={sectionLabels} />
     </WrapperDiv>
   ));

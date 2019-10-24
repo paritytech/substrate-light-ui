@@ -35,7 +35,7 @@ export function App () {
                 </React.Fragment>
                 : <Loading active>
                   Connecting to the node...
-                  </Loading>
+                </Loading>
               }
             </AppContext.Consumer>
             <Alerts />

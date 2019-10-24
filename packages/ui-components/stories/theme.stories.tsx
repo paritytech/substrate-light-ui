@@ -6,10 +6,10 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { select, text, withKnobs } from '@storybook/addon-knobs';
 
-import { Card, Container, DynamicSizeText, ErrorText, FadedText, FONT_SIZES, FontSize,Header, SubHeader, SuccessText, substrateLightTheme } from '../src';
+import { Card, Container, DynamicSizeText, ErrorText, FadedText, FONT_SIZES, FontSize, Header, SubHeader, SuccessText, substrateLightTheme } from '../src';
 
 const colorPaletteCard = (color: string, hex: string) => (
-  <Card style={{ flex: `1 0 calc(33.333% - 20px)`, maxWidth: `calc(33.333% - 20px)` }}>
+  <Card style={{ flex: '1 0 calc(33.333% - 20px)', maxWidth: 'calc(33.333% - 20px)' }}>
     <div style={{ background: hex, width: '100%', height: '85%' }} />
     <Card.Content style={{ display: 'flex column', textAlign: 'center' }}>
       <Card.Header> {color} </Card.Header>

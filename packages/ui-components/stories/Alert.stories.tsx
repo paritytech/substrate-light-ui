@@ -30,7 +30,7 @@ storiesOf('Alerts', module)
       warning={false}
     >
     For your information: this is an information
-  </Alert>
+    </Alert>
   ))
   .add('Success', () => (
     <Alert

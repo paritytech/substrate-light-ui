@@ -17,9 +17,9 @@ export function CouncilMembers () {
 
   useEffect(() => {
     const subscription = api.query.council.members<Vec<AccountId>>()
-        .subscribe((activeCouncil) => {
-          setActiveCouncil(activeCouncil);
-        });
+      .subscribe((activeCouncil) => {
+        setActiveCouncil(activeCouncil);
+      });
 
     return () => subscription.unsubscribe();
   }, []);
@@ -35,16 +35,16 @@ export function CouncilMembers () {
             () => keyring.getAccount(accountId),
             (e: any) => new Error(e.message)
           )
-          .chain((pair) => tryCatch2v(
-            () => {
-              if (!isUndefined(pair)) {
-                name = pair.meta.name;
-              }
-              name = '';
-              throw new Error('could not get meta from pair');
-            },
-            (e) => e as Error
-          ));
+            .chain((pair) => tryCatch2v(
+              () => {
+                if (!isUndefined(pair)) {
+                  name = pair.meta.name;
+                }
+                name = '';
+                throw new Error('could not get meta from pair');
+              },
+              (e) => e as Error
+            ));
 
           return (
             <Card height='120px' key={accountId.toString()}>

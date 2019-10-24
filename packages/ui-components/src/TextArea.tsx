@@ -7,10 +7,10 @@ import { Form } from 'semantic-ui-react';
 import SUITextArea from 'semantic-ui-react/dist/commonjs/addons/TextArea';
 
 type TextAreaProps = {
-  placeholder?: string,
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void,
-  rows?: number,
-  value?: string
+  placeholder?: string;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  rows?: number;
+  value?: string;
 };
 
 export function TextArea (props: TextAreaProps) {

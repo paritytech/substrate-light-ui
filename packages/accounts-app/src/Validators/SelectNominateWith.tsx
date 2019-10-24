@@ -65,8 +65,8 @@ export function SelectNominateWith (props: Props) {
             />
           </Card.Content>
           {
-            bondingPair
-            && (
+            bondingPair &&
+            (
               <Card.Content extra>
                 <StackedHorizontal>
                   <FadedText>Stash:</FadedText>

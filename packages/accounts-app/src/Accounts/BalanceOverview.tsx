@@ -56,7 +56,7 @@ export function BalanceOverview (props: Pick<Props, Exclude<keyof Props, keyof '
   }, [controllerBalance, controllerId, controllerNonce, derivedBalanceFees]);
 
   const _validate = (): Either<Errors, AllExtrinsicData> => {
-    let errors: Errors = [];
+    const errors: Errors = [];
 
     if (!controllerNonce) { errors.push('Calculating account nonce...'); }
 

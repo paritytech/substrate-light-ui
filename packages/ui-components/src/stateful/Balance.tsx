@@ -21,7 +21,7 @@ export function Balance (props: BalanceProps) {
   const [allStaking, setAllStaking] = useState<DerivedStaking>();
 
   useEffect(() => {
-    let balanceSub = combineLatest([
+    const balanceSub = combineLatest([
       api.derive.balances.all(address),
       api.derive.staking.info(address)
     ]).subscribe(([allBalances, allStaking]) => {

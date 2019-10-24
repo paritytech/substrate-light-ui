@@ -38,11 +38,11 @@ export function AccountOverviewDetailed (props: Props) {
     return (
       <Card>
         <Card.Content>
-        {
-          fromNullable(stakingInfo)
-            .map((stakingInfo) => <BalanceOverview history={history} {...stakingInfo} />)
-            .getOrElse(<Loader active inline />)
-        }
+          {
+            fromNullable(stakingInfo)
+              .map((stakingInfo) => <BalanceOverview history={history} {...stakingInfo} />)
+              .getOrElse(<Loader active inline />)
+          }
         </Card.Content>
       </Card>
     );
@@ -64,11 +64,11 @@ export function AccountOverviewDetailed (props: Props) {
                     size='small'
                   />
                 ))
-              .getOrElse(
-                <Stacked>
+                .getOrElse(
+                  <Stacked>
                     Not Nominating Anyone.
                     <StyledNavLink to={`/manageAccounts/${currentAccount}/validators`}>View Validators</StyledNavLink>
-                </Stacked>)
+                  </Stacked>)
             }
           </WithSpace>
           <WithSpace>

@@ -64,24 +64,24 @@ export function AccountsSetup (props: Props) {
                   )
                   : 'Your Controller Account will be for day to day needs, such as paying tx fees, and nominating new validators.'
               }
-              </DynamicSizeText>
+            </DynamicSizeText>
           </FadedText>
           {
             (
-              isReadyForNextStep()
-                && (
+              isReadyForNextStep() &&
+                (
                   <WithSpaceAround>
                     <Stacked justifyContent='space-around'>
                       <StyledNavButton
                         onClick={ whichAccount === 'stash'
-                              ? () => navToCreateController()
-                              : () => navToClaim()
+                          ? () => navToCreateController()
+                          : () => navToClaim()
                         }>
-                          {
-                            whichAccount === 'stash'
-                              ? 'Create Controller'
-                              : 'Claim KSM'
-                          }
+                        {
+                          whichAccount === 'stash'
+                            ? 'Create Controller'
+                            : 'Claim KSM'
+                        }
                       </StyledNavButton>
                     </Stacked>
                   </WithSpaceAround>
@@ -107,16 +107,16 @@ export function AccountsSetup (props: Props) {
             <SubHeader> Good Job! </SubHeader>
             <FadedText>You've created your first Stash account.</FadedText>
             <WithSpaceAround>
-            {
-              keyringAccounts.filter((account: CreateResult) => {
-                return fromNullable(account.json.meta.tags)
-                  .map(tags => tags.map((tag: string) => tag.toLowerCase()))
-                  .map(lowercaseTags => lowercaseTags.includes('stash'))
-                  .getOrElse(undefined);
-              }).map((account: CreateResult) =>
-                <AddressSummary address={account.json.address} name={account.json.meta.name} size='small' />
-              )
-            }
+              {
+                keyringAccounts.filter((account: CreateResult) => {
+                  return fromNullable(account.json.meta.tags)
+                    .map(tags => tags.map((tag: string) => tag.toLowerCase()))
+                    .map(lowercaseTags => lowercaseTags.includes('stash'))
+                    .getOrElse(undefined);
+                }).map((account: CreateResult) =>
+                  <AddressSummary address={account.json.address} name={account.json.meta.name} size='small' />
+                )
+              }
             </WithSpaceAround>
           </Stacked>
         );
@@ -130,9 +130,9 @@ export function AccountsSetup (props: Props) {
                 <SubHeader>Stash:</SubHeader>
                 {
                   keyringAccounts.filter((account: CreateResult) => account.json.meta.tags && account.json.meta.tags.includes('stash'))
-                                  .map((account: CreateResult) =>
-                                    <AddressSummary address={account.json.address} name={account.json.meta.name} size='small' />
-                                  )
+                    .map((account: CreateResult) =>
+                      <AddressSummary address={account.json.address} name={account.json.meta.name} size='small' />
+                    )
                 }
               </Stacked>
 
@@ -140,9 +140,9 @@ export function AccountsSetup (props: Props) {
                 <SubHeader>Controller:</SubHeader>
                 {
                   keyringAccounts.filter((account: CreateResult) => account.json.meta.tags && account.json.meta.tags.includes('controller'))
-                                  .map((account: CreateResult) =>
-                                    <AddressSummary address={account.json.address} name={account.json.meta.name} size='small' />
-                                  )
+                    .map((account: CreateResult) =>
+                      <AddressSummary address={account.json.address} name={account.json.meta.name} size='small' />
+                    )
                 }
               </Stacked>
             </StackedHorizontal>

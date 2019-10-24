@@ -12,12 +12,12 @@ import { DynamicSizeText, FadedText, Stacked, StyledLinkButton } from './Shared.
 import { Icon } from './index';
 
 export type BalanceDisplayProps = {
-  allBalances?: DerivedBalances,
-  allStaking?: DerivedStaking,
-  detailed?: boolean,
-  fontSize?: FontSize,
-  fontWeight?: FontWeight,
-  handleRedeem?: (address: string) => void
+  allBalances?: DerivedBalances;
+  allStaking?: DerivedStaking;
+  detailed?: boolean;
+  fontSize?: FontSize;
+  fontWeight?: FontWeight;
+  handleRedeem?: (address: string) => void;
 };
 
 const defaultProps = {
@@ -77,8 +77,7 @@ export function BalanceDisplay (props: BalanceDisplayProps = defaultProps) {
   return (
     <Stacked>
       {allBalances
-        ?
-        <React.Fragment>
+        ? <React.Fragment>
           <DynamicSizeText fontSize={fontSize} fontWeight={fontWeight}>
             <strong>Total Balance:</strong> {allBalances.freeBalance && formatBalance(allBalances.freeBalance)}
           </DynamicSizeText>
@@ -87,9 +86,9 @@ export function BalanceDisplay (props: BalanceDisplayProps = defaultProps) {
         : <Loader active inline />
       }
       {
-        detailed
-        && allBalances
-        && renderDetailedBalances()
+        detailed &&
+        allBalances &&
+        renderDetailedBalances()
       }
     </Stacked >
   );

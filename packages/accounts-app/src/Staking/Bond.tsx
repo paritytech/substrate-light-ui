@@ -29,8 +29,8 @@ interface Props extends RouteComponentProps<MatchParams> {
 }
 
 type RewardDestinationOption = {
-  text?: string,
-  value?: number
+  text?: string;
+  value?: number;
 };
 
 export const rewardDestinationOptions = [
@@ -63,7 +63,7 @@ export function Bond (props: Props) {
   }
 
   const _validate = (): Either<Errors, AllExtrinsicData> => {
-    let errors: Errors = [];
+    const errors: Errors = [];
 
     if (bond.lte(new BN(0))) {
       errors.push('Bond must be greater than zero!');

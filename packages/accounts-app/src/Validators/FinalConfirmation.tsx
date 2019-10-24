@@ -33,7 +33,7 @@ export function FinalConfirmation (props: Props) {
   const { enqueue, successObservable } = useContext(TxQueueContext);
 
   const _validate = (): Either<Errors, AllExtrinsicData> => {
-    let errors: Errors = [];
+    const errors: Errors = [];
 
     if (!nonce) { errors.push('Calculating account nonce...'); }
 

@@ -48,7 +48,7 @@ export function ValidatorsList (props: Props) {
       alert({ type: 'warning', content: 'You have already added this Validator to your nominee list' });
     }
 
-    let newNominees = nominees.add(nominee!);
+    const newNominees = nominees.add(nominee!);
     setNominees(newNominees);
   };
 

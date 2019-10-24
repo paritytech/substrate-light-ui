@@ -18,6 +18,6 @@ storiesOf('Progress Bar', module)
       <Progress
         disabled={boolean('disable', false)}
         percent={number('percent complete', 50)}
-         />
+      />
     </WrapperDiv>
   ));
