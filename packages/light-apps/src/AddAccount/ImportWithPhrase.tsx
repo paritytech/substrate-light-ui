@@ -10,7 +10,8 @@ import { none, Option, some } from 'fp-ts/lib/Option';
 import React, { useContext, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-interface Props extends RouteComponentProps { }
+type Props = RouteComponentProps
+
 interface UserInput {
   name: string;
   password: string;
@@ -39,7 +40,11 @@ function validate (values: UserInput): Either<UserInputError, UserInput> {
   return Object.keys(errors).length ? left(errors) : right(values);
 }
 
-export function ImportWithPhrase (props: Props) {
+function renderError (error: Option<string>): React.ReactElement | null {
+  return error.fold(null, (err) => <ErrorText>{err}</ErrorText>);
+}
+
+export function ImportWithPhrase (props: Props): React.ReactElement {
   const { history } = props;
   const { keyring } = useContext(AppContext);
 
@@ -48,9 +53,9 @@ export function ImportWithPhrase (props: Props) {
   const [password, setPassword] = useState('');
   const [recoveryPhrase, setRecoveryPhrase] = useState('');
 
-  const handleUnlockWithPhrase = () => {
+  const handleUnlockWithPhrase = (): void => {
     validate({ name, password, recoveryPhrase })
-      .chain(({ name, password, recoveryPhrase }) => tryCatch2v(
+      .chain(({ recoveryPhrase }) => tryCatch2v(
         () => {
           // This is inside tryCatch, because it might fail
           keyring.createFromUri(recoveryPhrase.trim(), {}, 'sr25519');
@@ -95,8 +100,4 @@ export function ImportWithPhrase (props: Props) {
       {renderError(error)}
     </Stacked>
   );
-}
-
-function renderError (error: Option<string>) {
-  return error.fold(null, (err) => <ErrorText>{err}</ErrorText>);
 }

@@ -10,17 +10,17 @@ import React, { useContext, useEffect, useState } from 'react';
 
 import { ReferendumRow } from './ReferendumRow';
 
-export function Referenda () {
+export function Referenda (): React.ReactElement {
   const { api } = useContext(AppContext);
   const [referenda, setReferenda] = useState<Option<ReferendumInfoExtended>[]>();
 
   useEffect(() => {
     const subscription = api.derive.democracy.referendums()
       .subscribe(setReferenda);
-    return () => subscription.unsubscribe();
+    return (): void => subscription.unsubscribe();
   }, []);
 
-  const renderEmptyTable = () => {
+  const renderEmptyTable = (): React.ReactElement => {
     return (
       <Table.Row>
         <Table.Cell>
@@ -30,20 +30,23 @@ export function Referenda () {
     );
   };
 
-  const renderReferendaTable = (_referenda: Option<ReferendumInfoExtended>[]) => {
+  const renderReferendaTable = (_referenda: Option<ReferendumInfoExtended>[]): React.ReactElement => {
     return (
-      _referenda.map((_referendum: Option<ReferendumInfoExtended>) => {
-        const referendum = _referendum.unwrapOr(null);
+      <>
+        {_referenda.map((_referendum: Option<ReferendumInfoExtended>) => {
+          const referendum = _referendum.unwrapOr(null);
 
-        return (
-          referendum &&
-          <ReferendumRow idNumber={referendum.index} key={referendum.index.toString()} referendum={referendum} />
-        );
-      })
+          return (
+            referendum &&
+            <ReferendumRow idNumber={referendum.index} key={referendum.index.toString()} referendum={referendum} />
+          );
+        })
+        }
+      </>
     );
   };
 
-  const renderReferendaTableHeaderRow = () => {
+  const renderReferendaTableHeaderRow = (): React.ReactElement => {
     return (
       <Table.Header>
         <Table.Row>

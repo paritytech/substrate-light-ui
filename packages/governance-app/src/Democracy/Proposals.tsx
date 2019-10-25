@@ -12,7 +12,7 @@ import { take } from 'rxjs/operators';
 
 import { ProposalRow } from './ProposalRow';
 
-export function Proposals () {
+export function Proposals (): React.ReactElement {
   const { api } = useContext(AppContext);
   const [publicProposals, setProposals] = useState();
 
@@ -26,10 +26,10 @@ export function Proposals () {
       .subscribe((proposals) => {
         setProposals(proposals);
       });
-    return () => subscription.unsubscribe();
+    return (): void => subscription.unsubscribe();
   });
 
-  const renderProposalRow = ([propIndex, proposal, proposer]: ITuple<[PropIndex, Proposal, AccountId]>) => {
+  const renderProposalRow = ([propIndex, proposal, proposer]: ITuple<[PropIndex, Proposal, AccountId]>): React.ReactElement => {
     return (
       <ProposalRow
         key={propIndex.toString()}
@@ -40,7 +40,7 @@ export function Proposals () {
     );
   };
 
-  const renderEmptyTable = () => {
+  const renderEmptyTable = (): React.ReactElement => {
     return (
       <Table.Row>
         <Table.Cell>
@@ -50,8 +50,7 @@ export function Proposals () {
     );
   };
 
-  const renderProposalsTable = () => {
-    // FIXME More accurate type is Vector<(PropIndex, Proposal, AccountId)>
+  const renderProposalsTable = (): React.ReactElement => {
     return (
       publicProposals.map((proposal: ITuple<[PropIndex, Proposal, AccountId]>) => {
         return renderProposalRow(proposal);
@@ -59,7 +58,7 @@ export function Proposals () {
     );
   };
 
-  const renderProposalsTableHeaderRow = () => {
+  const renderProposalsTableHeaderRow = (): React.ReactElement => {
     return (
       <Table.Header>
         <Table.Row>

@@ -39,7 +39,7 @@ export const rewardDestinationOptions = [
   { text: 'Send rewards to my Controller account.', value: 2 }
 ];
 
-export function Bond (props: Props) {
+export function Bond (props: Props): React.ReactElement {
   const { api, keyring } = useContext(AppContext);
   const { enqueue: alert } = useContext(AlertsContext);
   const { derivedBalanceFees } = useContext(StakingContext);
@@ -89,7 +89,6 @@ export function Bond (props: Props) {
       amountAsString: bond.toString(),
       accountNonce: nonce,
       currentBalance: stashBalance,
-      // @ts-ignore the extrinsic works when testing, not sure why tslint is getting the wrong type here
       extrinsic,
       fees: derivedBalanceFees,
       recipientBalance: controllerBalance,
@@ -98,7 +97,7 @@ export function Bond (props: Props) {
     }, api);
 
     return values.fold(
-      (e: any) => left(errors),
+      () => left(errors),
       (allExtrinsicData: any) => right(allExtrinsicData)
     );
   };
@@ -121,7 +120,7 @@ export function Bond (props: Props) {
       setNonce(nonce);
     });
 
-    return () => subscription.unsubscribe();
+    return (): void => subscription.unsubscribe();
   }, [stash, controller]);
 
   useEffect(() => {
@@ -129,15 +128,15 @@ export function Bond (props: Props) {
   }, [bond, controllerBalance, nonce, stashBalance]);
 
   useEffect(() => {
-    successObservable.subscribe((success) => {
+    successObservable.subscribe(() => {
       setLoading(false);
       history.push(`/manageAccounts/${controller}/balances`);
     });
 
-    return () => successObservable.unsubscribe();
+    return (): void => successObservable.unsubscribe();
   }, []);
 
-  const handleConfirmBond = () => {
+  const handleConfirmBond = (): void => {
     fromNullable(status)
       .map(_validate)
       .map(status => status.fold(
@@ -151,9 +150,9 @@ export function Bond (props: Props) {
       ));
   };
 
-  const handleSetBond = ({ currentTarget: { value } }: React.SyntheticEvent<HTMLInputElement>) => !isUndefined(value) ? setBond(new BN(value)) : setBond(new BN(0));
+  const handleSetBond = ({ currentTarget: { value } }: React.SyntheticEvent<HTMLInputElement>): void => !isUndefined(value) ? setBond(new BN(value)) : setBond(new BN(0));
 
-  const handleSetBondFromPercent = (value: number) => {
+  const handleSetBondFromPercent = (value: number): void => {
     if (!stashBalance || !value) { return; }
 
     const bondAmount = stashBalance.freeBalance.toNumber() * value;
@@ -161,11 +160,11 @@ export function Bond (props: Props) {
     setBond(new BN(bondAmount));
   };
 
-  const onSelect = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
+  const onSelect = (_event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps): void => {
     setDestination(rewardDestinationOptions[data.value as number]);
   };
 
-  const renderContent = () => {
+  const renderContent = (): React.ReactElement => {
     return (
       <Stacked>
         <Header>Bonding Preferences </Header>
@@ -189,13 +188,13 @@ export function Bond (props: Props) {
                 />
               </WrapperDiv>
               <StackedHorizontal>
-                <WithSpace><button onClick={() => handleSetBondFromPercent(0.25)}>25%</button></WithSpace>
+                <WithSpace><button onClick={(): void => handleSetBondFromPercent(0.25)}>25%</button></WithSpace>
                 <Margin left />
-                <WithSpace><button onClick={() => handleSetBondFromPercent(0.5)}>50%</button></WithSpace>
+                <WithSpace><button onClick={(): void => handleSetBondFromPercent(0.5)}>50%</button></WithSpace>
                 <Margin left />
-                <WithSpace><button onClick={() => handleSetBondFromPercent(0.75)}>75%</button></WithSpace>
+                <WithSpace><button onClick={(): void => handleSetBondFromPercent(0.75)}>75%</button></WithSpace>
                 <Margin left />
-                <WithSpace><button onClick={() => handleSetBondFromPercent(1)}>100%</button></WithSpace>
+                <WithSpace><button onClick={(): void => handleSetBondFromPercent(1)}>100%</button></WithSpace>
               </StackedHorizontal>
             </Stacked>
           }
@@ -218,7 +217,7 @@ export function Bond (props: Props) {
     );
   };
 
-  const renderLoading = () => {
+  const renderLoading = (): React.ReactElement => {
     return (
       <WrapperDiv>
         <Stacked>

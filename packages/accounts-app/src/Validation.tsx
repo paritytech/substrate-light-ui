@@ -13,10 +13,10 @@ interface ValidationProps {
   value: Either<Errors, Accounts | AllExtrinsicData>;
 }
 
-export function Validation (props: ValidationProps) {
+export function Validation (props: ValidationProps): React.ReactElement {
   const { value } = props;
 
-  function renderErrors (errors: Errors) {
+  function renderErrors (errors: Errors): React.ReactElement {
     return (
       <WithSpace>
         {
@@ -30,7 +30,7 @@ export function Validation (props: ValidationProps) {
     );
   }
 
-  function renderSuccess () {
+  function renderSuccess (): React.ReactElement {
     return (
       <WithSpace>
         <Icon name='checkmark' />

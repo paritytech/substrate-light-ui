@@ -30,6 +30,5 @@ export const logger = createLogger({
       format: format.combine(format.timestamp(), format.json()),
       level: 'debug'
     })
-
   ]
 });

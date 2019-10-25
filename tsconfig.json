@@ -4,6 +4,10 @@
     "**/node_modules/**/*"
   ],
   "compilerOptions": {
-    "strict": true
+    "downlevelIteration": true,
+    "esModuleInterop": true,
+    "jsx": "react",
+    "strict": true,
+    "target": "es5"
   }
 }

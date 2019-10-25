@@ -15,17 +15,17 @@ interface Props {
   handleSelectNominateWith: (account: string | null) => void;
 }
 
-export function SelectNominateWith (props: Props) {
+export function SelectNominateWith (props: Props): React.ReactElement {
   const { history, handleSelectNominateWith } = props;
   const { keyring } = useContext(AppContext);
   const { onlyBondedAccounts } = useContext(StakingContext);
 
-  const handleAccountSelected = ({ currentTarget: { dataset: { account } } }: React.MouseEvent<HTMLElement>) => {
+  const handleAccountSelected = ({ currentTarget: { dataset: { account } } }: React.MouseEvent<HTMLElement>): void => {
     handleSelectNominateWith(account!);
   };
 
-  const renderNoBondedAccounts = () => {
-    const navToStakingOptions = () => {
+  const renderNoBondedAccounts = (): React.ReactElement => {
+    const navToStakingOptions = (): void => {
       const currentAccount = location.pathname.split('/')[2];
       history.push(`/accountManagement/${currentAccount}/staking/setup`);
     };
@@ -106,7 +106,7 @@ export function SelectNominateWith (props: Props) {
               </Stacked>
             </WithSpace>
           </StackedHorizontal>
-          <FadedText>If you don't see an account listed here, you should make sure it is bonded before you can nominate with it.</FadedText>
+          <FadedText>If you don&apos;t see an account listed here, you should make sure it is bonded before you can nominate with it.</FadedText>
         </Stacked>
       </Modal.Actions>
     </React.Fragment>

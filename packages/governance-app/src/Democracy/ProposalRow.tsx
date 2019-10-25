@@ -13,14 +13,32 @@ import React, { useEffect, useContext, useState } from 'react';
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 
-interface IProps {
+interface Props {
   key: string;
   propIndex: PropIndex;
   proposal: Proposal;
   proposer: AccountId;
 }
 
-export function ProposalRow (props: IProps) {
+function renderSecondersList (accountIds?: Vec<AccountId>): React.ReactElement {
+  if (accountIds && accountIds.length) {
+    return (
+      <>
+        {accountIds.map((accountId: AccountId) => {
+          return (
+            <Dropdown.Item key={accountId.toString()}>
+              <AddressSummary address={accountId.toString()} orientation='vertical' size='tiny' />
+            </Dropdown.Item>
+          );
+        })}
+      </>
+    );
+  } else {
+    return <FadedText> No Seconders Yet </FadedText>;
+  }
+}
+
+export function ProposalRow (props: Props): React.ReactElement {
   const { propIndex, proposal, proposer } = props;
   const { api, keyring } = useContext(AppContext);
   const { enqueue } = useContext(TxQueueContext);
@@ -50,11 +68,12 @@ export function ProposalRow (props: IProps) {
         setFees(fees);
         setVotingBalance(votingBalance);
       });
-    return () => subscription.unsubscribe();
+    return (): void => subscription.unsubscribe();
   });
 
-  const handleSeconding = () => {
+  const handleSeconding = (): void => {
     const extrinsic = api.tx.democracy.second(propIndex);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore works in test...
     const values = validateDerived({ accountNonce, amount: new BN(0), currentBalance: votingBalance, extrinsic, fees, recipientBalance: undefined });
 
@@ -74,9 +93,7 @@ export function ProposalRow (props: IProps) {
       <Table.Cell>{propIndex.toString()}</Table.Cell>
       <Table.Cell>{section}.{method}</Table.Cell>
       <Table.Cell>
-        {
-          meta && meta.documentation && meta.documentation.join(' ') || 'No Description Available'
-        }
+        {meta && meta.documentation ? meta.documentation.join(' ') : 'No Description Available'}
       </Table.Cell>
       <Table.Cell><AddressSummary address={proposer.toString()} noBalance orientation='vertical' size='tiny' /></Table.Cell>
       <Table.Cell>
@@ -106,18 +123,4 @@ export function ProposalRow (props: IProps) {
       </Table.Cell>
     </Table.Row>
   );
-}
-
-function renderSecondersList (accountIds?: Vec<AccountId>) {
-  if (accountIds && accountIds.length) {
-    return accountIds.map((accountId: AccountId) => {
-      return (
-        <Dropdown.Item key={accountId.toString()}>
-          <AddressSummary address={accountId.toString()} orientation='vertical' size='tiny' />
-        </Dropdown.Item>
-      );
-    });
-  } else {
-    return <FadedText> No Seconders Yet </FadedText>;
-  }
 }

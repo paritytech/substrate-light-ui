@@ -20,7 +20,7 @@ interface Props {
   nominees: Set<string>;
 }
 
-export function ValidatorListHeader (props: Props) {
+export function ValidatorListHeader (props: Props): React.ReactElement {
   const { history, nominees } = props;
   const { api } = useContext(AppContext);
   const [sessionInfo, setSessionInfo] = useState<DerivedSessionInfo>();
@@ -31,10 +31,10 @@ export function ValidatorListHeader (props: Props) {
       .pipe(take(1))
       .subscribe(setSessionInfo);
 
-    return () => subscription.unsubscribe();
+    return (): void => subscription.unsubscribe();
   }, []);
 
-  const renderEraProgress = () => {
+  const renderEraProgress = (): React.ReactElement => {
     return (
       <WithSpace>
         <Card height='20rem' width='30%'>
@@ -45,6 +45,7 @@ export function ValidatorListHeader (props: Props) {
                 .map(sessionInfo =>
                   <Progress
                     color='pink'
+                    key={`${sessionInfo.currentEra.toString()}-${sessionInfo.currentIndex.toString()}`}
                     progress='ratio'
                     size='small'
                     total={sessionInfo.eraLength.toNumber()}
@@ -59,7 +60,7 @@ export function ValidatorListHeader (props: Props) {
     );
   };
 
-  const renderSessionProgress = () => {
+  const renderSessionProgress = (): React.ReactElement => {
     return (
       <WithSpace>
         <Card height='20rem' width='30%'>
@@ -70,6 +71,7 @@ export function ValidatorListHeader (props: Props) {
                 .map(sessionInfo =>
                   <Progress
                     color='teal'
+                    key={`${sessionInfo.currentEra.toString()}-${sessionInfo.currentIndex.toString()}`}
                     progress='ratio'
                     size='small'
                     total={sessionInfo.sessionLength.toNumber()}
@@ -84,7 +86,7 @@ export function ValidatorListHeader (props: Props) {
     );
   };
 
-  const renderNomineesList = () => {
+  const renderNomineesList = (): React.ReactElement => {
     const nomineesList = [...nominees];
 
     return (

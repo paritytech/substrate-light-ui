@@ -9,9 +9,7 @@ import url from 'url';
 import { isSubstrateRunning } from './app/isSubstrateRunning';
 import { initMenu } from './app/menu';
 import { killSubstrate, runSubstrateDev } from './app/substrateProcess';
-// @ts-ignore No idea why we have module not found
 import { productName } from '../../electron-builder.json';
-// @ts-ignore No idea why we have module not found
 import { version } from '../../package.json';
 import { logger, staticPath } from './util';
 
@@ -28,42 +26,7 @@ logger.debug(`Process args: ${process.argv}`);
 
 initMenu();
 
-app.once('ready', async () => {
-  if (!await isSubstrateRunning()) {
-    runSubstrateDev();
-  }
-
-  createWindow();
-});
-
-// Quit when all windows are closed.
-app.on('window-all-closed', function () {
-  // On OS X it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
-    killSubstrate();
-    app.quit();
-  }
-});
-
-app.on('activate', function () {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (sluiApp === undefined) {
-    createWindow();
-  }
-});
-
-// Make sure Substrate stops when UI stops
-app.on('before-quit', killSubstrate);
-
-app.on('will-quit', killSubstrate);
-
-app.on('quit', () => {
-  killSubstrate();
-});
-
-function createWindow () {
+function createWindow (): void {
   sluiApp = new BrowserWindow({
     height: 1920,
     resizable: true,
@@ -105,3 +68,42 @@ function createWindow () {
     killSubstrate();
   });
 }
+
+// eslint-
+app.once('ready', (): void => {
+  isSubstrateRunning()
+    .then(running => {
+      if (!running) {
+        return runSubstrateDev();
+      }
+    })
+    .then(createWindow)
+    .catch(logger.error);
+});
+
+// Quit when all windows are closed.
+app.on('window-all-closed', () => {
+  // On OS X it is common for applications and their menu bar
+  // to stay active until the user quits explicitly with Cmd + Q
+  if (process.platform !== 'darwin') {
+    killSubstrate();
+    app.quit();
+  }
+});
+
+app.on('activate', () => {
+  // On OS X it's common to re-create a window in the app when the
+  // dock icon is clicked and there are no other windows open.
+  if (sluiApp === undefined) {
+    createWindow();
+  }
+});
+
+// Make sure Substrate stops when UI stops
+app.on('before-quit', killSubstrate);
+
+app.on('will-quit', killSubstrate);
+
+app.on('quit', () => {
+  killSubstrate();
+});

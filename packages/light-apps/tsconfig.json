@@ -1,13 +1,11 @@
 {
   "compilerOptions": {
     "allowJs": false,
-    "declaration": false,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "module": "esnext",
     "noEmit": true,
-    "resolveJsonModule": true,
     "skipLibCheck": false,
     "lib": [
       "dom",
@@ -16,7 +14,6 @@
     ]
   },
   "extends": "../../tsconfig",
-
   "include": [
     "src"
   ]

@@ -20,9 +20,9 @@ interface MatchParams {
   currentAccount: string;
 }
 
-interface IProps extends RouteComponentProps<MatchParams> { }
+type Props = RouteComponentProps<MatchParams>;
 
-export function Governance (props: IProps) {
+export function Governance (props: Props): React.ReactElement {
   const { api } = useContext(AppContext);
   const [refCount, setRefCount] = useState();
   const [latestBlockNumber, setLatestBlockNumber] = useState();
@@ -33,7 +33,7 @@ export function Governance (props: IProps) {
   useEffect(() => {
     const blockSub = api.derive.chain.bestNumber().subscribe(setLatestBlockNumber);
 
-    return () => blockSub.unsubscribe();
+    return (): void => blockSub.unsubscribe();
   }, []);
 
   useEffect(() => {
@@ -46,10 +46,10 @@ export function Governance (props: IProps) {
         setRefCount(refCount);
       });
 
-    return () => subscription.unsubscribe();
+    return (): void => subscription.unsubscribe();
   }, []);
 
-  const navToDemocracy = () => {
+  const navToDemocracy = (): void => {
     const { history, location, match } = props;
     const currentPath = location.pathname.split('/')[3];
     if (currentPath !== 'democracy') {
@@ -57,7 +57,7 @@ export function Governance (props: IProps) {
     }
   };
 
-  const navToCouncil = () => {
+  const navToCouncil = (): void => {
     const { history, location, match } = props;
     const currentPath = location.pathname.split('/')[3];
     if (currentPath !== 'council') {

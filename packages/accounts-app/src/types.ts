@@ -6,8 +6,8 @@ import { AccountId, BlockNumber } from '@polkadot/types/interfaces';
 import BN from 'bn.js';
 
 export type Accounts = {
-  stash: string,
-  controller: string
+  stash: string;
+  controller: string;
 };
 
 type Error = string;

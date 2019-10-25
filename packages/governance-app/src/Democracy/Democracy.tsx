@@ -4,14 +4,11 @@
 
 import { Margin } from '@substrate/ui-components';
 import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
 
 import { Proposals } from './Proposals';
 import { Referenda } from './Referenda';
 
-interface IProps extends RouteComponentProps {}
-
-export function Democracy (props: IProps) {
+export function Democracy (): React.ReactElement {
   return (
     <React.Fragment>
       <Referenda />

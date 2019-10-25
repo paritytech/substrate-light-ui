@@ -15,7 +15,7 @@ interface MatchParams {
   currentAccount: string;
 }
 
-interface Props extends RouteComponentProps<MatchParams> { }
+type Props = RouteComponentProps<MatchParams>
 
 const MENUS = [
   {
@@ -32,7 +32,7 @@ const MENUS = [
   }
 ];
 
-export function AddAccount (props: Props) {
+export function AddAccount (props: Props): React.ReactElement {
   const activeTab = props.location.pathname.split('/')[4]; // FIXME Is there a better way to do that?
   const { match: { params: { currentAccount } } } = props;
 

@@ -29,25 +29,10 @@ interface Props extends RouteComponentProps<MatchParams> {
   stash: string;
 }
 
-export function Setup (props: Props) {
+export function Setup (props: Props): React.ReactElement {
   const { history } = props;
   const [controller, setController] = useState();
   const [stash, setStash] = useState();
-
-  const status: Either<Errors, Accounts> = validate().fold(
-    (errors: Errors) => left(errors),
-    (accounts: Accounts) => right(accounts)
-  );
-
-  const handleNext = () => {
-    status.fold(
-      (errors) => { console.error(errors); /* should be displayed by Validation */ },
-      ({ controller, stash }: Accounts) => history.push(`/manageAccounts/${stash}/staking/bond`, {
-        controller,
-        stash
-      })
-    );
-  };
 
   function validate (): Either<Errors, Accounts> {
     const errors = [] as Errors;
@@ -65,6 +50,21 @@ export function Setup (props: Props) {
 
     return errors.length ? left(errors) : right({ stash, controller } as Accounts);
   }
+
+  const status: Either<Errors, Accounts> = validate().fold(
+    (errors: Errors) => left(errors),
+    (accounts: Accounts) => right(accounts)
+  );
+
+  const handleNext = (): void => {
+    status.fold(
+      (errors) => { console.error(errors); /* should be displayed by Validation */ },
+      ({ controller, stash }: Accounts) => history.push(`/manageAccounts/${stash}/staking/bond`, {
+        controller,
+        stash
+      })
+    );
+  };
 
   return (
     <Stacked>

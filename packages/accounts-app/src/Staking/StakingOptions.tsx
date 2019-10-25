@@ -4,7 +4,7 @@
 
 import { Card } from '@substrate/ui-components';
 import React from 'react';
-import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 
 import { Bond } from './Bond';
 import { Setup } from './Setup';
@@ -13,9 +13,7 @@ interface MatchParams {
   currentAccount?: string;
 }
 
-interface Props extends RouteComponentProps<MatchParams> {}
-
-export function StakingOptions (props: Props) {
+export function StakingOptions (): React.ReactElement {
   return (
     <Card height='100%'>
       <Card.Content>

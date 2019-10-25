@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { u32 } from '@polkadot/types';
+import { createType, u32 } from '@polkadot/types';
 import { AccountId } from '@polkadot/types/interfaces';
 import { FadedText, FlexItem, Stacked, Table, WrapperDiv } from '@substrate/ui-components';
 import { AlertsContext, AppContext } from '@substrate/ui-common';
@@ -20,14 +20,14 @@ interface MatchParams {
   currentAccount: string;
 }
 
-interface Props extends RouteComponentProps<MatchParams> { }
+type Props = RouteComponentProps<MatchParams>
 
-export function ValidatorsList (props: Props) {
+export function ValidatorsList (props: Props): React.ReactElement {
   const { enqueue: alert } = useContext(AlertsContext);
   const { api } = useContext(AppContext);
   const [currentValidatorsControllersV1OrStashesV2, setCurrentValidatorsControllersV1OrStashesV2] = useState<AccountId[]>([]);
   const [nominees, setNominees] = useState<Set<string>>(new Set());
-  const [validatorCount, setValidatorCount] = useState<u32>(new u32(0));
+  const [validatorCount, setValidatorCount] = useState(createType('u32', 0));
 
   useEffect(() => {
     const subscription: Subscription = combineLatest([
@@ -40,10 +40,10 @@ export function ValidatorsList (props: Props) {
         setValidatorCount(validatorCount);
       });
 
-    return () => subscription.unsubscribe();
+    return (): void => subscription.unsubscribe();
   }, []);
 
-  const addToNomineeList = ({ currentTarget: { dataset: { nominee } } }: React.MouseEvent<HTMLElement>) => {
+  const addToNomineeList = ({ currentTarget: { dataset: { nominee } } }: React.MouseEvent<HTMLElement>): void => {
     if (nominees.has(nominee!)) {
       alert({ type: 'warning', content: 'You have already added this Validator to your nominee list' });
     }
@@ -52,24 +52,24 @@ export function ValidatorsList (props: Props) {
     setNominees(newNominees);
   };
 
-  const renderBody = () => (
-    <Table.Body>
-      {
-        fromNullable(currentValidatorsControllersV1OrStashesV2)
-          .map(validators => validators.map(renderValidatorRow))
-          .getOrElse([1].map(() => <Table.Row textAlign='center'><Loader active inline /></Table.Row>))
-      }
-    </Table.Body>
-  );
-
-  const renderValidatorRow = (validator: AccountId) => (
+  const renderValidatorRow = (validator: AccountId): React.ReactElement => (
     <ValidatorRow
       addToNomineeList={addToNomineeList}
       key={validator.toString()}
       validator={validator} />
   );
 
-  const renderHeader = () => {
+  const renderBody = (): React.ReactElement => (
+    <Table.Body>
+      {
+        fromNullable(currentValidatorsControllersV1OrStashesV2)
+          .map(validators => validators.map(renderValidatorRow))
+          .getOrElse([1].map((i) => <Table.Row key={i} textAlign='center'><Loader active inline /></Table.Row>))
+      }
+    </Table.Body>
+  );
+
+  const renderHeader = (): React.ReactElement => {
     return (
       <Table.Header>
         <Table.Row>
@@ -84,7 +84,7 @@ export function ValidatorsList (props: Props) {
     );
   };
 
-  const renderContent = () => {
+  const renderContent = (): React.ReactElement => {
     return (
       <React.Fragment>
         {renderHeader()}

@@ -8,7 +8,7 @@ import { AppContext } from '@substrate/ui-common';
 import { FadedText, Header, Stacked } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';
 
-export function CouncilCandidates () {
+export function CouncilCandidates (): React.ReactElement {
   const { api } = useContext(AppContext);
   const [councilCandidates, setCouncilCandidates] = useState();
 
@@ -18,7 +18,7 @@ export function CouncilCandidates () {
         setCouncilCandidates(councilCandidates);
       });
 
-    return () => subscription.unsubscribe();
+    return (): void => subscription.unsubscribe();
   }, []);
 
   if (councilCandidates && councilCandidates.length) {
@@ -28,7 +28,7 @@ export function CouncilCandidates () {
         {
           councilCandidates.map((accountId: AccountId) => {
             return (
-              <li>{accountId} is a candidate</li>
+              <li key={accountId.toString()}>{accountId} is a candidate</li>
             );
           })
         }

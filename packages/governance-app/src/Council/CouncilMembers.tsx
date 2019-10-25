@@ -11,7 +11,7 @@ import { tryCatch2v } from 'fp-ts/lib/Either';
 import React, { useContext, useEffect, useState } from 'react';
 import Card from 'semantic-ui-react/dist/commonjs/views/Card';
 
-export function CouncilMembers () {
+export function CouncilMembers (): React.ReactElement {
   const { api, keyring } = useContext(AppContext);
   const [activeCouncil, setActiveCouncil] = useState<Vec<AccountId>>();
 
@@ -21,7 +21,7 @@ export function CouncilMembers () {
         setActiveCouncil(activeCouncil);
       });
 
-    return () => subscription.unsubscribe();
+    return (): void => subscription.unsubscribe();
   }, []);
 
   return (
