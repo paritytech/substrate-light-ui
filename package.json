@@ -46,7 +46,7 @@
     "typescript": "^3.6.3"
   },
   "resolutions": {
-    "@polkadot/api": "^0.94.0-beta.4",
+    "@polkadot/api": "^0.96.0-beta.5",
     "@types/styled-components": "4.1.8"
   }
 }
