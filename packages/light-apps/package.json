@@ -20,7 +20,7 @@
   "homepage": "./",
   "dependencies": {
     "@parity/qr-signer": "^0.3.2",
-    "@polkadot/ui-assets": "^0.45.1",
+    "@polkadot/ui-assets": "^0.46.1",
     "@substrate/accounts-app": "^0.2.0",
     "@substrate/governance-app": "^0.2.0",
     "@substrate/transfer-app": "^0.2.0",
