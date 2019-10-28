@@ -989,10 +989,10 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.0", "@babel/runtime@^7.4.2", "@babel/runtime@^7.4.4", "@babel/runtime@^7.4.5", "@babel/runtime@^7.5.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.2":
-  version "7.6.2"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.6.2.tgz#c3d6e41b304ef10dcf13777a33e7694ec4a9a6dd"
-  integrity sha512-EXxN64agfUqqIGeEjI5dL5z0Sw0ZwWo1mLTi4mQowCZ42O59b7DRpZAnTC6OqdF28wMBMFKNb/4uFGrVaigSpg==
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.0", "@babel/runtime@^7.4.2", "@babel/runtime@^7.4.4", "@babel/runtime@^7.4.5", "@babel/runtime@^7.5.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.2", "@babel/runtime@^7.6.3":
+  version "7.6.3"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.6.3.tgz#935122c74c73d2240cafd32ddb5fc2a6cd35cf1f"
+  integrity sha512-kq6anf9JGjW8Nt5rYfEuGRaEAaH1mkv3Bbu6rYvLOpPh/RusSJXuKPEAoZ7L7gybZkchE8+NV5g9vKF4AGAtsA==
   dependencies:
     regenerator-runtime "^0.13.2"
 
@@ -2349,16 +2349,16 @@
     "@polkadot/util" "^1.5.1"
     "@polkadot/util-crypto" "^1.5.1"
 
-"@polkadot/react-identicon@^0.45.1":
-  version "0.45.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/react-identicon/-/react-identicon-0.45.1.tgz#3bca5d3dcc5109a4bb5cb7347b2ee898b737fc6c"
-  integrity sha512-8qz4s15cTGS1i/GlYE4DoecrOHu3/BoOK8MnQF/2ZKY28k7Ha5BtSdR/eJi9mGhMrnVZyiUzykhm9ut73flB+w==
+"@polkadot/react-identicon@^0.46.1":
+  version "0.46.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/react-identicon/-/react-identicon-0.46.1.tgz#4758c6d41210421d7c1c8dc1af38c68e45437589"
+  integrity sha512-FLbCFdn8mp7jcv3tL/wj28Ib3HXwAkk3sRmUFeaHApeeaqX5K+WLzucfQWofszorjOwZSQwgKp2SU2iZMrxHlw==
   dependencies:
-    "@babel/runtime" "^7.6.2"
-    "@polkadot/ui-settings" "^0.45.1"
-    "@polkadot/ui-shared" "^0.45.1"
+    "@babel/runtime" "^7.6.3"
+    "@polkadot/ui-settings" "^0.46.1"
+    "@polkadot/ui-shared" "^0.46.1"
     "@types/color" "^3.0.0"
-    "@types/react-copy-to-clipboard" "^4.2.6"
+    "@types/react-copy-to-clipboard" "^4.3.0"
     color "^3.1.2"
     jdenticon "2.2.0"
     react-copy-to-clipboard "^5.0.1"
@@ -2427,21 +2427,21 @@
   optionalDependencies:
     "@ledgerhq/hw-transport-node-hid" "^4.70.0"
 
-"@polkadot/ui-settings@^0.45.1":
-  version "0.45.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-0.45.1.tgz#1d4b38c82c78aaf093372af40600d783bfb9dae9"
-  integrity sha512-a50fjB5eq6AEaeL29x7ibpSzO20nWltNrph3fgf+2dv34ucaTsSBJIi1fgmD1JYy2tFI8bPZurXCrTOcyPfnVQ==
+"@polkadot/ui-settings@^0.46.1":
+  version "0.46.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-0.46.1.tgz#0de06a4ba64598b4d4165a81407169ea1ba07590"
+  integrity sha512-4bZnH27IRUXveuoaWKZqwneY7rZd7YA9ZCxx4TbixepEJZa+MiEhc4dt7eyldR6U5BVNrMQ8oRtUFKSJY4EVQw==
   dependencies:
-    "@babel/runtime" "^7.6.2"
+    "@babel/runtime" "^7.6.3"
     "@types/store" "^2.0.2"
     store "^2.0.12"
 
-"@polkadot/ui-shared@^0.45.1":
-  version "0.45.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-shared/-/ui-shared-0.45.1.tgz#bfee1d85070948c86d34774cc3e365b2dfc54b87"
-  integrity sha512-/5z5o+GkEbwrzSDWhh1XdJpAgNmanrssFEnOw5obp42qfbNp12M64N0VEjyT76qxoXa9OcimmnNkmBG+Zqpw8Q==
+"@polkadot/ui-shared@^0.46.1":
+  version "0.46.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-shared/-/ui-shared-0.46.1.tgz#d36eea7bbf2d2ac4f9035352a80226ee7a6a25b3"
+  integrity sha512-zMgBiV91wr6jDk7qzmLcXWXn4nOeu/3aqIORi7MlQOURSVAAV3E+/Z/pP4hViZOpDZAukj8H6Iyljf1wPwDxCA==
   dependencies:
-    "@babel/runtime" "^7.6.2"
+    "@babel/runtime" "^7.6.3"
     "@types/color" "^3.0.0"
     color "^3.1.2"
 
@@ -3281,7 +3281,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-copy-to-clipboard@^4.2.6":
+"@types/react-copy-to-clipboard@^4.3.0":
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/@types/react-copy-to-clipboard/-/react-copy-to-clipboard-4.3.0.tgz#8e07becb4f11cfced4bd36038cb5bdf5c2658be5"
   integrity sha512-iideNPRyroENqsOFh1i2Dv3zkviYS9r/9qD9Uh3Z9NNoAAqqa2x53i7iGndGNnJFIo20wIu7Hgh77tx1io8bgw==
