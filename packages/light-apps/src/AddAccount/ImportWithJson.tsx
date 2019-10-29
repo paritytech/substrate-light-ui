@@ -6,15 +6,12 @@ import { KeyringJson } from '@polkadot/ui-keyring/types';
 import { AlertsContext, AppContext, handler } from '@substrate/ui-common';
 import { Dropdown, ErrorText, Input, InputFile, Margin, NavButton, Stacked, SubHeader, WrapperDiv } from '@substrate/ui-components';
 import React, { useState, useContext } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
 
 import { Tags, TagOptions } from './types';
 
 type Step = 'upload' | 'password';
 
-type Props = RouteComponentProps;
-
-export function ImportWithJson (): React.ReactElement<Props> {
+export function ImportWithJson (): React.ReactElement {
   const { enqueue } = useContext(AlertsContext);
   const { keyring } = useContext(AppContext);
 

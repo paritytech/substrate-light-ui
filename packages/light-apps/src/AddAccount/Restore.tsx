@@ -22,7 +22,7 @@ export function Restore (props: Props): React.ReactElement {
       </Menu>
       {
         screen === 'JSON'
-          ? <ImportWithJson {...props} />
+          ? <ImportWithJson />
           : <ImportWithPhrase {...props} />
       }
     </React.Fragment>
