@@ -21,7 +21,7 @@ type AlertType = keyof typeof colors;
  * @param index - The index of the gradient color.
  */
 function gradientColor (index: 0 | 1) {
-  return function (props: AlertProps): string {
+  return function (props: AlertProps & StyledProps): string {
     // Check if props.{error, info, warning} is set.
     const alertType = ['error', 'info', 'warning'].find(type => props[type]) as AlertType | undefined;
     if (alertType) {

@@ -18,6 +18,8 @@ module.exports = {
   },
   plugins: ['react', '@typescript-eslint'],
   rules: {
+    // Disable prop-types, because we already have TS
+    "react/prop-types": "off",
     // FIXME Remove all these rules!
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off'

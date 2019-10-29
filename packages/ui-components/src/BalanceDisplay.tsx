@@ -29,6 +29,34 @@ const defaultProps = {
 export function BalanceDisplay (props: BalanceDisplayProps = defaultProps): React.ReactElement {
   const { allBalances, allStaking, detailed, fontSize, fontWeight, handleRedeem } = props;
 
+  const renderRedeemButton = (): React.ReactElement | null => {
+    return (allStaking && allStaking.controllerId
+      ? (
+        <StyledLinkButton onClick={(): void => allStaking && allStaking.controllerId && handleRedeem && handleRedeem(allStaking.controllerId.toString())}>
+          <Icon name='lock' />
+          Redeem Funds
+        </StyledLinkButton>
+      )
+      : null);
+  };
+
+  const renderUnlocking = (): React.ReactElement | null => {
+    return (
+      allStaking && allStaking.unlocking
+        ? (
+          <>
+            {allStaking.unlocking.map(({ remainingBlocks, value }, index) => (
+              <div key={index}>
+                <FadedText>Unbonded Amount: {formatBalance(value)}</FadedText>
+                <FadedText> Blocks remaining: {remainingBlocks.toNumber()}</FadedText>
+              </div>
+            ))}
+          </>
+        )
+        : null
+    );
+  };
+
   const renderDetailedBalances = (): React.ReactElement => {
     const { availableBalance, lockedBalance, reservedBalance } = allBalances!;
 
@@ -49,28 +77,6 @@ export function BalanceDisplay (props: BalanceDisplayProps = defaultProps): Reac
         <span><b>Locked:</b>{lockedBalance && <FadedText>{formatBalance(lockedBalance)}</FadedText>}</span>
         {renderUnlocking()}
       </React.Fragment>
-    );
-  };
-
-  const renderRedeemButton = (): React.ReactElement => {
-    return (allStaking && allStaking.controllerId && (
-      <StyledLinkButton onClick={(): void => handleRedeem && handleRedeem(allStaking.controllerId!.toString())}>
-        <Icon name='lock' />
-        Redeem Funds
-      </StyledLinkButton>
-    ));
-  };
-
-  const renderUnlocking = (): React.ReactElement => {
-    return (
-      allStaking &&
-      allStaking.unlocking &&
-      allStaking.unlocking.map(({ remainingBlocks, value }, index) => (
-        <div key={index}>
-          <FadedText>Unbonded Amount: {formatBalance(value)}</FadedText>
-          <FadedText> Blocks remaining: {remainingBlocks.toNumber()}</FadedText>
-        </div>
-      ))
     );
   };
 
