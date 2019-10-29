@@ -14,7 +14,7 @@ type WalletCardProps = {
   overflow?: string;
 };
 
-export function WalletCard (props: WalletCardProps) {
+export function WalletCard (props: WalletCardProps): React.ReactElement {
   const { children, header, height, overflow = 'none', subheader } = props;
 
   return (

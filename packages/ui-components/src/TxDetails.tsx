@@ -4,6 +4,8 @@
 
 import BN from 'bn.js';
 import React from 'react';
+import { SemanticShorthandItem } from 'semantic-ui-react';
+import { AccordionPanelProps } from 'semantic-ui-react/dist/commonjs/modules/Accordion/AccordionPanel';
 
 import { Accordion, AccordionProps, DEFAULT_TOKEN_SYMBOL, Stacked, SubHeader } from './';
 
@@ -16,7 +18,7 @@ interface TxDetailsProps extends AccordionProps {
   tokenSymbol?: string;
 }
 
-function panels ({ allFees, allTotal, amount, recipientAddress, senderAddress, tokenSymbol }: TxDetailsProps) {
+function panels ({ allFees, allTotal, amount, recipientAddress, senderAddress, tokenSymbol }: TxDetailsProps): SemanticShorthandItem<AccordionPanelProps>[] {
   const symbol = tokenSymbol || DEFAULT_TOKEN_SYMBOL;
 
   return [{
@@ -41,7 +43,7 @@ function panels ({ allFees, allTotal, amount, recipientAddress, senderAddress, t
   }];
 }
 
-export function TxDetails ({ allFees, allTotal, amount, recipientAddress, senderAddress, tokenSymbol, ...rest }: TxDetailsProps) {
+export function TxDetails ({ allFees, allTotal, amount, recipientAddress, senderAddress, tokenSymbol, ...rest }: TxDetailsProps): React.ReactElement {
   return (
     <Accordion panels={panels({ allFees, allTotal, amount, recipientAddress, senderAddress, tokenSymbol })} {...rest} />
   );

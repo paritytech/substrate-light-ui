@@ -19,7 +19,7 @@ interface MarginProps {
 /**
  * Mapping between <Margin />'s size and its CSS value.
  */
-function sizeValues (size: MarginPropsValue) {
+function sizeValues (size: MarginPropsValue): string {
   switch (size) {
     case true:
       return MARGIN_SIZES.medium;
@@ -36,7 +36,7 @@ function sizeValues (size: MarginPropsValue) {
 /**
  * Get value from prop.
  */
-const getMarginValue = (position: keyof MarginProps) => (props: MarginProps) =>
+const getMarginValue = (position: keyof MarginProps) => (props: MarginProps): string =>
   sizeValues(props[position]);
 
 export const Margin = styled.div<MarginProps>`

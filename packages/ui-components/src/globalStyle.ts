@@ -43,3 +43,7 @@ export const substrateLightTheme = {
 };
 
 export type Color = keyof typeof substrateLightTheme;
+
+export type StyledProps = {
+  theme: typeof substrateLightTheme
+}

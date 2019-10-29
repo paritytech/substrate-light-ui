@@ -12,10 +12,10 @@ export const FlexSegment = styled<any>(SUISegment)`
     display: flex;
     justify-content: center;
     align-items: center;
-    height: ${props => props.height || '3rem'};
-    width: ${props => props.width || '80%'};
+    height: ${(props): string => props.height || '3rem'};
+    width: ${(props): string => props.width || '80%'};
     margin: 0.3rem auto;
     box-shadow: 0 2px 2px 0 rgba(${substrateLightTheme.black}, 0.3);
-    background-color: ${props => props.backgroundColor || substrateLightTheme.white};
+    background-color: ${(props): string => props.backgroundColor || substrateLightTheme.white};
   }
 `;

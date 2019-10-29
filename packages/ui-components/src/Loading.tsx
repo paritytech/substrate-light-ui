@@ -12,7 +12,7 @@ type LoadingProps = {
   inverted?: boolean;
 };
 
-export function Loading (props: LoadingProps) {
+export function Loading (props: LoadingProps): React.ReactElement {
   const { active, children, inline = false, inverted = false } = props;
   return (
     <React.Fragment>

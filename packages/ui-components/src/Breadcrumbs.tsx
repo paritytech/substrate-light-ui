@@ -16,7 +16,7 @@ interface BreadcrumbProps {
   size?: SUIBreadcrumbSize;
 }
 
-export function Breadcrumbs (props: BreadcrumbProps) {
+export function Breadcrumbs (props: BreadcrumbProps): React.ReactElement {
   const { activeLabel, onClick, sectionLabels, size } = props;
 
   return (
@@ -26,10 +26,10 @@ export function Breadcrumbs (props: BreadcrumbProps) {
           sectionLabels.map((label, idx) => {
             const active = activeLabel === label;
             return (
-              <Margin left='big'>
+              <Margin key={label} left='big'>
                 <SUIBreadcrumb.Section active={active} onClick={onClick}>
                   <Stacked>
-                    <Circle fill={substrateLightTheme.lightBlue1} label={idx.toString()} radius={32} withShadow={active}/>
+                    <Circle fill={substrateLightTheme.lightBlue1} label={idx.toString()} radius={32} withShadow={active} />
                     <Margin top />
                     <FadedText>{label}</FadedText>
                   </Stacked>

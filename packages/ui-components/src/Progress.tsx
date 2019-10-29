@@ -15,7 +15,7 @@ interface ProgressProps {
   value?: number;
 }
 
-export function Progress (props: ProgressProps) {
+export function Progress (props: ProgressProps): React.ReactElement {
   const { color = 'blue', disabled, percent, size } = props;
 
   return (

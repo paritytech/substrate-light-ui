@@ -25,11 +25,11 @@ const defaultProps = {
   fontSize: 'large' as FontSize
 };
 
-/* FIXME: https://github.com/paritytech/substrate-light-ui/issues/471 */
-export function BalanceDisplay (props: BalanceDisplayProps = defaultProps) {
+// FIXME: https://github.com/paritytech/substrate-light-ui/issues/471
+export function BalanceDisplay (props: BalanceDisplayProps = defaultProps): React.ReactElement {
   const { allBalances, allStaking, detailed, fontSize, fontWeight, handleRedeem } = props;
 
-  const renderDetailedBalances = () => {
+  const renderDetailedBalances = (): React.ReactElement => {
     const { availableBalance, lockedBalance, reservedBalance } = allBalances!;
 
     return (
@@ -52,16 +52,16 @@ export function BalanceDisplay (props: BalanceDisplayProps = defaultProps) {
     );
   };
 
-  const renderRedeemButton = () => {
+  const renderRedeemButton = (): React.ReactElement => {
     return (allStaking && allStaking.controllerId && (
-      <StyledLinkButton onClick={() => handleRedeem && handleRedeem(allStaking.controllerId!.toString())}>
+      <StyledLinkButton onClick={(): void => handleRedeem && handleRedeem(allStaking.controllerId!.toString())}>
         <Icon name='lock' />
         Redeem Funds
       </StyledLinkButton>
     ));
   };
 
-  const renderUnlocking = () => {
+  const renderUnlocking = (): React.ReactElement => {
     return (
       allStaking &&
       allStaking.unlocking &&

@@ -5,7 +5,6 @@
 import { LinkProps } from 'react-router-dom';
 
 import { Color } from './globalStyle';
-import { ButtonProps } from './index';
 import { FlexAlign, FlexDirection, FlexJustify, FontSize, MarginSize } from './types';
 
 export interface HeaderProps {
@@ -26,7 +25,7 @@ export interface FlexItemProps {
   padding?: MarginSize;
 }
 
-export interface NavButtonProps extends ButtonProps {
+export interface StyledNavButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   negative?: boolean;
 }
 

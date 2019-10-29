@@ -11,7 +11,7 @@ interface Props {
   phrase: string;
 }
 
-export function MnemonicPhraseList (props: Props) {
+export function MnemonicPhraseList (props: Props): React.ReactElement {
   const phrase = props.phrase.split(' ');
   const firstHalf = phrase.slice(0, phrase.length / 2);
   const secondHalf = phrase.slice(phrase.length / 2, phrase.length);

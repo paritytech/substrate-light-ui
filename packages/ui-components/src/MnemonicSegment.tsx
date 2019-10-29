@@ -11,7 +11,7 @@ type MnemonicSegmentProps = {
   onClick?: () => void;
 };
 
-export function MnemonicSegment (props: MnemonicSegmentProps) {
+export function MnemonicSegment (props: MnemonicSegmentProps): React.ReactElement {
   const { mnemonic, onClick } = props;
 
   return (

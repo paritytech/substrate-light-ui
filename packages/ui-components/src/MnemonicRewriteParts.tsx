@@ -18,7 +18,7 @@ interface Props {
   handleSetFourthWord: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export function MnemonicRewriteParts (props: Props) {
+export function MnemonicRewriteParts (props: Props): React.ReactElement {
   const {
     randomFourWords,
     firstWord,
