@@ -57,8 +57,10 @@ const successObservable = new Subject<ExtrinsicDetails>();
 const errorObservable = new Subject<{ error: string }>();
 
 export const TxQueueContext = createContext({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   enqueue: (extrinsic: Extrinsic, details: ExtrinsicDetails) => { console.error(INIT_ERROR); },
   txQueue: [] as PendingExtrinsic[],
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   submit: (extrinsicId: number) => { console.error(INIT_ERROR); },
   clear: () => { console.error(INIT_ERROR); },
   cancelObservable,
@@ -66,14 +68,14 @@ export const TxQueueContext = createContext({
   errorObservable
 });
 
-export function TxQueueContextProvider (props: Props) {
+export function TxQueueContextProvider (props: Props): React.ReactElement {
   const [txCounter, setTxCounter] = useState(0); // Number of tx sent in total
   const [txQueue, setTxQueue] = useState([] as PendingExtrinsic[]);
 
   /**
    * Replace tx with id `extrinsicId` with a new tx
    */
-  const replaceTx = (extrinsicId: number, newTx: PendingExtrinsic) => {
+  const replaceTx = (extrinsicId: number, newTx: PendingExtrinsic): void => {
     setTxQueue((prevTxQueue: PendingExtrinsic[]) => prevTxQueue.map((tx: PendingExtrinsic) => (
       tx.id === extrinsicId
         ? newTx
@@ -84,7 +86,7 @@ export function TxQueueContextProvider (props: Props) {
   /**
    * Unsubscribe the tx with id `extrinsicId`
    */
-  const closeTxSubscription = (extrinsicId: number) => {
+  const closeTxSubscription = (extrinsicId: number): void => {
     const tx = txQueue.find((tx) => tx.id === extrinsicId);
     if (tx) {
       tx.unsubscribe();
@@ -95,7 +97,7 @@ export function TxQueueContextProvider (props: Props) {
   /**
    * Add a tx to the queue
    */
-  const enqueue = (extrinsic: Extrinsic, details: ExtrinsicDetails) => {
+  const enqueue = (extrinsic: Extrinsic, details: ExtrinsicDetails): void => {
     const extrinsicId = txCounter;
     setTxCounter(txCounter + 1);
 
@@ -119,7 +121,7 @@ export function TxQueueContextProvider (props: Props) {
   /**
    * Sign and send the tx with id `extrinsicId`
    */
-  const submit = (extrinsicId: number) => {
+  const submit = (extrinsicId: number): void => {
     const pendingExtrinsic = txQueue.find((tx) => tx.id === extrinsicId);
 
     if (!pendingExtrinsic) {
@@ -193,7 +195,7 @@ export function TxQueueContextProvider (props: Props) {
   /**
    * Clear the txQueue.
    */
-  const clear = () => {
+  const clear = (): void => {
     const msg: string[] = [];
     txQueue.forEach(({ extrinsic: { method }, unsubscribe }) => {
       msg.push(`${method.sectionName}.${method.methodName}`);

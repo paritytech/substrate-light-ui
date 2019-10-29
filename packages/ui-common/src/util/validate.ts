@@ -6,7 +6,7 @@ import ApiRx from '@polkadot/api/rx';
 import { compactToU8a } from '@polkadot/util';
 import BN from 'bn.js';
 import { Either, left, right } from 'fp-ts/lib/Either';
-import { none, some } from 'fp-ts/lib/Option';
+import { none, Option, some } from 'fp-ts/lib/Option';
 
 import { AllExtrinsicData, Errors, SubResults, UserInputs, WithAmount, WithExtrinsic } from '../types';
 
@@ -87,7 +87,7 @@ export function validateDerived (values: SubResults & UserInputs & WithExtrinsic
 /**
  * Add the extrinsic object, no validation done here.
  */
-function validateExtrinsic (api: ApiRx) {
+function validateExtrinsic () {
   return function (values: SubResults & UserInputs & WithExtrinsic & WithAmount): Either<Errors, SubResults & UserInputs & WithExtrinsic & WithAmount> {
     const { extrinsic } = values;
 
@@ -165,7 +165,7 @@ function validateUserInputs (values: Partial<SubResults & UserInputs & WithExtri
  * undesirable effects for the user.
  * @see https://github.com/polkadot-js/apps/blob/master/packages/ui-signer/src/Checks/index.tsx#L158-L168
  */
-export function validateWarnings (values: AllExtrinsicData) {
+export function validateWarnings (values: AllExtrinsicData): Option<string[]> {
   const { fees, hasAvailable, isCreation, isNoEffect, isRemovable, isReserved } = values;
 
   const warnings = [];
@@ -194,13 +194,11 @@ export function validateWarnings (values: AllExtrinsicData) {
  * from the `.chain()` syntax.
  */
 export function validate (
-  values: Partial<UserInputs & WithExtrinsic & SubResults>,
-  api: ApiRx
+  values: Partial<UserInputs & WithExtrinsic & SubResults>
 ): Either<Errors, AllExtrinsicData> {
-
   return validateUserInputs(values)
     .chain(validateSubResults)
     .chain(validateAmount)
-    .chain(validateExtrinsic(api))
+    .chain(validateExtrinsic())
     .chain(validateDerived);
 }

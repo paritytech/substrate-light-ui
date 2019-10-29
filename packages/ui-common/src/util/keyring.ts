@@ -18,7 +18,9 @@ enum AddressType {
  */
 function keyringHelper (type: AddressType, keyring: Keyring, address?: string): Either<Error, KeyringAddress> {
   // Which keyring function to call?
-  const keyringFunction = (type === AddressType.Account ? keyring.getAccount : keyring.getAddress).bind(keyring);
+  const keyringFunction = type === AddressType.Account
+    ? (addr: string): KeyringAddress | undefined => keyring.getAccount(addr)
+    : (addr: string): KeyringAddress | undefined => keyring.getAddress(addr);
 
   return fromOption(new Error('You need to specify an address'))(fromNullable(address))
     // `keyring.getAddress` might fail: catch and return None if it does, pass on the KeyringAddress otherwise

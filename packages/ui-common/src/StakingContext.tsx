@@ -25,7 +25,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-export function StakingContextProvider (props: Props) {
+export function StakingContextProvider (props: Props): React.ReactElement {
   const { children } = props;
   const { api, isReady, keyring } = useContext(AppContext);
   const [accountStakingMap, setAccountStakingMap] = useState<AccountDerivedStakingMap>({});
@@ -51,13 +51,15 @@ export function StakingContextProvider (props: Props) {
             setOnlyBondedAccounts(newAccountStakingMap);
           }
         });
-      return () => subscription.unsubscribe();
+
+      return (): void => subscription.unsubscribe();
     });
   }, [api, isReady, keyring]);
 
   // get allStashesAndControllers
   useEffect(() => {
     if (!isReady) { return; }
+
     const controllersSub = api.derive.staking.controllers()
       .pipe(take(1))
       .subscribe((allStashesAndControllers) => {
@@ -70,16 +72,18 @@ export function StakingContextProvider (props: Props) {
         setAllStashes(allStashes);
       });
 
-    return () => controllersSub.unsubscribe();
+    return (): void => controllersSub.unsubscribe();
   }, [api, isReady]);
 
   // derived fees
   useEffect(() => {
     if (!isReady) { return; }
+
     const feeSub = api.derive.balances.fees()
       .pipe(take(1))
       .subscribe(setDerivedBalanceFees);
-    return () => feeSub.unsubscribe();
+
+    return (): void => feeSub.unsubscribe();
   }, [api, isReady]);
 
   return (

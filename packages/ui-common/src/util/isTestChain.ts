@@ -2,10 +2,13 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-export function isTestChain (chain?: string) {
+const TEST_CHAINS = ['Development', 'Local Testnet'] as const;
+type TestChain = typeof TEST_CHAINS[number]
+
+export function isTestChain (chain?: string): chain is TestChain {
   if (!chain) {
     return false;
   }
 
-  return ['Development', 'Local Testnet'].includes(chain);
+  return (TEST_CHAINS).includes(chain as TestChain);
 }

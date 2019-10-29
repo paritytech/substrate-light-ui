@@ -13,7 +13,7 @@ type TextAreaProps = {
   value?: string;
 };
 
-export function TextArea (props: TextAreaProps) {
+export function TextArea (props: TextAreaProps): React.ReactElement {
   const { placeholder, rows, value } = props;
 
   return (

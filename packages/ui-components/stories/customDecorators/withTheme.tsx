@@ -7,7 +7,7 @@ import { ThemeProvider } from 'styled-components';
 
 import { GlobalStyle, substrateLightTheme } from '../../src/globalStyle';
 
-export const withTheme = (storyFn: any) => {
+export const withTheme = (storyFn: any): React.ReactElement => {
   return (
     <React.Fragment>
       <GlobalStyle />
