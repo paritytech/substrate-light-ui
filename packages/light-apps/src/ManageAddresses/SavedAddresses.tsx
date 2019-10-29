@@ -13,17 +13,46 @@ interface MatchParams {
   currentAccount: string;
 }
 
-interface Props extends RouteComponentProps<MatchParams> { }
+type Props = RouteComponentProps<MatchParams>;
 
-export function SavedAddresses (props: Props) {
+function renderAllAddressesFromKeyring (addresses: SingleAddress[], currentAccount: string): React.ReactElement {
+  return (
+    addresses.length
+      ? (
+        <>
+          {addresses.map((address: SingleAddress) =>
+            <React.Fragment key={`__locked_${address.json.address}`}>
+              <Margin top />
+              <StackedHorizontal>
+                <Link to={`/addresses/${currentAccount}/${address.json.address}`}>
+                  <AddressSummary
+                    address={address.json.address}
+                    name={address.json.meta.name}
+                    orientation='horizontal'
+                    size='small'
+                  />
+                </Link>
+                <Margin left />
+                <CopyButton value={address.json.address} />
+              </StackedHorizontal>
+            </React.Fragment>
+          )}
+        </>
+      )
+      : <p> It looks like you haven&apos;t saved any addresses yet. </p>
+  );
+}
+
+export function SavedAddresses (props: Props): React.ReactElement {
   const { match: { params: { currentAccount } } } = props;
   const [addresses, setAddresses] = useState<SingleAddress[]>([]);
   useEffect(() => {
     const addressesSub = addressObservable.subject
+      // eslint-disable-next-line @typescript-eslint/unbound-method
       .pipe(map(Object.values))
       .subscribe(setAddresses);
 
-    return () => addressesSub.unsubscribe();
+    return (): void => addressesSub.unsubscribe();
   }, []);
 
   return (
@@ -33,29 +62,5 @@ export function SavedAddresses (props: Props) {
         {renderAllAddressesFromKeyring(addresses, currentAccount)}
       </WithSpace>
     </Stacked>
-  );
-}
-
-function renderAllAddressesFromKeyring (addresses: SingleAddress[], currentAccount: string) {
-  return (
-    addresses.length
-      ? addresses.map((address: SingleAddress) =>
-        <React.Fragment key={`__locked_${address.json.address}`}>
-          <Margin top />
-          <StackedHorizontal>
-            <Link to={`/addresses/${currentAccount}/${address.json.address}`}>
-              <AddressSummary
-                address={address.json.address}
-                name={address.json.meta.name}
-                orientation='horizontal'
-                size='small'
-              />
-            </Link>
-            <Margin left />
-            <CopyButton value={address.json.address} />
-          </StackedHorizontal>
-        </React.Fragment>
-      )
-      : <p> It looks like you haven't saved any addresses yet. </p>
   );
 }

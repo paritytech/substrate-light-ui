@@ -12,8 +12,8 @@ import { UserInput, UserInputError, PhrasePartialRewrite, PhrasePartialRewriteEr
  * Fischer Yates shuffle numbers between 0 and @max
  * @param max highest number the random number should be
  */
-export function getRandomInts (max: number) {
-  let scratch = [];
+export function getRandomInts (max: number): number[] {
+  const scratch = [];
 
   // populate with the range of possible numbers
   for (let i = 1; i <= max; ++i) {
@@ -54,15 +54,16 @@ export function validateMeta (values: UserInput, step: string, whichAccount: str
     values.tags = [whichAccount];
   }
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
   // @ts-ignore
   values.tags = values.tags.map(tag => tag.toLowerCase());
 
   if (step === 'meta') {
     (['name', 'password'] as (Exclude<keyof UserInput, 'tags'>)[])
-    .filter((key) => !values[key])
-    .forEach((key) => {
-      errors[key] = `Field "${key}" cannot be empty`;
-    });
+      .filter((key) => !values[key])
+      .forEach((key) => {
+        errors[key] = `Field "${key}" cannot be empty`;
+      });
   }
   // Should not tag an account as both a stash and controller
   if (values.tags.includes('stash') && values.tags.includes('controller')) {
@@ -76,7 +77,7 @@ export function validateMeta (values: UserInput, step: string, whichAccount: str
  * Validate phrase rewrite
  */
 export function validateRewrite (values: PhrasePartialRewrite, randomFourWords: Array<Array<string>>): Either<PhrasePartialRewriteError, PhrasePartialRewrite> {
-  let errors = {} as PhrasePartialRewriteError;
+  const errors = {} as PhrasePartialRewriteError;
 
   const { firstWord, secondWord, thirdWord, fourthWord } = values;
 
@@ -85,11 +86,11 @@ export function validateRewrite (values: PhrasePartialRewrite, randomFourWords: 
   }
 
   if (
-      firstWord === randomFourWords[0][1]
-      && secondWord === randomFourWords[1][1]
-      && thirdWord === randomFourWords[2][1]
-      && fourthWord === randomFourWords[3][1]
-    ) {
+    firstWord === randomFourWords[0][1] &&
+    secondWord === randomFourWords[1][1] &&
+    thirdWord === randomFourWords[2][1] &&
+    fourthWord === randomFourWords[3][1]
+  ) {
     return right(values);
   } else {
     errors.incorrectFields = 'It seems you did not copy all the words properly. Please double check your inputs and try again.';

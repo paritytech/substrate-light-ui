@@ -13,7 +13,7 @@ interface Props {
   history: H.History;
 }
 
-export function Forget (props: Props) {
+export function Forget (props: Props): React.ReactElement {
   const { currentAccount, history } = props;
   const { keyring } = useContext(AppContext);
   const { enqueue } = useContext(AlertsContext);

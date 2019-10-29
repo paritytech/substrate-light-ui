@@ -13,19 +13,20 @@ import { map } from 'rxjs/operators';
 import { Create } from '../AddAccount/Create/CreateAccount';
 import { Restore } from '../AddAccount/Restore';
 
-interface Props extends RouteComponentProps { }
+type Props = RouteComponentProps
 
-export function AccountsSetup (props: Props) {
+export function AccountsSetup (props: Props): React.ReactElement {
   const { history, location } = props;
   const [keyringAccounts, setKeyringAccounts] = useState();
   const [whichAccount, setWhichAccount] = useState();
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     const accountsSub = accounts.subject.pipe(map(Object.values)).subscribe(values => {
       setKeyringAccounts(values);
     });
 
-    return () => accountsSub.unsubscribe();
+    return (): void => accountsSub.unsubscribe();
   }, []);
 
   useEffect(() => {
@@ -34,11 +35,11 @@ export function AccountsSetup (props: Props) {
     setWhichAccount(whichAccount.toLowerCase());
   }, [location]);
 
-  const navToClaim = () => {
+  const navToClaim = (): void => {
     history.push('/onboarding/claim');
   };
 
-  const navToCreateController = () => {
+  const navToCreateController = (): void => {
     history.push('/onboarding/controller');
   };
 
@@ -46,7 +47,7 @@ export function AccountsSetup (props: Props) {
     return ((whichAccount === 'stash' && keyringAccounts.length > 0) || (whichAccount === 'controller' && keyringAccounts.length > 1));
   };
 
-  const renderMessage = () => {
+  const renderMessage = (): React.ReactElement => {
     return (
       <FlexItem flex={2}>
         <WithSpaceAround>
@@ -69,23 +70,23 @@ export function AccountsSetup (props: Props) {
           {
             (
               isReadyForNextStep() &&
-                (
-                  <WithSpaceAround>
-                    <Stacked justifyContent='space-around'>
-                      <StyledNavButton
-                        onClick={ whichAccount === 'stash'
-                          ? () => navToCreateController()
-                          : () => navToClaim()
-                        }>
-                        {
-                          whichAccount === 'stash'
-                            ? 'Create Controller'
-                            : 'Claim KSM'
-                        }
-                      </StyledNavButton>
-                    </Stacked>
-                  </WithSpaceAround>
-                )
+              (
+                <WithSpaceAround>
+                  <Stacked justifyContent='space-around'>
+                    <StyledNavButton
+                      onClick={whichAccount === 'stash'
+                        ? navToCreateController
+                        : navToClaim
+                      }>
+                      {
+                        whichAccount === 'stash'
+                          ? 'Create Controller'
+                          : 'Claim KSM'
+                      }
+                    </StyledNavButton>
+                  </Stacked>
+                </WithSpaceAround>
+              )
             )
           }
         </WithSpaceAround>
@@ -93,19 +94,19 @@ export function AccountsSetup (props: Props) {
     );
   };
 
-  const renderSetupCard = () => {
+  const renderSetupCard = (): React.ReactElement => {
     const { location } = props;
     const path = location.pathname.split('/').slice(0, 3).join('/');
     const activeTab = location.pathname.split('/')[3];
 
-    const renderAffirmation = () => {
+    const renderAffirmation = (): React.ReactElement => {
       const isStash = location.pathname.split('/')[2] === 'stash'; // yuck
 
       if (isStash) {
         return (
           <Stacked>
             <SubHeader> Good Job! </SubHeader>
-            <FadedText>You've created your first Stash account.</FadedText>
+            <FadedText>You&apos;ve created your first Stash account.</FadedText>
             <WithSpaceAround>
               {
                 keyringAccounts.filter((account: CreateResult) => {
@@ -114,7 +115,7 @@ export function AccountsSetup (props: Props) {
                     .map(lowercaseTags => lowercaseTags.includes('stash'))
                     .getOrElse(undefined);
                 }).map((account: CreateResult) =>
-                  <AddressSummary address={account.json.address} name={account.json.meta.name} size='small' />
+                  <AddressSummary address={account.json.address} key={account.json.address} name={account.json.meta.name} size='small' />
                 )
               }
             </WithSpaceAround>
@@ -131,7 +132,7 @@ export function AccountsSetup (props: Props) {
                 {
                   keyringAccounts.filter((account: CreateResult) => account.json.meta.tags && account.json.meta.tags.includes('stash'))
                     .map((account: CreateResult) =>
-                      <AddressSummary address={account.json.address} name={account.json.meta.name} size='small' />
+                      <AddressSummary address={account.json.address} key={account.json.address} name={account.json.meta.name} size='small' />
                     )
                 }
               </Stacked>
@@ -141,7 +142,7 @@ export function AccountsSetup (props: Props) {
                 {
                   keyringAccounts.filter((account: CreateResult) => account.json.meta.tags && account.json.meta.tags.includes('controller'))
                     .map((account: CreateResult) =>
-                      <AddressSummary address={account.json.address} name={account.json.meta.name} size='small' />
+                      <AddressSummary address={account.json.address} key={account.json.address} name={account.json.meta.name} size='small' />
                     )
                 }
               </Stacked>
@@ -166,16 +167,16 @@ export function AccountsSetup (props: Props) {
                   <Card style={{ height: '100%' }}>
                     <Card.Header>
                       <Menu fluid secondary widths={2}>
-                        <Menu.Item active={activeTab === 'create'} onClick={() => history.push(`${path}/create`)}>Create</Menu.Item>
-                        <Menu.Item active={activeTab === 'restore'} onClick={() => history.push(`${path}/restore`)}>Restore</Menu.Item>
+                        <Menu.Item active={activeTab === 'create'} onClick={(): void => history.push(`${path}/create`)}>Create</Menu.Item>
+                        <Menu.Item active={activeTab === 'restore'} onClick={(): void => history.push(`${path}/restore`)}>Restore</Menu.Item>
                       </Menu>
                     </Card.Header>
                     <Card.Content>
                       <Switch>
-                        <Route path='/onboarding/stash/create' render={(props: Props) => <Create identiconSize='small' {...props} />} />
-                        <Route path='/onboarding/controller/create' render={(props: Props) => <Create identiconSize='small' {...props} />} />
-                        <Route path='/onboarding/stash/restore' render={(props: Props) => <Restore {...props} />} />
-                        <Route path='/onboarding/controller/restore' render={(props: Props) => <Restore {...props}/>} />
+                        <Route path='/onboarding/stash/create' render={(props: Props): React.ReactElement => <Create identiconSize='small' {...props} />} />
+                        <Route path='/onboarding/controller/create' render={(props: Props): React.ReactElement => <Create identiconSize='small' {...props} />} />
+                        <Route path='/onboarding/stash/restore' render={(props: Props): React.ReactElement => <Restore {...props} />} />
+                        <Route path='/onboarding/controller/restore' render={(props: Props): React.ReactElement => <Restore {...props} />} />
                         <Redirect exact path='/onboarding/stash' to='/onboarding/stash/create' />
                         <Redirect exact path='/onboarding/controller' to='/onboarding/controller/create' />
                       </Switch>
@@ -192,8 +193,8 @@ export function AccountsSetup (props: Props) {
   return (
     <Modal.Content>
       <StackedHorizontal>
-        { renderSetupCard() }
-        { renderMessage() }
+        {renderSetupCard()}
+        {renderMessage()}
       </StackedHorizontal>
     </Modal.Content>
   );

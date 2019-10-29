@@ -29,7 +29,7 @@ storiesOf('Alerts', module)
       success={false}
       warning={false}
     >
-    For your information: this is an information
+      For your information: this is an information
     </Alert>
   ))
   .add('Success', () => (
@@ -39,7 +39,7 @@ storiesOf('Alerts', module)
       success={true}
       warning={false}
     >
-    Such success!
+      Such success!
     </Alert>
   ))
   .add('Warning', () => (
@@ -49,6 +49,6 @@ storiesOf('Alerts', module)
       success={false}
       warning={true}
     >
-    I'm warning you, don't do it.
+      I&apos;m warning you, don&apos;t do it.
     </Alert>
   ));

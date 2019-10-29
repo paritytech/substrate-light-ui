@@ -16,7 +16,7 @@ import { RouteComponentProps } from 'react-router';
 import { map, take } from 'rxjs/operators';
 import Card from 'semantic-ui-react/dist/commonjs/views/Card';
 
-interface Props extends RouteComponentProps {}
+type Props = RouteComponentProps;
 
 interface EthereumAddressPayload {
   address: string;
@@ -32,7 +32,7 @@ const validateEthereumAddress = (addr: string): Either<string, EthereumAddress> 
   }
 };
 
-export function Claim (props: Props) {
+export function Claim (props: Props): React.ReactElement {
   const { history } = props;
   const { api } = useContext(AppContext);
 
@@ -46,6 +46,7 @@ export function Claim (props: Props) {
   const [signature, setSignature] = useState();
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     const accountsSub = accounts.subject.pipe(map(Object.values)).subscribe(values => {
       const stash = values.filter(value =>
         fromNullable(value.json.meta.tags)
@@ -60,12 +61,13 @@ export function Claim (props: Props) {
       setMessageToSign(_messageToSign);
     });
 
-    return () => accountsSub.unsubscribe();
+    return (): void => accountsSub.unsubscribe();
   }, []);
 
-  const handleSubmitClaim = (event: React.MouseEvent<HTMLElement>) => {
+  const handleSubmitClaim = (): void => {
     if (!ethereumAddress) {
       setClaimError('Please set your Ethereum address to claim.');
+
       return;
     }
 
@@ -83,11 +85,11 @@ export function Claim (props: Props) {
       });
   };
 
-  const handleScanSignature = (signature: any) => {
+  const handleScanSignature = (signature: any): void => {
     setSignature(signature);
   };
 
-  const handleSetEthereumAddress = (data: EthereumAddressPayload) => {
+  const handleSetEthereumAddress = (data: EthereumAddressPayload): void => {
     if (!data) {
       setClaimError('invalid payload.');
       return;
@@ -107,7 +109,7 @@ export function Claim (props: Props) {
     );
   };
 
-  const renderCheckingClaim = () => {
+  const renderCheckingClaim = (): React.ReactElement => {
     return (
       <Stacked>
         {
@@ -118,7 +120,7 @@ export function Claim (props: Props) {
                 <Header>Signature valid!</Header>
                 <FadedText>Press the button below to claim your KSM!</FadedText>
                 <StyledNavButton negative onClick={handleSubmitClaim}>Check Claim</StyledNavButton>
-                <ErrorText>{ claimError }</ErrorText>
+                <ErrorText>{claimError}</ErrorText>
               </Stacked>
             )
         }
@@ -126,21 +128,7 @@ export function Claim (props: Props) {
     );
   };
 
-  const renderStartClaim = () => {
-    return (
-      <React.Fragment>
-        <StyledLinkButton onClick={() => setRenderQr(!renderQr)}>{renderQr ? 'Raw' : 'QR'} </StyledLinkButton>
-        {
-          renderQr
-            ? renderWithQr()
-            : renderWithRaw()
-        }
-        <ErrorText>{ claimError }</ErrorText>
-      </React.Fragment>
-    );
-  };
-
-  const renderWithRaw = () => {
+  const renderWithRaw = (): React.ReactElement => {
     return (
       <Card.Group itemsPerRow={2} stackable>
         <Card raised>
@@ -171,7 +159,7 @@ export function Claim (props: Props) {
     );
   };
 
-  const renderWithQr = () => {
+  const renderWithQr = (): React.ReactElement => {
     return (
       <Card.Content centered>
         <Stacked>
@@ -184,23 +172,37 @@ export function Claim (props: Props) {
               : <React.Fragment>
                 {
                   messageToSign &&
-                    <React.Fragment>
-                      <Message floating>
-                        <FadedText>Scan the QR Code below to sign the following message.</FadedText>
-                        <BoldText>{messageToSign}</BoldText>
-                      </Message>
-                      {
-                        scanSignature
-                          ? (<QrSigner onScan={handleScanSignature} scan={true} size={300}/>)
-                          : (<QrSigner account={ethereumAddress.toHex()} data={stringToHex(messageToSign)} scan={false} size={300} />)
-                      }
-                    </React.Fragment>
+                  <React.Fragment>
+                    <Message floating>
+                      <FadedText>Scan the QR Code below to sign the following message.</FadedText>
+                      <BoldText>{messageToSign}</BoldText>
+                    </Message>
+                    {
+                      scanSignature
+                        ? (<QrSigner onScan={handleScanSignature} scan={true} size={300} />)
+                        : (<QrSigner account={ethereumAddress.toHex()} data={stringToHex(messageToSign)} scan={false} size={300} />)
+                    }
+                  </React.Fragment>
                 }
               </React.Fragment>
           }
-          <StyledLinkButton onClick={() => setScanSignature(!scanSignature)}>{ scanSignature ? 'Show QR' : 'Scan Signature' }</StyledLinkButton>
+          <StyledLinkButton onClick={(): void => setScanSignature(!scanSignature)}>{scanSignature ? 'Show QR' : 'Scan Signature'}</StyledLinkButton>
         </Stacked>
       </Card.Content>
+    );
+  };
+
+  const renderStartClaim = (): React.ReactElement => {
+    return (
+      <React.Fragment>
+        <StyledLinkButton onClick={(): void => setRenderQr(!renderQr)}>{renderQr ? 'Raw' : 'QR'} </StyledLinkButton>
+        {
+          renderQr
+            ? renderWithQr()
+            : renderWithRaw()
+        }
+        <ErrorText>{claimError}</ErrorText>
+      </React.Fragment>
     );
   };
 
@@ -217,8 +219,8 @@ export function Claim (props: Props) {
       </Modal.Content>
       <Modal.Actions>
         <StackedHorizontal justifyContent='space-around'>
-          <StyledLinkButton onClick={() => history.push('/onboarding/bond')}>Skip</StyledLinkButton>
-          <StyledNavButton disabled={!claim} onClick={() => history.push('/onboarding/bond')}>Next</StyledNavButton>
+          <StyledLinkButton onClick={(): void => history.push('/onboarding/bond')}>Skip</StyledLinkButton>
+          <StyledNavButton disabled={!claim} onClick={(): void => history.push('/onboarding/bond')}>Next</StyledNavButton>
         </StackedHorizontal>
       </Modal.Actions>
     </React.Fragment>

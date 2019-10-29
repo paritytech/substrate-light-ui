@@ -6,12 +6,12 @@ import { Image, Modal, StyledNavButton, WithSpaceAround, substrateLightTheme } f
 import React from 'react';
 import { RouteComponentProps } from 'react-router';
 
-interface Props extends RouteComponentProps {}
+type Props = RouteComponentProps;
 
-export function Welcome (props: Props) {
+export function Welcome (props: Props): React.ReactElement {
   const { history } = props;
 
-  const navToCreateStash = () => {
+  const navToCreateStash = (): void => {
     history.push('/onboarding/stash');
   };
 

@@ -10,7 +10,7 @@ import { Add } from './Add';
 import { Edit } from './Edit';
 import { SavedAddresses } from './SavedAddresses';
 
-export function ManageAddresses () {
+export function ManageAddresses (): React.ReactElement {
   return (
     <WalletCard
       header='Address Book'

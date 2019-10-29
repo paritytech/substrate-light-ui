@@ -12,15 +12,16 @@ import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { map, take } from 'rxjs/operators';
 
-interface Props extends RouteComponentProps { }
+type Props = RouteComponentProps
 
-export function BondingSetup (props: Props) {
+export function BondingSetup (props: Props): React.ReactElement {
   const { api } = useContext(AppContext);
   const [controller, setController] = useState();
   const [stash, setStash] = useState();
   const [stashNoBalance, setStashNoBalance] = useState<boolean>(true);
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     const accountsSub = accounts.subject.pipe(map(Object.values)).subscribe(values => {
       const _controller = values.filter(value => value.json.meta.tags && value.json.meta.tags.includes('controller'))[0];
       const _stash = values.filter(value => value.json.meta.tags && value.json.meta.tags.includes('stash'))[0];
@@ -29,7 +30,7 @@ export function BondingSetup (props: Props) {
       setStash(_stash);
     });
 
-    return () => accountsSub.unsubscribe();
+    return (): void => accountsSub.unsubscribe();
   }, []);
 
   useEffect(() => {
@@ -40,16 +41,16 @@ export function BondingSetup (props: Props) {
     const stashBalSub = api.query.balances.freeBalance<Balance>(stash.json.address)
       .pipe(
         take(1)
-      ).subscribe((balance: BN) => {
+      ).subscribe((balance) => {
         if (balance.gt(new BN(0))) {
           setStashNoBalance(false);
         }
       });
 
-    return () => stashBalSub.unsubscribe();
+    return (): void => stashBalSub.unsubscribe();
   }, [api, stash]);
 
-  const renderControllerNotFound = () => {
+  const renderControllerNotFound = (): React.ReactElement => {
     return (
       <Stacked>
         <Header>Uh oh...</Header>
@@ -60,7 +61,7 @@ export function BondingSetup (props: Props) {
     );
   };
 
-  const renderStashNotFound = () => {
+  const renderStashNotFound = (): React.ReactElement => {
     return (
       <Stacked>
         <Header>Uh oh...</Header>
@@ -71,7 +72,7 @@ export function BondingSetup (props: Props) {
     );
   };
 
-  const renderStashNoBalance = () => {
+  const renderStashNoBalance = (): React.ReactElement => {
     return (
       <Stacked>
         <Header>Your Stash account has no balance!</Header>

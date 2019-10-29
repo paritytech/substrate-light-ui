@@ -5,9 +5,9 @@
 export type Steps = 'copy' | 'rewrite' | 'meta';
 
 export type TagOption = {
-  key: string,
-  text: string,
-  value: string
+  key: string;
+  text: string;
+  value: string;
 };
 
 export type Tags = Array<string>;
@@ -27,7 +27,7 @@ export interface UserInput {
   tags: Tags | string;
 }
 
-export interface UserInputError extends Partial<UserInput> { }
+export type UserInputError = Partial<UserInput>
 export interface PhrasePartialRewriteError {
   emptyFields: string;
   incorrectFields: string;

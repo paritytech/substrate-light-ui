@@ -7,7 +7,7 @@ import React from 'react';
 
 import { SaveAddress } from './SaveAddress';
 
-export function Add () {
+export function Add (): React.ReactElement {
   return (
     <Stacked>
       <SubHeader> Enter an ddress and save it with a name for later use. </SubHeader>

@@ -18,11 +18,27 @@ interface Props {
 /**
  * Get the address's name. Return `''` if the address doesn't exist.
  */
-function getAddressName (keyringAddress: Either<Error, KeyringAddress>) {
+function getAddressName (keyringAddress: Either<Error, KeyringAddress>): string {
   return keyringAddress.map((keyringAddress) => keyringAddress.meta.name || '').getOrElse('');
 }
 
-export function SaveAddress (props: Props) {
+function renderError (error?: string): React.ReactElement {
+  return (
+    <ErrorText>
+      {error}
+    </ErrorText>
+  );
+}
+
+function renderSuccess (success?: string): React.ReactElement {
+  return (
+    <SuccessText>
+      {success}
+    </SuccessText>
+  );
+}
+
+export function SaveAddress (props: Props): React.ReactElement {
   const { addressDisabled, defaultAddress = '', onSave } = props;
 
   const { keyring } = useContext(AppContext);
@@ -40,7 +56,17 @@ export function SaveAddress (props: Props) {
   const [error, setError] = useState<string | undefined>(undefined);
   const [success, setSuccess] = useState<string | undefined>(undefined);
 
-  const handleSubmit = () => {
+  const onError = (value?: string): void => {
+    setError(value);
+    setSuccess(undefined);
+  };
+
+  const onSuccess = (value?: string): void => {
+    setError(undefined);
+    setSuccess(value);
+  };
+
+  const handleSubmit = (): void => {
     try {
       // if address already saved under this name: throw
       const lookupAddress = keyring.getAddress(address);
@@ -59,16 +85,6 @@ export function SaveAddress (props: Props) {
     } catch (e) {
       onError(e.message);
     }
-  };
-
-  const onError = (value?: string) => {
-    setError(value);
-    setSuccess(undefined);
-  };
-
-  const onSuccess = (value?: string) => {
-    setError(undefined);
-    setSuccess(value);
   };
 
   return (
@@ -101,21 +117,5 @@ export function SaveAddress (props: Props) {
         </WrapperDiv>
       </Stacked>
     </Form>
-  );
-}
-
-function renderError (error?: string) {
-  return (
-    <ErrorText>
-      {error}
-    </ErrorText>
-  );
-}
-
-function renderSuccess (success?: string) {
-  return (
-    <SuccessText>
-      {success}
-    </SuccessText>
   );
 }

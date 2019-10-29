@@ -6,7 +6,7 @@ import { Alert } from '@substrate/ui-components';
 import { Alert as AlertType, AlertsContext } from '@substrate/ui-common';
 import React, { useContext } from 'react';
 
-export function Alerts () {
+export function Alerts (): React.ReactElement {
   const { alerts, remove } = useContext(AlertsContext);
 
   return (
@@ -16,7 +16,7 @@ export function Alerts () {
           error={alert.type === 'error'}
           info={alert.type === 'info'}
           key={alert.id}
-          onDismiss={() => remove(alert.id)}
+          onDismiss={(): void => remove(alert.id)}
           success={alert.type === 'success'}
           warning={alert.type === 'warning'}
         >

@@ -29,7 +29,7 @@ function unlockAccount (keyringPair: KeyringPair, password: string): Either<Erro
   return right(keyringPair);
 }
 
-export function Signer () {
+export function Signer (): React.ReactElement | null {
   const { clear, submit, txQueue } = useContext(TxQueueContext);
   const [inputPassword, setInputPassword] = useState('');
   const [error, setError] = useState('');
@@ -42,7 +42,7 @@ export function Signer () {
 
   const { senderPair } = pendingTx.details;
 
-  const handlePasswordChange = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePasswordChange = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>): void => {
     setError('');
     setInputPassword(value);
   };

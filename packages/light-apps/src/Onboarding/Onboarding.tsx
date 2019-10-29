@@ -17,24 +17,25 @@ interface MatchParams {
   activeOnboardingStep: string;
 }
 
-interface Props extends RouteComponentProps<MatchParams> { }
+type Props = RouteComponentProps<MatchParams>;
 
-export function Onboarding (props: Props) {
+export function Onboarding (props: Props): React.ReactElement {
   const { history, match: { params: { activeOnboardingStep } } } = props;
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
 
-  const confirmSkipOnboarding = (e: React.MouseEvent<HTMLElement>) => {
+  const confirmSkipOnboarding = (): void => {
     setShowConfirmationDialog(true);
   };
 
-  const skipOnboarding = () => {
+  const skipOnboarding = (): void => {
     localStorage.setItem('skipOnboarding', 'y');
 
     history.replace('/');
     window.location.reload();
   };
 
-  const navToBreadcrumb = (event: React.MouseEvent<HTMLElement>, data: any) => {
+  const navToBreadcrumb = (event: React.MouseEvent<HTMLElement>): void => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
     // FIXME: apparently type ChildNode from MouseEvent does not have innerText, but in practice it does. Maybe needs to be more specific than React.MouseEvent<HTMLElement>?
     const text = event.currentTarget.childNodes[0].innerText;
@@ -43,7 +44,7 @@ export function Onboarding (props: Props) {
     history.replace(`/onboarding/${to}`);
   };
 
-  const renderSkipOnboardingOption = () => {
+  const renderSkipOnboardingOption = (): React.ReactElement => {
     return (
       <Modal
         centered
@@ -60,7 +61,7 @@ export function Onboarding (props: Props) {
 
           <WrapperDiv width='90%'>
             <StackedHorizontal justifyContent='space-between'>
-              <StyledNavButton negative onClick={() => setShowConfirmationDialog(false)}>No</StyledNavButton>
+              <StyledNavButton negative onClick={(): void => setShowConfirmationDialog(false)}>No</StyledNavButton>
               <StyledNavButton onClick={skipOnboarding}>Yes</StyledNavButton>
             </StackedHorizontal>
           </WrapperDiv>
@@ -79,7 +80,7 @@ export function Onboarding (props: Props) {
       >
         <Stacked margin='tiny'>
           <Margin top />
-          { renderSkipOnboardingOption() }
+          {renderSkipOnboardingOption()}
           <Margin top />
           <Breadcrumbs activeLabel={activeOnboardingStep.toLowerCase()} onClick={navToBreadcrumb} sectionLabels={ONBOARDING_STEPS} size='mini' />
         </Stacked>
