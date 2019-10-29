@@ -19,7 +19,7 @@ interface Props {
   recipientAddress: string;
 }
 
-export function SendBalance (props: Props) {
+export function SendBalance (props: Props): React.ReactElement {
   const { api, keyring } = useContext(AppContext);
   const { enqueue } = useContext(TxQueueContext);
 
@@ -60,7 +60,8 @@ export function SendBalance (props: Props) {
         setRecipientBalance(recipientBalance);
         setAccountNonce(accountNonce);
       });
-    return () => subscription.unsubscribe();
+
+    return (): void => subscription.unsubscribe();
   }, [currentAccount, recipientAddress]);
 
   useEffect(() => {
@@ -69,15 +70,15 @@ export function SendBalance (props: Props) {
     setValidationResult(values);
   }, [amountAsString, accountNonce, currentBalance, fees, recipientBalance, currentAccount, recipientAddress]);
 
-  const changeCurrentAccount = (newCurrentAccount: string) => {
+  const changeCurrentAccount = (newCurrentAccount: string): void => {
     setSender(newCurrentAccount);
   };
 
-  const changeRecipientAddress = (newRecipientAddress: string) => {
+  const changeRecipientAddress = (newRecipientAddress: string): void => {
     setReceiver(newRecipientAddress);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (): void => {
     validationResult.fold(
       (error) => { console.error(error); },
       (allExtrinsicData: AllExtrinsicData) => {

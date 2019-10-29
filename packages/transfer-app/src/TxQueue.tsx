@@ -12,7 +12,53 @@ interface Props extends Partial<AllExtrinsicData> {
   currentAccount: string;
 }
 
-export function TxQueue (props: Props) {
+function renderDetails (currentAccount: string, txQueue: PendingExtrinsic[]): React.ReactElement {
+  const { details: { allFees, allTotal, amount, recipientAddress } } = txQueue[0];
+
+  return (
+    <TxDetails
+      allFees={allFees}
+      allTotal={allTotal}
+      amount={amount}
+      recipientAddress={recipientAddress}
+      senderAddress={currentAccount}
+    />
+  );
+}
+
+function renderSummary (currentAccount: string, txQueue: PendingExtrinsic[]): React.ReactElement {
+  const { details: { amount, recipientAddress }, extrinsic: { meta: { name } } } = txQueue[0];
+
+  return (
+    <TxSummary
+      amount={amount}
+      methodCall={name.toString()}
+      recipientAddress={recipientAddress}
+      senderAddress={currentAccount}
+    />
+  );
+}
+
+function renderTxStatusHelper (label: string, icon: string): React.ReactElement {
+  return <Stacked>
+    <SubHeader color='lightBlue1' >{label}</SubHeader>
+    <Icon name={icon} size='big' />
+  </Stacked>;
+}
+
+function renderTxStatus (txQueue: PendingExtrinsic[]): React.ReactElement {
+  const { isFinalized, isDropped, isUsurped } = txQueue[0].status;
+
+  if (isFinalized) {
+    return renderTxStatusHelper('Transaction completed!', 'check');
+  } else if (isDropped || isUsurped) {
+    return renderTxStatusHelper('Transaction error!', 'cross');
+  } else {
+    return renderTxStatusHelper('Sending...', 'spinner');
+  }
+}
+
+export function TxQueue (props: Props): React.ReactElement | null {
   const { currentAccount } = props;
   const { clear, txQueue } = useContext(TxQueueContext);
 
@@ -36,50 +82,4 @@ export function TxQueue (props: Props) {
       </FlexItem>
     </Stacked>
   );
-}
-
-function renderDetails (currentAccount: string, txQueue: PendingExtrinsic[]) {
-  const { details: { allFees, allTotal, amount, recipientAddress } } = txQueue[0];
-
-  return (
-    <TxDetails
-      allFees={allFees}
-      allTotal={allTotal}
-      amount={amount}
-      recipientAddress={recipientAddress}
-      senderAddress={currentAccount}
-    />
-  );
-}
-
-function renderSummary (currentAccount: string, txQueue: PendingExtrinsic[]) {
-  const { details: { amount, recipientAddress }, extrinsic: { meta: { name } } } = txQueue[0];
-
-  return (
-    <TxSummary
-      amount={amount}
-      methodCall={name.toString()}
-      recipientAddress={recipientAddress}
-      senderAddress={currentAccount}
-    />
-  );
-}
-
-function renderTxStatus (txQueue: PendingExtrinsic[]) {
-  const { isFinalized, isDropped, isUsurped } = txQueue[0].status;
-
-  if (isFinalized) {
-    return renderTxStatusHelper('Transaction completed!', 'check');
-  } else if (isDropped || isUsurped) {
-    return renderTxStatusHelper('Transaction error!', 'cross');
-  } else {
-    return renderTxStatusHelper('Sending...', 'spinner');
-  }
-}
-
-function renderTxStatusHelper (label: string, icon: string) {
-  return <Stacked>
-    <SubHeader color='lightBlue1' >{label}</SubHeader>
-    <Icon name={icon} size='big' />
-  </Stacked>;
 }
