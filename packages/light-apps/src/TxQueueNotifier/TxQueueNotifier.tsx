@@ -78,7 +78,7 @@ export function TxQueueNotifier (): React.ReactElement | null {
       });
     });
 
-    return () => subscription.unsubscribe();
+    return (): void => subscription.unsubscribe();
   }, [cancelObservable, enqueue]);
 
   return null;

@@ -5,7 +5,7 @@ import React from 'react';
 
 import { Tags, TagOptions } from '../types';
 
-export function renderSetName (name: string, setName: React.Dispatch<React.SetStateAction<string>>) {
+export function renderSetName (name: string, setName: React.Dispatch<React.SetStateAction<string>>): React.ReactElement {
   return (
     <Stacked>
       <SubHeader noMargin> Give it a name </SubHeader>
@@ -21,7 +21,7 @@ export function renderSetName (name: string, setName: React.Dispatch<React.SetSt
   );
 }
 
-export function renderSetPassword (password: string, setPassword: React.Dispatch<React.SetStateAction<string>>) {
+export function renderSetPassword (password: string, setPassword: React.Dispatch<React.SetStateAction<string>>): React.ReactElement {
   return (
     <Stacked>
       <SubHeader noMargin> Encrypt it with a passphrase </SubHeader>
@@ -36,8 +36,8 @@ export function renderSetPassword (password: string, setPassword: React.Dispatch
   );
 }
 
-export function renderErrors (errors: Option<Array<string>>) {
-  return errors.fold(null, errStrings => errStrings.map(err => <ErrorText>{err}</ErrorText>));
+export function renderErrors (errors: Option<Array<string>>): React.ReactElement | null {
+  return errors.fold(null, errStrings => <>{errStrings.map(err => <ErrorText key={err}>{err}</ErrorText>)}</>);
 }
 
 export function renderRewriteStep (
@@ -56,7 +56,7 @@ export function renderRewriteStep (
     goToPreviousStep: () => void;
     goToNextStep: () => void;
   }
-) {
+): React.ReactElement {
   const { randomFourWords, firstWord, secondWord, thirdWord, fourthWord } = values;
   const { goToNextStep, goToPreviousStep, handleSetFirstWord, handleSetSecondWord, handleSetThirdWord, handleSetFourthWord } = setters;
 
@@ -102,12 +102,12 @@ export function renderMetaStep (
     handleOnChange: (event: React.SyntheticEvent, data: any) => void; // FIXME any
     createNewAccount: () => void;
     goToPreviousStep: () => void;
-  }) {
+  }): React.ReactElement {
   const { name, password, tags, tagOptions, whichAccount } = values;
   const { handleAddTag, handleOnChange, setName, setPassword } = setters;
   const { createNewAccount, goToPreviousStep } = setters;
 
-  const renderSetTags = () => {
+  const renderSetTags = (): React.ReactElement => {
     return (
       <Stacked>
         <SubHeader noMargin>Add Tags:</SubHeader>
@@ -159,7 +159,7 @@ export function renderCopyStep (
   setters: {
     goToNextStep: () => void;
   }
-) {
+): React.ReactElement {
   const { mnemonic } = values;
   const { goToNextStep } = setters;
 

@@ -6,15 +6,12 @@ import { KeyringJson } from '@polkadot/ui-keyring/types';
 import { AlertsContext, AppContext, handler } from '@substrate/ui-common';
 import { Dropdown, ErrorText, Input, InputFile, Margin, NavButton, Stacked, SubHeader, WrapperDiv } from '@substrate/ui-components';
 import React, { useState, useContext } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
 
 import { Tags, TagOptions } from './types';
 
 type Step = 'upload' | 'password';
 
-type Props = RouteComponentProps
-
-export function ImportWithJson (props: Props): React.ReactElement {
+export function ImportWithJson (): React.ReactElement {
   const { enqueue } = useContext(AlertsContext);
   const { keyring } = useContext(AppContext);
 
@@ -48,7 +45,7 @@ export function ImportWithJson (props: Props): React.ReactElement {
     setTags(value);
   };
 
-  const handleFileUploaded = async (file: string | null): Promise<void> => {
+  const handleFileUploaded = (file: string | null): void => {
     try {
       if (!file) {
         throw new Error('File was empty. Make sure you uploaded the correct file and try again.');

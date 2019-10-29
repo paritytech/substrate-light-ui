@@ -20,10 +20,10 @@ export function Forget (props: Props): React.ReactElement {
 
   const [forgetModalOpen, setForgetModalOpen] = useState(false);
 
-  const openForgetModal = () => setForgetModalOpen(true);
-  const closeForgetModal = () => setForgetModalOpen(false);
+  const openForgetModal = (): void => setForgetModalOpen(true);
+  const closeForgetModal = (): void => setForgetModalOpen(false);
 
-  const forgetCurrentAccount = () => {
+  const forgetCurrentAccount = (): void => {
     try {
       // forget it from keyring
       keyring.forgetAccount(currentAccount);
