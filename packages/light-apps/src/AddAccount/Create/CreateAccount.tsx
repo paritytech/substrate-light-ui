@@ -18,7 +18,23 @@ interface Props extends RouteComponentProps {
   identiconSize?: SizeType;
 }
 
-export function Create (props: Props) {
+function randomlyPickFour (phrase: string): Array<Array<string>> {
+  const phraseArray = phrase.split(' ');
+  const ceil = phraseArray.length;
+
+  const [first, second, third, fourth] = getRandomInts(ceil);
+
+  const randomFour = [
+    [first, phraseArray[first - 1]],
+    [second, phraseArray[second - 1]],
+    [third, phraseArray[third - 1]],
+    [fourth, phraseArray[fourth - 1]]
+  ] as Array<Array<string>>;
+
+  return randomFour;
+}
+
+export function Create (props: Props): React.ReactElement {
   const { identiconSize, location } = props;
 
   const { keyring } = useContext(AppContext);
@@ -58,38 +74,22 @@ export function Create (props: Props) {
   const address = generateAddressFromMnemonic(keyring, mnemonic);
   const validation = validateMeta({ name, password, tags }, step, whichAccount);
 
-  function randomlyPickFour (phrase: string): Array<Array<string>> {
-    const phraseArray = phrase.split(' ');
-    const ceil = phraseArray.length;
-
-    const [first, second, third, fourth] = getRandomInts(ceil);
-
-    const randomFour = [
-      [first, phraseArray[first - 1]],
-      [second, phraseArray[second - 1]],
-      [third, phraseArray[third - 1]],
-      [fourth, phraseArray[fourth - 1]]
-    ] as Array<Array<string>>;
-
-    return randomFour;
-  }
-
-  const handleSetFirstWord = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSetFirstWord = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>): void => {
     setFirstWord(value);
   };
 
-  const handleSetSecondWord = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSetSecondWord = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>): void => {
     setSecondWord(value);
   };
-  const handleSetThirdWord = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSetThirdWord = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>): void => {
     setThirdWord(value);
   };
 
-  const handleSetFourthWord = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSetFourthWord = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>): void => {
     setFourthWord(value);
   };
 
-  const createNewAccount = () => {
+  const createNewAccount = (): void => {
     validation.fold(
       (err) => { onError(err); },
       (values) => {
@@ -109,11 +109,11 @@ export function Create (props: Props) {
     );
   };
 
-  const onError = (err: UserInputError | PhrasePartialRewriteError) => {
+  const onError = (err: UserInputError | PhrasePartialRewriteError): void => {
     setErrors(some(Object.values(err)));
   };
 
-  const goToNextStep = () => {
+  const goToNextStep = (): void => {
     setErrors(none);
 
     if (step === 'copy') {
@@ -131,7 +131,7 @@ export function Create (props: Props) {
     }
   };
 
-  const goToPreviousStep = () => {
+  const goToPreviousStep = (): void => {
     setErrors(none);
 
     if (step === 'rewrite') {
@@ -143,11 +143,11 @@ export function Create (props: Props) {
     }
   };
 
-  const handleOnChange = (event: React.SyntheticEvent, { value }: any) => {
+  const handleOnChange = (event: React.SyntheticEvent, { value }: any): void => {
     setTags(value);
   };
 
-  const handleAddTag = (e: React.SyntheticEvent, { value }: any) => {
+  const handleAddTag = (e: React.SyntheticEvent, { value }: any): void => {
     setTagOptions([...tagOptions, { key: value, text: value, value }]);
   };
 

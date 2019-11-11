@@ -16,9 +16,9 @@ interface Props {
 }
 
 // FIXME: also get Convictions if they exist
-const votesReducer = (state: any, action: any) => {
+const votesReducer = (state: any, action: any): any => {
   switch (action.type) {
-    case 'NEW_VOTE':
+    case 'NEW_VOTE': {
       const newState = action.votes && action.votes.reduce((state: any, v: DerivedReferendumVote) => {
         if (v.vote.isAye) {
           state.yayVoteCount++;
@@ -41,6 +41,7 @@ const votesReducer = (state: any, action: any) => {
         totalVoteBalance: new BN(0)
       });
       return newState;
+    }
     default:
       throw new Error();
   }

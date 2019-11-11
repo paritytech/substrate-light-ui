@@ -57,7 +57,7 @@ export function FinalConfirmation (props: Props): React.ReactElement {
       extrinsic,
       fees: derivedBalanceFees,
       currentAccount: nominateWith
-    }, api);
+    });
 
     return values.fold(
       (e: any) => left(e),

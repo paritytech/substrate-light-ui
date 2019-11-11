@@ -65,7 +65,7 @@ export function SendBalance (props: Props): React.ReactElement {
   }, [currentAccount, recipientAddress]);
 
   useEffect(() => {
-    const values = validate({ amountAsString, accountNonce, currentBalance, extrinsic, fees, recipientBalance, currentAccount, recipientAddress }, api);
+    const values = validate({ amountAsString, accountNonce, currentBalance, extrinsic, fees, recipientBalance, currentAccount, recipientAddress });
 
     setValidationResult(values);
   }, [amountAsString, accountNonce, currentBalance, fees, recipientBalance, currentAccount, recipientAddress]);

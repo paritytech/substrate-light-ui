@@ -94,7 +94,7 @@ export function Bond (props: Props): React.ReactElement {
       recipientBalance: controllerBalance,
       currentAccount: stash,
       recipientAddress: controller
-    }, api);
+    });
 
     return values.fold(
       () => left(errors),

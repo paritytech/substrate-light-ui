@@ -23,7 +23,7 @@ interface Props extends RouteComponentProps<MatchParams> {
   name: string;
 }
 
-export function AccountOverviewDetailed (props: Props) {
+export function AccountOverviewDetailed (props: Props): React.ReactElement {
   const { history, match: { params: { currentAccount } } } = props;
   const { accountStakingMap, allStashes } = useContext(StakingContext);
   const [nominees, setNominees] = useState();
@@ -34,13 +34,13 @@ export function AccountOverviewDetailed (props: Props) {
     setNominees(stakingInfo && stakingInfo.nominators && stakingInfo.nominators.map(nominator => nominator.toString()));
   }, []);
 
-  const renderBalanceDetails = () => {
+  const renderBalanceDetails = (): React.ReactElement => {
     return (
       <Card>
         <Card.Content>
           {
             fromNullable(stakingInfo)
-              .map((stakingInfo) => <BalanceOverview history={history} {...stakingInfo} />)
+              .map((stakingInfo) => <BalanceOverview history={history} key={stakingInfo.accountId.toString()} {...stakingInfo} />)
               .getOrElse(<Loader active inline />)
           }
         </Card.Content>
@@ -48,7 +48,7 @@ export function AccountOverviewDetailed (props: Props) {
     );
   };
 
-  const renderNominationDetails = () => {
+  const renderNominationDetails = (): React.ReactElement => {
     return (
       <Card>
         <Card.Content>
@@ -87,7 +87,7 @@ export function AccountOverviewDetailed (props: Props) {
     );
   };
 
-  const renderGeneral = () => {
+  const renderGeneral = (): React.ReactElement => {
     const isStashNominating = fromNullable(stakingInfo)
       .mapNullable(({ nominators }) => nominators)
       .map(nominators => nominators.length > 0)

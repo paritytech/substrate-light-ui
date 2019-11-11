@@ -23,7 +23,7 @@ interface Props extends DerivedStaking {
   history: H.History;
 }
 
-export function BalanceOverview (props: Pick<Props, Exclude<keyof Props, keyof 'validatorPrefs'>>) {
+export function BalanceOverview (props: Pick<Props, Exclude<keyof Props, keyof 'validatorPrefs'>>): React.ReactElement {
   const { accountId, controllerId, history, stakers, stashId, stakingLedger } = props;
   const { enqueue: alert } = useContext(AlertsContext);
   const { api, keyring } = useContext(AppContext);
@@ -48,12 +48,8 @@ export function BalanceOverview (props: Pick<Props, Exclude<keyof Props, keyof '
         setControllerNonce(controllerNonce);
       });
 
-    return () => subscription.unsubscribe();
+    return (): void => subscription.unsubscribe();
   }, [controllerId]);
-
-  useEffect(() => {
-    setStatus(_validate());
-  }, [controllerBalance, controllerId, controllerNonce, derivedBalanceFees]);
 
   const _validate = (): Either<Errors, AllExtrinsicData> => {
     const errors: Errors = [];
@@ -75,29 +71,34 @@ export function BalanceOverview (props: Pick<Props, Exclude<keyof Props, keyof '
       amountAsString: unbondAmount.toString(),
       accountNonce: controllerNonce,
       currentBalance: controllerBalance,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
       extrinsic,
       fees: derivedBalanceFees,
       currentAccount: controllerId!.toString()
-    }, api);
+    });
 
     return values.fold(
-      (e: any) => left(errors),
+      () => left(errors),
       (allExtrinsicData: any) => right(allExtrinsicData)
     );
   };
 
-  const renderUnBondedAccountOptions = () => {
+  useEffect(() => {
+    setStatus(_validate());
+  }, [controllerBalance, controllerId, controllerNonce, derivedBalanceFees]);
+
+  const renderUnBondedAccountOptions = (): React.ReactElement => {
     return (
       <WithSpace>
         <SubHeader>Account is not bonded.</SubHeader>
-        <StyledLinkButton onClick={() => history.push(`/manageAccounts/${accountId}/staking`)}>Choose Staking Options</StyledLinkButton>
+        <StyledLinkButton onClick={(): void => history.push(`/manageAccounts/${accountId}/staking`)}>Choose Staking Options</StyledLinkButton>
       </WithSpace>
     );
   };
 
   // N.B. You can only unbond from controller
-  const unbond = () => {
+  const unbond = (): void => {
     if (!controllerId) { return; }
     fromNullable(status)
       .map(_validate)
@@ -111,7 +112,7 @@ export function BalanceOverview (props: Pick<Props, Exclude<keyof Props, keyof '
       ));
   };
 
-  const handleSetUnbondAmount = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSetUnbondAmount = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>): void => {
     setUnbondAmount(new BN(value));
   };
 

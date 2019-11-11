@@ -25,7 +25,7 @@ export interface FlexItemProps {
   padding?: MarginSize;
 }
 
-export interface StyledNavButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
+export interface StyledNavButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   negative?: boolean;
 }
 

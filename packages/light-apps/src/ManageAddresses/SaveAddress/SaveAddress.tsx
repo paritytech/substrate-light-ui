@@ -79,7 +79,7 @@ export function SaveAddress (props: Props): React.ReactElement {
 
       onSuccess('Successfully saved address');
 
-      if (isFunction(onSave)) {
+      if (onSave && isFunction(onSave)) {
         onSave();
       }
     } catch (e) {

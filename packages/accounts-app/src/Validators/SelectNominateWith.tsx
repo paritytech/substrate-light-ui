@@ -40,7 +40,7 @@ export function SelectNominateWith (props: Props): React.ReactElement {
   };
 
   // TODO for now only show controllers, later add ability to restore and unlock controller from stash in keyring
-  const renderBondedAccountOption = (account: AccountId | string) => {
+  const renderBondedAccountOption = (account: AccountId | string): React.ReactElement => {
     // TODO: p2 put this logic somewhere elsea so it's reusable
     const stakingInfo = onlyBondedAccounts[account.toString()];
     const accountType = stakingInfo.accountId === stakingInfo.controllerId ? 'controller' : 'stash';
