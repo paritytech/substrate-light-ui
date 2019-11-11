@@ -9,7 +9,6 @@ import { StyledNavButtonProps } from './StyleProps';
 import { FontSize } from './types';
 
 interface NavButtonProps extends StyledNavButtonProps {
-  children?: React.ReactChild;
   fontSize?: FontSize;
   fontWeight?: string;
   value?: string;

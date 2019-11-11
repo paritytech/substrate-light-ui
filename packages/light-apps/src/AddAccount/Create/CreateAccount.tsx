@@ -89,6 +89,10 @@ export function Create (props: Props): React.ReactElement {
     setFourthWord(value);
   };
 
+  const onError = (err: UserInputError | PhrasePartialRewriteError): void => {
+    setErrors(some(Object.values(err)));
+  };
+
   const createNewAccount = (): void => {
     validation.fold(
       (err) => { onError(err); },
@@ -107,10 +111,6 @@ export function Create (props: Props): React.ReactElement {
         FileSaver.saveAs(blob, `${values.name}-${result.pair.address}.json`);
       }
     );
-  };
-
-  const onError = (err: UserInputError | PhrasePartialRewriteError): void => {
-    setErrors(some(Object.values(err)));
   };
 
   const goToNextStep = (): void => {

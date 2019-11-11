@@ -1,17 +1,21 @@
 {
   "compilerOptions": {
     "allowJs": false,
+    "allowSyntheticDefaultImports": true,
+    "declaration": false,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
-    "module": "esnext",
-    "noEmit": true,
-    "skipLibCheck": false,
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
-    ]
+    ],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": false,
   },
   "extends": "../../tsconfig",
   "include": [

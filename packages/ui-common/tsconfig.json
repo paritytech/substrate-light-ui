@@ -1,7 +1,5 @@
 {
   "compilerOptions": {
-    "declaration": true,
-    "jsx": "react",
     "outDir": "./build"
   },
   "extends": "../../tsconfig",
