@@ -13,7 +13,7 @@
     "test": "echo skipped"
   },
   "dependencies": {
-    "@polkadot/api": "^0.96.0-beta.5",
+    "@polkadot/api": "^0.97.0-beta.1",
     "@polkadot/ui-keyring": "^0.46.1"
   },
   "peerDependencies": {

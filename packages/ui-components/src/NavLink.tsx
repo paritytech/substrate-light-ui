@@ -14,7 +14,7 @@ interface NavLinkProps extends StyledNavLinkProps {
   value?: string;
 }
 
-export function NavLink (props: NavLinkProps) {
+export function NavLink (props: NavLinkProps): React.ReactElement {
   const { children, fontSize = 'medium', fontWeight = '300', value, ...rest } = props;
 
   return (

@@ -14,14 +14,14 @@ interface BalanceProps extends Pick<BalanceDisplayProps, Exclude<keyof BalanceDi
   detailed?: boolean;
 }
 
-export function Balance (props: BalanceProps) {
+export function Balance (props: BalanceProps): React.ReactElement {
   const { address, detailed = false, ...rest } = props;
   const { api } = useContext(AppContext);
   const [allBalances, setAllBalances] = useState<DerivedBalances>();
   const [allStaking, setAllStaking] = useState<DerivedStaking>();
 
   useEffect(() => {
-    let balanceSub = combineLatest([
+    const balanceSub = combineLatest([
       api.derive.balances.all(address),
       api.derive.staking.info(address)
     ]).subscribe(([allBalances, allStaking]) => {
@@ -29,10 +29,11 @@ export function Balance (props: BalanceProps) {
       setAllStaking(allStaking);
     });
 
-    return () => balanceSub.unsubscribe();
+    return (): void => balanceSub.unsubscribe();
   }, [api, address]);
 
-  const handleRedeem = async (address: string) => {
+  const handleRedeem = (address: string): void => {
+    // FIXME We're not unsubscring here, we should
     of(api.tx.staking.withdrawUnbonded(address)).subscribe();
   };
 

@@ -1,6 +1,15 @@
 {
-  "extends": "./node_modules/@polkadot/dev/config/tsconfig",
+  "exclude": [
+    "**/build/**/*",
+    "**/node_modules/**/*"
+  ],
   "compilerOptions": {
-    "types": []
+    "declaration": true,
+    "downlevelIteration": true,
+    "esModuleInterop": true,
+    "jsx": "react",
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "es5"
   }
 }

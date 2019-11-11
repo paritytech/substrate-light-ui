@@ -10,15 +10,15 @@ import BN from 'bn.js';
 import React, { useEffect, useContext, useReducer, useState } from 'react';
 import { combineLatest } from 'rxjs';
 
-interface IProps {
+interface Props {
   idNumber: any;
   referendum: any;
 }
 
 // FIXME: also get Convictions if they exist
-const votesReducer = (state: any, action: any) => {
+const votesReducer = (state: any, action: any): any => {
   switch (action.type) {
-    case 'NEW_VOTE':
+    case 'NEW_VOTE': {
       const newState = action.votes && action.votes.reduce((state: any, v: DerivedReferendumVote) => {
         if (v.vote.isAye) {
           state.yayVoteCount++;
@@ -33,20 +33,21 @@ const votesReducer = (state: any, action: any) => {
 
         return state;
       },
-        {
-          nayVoteBalance: new BN(0),
-          nayVoteCount: 0,
-          yayVoteBalance: new BN(0),
-          yayVoteCount: 0,
-          totalVoteBalance: new BN(0)
-        });
+      {
+        nayVoteBalance: new BN(0),
+        nayVoteCount: 0,
+        yayVoteBalance: new BN(0),
+        yayVoteCount: 0,
+        totalVoteBalance: new BN(0)
+      });
       return newState;
+    }
     default:
       throw new Error();
   }
 };
 
-export function ReferendumRow (props: IProps) {
+export function ReferendumRow (props: Props): React.ReactElement {
   const { idNumber, referendum } = props;
   const { api, keyring } = useContext(AppContext);
   const { enqueue } = useContext(TxQueueContext);
@@ -83,20 +84,21 @@ export function ReferendumRow (props: IProps) {
         setVotingBalance(votingBalance);
       });
 
-    return () => subscription.unsubscribe();
-  }, []);
+    return (): void => subscription.unsubscribe();
+  }, [api.derive.balances, api.derive.chain, api.derive.democracy, api.query.system, currentAccount, idNumber]);
+
+  const handleNewVote = (votes: Array<DerivedReferendumVote>): void => {
+    dispatch({ type: 'NEW_VOTE', votes });
+  };
 
   useEffect(() => {
     votesForRef && handleNewVote(votesForRef);
   }, [votesForRef]);
 
-  const handleNewVote = (votes: Array<DerivedReferendumVote>) => {
-    dispatch({ type: 'NEW_VOTE', votes });
-  };
-
-  const handleVote = ({ currentTarget: { dataset: { vote } } }: React.MouseEvent<HTMLElement>) => {
+  const handleVote = ({ currentTarget: { dataset: { vote } } }: React.MouseEvent<HTMLElement>): void => {
     const extrinsic = api.tx.democracy.vote(idNumber, vote === 'yay');
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore works in test...
     const values = validateDerived({ accountNonce, amount: new BN(0), currentBalance: votingBalance, extrinsic, fees, recipientBalance: undefined });
 

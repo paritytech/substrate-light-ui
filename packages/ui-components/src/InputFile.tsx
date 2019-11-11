@@ -3,16 +3,16 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React, { useCallback } from 'react';
-import { useDropzone } from 'react-dropzone';
+import { DropzoneState, useDropzone } from 'react-dropzone';
 import styled from 'styled-components';
 
 type Props = {
-  onChange?: (data: string | null) => void
+  onChange?: (data: string | null) => void;
 };
 
 const defaultAccept = ['application/json, text/plain'].join(',');
 
-const getColor = (props: any) => {
+const getColor = (props: Partial<DropzoneState>): string => {
   if (props.isDragAccept) {
     return '#00e676';
   }
@@ -25,11 +25,11 @@ const getColor = (props: any) => {
   return '#eeeeee';
 };
 
-const Container = styled.div`
+const Container = styled<any>('div')`
   align-items: center;
   border-width: 2px;
   border-radius: 2px;
-  border-color: ${props => getColor(props)};
+  border-color: ${(props): string => getColor(props)};
   border-style: dashed;
   background-color: #fafafa;
   color: #bdbdbd;
@@ -41,18 +41,18 @@ const Container = styled.div`
   transition: border .24s ease-in-out;
 `;
 
-export function InputFile (props: Props) {
+export function InputFile (props: Props): React.ReactElement {
   const onDrop = useCallback((acceptedFiles: Array<File>) => {
     const reader = new FileReader();
 
-    reader.onabort = () => console.log('file reading was aborted');
-    reader.onerror = () => console.log('file reading has failed');
-    reader.onload = () => {
+    reader.onabort = (): void => console.log('file reading was aborted');
+    reader.onerror = (): void => console.log('file reading has failed');
+    reader.onload = (): void => {
       props.onChange && props.onChange(reader.result as string);
     };
 
     acceptedFiles.forEach(file => reader.readAsBinaryString(file));
-  }, []);
+  }, [props]);
 
   const {
     getRootProps,
@@ -66,7 +66,7 @@ export function InputFile (props: Props) {
     <div className='container'>
       <Container {...getRootProps({ isDragActive, isDragAccept, isDragReject })}>
         <input {...getInputProps()} />
-        <p>Drag 'n' drop some files here, or click to select files</p>
+        <p>Drag &apos;n&apos; drop some files here, or click to select files</p>
       </Container>
     </div>
   );

@@ -8,12 +8,12 @@ import { CopyButton } from './CopyButton';
 import { FlexSegment } from './FlexSegment';
 
 type AddressProps = {
-  address: string,
-  shortened?: boolean,
-  zIndex?: number
+  address: string;
+  shortened?: boolean;
+  zIndex?: number;
 };
 
-export function Address (props: AddressProps) {
+export function Address (props: AddressProps): React.ReactElement {
   const { address, shortened, zIndex = 0 } = props;
 
   return (

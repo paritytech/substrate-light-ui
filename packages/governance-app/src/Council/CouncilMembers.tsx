@@ -11,18 +11,18 @@ import { tryCatch2v } from 'fp-ts/lib/Either';
 import React, { useContext, useEffect, useState } from 'react';
 import Card from 'semantic-ui-react/dist/commonjs/views/Card';
 
-export function CouncilMembers () {
+export function CouncilMembers (): React.ReactElement {
   const { api, keyring } = useContext(AppContext);
   const [activeCouncil, setActiveCouncil] = useState<Vec<AccountId>>();
 
   useEffect(() => {
     const subscription = api.query.council.members<Vec<AccountId>>()
-        .subscribe((activeCouncil) => {
-          setActiveCouncil(activeCouncil);
-        });
+      .subscribe((activeCouncil) => {
+        setActiveCouncil(activeCouncil);
+      });
 
-    return () => subscription.unsubscribe();
-  }, []);
+    return (): void => subscription.unsubscribe();
+  }, [api.query.council]);
 
   return (
     <React.Fragment>
@@ -35,16 +35,16 @@ export function CouncilMembers () {
             () => keyring.getAccount(accountId),
             (e: any) => new Error(e.message)
           )
-          .chain((pair) => tryCatch2v(
-            () => {
-              if (!isUndefined(pair)) {
-                name = pair.meta.name;
-              }
-              name = '';
-              throw new Error('could not get meta from pair');
-            },
-            (e) => e as Error
-          ));
+            .chain((pair) => tryCatch2v(
+              () => {
+                if (!isUndefined(pair)) {
+                  name = pair.meta.name;
+                }
+                name = '';
+                throw new Error('could not get meta from pair');
+              },
+              (e) => e as Error
+            ));
 
           return (
             <Card height='120px' key={accountId.toString()}>

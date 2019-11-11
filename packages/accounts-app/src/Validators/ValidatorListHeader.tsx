@@ -20,7 +20,7 @@ interface Props {
   nominees: Set<string>;
 }
 
-export function ValidatorListHeader (props: Props) {
+export function ValidatorListHeader (props: Props): React.ReactElement {
   const { history, nominees } = props;
   const { api } = useContext(AppContext);
   const [sessionInfo, setSessionInfo] = useState<DerivedSessionInfo>();
@@ -31,10 +31,10 @@ export function ValidatorListHeader (props: Props) {
       .pipe(take(1))
       .subscribe(setSessionInfo);
 
-    return () => subscription.unsubscribe();
-  }, []);
+    return (): void => subscription.unsubscribe();
+  }, [api.derive.session]);
 
-  const renderEraProgress = () => {
+  const renderEraProgress = (): React.ReactElement => {
     return (
       <WithSpace>
         <Card height='20rem' width='30%'>
@@ -45,6 +45,7 @@ export function ValidatorListHeader (props: Props) {
                 .map(sessionInfo =>
                   <Progress
                     color='pink'
+                    key={`${sessionInfo.currentEra.toString()}-${sessionInfo.currentIndex.toString()}`}
                     progress='ratio'
                     size='small'
                     total={sessionInfo.eraLength.toNumber()}
@@ -59,7 +60,7 @@ export function ValidatorListHeader (props: Props) {
     );
   };
 
-  const renderSessionProgress = () => {
+  const renderSessionProgress = (): React.ReactElement => {
     return (
       <WithSpace>
         <Card height='20rem' width='30%'>
@@ -70,6 +71,7 @@ export function ValidatorListHeader (props: Props) {
                 .map(sessionInfo =>
                   <Progress
                     color='teal'
+                    key={`${sessionInfo.currentEra.toString()}-${sessionInfo.currentIndex.toString()}`}
                     progress='ratio'
                     size='small'
                     total={sessionInfo.sessionLength.toNumber()}
@@ -84,7 +86,7 @@ export function ValidatorListHeader (props: Props) {
     );
   };
 
-  const renderNomineesList = () => {
+  const renderNomineesList = (): React.ReactElement => {
     const nomineesList = [...nominees];
 
     return (
@@ -93,7 +95,7 @@ export function ValidatorListHeader (props: Props) {
           <Card.Content>
             <SubHeader>Nominees: {nominees.size}</SubHeader>
             <StackedHorizontal>
-              {nomineesList.map(nomineeId => <FlexItem><AddressSummary address={nomineeId} noBalance noPlaceholderName size='small' /></FlexItem>)}
+              {nomineesList.map(nomineeId => <FlexItem key={nomineeId}><AddressSummary address={nomineeId} noBalance noPlaceholderName size='small' /></FlexItem>)}
             </StackedHorizontal>
             {nomineesList.length ? <ConfirmNominationDialog history={history} nominees={[...nominees]} /> : <FadedText>You have not yet added any Validators to your Nominees list. You can browse Validators to add from the table below.</FadedText>}
           </Card.Content>

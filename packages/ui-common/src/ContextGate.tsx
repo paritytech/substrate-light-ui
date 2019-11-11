@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { ApiRx, WsProvider } from '@polkadot/api';
-import { u8 } from '@polkadot/types/primitive';
+import { createType } from '@polkadot/types';
 import keyring from '@polkadot/ui-keyring';
 import { logger } from '@polkadot/util';
 import React, { useState, useEffect } from 'react';
@@ -20,6 +20,8 @@ interface State {
   isReady: boolean;
   system: System;
 }
+
+const INIT_ERROR = new Error('Please wait for `isReady` before fetching this property');
 
 const DISCONNECTED_STATE_PROPERTIES = {
   isReady: false,
@@ -49,15 +51,13 @@ const WS_URL = 'wss://kusama-rpc.polkadot.io/'; // FIXME Change to localhost whe
 // Just in case, we default to 42
 const SS58_PREFIX = 42;
 
-const INIT_ERROR = new Error('Please wait for `isReady` before fetching this property');
-
 let keyringInitialized = false;
 
 const l = logger('ui-common');
 
 const api = new ApiRx({ provider: new WsProvider(WS_URL) });
 
-export function ContextGate (props: { children: React.ReactNode }) {
+export function ContextGate (props: { children: React.ReactNode }): React.ReactElement {
   const { children } = props;
   const [state, setState] = useState<State>(DISCONNECTED_STATE_PROPERTIES);
   const { isReady, system } = state;
@@ -77,10 +77,10 @@ export function ContextGate (props: { children: React.ReactNode }) {
       .pipe(
         filter(isConnected => !!isConnected),
         // API needs to be ready to be able to use RPCs; connected isn't enough
-        switchMap(_ =>
+        switchMap(() =>
           api.isReady
         ),
-        switchMap(_ =>
+        switchMap(() =>
           combineLatest([
             api.rpc.system.chain(),
             api.rpc.system.health(),
@@ -94,7 +94,7 @@ export function ContextGate (props: { children: React.ReactNode }) {
         if (!keyringInitialized) {
           // keyring with Schnorrkel support
           keyring.loadAll({
-            ss58Format: properties.ss58Format.unwrapOr(new u8(SS58_PREFIX)).toNumber(),
+            ss58Format: properties.ss58Format.unwrapOr(createType('u8', SS58_PREFIX)).toNumber(),
             genesisHash: api.genesisHash,
             isDevelopment: isTestChain(chain.toString()),
             type: 'ed25519'

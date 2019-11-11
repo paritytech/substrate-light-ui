@@ -7,14 +7,14 @@ import React from 'react';
 import { Card, Header, SubHeader, Stacked, WithSpaceAround } from './index';
 
 type WalletCardProps = {
-  children: React.ReactNode,
-  header: string,
-  height?: string,
-  subheader?: string,
-  overflow?: string
+  children: React.ReactNode;
+  header: string;
+  height?: string;
+  subheader?: string;
+  overflow?: string;
 };
 
-export function WalletCard (props: WalletCardProps) {
+export function WalletCard (props: WalletCardProps): React.ReactElement {
   const { children, header, height, overflow = 'none', subheader } = props;
 
   return (

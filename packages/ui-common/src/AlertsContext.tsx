@@ -17,7 +17,9 @@ export interface Alert extends AlertWithoutId {
 }
 
 export const AlertsContext = createContext({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   enqueue: (newAlertWithoutId: AlertWithoutId) => { console.error('No context provider found above in the tree.'); },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   remove: (Alertid: number) => { console.error('No context provider found above in the tree.'); },
   alerts: [] as Alert[]
 });
@@ -26,10 +28,17 @@ interface Props {
   children: any;
 }
 
-export function AlertsContextProvider (props: Props) {
+export function AlertsContextProvider (props: Props): React.ReactElement {
   const [{ alerts, nextAlertId }, setAlerts] = useState({ alerts: [] as Alert[], nextAlertId: 0 });
 
-  const enqueue = (newAlertWithoutId: AlertWithoutId) => {
+  const remove = (alertId: number): void => {
+    setAlerts({
+      alerts: [...alerts.filter(({ id }: { id: number }) => id !== alertId)],
+      nextAlertId
+    });
+  };
+
+  const enqueue = (newAlertWithoutId: AlertWithoutId): void => {
     setAlerts({
       alerts: [
         ...alerts, {
@@ -39,13 +48,6 @@ export function AlertsContextProvider (props: Props) {
         }
       ],
       nextAlertId: nextAlertId + 1
-    });
-  };
-
-  const remove = (alertId: number) => {
-    setAlerts({
-      alerts: [...alerts.filter(({ id }: {id: number}) => id !== alertId)],
-      nextAlertId
     });
   };
 

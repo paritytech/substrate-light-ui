@@ -10,7 +10,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 
-export function CouncilSummary () {
+export function CouncilSummary (): React.ReactElement {
   const { api } = useContext(AppContext);
 
   const carryCount = api.consts.elections.carryCount as u32;
@@ -31,8 +31,8 @@ export function CouncilSummary () {
         setVoteCount(voteCount);
       });
 
-    return () => subscription.unsubscribe();
-  }, []);
+    return (): void => subscription.unsubscribe();
+  }, [api.query.council]);
 
   return (
     <React.Fragment>

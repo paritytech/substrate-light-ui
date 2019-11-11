@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
+    "resolveJsonModule": true,
     "outDir": "./build"
   },
   "extends": "../../tsconfig",
-  "include": ["./src"]
+  "include": [
+    "./src"
+  ]
 }

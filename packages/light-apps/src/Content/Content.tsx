@@ -23,7 +23,7 @@ import { Onboarding } from '../Onboarding';
 import { Signer } from '../Signer';
 import { TxQueueNotifier } from '../TxQueueNotifier';
 
-export function Content () {
+export function Content (): React.ReactElement {
   const { api } = useContext(AppContext);
 
   const [defaultAccount, setDefaultAccount] = useState<Option<SingleAddress>>(none);
@@ -40,15 +40,16 @@ export function Content () {
 
   useEffect(() => {
     const accountsSub = accounts.subject
+      // eslint-disable-next-line @typescript-eslint/unbound-method
       .pipe(map(Object.values), map(head))
       .subscribe(setDefaultAccount);
 
-    return () => accountsSub.unsubscribe();
+    return (): void => accountsSub.unsubscribe();
   }, [api]);
 
-  const renderOnboarding = () => (
+  const renderOnboarding = (): React.ReactElement => (
     <React.Fragment>
-      <Route path={`/onboarding/:activeOnboardingStep`} component={Onboarding} />
+      <Route path={'/onboarding/:activeOnboardingStep'} component={Onboarding} />
       <Redirect exact from='/' to={`/onboarding/${ONBOARDING_STEPS[0]}`} />
     </React.Fragment>
   );
@@ -59,7 +60,7 @@ export function Content () {
         !isOnboarding
           ? defaultAccount
             .map(({ json }) => (
-              <Sidebar.Pushable as={Container} raised>
+              <Sidebar.Pushable as={Container} key={json.address} raised>
                 <Sidebar.Pusher>
                   <Route path={['/accounts/:currentAccount/add', '/addresses/:currentAccount', '/governance/:currentAccount', '/manageAccounts/:currentAccount']} component={IdentityHeader} />
                   <Switch>

@@ -17,12 +17,12 @@ interface Props {
 }
 
 // TODO: p3 refactor all this to smaller components
-export function ConfirmNominationDialog (props: Props) {
+export function ConfirmNominationDialog (props: Props): React.ReactElement {
   const { disabled, history, nominees } = props;
 
   const [nominateWith, setNominateWith] = useState();
 
-  const handleSelectNominateWith = (account: string | null) => {
+  const handleSelectNominateWith = (account: string | null): void => {
     setNominateWith(account);
   };
 

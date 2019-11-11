@@ -14,7 +14,7 @@ import React from 'react';
  * ```
  */
 export function handler (setter: React.Dispatch<React.SetStateAction<string>>) {
-  return function ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) {
+  return function ({ target: { value } }: React.ChangeEvent<HTMLInputElement>): void {
     setter(value);
   };
 }

@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
-    "jsx": "react",
     "outDir": "./build"
   },
   "extends": "../../tsconfig",
-  "include": ["./src"]
+  "include": [
+    "./src"
+  ]
 }

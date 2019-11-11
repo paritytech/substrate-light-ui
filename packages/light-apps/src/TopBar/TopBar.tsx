@@ -9,16 +9,14 @@ import React, { useContext, useEffect, useState } from 'react';
 import { BlockCounter, NodeStatus } from './TopBar.styles';
 import substrateLogo from '@polkadot/ui-assets/polkadot-circle.svg';
 
-interface Props { }
-
-export function TopBar (props: Props) {
+export function TopBar (): React.ReactElement {
   const { api, system: { chain, health: { isSyncing }, name, version } } = useContext(AppContext);
 
   const [blockNumber, setBlockNumber] = useState();
   useEffect(() => {
     const chainHeadSub = api.rpc.chain.subscribeNewHeads().subscribe((header) => setBlockNumber(header.number));
 
-    return () => {
+    return (): void => {
       chainHeadSub.unsubscribe();
     };
   }, [api, setBlockNumber]);

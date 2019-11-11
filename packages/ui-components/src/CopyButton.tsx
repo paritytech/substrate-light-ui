@@ -10,25 +10,25 @@ import { Icon } from './Icon';
 import { Stacked } from './Shared.styles';
 
 type CopyButtonProps = {
-  value?: string
+  value?: string;
 };
 
 const StyledCopyButton = styled.button`
   border: none;
   background-color: inherit;
-  color: ${props => props.theme.lightBlue1};
+  color: ${(props): string => props.theme.lightBlue1};
 
   :hover {
     cursor: pointer;
-    color: ${props => props.theme.darkBlue};
+    color: ${(props): string => props.theme.darkBlue};
   }
 `;
 
-export function CopyButton (props: CopyButtonProps) {
+export function CopyButton (props: CopyButtonProps): React.ReactElement {
   const { value } = props;
   const [copied, setCopied] = useState(false);
 
-  const handleCopied = () => {
+  const handleCopied = (): void => {
     setCopied(true);
 
     setTimeout(() => setCopied(false), 1000);

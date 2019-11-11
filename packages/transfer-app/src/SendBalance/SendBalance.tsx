@@ -19,7 +19,7 @@ interface Props {
   recipientAddress: string;
 }
 
-export function SendBalance (props: Props) {
+export function SendBalance (props: Props): React.ReactElement {
   const { api, keyring } = useContext(AppContext);
   const { enqueue } = useContext(TxQueueContext);
 
@@ -60,24 +60,25 @@ export function SendBalance (props: Props) {
         setRecipientBalance(recipientBalance);
         setAccountNonce(accountNonce);
       });
-    return () => subscription.unsubscribe();
-  }, [currentAccount, recipientAddress]);
+
+    return (): void => subscription.unsubscribe();
+  }, [api.derive.balances, api.query.system, currentAccount, recipientAddress]);
 
   useEffect(() => {
-    const values = validate({ amountAsString, accountNonce, currentBalance, extrinsic, fees, recipientBalance, currentAccount, recipientAddress }, api);
+    const values = validate({ amountAsString, accountNonce, currentBalance, extrinsic, fees, recipientBalance, currentAccount, recipientAddress });
 
     setValidationResult(values);
-  }, [amountAsString, accountNonce, currentBalance, fees, recipientBalance, currentAccount, recipientAddress]);
+  }, [amountAsString, accountNonce, currentBalance, fees, recipientBalance, currentAccount, recipientAddress, extrinsic]);
 
-  const changeCurrentAccount = (newCurrentAccount: string) => {
+  const changeCurrentAccount = (newCurrentAccount: string): void => {
     setSender(newCurrentAccount);
   };
 
-  const changeRecipientAddress = (newRecipientAddress: string) => {
+  const changeRecipientAddress = (newRecipientAddress: string): void => {
     setReceiver(newRecipientAddress);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (): void => {
     validationResult.fold(
       (error) => { console.error(error); },
       (allExtrinsicData: AllExtrinsicData) => {

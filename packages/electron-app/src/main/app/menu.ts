@@ -39,23 +39,18 @@ const template = [
       { role: 'cut' },
       { role: 'copy' },
       { role: 'paste' },
-      ...(process.platform === 'darwin' ? [
-        { role: 'pasteAndMatchStyle' },
-        { role: 'delete' },
-        { role: 'selectAll' },
-        { type: 'separator' },
-        {
-          label: 'Speech',
-          submenu: [
-            { role: 'startspeaking' },
-            { role: 'stopspeaking' }
-          ]
-        }
-      ] : [
+      ...(process.platform === 'darwin'
+        ? [
+          { role: 'pasteAndMatchStyle' },
+          { role: 'delete' },
+          { role: 'selectAll' },
+          { type: 'separator' }
+        ]
+        : [
           { role: 'delete' },
           { type: 'separator' },
           { role: 'selectAll' }
-      ])
+        ])
     ]
   },
   // { role: 'viewMenu' }
@@ -85,7 +80,7 @@ const template = [
         { type: 'separator' },
         { role: 'window' }
       ] : [
-          { role: 'close' }
+        { role: 'close' }
       ])
     ]
   },
@@ -94,7 +89,7 @@ const template = [
     submenu: [
       {
         label: 'Learn More',
-        click () {
+        click (): void {
           shell
             .openExternal('https://github.com/paritytech/substrate-light-ui')
             .catch(logger.error);
@@ -104,7 +99,8 @@ const template = [
   }
 ];
 
-export function initMenu () {
+export function initMenu (): void {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
   // @ts-ignore FIXME Not sure why TS is complaining about template here...
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);

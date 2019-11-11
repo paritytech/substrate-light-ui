@@ -10,7 +10,7 @@ import { AddressSummary, Dropdown, DropdownProps, FadedText, Header, Input, Marg
 import BN from 'bn.js';
 import { Either, left, right } from 'fp-ts/lib/Either';
 import { fromNullable } from 'fp-ts/lib/Option';
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useCallback, useContext, useState, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { combineLatest, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -29,8 +29,8 @@ interface Props extends RouteComponentProps<MatchParams> {
 }
 
 type RewardDestinationOption = {
-  text?: string,
-  value?: number
+  text?: string;
+  value?: number;
 };
 
 export const rewardDestinationOptions = [
@@ -39,7 +39,7 @@ export const rewardDestinationOptions = [
   { text: 'Send rewards to my Controller account.', value: 2 }
 ];
 
-export function Bond (props: Props) {
+export function Bond (props: Props): React.ReactElement {
   const { api, keyring } = useContext(AppContext);
   const { enqueue: alert } = useContext(AlertsContext);
   const { derivedBalanceFees } = useContext(StakingContext);
@@ -62,8 +62,8 @@ export function Bond (props: Props) {
     stash = history.location.state.stash;
   }
 
-  const _validate = (): Either<Errors, AllExtrinsicData> => {
-    let errors: Errors = [];
+  const _validate = useCallback((): Either<Errors, AllExtrinsicData> => {
+    const errors: Errors = [];
 
     if (bond.lte(new BN(0))) {
       errors.push('Bond must be greater than zero!');
@@ -89,19 +89,18 @@ export function Bond (props: Props) {
       amountAsString: bond.toString(),
       accountNonce: nonce,
       currentBalance: stashBalance,
-      // @ts-ignore the extrinsic works when testing, not sure why tslint is getting the wrong type here
       extrinsic,
       fees: derivedBalanceFees,
       recipientBalance: controllerBalance,
       currentAccount: stash,
       recipientAddress: controller
-    }, api);
+    });
 
     return values.fold(
-      (e: any) => left(errors),
+      () => left(errors),
       (allExtrinsicData: any) => right(allExtrinsicData)
     );
-  };
+  }, [api, bond, controller, controllerBalance, derivedBalanceFees, destination, nonce, stash, stashBalance]);
 
   // use api.consts when it is availabe in @polkadot/api
   useEffect(() => {
@@ -121,23 +120,23 @@ export function Bond (props: Props) {
       setNonce(nonce);
     });
 
-    return () => subscription.unsubscribe();
-  }, [stash, controller]);
+    return (): void => subscription.unsubscribe();
+  }, [stash, controller, api.derive.balances, api.query.system]);
 
   useEffect(() => {
     setStatus(_validate());
-  }, [bond, controllerBalance, nonce, stashBalance]);
+  }, [_validate, bond, controllerBalance, nonce, stashBalance]);
 
   useEffect(() => {
-    successObservable.subscribe((success) => {
+    successObservable.subscribe(() => {
       setLoading(false);
       history.push(`/manageAccounts/${controller}/balances`);
     });
 
-    return () => successObservable.unsubscribe();
-  }, []);
+    return (): void => successObservable.unsubscribe();
+  }, [controller, history, successObservable]);
 
-  const handleConfirmBond = () => {
+  const handleConfirmBond = (): void => {
     fromNullable(status)
       .map(_validate)
       .map(status => status.fold(
@@ -151,9 +150,9 @@ export function Bond (props: Props) {
       ));
   };
 
-  const handleSetBond = ({ currentTarget: { value } }: React.SyntheticEvent<HTMLInputElement>) => !isUndefined(value) ? setBond(new BN(value)) : setBond(new BN(0));
+  const handleSetBond = ({ currentTarget: { value } }: React.SyntheticEvent<HTMLInputElement>): void => !isUndefined(value) ? setBond(new BN(value)) : setBond(new BN(0));
 
-  const handleSetBondFromPercent = (value: number) => {
+  const handleSetBondFromPercent = (value: number): void => {
     if (!stashBalance || !value) { return; }
 
     const bondAmount = stashBalance.freeBalance.toNumber() * value;
@@ -161,11 +160,11 @@ export function Bond (props: Props) {
     setBond(new BN(bondAmount));
   };
 
-  const onSelect = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
+  const onSelect = (_event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps): void => {
     setDestination(rewardDestinationOptions[data.value as number]);
   };
 
-  const renderContent = () => {
+  const renderContent = (): React.ReactElement => {
     return (
       <Stacked>
         <Header>Bonding Preferences </Header>
@@ -189,13 +188,13 @@ export function Bond (props: Props) {
                 />
               </WrapperDiv>
               <StackedHorizontal>
-                <WithSpace><button onClick={() => handleSetBondFromPercent(0.25)}>25%</button></WithSpace>
+                <WithSpace><button onClick={(): void => handleSetBondFromPercent(0.25)}>25%</button></WithSpace>
                 <Margin left />
-                <WithSpace><button onClick={() => handleSetBondFromPercent(0.5)}>50%</button></WithSpace>
+                <WithSpace><button onClick={(): void => handleSetBondFromPercent(0.5)}>50%</button></WithSpace>
                 <Margin left />
-                <WithSpace><button onClick={() => handleSetBondFromPercent(0.75)}>75%</button></WithSpace>
+                <WithSpace><button onClick={(): void => handleSetBondFromPercent(0.75)}>75%</button></WithSpace>
                 <Margin left />
-                <WithSpace><button onClick={() => handleSetBondFromPercent(1)}>100%</button></WithSpace>
+                <WithSpace><button onClick={(): void => handleSetBondFromPercent(1)}>100%</button></WithSpace>
               </StackedHorizontal>
             </Stacked>
           }
@@ -218,7 +217,7 @@ export function Bond (props: Props) {
     );
   };
 
-  const renderLoading = () => {
+  const renderLoading = (): React.ReactElement => {
     return (
       <WrapperDiv>
         <Stacked>

@@ -14,7 +14,7 @@ interface CircleProps {
   withShadow?: boolean;
 }
 
-export function Circle (props: CircleProps) {
+export function Circle (props: CircleProps): React.ReactElement {
   const { fill, label, radius = 20, withShadow = false } = props;
 
   const StyledCircle = styled.span`

@@ -8,13 +8,13 @@ import Label from 'semantic-ui-react/dist/commonjs/elements/Label/Label';
 import { StackedHorizontal } from './index';
 
 type LabelledProps = {
-  children: React.ReactNode,
-  isHidden?: boolean,
-  label?: React.ReactNode,
-  withLabel?: boolean
+  children: React.ReactNode;
+  isHidden?: boolean;
+  label?: React.ReactNode;
+  withLabel?: boolean;
 };
 
-export function Labelled (props: LabelledProps) {
+export function Labelled (props: LabelledProps): React.ReactElement | null {
   const { children, isHidden = false, label, withLabel = false } = props;
 
   if (isHidden) {

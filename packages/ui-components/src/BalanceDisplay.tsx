@@ -12,12 +12,12 @@ import { DynamicSizeText, FadedText, Stacked, StyledLinkButton } from './Shared.
 import { Icon } from './index';
 
 export type BalanceDisplayProps = {
-  allBalances?: DerivedBalances,
-  allStaking?: DerivedStaking,
-  detailed?: boolean,
-  fontSize?: FontSize,
-  fontWeight?: FontWeight,
-  handleRedeem?: (address: string) => void
+  allBalances?: DerivedBalances;
+  allStaking?: DerivedStaking;
+  detailed?: boolean;
+  fontSize?: FontSize;
+  fontWeight?: FontWeight;
+  handleRedeem?: (address: string) => void;
 };
 
 const defaultProps = {
@@ -25,11 +25,39 @@ const defaultProps = {
   fontSize: 'large' as FontSize
 };
 
-/* FIXME: https://github.com/paritytech/substrate-light-ui/issues/471 */
-export function BalanceDisplay (props: BalanceDisplayProps = defaultProps) {
+// FIXME: https://github.com/paritytech/substrate-light-ui/issues/471
+export function BalanceDisplay (props: BalanceDisplayProps = defaultProps): React.ReactElement {
   const { allBalances, allStaking, detailed, fontSize, fontWeight, handleRedeem } = props;
 
-  const renderDetailedBalances = () => {
+  const renderRedeemButton = (): React.ReactElement | null => {
+    return (allStaking && allStaking.controllerId
+      ? (
+        <StyledLinkButton onClick={(): void => allStaking && allStaking.controllerId && handleRedeem && handleRedeem(allStaking.controllerId.toString())}>
+          <Icon name='lock' />
+          Redeem Funds
+        </StyledLinkButton>
+      )
+      : null);
+  };
+
+  const renderUnlocking = (): React.ReactElement | null => {
+    return (
+      allStaking && allStaking.unlocking
+        ? (
+          <>
+            {allStaking.unlocking.map(({ remainingBlocks, value }, index) => (
+              <div key={index}>
+                <FadedText>Unbonded Amount: {formatBalance(value)}</FadedText>
+                <FadedText> Blocks remaining: {remainingBlocks.toNumber()}</FadedText>
+              </div>
+            ))}
+          </>
+        )
+        : null
+    );
+  };
+
+  const renderDetailedBalances = (): React.ReactElement => {
     const { availableBalance, lockedBalance, reservedBalance } = allBalances!;
 
     return (
@@ -52,33 +80,10 @@ export function BalanceDisplay (props: BalanceDisplayProps = defaultProps) {
     );
   };
 
-  const renderRedeemButton = () => {
-    return (allStaking && allStaking.controllerId && (
-      <StyledLinkButton onClick={() => handleRedeem && handleRedeem(allStaking.controllerId!.toString())}>
-        <Icon name='lock' />
-        Redeem Funds
-      </StyledLinkButton>
-    ));
-  };
-
-  const renderUnlocking = () => {
-    return (
-      allStaking &&
-      allStaking.unlocking &&
-      allStaking.unlocking.map(({ remainingBlocks, value }, index) => (
-        <div key={index}>
-          <FadedText>Unbonded Amount: {formatBalance(value)}</FadedText>
-          <FadedText> Blocks remaining: {remainingBlocks.toNumber()}</FadedText>
-        </div>
-      ))
-    );
-  };
-
   return (
     <Stacked>
       {allBalances
-        ?
-        <React.Fragment>
+        ? <React.Fragment>
           <DynamicSizeText fontSize={fontSize} fontWeight={fontWeight}>
             <strong>Total Balance:</strong> {allBalances.freeBalance && formatBalance(allBalances.freeBalance)}
           </DynamicSizeText>
@@ -87,9 +92,9 @@ export function BalanceDisplay (props: BalanceDisplayProps = defaultProps) {
         : <Loader active inline />
       }
       {
-        detailed
-        && allBalances
-        && renderDetailedBalances()
+        detailed &&
+        allBalances &&
+        renderDetailedBalances()
       }
     </Stacked >
   );

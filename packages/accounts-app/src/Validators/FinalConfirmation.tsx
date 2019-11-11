@@ -10,7 +10,7 @@ import BN from 'bn.js';
 import { Either, left, right } from 'fp-ts/lib/Either';
 import { fromNullable, some } from 'fp-ts/lib/Option';
 import H from 'history';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 import Card from 'semantic-ui-react/dist/commonjs/views/Card';
@@ -26,14 +26,18 @@ interface Props {
   nominateWith: string;
 }
 
-export function FinalConfirmation (props: Props) {
+export function FinalConfirmation (props: Props): React.ReactElement {
   const { handleSelectNominateWith, history, nominees, nominateWith } = props;
   const { api, keyring } = useContext(AppContext);
   const { derivedBalanceFees, onlyBondedAccounts } = useContext(StakingContext);
   const { enqueue, successObservable } = useContext(TxQueueContext);
 
-  const _validate = (): Either<Errors, AllExtrinsicData> => {
-    let errors: Errors = [];
+  const [controllerVotingBalance, setControllerVotingBalance] = useState<DerivedBalances>();
+  const [nonce, setNonce] = useState<Index>();
+  const [status, setStatus] = useState<Either<Errors, AllExtrinsicData>>();
+
+  const _validate = useCallback((): Either<Errors, AllExtrinsicData> => {
+    const errors: Errors = [];
 
     if (!nonce) { errors.push('Calculating account nonce...'); }
 
@@ -53,13 +57,13 @@ export function FinalConfirmation (props: Props) {
       extrinsic,
       fees: derivedBalanceFees,
       currentAccount: nominateWith
-    }, api);
+    });
 
     return values.fold(
       (e: any) => left(e),
       (allExtrinsicData: any) => right(allExtrinsicData)
     );
-  };
+  }, [api, controllerVotingBalance, derivedBalanceFees, nominateWith, nominees, nonce, onlyBondedAccounts]);
 
   useEffect(() => {
     const subscription = combineLatest([
@@ -72,22 +76,18 @@ export function FinalConfirmation (props: Props) {
         setNonce(nonce);
       });
 
-    return () => subscription.unsubscribe();
-  }, [nominateWith]);
-
-  const [controllerVotingBalance, setControllerVotingBalance] = useState<DerivedBalances>();
-  const [nonce, setNonce] = useState<Index>();
-  const [status, setStatus] = useState<Either<Errors, AllExtrinsicData>>();
+    return (): void => subscription.unsubscribe();
+  }, [api.derive.balances, api.query.system, nominateWith]);
 
   useEffect(() => {
     setStatus(_validate());
-  }, [derivedBalanceFees, nominateWith, nonce, onlyBondedAccounts]);
+  }, [_validate, derivedBalanceFees, nominateWith, nonce, onlyBondedAccounts]);
 
   useEffect(() => {
     successObservable.subscribe(() => history.push(`/manageAccounts/${nominateWith}/balances`));
-  }, []);
+  }, [history, nominateWith, successObservable]);
 
-  const onConfirm = () => {
+  const onConfirm = (): void => {
     fromNullable(status)
       .map(_validate)
       .map(status =>
@@ -146,25 +146,23 @@ export function FinalConfirmation (props: Props) {
             <FadedText> Nominees </FadedText>
             <Card.Group centered>
               <div style={{ height: '25rem', overflow: 'auto' }}>
-                {
-                  nominees.map(nominee =>
-                    <Card>
-                      <Card.Content>
-                        <AddressSummary
-                          address={nominee.toString()}
-                          name={
-                            fromNullable(keyring.getAddress(nominee.toString()))
-                              .chain(account => some(account.meta))
-                              .chain(meta => some(meta.name))
-                              .getOrElse(undefined)
-                          }
-                          noPlaceholderName
-                          orientation='vertical'
-                          size='small' />
-                      </Card.Content>
-                    </Card>
-                  )
-                }
+                {nominees.map(nominee =>
+                  <Card key="nominee">
+                    <Card.Content>
+                      <AddressSummary
+                        address={nominee.toString()}
+                        name={
+                          fromNullable(keyring.getAddress(nominee.toString()))
+                            .chain(account => some(account.meta))
+                            .chain(meta => some(meta.name))
+                            .getOrElse(undefined)
+                        }
+                        noPlaceholderName
+                        orientation='vertical'
+                        size='small' />
+                    </Card.Content>
+                  </Card>
+                )}
               </div>
             </Card.Group>
           </Stacked>
@@ -178,7 +176,7 @@ export function FinalConfirmation (props: Props) {
             <StyledNavButton disabled={status && status.isLeft()} onClick={onConfirm}><Icon name='checkmark' color='green' /> Confirm </StyledNavButton>
           </StackedHorizontal>
           <Margin bottom />
-          <StyledLinkButton onClick={() => handleSelectNominateWith(null)}>Change Account</StyledLinkButton>
+          <StyledLinkButton onClick={(): void => handleSelectNominateWith(null)}>Change Account</StyledLinkButton>
         </Stacked>
       </WithSpace>
       {status && <Validation value={status} />}

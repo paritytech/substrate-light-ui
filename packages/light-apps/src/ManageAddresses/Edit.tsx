@@ -13,9 +13,9 @@ interface MatchParams {
   editAddress: string;
 }
 
-interface Props extends RouteComponentProps<MatchParams> { }
+type Props = RouteComponentProps<MatchParams>;
 
-export function Edit (props: Props) {
+export function Edit (props: Props): React.ReactElement {
   const { match: { params: { currentAccount, editAddress } } } = props;
   return (
     <Stacked>

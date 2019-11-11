@@ -42,4 +42,4 @@ storiesOf('Accordion', module)
       </Accordion.Content>
     </Accordion>
   ))
-  ;
+;

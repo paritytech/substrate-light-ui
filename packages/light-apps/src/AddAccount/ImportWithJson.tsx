@@ -6,15 +6,12 @@ import { KeyringJson } from '@polkadot/ui-keyring/types';
 import { AlertsContext, AppContext, handler } from '@substrate/ui-common';
 import { Dropdown, ErrorText, Input, InputFile, Margin, NavButton, Stacked, SubHeader, WrapperDiv } from '@substrate/ui-components';
 import React, { useState, useContext } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
 
 import { Tags, TagOptions } from './types';
 
 type Step = 'upload' | 'password';
 
-interface Props extends RouteComponentProps { }
-
-export function ImportWithJson (props: Props) {
+export function ImportWithJson (): React.ReactElement {
   const { enqueue } = useContext(AlertsContext);
   const { keyring } = useContext(AppContext);
 
@@ -30,7 +27,7 @@ export function ImportWithJson (props: Props) {
 
   const [tags, setTags] = useState<Tags>([]);
 
-  const checkAndAddTags = (json: KeyringJson) => {
+  const checkAndAddTags = (json: KeyringJson): void => {
     if (json.meta.tags) {
       json.meta.tags.forEach((tag: string): void => {
         setTagOptions([...tagOptions, { key: tag, text: tag, value: tag }]);
@@ -40,15 +37,15 @@ export function ImportWithJson (props: Props) {
     }
   };
 
-  const handleAddTag = (e: React.SyntheticEvent, { value }: any) => {
+  const handleAddTag = (e: React.SyntheticEvent, { value }: any): void => {
     setTagOptions([...tagOptions, { key: value, text: value, value }]);
   };
 
-  const handleOnChange = (event: React.SyntheticEvent, { value }: any) => {
+  const handleOnChange = (event: React.SyntheticEvent, { value }: any): void => {
     setTags(value);
   };
 
-  const handleFileUploaded = async (file: string | null) => {
+  const handleFileUploaded = (file: string | null): void => {
     try {
       if (!file) {
         throw new Error('File was empty. Make sure you uploaded the correct file and try again.');
@@ -66,7 +63,7 @@ export function ImportWithJson (props: Props) {
     }
   };
 
-  const handleRestoreWithJson = () => {
+  const handleRestoreWithJson = (): void => {
     try {
       const json = JSON.parse(jsonString);
 
@@ -90,7 +87,7 @@ export function ImportWithJson (props: Props) {
     }
   };
 
-  const renderSetTags = () => {
+  const renderSetTags = (): React.ReactElement => {
     return (
       <Stacked>
         <SubHeader noMargin>Add Tags:</SubHeader>

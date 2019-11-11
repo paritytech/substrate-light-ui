@@ -19,7 +19,7 @@ interface Props {
   currentAccount: string;
 }
 
-export function Transfer (props: Props) {
+export function Transfer (props: Props): React.ReactElement {
   const { currentAccount } = props;
   const { txQueue } = useContext(TxQueueContext);
   const [allAddresses, setAllAddresses] = useState<SingleAddress[]>([]);
@@ -31,13 +31,15 @@ export function Transfer (props: Props) {
 
   useEffect(() => {
     const allAddressessub = combineLatest([
+      // eslint-disable-next-line @typescript-eslint/unbound-method
       accountObservable.subject.pipe(map(Object.values)),
+      // eslint-disable-next-line @typescript-eslint/unbound-method
       addressObservable.subject.pipe(map(Object.values))
     ])
       .pipe(map(flatten))
       .subscribe(setAllAddresses);
 
-    return () => {
+    return (): void => {
       allAddressessub.unsubscribe();
     };
   }, []);
@@ -61,7 +63,7 @@ export function Transfer (props: Props) {
               animation='overlay'
               direction='right'
               icon='labeled'
-              onHide={() => setVisible(false)}
+              onHide={(): void => setVisible(false)}
               vertical
               visible={visible}
               width='very wide'
@@ -75,7 +77,7 @@ export function Transfer (props: Props) {
               </WithSpaceAround>
             </Sidebar>
           )
-          : <Fab onClick={() => setVisible(true)} type='send' />
+          : <Fab onClick={(): void => setVisible(true)} type='send' />
       }
     </React.Fragment>
   );

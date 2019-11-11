@@ -34,7 +34,7 @@ function getAddressFromString (allAccounts: SubjectInfo, allAddresses: SubjectIn
   return allAccounts[address] || allAddresses[address];
 }
 
-function renderDropdownItemText (address: SingleAddress) {
+function renderDropdownItemText (address: SingleAddress): React.ReactElement {
   return (
     <DropdownItemText>
       <strong>{address.json.meta.name}</strong>
@@ -44,8 +44,8 @@ function renderDropdownItemText (address: SingleAddress) {
   );
 }
 
-export function InputAddress (props: InputAddressProps) {
-  const { children, onChangeAddress, types = ['accounts'], value, ...rest } = props;
+export function InputAddress (props: InputAddressProps): React.ReactElement {
+  const { onChangeAddress, types = ['accounts'], value, ...rest } = props;
   const [accounts, setAccounts] = useState<SubjectInfo>({});
   const [addresses, setAddresses] = useState<SubjectInfo>({});
 
@@ -60,16 +60,16 @@ export function InputAddress (props: InputAddressProps) {
       setAddresses(add);
     });
 
-    return () => subscription.unsubscribe();
+    return (): void => subscription.unsubscribe();
   }, []);
 
-  function handleChange (_event: React.MouseEvent<HTMLDivElement, Event>, data: DropdownItemProps) {
+  function handleChange (_event: React.MouseEvent<HTMLDivElement, Event>, data: DropdownItemProps): void {
     if (data.value && onChangeAddress) {
       onChangeAddress(data.value.toString());
     }
   }
 
-  function renderDropdownItem (address: SingleAddress) {
+  function renderDropdownItem (address: SingleAddress): React.ReactElement {
     return <Dropdown.Item
       image={<IdentityIcon value={address.json.address} size={20} />}
       key={address.json.address}

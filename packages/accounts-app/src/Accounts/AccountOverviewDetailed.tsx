@@ -23,7 +23,7 @@ interface Props extends RouteComponentProps<MatchParams> {
   name: string;
 }
 
-export function AccountOverviewDetailed (props: Props) {
+export function AccountOverviewDetailed (props: Props): React.ReactElement {
   const { history, match: { params: { currentAccount } } } = props;
   const { accountStakingMap, allStashes } = useContext(StakingContext);
   const [nominees, setNominees] = useState();
@@ -32,23 +32,23 @@ export function AccountOverviewDetailed (props: Props) {
 
   useEffect(() => {
     setNominees(stakingInfo && stakingInfo.nominators && stakingInfo.nominators.map(nominator => nominator.toString()));
-  }, []);
+  }, [stakingInfo]);
 
-  const renderBalanceDetails = () => {
+  const renderBalanceDetails = (): React.ReactElement => {
     return (
       <Card>
         <Card.Content>
-        {
-          fromNullable(stakingInfo)
-            .map((stakingInfo) => <BalanceOverview history={history} {...stakingInfo} />)
-            .getOrElse(<Loader active inline />)
-        }
+          {
+            fromNullable(stakingInfo)
+              .map((stakingInfo) => <BalanceOverview history={history} key={stakingInfo.accountId.toString()} {...stakingInfo} />)
+              .getOrElse(<Loader active inline />)
+          }
         </Card.Content>
       </Card>
     );
   };
 
-  const renderNominationDetails = () => {
+  const renderNominationDetails = (): React.ReactElement => {
     return (
       <Card>
         <Card.Content>
@@ -64,11 +64,11 @@ export function AccountOverviewDetailed (props: Props) {
                     size='small'
                   />
                 ))
-              .getOrElse(
-                <Stacked>
+                .getOrElse(
+                  <Stacked>
                     Not Nominating Anyone.
                     <StyledNavLink to={`/manageAccounts/${currentAccount}/validators`}>View Validators</StyledNavLink>
-                </Stacked>)
+                  </Stacked>)
             }
           </WithSpace>
           <WithSpace>
@@ -87,7 +87,7 @@ export function AccountOverviewDetailed (props: Props) {
     );
   };
 
-  const renderGeneral = () => {
+  const renderGeneral = (): React.ReactElement => {
     const isStashNominating = fromNullable(stakingInfo)
       .mapNullable(({ nominators }) => nominators)
       .map(nominators => nominators.length > 0)

@@ -20,7 +20,7 @@ import { TopBar } from './TopBar';
 const Router: any =
   process.env.NODE_ENV === 'production' ? MemoryRouter : BrowserRouter;
 
-export function App () {
+export function App (): React.ReactElement {
   return (
     <ContextGate>
       <Router>
@@ -28,14 +28,14 @@ export function App () {
           <FixedWidthContainer>
             <GlobalStyle />
             <AppContext.Consumer>
-              {({ isReady }) => isReady
+              {({ isReady }): React.ReactElement => isReady
                 ? <React.Fragment>
                   <TopBar />
                   <Content />
                 </React.Fragment>
                 : <Loading active>
                   Connecting to the node...
-                  </Loading>
+                </Loading>
               }
             </AppContext.Consumer>
             <Alerts />

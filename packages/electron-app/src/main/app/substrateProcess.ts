@@ -9,7 +9,7 @@ import { bundledPath, logger } from '../util';
 let substrateProc: ChildProcess;
 
 // TEMPORARY: change to runSubstrateLight once the light client is available.
-export const runSubstrateDev = () => {
+export const runSubstrateDev = (): void => {
   if (substrateProc) {
     logger.error('Unable to initialise Parity Substrate more than once');
     return;
@@ -35,7 +35,7 @@ export const runSubstrateDev = () => {
   substrateProc = substrate;
 };
 
-export const killSubstrate = () => {
+export const killSubstrate = (): void => {
   if (substrateProc) {
     logger.info('Killing Substrate');
     substrateProc.kill();

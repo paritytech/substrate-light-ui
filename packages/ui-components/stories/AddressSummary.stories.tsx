@@ -10,8 +10,8 @@ import { withTheme } from './customDecorators';
 import { AddressSummary } from '../src/stateful/AddressSummary';
 import { OrientationType, SizeType } from '../src/stateful/AddressSummary/types';
 
-let orientations: Array<OrientationType> = ['horizontal', 'vertical'];
-let sizes: Array<SizeType> = ['tiny', 'small', 'medium', 'large'];
+const orientations: Array<OrientationType> = ['horizontal', 'vertical'];
+const sizes: Array<SizeType> = ['tiny', 'small', 'medium', 'large'];
 
 storiesOf('Address Sumary', module)
   .addDecorator(withKnobs)

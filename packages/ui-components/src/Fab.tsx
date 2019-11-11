@@ -3,11 +3,11 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import SUIButton from 'semantic-ui-react/dist/commonjs/elements/Button';
+import SUIButton, { ButtonProps } from 'semantic-ui-react/dist/commonjs/elements/Button';
 import styled from 'styled-components';
 
 import { substrateLightTheme } from './globalStyle';
-import { ButtonProps, Icon } from './index';
+import { Icon } from './Icon';
 
 const SUIFab = styled(SUIButton)`
   &&& {
@@ -22,8 +22,8 @@ const SUIFab = styled(SUIButton)`
     text-align: center;
     vertical-align: center;
     color: white;
-    height: ${props => props.height || '4rem'};
-    width: ${props => props.width || '4rem'};
+    height: ${(props): string => props.height || '4rem'};
+    width: ${(props): string => props.width || '4rem'};
     box-shadow: '0 6px 6px 0 rgba(0, 0, 0, 0.24), 0 0 6px 0 rgba(0, 0, 0, 0.12)';
     border-radius: 50%;
     position: fixed;
@@ -38,7 +38,7 @@ interface Props extends ButtonProps {
   type?: FabTypes;
 }
 
-export function Fab (props: Props) {
+export function Fab (props: Props): React.ReactElement {
   return (
     <SUIFab {...props}>
       {

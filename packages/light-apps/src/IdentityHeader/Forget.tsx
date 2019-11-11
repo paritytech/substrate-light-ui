@@ -13,17 +13,17 @@ interface Props {
   history: H.History;
 }
 
-export function Forget (props: Props) {
+export function Forget (props: Props): React.ReactElement {
   const { currentAccount, history } = props;
   const { keyring } = useContext(AppContext);
   const { enqueue } = useContext(AlertsContext);
 
   const [forgetModalOpen, setForgetModalOpen] = useState(false);
 
-  const openForgetModal = () => setForgetModalOpen(true);
-  const closeForgetModal = () => setForgetModalOpen(false);
+  const openForgetModal = (): void => setForgetModalOpen(true);
+  const closeForgetModal = (): void => setForgetModalOpen(false);
 
-  const forgetCurrentAccount = () => {
+  const forgetCurrentAccount = (): void => {
     try {
       // forget it from keyring
       keyring.forgetAccount(currentAccount);

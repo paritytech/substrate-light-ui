@@ -1,10 +1,17 @@
 {
   "compilerOptions": {
-    "jsx": "react",
     "outDir": "./build"
   },
-  "rootDirs": ["src", "stories"],
+  "rootDirs": [
+    "src",
+    "stories"
+  ],
   "extends": "../../tsconfig",
-  "include": ["./src"],
-  "types": ["node", "jest"]
+  "include": [
+    "./src"
+  ],
+  "types": [
+    "node",
+    "jest"
+  ]
 }

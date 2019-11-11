@@ -12,7 +12,7 @@ interface Props {
   currentAccount: string;
 }
 
-export function Backup (props: Props) {
+export function Backup (props: Props): React.ReactElement {
   const { currentAccount } = props;
   const { keyring } = useContext(AppContext);
   const { enqueue } = useContext(AlertsContext);
@@ -20,8 +20,8 @@ export function Backup (props: Props) {
   const [modalOpen, setModalOpen] = useState(false);
   const [password, setPassword] = useState('');
 
-  const closeBackupModal = () => { setModalOpen(false); setPassword(''); };
-  const backupCurrentAccount = () => {
+  const closeBackupModal = (): void => { setModalOpen(false); setPassword(''); };
+  const backupCurrentAccount = (): void => {
     try {
       const pair = keyring.getPair(currentAccount);
       const json = keyring.backupAccount(pair, password);
@@ -42,14 +42,14 @@ export function Backup (props: Props) {
       closeOnDimmerClick
       closeOnEscape
       open={modalOpen}
-      trigger={<Dropdown.Item icon='arrow alternate circle down' onClick={() => setModalOpen(true)} text='Backup Account' />}
+      trigger={<Dropdown.Item icon='arrow alternate circle down' onClick={(): void => setModalOpen(true)} text='Backup Account' />}
     >
       <WithSpaceAround>
         <SubHeader> Please Confirm You Want to Backup this Account </SubHeader>
         <FadedText>By pressing confirm you will be downloading a JSON keyfile that can later be used to unlock your account. </FadedText>
         <Modal.Actions>
           <Stacked>
-            <FadedText> Please encrypt your account first with the account's password. </FadedText>
+            <FadedText> Please encrypt your account first with the account&apos;s password. </FadedText>
             <Input onChange={handler(setPassword)} type='password' value={password} />
             <StackedHorizontal>
               <WithSpaceBetween>

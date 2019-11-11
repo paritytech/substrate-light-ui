@@ -14,52 +14,22 @@ import { OrientationType, SizeType } from './types';
 import { FlexJustify, FontSize } from '../../types';
 
 type AddressSummaryProps = {
-  address?: string, // TODO support AccountId
-  bondingPair?: string, // TODO support AccountId
-  detailed?: boolean,
-  isNominator?: boolean,
-  isValidator?: boolean,
-  justifyContent?: FlexJustify,
-  name?: string,
-  noPlaceholderName?: boolean,
-  noBalance?: boolean,
-  orientation?: OrientationType,
-  type?: 'stash' | 'controller',
-  size?: SizeType,
+  address?: string; // TODO support AccountId
+  bondingPair?: string; // TODO support AccountId
+  detailed?: boolean;
+  isNominator?: boolean;
+  isValidator?: boolean;
+  justifyContent?: FlexJustify;
+  name?: string;
+  noPlaceholderName?: boolean;
+  noBalance?: boolean;
+  orientation?: OrientationType;
+  type?: 'stash' | 'controller';
+  size?: SizeType;
   withShortAddress?: boolean;
 };
 
 const PLACEHOLDER_NAME = 'No Name';
-
-export function AddressSummary (props: AddressSummaryProps) {
-  const {
-    address,
-    justifyContent = 'space-around',
-    orientation = 'vertical',
-    size = 'medium'
-  } = props;
-
-  return fromNullable(address)
-    .map((address: string) => {
-      return orientation === 'vertical'
-          ? (
-            <Stacked justifyContent={justifyContent}>
-              {renderIcon(address, size)}
-              {renderDetails(address, props)}
-            </Stacked>
-          )
-          : (
-            <StackedHorizontal justifyContent={justifyContent}>
-              {renderIcon(address, size)}
-              <Margin left />
-              <Stacked>
-                {renderDetails(address, props)}
-              </Stacked>
-            </StackedHorizontal>
-          );
-    })
-    .getOrElse(<div>No Address Provided</div>);
-}
 
 const ICON_SIZES = {
   tiny: 16,
@@ -68,7 +38,7 @@ const ICON_SIZES = {
   large: 128
 };
 
-function renderIcon (address: string, size: SizeType) {
+function renderIcon (address: string, size: SizeType): React.ReactElement {
   return <IdentityIcon value={address} theme={'substrate'} size={ICON_SIZES[size]} />;
 }
 
@@ -79,23 +49,53 @@ const FONT_SIZES: any = {
   large: 'big'
 };
 
-function renderBadge (type: string) {
+function renderBadge (type: string): React.ReactElement {
   // FIXME make it an actual badge
   return type === 'nominator' ? <SubHeader>nominator</SubHeader> : <SubHeader>validator</SubHeader>;
 }
 
-function renderDetails (address: string, props: Exclude<AddressSummaryProps, keyof 'address'>) {
-  const { bondingPair, detailed, isNominator, isValidator, name = PLACEHOLDER_NAME, noBalance, noPlaceholderName, size = 'medium', type, withShortAddress } = props;
+function renderDetails (address: string, summaryProps: Exclude<AddressSummaryProps, keyof 'address'>): React.ReactElement {
+  const { bondingPair, detailed, isNominator, isValidator, name = PLACEHOLDER_NAME, noBalance, noPlaceholderName, size = 'medium', type, withShortAddress } = summaryProps;
 
   return (
     <Stacked>
       <DynamicSizeText fontSize={FONT_SIZES[size] as FontSize}> {noPlaceholderName ? null : name} </DynamicSizeText>
-      { withShortAddress && <Address address={address} shortened />}
-      { type && <FadedText> Account Type: {type} </FadedText>}
-      { bondingPair && <StackedHorizontal><FadedText> Bonding Pair: </FadedText> {renderIcon(bondingPair, 'tiny')} </StackedHorizontal> }
-      { isNominator && renderBadge('nominator') }
-      { isValidator && renderBadge('validator') }
+      {withShortAddress && <Address address={address} shortened />}
+      {type && <FadedText> Account Type: {type} </FadedText>}
+      {bondingPair && <StackedHorizontal><FadedText> Bonding Pair: </FadedText> {renderIcon(bondingPair, 'tiny')} </StackedHorizontal>}
+      {isNominator && renderBadge('nominator')}
+      {isValidator && renderBadge('validator')}
       {!noBalance && <Balance address={address} detailed={detailed} fontSize={FONT_SIZES[size] as FontSize} />}
     </Stacked>
   );
+}
+
+export function AddressSummary (props: AddressSummaryProps): React.ReactElement {
+  const {
+    address,
+    justifyContent = 'space-around',
+    orientation = 'vertical',
+    size = 'medium'
+  } = props;
+
+  return fromNullable(address)
+    .map((address: string) => {
+      return orientation === 'vertical'
+        ? (
+          <Stacked justifyContent={justifyContent}>
+            {renderIcon(address, size)}
+            {renderDetails(address, props)}
+          </Stacked>
+        )
+        : (
+          <StackedHorizontal justifyContent={justifyContent}>
+            {renderIcon(address, size)}
+            <Margin left />
+            <Stacked>
+              {renderDetails(address, props)}
+            </Stacked>
+          </StackedHorizontal>
+        );
+    })
+    .getOrElse(<div>No Address Provided</div>);
 }

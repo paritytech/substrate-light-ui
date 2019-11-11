@@ -15,7 +15,7 @@ interface Props extends RouteComponentProps<MatchParams> {
   currentAccount: string;
 }
 
-export function ShowValidators (props: Props) {
+export function ShowValidators (props: Props): React.ReactElement {
   const { match: { params: { currentAccount } } } = props;
 
   return (

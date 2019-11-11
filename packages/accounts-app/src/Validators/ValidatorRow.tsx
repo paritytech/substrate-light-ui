@@ -19,7 +19,7 @@ interface Props {
 }
 
 // TODO: show validator preferences, i.e. commissions and times reported offline
-export function ValidatorRow (props: Props) {
+export function ValidatorRow (props: Props): React.ReactElement {
   const { validator } = props;
   const { api, keyring } = useContext(AppContext);
   const [nominators, setNominators] = useState<[AccountId, Compact<Balance>][]>([]);
@@ -46,10 +46,10 @@ export function ValidatorRow (props: Props) {
         setLoading(false);
       });
 
-    return () => subscription.unsubscribe();
-  }, []);
+    return (): void => subscription.unsubscribe();
+  }, [api, validator]);
 
-  const renderAmINominating = () => {
+  const renderAmINominating = (): React.ReactElement => {
     const myAddresses = keyring.getAccounts().map(({ address }): string => address);
 
     return fromNullable(nominators)
@@ -58,7 +58,7 @@ export function ValidatorRow (props: Props) {
       .getOrElse(<FadedText>You are not currently nominating this Validator.</FadedText>);
   };
 
-  const renderNominators = () => {
+  const renderNominators = (): React.ReactElement => {
     return (
       loading
         ? <Loader active inline />

@@ -8,19 +8,18 @@ import { AppContext } from '@substrate/ui-common';
 import { FadedText, Header, Stacked } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';
 
-export function CouncilCandidates () {
+export function CouncilCandidates (): React.ReactElement {
   const { api } = useContext(AppContext);
   const [councilCandidates, setCouncilCandidates] = useState();
 
   useEffect(() => {
-
     const subscription = api.query.elections.candidates<Vec<AccountId>>()
       .subscribe((councilCandidates) => {
         setCouncilCandidates(councilCandidates);
       });
 
-    return () => subscription.unsubscribe();
-  }, []);
+    return (): void => subscription.unsubscribe();
+  }, [api.query.elections]);
 
   if (councilCandidates && councilCandidates.length) {
     return (
@@ -29,7 +28,7 @@ export function CouncilCandidates () {
         {
           councilCandidates.map((accountId: AccountId) => {
             return (
-              <li>{accountId} is a candidate</li>
+              <li key={accountId.toString()}>{accountId} is a candidate</li>
             );
           })
         }
@@ -45,7 +44,7 @@ export function CouncilCandidates () {
           target='_blank'
         >
           Click here to learn more about the Council
-          </a>
+        </a>
       </Stacked>
     );
   }

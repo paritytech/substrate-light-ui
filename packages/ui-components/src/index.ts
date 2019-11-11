@@ -4,7 +4,6 @@
 
 // We export these ones as-is from SUI
 export {
-  ButtonProps,
   Dropdown, DropdownProps,
   Form, FormProps,
   Grid, GridProps,

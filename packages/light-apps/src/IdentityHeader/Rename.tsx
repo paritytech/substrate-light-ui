@@ -11,7 +11,7 @@ interface Props {
   currentAccount: string;
 }
 
-export function Rename (props: Props) {
+export function Rename (props: Props): React.ReactElement {
   const { currentAccount } = props;
   const { keyring } = useContext(AppContext);
   const { enqueue } = useContext(AlertsContext);
@@ -22,10 +22,10 @@ export function Rename (props: Props) {
   const [modalOpen, setModalOpen] = useState(false);
   const [name, setName] = useState(keyringAccount.map((account) => account.meta.name || '').getOrElse(''));
 
-  const openRenameModal = () => setModalOpen(true);
-  const closeRenameModal = () => { setModalOpen(false); setName(name); };
+  const openRenameModal = (): void => setModalOpen(true);
+  const closeRenameModal = (): void => { setModalOpen(false); setName(name); };
 
-  const renameCurrentAccount = () => {
+  const renameCurrentAccount = (): void => {
     keyring.saveAccountMeta(keyring.getPair(currentAccount), { name });
 
     closeRenameModal();

@@ -5,7 +5,7 @@ import React from 'react';
 
 import { Tags, TagOptions } from '../types';
 
-export function renderSetName (name: string, setName: React.Dispatch<React.SetStateAction<string>>) {
+export function renderSetName (name: string, setName: React.Dispatch<React.SetStateAction<string>>): React.ReactElement {
   return (
     <Stacked>
       <SubHeader noMargin> Give it a name </SubHeader>
@@ -21,42 +21,42 @@ export function renderSetName (name: string, setName: React.Dispatch<React.SetSt
   );
 }
 
-export function renderSetPassword (password: string, setPassword: React.Dispatch<React.SetStateAction<string>>) {
+export function renderSetPassword (password: string, setPassword: React.Dispatch<React.SetStateAction<string>>): React.ReactElement {
   return (
     <Stacked>
       <SubHeader noMargin> Encrypt it with a passphrase </SubHeader>
-        <Input
-          fluid
-          min={8}
-          onChange={handler(setPassword)}
-          type='password'
-          value={password}
-        />
+      <Input
+        fluid
+        min={8}
+        onChange={handler(setPassword)}
+        type='password'
+        value={password}
+      />
     </Stacked>
   );
 }
 
-export function renderErrors (errors: Option<Array<string>>) {
-  return errors.fold(null, errStrings => errStrings.map(err => <ErrorText>{err}</ErrorText>));
+export function renderErrors (errors: Option<Array<string>>): React.ReactElement | null {
+  return errors.fold(null, errStrings => <>{errStrings.map(err => <ErrorText key={err}>{err}</ErrorText>)}</>);
 }
 
 export function renderRewriteStep (
   values: {
-    firstWord: string,
-    secondWord: string,
-    thirdWord: string,
-    fourthWord: string,
-    randomFourWords: Array<Array<string>>
+    firstWord: string;
+    secondWord: string;
+    thirdWord: string;
+    fourthWord: string;
+    randomFourWords: Array<Array<string>>;
   },
   setters: {
-    handleSetFirstWord: (e: React.ChangeEvent<HTMLInputElement>) => void,
-    handleSetSecondWord: (e: React.ChangeEvent<HTMLInputElement>) => void,
-    handleSetThirdWord: (e: React.ChangeEvent<HTMLInputElement>) => void,
-    handleSetFourthWord: (e: React.ChangeEvent<HTMLInputElement>) => void,
-    goToPreviousStep: () => void,
-    goToNextStep: () => void
+    handleSetFirstWord: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    handleSetSecondWord: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    handleSetThirdWord: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    handleSetFourthWord: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    goToPreviousStep: () => void;
+    goToNextStep: () => void;
   }
-) {
+): React.ReactElement {
   const { randomFourWords, firstWord, secondWord, thirdWord, fourthWord } = values;
   const { goToNextStep, goToPreviousStep, handleSetFirstWord, handleSetSecondWord, handleSetThirdWord, handleSetFourthWord } = setters;
 
@@ -76,7 +76,7 @@ export function renderRewriteStep (
         handleSetSecondWord={handleSetSecondWord}
         handleSetThirdWord={handleSetThirdWord}
         handleSetFourthWord={handleSetFourthWord}
-         />
+      />
       <WithSpaceAround>
         <StackedHorizontal>
           <StyledLinkButton onClick={goToPreviousStep}> Back </StyledLinkButton>
@@ -89,25 +89,25 @@ export function renderRewriteStep (
 
 export function renderMetaStep (
   values: {
-    name: string,
-    password: string,
-    tags: Tags,
-    tagOptions: TagOptions,
-    whichAccount?: string
+    name: string;
+    password: string;
+    tags: Tags;
+    tagOptions: TagOptions;
+    whichAccount?: string;
   },
   setters: {
-    setName: React.Dispatch<React.SetStateAction<string>>,
-    setPassword: React.Dispatch<React.SetStateAction<string>>,
-    handleAddTag: (event: React.SyntheticEvent, data: any) => void, // FIXME any
-    handleOnChange: (event: React.SyntheticEvent, data: any) => void, // FIXME any
-    createNewAccount: () => void,
-    goToPreviousStep: () => void
-  }) {
+    setName: React.Dispatch<React.SetStateAction<string>>;
+    setPassword: React.Dispatch<React.SetStateAction<string>>;
+    handleAddTag: (event: React.SyntheticEvent, data: any) => void; // FIXME any
+    handleOnChange: (event: React.SyntheticEvent, data: any) => void; // FIXME any
+    createNewAccount: () => void;
+    goToPreviousStep: () => void;
+  }): React.ReactElement {
   const { name, password, tags, tagOptions, whichAccount } = values;
   const { handleAddTag, handleOnChange, setName, setPassword } = setters;
   const { createNewAccount, goToPreviousStep } = setters;
 
-  const renderSetTags = () => {
+  const renderSetTags = (): React.ReactElement => {
     return (
       <Stacked>
         <SubHeader noMargin>Add Tags:</SubHeader>
@@ -143,23 +143,23 @@ export function renderMetaStep (
 
   return (
     <WrapperDiv margin='0'>
-        {renderSetName(name, setName)}
-        <Margin top='small' />
-        {renderSetPassword(password, setPassword)}
-        <Margin top='small' />
-        {renderSetTags()}
-      </WrapperDiv>
+      {renderSetName(name, setName)}
+      <Margin top='small' />
+      {renderSetPassword(password, setPassword)}
+      <Margin top='small' />
+      {renderSetTags()}
+    </WrapperDiv>
   );
 }
 
 export function renderCopyStep (
   values: {
-    mnemonic: string
+    mnemonic: string;
   },
   setters: {
-    goToNextStep: () => void
+    goToNextStep: () => void;
   }
-) {
+): React.ReactElement {
   const { mnemonic } = values;
   const { goToNextStep } = setters;
 

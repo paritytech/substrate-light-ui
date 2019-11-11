@@ -18,7 +18,7 @@ interface Props {
   name?: string;
 }
 
-export function AccountsOverviewCard (props: Props) {
+export function AccountsOverviewCard (props: Props): React.ReactElement {
   const { address, history, name } = props;
   const { keyring } = useContext(AppContext);
   const { enqueue } = useContext(AlertsContext);
@@ -39,11 +39,12 @@ export function AccountsOverviewCard (props: Props) {
       .getOrElse(undefined);
 
     setBondingPair(bondingPair);
-  }, []);
+  }, [address, derivedStakingInfo]);
 
-  const handleBackup = () => {
+  const handleBackup = (): void => {
     if (confirmScreen !== 'backup') {
       setConfirmScreen('backup');
+
       return;
     }
 
@@ -60,13 +61,13 @@ export function AccountsOverviewCard (props: Props) {
     }
   };
 
-  const handleCancel = () => {
+  const handleCancel = (): void => {
     if (confirmScreen) {
       setConfirmScreen(null);
     }
   };
 
-  const handleForget = () => {
+  const handleForget = (): void => {
     if (confirmScreen !== 'forget') {
       setConfirmScreen('forget');
       return;
@@ -82,18 +83,18 @@ export function AccountsOverviewCard (props: Props) {
     }
   };
 
-  const navToBalances = () => {
+  const navToBalances = (): void => {
     history.push(`/manageAccounts/${address}/balances`);
   };
 
-  const renderConfirmBackup = () => {
+  const renderConfirmBackup = (): React.ReactElement => {
     return (
       <WithSpaceAround>
         <SubHeader> Please Confirm You Want to Backup this Account </SubHeader>
         <FadedText>By pressing confirm you will be downloading a JSON keyfile that can later be used to unlock your account. </FadedText>
         <Card.Description>
           <Stacked>
-            <FadedText> Please encrypt your account first with the account's password. </FadedText>
+            <FadedText> Please encrypt your account first with the account&apos;s password. </FadedText>
             <Input onChange={handler(setPassword)} type='password' value={password} />
             <StackedHorizontal>
               <WithSpaceBetween>
@@ -107,7 +108,7 @@ export function AccountsOverviewCard (props: Props) {
     );
   };
 
-  const renderConfirmForget = () => {
+  const renderConfirmForget = (): React.ReactElement => {
     return (
       <WithSpaceAround>
         <Stacked>
@@ -151,7 +152,7 @@ export function AccountsOverviewCard (props: Props) {
                     <StyledLinkButton onClick={handleForget}>
                       <Icon name='remove' />
                       Forget
-                      </StyledLinkButton>
+                    </StyledLinkButton>
                     <StyledLinkButton onClick={handleBackup}>
                       <Icon name='arrow alternate circle down' />
                       Backup

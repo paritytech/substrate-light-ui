@@ -16,19 +16,19 @@ interface MatchParams {
   currentAccount: string;
 }
 
-interface Props extends RouteComponentProps<MatchParams> { }
+type Props = RouteComponentProps<MatchParams>;
 
-export function IdentityHeader (props: Props) {
+export function IdentityHeader (props: Props): React.ReactElement {
   const { history, location, match: { params: { currentAccount } } } = props;
 
   const currentPath = location.pathname.split('/')[1];
 
   // Change account
-  const changeCurrentAccount = (account: string) => {
+  const changeCurrentAccount = (account: string): void => {
     history.push(`/${currentPath}/${account}`);
   };
 
-  const renderPrimaryMenu = () => {
+  const renderPrimaryMenu = (): React.ReactElement => {
     return (
       <Menu stackable>
         <Switch>
@@ -82,18 +82,18 @@ export function IdentityHeader (props: Props) {
     );
   };
 
-  const renderSecondaryMenu = () => {
+  const renderSecondaryMenu = (): React.ReactElement => {
     const activeTab = location.pathname.split('/')[1];
 
-    const navToAccounts = () => {
+    const navToAccounts = (): void => {
       history.push(`/manageAccounts/${currentAccount}`);
     };
 
-    const navToGovernance = () => {
+    const navToGovernance = (): void => {
       history.push(`/governance/${currentAccount}`);
     };
 
-    const navToManageAddressBook = () => {
+    const navToManageAddressBook = (): void => {
       history.push(`/addresses/${currentAccount}`);
     };
 
@@ -120,7 +120,7 @@ export function IdentityHeader (props: Props) {
     );
   };
 
-  const renderHeader = () => (
+  const renderHeader = (): React.ReactElement => (
     <React.Fragment>
       <Joyride run={true} steps={tutorialSteps} />
       <Margin top='big' />

@@ -12,17 +12,17 @@ type ModalProps = SUIModalProps;
 
 const StyledModal = styled(SUIModal)`
   &&& {
-    position: ${props => props.position || 'relative'};
-    bottom: ${props => props.bottom || undefined};
-    right: ${props => props.right || undefined};
+    position: ${(props): string => props.position || 'relative'};
+    bottom: ${(props): string | undefined => props.bottom || undefined};
+    right: ${(props): string | undefined => props.right || undefined};
   }
 `;
 
 const StyledContent = styled(SUIModal.Content)`
   &&& {
     display: flex;
-    align-items: ${props => props.alignItems || 'center'};
-    justify-content: ${props => props.justifyContent || 'center'};
+    align-items: ${(props): string => props.alignItems || 'center'};
+    justify-content: ${(props): string => props.justifyContent || 'center'};
     min-width: 100%;
   }
 `;
@@ -32,7 +32,7 @@ const StyledActions = styled(StyledContent)`
 `;
 
 // FIXME: this component is reused here and in @polkadot/apps - should be moved to @polkadot/ui
-export function Modal (props: ModalProps) {
+export function Modal (props: ModalProps): React.ReactElement {
   return (
     <StyledModal {...props} />
   );

@@ -4,16 +4,12 @@
 
 import { Grid, Margin } from '@substrate/ui-components';
 import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
 
 import { CouncilCandidates } from './CouncilCandidates';
 import { CouncilMembers } from './CouncilMembers';
 import { CouncilSummary } from './CouncilSummary';
 
-interface IProps extends RouteComponentProps {}
-
-export function Council (props: IProps) {
-
+export function Council (): React.ReactElement {
   return (
     <Grid>
       <Margin top />

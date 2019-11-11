@@ -20,9 +20,9 @@ interface MatchParams {
   currentAccount: string;
 }
 
-interface IProps extends RouteComponentProps<MatchParams> { }
+type Props = RouteComponentProps<MatchParams>;
 
-export function Governance (props: IProps) {
+export function Governance (props: Props): React.ReactElement {
   const { api } = useContext(AppContext);
   const [refCount, setRefCount] = useState();
   const [latestBlockNumber, setLatestBlockNumber] = useState();
@@ -33,8 +33,8 @@ export function Governance (props: IProps) {
   useEffect(() => {
     const blockSub = api.derive.chain.bestNumber().subscribe(setLatestBlockNumber);
 
-    return () => blockSub.unsubscribe();
-  }, []);
+    return (): void => blockSub.unsubscribe();
+  }, [api.derive.chain]);
 
   useEffect(() => {
     const subscription = combineLatest([
@@ -46,20 +46,20 @@ export function Governance (props: IProps) {
         setRefCount(refCount);
       });
 
-    return () => subscription.unsubscribe();
-  }, []);
+    return (): void => subscription.unsubscribe();
+  }, [api.query.democracy]);
 
-  const navToDemocracy = () => {
-    let { history, location, match } = props;
-    let currentPath = location.pathname.split('/')[3];
+  const navToDemocracy = (): void => {
+    const { history, location, match } = props;
+    const currentPath = location.pathname.split('/')[3];
     if (currentPath !== 'democracy') {
       history.push(`/governance/${match.params.currentAccount}/democracy`);
     }
   };
 
-  const navToCouncil = () => {
-    let { history, location, match } = props;
-    let currentPath = location.pathname.split('/')[3];
+  const navToCouncil = (): void => {
+    const { history, location, match } = props;
+    const currentPath = location.pathname.split('/')[3];
     if (currentPath !== 'council') {
       history.push(`/governance/${match.params.currentAccount}/council`);
     }

@@ -12,7 +12,7 @@ interface YayNayProps {
   width?: number;
 }
 
-export const YayNay = (props: YayNayProps) => {
+export const YayNay = (props: YayNayProps): React.ReactElement => {
   const { yay, nay, height, width } = props;
 
   const data = [

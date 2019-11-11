@@ -12,7 +12,7 @@ import { logger } from '../util';
  * Detect if another instance of Substrate is already running or not. To achieve
  * that, we just ping 127.0.0.1:9933.
  */
-export async function isSubstrateRunning () {
+export async function isSubstrateRunning (): Promise<boolean> {
   /**
    * Try to ping 9933 to test if Substrate is running.
    */

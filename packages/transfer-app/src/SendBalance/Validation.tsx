@@ -14,19 +14,7 @@ interface Props {
   values: Either<Errors, AllExtrinsicData>;
 }
 
-export function Validation (props: Props) {
-  const { values } = props;
-  const warnings = fromEither(values).chain(validateWarnings);
-
-  return (
-    <Stacked alignItems='flex-start'>
-      {values.fold(renderErrors, renderNull)}
-      {warnings.fold(null, renderWarnings)}
-    </Stacked>
-  );
-}
-
-function renderErrors (errors: Errors) {
+function renderErrors (errors: Errors): React.ReactElement {
   // For now we assume there's only one error, and show it. It should be
   // relatively easy to extend to show multiple errors.
   const error = Object.values(errors)[0];
@@ -41,11 +29,11 @@ function renderErrors (errors: Errors) {
   );
 }
 
-function renderNull () {
+function renderNull (): null {
   return null;
 }
 
-function renderWarnings (warnings: Warnings) {
+function renderWarnings (warnings: Warnings): React.ReactElement {
   return (
     <React.Fragment>
       <SubHeader textAlign='left'>Warnings</SubHeader>
@@ -53,5 +41,17 @@ function renderWarnings (warnings: Warnings) {
         {warnings.map((warning) => <List.Item key={warning}>{warning}</List.Item>)}
       </List>
     </React.Fragment>
+  );
+}
+
+export function Validation (props: Props): React.ReactElement {
+  const { values } = props;
+  const warnings = fromEither(values).chain(validateWarnings);
+
+  return (
+    <Stacked alignItems='flex-start'>
+      {values.fold(renderErrors, renderNull)}
+      {warnings.fold(null, renderWarnings)}
+    </Stacked>
   );
 }
