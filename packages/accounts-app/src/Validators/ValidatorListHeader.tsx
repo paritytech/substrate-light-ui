@@ -32,7 +32,7 @@ export function ValidatorListHeader (props: Props): React.ReactElement {
       .subscribe(setSessionInfo);
 
     return (): void => subscription.unsubscribe();
-  }, []);
+  }, [api.derive.session]);
 
   const renderEraProgress = (): React.ReactElement => {
     return (

@@ -10,7 +10,7 @@ import BN from 'bn.js';
 import { Either, left, right } from 'fp-ts/lib/Either';
 import { fromNullable, some } from 'fp-ts/lib/Option';
 import H from 'history';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 import Card from 'semantic-ui-react/dist/commonjs/views/Card';
@@ -36,7 +36,7 @@ export function FinalConfirmation (props: Props): React.ReactElement {
   const [nonce, setNonce] = useState<Index>();
   const [status, setStatus] = useState<Either<Errors, AllExtrinsicData>>();
 
-  const _validate = (): Either<Errors, AllExtrinsicData> => {
+  const _validate = useCallback((): Either<Errors, AllExtrinsicData> => {
     const errors: Errors = [];
 
     if (!nonce) { errors.push('Calculating account nonce...'); }
@@ -63,7 +63,7 @@ export function FinalConfirmation (props: Props): React.ReactElement {
       (e: any) => left(e),
       (allExtrinsicData: any) => right(allExtrinsicData)
     );
-  };
+  }, [api, controllerVotingBalance, derivedBalanceFees, nominateWith, nominees, nonce, onlyBondedAccounts]);
 
   useEffect(() => {
     const subscription = combineLatest([
@@ -77,15 +77,15 @@ export function FinalConfirmation (props: Props): React.ReactElement {
       });
 
     return (): void => subscription.unsubscribe();
-  }, [nominateWith]);
+  }, [api.derive.balances, api.query.system, nominateWith]);
 
   useEffect(() => {
     setStatus(_validate());
-  }, [derivedBalanceFees, nominateWith, nonce, onlyBondedAccounts]);
+  }, [_validate, derivedBalanceFees, nominateWith, nonce, onlyBondedAccounts]);
 
   useEffect(() => {
     successObservable.subscribe(() => history.push(`/manageAccounts/${nominateWith}/balances`));
-  }, []);
+  }, [history, nominateWith, successObservable]);
 
   const onConfirm = (): void => {
     fromNullable(status)

@@ -18,7 +18,7 @@ export function Referenda (): React.ReactElement {
     const subscription = api.derive.democracy.referendums()
       .subscribe(setReferenda);
     return (): void => subscription.unsubscribe();
-  }, []);
+  }, [api.derive.democracy]);
 
   const renderEmptyTable = (): React.ReactElement => {
     return (

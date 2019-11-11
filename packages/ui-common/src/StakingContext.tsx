@@ -54,7 +54,7 @@ export function StakingContextProvider (props: Props): React.ReactElement {
 
       return (): void => subscription.unsubscribe();
     });
-  }, [api, isReady, keyring]);
+  }, [accountStakingMap, api, isReady, keyring]);
 
   // get allStashesAndControllers
   useEffect(() => {

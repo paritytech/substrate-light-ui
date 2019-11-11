@@ -12,7 +12,7 @@ import BN from 'bn.js';
 import { Either, left, right } from 'fp-ts/lib/Either';
 import { fromNullable, some } from 'fp-ts/lib/Option';
 import H from 'history';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 
@@ -49,9 +49,9 @@ export function BalanceOverview (props: Pick<Props, Exclude<keyof Props, keyof '
       });
 
     return (): void => subscription.unsubscribe();
-  }, [controllerId]);
+  }, [api.derive.balances, api.query.system, controllerId]);
 
-  const _validate = (): Either<Errors, AllExtrinsicData> => {
+  const _validate = useCallback((): Either<Errors, AllExtrinsicData> => {
     const errors: Errors = [];
 
     if (!controllerNonce) { errors.push('Calculating account nonce...'); }
@@ -82,11 +82,11 @@ export function BalanceOverview (props: Pick<Props, Exclude<keyof Props, keyof '
       () => left(errors),
       (allExtrinsicData: any) => right(allExtrinsicData)
     );
-  };
+  }, [api, controllerBalance, controllerId, controllerNonce, derivedBalanceFees, unbondAmount]);
 
   useEffect(() => {
     setStatus(_validate());
-  }, [controllerBalance, controllerId, controllerNonce, derivedBalanceFees]);
+  }, [_validate, controllerBalance, controllerId, controllerNonce, derivedBalanceFees]);
 
   const renderUnBondedAccountOptions = (): React.ReactElement => {
     return (

@@ -10,7 +10,7 @@ import { AddressSummary, Dropdown, DropdownProps, FadedText, Header, Input, Marg
 import BN from 'bn.js';
 import { Either, left, right } from 'fp-ts/lib/Either';
 import { fromNullable } from 'fp-ts/lib/Option';
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useCallback, useContext, useState, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { combineLatest, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -62,7 +62,7 @@ export function Bond (props: Props): React.ReactElement {
     stash = history.location.state.stash;
   }
 
-  const _validate = (): Either<Errors, AllExtrinsicData> => {
+  const _validate = useCallback((): Either<Errors, AllExtrinsicData> => {
     const errors: Errors = [];
 
     if (bond.lte(new BN(0))) {
@@ -100,7 +100,7 @@ export function Bond (props: Props): React.ReactElement {
       () => left(errors),
       (allExtrinsicData: any) => right(allExtrinsicData)
     );
-  };
+  }, [api, bond, controller, controllerBalance, derivedBalanceFees, destination, nonce, stash, stashBalance]);
 
   // use api.consts when it is availabe in @polkadot/api
   useEffect(() => {
@@ -121,11 +121,11 @@ export function Bond (props: Props): React.ReactElement {
     });
 
     return (): void => subscription.unsubscribe();
-  }, [stash, controller]);
+  }, [stash, controller, api.derive.balances, api.query.system]);
 
   useEffect(() => {
     setStatus(_validate());
-  }, [bond, controllerBalance, nonce, stashBalance]);
+  }, [_validate, bond, controllerBalance, nonce, stashBalance]);
 
   useEffect(() => {
     successObservable.subscribe(() => {
@@ -134,7 +134,7 @@ export function Bond (props: Props): React.ReactElement {
     });
 
     return (): void => successObservable.unsubscribe();
-  }, []);
+  }, [controller, history, successObservable]);
 
   const handleConfirmBond = (): void => {
     fromNullable(status)

@@ -85,7 +85,7 @@ export function ReferendumRow (props: Props): React.ReactElement {
       });
 
     return (): void => subscription.unsubscribe();
-  }, []);
+  }, [api.derive.balances, api.derive.chain, api.derive.democracy, api.query.system, currentAccount, idNumber]);
 
   const handleNewVote = (votes: Array<DerivedReferendumVote>): void => {
     dispatch({ type: 'NEW_VOTE', votes });

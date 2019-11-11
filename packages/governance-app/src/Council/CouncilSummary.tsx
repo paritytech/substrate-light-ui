@@ -32,7 +32,7 @@ export function CouncilSummary (): React.ReactElement {
       });
 
     return (): void => subscription.unsubscribe();
-  }, []);
+  }, [api.query.council]);
 
   return (
     <React.Fragment>

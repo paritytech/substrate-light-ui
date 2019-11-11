@@ -52,7 +52,7 @@ export function InputFile (props: Props): React.ReactElement {
     };
 
     acceptedFiles.forEach(file => reader.readAsBinaryString(file));
-  }, []);
+  }, [props]);
 
   const {
     getRootProps,

@@ -22,7 +22,7 @@ const Options = (props: Props): React.ReactElement => {
 
   useEffect(() => {
     setActive(location.pathname.split('/')[3]);
-  });
+  }, [location.pathname]);
 
   const navToOverview = (): void => {
     history.push(`/manageAccounts/${currentAccount}/overview`);

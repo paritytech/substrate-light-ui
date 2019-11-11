@@ -39,7 +39,7 @@ export function AccountsOverviewCard (props: Props): React.ReactElement {
       .getOrElse(undefined);
 
     setBondingPair(bondingPair);
-  }, []);
+  }, [address, derivedStakingInfo]);
 
   const handleBackup = (): void => {
     if (confirmScreen !== 'backup') {

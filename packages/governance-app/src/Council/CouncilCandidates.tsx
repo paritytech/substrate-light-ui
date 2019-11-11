@@ -19,7 +19,7 @@ export function CouncilCandidates (): React.ReactElement {
       });
 
     return (): void => subscription.unsubscribe();
-  }, []);
+  }, [api.query.elections]);
 
   if (councilCandidates && councilCandidates.length) {
     return (

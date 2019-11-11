@@ -47,7 +47,7 @@ export function ValidatorRow (props: Props): React.ReactElement {
       });
 
     return (): void => subscription.unsubscribe();
-  }, []);
+  }, [api, validator]);
 
   const renderAmINominating = (): React.ReactElement => {
     const myAddresses = keyring.getAccounts().map(({ address }): string => address);

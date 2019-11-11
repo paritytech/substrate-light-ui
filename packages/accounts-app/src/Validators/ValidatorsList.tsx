@@ -41,7 +41,7 @@ export function ValidatorsList (props: Props): React.ReactElement {
       });
 
     return (): void => subscription.unsubscribe();
-  }, []);
+  }, [api.query.session, api.query.staking]);
 
   const addToNomineeList = ({ currentTarget: { dataset: { nominee } } }: React.MouseEvent<HTMLElement>): void => {
     if (nominees.has(nominee!)) {

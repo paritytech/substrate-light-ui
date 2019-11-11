@@ -22,7 +22,7 @@ export function CouncilMembers (): React.ReactElement {
       });
 
     return (): void => subscription.unsubscribe();
-  }, []);
+  }, [api.query.council]);
 
   return (
     <React.Fragment>

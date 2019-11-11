@@ -34,7 +34,7 @@ export function Governance (props: Props): React.ReactElement {
     const blockSub = api.derive.chain.bestNumber().subscribe(setLatestBlockNumber);
 
     return (): void => blockSub.unsubscribe();
-  }, []);
+  }, [api.derive.chain]);
 
   useEffect(() => {
     const subscription = combineLatest([
@@ -47,7 +47,7 @@ export function Governance (props: Props): React.ReactElement {
       });
 
     return (): void => subscription.unsubscribe();
-  }, []);
+  }, [api.query.democracy]);
 
   const navToDemocracy = (): void => {
     const { history, location, match } = props;

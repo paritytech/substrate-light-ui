@@ -62,13 +62,13 @@ export function SendBalance (props: Props): React.ReactElement {
       });
 
     return (): void => subscription.unsubscribe();
-  }, [currentAccount, recipientAddress]);
+  }, [api.derive.balances, api.query.system, currentAccount, recipientAddress]);
 
   useEffect(() => {
     const values = validate({ amountAsString, accountNonce, currentBalance, extrinsic, fees, recipientBalance, currentAccount, recipientAddress });
 
     setValidationResult(values);
-  }, [amountAsString, accountNonce, currentBalance, fees, recipientBalance, currentAccount, recipientAddress]);
+  }, [amountAsString, accountNonce, currentBalance, fees, recipientBalance, currentAccount, recipientAddress, extrinsic]);
 
   const changeCurrentAccount = (newCurrentAccount: string): void => {
     setSender(newCurrentAccount);
