@@ -16,10 +16,13 @@ module.exports = {
       './tsconfig.json'
     ]
   },
-  plugins: ['react', '@typescript-eslint'],
+  plugins: ['react', 'react-hooks', '@typescript-eslint'],
   rules: {
     // Disable prop-types, because we already have TS
     "react/prop-types": "off",
+    // Hooks rules
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
     // FIXME Remove all these rules!
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off'
