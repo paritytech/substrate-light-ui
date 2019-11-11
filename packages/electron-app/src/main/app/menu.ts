@@ -44,14 +44,7 @@ const template = [
           { role: 'pasteAndMatchStyle' },
           { role: 'delete' },
           { role: 'selectAll' },
-          { type: 'separator' },
-          {
-            label: 'Speech',
-            submenu: [
-              { role: 'startspeaking' },
-              { role: 'stopspeaking' }
-            ]
-          }
+          { type: 'separator' }
         ]
         : [
           { role: 'delete' },
