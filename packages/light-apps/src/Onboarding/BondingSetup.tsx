@@ -5,7 +5,7 @@
 import { Balance } from '@polkadot/types/interfaces';
 import accounts from '@polkadot/ui-keyring/observable/accounts';
 import { Bond } from '@substrate/accounts-app';
-import { AppContext } from '@substrate/ui-common';
+import { AppContext } from '@substrate/context';
 import { FadedText, Header, Icon, Message, Modal, Stacked, substrateLightTheme } from '@substrate/ui-components';
 import BN from 'bn.js';
 import React, { useContext, useEffect, useState } from 'react';

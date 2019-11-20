@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AppContext } from '@substrate/ui-common';
+import { AppContext } from '@substrate/context';
 import { FadedText, FlexItem, NavLink, StackedHorizontal, Margin } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';
 

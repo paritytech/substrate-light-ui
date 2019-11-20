@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { mnemonicGenerate } from '@polkadot/util-crypto';
-import { AppContext } from '@substrate/ui-common';
+import { AppContext } from '@substrate/context';
 import { AddressSummary, Margin, SizeType, Stacked } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
 import { none, Option, some } from 'fp-ts/lib/Option';

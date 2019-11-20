@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { KeyringPair } from '@polkadot/keyring/types';
-import { TxQueueContext } from '@substrate/ui-common';
+import { TxQueueContext } from '@substrate/context';
 import { ErrorText, Form, Input, Margin, NavButton, Stacked, StyledLinkButton, TxDetails, TxSummary, StackedHorizontal } from '@substrate/ui-components';
 import { Either, left, right } from 'fp-ts/lib/Either';
 import React, { useContext, useState } from 'react';

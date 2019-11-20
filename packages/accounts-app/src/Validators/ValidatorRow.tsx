@@ -5,7 +5,7 @@
 import { Compact, Option } from '@polkadot/types';
 import { AccountId, Balance, Exposure, IndividualExposure, StakingLedger } from '@polkadot/types/interfaces';
 import { formatBalance } from '@polkadot/util';
-import { AppContext } from '@substrate/ui-common';
+import { AppContext } from '@substrate/context';
 import { AddressSummary, DynamicSizeText, FadedText, Icon, Margin, Stacked, StyledLinkButton, SubHeader, Table, WithSpaceAround } from '@substrate/ui-components';
 import { fromNullable, some } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';

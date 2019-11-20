@@ -4,7 +4,7 @@
 
 import { createType } from '@polkadot/types';
 import { AccountId } from '@polkadot/types/interfaces';
-import { AlertsContext, AppContext, handler, StakingContext } from '@substrate/ui-common';
+import { AlertsContext, AppContext, handler, StakingContext } from '@substrate/context';
 import { AddressSummary, FadedText, Icon, Input, Margin, Stacked, StackedHorizontal, StyledLinkButton, SubHeader, WithSpaceAround, WithSpaceBetween } from '@substrate/ui-components';
 import H from 'history';
 import FileSaver from 'file-saver';

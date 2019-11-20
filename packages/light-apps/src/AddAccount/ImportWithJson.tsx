@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { KeyringJson } from '@polkadot/ui-keyring/types';
-import { AlertsContext, AppContext, handler } from '@substrate/ui-common';
+import { AlertsContext, AppContext, handler } from '@substrate/context';
 import { Dropdown, ErrorText, Input, InputFile, Margin, NavButton, Stacked, SubHeader, WrapperDiv } from '@substrate/ui-components';
 import React, { useState, useContext } from 'react';
 

@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { createType } from '@polkadot/types';
-import { StakingContext } from '@substrate/ui-common';
+import { StakingContext } from '@substrate/context';
 import { AddressSummary, Grid, Margin, Stacked, StyledNavLink, SubHeader, WithSpace } from '@substrate/ui-components';
 import { fromNullable } from 'fp-ts/lib/Option';
 import React, { useEffect, useState, useContext } from 'react';

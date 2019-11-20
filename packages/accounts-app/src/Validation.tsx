@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AllExtrinsicData } from '@substrate/ui-common';
+import { AllExtrinsicData } from '@substrate/context';
 import { ErrorText, Icon, Stacked, WithSpace } from '@substrate/ui-components';
 import { Either } from 'fp-ts/lib/Either';
 import React from 'react';

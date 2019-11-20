@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { Alert } from '@substrate/ui-components';
-import { Alert as AlertType, AlertsContext } from '@substrate/ui-common';
+import { Alert as AlertType, AlertsContext } from '@substrate/context';
 import React, { useContext } from 'react';
 
 export function Alerts (): React.ReactElement {

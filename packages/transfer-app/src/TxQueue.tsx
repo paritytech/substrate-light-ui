@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { PendingExtrinsic, TxQueueContext } from '@substrate/ui-common';
+import { PendingExtrinsic, TxQueueContext } from '@substrate/context';
 import { FlexItem, Icon, NavButton, Stacked, SubHeader, TxDetails, TxSummary } from '@substrate/ui-components';
 import React, { useContext } from 'react';
 

@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AppContext, ContextGate } from '@substrate/ui-common';
+import { AppContext, ContextGate } from '@substrate/context';
 import { FixedWidthContainer, GlobalStyle, Loading, substrateLightTheme } from '@substrate/ui-components';
 import React from 'react';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';

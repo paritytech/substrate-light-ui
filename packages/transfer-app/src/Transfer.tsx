@@ -5,7 +5,7 @@
 import accountObservable from '@polkadot/ui-keyring/observable/accounts';
 import addressObservable from '@polkadot/ui-keyring/observable/addresses';
 import { SingleAddress } from '@polkadot/ui-keyring/observable/types';
-import { TxQueueContext } from '@substrate/ui-common';
+import { TxQueueContext } from '@substrate/context';
 import { Header, Fab, Menu, Sidebar, WithSpaceAround } from '@substrate/ui-components';
 import { findFirst, flatten } from 'fp-ts/lib/Array';
 import React, { useContext, useEffect, useState } from 'react';

@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { validateWarnings } from '@substrate/ui-common';
+import { validateWarnings } from '@substrate/context';
 import { ErrorText, List, Stacked, SubHeader } from '@substrate/ui-components';
 import { Either } from 'fp-ts/lib/Either';
 import { fromEither } from 'fp-ts/lib/Option';

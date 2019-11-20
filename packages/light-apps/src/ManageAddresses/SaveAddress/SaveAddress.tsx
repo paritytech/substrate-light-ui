@@ -4,7 +4,7 @@
 
 import { KeyringAddress } from '@polkadot/ui-keyring/types';
 import { isFunction } from '@polkadot/util';
-import { AppContext, getKeyringAddress, handler } from '@substrate/ui-common';
+import { AppContext, getKeyringAddress, handler } from '@substrate/context';
 import { ErrorText, Form, Input, Margin, NavButton, Stacked, SuccessText, WrapperDiv } from '@substrate/ui-components';
 import { Either } from 'fp-ts/lib/Either';
 import React, { useContext, useEffect, useState } from 'react';

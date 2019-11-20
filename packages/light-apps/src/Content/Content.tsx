@@ -7,7 +7,7 @@ import { Accounts } from '@substrate/accounts-app';
 import { Governance } from '@substrate/governance-app';
 import { SingleAddress } from '@polkadot/ui-keyring/observable/types';
 import { Transfer } from '@substrate/transfer-app';
-import { AppContext } from '@substrate/ui-common';
+import { AppContext } from '@substrate/context';
 import { Sidebar, Container } from '@substrate/ui-components';
 import { head } from 'fp-ts/lib/Array';
 import { none, Option } from 'fp-ts/lib/Option';

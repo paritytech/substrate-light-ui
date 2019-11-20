@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { AccountId } from '@polkadot/types/interfaces';
-import { AppContext, StakingContext } from '@substrate/ui-common';
+import { AppContext, StakingContext } from '@substrate/context';
 import { Address, AddressSummary, FadedText, Header, Margin, Modal, Stacked, StackedHorizontal, StyledNavButton, SubHeader, WithSpace } from '@substrate/ui-components';
 import { fromNullable, some } from 'fp-ts/lib/Option';
 import H from 'history';

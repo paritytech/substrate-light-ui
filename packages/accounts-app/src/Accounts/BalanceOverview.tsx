@@ -6,7 +6,7 @@ import { createType } from '@polkadot/types';
 import { Index } from '@polkadot/types/interfaces';
 import { DerivedStaking, DerivedBalances } from '@polkadot/api-derive/types';
 import { formatBalance } from '@polkadot/util';
-import { AlertsContext, AppContext, StakingContext, TxQueueContext, validate, AllExtrinsicData } from '@substrate/ui-common';
+import { AlertsContext, AppContext, StakingContext, TxQueueContext, validate, AllExtrinsicData } from '@substrate/context';
 import { AddressSummary, FadedText, Grid, Input, Stacked, SubHeader, WithSpace, StyledLinkButton } from '@substrate/ui-components';
 import BN from 'bn.js';
 import { Either, left, right } from 'fp-ts/lib/Either';

@@ -5,7 +5,7 @@
 import { DerivedBalances } from '@polkadot/api-derive/types';
 import { Index } from '@polkadot/types/interfaces';
 import { isUndefined } from '@polkadot/util';
-import { AppContext, AlertsContext, StakingContext, TxQueueContext, validate, AllExtrinsicData } from '@substrate/ui-common';
+import { AppContext, AlertsContext, StakingContext, TxQueueContext, validate, AllExtrinsicData } from '@substrate/context';
 import { AddressSummary, Dropdown, DropdownProps, FadedText, Header, Input, Margin, Stacked, StackedHorizontal, StyledNavButton, SubHeader, WithSpace, WithSpaceAround, WrapperDiv } from '@substrate/ui-components';
 import BN from 'bn.js';
 import { Either, left, right } from 'fp-ts/lib/Either';

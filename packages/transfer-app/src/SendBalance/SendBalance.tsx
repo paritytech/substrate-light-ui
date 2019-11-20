@@ -4,7 +4,7 @@
 
 import { DerivedBalances, DerivedFees } from '@polkadot/api-derive/types';
 import { Index } from '@polkadot/types/interfaces';
-import { AppContext, handler, TxQueueContext, validate, AllExtrinsicData, Errors } from '@substrate/ui-common';
+import { AppContext, handler, TxQueueContext, validate, AllExtrinsicData, Errors } from '@substrate/context';
 import { Balance, Form, Input, NavButton, Stacked, SubHeader, WrapperDiv, WithSpaceAround } from '@substrate/ui-components';
 import { Either, left } from 'fp-ts/lib/Either';
 import React, { useContext, useEffect, useState } from 'react';

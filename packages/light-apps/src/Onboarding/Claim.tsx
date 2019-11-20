@@ -7,7 +7,7 @@ import accounts from '@polkadot/ui-keyring/observable/accounts';
 import { stringToHex } from '@polkadot/util';
 import { Option, H160 } from '@polkadot/types';
 import { BalanceOf, EthereumAddress } from '@polkadot/types/interfaces';
-import { AppContext } from '@substrate/ui-common';
+import { AppContext } from '@substrate/context';
 import { BoldText, CopyButton, ErrorText, FadedText, FlexSegment, Header, Loading, Margin, Message, Modal, SubHeader, StyledNavButton, StyledLinkButton, Stacked, StackedHorizontal, TextArea } from '@substrate/ui-components';
 import { Either, left, right } from 'fp-ts/lib/Either';
 import { fromNullable } from 'fp-ts/lib/Option';

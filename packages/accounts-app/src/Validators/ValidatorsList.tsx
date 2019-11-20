@@ -5,7 +5,7 @@
 import { createType, u32 } from '@polkadot/types';
 import { AccountId } from '@polkadot/types/interfaces';
 import { FadedText, FlexItem, Stacked, Table, WrapperDiv } from '@substrate/ui-components';
-import { AlertsContext, AppContext } from '@substrate/ui-common';
+import { AlertsContext, AppContext } from '@substrate/context';
 import { fromNullable } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';

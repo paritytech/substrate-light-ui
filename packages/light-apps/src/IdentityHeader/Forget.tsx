@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AppContext, AlertsContext } from '@substrate/ui-common';
+import { AppContext, AlertsContext } from '@substrate/context';
 import { Dropdown, FadedText, Icon, Margin, Stacked, StackedHorizontal, StyledLinkButton, SubHeader, WithSpaceAround } from '@substrate/ui-components';
 import H from 'history';
 import React, { useContext, useState } from 'react';

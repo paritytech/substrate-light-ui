@@ -1,4 +1,4 @@
-import { handler } from '@substrate/ui-common';
+import { handler } from '@substrate/context';
 import { Dropdown, ErrorText, FadedText, Input, Margin, MnemonicPhraseList, MnemonicRewriteParts, NavButton, Stacked, StyledLinkButton, SubHeader, WrapperDiv, WithSpaceAround, StyledNavButton, StackedHorizontal } from '@substrate/ui-components';
 import { Option } from 'fp-ts/lib/Option';
 import React from 'react';

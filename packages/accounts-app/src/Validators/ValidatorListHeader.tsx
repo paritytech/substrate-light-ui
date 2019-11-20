@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AppContext } from '@substrate/ui-common';
+import { AppContext } from '@substrate/context';
 import { AddressSummary, FadedText, FlexItem, Margin, StackedHorizontal, SubHeader, WithSpace } from '@substrate/ui-components';
 import { DerivedSessionInfo } from '@polkadot/api-derive/types';
 import H from 'history';
