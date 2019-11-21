@@ -2,17 +2,16 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { createType } from '@polkadot/types';
-import { StakingContext } from '@substrate/context';
-import { AddressSummary, Grid, Margin, Stacked, StyledNavLink, SubHeader, WithSpace } from '@substrate/ui-components';
+import { ApiContext, StakingContext } from '@substrate/context';
+import { AddressSummary, Grid, Margin, Stacked, SubHeader, WithSpace } from '@substrate/ui-components';
 import { fromNullable } from 'fp-ts/lib/Option';
-import React, { useEffect, useState, useContext } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
-import Card from 'semantic-ui-react/dist/commonjs/views/Card';
+import React, { useContext, useEffect, useState } from 'react';
+import { Link, RouteComponentProps } from 'react-router-dom';
 import Loader from 'semantic-ui-react/dist/commonjs/elements/Loader';
+import Card from 'semantic-ui-react/dist/commonjs/views/Card';
 
-import { BalanceOverview } from './BalanceOverview';
 import { rewardDestinationOptions } from '../constants';
+import { BalanceOverview } from './BalanceOverview';
 
 interface MatchParams {
   currentAccount: string;
@@ -23,8 +22,14 @@ interface Props extends RouteComponentProps<MatchParams> {
   name: string;
 }
 
-export function AccountOverviewDetailed (props: Props): React.ReactElement {
-  const { history, match: { params: { currentAccount } } } = props;
+export function AccountOverviewDetailed(props: Props): React.ReactElement {
+  const {
+    history,
+    match: {
+      params: { currentAccount },
+    },
+  } = props;
+  const { api } = useContext(ApiContext);
   const { accountStakingMap, allStashes } = useContext(StakingContext);
   const [nominees, setNominees] = useState();
 
@@ -38,11 +43,11 @@ export function AccountOverviewDetailed (props: Props): React.ReactElement {
     return (
       <Card>
         <Card.Content>
-          {
-            fromNullable(stakingInfo)
-              .map((stakingInfo) => <BalanceOverview history={history} key={stakingInfo.accountId.toString()} {...stakingInfo} />)
-              .getOrElse(<Loader active inline />)
-          }
+          {fromNullable(stakingInfo)
+            .map(stakingInfo => (
+              <BalanceOverview history={history} key={stakingInfo.accountId.toString()} {...stakingInfo} />
+            ))
+            .getOrElse(<Loader active inline />)}
         </Card.Content>
       </Card>
     );
@@ -54,32 +59,26 @@ export function AccountOverviewDetailed (props: Props): React.ReactElement {
         <Card.Content>
           <SubHeader noMargin>Currently Nominating:</SubHeader>
           <WithSpace style={{ height: '30rem', overflow: 'auto' }}>
-            {
-              fromNullable(nominees)
-                .map(nominees => nominees.map((nomineeId: string, index: string) =>
-                  <AddressSummary
-                    address={nomineeId}
-                    key={index}
-                    orientation='horizontal'
-                    size='small'
-                  />
+            {fromNullable(nominees)
+              .map(nominees =>
+                nominees.map((nomineeId: string, index: string) => (
+                  <AddressSummary address={nomineeId} key={index} orientation='horizontal' size='small' />
                 ))
-                .getOrElse(
-                  <Stacked>
-                    Not Nominating Anyone.
-                    <StyledNavLink to={`/manageAccounts/${currentAccount}/validators`}>View Validators</StyledNavLink>
-                  </Stacked>)
-            }
+              )
+              .getOrElse(
+                <Stacked>
+                  Not Nominating Anyone.
+                  <Link to={`/manageAccounts/${currentAccount}/validators`}>View Validators</Link>
+                </Stacked>
+              )}
           </WithSpace>
           <WithSpace>
             <Grid.Row>
               <SubHeader>Reward Destination: </SubHeader>
-              {
-                fromNullable(stakingInfo)
-                  .mapNullable(({ rewardDestination }) => rewardDestination)
-                  .map(rewardDestination => rewardDestinationOptions[rewardDestination.toNumber()])
-                  .getOrElse('Reward Destination Not Set...')
-              }
+              {fromNullable(stakingInfo)
+                .mapNullable(({ rewardDestination }) => rewardDestination)
+                .map(rewardDestination => rewardDestinationOptions[rewardDestination.toNumber()])
+                .getOrElse('Reward Destination Not Set...')}
             </Grid.Row>
           </WithSpace>
         </Card.Content>
@@ -94,16 +93,19 @@ export function AccountOverviewDetailed (props: Props): React.ReactElement {
       .getOrElse(false);
 
     const isStashValidating = fromNullable(allStashes)
-      .map(allStashes => allStashes.includes(createType('AccountId', currentAccount)))
+      .map(allStashes => allStashes.includes(api.createType('AccountId', currentAccount)))
       .getOrElse(false);
 
-    const accountType = fromNullable(stakingInfo).map(stakingInfo => createType('AccountId', currentAccount).eq(stakingInfo.controllerId) ? 'controller' : 'stash');
+    const accountType = fromNullable(stakingInfo).map(stakingInfo =>
+      api.createType('AccountId', currentAccount).eq(stakingInfo.controllerId) ? 'controller' : 'stash'
+    );
 
     const bondingPair = fromNullable(stakingInfo)
-      .map(stakingInfo => accountType.fold(
-        undefined,
-        (accountType) => accountType === 'controller' ? stakingInfo.stashId : stakingInfo.controllerId
-      ))
+      .map(stakingInfo =>
+        accountType.fold(undefined, accountType =>
+          accountType === 'controller' ? stakingInfo.stashId : stakingInfo.controllerId
+        )
+      )
       .getOrElse(undefined);
 
     return (
@@ -118,7 +120,8 @@ export function AccountOverviewDetailed (props: Props): React.ReactElement {
               isNominator={isStashNominating}
               isValidator={isStashValidating}
               name={name}
-              size='small' />
+              size='small'
+            />
           </Card.Content>
         </Card>
         <Margin left />
@@ -129,11 +132,5 @@ export function AccountOverviewDetailed (props: Props): React.ReactElement {
     );
   };
 
-  return (
-    <Grid columns='16'>
-      {
-        renderGeneral()
-      }
-    </Grid>
-  );
+  return <Grid columns='16'>{renderGeneral()}</Grid>;
 }

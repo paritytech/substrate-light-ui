@@ -3,22 +3,22 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { mnemonicGenerate } from '@polkadot/util-crypto';
-import { AppContext } from '@substrate/context';
+import { KeyringContext } from '@substrate/accounts-app';
 import { AddressSummary, Margin, SizeType, Stacked } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
 import { none, Option, some } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { renderCopyStep, renderErrors, renderMetaStep, renderRewriteStep } from './subComponents';
-import { Steps, Tags, TagOptions, UserInputError, PhrasePartialRewriteError } from '../types';
+import { PhrasePartialRewriteError, Steps, TagOptions, Tags, UserInputError } from '../types';
 import { generateAddressFromMnemonic, getRandomInts, validateMeta, validateRewrite } from '../util';
+import { renderCopyStep, renderErrors, renderMetaStep, renderRewriteStep } from './subComponents';
 
 interface Props extends RouteComponentProps {
   identiconSize?: SizeType;
 }
 
-function randomlyPickFour (phrase: string): Array<Array<string>> {
+function randomlyPickFour(phrase: string): Array<Array<string>> {
   const phraseArray = phrase.split(' ');
   const ceil = phraseArray.length;
 
@@ -28,16 +28,16 @@ function randomlyPickFour (phrase: string): Array<Array<string>> {
     [first, phraseArray[first - 1]],
     [second, phraseArray[second - 1]],
     [third, phraseArray[third - 1]],
-    [fourth, phraseArray[fourth - 1]]
+    [fourth, phraseArray[fourth - 1]],
   ] as Array<Array<string>>;
 
   return randomFour;
 }
 
-export function Create (props: Props): React.ReactElement {
+export function Create(props: Props): React.ReactElement {
   const { identiconSize, location } = props;
 
-  const { keyring } = useContext(AppContext);
+  const { keyring } = useContext(KeyringContext);
 
   const [errors, setErrors] = useState<Option<Array<string>>>(none);
   const [mnemonic] = useState(mnemonicGenerate());
@@ -47,7 +47,7 @@ export function Create (props: Props): React.ReactElement {
 
   const [tagOptions, setTagOptions] = useState<TagOptions>([
     { key: '0', text: 'stash', value: 'Stash' },
-    { key: '1', text: 'controller', value: 'Controller' }
+    { key: '1', text: 'controller', value: 'Controller' },
   ]);
   const [tags, setTags] = useState<Tags>([]);
 
@@ -95,15 +95,16 @@ export function Create (props: Props): React.ReactElement {
 
   const createNewAccount = (): void => {
     validation.fold(
-      (err) => { onError(err); },
-      (values) => {
+      err => {
+        onError(err);
+      },
+      values => {
         // keyring.createFromUri(`${phrase.trim()}${derivePath}`, {}, pairType).address;
         // keyring.addUri(`${seed}${derivePath}`, password, { name, tags }, pairType);
-        const result = keyring.addUri(mnemonic.trim(), values.password,
-          {
-            name: values.name,
-            tags: values.tags
-          });
+        const result = keyring.addUri(mnemonic.trim(), values.password, {
+          name: values.name,
+          tags: values.tags,
+        });
 
         const json = result.json;
         const blob = new Blob([JSON.stringify(json)], { type: 'application/json; charset=utf-8' });
@@ -118,14 +119,14 @@ export function Create (props: Props): React.ReactElement {
 
     if (step === 'copy') {
       validateMeta({ name, password, tags }, step, whichAccount).fold(
-        (err) => onError(err),
+        err => onError(err),
         () => setStep('rewrite')
       );
     }
 
     if (step === 'rewrite') {
       validateRewrite({ firstWord, secondWord, thirdWord, fourthWord }, randomFourWords).fold(
-        (err) => onError(err),
+        err => onError(err),
         () => setStep('meta')
       );
     }
@@ -143,11 +144,11 @@ export function Create (props: Props): React.ReactElement {
     }
   };
 
-  const handleOnChange = (event: React.SyntheticEvent, { value }: any): void => {
+  const handleOnChange = (_event: React.SyntheticEvent, { value }: any): void => {
     setTags(value);
   };
 
-  const handleAddTag = (e: React.SyntheticEvent, { value }: any): void => {
+  const handleAddTag = (_event: React.SyntheticEvent, { value }: any): void => {
     setTagOptions([...tagOptions, { key: value, text: value, value }]);
   };
 
@@ -158,9 +159,21 @@ export function Create (props: Props): React.ReactElement {
       {step === 'copy'
         ? renderCopyStep({ mnemonic }, { goToNextStep })
         : step === 'rewrite'
-          ? renderRewriteStep({ randomFourWords, firstWord, secondWord, thirdWord, fourthWord }, { handleSetFirstWord, handleSetSecondWord, handleSetThirdWord, handleSetFourthWord, goToPreviousStep, goToNextStep })
-          : renderMetaStep({ name, password, tags, tagOptions, whichAccount }, { setName, setPassword, handleAddTag, handleOnChange, createNewAccount, goToPreviousStep })
-      }
+        ? renderRewriteStep(
+            { randomFourWords, firstWord, secondWord, thirdWord, fourthWord },
+            {
+              handleSetFirstWord,
+              handleSetSecondWord,
+              handleSetThirdWord,
+              handleSetFourthWord,
+              goToPreviousStep,
+              goToNextStep,
+            }
+          )
+        : renderMetaStep(
+            { name, password, tags, tagOptions, whichAccount },
+            { setName, setPassword, handleAddTag, handleOnChange, createNewAccount, goToPreviousStep }
+          )}
       {renderErrors(errors)}
     </Stacked>
   );

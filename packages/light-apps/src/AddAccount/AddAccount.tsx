@@ -2,12 +2,13 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Menu, WalletCard } from '@substrate/ui-components';
+import { Menu } from '@substrate/ui-components';
 import React from 'react';
-import { RouteComponentProps, Link, Switch, Route, Redirect } from 'react-router-dom';
+import { Link, Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 import { Container } from 'semantic-ui-react';
 
 import { Create } from '../AddAccount/Create/CreateAccount';
+import { WalletCard } from '../components';
 import { ImportWithJson } from './ImportWithJson';
 import { ImportWithPhrase } from './ImportWithPhrase';
 
@@ -15,35 +16,37 @@ interface MatchParams {
   currentAccount: string;
 }
 
-type Props = RouteComponentProps<MatchParams>
+type Props = RouteComponentProps<MatchParams>;
 
 const MENUS = [
   {
     label: 'Generate new account',
-    route: 'generate'
+    route: 'generate',
   },
   {
     label: 'Import from JSON keyfile',
-    route: 'json'
+    route: 'json',
   },
   {
     label: 'Import from mnemonic phrase',
-    route: 'phrase'
-  }
+    route: 'phrase',
+  },
 ];
 
-export function AddAccount (props: Props): React.ReactElement {
+export function AddAccount(props: Props): React.ReactElement {
   const activeTab = props.location.pathname.split('/')[4]; // FIXME Is there a better way to do that?
-  const { match: { params: { currentAccount } } } = props;
+  const {
+    match: {
+      params: { currentAccount },
+    },
+  } = props;
 
   return (
     <Container>
       <Menu>
         {MENUS.map(({ label, route }) => (
           <Link key={route} to={`/accounts/${currentAccount}/add/${route}`}>
-            <Menu.Item active={activeTab === route}>
-              {label}
-            </Menu.Item>
+            <Menu.Item active={activeTab === route}>{label}</Menu.Item>
           </Link>
         ))}
       </Menu>

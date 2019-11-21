@@ -11,32 +11,29 @@ import { map } from 'rxjs/operators';
 
 import { AccountsOverviewCard } from './AccountsOverviewCard';
 
-type Props = RouteComponentProps
+type Props = RouteComponentProps;
 
-export function AccountsOverview (props: Props): React.ReactElement {
+export function AccountsOverview(props: Props): React.ReactElement {
   const { history } = props;
   const [allUnlockedAccounts, setAllUnlocked] = useState<SingleAddress[]>([]);
 
   useEffect(() => {
     const accountsSub =
       // eslint-disable-next-line @typescript-eslint/unbound-method
-      accountObservable.subject.pipe(map(Object.values))
-        .subscribe(setAllUnlocked);
+      accountObservable.subject.pipe(map(Object.values)).subscribe(setAllUnlocked);
 
     return (): void => accountsSub.unsubscribe();
   }, []);
 
   return (
     <Grid columns={16}>
-      {
-        allUnlockedAccounts.map((account) => {
-          return (
-            <Grid.Column key={account.json.address} stretched width='4'>
-              <AccountsOverviewCard address={account.json.address} name={account.json.meta.name} history={history} />
-            </Grid.Column>
-          );
-        })
-      }
+      {allUnlockedAccounts.map(account => {
+        return (
+          <Grid.Column key={account.json.address} stretched width='4'>
+            <AccountsOverviewCard address={account.json.address} name={account.json.meta.name} history={history} />
+          </Grid.Column>
+        );
+      })}
     </Grid>
   );
 }

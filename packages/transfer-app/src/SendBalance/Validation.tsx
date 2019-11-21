@@ -14,37 +14,37 @@ interface Props {
   values: Either<Errors, AllExtrinsicData>;
 }
 
-function renderErrors (errors: Errors): React.ReactElement {
+function renderErrors(errors: Errors): React.ReactElement {
   // For now we assume there's only one error, and show it. It should be
   // relatively easy to extend to show multiple errors.
   const error = Object.values(errors)[0];
 
   return (
-    <React.Fragment>
+    <>
       <SubHeader textAlign='left'>Errors</SubHeader>
-      <ErrorText>
-        {error}
-      </ErrorText>
-    </React.Fragment>
+      <ErrorText>{error}</ErrorText>
+    </>
   );
 }
 
-function renderNull (): null {
+function renderNull(): null {
   return null;
 }
 
-function renderWarnings (warnings: Warnings): React.ReactElement {
+function renderWarnings(warnings: Warnings): React.ReactElement {
   return (
-    <React.Fragment>
+    <>
       <SubHeader textAlign='left'>Warnings</SubHeader>
       <List>
-        {warnings.map((warning) => <List.Item key={warning}>{warning}</List.Item>)}
+        {warnings.map(warning => (
+          <List.Item key={warning}>{warning}</List.Item>
+        ))}
       </List>
-    </React.Fragment>
+    </>
   );
 }
 
-export function Validation (props: Props): React.ReactElement {
+export function Validation(props: Props): React.ReactElement {
   const { values } = props;
   const warnings = fromEither(values).chain(validateWarnings);
 

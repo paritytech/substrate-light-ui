@@ -12,8 +12,10 @@ interface Props extends Partial<AllExtrinsicData> {
   currentAccount: string;
 }
 
-function renderDetails (currentAccount: string, txQueue: PendingExtrinsic[]): React.ReactElement {
-  const { details: { allFees, allTotal, amount, recipientAddress } } = txQueue[0];
+function renderDetails(currentAccount: string, txQueue: PendingExtrinsic[]): React.ReactElement {
+  const {
+    details: { allFees, allTotal, amount, recipientAddress },
+  } = txQueue[0];
 
   return (
     <TxDetails
@@ -26,8 +28,13 @@ function renderDetails (currentAccount: string, txQueue: PendingExtrinsic[]): Re
   );
 }
 
-function renderSummary (currentAccount: string, txQueue: PendingExtrinsic[]): React.ReactElement {
-  const { details: { amount, recipientAddress }, extrinsic: { meta: { name } } } = txQueue[0];
+function renderSummary(currentAccount: string, txQueue: PendingExtrinsic[]): React.ReactElement {
+  const {
+    details: { amount, recipientAddress },
+    extrinsic: {
+      meta: { name },
+    },
+  } = txQueue[0];
 
   return (
     <TxSummary
@@ -39,14 +46,16 @@ function renderSummary (currentAccount: string, txQueue: PendingExtrinsic[]): Re
   );
 }
 
-function renderTxStatusHelper (label: string, icon: string): React.ReactElement {
-  return <Stacked>
-    <SubHeader color='lightBlue1' >{label}</SubHeader>
-    <Icon name={icon} size='big' />
-  </Stacked>;
+function renderTxStatusHelper(label: string, icon: string): React.ReactElement {
+  return (
+    <Stacked>
+      <SubHeader color='lightBlue1'>{label}</SubHeader>
+      <Icon name={icon} size='big' />
+    </Stacked>
+  );
 }
 
-function renderTxStatus (txQueue: PendingExtrinsic[]): React.ReactElement {
+function renderTxStatus(txQueue: PendingExtrinsic[]): React.ReactElement {
   const { isFinalized, isDropped, isUsurped } = txQueue[0].status;
 
   if (isFinalized) {
@@ -58,7 +67,7 @@ function renderTxStatus (txQueue: PendingExtrinsic[]): React.ReactElement {
   }
 }
 
-export function TxQueue (props: Props): React.ReactElement | null {
+export function TxQueue(props: Props): React.ReactElement | null {
   const { currentAccount } = props;
   const { clear, txQueue } = useContext(TxQueueContext);
 
@@ -78,7 +87,9 @@ export function TxQueue (props: Props): React.ReactElement | null {
         {renderDetails(currentAccount, txQueue)}
         {txQueue[0].status.isFinalized ? (
           <NavButton onClick={clear}>New Transfer</NavButton>
-        ) : <p>Please wait until the transaction is validated before making a new transfer..</p>}
+        ) : (
+          <p>Please wait until the transaction is validated before making a new transfer..</p>
+        )}
       </FlexItem>
     </Stacked>
   );

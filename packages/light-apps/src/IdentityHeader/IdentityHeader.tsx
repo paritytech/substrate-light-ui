@@ -2,15 +2,24 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Balance, CopyButton, Dropdown, FadedText, Icon, InputAddress, Margin, Menu, NavLink, StackedHorizontal, SubHeader } from '@substrate/ui-components';
+import {
+  Balance,
+  CopyButton,
+  Dropdown,
+  FadedText,
+  Icon,
+  InputAddress,
+  Margin,
+  Menu,
+  StackedHorizontal,
+  SubHeader,
+} from '@substrate/ui-components';
 import React from 'react';
-import Joyride from 'react-joyride';
-import { Route, RouteComponentProps, Switch } from 'react-router-dom';
+import { Link, Route, RouteComponentProps, Switch } from 'react-router-dom';
 
 import { Backup } from './Backup';
 import { Forget } from './Forget';
 import { Rename } from './Rename';
-import { tutorialSteps } from '../constants';
 
 interface MatchParams {
   currentAccount: string;
@@ -18,8 +27,14 @@ interface MatchParams {
 
 type Props = RouteComponentProps<MatchParams>;
 
-export function IdentityHeader (props: Props): React.ReactElement {
-  const { history, location, match: { params: { currentAccount } } } = props;
+export function IdentityHeader(props: Props): React.ReactElement {
+  const {
+    history,
+    location,
+    match: {
+      params: { currentAccount },
+    },
+  } = props;
 
   const currentPath = location.pathname.split('/')[1];
 
@@ -35,19 +50,17 @@ export function IdentityHeader (props: Props): React.ReactElement {
           <Route path={['/governance', '/manageAccounts']}>
             <Menu.Item fitted>
               <StackedHorizontal>
-                <InputAddress
-                  fluid
-                  onChangeAddress={changeCurrentAccount}
-                  value={currentAccount}
-                />
+                <InputAddress fluid onChangeAddress={changeCurrentAccount} value={currentAccount} />
                 <CopyButton value={currentAccount} />
               </StackedHorizontal>
             </Menu.Item>
-            <Menu.Item><Balance address={currentAccount} fontSize='medium' /></Menu.Item>
             <Menu.Item>
-              <NavLink to={`/accounts/${currentAccount}/add`} className='.add-account'>
+              <Balance address={currentAccount} fontSize='medium' />
+            </Menu.Item>
+            <Menu.Item>
+              <Link to={`/accounts/${currentAccount}/add`}>
                 Add an Account <Icon name='plus' />
-              </NavLink>
+              </Link>
             </Menu.Item>
             <Menu.Menu position='right'>
               <Dropdown
@@ -66,16 +79,31 @@ export function IdentityHeader (props: Props): React.ReactElement {
             </Menu.Menu>
           </Route>
           <Route path='/addresses'>
-            <Menu.Item><FadedText>Manage Address Book</FadedText></Menu.Item>
-            <Menu.Item><SubHeader>Inspect the status of any identity and name it for later use</SubHeader></Menu.Item>
+            <Menu.Item>
+              <FadedText>Manage Address Book</FadedText>
+            </Menu.Item>
+            <Menu.Item>
+              <SubHeader>Inspect the status of any identity and name it for later use</SubHeader>
+            </Menu.Item>
           </Route>
           <Route path='/accounts/:currentAccount/add'>
-            <Menu.Item><FadedText>Add Account</FadedText></Menu.Item>
-            <Menu.Item><SubHeader>Create a new account from a generated mnemonic seed, or import via your JSON backup file/mnemonic phrase. </SubHeader></Menu.Item>
+            <Menu.Item>
+              <FadedText>Add Account</FadedText>
+            </Menu.Item>
+            <Menu.Item>
+              <SubHeader>
+                Create a new account from a generated mnemonic seed, or import via your JSON backup file/mnemonic
+                phrase.{' '}
+              </SubHeader>
+            </Menu.Item>
           </Route>
           <Route path='/manageAccounts/:currentAccount'>
-            <Menu.Item><FadedText>Manage Accounts</FadedText></Menu.Item>
-            <Menu.Item><SubHeader>Manage Your Accounts, including Staking, Bonding, Nominating </SubHeader></Menu.Item>
+            <Menu.Item>
+              <FadedText>Manage Accounts</FadedText>
+            </Menu.Item>
+            <Menu.Item>
+              <SubHeader>Manage Your Accounts, including Staking, Bonding, Nominating </SubHeader>
+            </Menu.Item>
           </Route>
         </Switch>
       </Menu>
@@ -100,7 +128,7 @@ export function IdentityHeader (props: Props): React.ReactElement {
     return (
       <StackedHorizontal justifyContent='flex-start' alignItems='flex-start'>
         <Menu stackable secondary>
-          <Menu.Item active={activeTab === 'manageAccounts'} onClick={navToAccounts} className='.accounts-overview'>
+          <Menu.Item active={activeTab === 'manageAccounts'} onClick={navToAccounts}>
             Accounts
             <Margin left='small' />
             <Icon color='black' name='id card' />
@@ -121,12 +149,11 @@ export function IdentityHeader (props: Props): React.ReactElement {
   };
 
   const renderHeader = (): React.ReactElement => (
-    <React.Fragment>
-      <Joyride run={true} steps={tutorialSteps} />
+    <>
       <Margin top='big' />
       {renderSecondaryMenu()}
       {renderPrimaryMenu()}
-    </React.Fragment>
+    </>
   );
 
   return renderHeader();

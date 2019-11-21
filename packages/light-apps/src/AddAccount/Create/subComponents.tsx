@@ -1,46 +1,58 @@
 import { handler } from '@substrate/context';
-import { Dropdown, ErrorText, FadedText, Input, Margin, MnemonicPhraseList, MnemonicRewriteParts, NavButton, Stacked, StyledLinkButton, SubHeader, WrapperDiv, WithSpaceAround, StyledNavButton, StackedHorizontal } from '@substrate/ui-components';
+import {
+  Dropdown,
+  ErrorText,
+  FadedText,
+  Input,
+  Margin,
+  MnemonicPhraseList,
+  MnemonicRewriteParts,
+  NavButton,
+  Stacked,
+  StackedHorizontal,
+  StyledLinkButton,
+  StyledNavButton,
+  SubHeader,
+  WithSpaceAround,
+  WrapperDiv,
+} from '@substrate/ui-components';
 import { Option } from 'fp-ts/lib/Option';
 import React from 'react';
 
-import { Tags, TagOptions } from '../types';
+import { TagOptions, Tags } from '../types';
 
-export function renderSetName (name: string, setName: React.Dispatch<React.SetStateAction<string>>): React.ReactElement {
+export function renderSetName(name: string, setName: React.Dispatch<React.SetStateAction<string>>): React.ReactElement {
   return (
     <Stacked>
       <SubHeader noMargin> Give it a name </SubHeader>
-      <Input
-        autoFocus
-        fluid
-        min={1}
-        onChange={handler(setName)}
-        type='text'
-        value={name}
-      />
+      <Input autoFocus fluid min={1} onChange={handler(setName)} type='text' value={name} />
     </Stacked>
   );
 }
 
-export function renderSetPassword (password: string, setPassword: React.Dispatch<React.SetStateAction<string>>): React.ReactElement {
+export function renderSetPassword(
+  password: string,
+  setPassword: React.Dispatch<React.SetStateAction<string>>
+): React.ReactElement {
   return (
     <Stacked>
       <SubHeader noMargin> Encrypt it with a passphrase </SubHeader>
-      <Input
-        fluid
-        min={8}
-        onChange={handler(setPassword)}
-        type='password'
-        value={password}
-      />
+      <Input fluid min={8} onChange={handler(setPassword)} type='password' value={password} />
     </Stacked>
   );
 }
 
-export function renderErrors (errors: Option<Array<string>>): React.ReactElement | null {
-  return errors.fold(null, errStrings => <>{errStrings.map(err => <ErrorText key={err}>{err}</ErrorText>)}</>);
+export function renderErrors(errors: Option<Array<string>>): React.ReactElement | null {
+  return errors.fold(null, errStrings => (
+    <>
+      {errStrings.map(err => (
+        <ErrorText key={err}>{err}</ErrorText>
+      ))}
+    </>
+  ));
 }
 
-export function renderRewriteStep (
+export function renderRewriteStep(
   values: {
     firstWord: string;
     secondWord: string;
@@ -58,7 +70,14 @@ export function renderRewriteStep (
   }
 ): React.ReactElement {
   const { randomFourWords, firstWord, secondWord, thirdWord, fourthWord } = values;
-  const { goToNextStep, goToPreviousStep, handleSetFirstWord, handleSetSecondWord, handleSetThirdWord, handleSetFourthWord } = setters;
+  const {
+    goToNextStep,
+    goToPreviousStep,
+    handleSetFirstWord,
+    handleSetSecondWord,
+    handleSetThirdWord,
+    handleSetFourthWord,
+  } = setters;
 
   return (
     <Stacked>
@@ -87,7 +106,7 @@ export function renderRewriteStep (
   );
 }
 
-export function renderMetaStep (
+export function renderMetaStep(
   values: {
     name: string;
     password: string;
@@ -102,7 +121,8 @@ export function renderMetaStep (
     handleOnChange: (event: React.SyntheticEvent, data: any) => void; // FIXME any
     createNewAccount: () => void;
     goToPreviousStep: () => void;
-  }): React.ReactElement {
+  }
+): React.ReactElement {
   const { name, password, tags, tagOptions, whichAccount } = values;
   const { handleAddTag, handleOnChange, setName, setPassword } = setters;
   const { createNewAccount, goToPreviousStep } = setters;
@@ -112,25 +132,22 @@ export function renderMetaStep (
       <Stacked>
         <SubHeader noMargin>Add Tags:</SubHeader>
 
-        {
-          whichAccount
-            ? (
-              <Input disabled fluid value={whichAccount} />
-            )
-            : (
-              <Dropdown
-                allowAdditions
-                closeOnChange
-                fluid
-                multiple
-                onAddItem={handleAddTag}
-                onChange={handleOnChange}
-                options={tagOptions}
-                search
-                selection
-                value={tags} />
-            )
-        }
+        {whichAccount ? (
+          <Input disabled fluid value={whichAccount} />
+        ) : (
+          <Dropdown
+            allowAdditions
+            closeOnChange
+            fluid
+            multiple
+            onAddItem={handleAddTag}
+            onChange={handleOnChange}
+            options={tagOptions}
+            search
+            selection
+            value={tags}
+          />
+        )}
         <WithSpaceAround>
           <StackedHorizontal justifyContent='space-between'>
             <StyledLinkButton onClick={goToPreviousStep}> Back </StyledLinkButton>
@@ -152,7 +169,7 @@ export function renderMetaStep (
   );
 }
 
-export function renderCopyStep (
+export function renderCopyStep(
   values: {
     mnemonic: string;
   },
@@ -172,7 +189,11 @@ export function renderCopyStep (
   return (
     <Stacked>
       <SubHeader> Copy the following mnemonic phrase</SubHeader>
-      <FadedText> Your private key will be generated from this phrase. Anyone with access to this phrase can have full control your funds so make sure to keep it a secure and secret. </FadedText>
+      <FadedText>
+        {' '}
+        Your private key will be generated from this phrase. Anyone with access to this phrase can have full control
+        your funds so make sure to keep it a secure and secret.{' '}
+      </FadedText>
       <MnemonicPhraseList phrase={mnemonic} />
       <NavButton onClick={goToNextStep}> Next </NavButton>
     </Stacked>

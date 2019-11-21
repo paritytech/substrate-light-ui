@@ -4,8 +4,18 @@
 
 import { DerivedBalances, DerivedFees } from '@polkadot/api-derive/types';
 import { Index } from '@polkadot/types/interfaces';
-import { AppContext, handler, TxQueueContext, validate, AllExtrinsicData, Errors } from '@substrate/context';
-import { Balance, Form, Input, NavButton, Stacked, SubHeader, WrapperDiv, WithSpaceAround } from '@substrate/ui-components';
+import { KeyringContext } from '@substrate/accounts-app';
+import { AllExtrinsicData, ApiContext, Errors, handler, TxQueueContext, validate } from '@substrate/context';
+import {
+  Balance,
+  Form,
+  Input,
+  NavButton,
+  Stacked,
+  SubHeader,
+  WithSpaceAround,
+  WrapperDiv,
+} from '@substrate/ui-components';
 import { Either, left } from 'fp-ts/lib/Either';
 import React, { useContext, useEffect, useState } from 'react';
 import { zip } from 'rxjs';
@@ -19,9 +29,10 @@ interface Props {
   recipientAddress: string;
 }
 
-export function SendBalance (props: Props): React.ReactElement {
-  const { api, keyring } = useContext(AppContext);
+export function SendBalance(props: Props): React.ReactElement {
+  const { api } = useContext(ApiContext);
   const { enqueue } = useContext(TxQueueContext);
+  const { keyring } = useContext(KeyringContext);
 
   const { currentAccount, recipientAddress } = props;
 
@@ -32,7 +43,9 @@ export function SendBalance (props: Props): React.ReactElement {
   const [receiver, setReceiver] = useState<string>();
   const [recipientBalance, setRecipientBalance] = useState<DerivedBalances>();
   const [sender, setSender] = useState<string>();
-  const [validationResult, setValidationResult] = useState<Either<Errors, AllExtrinsicData>>(left({ fees: 'fetching fees...' }));
+  const [validationResult, setValidationResult] = useState<Either<Errors, AllExtrinsicData>>(
+    left({ fees: 'fetching fees...' })
+  );
 
   const extrinsic = api.tx.balances.transfer(recipientAddress, amountAsString);
 
@@ -51,9 +64,7 @@ export function SendBalance (props: Props): React.ReactElement {
       api.derive.balances.votingBalance(recipientAddress),
       api.query.system.accountNonce<Index>(currentAccount)
     )
-      .pipe(
-        take(1)
-      )
+      .pipe(take(1))
       .subscribe(([fees, currentBalance, recipientBalance, accountNonce]) => {
         setFees(fees);
         setCurrentBalance(currentBalance);
@@ -65,10 +76,28 @@ export function SendBalance (props: Props): React.ReactElement {
   }, [api.derive.balances, api.query.system, currentAccount, recipientAddress]);
 
   useEffect(() => {
-    const values = validate({ amountAsString, accountNonce, currentBalance, extrinsic, fees, recipientBalance, currentAccount, recipientAddress });
+    const values = validate({
+      amountAsString,
+      accountNonce,
+      currentBalance,
+      extrinsic,
+      fees,
+      recipientBalance,
+      currentAccount,
+      recipientAddress,
+    });
 
     setValidationResult(values);
-  }, [amountAsString, accountNonce, currentBalance, fees, recipientBalance, currentAccount, recipientAddress, extrinsic]);
+  }, [
+    amountAsString,
+    accountNonce,
+    currentBalance,
+    fees,
+    recipientBalance,
+    currentAccount,
+    recipientAddress,
+    extrinsic,
+  ]);
 
   const changeCurrentAccount = (newCurrentAccount: string): void => {
     setSender(newCurrentAccount);
@@ -80,13 +109,23 @@ export function SendBalance (props: Props): React.ReactElement {
 
   const handleSubmit = (): void => {
     validationResult.fold(
-      (error) => { console.error(error); },
+      error => {
+        console.error(error);
+      },
       (allExtrinsicData: AllExtrinsicData) => {
         // If everything is correct, then submit the extrinsic
         const { extrinsic, amount, allFees, allTotal, recipientAddress: rcptAddress } = allExtrinsicData;
 
-        enqueue(extrinsic, { amount, allFees, allTotal, methodCall: extrinsic.meta.name.toString(), senderPair: keyring.getPair(currentAccount), recipientAddress: rcptAddress });
-      });
+        enqueue(extrinsic, {
+          amount,
+          allFees,
+          allTotal,
+          methodCall: extrinsic.meta.name.toString(),
+          senderPair: keyring.getPair(currentAccount),
+          recipientAddress: rcptAddress,
+        });
+      }
+    );
   };
 
   return (

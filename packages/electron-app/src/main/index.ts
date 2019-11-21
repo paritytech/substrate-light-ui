@@ -6,11 +6,11 @@ import { app, BrowserWindow } from 'electron';
 import path from 'path';
 import url from 'url';
 
+import { productName } from '../../electron-builder.json';
+import { version } from '../../package.json';
 import { isSubstrateRunning } from './app/isSubstrateRunning';
 import { initMenu } from './app/menu';
 import { killSubstrate, runSubstrateDev } from './app/substrateProcess';
-import { productName } from '../../electron-builder.json';
-import { version } from '../../package.json';
 import { logger, staticPath } from './util';
 
 // https://electronjs.org/docs/tutorial/security#electron-security-warnings
@@ -26,7 +26,7 @@ logger.debug(`Process args: ${process.argv}`);
 
 initMenu();
 
-function createWindow (): void {
+function createWindow(): void {
   sluiApp = new BrowserWindow({
     height: 1920,
     resizable: true,
@@ -47,8 +47,8 @@ function createWindow (): void {
       safeDialogs: true,
       safeDialogsMessage: 'Electron consecutive dialog protection was triggered',
       webSecurity: true, // https://electronjs.org/docs/tutorial/security#5-do-not-disable-websecurity
-      webviewTag: false // Associated with `will-attach-webview`
-    }
+      webviewTag: false, // Associated with `will-attach-webview`
+    },
   });
 
   sluiApp
@@ -56,14 +56,14 @@ function createWindow (): void {
       process.env.NODE_ENV !== 'production'
         ? REACT_DEV_LOCALHOST
         : url.format({
-          pathname: path.join(staticPath, 'build', 'index.html'),
-          protocol: 'file:',
-          slashes: true
-        })
+            pathname: path.join(staticPath, 'build', 'index.html'),
+            protocol: 'file:',
+            slashes: true,
+          })
     )
     .catch(logger.error);
 
-  sluiApp.on('closed', function () {
+  sluiApp.on('closed', function() {
     sluiApp = undefined;
     killSubstrate();
   });

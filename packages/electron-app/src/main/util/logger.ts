@@ -22,13 +22,13 @@ export const logger = createLogger({
         format.colorize(),
         format.printf(info => `[${info.timestamp}] ${info.level} ${info.message}`)
       ),
-      level: 'debug'
+      level: 'debug',
     }),
     // And save to file
     new transports.File({
       filename: `${app.getPath('userData')}/slui.log`,
       format: format.combine(format.timestamp(), format.json()),
-      level: 'debug'
-    })
-  ]
+      level: 'debug',
+    }),
+  ],
 });
