@@ -1038,10 +1038,10 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.0", "@babel/runtime@^7.4.2", "@babel/runtime@^7.4.4", "@babel/runtime@^7.4.5", "@babel/runtime@^7.5.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.2", "@babel/runtime@^7.6.3", "@babel/runtime@^7.7.1":
-  version "7.7.2"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.7.2.tgz#111a78002a5c25fc8e3361bedc9529c696b85a6a"
-  integrity sha512-JONRbXbTXc9WQE2mAZd1p0Z3DZ/6vaQIkgYMSTP3KjRCyd7rCZCcfhCyX+YjwcKxcZ82UrxbRD358bpExNgrjw==
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.0", "@babel/runtime@^7.4.2", "@babel/runtime@^7.4.4", "@babel/runtime@^7.4.5", "@babel/runtime@^7.5.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.2", "@babel/runtime@^7.6.3", "@babel/runtime@^7.7.1", "@babel/runtime@^7.7.4":
+  version "7.7.4"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.7.4.tgz#b23a856751e4bf099262f867767889c0e3fe175b"
+  integrity sha512-r24eVUUr0QqNZa+qrImUk8fn5SPhHq+IfYvIoIMg0do3GdK9sMdiLKP3GYVVaxpPKORgm8KRKaNTEhAjgIpLMw==
   dependencies:
     regenerator-runtime "^0.13.2"
 
@@ -2409,20 +2409,20 @@
     "@polkadot/util" "^1.7.0-beta.6"
     "@polkadot/util-crypto" "^1.7.0-beta.6"
 
-"@polkadot/react-identicon@^0.46.1":
-  version "0.46.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/react-identicon/-/react-identicon-0.46.1.tgz#4758c6d41210421d7c1c8dc1af38c68e45437589"
-  integrity sha512-FLbCFdn8mp7jcv3tL/wj28Ib3HXwAkk3sRmUFeaHApeeaqX5K+WLzucfQWofszorjOwZSQwgKp2SU2iZMrxHlw==
+"@polkadot/react-identicon@^0.47.1":
+  version "0.47.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/react-identicon/-/react-identicon-0.47.1.tgz#792889d6170f4693dc3fffc4165f8e8e43e44e39"
+  integrity sha512-9G5wxhCTY7LZIO8Vd7rHeEXyVI8OUrv7zPiePuthvVLyCMLX3OWFMqALm/+10R4ZsmLK8yBFl+fvAcfuWZm1vw==
   dependencies:
-    "@babel/runtime" "^7.6.3"
-    "@polkadot/ui-settings" "^0.46.1"
-    "@polkadot/ui-shared" "^0.46.1"
+    "@babel/runtime" "^7.7.4"
+    "@polkadot/ui-settings" "^0.47.1"
+    "@polkadot/ui-shared" "^0.47.1"
     "@types/color" "^3.0.0"
     "@types/react-copy-to-clipboard" "^4.3.0"
     color "^3.1.2"
     jdenticon "2.2.0"
-    react-copy-to-clipboard "^5.0.1"
-    styled-components "^4.4.0"
+    react-copy-to-clipboard "^5.0.2"
+    styled-components "^4.4.1"
 
 "@polkadot/rpc-core@^0.97.0-beta.1":
   version "0.97.0-beta.1"
@@ -2486,21 +2486,21 @@
   optionalDependencies:
     "@ledgerhq/hw-transport-node-hid" "^4.72.2"
 
-"@polkadot/ui-settings@^0.46.1":
-  version "0.46.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-0.46.1.tgz#0de06a4ba64598b4d4165a81407169ea1ba07590"
-  integrity sha512-4bZnH27IRUXveuoaWKZqwneY7rZd7YA9ZCxx4TbixepEJZa+MiEhc4dt7eyldR6U5BVNrMQ8oRtUFKSJY4EVQw==
+"@polkadot/ui-settings@^0.47.1":
+  version "0.47.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-0.47.1.tgz#1cbcab943557538baab30b80d80ac74f6d17199d"
+  integrity sha512-vvKNvznkkL2WShFyJxWG3AYHukVKDo+Z3k5x4beTQNVXmfXpM5RjZJlhHq8nGAdMjR4rml+RqkjAjJ9KQ6bg8A==
   dependencies:
-    "@babel/runtime" "^7.6.3"
+    "@babel/runtime" "^7.7.4"
     "@types/store" "^2.0.2"
     store "^2.0.12"
 
-"@polkadot/ui-shared@^0.46.1":
-  version "0.46.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-shared/-/ui-shared-0.46.1.tgz#d36eea7bbf2d2ac4f9035352a80226ee7a6a25b3"
-  integrity sha512-zMgBiV91wr6jDk7qzmLcXWXn4nOeu/3aqIORi7MlQOURSVAAV3E+/Z/pP4hViZOpDZAukj8H6Iyljf1wPwDxCA==
+"@polkadot/ui-shared@^0.47.1":
+  version "0.47.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-shared/-/ui-shared-0.47.1.tgz#21132058ab1d66a1cf58eb45597fde7c22d6c72e"
+  integrity sha512-Un1NtBx115/037c4GgqxgA2qCk3lJDedKCgP03XXZ7keXKelxa+hpWHCi0Jl28vMO1stXQpSkAuZ78WkBMkB6A==
   dependencies:
-    "@babel/runtime" "^7.6.3"
+    "@babel/runtime" "^7.7.4"
     "@types/color" "^3.0.0"
     color "^3.1.2"
 
@@ -14806,7 +14806,7 @@ react-color@^2.17.0:
     reactcss "^1.2.0"
     tinycolor2 "^1.4.1"
 
-react-copy-to-clipboard@^5.0.1:
+react-copy-to-clipboard@^5.0.2:
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/react-copy-to-clipboard/-/react-copy-to-clipboard-5.0.2.tgz#d82a437e081e68dfca3761fbd57dbf2abdda1316"
   integrity sha512-/2t5mLMMPuN5GmdXo6TebFa8IoFxZ+KTDDqYhcDm0PhkgEzSxVvIX26G20s1EB02A4h2UZgwtfymZ3lGJm0OLg==
@@ -16950,7 +16950,7 @@ styled-components@4.4.0:
     stylis-rule-sheet "^0.0.10"
     supports-color "^5.5.0"
 
-styled-components@^4.4.0:
+styled-components@^4.4.1:
   version "4.4.1"
   resolved "https://registry.yarnpkg.com/styled-components/-/styled-components-4.4.1.tgz#e0631e889f01db67df4de576fedaca463f05c2f2"
   integrity sha512-RNqj14kYzw++6Sr38n7197xG33ipEOktGElty4I70IKzQF1jzaD1U4xQ+Ny/i03UUhHlC5NWEO+d8olRCDji6g==
