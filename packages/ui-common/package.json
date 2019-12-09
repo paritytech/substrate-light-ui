@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@polkadot/api": "^0.97.0-beta.1",
-    "@polkadot/ui-keyring": "^0.46.1"
+    "@polkadot/ui-keyring": "^0.47.1"
   },
   "peerDependencies": {
     "react": "^16.9"
