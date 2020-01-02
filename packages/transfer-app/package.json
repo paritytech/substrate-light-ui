@@ -14,8 +14,8 @@
   },
   "dependencies": {
     "@substrate/accounts-app": "^0.2.0",
-    "@substrate/context": "^0.2.0",
-    "@substrate/ui-components": "^0.2.0",
+    "@substrate/context": "^0.3.3",
+    "@substrate/ui-components": "^0.3.3",
     "fp-ts": "1.18.1"
   }
 }
