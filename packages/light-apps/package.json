@@ -20,7 +20,7 @@
   "homepage": "./",
   "dependencies": {
     "@parity/qr-signer": "^0.3.2",
-    "@polkadot/api": "^0.100.0-beta.15",
+    "@polkadot/api": "^0.100.0-beta.16",
     "@polkadot/ui-assets": "^0.47.1",
     "@substrate/accounts-app": "^0.2.0",
     "@substrate/transfer-app": "^0.2.0",
@@ -32,7 +32,7 @@
     "react": "^16.9",
     "react-dom": "^16.6.3",
     "react-router-dom": "^5.0.0",
-    "react-scripts": "3.2.0",
+    "react-scripts": "3.3.0",
     "rxjs": "^6.4.0",
     "semantic-ui-css": "^2.4.1",
     "store": "^2.0.12",
