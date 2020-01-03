@@ -6,7 +6,7 @@ import { FlexItem, Margin, StackedHorizontal } from '@substrate/ui-components';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import { WalletCard } from '../components';
+import { WalletCard } from '@substrate/accounts-app/src/AddAccount/components';
 import { Add } from './Add';
 import { Edit } from './Edit';
 import { SavedAddresses } from './SavedAddresses';

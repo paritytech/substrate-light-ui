@@ -4,14 +4,13 @@
 
 import accounts from '@polkadot/ui-keyring/observable/accounts';
 import { SingleAddress } from '@polkadot/ui-keyring/observable/types';
-import { Accounts } from '@substrate/accounts-app';
+import { Accounts, AddAccount } from '@substrate/accounts-app';
 import { ApiContext } from '@substrate/context';
 import { Transfer } from '@substrate/transfer-app';
 import { Container, Sidebar } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-import { AddAccount } from '../AddAccount';
 import { IdentityHeader } from '../IdentityHeader';
 import { ManageAddresses } from '../ManageAddresses';
 import { Signer } from '../Signer';
@@ -36,7 +35,6 @@ export function Content(): React.ReactElement {
             path={[
               '/accounts/:currentAccount/add',
               '/addresses/:currentAccount',
-              '/governance/:currentAccount',
               '/manageAccounts/:currentAccount',
             ]}
             component={IdentityHeader}
@@ -47,7 +45,6 @@ export function Content(): React.ReactElement {
             <Route path='/accounts/add' component={AddAccount} />
             {!defaultAccount && <Redirect exact from='/' to='/accounts/add/' />}
             {defaultAccount && <Redirect exact from='/' to={`/manageAccounts/${defaultAccount.json.address}`} />}
-            {defaultAccount && <Redirect exact from='/governance' to={`/governance/${defaultAccount.json.address}`} />}
             <Redirect to='/' />
           </Switch>
           <TxQueueNotifier />

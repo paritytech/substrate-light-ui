@@ -6,8 +6,8 @@ import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { Container } from 'semantic-ui-react';
 
-import { Create } from '../AddAccount/Create/CreateAccount';
-import { WalletCard } from '../components';
+import { WalletCard } from './components';
+import { Create } from './Create/CreateAccount';
 import { ImportWithJson } from './ImportWithJson';
 import { ImportWithPhrase } from './ImportWithPhrase';
 

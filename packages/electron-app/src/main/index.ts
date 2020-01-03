@@ -28,9 +28,9 @@ initMenu();
 
 function createWindow(): void {
   sluiApp = new BrowserWindow({
-    height: 1920,
+    height: 920,
     resizable: true,
-    width: 1440,
+    width: 560,
     webPreferences: {
       allowRunningInsecureContent: false,
       contextIsolation: true, // prevent context sharing between renderer<->main processes
