@@ -2,6 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { AccountId } from '@polkadot/types/interfaces';
 import { ApiContext, StakingContext } from '@substrate/context';
 import { AddressSummary, Grid, Margin, Stacked, SubHeader, WithSpace } from '@substrate/ui-components';
 import { fromNullable } from 'fp-ts/lib/Option';
@@ -36,7 +37,11 @@ export function AccountOverviewDetailed(props: Props): React.ReactElement {
   const stakingInfo = accountStakingMap[currentAccount];
 
   useEffect(() => {
-    setNominees(stakingInfo && stakingInfo.nominators && stakingInfo.nominators.map(nominator => nominator.toString()));
+    setNominees(
+      stakingInfo &&
+        stakingInfo.nominators &&
+        stakingInfo.nominators.map((nominator: AccountId) => nominator.toString())
+    );
   }, [stakingInfo]);
 
   const renderBalanceDetails = (): React.ReactElement => {

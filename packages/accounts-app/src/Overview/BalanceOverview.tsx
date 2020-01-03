@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { DerivedBalances, DerivedStaking } from '@polkadot/api-derive/types';
+import { DerivedBalances, DerivedStakingAccount } from '@polkadot/api-derive/types';
 import { Index } from '@polkadot/types/interfaces';
 import { formatBalance } from '@polkadot/util';
 import {
@@ -34,7 +34,7 @@ import { take } from 'rxjs/operators';
 import { KeyringContext } from '../KeyringContext';
 import { Errors } from '../types';
 
-interface Props extends DerivedStaking {
+interface Props extends DerivedStakingAccount {
   history: H.History;
 }
 

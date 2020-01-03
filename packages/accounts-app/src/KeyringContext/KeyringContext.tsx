@@ -3,6 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import keyring from '@polkadot/ui-keyring';
+import { KeyringOptions } from '@polkadot/ui-keyring/types';
 import { ApiContext } from '@substrate/context';
 import React, { useContext, useEffect } from 'react';
 
@@ -25,7 +26,7 @@ export function KeyringContextProvider(props: { children: React.ReactNode }): Re
       genesisHash: api.genesisHash,
       ss58Format: system.properties.ss58Format.unwrapOr(api.createType('u32', DEFAULT_SS58_PREFIX)).toNumber(),
       type: 'ed25519',
-    });
+    } as KeyringOptions);
   }, [api, system]);
 
   return <KeyringContext.Provider value={{ keyring }}>{children}</KeyringContext.Provider>;
