@@ -31,7 +31,7 @@
     "preelectron": "yarn build",
     "prepackage": "yarn build",
     "prestart": "./scripts/prestart.sh",
-    "start": "lerna exec yarn start --parallel",
+    "start": "lerna exec yarn start --parallel --scope=@substrate/accounts-app --scope=@substrate/transfer-app --scope=@substrate/light-apps",
     "storybook": "cd packages/ui-components && yarn storybook",
     "storybook-build": "cd packages/ui-components && yarn build-storybook",
     "test": "CI=true lerna run test --parallel"
@@ -51,5 +51,8 @@
   "resolutions": {
     "@types/styled-components": "4.1.8",
     "typescript": "^3.7.2"
+  },
+  "dependencies": {
+    "@types/styled-components": "4.1.8"
   }
 }

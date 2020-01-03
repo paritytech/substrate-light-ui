@@ -155,10 +155,10 @@ export function AccountsOverviewCard(props: Props): React.ReactElement {
       </WithSpaceAround>
     );
   };
-
+``
   return (
     <>
-      <Card height='30rem'>
+      <Card height='20rem'>
         {confirmScreen ? (
           <>
             <Card.Content>
@@ -174,6 +174,7 @@ export function AccountsOverviewCard(props: Props): React.ReactElement {
                 bondingPair={bondingPair && bondingPair.toString()}
                 detailed
                 name={name}
+                orientation='horizontal'
                 size='small'
               />
               <Margin bottom />

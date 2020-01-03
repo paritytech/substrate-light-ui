@@ -4,7 +4,7 @@
 
 import accounts from '@polkadot/ui-keyring/observable/accounts';
 import { SingleAddress } from '@polkadot/ui-keyring/observable/types';
-import { Accounts, AddAccount } from '@substrate/accounts-app';
+import { AccountsOverview, AddAccount } from '@substrate/accounts-app';
 import { ApiContext } from '@substrate/context';
 import { Transfer } from '@substrate/transfer-app';
 import { Container, Sidebar } from '@substrate/ui-components';
@@ -29,7 +29,7 @@ export function Content(): React.ReactElement {
 
   return (
     <>
-      <Sidebar.Pushable as={Container} raised>
+      <Sidebar.Pushable as={Container} raised="true">
         <Sidebar.Pusher>
           <Route
             path={[
@@ -41,14 +41,17 @@ export function Content(): React.ReactElement {
           />
           <Switch>
             <Route path='/addresses/:currentAccount' component={ManageAddresses} />
-            <Route path='/manageAccounts/:currentAccount' component={Accounts} />
+            <Route path='/manageAccounts/:currentAccount' component={AccountsOverview} />
             <Route path='/accounts/add' component={AddAccount} />
-            {!defaultAccount && <Redirect exact from='/' to='/accounts/add/' />}
-            {defaultAccount && <Redirect exact from='/' to={`/manageAccounts/${defaultAccount.json.address}`} />}
+            {
+              defaultAccount
+                ? <Redirect exact from='/' to={`/manageAccounts/${defaultAccount.json.address}`} />
+                : <Redirect exact from='/' to='/accounts/add/' />
+            }
             <Redirect to='/' />
           </Switch>
           <TxQueueNotifier />
-          {defaultAccount && <Transfer currentAccount={defaultAccount.json.address} />}
+          {/* {defaultAccount && <Transfer currentAccount={defaultAccount.json.address} />} */}
         </Sidebar.Pusher>
       </Sidebar.Pushable>
       <Signer />

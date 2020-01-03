@@ -36,6 +36,7 @@ export function IdentityHeader(props: Props): React.ReactElement {
     },
   } = props;
 
+  console.log('id header -> ', currentAccount);
   const currentPath = location.pathname.split('/')[1];
 
   // Change account
@@ -47,7 +48,7 @@ export function IdentityHeader(props: Props): React.ReactElement {
     return (
       <Menu stackable>
         <Switch>
-          <Route path={['/governance', '/manageAccounts']}>
+          <Route path={['/manageAccounts']}>
             <Menu.Item fitted>
               <StackedHorizontal>
                 <InputAddress fluid onChangeAddress={changeCurrentAccount} value={currentAccount} />
@@ -117,10 +118,6 @@ export function IdentityHeader(props: Props): React.ReactElement {
       history.push(`/manageAccounts/${currentAccount}`);
     };
 
-    const navToGovernance = (): void => {
-      history.push(`/governance/${currentAccount}`);
-    };
-
     const navToManageAddressBook = (): void => {
       history.push(`/addresses/${currentAccount}`);
     };
@@ -132,11 +129,6 @@ export function IdentityHeader(props: Props): React.ReactElement {
             Accounts
             <Margin left='small' />
             <Icon color='black' name='id card' />
-          </Menu.Item>
-          <Menu.Item active={activeTab === 'governance'} onClick={navToGovernance}>
-            Governance
-            <Margin left='small' />
-            <Icon color='black' name='hand paper outline' />
           </Menu.Item>
           <Menu.Item onClick={navToManageAddressBook}>
             Manage Address Book

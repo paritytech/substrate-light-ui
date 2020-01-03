@@ -19,15 +19,16 @@ const DEFAULT_SS58_PREFIX = 42;
 
 export function KeyringContextProvider(props: { children: React.ReactNode }): React.ReactElement {
   const { children } = props;
-  const { api, system } = useContext(ApiContext);
+  const { api, isReady, system } = useContext(ApiContext);
 
   useEffect(() => {
+    isReady &&
     keyring.loadAll({
       genesisHash: api.genesisHash,
       ss58Format: system.properties.ss58Format.unwrapOr(api.createType('u32', DEFAULT_SS58_PREFIX)).toNumber(),
       type: 'ed25519',
     } as KeyringOptions);
-  }, [api, system]);
+  }, [api, isReady, system]);
 
   return <KeyringContext.Provider value={{ keyring }}>{children}</KeyringContext.Provider>;
 }
