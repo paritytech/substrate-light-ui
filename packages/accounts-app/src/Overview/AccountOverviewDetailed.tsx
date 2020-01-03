@@ -37,7 +37,11 @@ export function AccountOverviewDetailed(props: Props): React.ReactElement {
   const stakingInfo = accountStakingMap[currentAccount];
 
   useEffect(() => {
-    setNominees(stakingInfo && stakingInfo.nominators && stakingInfo.nominators.map((nominator: AccountId) => nominator.toString()));
+    setNominees(
+      stakingInfo &&
+        stakingInfo.nominators &&
+        stakingInfo.nominators.map((nominator: AccountId) => nominator.toString())
+    );
   }, [stakingInfo]);
 
   const renderBalanceDetails = (): React.ReactElement => {
