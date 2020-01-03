@@ -2,58 +2,40 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Menu, WalletCard } from '@substrate/ui-components';
 import React from 'react';
-import { RouteComponentProps, Link, Switch, Route, Redirect } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import { Container } from 'semantic-ui-react';
 
 import { Create } from '../AddAccount/Create/CreateAccount';
+import { WalletCard } from '../components';
 import { ImportWithJson } from './ImportWithJson';
 import { ImportWithPhrase } from './ImportWithPhrase';
 
-interface MatchParams {
-  currentAccount: string;
-}
+// FIXME
+// const MENUS = [
+//   {
+//     label: 'Generate new account',
+//     route: 'generate',
+//   },
+//   {
+//     label: 'Import from JSON keyfile',
+//     route: 'json',
+//   },
+//   {
+//     label: 'Import from mnemonic phrase',
+//     route: 'phrase',
+//   },
+// ];
 
-type Props = RouteComponentProps<MatchParams>
-
-const MENUS = [
-  {
-    label: 'Generate new account',
-    route: 'generate'
-  },
-  {
-    label: 'Import from JSON keyfile',
-    route: 'json'
-  },
-  {
-    label: 'Import from mnemonic phrase',
-    route: 'phrase'
-  }
-];
-
-export function AddAccount (props: Props): React.ReactElement {
-  const activeTab = props.location.pathname.split('/')[4]; // FIXME Is there a better way to do that?
-  const { match: { params: { currentAccount } } } = props;
-
+export function AddAccount(): React.ReactElement {
   return (
     <Container>
-      <Menu>
-        {MENUS.map(({ label, route }) => (
-          <Link key={route} to={`/accounts/${currentAccount}/add/${route}`}>
-            <Menu.Item active={activeTab === route}>
-              {label}
-            </Menu.Item>
-          </Link>
-        ))}
-      </Menu>
-
       <WalletCard header='Add an Account' height='100%'>
         <Switch>
-          <Route path='/accounts/:currentAccount/add/generate' component={Create} />
-          <Route path='/accounts/:currentAccount/add/json' component={ImportWithJson} />
-          <Route path='/accounts/:currentAccount/add/phrase' component={ImportWithPhrase} />
-          <Redirect to='/accounts/:currentAccount/add/generate' />
+          <Route path='/accounts/add/generate' component={Create} />
+          <Route path='/accounts/add/json' component={ImportWithJson} />
+          <Route path='/accounts/add/phrase' component={ImportWithPhrase} />
+          <Redirect to='/accounts/add/generate' />
         </Switch>
       </WalletCard>
     </Container>

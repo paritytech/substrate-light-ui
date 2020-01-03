@@ -27,7 +27,7 @@ export interface UserInput {
   tags: Tags | string;
 }
 
-export type UserInputError = Partial<UserInput>
+export type UserInputError = Partial<UserInput>;
 export interface PhrasePartialRewriteError {
   emptyFields: string;
   incorrectFields: string;

@@ -2,8 +2,19 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AppContext, AlertsContext } from '@substrate/ui-common';
-import { Dropdown, FadedText, Icon, Margin, Stacked, StackedHorizontal, StyledLinkButton, SubHeader, WithSpaceAround } from '@substrate/ui-components';
+import { KeyringContext } from '@substrate/accounts-app';
+import { AlertsContext } from '@substrate/context';
+import {
+  Dropdown,
+  FadedText,
+  Icon,
+  Margin,
+  Stacked,
+  StackedHorizontal,
+  StyledLinkButton,
+  SubHeader,
+  WithSpaceAround,
+} from '@substrate/ui-components';
 import H from 'history';
 import React, { useContext, useState } from 'react';
 import Modal from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
@@ -13,9 +24,9 @@ interface Props {
   history: H.History;
 }
 
-export function Forget (props: Props): React.ReactElement {
+export function Forget(props: Props): React.ReactElement {
   const { currentAccount, history } = props;
-  const { keyring } = useContext(AppContext);
+  const { keyring } = useContext(KeyringContext);
   const { enqueue } = useContext(AlertsContext);
 
   const [forgetModalOpen, setForgetModalOpen] = useState(false);
@@ -36,7 +47,12 @@ export function Forget (props: Props): React.ReactElement {
   };
 
   return (
-    <Modal closeOnDimmerClick={true} closeOnEscape={true} open={forgetModalOpen} trigger={<Dropdown.Item icon='trash' onClick={openForgetModal} text='Forget Account' />}>
+    <Modal
+      closeOnDimmerClick={true}
+      closeOnEscape={true}
+      open={forgetModalOpen}
+      trigger={<Dropdown.Item icon='trash' onClick={openForgetModal} text='Forget Account' />}
+    >
       <WithSpaceAround>
         <Stacked>
           <SubHeader> Please Confirm You Want to Forget this Account </SubHeader>
@@ -45,8 +61,12 @@ export function Forget (props: Props): React.ReactElement {
           <FadedText> You can restore this later from your mnemonic phrase or json backup file. </FadedText>
           <Modal.Actions>
             <StackedHorizontal>
-              <StyledLinkButton onClick={closeForgetModal}><Icon name='remove' color='red' /> <FadedText> Cancel </FadedText> </StyledLinkButton>
-              <StyledLinkButton onClick={forgetCurrentAccount}><Icon name='checkmark' color='green' /> <FadedText> Confirm Forget </FadedText> </StyledLinkButton>
+              <StyledLinkButton onClick={closeForgetModal}>
+                <Icon name='remove' color='red' /> <FadedText> Cancel </FadedText>{' '}
+              </StyledLinkButton>
+              <StyledLinkButton onClick={forgetCurrentAccount}>
+                <Icon name='checkmark' color='green' /> <FadedText> Confirm Forget </FadedText>{' '}
+              </StyledLinkButton>
             </StackedHorizontal>
           </Modal.Actions>
         </Stacked>

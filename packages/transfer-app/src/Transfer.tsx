@@ -5,8 +5,8 @@
 import accountObservable from '@polkadot/ui-keyring/observable/accounts';
 import addressObservable from '@polkadot/ui-keyring/observable/addresses';
 import { SingleAddress } from '@polkadot/ui-keyring/observable/types';
-import { TxQueueContext } from '@substrate/ui-common';
-import { Header, Fab, Menu, Sidebar, WithSpaceAround } from '@substrate/ui-components';
+import { TxQueueContext } from '@substrate/context';
+import { Fab, Header, Menu, Sidebar, WithSpaceAround } from '@substrate/ui-components';
 import { findFirst, flatten } from 'fp-ts/lib/Array';
 import React, { useContext, useEffect, useState } from 'react';
 import { combineLatest } from 'rxjs';
@@ -19,7 +19,7 @@ interface Props {
   currentAccount: string;
 }
 
-export function Transfer (props: Props): React.ReactElement {
+export function Transfer(props: Props): React.ReactElement {
   const { currentAccount } = props;
   const { txQueue } = useContext(TxQueueContext);
   const [allAddresses, setAllAddresses] = useState<SingleAddress[]>([]);
@@ -34,7 +34,7 @@ export function Transfer (props: Props): React.ReactElement {
       // eslint-disable-next-line @typescript-eslint/unbound-method
       accountObservable.subject.pipe(map(Object.values)),
       // eslint-disable-next-line @typescript-eslint/unbound-method
-      addressObservable.subject.pipe(map(Object.values))
+      addressObservable.subject.pipe(map(Object.values)),
     ])
       .pipe(map(flatten))
       .subscribe(setAllAddresses);
@@ -54,31 +54,30 @@ export function Transfer (props: Props): React.ReactElement {
     .getOrElse(currentAccount);
 
   return (
-    <React.Fragment>
-      {
-        visible
-          ? (
-            <Sidebar
-              as={Menu}
-              animation='overlay'
-              direction='right'
-              icon='labeled'
-              onHide={(): void => setVisible(false)}
-              vertical
-              visible={visible}
-              width='very wide'
-            >
-              <WithSpaceAround>
-                <Header>Send Funds</Header>
-                {txQueue.length
-                  ? <TxQueue currentAccount={currentAccount} />
-                  : <SendBalance currentAccount={currentAccount} recipientAddress={firstDifferentAddress} />
-                }
-              </WithSpaceAround>
-            </Sidebar>
-          )
-          : <Fab onClick={(): void => setVisible(true)} type='send' />
-      }
-    </React.Fragment>
+    <>
+      {visible ? (
+        <Sidebar
+          as={Menu}
+          animation='overlay'
+          direction='right'
+          icon='labeled'
+          onHide={(): void => setVisible(false)}
+          vertical
+          visible={visible}
+          width='very wide'
+        >
+          <WithSpaceAround>
+            <Header>Send Funds</Header>
+            {txQueue.length ? (
+              <TxQueue currentAccount={currentAccount} />
+            ) : (
+              <SendBalance currentAccount={currentAccount} recipientAddress={firstDifferentAddress} />
+            )}
+          </WithSpaceAround>
+        </Sidebar>
+      ) : (
+        <Fab onClick={(): void => setVisible(true)} type='send' />
+      )}
+    </>
   );
 }

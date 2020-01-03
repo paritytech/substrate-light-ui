@@ -2,18 +2,22 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AlertsContext, AppContext, TxQueueContext } from '@substrate/ui-common';
+import { AlertsContext, ApiContext, TxQueueContext } from '@substrate/context';
 import { Alert, Message, StackedHorizontal, TxSummary } from '@substrate/ui-components';
 import React, { useContext, useEffect } from 'react';
 
-export function TxQueueNotifier (): React.ReactElement | null {
+export function TxQueueNotifier(): React.ReactElement | null {
   const { enqueue } = useContext(AlertsContext);
-  const { system: { properties: { tokenSymbol } } } = useContext(AppContext);
+  const {
+    system: {
+      properties: { tokenSymbol },
+    },
+  } = useContext(ApiContext);
   const { cancelObservable, errorObservable, successObservable } = useContext(TxQueueContext);
 
   // Display notification on success
   useEffect(() => {
-    const subscription = successObservable.subscribe((details) => {
+    const subscription = successObservable.subscribe(details => {
       const { amount, methodCall, recipientAddress, senderPair } = details;
 
       const content = (
@@ -33,7 +37,7 @@ export function TxQueueNotifier (): React.ReactElement | null {
 
       enqueue({
         content: content,
-        type: 'success'
+        type: 'success',
       });
     });
 
@@ -48,13 +52,13 @@ export function TxQueueNotifier (): React.ReactElement | null {
       const content = (
         <Alert error>
           <Message.Header>Error! </Message.Header>
-          <Message.Content > {error} </Message.Content>
+          <Message.Content> {error} </Message.Content>
         </Alert>
       );
 
       enqueue({
         content: content,
-        type: 'error'
+        type: 'error',
       });
     });
 
@@ -74,7 +78,7 @@ export function TxQueueNotifier (): React.ReactElement | null {
 
       enqueue({
         content: content,
-        type: 'warning'
+        type: 'warning',
       });
     });
 

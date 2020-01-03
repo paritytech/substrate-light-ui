@@ -4,7 +4,8 @@
 
 import { KeyringAddress } from '@polkadot/ui-keyring/types';
 import { isFunction } from '@polkadot/util';
-import { AppContext, getKeyringAddress, handler } from '@substrate/ui-common';
+import { KeyringContext } from '@substrate/accounts-app';
+import { getKeyringAddress, handler } from '@substrate/context';
 import { ErrorText, Form, Input, Margin, NavButton, Stacked, SuccessText, WrapperDiv } from '@substrate/ui-components';
 import { Either } from 'fp-ts/lib/Either';
 import React, { useContext, useEffect, useState } from 'react';
@@ -18,30 +19,22 @@ interface Props {
 /**
  * Get the address's name. Return `''` if the address doesn't exist.
  */
-function getAddressName (keyringAddress: Either<Error, KeyringAddress>): string {
-  return keyringAddress.map((keyringAddress) => keyringAddress.meta.name || '').getOrElse('');
+function getAddressName(keyringAddress: Either<Error, KeyringAddress>): string {
+  return keyringAddress.map(keyringAddress => keyringAddress.meta.name || '').getOrElse('');
 }
 
-function renderError (error?: string): React.ReactElement {
-  return (
-    <ErrorText>
-      {error}
-    </ErrorText>
-  );
+function renderError(error?: string): React.ReactElement {
+  return <ErrorText>{error}</ErrorText>;
 }
 
-function renderSuccess (success?: string): React.ReactElement {
-  return (
-    <SuccessText>
-      {success}
-    </SuccessText>
-  );
+function renderSuccess(success?: string): React.ReactElement {
+  return <SuccessText>{success}</SuccessText>;
 }
 
-export function SaveAddress (props: Props): React.ReactElement {
+export function SaveAddress(props: Props): React.ReactElement {
   const { addressDisabled, defaultAddress = '', onSave } = props;
 
-  const { keyring } = useContext(AppContext);
+  const { keyring } = useContext(KeyringContext);
 
   const [address, setAddress] = useState(defaultAddress);
   const keyringAddress = getKeyringAddress(keyring, address);
@@ -51,7 +44,7 @@ export function SaveAddress (props: Props): React.ReactElement {
     setAddress(defaultAddress);
     setName(getAddressName(keyringAddress));
     // eslint-disable-next-line
-  }, [defaultAddress]); // No need for keyringAddress dep, because it already depends on defaultAddress
+  }, [defaultAddress, keyringAddress]); // No need for keyringAddress dep, because it already depends on defaultAddress
 
   const [error, setError] = useState<string | undefined>(undefined);
   const [success, setSuccess] = useState<string | undefined>(undefined);
@@ -102,14 +95,7 @@ export function SaveAddress (props: Props): React.ReactElement {
             value={address}
           />
           <Margin top />
-          <Input
-            fluid
-            label='Name'
-            onChange={handler(setName)}
-            required
-            type='text'
-            value={name}
-          />
+          <Input fluid label='Name' onChange={handler(setName)} required type='text' value={name} />
           <Margin top />
           <NavButton type='submit' value='Save Address' />
           {renderError(error)}

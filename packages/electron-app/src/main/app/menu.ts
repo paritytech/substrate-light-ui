@@ -8,26 +8,28 @@ import { logger } from '../util';
 
 const template = [
   // { role: 'appMenu' }
-  ...(process.platform === 'darwin' ? [{
-    label: app.getName(),
-    submenu: [
-      { role: 'about' },
-      { type: 'separator' },
-      { role: 'services' },
-      { type: 'separator' },
-      { role: 'hide' },
-      { role: 'hideothers' },
-      { role: 'unhide' },
-      { type: 'separator' },
-      { role: 'quit' }
-    ]
-  }] : []),
+  ...(process.platform === 'darwin'
+    ? [
+        {
+          label: app.getName(),
+          submenu: [
+            { role: 'about' },
+            { type: 'separator' },
+            { role: 'services' },
+            { type: 'separator' },
+            { role: 'hide' },
+            { role: 'hideothers' },
+            { role: 'unhide' },
+            { type: 'separator' },
+            { role: 'quit' },
+          ],
+        },
+      ]
+    : []),
   // { role: 'fileMenu' }
   {
     label: 'File',
-    submenu: [
-      process.platform === 'darwin' ? { role: 'close' } : { role: 'quit' }
-    ]
+    submenu: [process.platform === 'darwin' ? { role: 'close' } : { role: 'quit' }],
   },
   // { role: 'editMenu' }
   {
@@ -40,18 +42,9 @@ const template = [
       { role: 'copy' },
       { role: 'paste' },
       ...(process.platform === 'darwin'
-        ? [
-          { role: 'pasteAndMatchStyle' },
-          { role: 'delete' },
-          { role: 'selectAll' },
-          { type: 'separator' }
-        ]
-        : [
-          { role: 'delete' },
-          { type: 'separator' },
-          { role: 'selectAll' }
-        ])
-    ]
+        ? [{ role: 'pasteAndMatchStyle' }, { role: 'delete' }, { role: 'selectAll' }, { type: 'separator' }]
+        : [{ role: 'delete' }, { type: 'separator' }, { role: 'selectAll' }]),
+    ],
   },
   // { role: 'viewMenu' }
   {
@@ -65,8 +58,8 @@ const template = [
       { role: 'zoomin' },
       { role: 'zoomout' },
       { type: 'separator' },
-      { role: 'togglefullscreen' }
-    ]
+      { role: 'togglefullscreen' },
+    ],
   },
   // { role: 'windowMenu' }
   {
@@ -74,32 +67,25 @@ const template = [
     submenu: [
       { role: 'minimize' },
       { role: 'zoom' },
-      ...(process.platform === 'darwin' ? [
-        { type: 'separator' },
-        { role: 'front' },
-        { type: 'separator' },
-        { role: 'window' }
-      ] : [
-        { role: 'close' }
-      ])
-    ]
+      ...(process.platform === 'darwin'
+        ? [{ type: 'separator' }, { role: 'front' }, { type: 'separator' }, { role: 'window' }]
+        : [{ role: 'close' }]),
+    ],
   },
   {
     role: 'help',
     submenu: [
       {
         label: 'Learn More',
-        click (): void {
-          shell
-            .openExternal('https://github.com/paritytech/substrate-light-ui')
-            .catch(logger.error);
-        }
-      }
-    ]
-  }
+        click(): void {
+          shell.openExternal('https://github.com/paritytech/substrate-light-ui').catch(logger.error);
+        },
+      },
+    ],
+  },
 ];
 
-export function initMenu (): void {
+export function initMenu(): void {
   // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
   // @ts-ignore FIXME Not sure why TS is complaining about template here...
   const menu = Menu.buildFromTemplate(template);

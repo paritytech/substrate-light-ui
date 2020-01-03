@@ -3,8 +3,19 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { KeyringPair } from '@polkadot/keyring/types';
-import { TxQueueContext } from '@substrate/ui-common';
-import { ErrorText, Form, Input, Margin, NavButton, Stacked, StyledLinkButton, TxDetails, TxSummary, StackedHorizontal } from '@substrate/ui-components';
+import { TxQueueContext } from '@substrate/context';
+import {
+  ErrorText,
+  Form,
+  Input,
+  Margin,
+  NavButton,
+  Stacked,
+  StackedHorizontal,
+  StyledLinkButton,
+  TxDetails,
+  TxSummary,
+} from '@substrate/ui-components';
 import { Either, left, right } from 'fp-ts/lib/Either';
 import React, { useContext, useState } from 'react';
 import Modal from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
@@ -15,7 +26,7 @@ import Modal from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
  * @param keyringPair - The pair to unlock
  * @param password - The password to use to unlock
  */
-function unlockAccount (keyringPair: KeyringPair, password: string): Either<Error, KeyringPair> {
+function unlockAccount(keyringPair: KeyringPair, password: string): Either<Error, KeyringPair> {
   if (!keyringPair.isLocked) {
     return right(keyringPair);
   }
@@ -29,7 +40,7 @@ function unlockAccount (keyringPair: KeyringPair, password: string): Either<Erro
   return right(keyringPair);
 }
 
-export function Signer (): React.ReactElement | null {
+export function Signer(): React.ReactElement | null {
   const { clear, submit, txQueue } = useContext(TxQueueContext);
   const [inputPassword, setInputPassword] = useState('');
   const [error, setError] = useState('');
@@ -52,15 +63,17 @@ export function Signer (): React.ReactElement | null {
       as={Form}
       onSubmit={(): void => {
         unlockAccount(senderPair, inputPassword).fold(
-          (err) => setError(err.message),
+          err => setError(err.message),
           () => submit(pendingTx.id)
         );
       }}
       open
       size='tiny'
     >
-      <React.Fragment>
-        <Modal.Header color='lightBlue1' textAlign='left'>Sign transaction</Modal.Header>
+      <>
+        <Modal.Header color='lightBlue1' textAlign='left'>
+          Sign transaction
+        </Modal.Header>
         <Modal.Content>
           <Stacked alignItems='flex-start'>
             <p>By signing this transaction you are confirming that you wish to: </p>
@@ -70,17 +83,13 @@ export function Signer (): React.ReactElement | null {
               recipientAddress={pendingTx.details.recipientAddress}
               senderAddress={senderPair.address}
             />
-            {senderPair.isLocked && <React.Fragment>
-              <Margin top />
-              <Input
-                fluid
-                label='Password'
-                onChange={handlePasswordChange}
-                type='password'
-                value={inputPassword}
-              />
-              <Margin top />
-            </React.Fragment>}
+            {senderPair.isLocked && (
+              <>
+                <Margin top />
+                <Input fluid label='Password' onChange={handlePasswordChange} type='password' value={inputPassword} />
+                <Margin top />
+              </>
+            )}
             {error && <ErrorText>{error}</ErrorText>}
             <TxDetails
               allFees={pendingTx.details.allFees}
@@ -97,12 +106,10 @@ export function Signer (): React.ReactElement | null {
               Cancel
             </StyledLinkButton>
             <Margin left='small' />
-            <NavButton disabled={senderPair.isLocked && !inputPassword}>
-              OK
-            </NavButton>
+            <NavButton disabled={senderPair.isLocked && !inputPassword}>OK</NavButton>
           </StackedHorizontal>
         </Modal.Actions>
-      </React.Fragment>
+      </>
     </Modal>
   );
 }

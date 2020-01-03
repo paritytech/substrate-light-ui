@@ -6,13 +6,13 @@ import { Keyring } from '@polkadot/ui-keyring';
 import { mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
 import { Either, left, right } from 'fp-ts/lib/Either';
 
-import { UserInput, UserInputError, PhrasePartialRewrite, PhrasePartialRewriteError } from './types';
+import { PhrasePartialRewrite, PhrasePartialRewriteError, UserInput, UserInputError } from './types';
 
 /**
  * Fischer Yates shuffle numbers between 0 and @max
  * @param max highest number the random number should be
  */
-export function getRandomInts (max: number): number[] {
+export function getRandomInts(max: number): number[] {
   const scratch = [];
 
   // populate with the range of possible numbers
@@ -24,7 +24,7 @@ export function getRandomInts (max: number): number[] {
   let randIndex;
 
   for (let i = max - 1; i >= 0; i -= 1) {
-    randIndex = Math.floor(Math.random() * Math.floor((i)));
+    randIndex = Math.floor(Math.random() * Math.floor(i));
     temp = scratch[i];
     scratch[i] = scratch[randIndex];
     scratch[randIndex] = temp;
@@ -36,18 +36,16 @@ export function getRandomInts (max: number): number[] {
 /**
  * Derive public address from mnemonic key
  */
-export function generateAddressFromMnemonic (keyring: Keyring, mnemonic: string): string {
+export function generateAddressFromMnemonic(keyring: Keyring, mnemonic: string): string {
   const keypair = naclKeypairFromSeed(mnemonicToSeed(mnemonic));
 
-  return keyring.encodeAddress(
-    keypair.publicKey
-  );
+  return keyring.encodeAddress(keypair.publicKey);
 }
 
 /**
  * Validate user inputs
  */
-export function validateMeta (values: UserInput, step: string, whichAccount: string): Either<UserInputError, UserInput> {
+export function validateMeta(values: UserInput, step: string, whichAccount: string): Either<UserInputError, UserInput> {
   const errors = {} as UserInputError;
 
   if (whichAccount) {
@@ -59,9 +57,9 @@ export function validateMeta (values: UserInput, step: string, whichAccount: str
   values.tags = values.tags.map(tag => tag.toLowerCase());
 
   if (step === 'meta') {
-    (['name', 'password'] as (Exclude<keyof UserInput, 'tags'>)[])
-      .filter((key) => !values[key])
-      .forEach((key) => {
+    (['name', 'password'] as Exclude<keyof UserInput, 'tags'>[])
+      .filter(key => !values[key])
+      .forEach(key => {
         errors[key] = `Field "${key}" cannot be empty`;
       });
   }
@@ -76,7 +74,10 @@ export function validateMeta (values: UserInput, step: string, whichAccount: str
 /**
  * Validate phrase rewrite
  */
-export function validateRewrite (values: PhrasePartialRewrite, randomFourWords: Array<Array<string>>): Either<PhrasePartialRewriteError, PhrasePartialRewrite> {
+export function validateRewrite(
+  values: PhrasePartialRewrite,
+  randomFourWords: Array<Array<string>>
+): Either<PhrasePartialRewriteError, PhrasePartialRewrite> {
   const errors = {} as PhrasePartialRewriteError;
 
   const { firstWord, secondWord, thirdWord, fourthWord } = values;
@@ -93,7 +94,8 @@ export function validateRewrite (values: PhrasePartialRewrite, randomFourWords: 
   ) {
     return right(values);
   } else {
-    errors.incorrectFields = 'It seems you did not copy all the words properly. Please double check your inputs and try again.';
+    errors.incorrectFields =
+      'It seems you did not copy all the words properly. Please double check your inputs and try again.';
   }
 
   return Object.keys(errors).length ? left(errors) : right(values);

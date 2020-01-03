@@ -3,17 +3,28 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { KeyringJson } from '@polkadot/ui-keyring/types';
-import { AlertsContext, AppContext, handler } from '@substrate/ui-common';
-import { Dropdown, ErrorText, Input, InputFile, Margin, NavButton, Stacked, SubHeader, WrapperDiv } from '@substrate/ui-components';
-import React, { useState, useContext } from 'react';
+import { KeyringContext } from '@substrate/accounts-app';
+import { AlertsContext, handler } from '@substrate/context';
+import {
+  Dropdown,
+  ErrorText,
+  Input,
+  InputFile,
+  Margin,
+  NavButton,
+  Stacked,
+  SubHeader,
+  WrapperDiv,
+} from '@substrate/ui-components';
+import React, { useContext, useState } from 'react';
 
-import { Tags, TagOptions } from './types';
+import { TagOptions, Tags } from './types';
 
 type Step = 'upload' | 'password';
 
-export function ImportWithJson (): React.ReactElement {
+export function ImportWithJson(): React.ReactElement {
   const { enqueue } = useContext(AlertsContext);
-  const { keyring } = useContext(AppContext);
+  const { keyring } = useContext(KeyringContext);
 
   const [errorText, setErrorText] = useState();
   const [step, setStep] = useState('upload' as Step);
@@ -22,7 +33,7 @@ export function ImportWithJson (): React.ReactElement {
 
   const [tagOptions, setTagOptions] = useState<TagOptions>([
     { key: '0', text: 'stash', value: 'Stash' },
-    { key: '1', text: 'controller', value: 'Controller' }
+    { key: '1', text: 'controller', value: 'Controller' },
   ]);
 
   const [tags, setTags] = useState<Tags>([]);
@@ -37,11 +48,11 @@ export function ImportWithJson (): React.ReactElement {
     }
   };
 
-  const handleAddTag = (e: React.SyntheticEvent, { value }: any): void => {
+  const handleAddTag = (_event: React.SyntheticEvent, { value }: any): void => {
     setTagOptions([...tagOptions, { key: value, text: value, value }]);
   };
 
-  const handleOnChange = (event: React.SyntheticEvent, { value }: any): void => {
+  const handleOnChange = (_event: React.SyntheticEvent, { value }: any): void => {
     setTags(value);
   };
 
@@ -58,7 +69,7 @@ export function ImportWithJson (): React.ReactElement {
     } catch (e) {
       enqueue({
         content: e.message,
-        type: 'error'
+        type: 'error',
       });
     }
   };
@@ -82,7 +93,7 @@ export function ImportWithJson (): React.ReactElement {
     } catch (e) {
       enqueue({
         content: e.message,
-        type: 'error'
+        type: 'error',
       });
     }
   };
@@ -101,7 +112,8 @@ export function ImportWithJson (): React.ReactElement {
           options={tagOptions}
           search
           selection
-          value={tags} />
+          value={tags}
+        />
       </Stacked>
     );
   };
@@ -109,26 +121,20 @@ export function ImportWithJson (): React.ReactElement {
   return (
     <Stacked>
       <SubHeader> Restore Account from JSON Backup File </SubHeader>
-      {
-        step === 'upload'
-          ? <InputFile onChange={handleFileUploaded} />
-          : (
-            <React.Fragment>
-              <WrapperDiv>
-                <Input
-                  fluid
-                  label='Password'
-                  onChange={handler(setInputPassword)}
-                  type='password' />
-                <Margin top />
-                {renderSetTags()}
-              </WrapperDiv>
-              <Margin top />
-              <ErrorText>{errorText}</ErrorText>
-              <NavButton onClick={handleRestoreWithJson} value='Restore' />
-            </React.Fragment>
-          )
-      }
+      {step === 'upload' ? (
+        <InputFile onChange={handleFileUploaded} />
+      ) : (
+        <>
+          <WrapperDiv>
+            <Input fluid label='Password' onChange={handler(setInputPassword)} type='password' />
+            <Margin top />
+            {renderSetTags()}
+          </WrapperDiv>
+          <Margin top />
+          <ErrorText>{errorText}</ErrorText>
+          <NavButton onClick={handleRestoreWithJson} value='Restore' />
+        </>
+      )}
     </Stacked>
   );
 }

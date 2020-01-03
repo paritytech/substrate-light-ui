@@ -11,10 +11,10 @@ const GREEN = '#79c879';
 const RED = '#ff0000';
 
 export const BlockCounter = ({ blockNumber, chainName }: BlockCounterProps): React.ReactElement => (
-  <React.Fragment>
+  <>
     <SubHeader noMargin> {chainName && chainName.toString()} </SubHeader>
     <p> Block #: {blockNumber && blockNumber.toString()} </p>
-  </React.Fragment>
+  </>
 );
 
 export const NodeStatus = ({ isSyncing }: NodeStatusProps): React.ReactElement => (

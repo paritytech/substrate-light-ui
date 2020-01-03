@@ -4,15 +4,15 @@
 
 import axios, { Method } from 'axios';
 
-import { DEFAULT_HTTP_PORT, TRUSTED_LOOPBACK } from './constants';
 import { logger } from '../util';
+import { DEFAULT_HTTP_PORT, TRUSTED_LOOPBACK } from './constants';
 
 /**
  * Substrate apibroadcasts through WS on port 9944 and through HTTP on port 9933 by default.
  * Detect if another instance of Substrate is already running or not. To achieve
  * that, we just ping 127.0.0.1:9933.
  */
-export async function isSubstrateRunning (): Promise<boolean> {
+export async function isSubstrateRunning(): Promise<boolean> {
   /**
    * Try to ping 9933 to test if Substrate is running.
    */
@@ -22,7 +22,7 @@ export async function isSubstrateRunning (): Promise<boolean> {
     const options = {
       headers: { 'Content-Type': 'application/json' },
       method: 'POST' as Method,
-      url: host
+      url: host,
     };
 
     await axios(options);
