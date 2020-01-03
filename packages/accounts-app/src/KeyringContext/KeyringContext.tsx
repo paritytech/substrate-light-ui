@@ -5,10 +5,11 @@
 import keyring from '@polkadot/ui-keyring';
 import { KeyringOptions } from '@polkadot/ui-keyring/types';
 import { ApiContext } from '@substrate/context';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 interface KeyringContext {
   keyring: typeof keyring;
+  keyringReady: boolean;
 }
 
 export const KeyringContext = React.createContext({} as KeyringContext);
@@ -20,6 +21,7 @@ const DEFAULT_SS58_PREFIX = 42;
 export function KeyringContextProvider(props: { children: React.ReactNode }): React.ReactElement {
   const { children } = props;
   const { api, isReady, system } = useContext(ApiContext);
+  const [keyringReady, setKeyringReady] = useState(false);
 
   useEffect(() => {
     isReady &&
@@ -28,7 +30,9 @@ export function KeyringContextProvider(props: { children: React.ReactNode }): Re
       ss58Format: system.properties.ss58Format.unwrapOr(api.createType('u32', DEFAULT_SS58_PREFIX)).toNumber(),
       type: 'ed25519',
     } as KeyringOptions);
+
+    setKeyringReady(true);
   }, [api, isReady, system]);
 
-  return <KeyringContext.Provider value={{ keyring }}>{children}</KeyringContext.Provider>;
+  return <KeyringContext.Provider value={{ keyring, keyringReady }}>{children}</KeyringContext.Provider>;
 }

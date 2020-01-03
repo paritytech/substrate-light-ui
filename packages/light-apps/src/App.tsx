@@ -5,7 +5,6 @@
 import 'semantic-ui-css/semantic.min.css';
 
 import { FixedWidthContainer, GlobalStyle, substrateLightTheme } from '@substrate/ui-components';
-import { ApiContext, ApiContextType } from '@substrate/context';
 import React from 'react';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
@@ -29,18 +28,10 @@ export function App(): React.ReactElement {
         <FixedWidthContainer>
           <GlobalStyle />
           <ContextGate>
-            <ApiContext.Consumer>
-              {({
-                isReady,
-              }: Partial<ApiContextType>): React.ReactElement | boolean | undefined =>
-                isReady && (
-                  <>
-                    <TopBar />
-                    <Content />
-                  </>
-                )
-              }
-            </ApiContext.Consumer>
+            <>
+              <TopBar />
+              <Content />
+            </>    
           </ContextGate>
           <Alerts />
         </FixedWidthContainer>

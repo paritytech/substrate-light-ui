@@ -37,7 +37,7 @@ function randomlyPickFour(phrase: string): Array<Array<string>> {
 export function Create(props: Props): React.ReactElement {
   const { identiconSize, location } = props;
 
-  const { keyring } = useContext(KeyringContext);
+  const { keyring, keyringReady } = useContext(KeyringContext);
 
   const [errors, setErrors] = useState<Option<Array<string>>>(none);
   const [mnemonic] = useState(mnemonicGenerate());
@@ -71,7 +71,7 @@ export function Create(props: Props): React.ReactElement {
     setRandomFourWords(randomFour);
   }, [location, mnemonic]);
 
-  const address = generateAddressFromMnemonic(keyring, mnemonic);
+  const address = keyringReady && generateAddressFromMnemonic(keyring, mnemonic);
   const validation = validateMeta({ name, password, tags }, step, whichAccount);
 
   const handleSetFirstWord = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>): void => {
@@ -154,7 +154,7 @@ export function Create(props: Props): React.ReactElement {
 
   return (
     <Stacked>
-      <AddressSummary address={address} name={name} size={identiconSize} />
+      {keyringReady && <AddressSummary address={address} name={name} size={identiconSize} />}
       <Margin top />
       {step === 'copy'
         ? renderCopyStep({ mnemonic }, { goToNextStep })
