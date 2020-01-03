@@ -2,6 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { KeyringContextProvider } from '@substrate/accounts-app';
 import {
   AlertsContextProvider,
   ApiContextProvider,
@@ -18,7 +19,9 @@ export function ContextGate(props: { children: React.ReactNode }): React.ReactEl
     <AlertsContextProvider>
       <TxQueueContextProvider>
         <ApiContextProvider loading={<Loading active>Connecting to the node...</Loading>}>
-          <StakingContextProvider>{children}</StakingContextProvider>
+          <KeyringContextProvider>
+            <StakingContextProvider>{children}</StakingContextProvider>
+          </KeyringContextProvider>
         </ApiContextProvider>
       </TxQueueContextProvider>
     </AlertsContextProvider>
