@@ -57,7 +57,7 @@ export function IdentityHeader(props: Props): React.ReactElement {
     return (
       <Menu stackable widths={6}>
         <Switch>
-          <Route path={['/manageAccounts', '/addresses', '/accounts/:currentAccount']}>
+          <Route path={['/manageAccounts', '/addresses', '/accounts/:currentAccount', '/transfer']}>
             <Menu.Item>
               <InputAddress fluid onChangeAddress={changeCurrentAccount} value={currentAccount} />
               <CopyButton value={currentAccount} />

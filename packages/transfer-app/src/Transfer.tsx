@@ -6,7 +6,7 @@ import accountObservable from '@polkadot/ui-keyring/observable/accounts';
 import addressObservable from '@polkadot/ui-keyring/observable/addresses';
 import { SingleAddress } from '@polkadot/ui-keyring/observable/types';
 import { TxQueueContext } from '@substrate/context';
-import { Header, WithSpaceAround } from '@substrate/ui-components';
+import { Header, WithSpaceAround, WrapperDiv } from '@substrate/ui-components';
 import { findFirst, flatten } from 'fp-ts/lib/Array';
 import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -52,13 +52,13 @@ export function Transfer(props: Props): React.ReactElement {
     .getOrElse(currentAccount);
 
   return (
-    <WithSpaceAround>
+    <WrapperDiv>
       <Header>Send Funds</Header>
       {txQueue.length ? (
         <TxQueue currentAccount={currentAccount} />
       ) : (
         <SendBalance currentAccount={currentAccount} recipientAddress={firstDifferentAddress} />
       )}
-    </WithSpaceAround>
+    </WrapperDiv>
   );
 }
