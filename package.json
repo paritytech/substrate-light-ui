@@ -8,8 +8,7 @@
   "repository": "https://github.com/paritytech/substrate-light-ui.git",
   "workspaces": {
     "packages": [
-      "packages/*",
-      "node_modules/@substrate/ui-components"
+      "packages/*"
     ],
     "nohoist": [
       "**/electron-builder",
