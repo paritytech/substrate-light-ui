@@ -22,7 +22,8 @@ export const Content = (): React.ReactElement => {
 
     // FIXME?: this should rerender then redirect when allAccounts is set, but it doesnt, so doing it manually instead for now.
     if (defaultAccount) {
-      history.push(`/manageAccounts/${defaultAccount}`)
+      // history.push(`/manageAccounts/${defaultAccount}`)
+      history.push(`/transfer/${defaultAccount}`);
     }
   }, [allAccounts, defaultAccount])
 

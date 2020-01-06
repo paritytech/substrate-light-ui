@@ -22,12 +22,8 @@ export function ContextGate(props: { children: React.ReactNode }): React.ReactEl
       <TxQueueContextProvider>
         <ApiContextProvider loading={<Loading active>Connecting to the node...</Loading>}>
           <ApiContext.Consumer>
-              {({
-                api,
-                isReady,
-                system,
-              }: Partial<ApiContextType>): React.ReactElement | boolean | undefined => {
-                return (
+              {({ api, isReady, system }: Partial<ApiContextType>): React.ReactElement | boolean | undefined => {
+                return api && isReady && system && (
                   <StakingContextProvider>
                     <KeyringContextProvider
                       api={api}
