@@ -39,6 +39,7 @@ export function Create(props: Props): React.ReactElement {
 
   const { keyring, keyringReady } = useContext(KeyringContext);
 
+  const [address, setAddress] = useState();
   const [errors, setErrors] = useState<Option<Array<string>>>(none);
   const [mnemonic] = useState(mnemonicGenerate());
   const [name, setName] = useState('');
@@ -60,6 +61,14 @@ export function Create(props: Props): React.ReactElement {
   const [whichAccount, setWhichAccount] = useState();
 
   useEffect(() => {
+    console.log('ready -> ', keyringReady);
+    if (keyringReady) {
+      const _address = generateAddressFromMnemonic(keyring, mnemonic);
+      setAddress(_address);
+    }
+  }, [keyringReady])
+
+  useEffect(() => {
     // pick random four from the mnemonic to make sure user copied it right
     const randomFour = randomlyPickFour(mnemonic);
     const whichAccount = location.pathname.split('/')[2];
@@ -71,7 +80,6 @@ export function Create(props: Props): React.ReactElement {
     setRandomFourWords(randomFour);
   }, [location, mnemonic]);
 
-  const address = keyringReady && generateAddressFromMnemonic(keyring, mnemonic);
   const validation = validateMeta({ name, password, tags }, step, whichAccount);
 
   const handleSetFirstWord = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>): void => {

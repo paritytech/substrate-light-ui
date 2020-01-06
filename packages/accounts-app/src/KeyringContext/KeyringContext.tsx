@@ -24,14 +24,18 @@ export function KeyringContextProvider(props: { children: React.ReactNode }): Re
   const [keyringReady, setKeyringReady] = useState(false);
 
   useEffect(() => {
-    isReady &&
-    keyring.loadAll({
-      genesisHash: api.genesisHash,
-      ss58Format: system.properties.ss58Format.unwrapOr(api.createType('u32', DEFAULT_SS58_PREFIX)).toNumber(),
-      type: 'ed25519',
-    } as KeyringOptions);
+    const loadKeyring = async () => {
+      await keyring.loadAll({
+        genesisHash: api.genesisHash,
+        ss58Format: system.properties.ss58Format.unwrapOr(api.createType('u32', DEFAULT_SS58_PREFIX)).toNumber(),
+        type: 'ed25519',
+      } as KeyringOptions);
+    }
 
-    setKeyringReady(true);
+    if (isReady) {
+      loadKeyring();
+      setKeyringReady(true);
+    }
   }, [api, isReady, system]);
 
   return <KeyringContext.Provider value={{ keyring, keyringReady }}>{children}</KeyringContext.Provider>;
