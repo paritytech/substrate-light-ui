@@ -61,7 +61,6 @@ export function Create(props: Props): React.ReactElement {
   const [whichAccount, setWhichAccount] = useState();
 
   useEffect(() => {
-    console.log('ready -> ', keyringReady);
     if (keyringReady) {
       const _address = generateAddressFromMnemonic(keyring, mnemonic);
       setAddress(_address);

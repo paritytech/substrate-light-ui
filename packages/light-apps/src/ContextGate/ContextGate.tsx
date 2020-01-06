@@ -23,13 +23,22 @@ export function ContextGate(props: { children: React.ReactNode }): React.ReactEl
         <ApiContextProvider loading={<Loading active>Connecting to the node...</Loading>}>
           <ApiContext.Consumer>
               {({
+                api,
                 isReady,
-              }: Partial<ApiContextType>): React.ReactElement | boolean | undefined =>
-                isReady && (
-              <KeyringContextProvider>
-                <StakingContextProvider>{children}</StakingContextProvider>
-              </KeyringContextProvider>
-              )
+                system,
+              }: Partial<ApiContextType>): React.ReactElement | boolean | undefined => {
+                return (
+                  <StakingContextProvider>
+                    <KeyringContextProvider
+                      api={api}
+                      isReady={isReady}
+                      system={system}
+                      >
+                      {children}
+                    </KeyringContextProvider>
+                  </StakingContextProvider>
+                )
+              }
             }
           </ApiContext.Consumer>
         </ApiContextProvider>
