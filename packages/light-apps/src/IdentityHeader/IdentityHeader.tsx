@@ -36,7 +36,6 @@ export function IdentityHeader(props: Props): React.ReactElement {
     },
   } = props;
 
-  console.log('id header -> ', currentAccount);
   const currentPath = location.pathname.split('/')[1];
 
   // Change account
@@ -46,16 +45,16 @@ export function IdentityHeader(props: Props): React.ReactElement {
 
   const renderPrimaryMenu = (): React.ReactElement => {
     return (
-      <Menu stackable>
+      <Menu stackable centered widths={5} fluid>
         <Switch>
           <Route path={['/manageAccounts']}>
-            <Menu.Item fitted>
+            {/* <Menu.Item fitted>
               <StackedHorizontal>
-                <InputAddress fluid onChangeAddress={changeCurrentAccount} value={currentAccount} />
                 <CopyButton value={currentAccount} />
               </StackedHorizontal>
-            </Menu.Item>
+            </Menu.Item> */}
             <Menu.Item>
+              <InputAddress fluid onChangeAddress={changeCurrentAccount} value={currentAccount} />
               <Balance address={currentAccount} fontSize='medium' />
             </Menu.Item>
             <Menu.Item>

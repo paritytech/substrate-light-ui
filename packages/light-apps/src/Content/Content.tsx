@@ -2,16 +2,13 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import accountObservable from '@polkadot/ui-keyring/observable/accounts';
-import { SingleAddress } from '@polkadot/ui-keyring/observable/types';
-import { AccountsOverview, AddAccount, KeyringContext } from '@substrate/accounts-app';
+import { AccountsOverview, AddAccount, ManageAddresses, KeyringContext } from '@substrate/accounts-app';
 import { Transfer } from '@substrate/transfer-app';
 import { Container, Sidebar } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 
 import { IdentityHeader } from '../IdentityHeader';
-import { ManageAddresses } from '../ManageAddresses';
 import { Signer } from '../Signer';
 import { TxQueueNotifier } from '../TxQueueNotifier';
 
@@ -53,7 +50,7 @@ export const Content = (): React.ReactElement => {
               <Redirect to='/' />
             </Switch>
             <TxQueueNotifier />
-            {/* {defaultAccount && <Transfer currentAccount={defaultAccount.json.address} />} */}
+            {defaultAccount && <Transfer currentAccount={defaultAccount} />}
           </Sidebar.Pusher>
         </Sidebar.Pushable>
         <Signer />

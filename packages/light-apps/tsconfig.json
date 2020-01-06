@@ -19,6 +19,6 @@
   },
   "extends": "../../tsconfig",
   "include": [
-    "src"
+    "src", "../accounts-app/src/ManageAddresses"
   ]
 }
