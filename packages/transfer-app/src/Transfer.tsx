@@ -6,7 +6,7 @@ import accountObservable from '@polkadot/ui-keyring/observable/accounts';
 import addressObservable from '@polkadot/ui-keyring/observable/addresses';
 import { SingleAddress } from '@polkadot/ui-keyring/observable/types';
 import { TxQueueContext } from '@substrate/context';
-import { Header, WithSpaceAround, WrapperDiv } from '@substrate/ui-components';
+import { Header, WrapperDiv } from '@substrate/ui-components';
 import { findFirst, flatten } from 'fp-ts/lib/Array';
 import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -23,7 +23,11 @@ interface MatchParams {
 type Props = RouteComponentProps<MatchParams>;
 
 export function Transfer(props: Props): React.ReactElement {
-  const { match: { params: { currentAccount } } } = props;
+  const {
+    match: {
+      params: { currentAccount },
+    },
+  } = props;
   const { txQueue } = useContext(TxQueueContext);
   const [allAddresses, setAllAddresses] = useState<SingleAddress[]>([]);
 

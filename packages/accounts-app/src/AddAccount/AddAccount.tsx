@@ -10,21 +10,6 @@ import { Create } from './Create/CreateAccount';
 import { ImportWithJson } from './ImportWithJson';
 import { ImportWithPhrase } from './ImportWithPhrase';
 
-const MENUS = [
-  {
-    label: 'Generate new account',
-    route: 'generate',
-  },
-  {
-    label: 'Import from JSON keyfile',
-    route: 'json',
-  },
-  {
-    label: 'Import from mnemonic phrase',
-    route: 'phrase',
-  },
-];
-
 type Props = RouteComponentProps;
 
 export function AddAccount(props: Props): React.ReactElement {
@@ -34,16 +19,16 @@ export function AddAccount(props: Props): React.ReactElement {
   const activeTab = location.pathname.split('/')[4];
 
   const navToCreate = () => {
-    history.push(`/accounts/${currentAccount}/add/generate`)
-  }
+    history.push(`/accounts/${currentAccount}/add/generate`);
+  };
 
   const navToImportJson = () => {
-    history.push(`/accounts/${currentAccount}/add/json`)
-  }
+    history.push(`/accounts/${currentAccount}/add/json`);
+  };
 
   const navToImportSeed = () => {
-    history.push(`/accounts/${currentAccount}/add/phrase`)
-  }
+    history.push(`/accounts/${currentAccount}/add/phrase`);
+  };
 
   return (
     <WrapperDiv>

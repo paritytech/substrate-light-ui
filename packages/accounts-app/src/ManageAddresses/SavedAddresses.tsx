@@ -12,7 +12,7 @@ import {
   StackedHorizontal,
   SubHeader,
   WithSpace,
-  WrapperDiv
+  WrapperDiv,
 } from '@substrate/ui-components';
 import React, { useEffect, useState } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';

@@ -2,12 +2,10 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { KeyringAddress } from '@polkadot/ui-keyring/types';
 import { isFunction } from '@polkadot/util';
-import { getKeyringAddress } from '@substrate/context';
+// import { getKeyringAddress } from '@substrate/context';
 import { ErrorText, Form, Input, Margin, NavButton, Stacked, SuccessText, WrapperDiv } from '@substrate/ui-components';
-import { Either } from 'fp-ts/lib/Either';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { KeyringContext } from '../../KeyringContext';
 
@@ -30,7 +28,7 @@ export function SaveAddress(props: Props): React.ReactElement {
   const { keyring } = useContext(KeyringContext);
 
   const [address, setAddress] = useState();
-  const keyringAddress = getKeyringAddress(keyring, address);
+  // const keyringAddress = getKeyringAddress(keyring, address);
   const [name, setName] = useState();
 
   const [error, setError] = useState<string | undefined>(undefined);
@@ -48,11 +46,11 @@ export function SaveAddress(props: Props): React.ReactElement {
 
   const handleChangeAddress = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     setAddress(value);
-  }
+  };
 
   const handleSetName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     setName(value);
-  }
+  };
 
   const handleSubmit = (): void => {
     try {

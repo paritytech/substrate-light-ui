@@ -10,7 +10,6 @@ import { SaveAddress } from './SaveAddress';
 
 interface MatchParams {
   currentAccount: string;
-  editAddress: string;
 }
 
 type Props = RouteComponentProps<MatchParams>;
@@ -18,7 +17,7 @@ type Props = RouteComponentProps<MatchParams>;
 export function Edit(props: Props): React.ReactElement {
   const {
     match: {
-      params: { currentAccount, editAddress },
+      params: { currentAccount },
     },
   } = props;
   return (

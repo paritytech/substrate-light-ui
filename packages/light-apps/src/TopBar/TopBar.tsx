@@ -33,8 +33,12 @@ export function TopBar(): React.ReactElement {
   return (
     <header>
       <StackedHorizontal justifyContent='space-between' alignItems='center'>
-        <Link to='/'><img alt='Polkadot Logo' src={substrateLogo} width={50} /></Link>
-        <FadedText>{name} {version}</FadedText>
+        <Link to='/'>
+          <img alt='Polkadot Logo' src={substrateLogo} width={50} />
+        </Link>
+        <FadedText>
+          {name} {version}
+        </FadedText>
         <Stacked>
           <NodeStatus isSyncing={isSyncing} />
           <BlockCounter blockNumber={blockNumber} chainName={chain} />
