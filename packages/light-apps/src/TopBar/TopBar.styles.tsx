@@ -19,7 +19,7 @@ export const BlockCounter = ({ blockNumber, chainName }: BlockCounterProps): Rea
 
 export const NodeStatus = ({ isSyncing }: NodeStatusProps): React.ReactElement => (
   <StackedHorizontal>
-    {isSyncing.eq(true) ? <Circle fill={GREEN} /> : <Circle fill={RED} />}
+    {isSyncing.eq(true) ? <Circle fill={GREEN} radius={10} /> : <Circle fill={RED} radius={10} />}
     <Margin left='small' />
     <p> Status: {isSyncing.eq(true) ? 'Syncing' : 'Synced'} </p>
   </StackedHorizontal>

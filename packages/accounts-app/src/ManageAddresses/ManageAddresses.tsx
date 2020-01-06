@@ -12,19 +12,10 @@ import { SavedAddresses } from './SavedAddresses';
 
 export function ManageAddresses(): React.ReactElement {
   return (
-    <WalletCard header='Address Book' height='100%'>
-      <StackedHorizontal justifyContent='space-between' alignItems='stretch'>
-        <FlexItem>
-          <Switch>
-            <Route path='/addresses/:currentAccount/:editAddress' component={Edit} />
-            <Route component={Add} />
-          </Switch>
-        </FlexItem>
-        <Margin left />
-        <FlexItem>
-          <Route path='/addresses/:currentAccount' component={SavedAddresses} />
-        </FlexItem>
-      </StackedHorizontal>
-    </WalletCard>
+    <Switch>
+      <Route path='/addresses/:currentAccount/:editAddress' component={Edit} />
+      <Route path='/addresses/add' component={Add} />
+      <Route path='/addresses/:currentAccount' component={SavedAddresses} />
+    </Switch>
   );
 }

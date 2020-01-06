@@ -51,13 +51,18 @@ export function IdentityHeader(props: Props): React.ReactElement {
     return (
       <Menu stackable widths={5} fitted>
         <Switch>
-          <Route path={['/manageAccounts', '/addresses']}>
+          <Route path={['/manageAccounts', '/addresses', '/accounts/:currentAccount']}>
             <Menu.Item>
               <InputAddress fluid onChangeAddress={changeCurrentAccount} value={currentAccount} />
               <CopyButton value={currentAccount} />
             </Menu.Item>
             <Menu.Item>
               <Balance address={currentAccount} fontSize='medium' />
+            </Menu.Item>
+            <Menu.Item active={activeTab === 'manageAccounts'} onClick={navToAccounts}>
+              Accounts
+              <Margin left='small' />
+              <Icon color='black' name='id card' />
             </Menu.Item>
             <Menu.Item>
               <Link to={`/accounts/${currentAccount}/add`}>
@@ -69,29 +74,10 @@ export function IdentityHeader(props: Props): React.ReactElement {
               <Margin left='small' />
               <Icon color='black' name='id card' />
             </Menu.Item>
-            <Menu.Item active={activeTab === 'manageAccounts'} onClick={navToAccounts}>
-              Accounts
-              <Margin left='small' />
-              <Icon color='black' name='id card' />
-            </Menu.Item>
-          </Route>
-          <Route path='/accounts/:currentAccount/add'>
             <Menu.Item>
-              <FadedText>Add Account</FadedText>
-            </Menu.Item>
-            <Menu.Item>
-              <SubHeader>
-                Create a new account from a generated mnemonic seed, or import via your JSON backup file/mnemonic
-                phrase.{' '}
-              </SubHeader>
-            </Menu.Item>
-          </Route>
-          <Route path='/manageAccounts/:currentAccount'>
-            <Menu.Item>
-              <FadedText>Manage Accounts</FadedText>
-            </Menu.Item>
-            <Menu.Item>
-              <SubHeader>Manage Your Accounts, including Staking, Bonding, Nominating </SubHeader>
+              <Link to={`/addresses/add`}>
+                Add an Address <Icon name='plus' />
+              </Link>
             </Menu.Item>
           </Route>
         </Switch>

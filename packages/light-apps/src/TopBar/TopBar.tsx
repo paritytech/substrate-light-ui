@@ -32,22 +32,12 @@ export function TopBar(): React.ReactElement {
 
   return (
     <header>
-      <Margin top='big' />
-      <Stacked width='100%' justifyContent='space-between' alignItems='center'>
-        <FlexItem>
-          <NodeStatus isSyncing={isSyncing} />
-        </FlexItem>
-        <FlexItem>
-          <Link to='/'>
-            <img alt='Parity Substrate Logo' src={substrateLogo} width={50} />
-          </Link>
-          <FadedText>
-            {name} {version}
-          </FadedText>
-        </FlexItem>
-        <FlexItem>
-          <BlockCounter blockNumber={blockNumber} chainName={chain} />
-        </FlexItem>
+      <Stacked justifyContent='space-between' alignItems='center'>
+        <Link to='/'><img alt='Polkadot Logo' src={substrateLogo} width={50} /></Link>
+        <FadedText>{name} {version}</FadedText>
+        <NodeStatus isSyncing={isSyncing} />
+        <Margin top />
+        <BlockCounter blockNumber={blockNumber} chainName={chain} />
       </Stacked>
     </header>
   );

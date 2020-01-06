@@ -30,7 +30,7 @@ export const Content = (): React.ReactElement => {
       <Sidebar.Pushable as={Container} raised='true'>
         <Sidebar.Pusher>
           <Route
-            path={['/accounts/:currentAccount/add', '/addresses/:currentAccount', '/manageAccounts/:currentAccount']}
+            path={['/accounts/:currentAccount/add', '/addresses/:currentAccount', '/manageAccounts/:currentAccount', '/accounts/add']}
             component={IdentityHeader}
           />
           <Switch>
