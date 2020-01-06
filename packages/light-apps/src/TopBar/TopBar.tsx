@@ -4,7 +4,7 @@
 
 import substrateLogo from '@polkadot/ui-assets/polkadot-circle.svg';
 import { ApiContext } from '@substrate/context';
-import { FadedText, FlexItem, Margin, Stacked } from '@substrate/ui-components';
+import { FadedText, Margin, Stacked } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 

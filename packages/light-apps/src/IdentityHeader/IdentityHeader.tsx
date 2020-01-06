@@ -5,12 +5,10 @@
 import {
   Balance,
   CopyButton,
-  FadedText,
   Icon,
   InputAddress,
   Margin,
-  Menu,
-  SubHeader,
+  Menu
 } from '@substrate/ui-components';
 import React from 'react';
 import { Link, Route, RouteComponentProps, Switch } from 'react-router-dom';
@@ -39,13 +37,21 @@ export function IdentityHeader(props: Props): React.ReactElement {
 
   const renderPrimaryMenu = (): React.ReactElement => {
     const activeTab = location.pathname.split('/')[1];
-
+  
     const navToAccounts = (): void => {
       history.push(`/manageAccounts/${currentAccount}`);
     };
 
+    const navToAddAccount = (): void => {
+      history.push(`/accounts/${currentAccount}/add/generate`);
+    }
+
     const navToManageAddressBook = (): void => {
       history.push(`/addresses/${currentAccount}`);
+    };
+
+    const navToAddAddress = (): void => {
+      history.push(`/addresses/${currentAccount}/add`);
     };
 
     return (
@@ -64,20 +70,14 @@ export function IdentityHeader(props: Props): React.ReactElement {
               <Margin left='small' />
               <Icon color='black' name='id card' />
             </Menu.Item>
-            <Menu.Item>
-              <Link to={`/accounts/${currentAccount}/add`}>
-                Add an Account <Icon name='plus' />
-              </Link>
-            </Menu.Item>
+            <Menu.Item active={activeTab === 'accounts'} onClick={navToAddAccount}>Add an Account <Icon name='plus' /></Menu.Item>
             <Menu.Item active={activeTab === 'addresses'} onClick={navToManageAddressBook}>
               Address Book
               <Margin left='small' />
               <Icon color='black' name='id card' />
             </Menu.Item>
-            <Menu.Item>
-              <Link to={`/addresses/add`}>
+            <Menu.Item active={activeTab === 'addresses'} onClick={navToAddAddress}>
                 Add an Address <Icon name='plus' />
-              </Link>
             </Menu.Item>
           </Route>
         </Switch>

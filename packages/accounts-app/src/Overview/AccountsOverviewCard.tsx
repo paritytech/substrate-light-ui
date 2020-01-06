@@ -173,6 +173,8 @@ export function AccountsOverviewCard(props: Props): React.ReactElement {
                 address={address}
                 bondingPair={bondingPair && bondingPair.toString()}
                 detailed
+                alignItems='center'
+                justifyContent='center'
                 name={name}
                 orientation='horizontal'
                 size='small'

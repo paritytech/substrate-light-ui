@@ -23,10 +23,10 @@ export function Edit(props: Props): React.ReactElement {
   } = props;
   return (
     <Stacked>
-      <SubHeader>Rename this address in your address book.</SubHeader>
+      <SubHeader>Edit Address</SubHeader>
       <Margin top />
       <Link to={`/addresses/${currentAccount}`}>Add a New Address</Link>
-      <SaveAddress addressDisabled defaultAddress={editAddress} />
+      <SaveAddress addressDisabled />
     </Stacked>
   );
 }

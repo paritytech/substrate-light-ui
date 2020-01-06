@@ -36,8 +36,8 @@ export const Content = (): React.ReactElement => {
           <Switch>
             <Route path='/addresses/:currentAccount' component={ManageAddresses} />
             <Route path='/manageAccounts/:currentAccount' component={AccountsOverview} />
-            <Route path='/accounts/add' component={AddAccount} />
-            <Redirect exact from='/' to='/accounts/add/' />
+            <Route path='/accounts/:currentAcccount/add' component={AddAccount} />
+            <Redirect exact from='/' to='/accounts/:currentAccount/add' />
             <Redirect to='/' />
           </Switch>
           <TxQueueNotifier />

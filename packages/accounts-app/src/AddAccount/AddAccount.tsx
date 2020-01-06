@@ -2,10 +2,9 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { WalletCard } from '@substrate/ui-components';
+import { Header, WrapperDiv } from '@substrate/ui-components';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { Container } from 'semantic-ui-react';
 
 import { Create } from './Create/CreateAccount';
 import { ImportWithJson } from './ImportWithJson';
@@ -29,15 +28,13 @@ import { ImportWithPhrase } from './ImportWithPhrase';
 
 export function AddAccount(): React.ReactElement {
   return (
-    <Container>
-      <WalletCard header='Add an Account' height='100%'>
-        <Switch>
-          <Route path='/accounts/add/generate' component={Create} />
-          <Route path='/accounts/add/json' component={ImportWithJson} />
-          <Route path='/accounts/add/phrase' component={ImportWithPhrase} />
-          <Redirect to='/accounts/add/generate' />
-        </Switch>
-      </WalletCard>
-    </Container>
+    <WrapperDiv>
+      <Header>Add an Account</Header>
+      <Switch>
+        <Route path='/accounts/:currentAccount/add/generate' component={Create} />
+        <Route path='/accounts/:currentAccount/add/json' component={ImportWithJson} />
+        <Route path='/accounts/:currentAccount/add/phrase' component={ImportWithPhrase} />
+      </Switch>
+    </WrapperDiv>
   );
 }
