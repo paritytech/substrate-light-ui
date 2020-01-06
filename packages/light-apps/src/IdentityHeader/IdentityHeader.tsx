@@ -11,7 +11,7 @@ import {
   Menu
 } from '@substrate/ui-components';
 import React from 'react';
-import { Link, Route, RouteComponentProps, Switch } from 'react-router-dom';
+import { Route, RouteComponentProps, Switch } from 'react-router-dom';
 
 interface MatchParams {
   currentAccount: string;
@@ -29,6 +29,9 @@ export function IdentityHeader(props: Props): React.ReactElement {
   } = props;
 
   const currentPath = location.pathname.split('/')[1];
+
+  console.log('path -> ', currentPath);
+  console.log('account => ', currentAccount);
 
   // Change account
   const changeCurrentAccount = (account: string): void => {
@@ -55,7 +58,7 @@ export function IdentityHeader(props: Props): React.ReactElement {
     };
 
     return (
-      <Menu stackable widths={5} fitted>
+      <Menu stackable widths={6}>
         <Switch>
           <Route path={['/manageAccounts', '/addresses', '/accounts/:currentAccount']}>
             <Menu.Item>
@@ -71,12 +74,12 @@ export function IdentityHeader(props: Props): React.ReactElement {
               <Icon color='black' name='id card' />
             </Menu.Item>
             <Menu.Item active={activeTab === 'accounts'} onClick={navToAddAccount}>Add an Account <Icon name='plus' /></Menu.Item>
-            <Menu.Item active={activeTab === 'addresses'} onClick={navToManageAddressBook}>
+            <Menu.Item active={activeTab === 'addresses' && !location.pathname.split('/')[3]} onClick={navToManageAddressBook}>
               Address Book
               <Margin left='small' />
               <Icon color='black' name='id card' />
             </Menu.Item>
-            <Menu.Item active={activeTab === 'addresses'} onClick={navToAddAddress}>
+            <Menu.Item active={activeTab === 'addresses' && location.pathname.split('/')[3] === 'add'} onClick={navToAddAddress}>
                 Add an Address <Icon name='plus' />
             </Menu.Item>
           </Route>
