@@ -25,19 +25,12 @@ const MENUS = [
   },
 ];
 
-interface MatchParams {
-  currentAccount: string;
-}
-
-type Props = RouteComponentProps<MatchParams>;
+type Props = RouteComponentProps;
 
 export function AddAccount(props: Props): React.ReactElement {
-  const { history, location, match: {
-    params: {
-      currentAccount
-    }
-  } } = props;
+  const { history, location } = props;
 
+  const currentAccount = location.pathname.split('/')[2];
   const activeTab = location.pathname.split('/')[4];
 
   const navToCreate = () => {

@@ -158,7 +158,7 @@ export function AccountsOverviewCard(props: Props): React.ReactElement {
 
   return (
     <>
-      <Card>
+      <Card height='100%'>
         {confirmScreen ? (
           <>
             <Card.Content>
@@ -172,7 +172,6 @@ export function AccountsOverviewCard(props: Props): React.ReactElement {
               <AddressSummary
                 address={address}
                 bondingPair={bondingPair && bondingPair.toString()}
-                detailed
                 alignItems='center'
                 justifyContent='center'
                 name={name}

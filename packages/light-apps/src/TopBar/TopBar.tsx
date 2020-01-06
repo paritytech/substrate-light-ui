@@ -4,7 +4,7 @@
 
 import substrateLogo from '@polkadot/ui-assets/polkadot-circle.svg';
 import { ApiContext } from '@substrate/context';
-import { FadedText, Margin, Stacked } from '@substrate/ui-components';
+import { FadedText, Margin, Stacked, StackedHorizontal } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -32,13 +32,15 @@ export function TopBar(): React.ReactElement {
 
   return (
     <header>
-      <Stacked justifyContent='space-between' alignItems='center'>
+      <StackedHorizontal justifyContent='space-between' alignItems='center'>
         <Link to='/'><img alt='Polkadot Logo' src={substrateLogo} width={50} /></Link>
         <FadedText>{name} {version}</FadedText>
-        <NodeStatus isSyncing={isSyncing} />
-        <Margin top />
-        <BlockCounter blockNumber={blockNumber} chainName={chain} />
-      </Stacked>
+        <Stacked>
+          <NodeStatus isSyncing={isSyncing} />
+          <BlockCounter blockNumber={blockNumber} chainName={chain} />
+        </Stacked>
+      </StackedHorizontal>
+      <Margin bottom />
     </header>
   );
 }

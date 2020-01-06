@@ -30,9 +30,6 @@ export function IdentityHeader(props: Props): React.ReactElement {
 
   const currentPath = location.pathname.split('/')[1];
 
-  console.log('path -> ', currentPath);
-  console.log('account => ', currentAccount);
-
   // Change account
   const changeCurrentAccount = (account: string): void => {
     history.push(`/${currentPath}/${account}`);

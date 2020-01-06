@@ -4,7 +4,7 @@
 
 import { AccountsOverview, AddAccount, KeyringContext, ManageAddresses } from '@substrate/accounts-app';
 import { Transfer } from '@substrate/transfer-app';
-import { Container, Sidebar } from '@substrate/ui-components';
+import { Fab } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 
@@ -27,23 +27,20 @@ export const Content = (): React.ReactElement => {
 
   return (
     <>
-      <Sidebar.Pushable as={Container} raised='true'>
-        <Sidebar.Pusher>
-          <Route
-            path={['/accounts/:currentAccount/add', '/addresses/:currentAccount', '/manageAccounts/:currentAccount', '/accounts/add']}
-            component={IdentityHeader}
-          />
-          <Switch>
-            <Route path='/addresses/:currentAccount' component={ManageAddresses} />
-            <Route path='/manageAccounts/:currentAccount' component={AccountsOverview} />
-            <Route path='/accounts/:currentAcccount/add' component={AddAccount} />
-            {/* { defaultAccount && <Redirect exact from='/' to='/accounts/:currentAccount/add' /> } */}
-            <Redirect to='/' />
-          </Switch>
-          <TxQueueNotifier />
-          {defaultAccount && <Transfer currentAccount={defaultAccount} />}
-        </Sidebar.Pusher>
-      </Sidebar.Pushable>
+      <Route
+        path={['/accounts/:currentAccount/add', '/addresses/:currentAccount', '/manageAccounts/:currentAccount', '/accounts/add', '/transfer/:currentAccount']}
+        component={IdentityHeader}
+      />
+      <Switch>
+        <Route path='/addresses/:currentAccount' component={ManageAddresses} />
+        <Route path='/manageAccounts/:currentAccount' component={AccountsOverview} />
+        <Route path='/accounts/:currentAccount/add' component={AddAccount} />
+        <Route path='/transfer/:currentAccount' component={Transfer} />
+        <Redirect to='/' />
+      </Switch>
+      <Route path={['/accounts/:currentAccount/add', '/addresses/:currentAccount', '/manageAccounts/:currentAccount', '/accounts/add']}
+        render={(props) => <Fab onClick={() => props.history.push(`/transfer/${defaultAccount}`)} type='send'/>} />
+      <TxQueueNotifier />
       <Signer />
     </>
   );

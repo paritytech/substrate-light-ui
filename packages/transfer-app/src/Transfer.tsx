@@ -6,28 +6,26 @@ import accountObservable from '@polkadot/ui-keyring/observable/accounts';
 import addressObservable from '@polkadot/ui-keyring/observable/addresses';
 import { SingleAddress } from '@polkadot/ui-keyring/observable/types';
 import { TxQueueContext } from '@substrate/context';
-import { Fab, Header, Menu, Sidebar, WithSpaceAround } from '@substrate/ui-components';
+import { Header, WithSpaceAround } from '@substrate/ui-components';
 import { findFirst, flatten } from 'fp-ts/lib/Array';
 import React, { useContext, useEffect, useState } from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { SendBalance } from './SendBalance';
 import { TxQueue } from './TxQueue';
 
-interface Props {
+interface MatchParams {
   currentAccount: string;
 }
 
+type Props = RouteComponentProps<MatchParams>;
+
 export function Transfer(props: Props): React.ReactElement {
-  const { currentAccount } = props;
+  const { match: { params: { currentAccount } } } = props;
   const { txQueue } = useContext(TxQueueContext);
   const [allAddresses, setAllAddresses] = useState<SingleAddress[]>([]);
-  const [visible, setVisible] = useState<boolean>(false);
-
-  useEffect(() => {
-    txQueue.length ? setVisible(true) : setVisible(false);
-  }, [txQueue]);
 
   useEffect(() => {
     const allAddressessub = combineLatest([
@@ -54,30 +52,13 @@ export function Transfer(props: Props): React.ReactElement {
     .getOrElse(currentAccount);
 
   return (
-    <>
-      {visible ? (
-        <Sidebar
-          as={Menu}
-          animation='overlay'
-          direction='right'
-          icon='labeled'
-          onHide={(): void => setVisible(false)}
-          vertical
-          visible={visible}
-          width='very wide'
-        >
-          <WithSpaceAround>
-            <Header>Send Funds</Header>
-            {txQueue.length ? (
-              <TxQueue currentAccount={currentAccount} />
-            ) : (
-              <SendBalance currentAccount={currentAccount} recipientAddress={firstDifferentAddress} />
-            )}
-          </WithSpaceAround>
-        </Sidebar>
+    <WithSpaceAround>
+      <Header>Send Funds</Header>
+      {txQueue.length ? (
+        <TxQueue currentAccount={currentAccount} />
       ) : (
-        <Fab onClick={(): void => setVisible(true)} type='send' />
+        <SendBalance currentAccount={currentAccount} recipientAddress={firstDifferentAddress} />
       )}
-    </>
+    </WithSpaceAround>
   );
 }

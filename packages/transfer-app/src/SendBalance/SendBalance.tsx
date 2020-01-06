@@ -138,7 +138,7 @@ export function SendBalance(props: Props): React.ReactElement {
           <InputAddress
             isDisabled
             onChangeAddress={changeCurrentAccount}
-            type='account'
+            type='accounts'
             value={sender}
             withLabel={false}
           />
@@ -168,7 +168,7 @@ export function SendBalance(props: Props): React.ReactElement {
           <InputAddress
             label={undefined}
             onChangeAddress={changeRecipientAddress}
-            type='all'
+            type={['accounts', 'addresses']}
             value={receiver}
             withLabel={false}
           />
