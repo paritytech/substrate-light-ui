@@ -16,6 +16,6 @@
     "@substrate/accounts-app": "^0.2.0",
     "@substrate/context": "^0.3.6",
     "@substrate/ui-components": "^0.3.6",
-    "fp-ts": "1.18.1"
+    "fp-ts": "2.3.1"
   }
 }
