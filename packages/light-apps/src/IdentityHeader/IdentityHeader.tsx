@@ -5,7 +5,6 @@
 import {
   Balance,
   CopyButton,
-  Dropdown,
   FadedText,
   Icon,
   InputAddress,
@@ -15,10 +14,6 @@ import {
 } from '@substrate/ui-components';
 import React from 'react';
 import { Link, Route, RouteComponentProps, Switch } from 'react-router-dom';
-
-import { Backup } from './Backup';
-import { Forget } from './Forget';
-import { Rename } from './Rename';
 
 interface MatchParams {
   currentAccount: string;
@@ -79,21 +74,6 @@ export function IdentityHeader(props: Props): React.ReactElement {
               <Margin left='small' />
               <Icon color='black' name='id card' />
             </Menu.Item>
-            <Menu.Menu position='right'>
-              <Dropdown
-                icon='setting'
-                position='right'
-                item
-                pointing
-                text='Manage Account &nbsp;' /* TODO add margin to the icon instead */
-              >
-                <Dropdown.Menu>
-                  <Rename currentAccount={currentAccount} />
-                  <Backup currentAccount={currentAccount} />
-                  <Forget currentAccount={currentAccount} history={history} />
-                </Dropdown.Menu>
-              </Dropdown>
-            </Menu.Menu>
           </Route>
           <Route path='/accounts/:currentAccount/add'>
             <Menu.Item>
