@@ -32,8 +32,8 @@
     "package:extension": "yarn build:extension && lerna run package --scope=@substrate/extension-app",
     "run:electron": "yarn build:electron && lerna run electron --scope=@substrate/electron-app",
     "start:ui": "./scripts/prestart.sh && lerna exec yarn start --parallel --scope=@substrate/accounts-app --scope=@substrate/transfer-app --scope=@substrate/light-apps",
-    "start:electron": "lerna run start --scope=@substrate/electron-app",
-    "start:extension": "lerna run start --scope=@substrate/extension-app",
+    "start:electron": "concurrently \"yarn:start:ui\" \"lerna run start --scope=@substrate/electron-app\"",
+    "start:extension": "concurrently \"yarn:start:ui\" \"lerna run start --scope=@substrate/extension-app\"",
     "test": "CI=true lerna run test --parallel"
   },
   "devDependencies": {

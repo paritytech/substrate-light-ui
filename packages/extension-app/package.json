@@ -7,11 +7,12 @@
   "private": true,
   "repository": "https://github.com/paritytech/substrate-light-ui.git",
   "scripts": {
-    "build": "webpack",
+    "build": "NODE_ENV=production webpack",
     "package": "(rm -rf ./master-build.zip && yarn build && cd packages/extension/build && zip -r -FS ../../../master-build.zip *) && (rm -rf ./master-src.zip && zip -r -x '*build*' -x '*node_modules*' -FS ./master-src.zip packages .babelrc.js .editorconfig .eslintignore .eslintrc.js babel.config.js CHANGELOG.md CONTRIBUTING.md jest.config.js lerna.json LICENSE package.json README.md tsconfig.json yarn.lock)",
-    "start": "yarn build --watch"
+    "start": "webpack --watch"
   },
   "devDependencies": {
+    "copy-webpack-plugin": "^5.1.1",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
     "webpack-extension-manifest-plugin": "^0.5.0"

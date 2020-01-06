@@ -60,6 +60,19 @@ The building might take some time, but you should see an Electron application af
 yarn build:extension
 ```
 
+Then install the extension
+
+- Chrome:
+  - go to `chrome://extensions/`
+  - ensure you have the Development flag set
+  - "Load unpacked" and point to `packages/extension-app/build`
+  - if developing, after making changes - refresh the extension
+- Firefox:
+  - go to `about:debugging#addons`
+  - check "Enable add-on debugging"
+  - click on "Load Temporary Add-on" and point to `packages/extension-app/build/manifest.json`
+  - if developing, after making changes - reload the extension
+
 ## Contributing
 
 We welcome any and all contributions whether it is in the form of raising an issue, filing a PR, or participating in the discussions. Please read the [Contributing Docs](CONTRIBUTING.md) first.
