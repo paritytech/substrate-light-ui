@@ -2,59 +2,49 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import accounts from '@polkadot/ui-keyring/observable/accounts';
-import { SingleAddress } from '@polkadot/ui-keyring/observable/types';
-import { Accounts } from '@substrate/accounts-app';
-import { ApiContext } from '@substrate/context';
+import { AccountsOverview, AddAccount, KeyringContext, ManageAddresses } from '@substrate/accounts-app';
 import { Transfer } from '@substrate/transfer-app';
 import { Container, Sidebar } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 
-import { AddAccount } from '../AddAccount';
 import { IdentityHeader } from '../IdentityHeader';
-import { ManageAddresses } from '../ManageAddresses';
 import { Signer } from '../Signer';
 import { TxQueueNotifier } from '../TxQueueNotifier';
 
-export function Content(): React.ReactElement {
-  const { api } = useContext(ApiContext);
-
-  const [defaultAccount, setDefaultAccount] = useState<SingleAddress | undefined>(undefined);
+export const Content = (): React.ReactElement => {
+  const history = useHistory();
+  const { allAccounts } = useContext(KeyringContext);
+  const [defaultAccount, setDefaultAccount] = useState<string>();
 
   useEffect(() => {
-    const accountsSub = accounts.subject.subscribe(accounts => setDefaultAccount(accounts[Object.keys(accounts)[0]]));
+    allAccounts && setDefaultAccount(allAccounts[0]);
 
-    return (): void => accountsSub.unsubscribe();
-  }, [api]);
+    if (defaultAccount) {
+      history.push(`/manageAccounts/${defaultAccount}`);
+    }
+  }, [allAccounts, defaultAccount, history]);
 
   return (
     <>
-      <Sidebar.Pushable as={Container} raised>
+      <Sidebar.Pushable as={Container} raised='true'>
         <Sidebar.Pusher>
           <Route
-            path={[
-              '/accounts/:currentAccount/add',
-              '/addresses/:currentAccount',
-              '/governance/:currentAccount',
-              '/manageAccounts/:currentAccount',
-            ]}
+            path={['/accounts/:currentAccount/add', '/addresses/:currentAccount', '/manageAccounts/:currentAccount']}
             component={IdentityHeader}
           />
           <Switch>
             <Route path='/addresses/:currentAccount' component={ManageAddresses} />
-            <Route path='/manageAccounts/:currentAccount' component={Accounts} />
+            <Route path='/manageAccounts/:currentAccount' component={AccountsOverview} />
             <Route path='/accounts/add' component={AddAccount} />
-            {!defaultAccount && <Redirect exact from='/' to='/accounts/add/' />}
-            {defaultAccount && <Redirect exact from='/' to={`/manageAccounts/${defaultAccount.json.address}`} />}
-            {defaultAccount && <Redirect exact from='/governance' to={`/governance/${defaultAccount.json.address}`} />}
+            <Redirect exact from='/' to='/accounts/add/' />
             <Redirect to='/' />
           </Switch>
           <TxQueueNotifier />
-          {defaultAccount && <Transfer currentAccount={defaultAccount.json.address} />}
+          {defaultAccount && <Transfer currentAccount={defaultAccount} />}
         </Sidebar.Pusher>
       </Sidebar.Pushable>
       <Signer />
     </>
   );
-}
+};

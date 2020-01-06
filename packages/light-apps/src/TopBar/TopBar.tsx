@@ -4,7 +4,7 @@
 
 import substrateLogo from '@polkadot/ui-assets/polkadot-circle.svg';
 import { ApiContext } from '@substrate/context';
-import { FadedText, FlexItem, Margin, StackedHorizontal } from '@substrate/ui-components';
+import { FadedText, FlexItem, Margin, Stacked } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -33,7 +33,7 @@ export function TopBar(): React.ReactElement {
   return (
     <header>
       <Margin top='big' />
-      <StackedHorizontal justifyContent='space-between' alignItems='flex-end'>
+      <Stacked width='100%' justifyContent='space-between' alignItems='center'>
         <FlexItem>
           <NodeStatus isSyncing={isSyncing} />
         </FlexItem>
@@ -48,7 +48,7 @@ export function TopBar(): React.ReactElement {
         <FlexItem>
           <BlockCounter blockNumber={blockNumber} chainName={chain} />
         </FlexItem>
-      </StackedHorizontal>
+      </Stacked>
     </header>
   );
 }

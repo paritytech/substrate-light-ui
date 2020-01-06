@@ -39,6 +39,7 @@ export function SendBalance(props: Props): React.ReactElement {
   const [amountAsString, setAmountAsString] = useState('');
   const [accountNonce, setAccountNonce] = useState<Index>();
   const [currentBalance, setCurrentBalance] = useState<DerivedBalances>();
+  const [extrinsic, setExtrinsic] = useState();
   const [fees, setFees] = useState<DerivedFees>();
   const [receiver, setReceiver] = useState<string>();
   const [recipientBalance, setRecipientBalance] = useState<DerivedBalances>();
@@ -46,8 +47,6 @@ export function SendBalance(props: Props): React.ReactElement {
   const [validationResult, setValidationResult] = useState<Either<Errors, AllExtrinsicData>>(
     left({ fees: 'fetching fees...' })
   );
-
-  const extrinsic = api.tx.balances.transfer(recipientAddress, amountAsString);
 
   // Subscribe to sender's & receivers's balances, nonce and some fees
   useEffect(() => {
@@ -57,6 +56,9 @@ export function SendBalance(props: Props): React.ReactElement {
 
     setSender(currentAccount);
     setReceiver(recipientAddress);
+
+    const _extrinsic = api.tx.balances.transfer(recipientAddress, amountAsString);
+    setExtrinsic(_extrinsic);
 
     const subscription = zip(
       api.derive.balances.fees(),
@@ -73,7 +75,7 @@ export function SendBalance(props: Props): React.ReactElement {
       });
 
     return (): void => subscription.unsubscribe();
-  }, [api.derive.balances, api.query.system, currentAccount, recipientAddress]);
+  }, [amountAsString, api, currentAccount, recipientAddress]);
 
   useEffect(() => {
     const values = validate({

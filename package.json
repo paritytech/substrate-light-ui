@@ -31,25 +31,29 @@
     "preelectron": "yarn build",
     "prepackage": "yarn build",
     "prestart": "./scripts/prestart.sh",
-    "start": "lerna exec yarn start --parallel",
+    "start": "lerna exec yarn start --parallel --scope=@substrate/accounts-app --scope=@substrate/transfer-app --scope=@substrate/light-apps",
     "storybook": "cd packages/ui-components && yarn storybook",
     "storybook-build": "cd packages/ui-components && yarn build-storybook",
     "test": "CI=true lerna run test --parallel"
   },
   "devDependencies": {
-    "@polkadot/dev": "^0.31.1",
+    "@polkadot/dev": "^0.32.13",
     "@polkadot/extension-dapp": "^0.14.1",
     "eslint-config-prettier": "^6.7.0",
     "eslint-plugin-prettier": "^3.1.1",
-    "eslint-plugin-simple-import-sort": "^4.0.0",
+    "eslint-plugin-simple-import-sort": "^5.0.0",
     "ncp": "^2.0.0",
     "node-fetch": "^2.5.0",
     "prettier": "^1.19.1",
-    "semver": "^6.0.0",
+    "semver": "^7.1.1",
     "typescript": "^3.7.2"
   },
   "resolutions": {
+    "react": "16.12",
     "@types/styled-components": "4.1.8",
     "typescript": "^3.7.2"
+  },
+  "dependencies": {
+    "@types/styled-components": "4.4.1"
   }
 }

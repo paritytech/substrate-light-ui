@@ -4,7 +4,7 @@
 
 import { AccountId } from '@polkadot/types/interfaces';
 import { ApiContext, StakingContext } from '@substrate/context';
-import { AddressSummary, Grid, Margin, Stacked, SubHeader, WithSpace } from '@substrate/ui-components';
+import { AddressSummary, Margin, Stacked, SubHeader, WithSpace } from '@substrate/ui-components';
 import { fromNullable } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
@@ -78,13 +78,11 @@ export function AccountOverviewDetailed(props: Props): React.ReactElement {
               )}
           </WithSpace>
           <WithSpace>
-            <Grid.Row>
-              <SubHeader>Reward Destination: </SubHeader>
-              {fromNullable(stakingInfo)
-                .mapNullable(({ rewardDestination }) => rewardDestination)
-                .map(rewardDestination => rewardDestinationOptions[rewardDestination.toNumber()])
-                .getOrElse('Reward Destination Not Set...')}
-            </Grid.Row>
+            <SubHeader>Reward Destination: </SubHeader>
+            {fromNullable(stakingInfo)
+              .mapNullable(({ rewardDestination }) => rewardDestination)
+              .map(rewardDestination => rewardDestinationOptions[rewardDestination.toNumber()])
+              .getOrElse('Reward Destination Not Set...')}
           </WithSpace>
         </Card.Content>
       </Card>
@@ -137,5 +135,5 @@ export function AccountOverviewDetailed(props: Props): React.ReactElement {
     );
   };
 
-  return <Grid columns='16'>{renderGeneral()}</Grid>;
+  return renderGeneral();
 }

@@ -3,13 +3,13 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { mnemonicGenerate } from '@polkadot/util-crypto';
-import { KeyringContext } from '@substrate/accounts-app';
 import { AddressSummary, Margin, SizeType, Stacked } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
 import { none, Option, some } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
+import { KeyringContext } from '../../KeyringContext';
 import { PhrasePartialRewriteError, Steps, TagOptions, Tags, UserInputError } from '../types';
 import { generateAddressFromMnemonic, getRandomInts, validateMeta, validateRewrite } from '../util';
 import { renderCopyStep, renderErrors, renderMetaStep, renderRewriteStep } from './subComponents';
@@ -35,10 +35,11 @@ function randomlyPickFour(phrase: string): Array<Array<string>> {
 }
 
 export function Create(props: Props): React.ReactElement {
-  const { identiconSize, location } = props;
+  const { location } = props;
 
-  const { keyring } = useContext(KeyringContext);
+  const { keyring, keyringReady } = useContext(KeyringContext);
 
+  const [address, setAddress] = useState();
   const [errors, setErrors] = useState<Option<Array<string>>>(none);
   const [mnemonic] = useState(mnemonicGenerate());
   const [name, setName] = useState('');
@@ -60,6 +61,13 @@ export function Create(props: Props): React.ReactElement {
   const [whichAccount, setWhichAccount] = useState();
 
   useEffect(() => {
+    if (keyringReady) {
+      const _address = generateAddressFromMnemonic(keyring, mnemonic);
+      setAddress(_address);
+    }
+  }, [keyring, keyringReady, mnemonic]);
+
+  useEffect(() => {
     // pick random four from the mnemonic to make sure user copied it right
     const randomFour = randomlyPickFour(mnemonic);
     const whichAccount = location.pathname.split('/')[2];
@@ -71,7 +79,6 @@ export function Create(props: Props): React.ReactElement {
     setRandomFourWords(randomFour);
   }, [location, mnemonic]);
 
-  const address = generateAddressFromMnemonic(keyring, mnemonic);
   const validation = validateMeta({ name, password, tags }, step, whichAccount);
 
   const handleSetFirstWord = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>): void => {
@@ -154,7 +161,7 @@ export function Create(props: Props): React.ReactElement {
 
   return (
     <Stacked>
-      <AddressSummary address={address} name={name} size={identiconSize} />
+      {keyringReady && <AddressSummary address={address} name={name} size='small' />}
       <Margin top />
       {step === 'copy'
         ? renderCopyStep({ mnemonic }, { goToNextStep })

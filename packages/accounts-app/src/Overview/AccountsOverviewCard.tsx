@@ -6,6 +6,7 @@ import { AccountId } from '@polkadot/types/interfaces';
 import { AlertsContext, ApiContext, handler, StakingContext } from '@substrate/context';
 import {
   AddressSummary,
+  Card,
   FadedText,
   Icon,
   Input,
@@ -21,7 +22,6 @@ import FileSaver from 'file-saver';
 import { fromNullable } from 'fp-ts/lib/Option';
 import H from 'history';
 import React, { useContext, useEffect, useState } from 'react';
-import Card from 'semantic-ui-react/dist/commonjs/views/Card';
 
 import { KeyringContext } from '../KeyringContext';
 
@@ -158,7 +158,7 @@ export function AccountsOverviewCard(props: Props): React.ReactElement {
 
   return (
     <>
-      <Card height='30rem'>
+      <Card>
         {confirmScreen ? (
           <>
             <Card.Content>
@@ -174,6 +174,7 @@ export function AccountsOverviewCard(props: Props): React.ReactElement {
                 bondingPair={bondingPair && bondingPair.toString()}
                 detailed
                 name={name}
+                orientation='horizontal'
                 size='small'
               />
               <Margin bottom />

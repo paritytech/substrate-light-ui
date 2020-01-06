@@ -2,8 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { KeyringJson } from '@polkadot/ui-keyring/types';
-import { KeyringContext } from '@substrate/accounts-app';
+import { KeyringAddress, KeyringJson } from '@polkadot/ui-keyring/types';
 import { AlertsContext, handler } from '@substrate/context';
 import {
   Dropdown,
@@ -18,6 +17,7 @@ import {
 } from '@substrate/ui-components';
 import React, { useContext, useState } from 'react';
 
+import { KeyringContext } from '../KeyringContext';
 import { TagOptions, Tags } from './types';
 
 type Step = 'upload' | 'password';
@@ -78,7 +78,8 @@ export function ImportWithJson(): React.ReactElement {
     try {
       const json = JSON.parse(jsonString);
 
-      const isAlreadyInKeyring = keyring.getAccounts().filter(account => account.address === json.address).length > 0;
+      const isAlreadyInKeyring =
+        keyring.getAccounts().filter((account: KeyringAddress) => account.address === json.address).length > 0;
 
       if (isAlreadyInKeyring) {
         setErrorText('You have already unlocked this account in your keyring!');

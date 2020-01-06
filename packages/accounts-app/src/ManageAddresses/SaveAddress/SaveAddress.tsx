@@ -4,11 +4,12 @@
 
 import { KeyringAddress } from '@polkadot/ui-keyring/types';
 import { isFunction } from '@polkadot/util';
-import { KeyringContext } from '@substrate/accounts-app';
 import { getKeyringAddress, handler } from '@substrate/context';
 import { ErrorText, Form, Input, Margin, NavButton, Stacked, SuccessText, WrapperDiv } from '@substrate/ui-components';
 import { Either } from 'fp-ts/lib/Either';
 import React, { useContext, useEffect, useState } from 'react';
+
+import { KeyringContext } from '../../KeyringContext';
 
 interface Props {
   addressDisabled?: boolean;
