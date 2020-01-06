@@ -6,6 +6,7 @@ import { AccountId } from '@polkadot/types/interfaces';
 import { AlertsContext, ApiContext, handler, StakingContext } from '@substrate/context';
 import {
   AddressSummary,
+  Card,
   FadedText,
   Icon,
   Input,
@@ -14,7 +15,6 @@ import {
   StackedHorizontal,
   StyledLinkButton,
   SubHeader,
-  WalletCard,
   WithSpaceAround,
   WithSpaceBetween,
 } from '@substrate/ui-components';
@@ -22,7 +22,6 @@ import FileSaver from 'file-saver';
 import { fromNullable } from 'fp-ts/lib/Option';
 import H from 'history';
 import React, { useContext, useEffect, useState } from 'react';
-import Card from 'semantic-ui-react/dist/commonjs/views/Card';
 
 import { KeyringContext } from '../KeyringContext';
 
@@ -156,7 +155,7 @@ export function AccountsOverviewCard(props: Props): React.ReactElement {
       </WithSpaceAround>
     );
   };
-``
+
   return (
     <>
       <Card>

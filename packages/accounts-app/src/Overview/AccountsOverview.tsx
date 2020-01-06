@@ -2,9 +2,9 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { WalletCard } from '@substrate/ui-components';
 import accountObservable from '@polkadot/ui-keyring/observable/accounts';
 import { SingleAddress } from '@polkadot/ui-keyring/observable/types';
+import { WalletCard } from '@substrate/ui-components';
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { map } from 'rxjs/operators';
@@ -26,10 +26,15 @@ export function AccountsOverview(props: Props): React.ReactElement {
   }, []);
 
   return (
-    <WalletCard header='Accounts' height='100%' margin='small'>
-      {allUnlockedAccounts.map(account => {
+    <WalletCard header='Accounts' height='100%'>
+      {allUnlockedAccounts.map((account, i) => {
         return (
-            <AccountsOverviewCard address={account.json.address} name={account.json.meta.name} history={history} />
+          <AccountsOverviewCard
+            address={account.json.address}
+            name={account.json.meta.name}
+            history={history}
+            key={i}
+          />
         );
       })}
     </WalletCard>

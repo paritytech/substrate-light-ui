@@ -2,8 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import accountObservable from '@polkadot/ui-keyring/observable/accounts';
 import keyring from '@polkadot/ui-keyring';
+import accountObservable from '@polkadot/ui-keyring/observable/accounts';
 import { KeyringOptions } from '@polkadot/ui-keyring/types';
 import { System } from '@substrate/context';
 import React, { useEffect, useState } from 'react';
@@ -15,10 +15,10 @@ interface KeyringContext {
 }
 
 interface KeyringContextProps {
-  api?: any,
-  children: React.ReactNode,
-  isReady?: boolean,
-  system?: System
+  api?: any;
+  children: React.ReactNode;
+  isReady?: boolean;
+  system?: System;
 }
 
 export const KeyringContext = React.createContext({} as KeyringContext);
@@ -28,7 +28,7 @@ export const KeyringContext = React.createContext({} as KeyringContext);
 const DEFAULT_SS58_PREFIX = 42;
 
 export function KeyringContextProvider(props: KeyringContextProps): React.ReactElement {
-  const { api, children, isReady, system } = props;
+  const { api, children, system } = props;
   const [keyringReady, setKeyringReady] = useState(false);
   const [allAccounts, setAllAccounts] = useState<string[] | undefined>();
 
@@ -41,10 +41,10 @@ export function KeyringContextProvider(props: KeyringContextProps): React.ReactE
       } as KeyringOptions);
       const accountsSub = accountObservable.subject.subscribe(accounts => {
         const allAccounts = accounts ? Object.keys(accounts) : [];
-  
+
         setAllAccounts(allAccounts);
       });
-      
+
       setKeyringReady(true);
 
       return (): void => accountsSub.unsubscribe();
@@ -52,12 +52,14 @@ export function KeyringContextProvider(props: KeyringContextProps): React.ReactE
   }, [api, system]);
 
   return (
-    <KeyringContext.Provider 
+    <KeyringContext.Provider
       value={{
         allAccounts,
         keyring,
-        keyringReady }}>
-          {children}
+        keyringReady,
+      }}
+    >
+      {children}
     </KeyringContext.Provider>
   );
 }

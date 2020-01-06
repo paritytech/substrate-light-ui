@@ -35,7 +35,7 @@ function randomlyPickFour(phrase: string): Array<Array<string>> {
 }
 
 export function Create(props: Props): React.ReactElement {
-  const { identiconSize, location } = props;
+  const { location } = props;
 
   const { keyring, keyringReady } = useContext(KeyringContext);
 
@@ -65,7 +65,7 @@ export function Create(props: Props): React.ReactElement {
       const _address = generateAddressFromMnemonic(keyring, mnemonic);
       setAddress(_address);
     }
-  }, [keyringReady])
+  }, [keyring, keyringReady, mnemonic]);
 
   useEffect(() => {
     // pick random four from the mnemonic to make sure user copied it right

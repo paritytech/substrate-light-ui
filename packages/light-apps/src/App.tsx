@@ -31,7 +31,7 @@ export function App(): React.ReactElement {
             <>
               <TopBar />
               <Content />
-            </>    
+            </>
           </ContextGate>
           <Alerts />
         </FixedWidthContainer>

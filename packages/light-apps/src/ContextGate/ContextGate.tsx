@@ -5,8 +5,8 @@
 import { KeyringContextProvider } from '@substrate/accounts-app';
 import {
   AlertsContextProvider,
-  ApiContextProvider,
   ApiContext,
+  ApiContextProvider,
   ApiContextType,
   StakingContextProvider,
   TxQueueContextProvider,
@@ -22,20 +22,19 @@ export function ContextGate(props: { children: React.ReactNode }): React.ReactEl
       <TxQueueContextProvider>
         <ApiContextProvider loading={<Loading active>Connecting to the node...</Loading>}>
           <ApiContext.Consumer>
-              {({ api, isReady, system }: Partial<ApiContextType>): React.ReactElement | boolean | undefined => {
-                return api && isReady && system && (
+            {({ api, isReady, system }: Partial<ApiContextType>): React.ReactElement | boolean | undefined => {
+              return (
+                api &&
+                isReady &&
+                system && (
                   <StakingContextProvider>
-                    <KeyringContextProvider
-                      api={api}
-                      isReady={isReady}
-                      system={system}
-                      >
+                    <KeyringContextProvider api={api} isReady={isReady} system={system}>
                       {children}
                     </KeyringContextProvider>
                   </StakingContextProvider>
                 )
-              }
-            }
+              );
+            }}
           </ApiContext.Consumer>
         </ApiContextProvider>
       </TxQueueContextProvider>

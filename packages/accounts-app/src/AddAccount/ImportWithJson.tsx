@@ -78,7 +78,8 @@ export function ImportWithJson(): React.ReactElement {
     try {
       const json = JSON.parse(jsonString);
 
-      const isAlreadyInKeyring = keyring.getAccounts().filter((account: KeyringAddress) => account.address === json.address).length > 0;
+      const isAlreadyInKeyring =
+        keyring.getAccounts().filter((account: KeyringAddress) => account.address === json.address).length > 0;
 
       if (isAlreadyInKeyring) {
         setErrorText('You have already unlocked this account in your keyring!');

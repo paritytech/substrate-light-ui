@@ -75,7 +75,7 @@ export function SendBalance(props: Props): React.ReactElement {
       });
 
     return (): void => subscription.unsubscribe();
-  }, [api, currentAccount, recipientAddress]);
+  }, [amountAsString, api, currentAccount, recipientAddress]);
 
   useEffect(() => {
     const values = validate({

@@ -119,10 +119,7 @@ export function IdentityHeader(props: Props): React.ReactElement {
     );
   };
 
-  const renderHeader = (): React.ReactElement => (
-    renderPrimaryMenu()
-
-  );
+  const renderHeader = (): React.ReactElement => renderPrimaryMenu();
 
   return renderHeader();
 }
