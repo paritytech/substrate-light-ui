@@ -11,7 +11,6 @@ import {
   InputAddress,
   Margin,
   Menu,
-  StackedHorizontal,
   SubHeader,
 } from '@substrate/ui-components';
 import React from 'react';
@@ -44,23 +43,41 @@ export function IdentityHeader(props: Props): React.ReactElement {
   };
 
   const renderPrimaryMenu = (): React.ReactElement => {
+    const activeTab = location.pathname.split('/')[1];
+
+    const navToAccounts = (): void => {
+      history.push(`/manageAccounts/${currentAccount}`);
+    };
+
+    const navToManageAddressBook = (): void => {
+      history.push(`/addresses/${currentAccount}`);
+    };
+
     return (
-      <Menu stackable centered widths={5} fluid>
+      <Menu stackable widths={5} fitted>
         <Switch>
-          <Route path={['/manageAccounts']}>
-            {/* <Menu.Item fitted>
-              <StackedHorizontal>
-                <CopyButton value={currentAccount} />
-              </StackedHorizontal>
-            </Menu.Item> */}
+          <Route path={['/manageAccounts', '/addresses']}>
             <Menu.Item>
               <InputAddress fluid onChangeAddress={changeCurrentAccount} value={currentAccount} />
+              <CopyButton value={currentAccount} />
+            </Menu.Item>
+            <Menu.Item>
               <Balance address={currentAccount} fontSize='medium' />
             </Menu.Item>
             <Menu.Item>
               <Link to={`/accounts/${currentAccount}/add`}>
                 Add an Account <Icon name='plus' />
               </Link>
+            </Menu.Item>
+            <Menu.Item active={activeTab === 'addresses'} onClick={navToManageAddressBook}>
+              Address Book
+              <Margin left='small' />
+              <Icon color='black' name='id card' />
+            </Menu.Item>
+            <Menu.Item active={activeTab === 'manageAccounts'} onClick={navToAccounts}>
+              Accounts
+              <Margin left='small' />
+              <Icon color='black' name='id card' />
             </Menu.Item>
             <Menu.Menu position='right'>
               <Dropdown
@@ -77,14 +94,6 @@ export function IdentityHeader(props: Props): React.ReactElement {
                 </Dropdown.Menu>
               </Dropdown>
             </Menu.Menu>
-          </Route>
-          <Route path='/addresses'>
-            <Menu.Item>
-              <FadedText>Manage Address Book</FadedText>
-            </Menu.Item>
-            <Menu.Item>
-              <SubHeader>Inspect the status of any identity and name it for later use</SubHeader>
-            </Menu.Item>
           </Route>
           <Route path='/accounts/:currentAccount/add'>
             <Menu.Item>
@@ -110,41 +119,9 @@ export function IdentityHeader(props: Props): React.ReactElement {
     );
   };
 
-  const renderSecondaryMenu = (): React.ReactElement => {
-    const activeTab = location.pathname.split('/')[1];
-
-    const navToAccounts = (): void => {
-      history.push(`/manageAccounts/${currentAccount}`);
-    };
-
-    const navToManageAddressBook = (): void => {
-      history.push(`/addresses/${currentAccount}`);
-    };
-
-    return (
-      <StackedHorizontal justifyContent='flex-start' alignItems='flex-start'>
-        <Menu stackable secondary>
-          <Menu.Item active={activeTab === 'manageAccounts'} onClick={navToAccounts}>
-            Accounts
-            <Margin left='small' />
-            <Icon color='black' name='id card' />
-          </Menu.Item>
-          <Menu.Item onClick={navToManageAddressBook}>
-            Manage Address Book
-            <Margin left='small' />
-            <Icon color='black' name='address book' />
-          </Menu.Item>
-        </Menu>
-      </StackedHorizontal>
-    );
-  };
-
   const renderHeader = (): React.ReactElement => (
-    <>
-      <Margin top='big' />
-      {renderSecondaryMenu()}
-      {renderPrimaryMenu()}
-    </>
+    renderPrimaryMenu()
+
   );
 
   return renderHeader();

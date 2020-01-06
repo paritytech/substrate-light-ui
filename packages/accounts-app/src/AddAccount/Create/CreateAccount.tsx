@@ -161,7 +161,7 @@ export function Create(props: Props): React.ReactElement {
 
   return (
     <Stacked>
-      {keyringReady && <AddressSummary address={address} name={name} size={identiconSize} />}
+      {keyringReady && <AddressSummary address={address} name={name} size='small' />}
       <Margin top />
       {step === 'copy'
         ? renderCopyStep({ mnemonic }, { goToNextStep })

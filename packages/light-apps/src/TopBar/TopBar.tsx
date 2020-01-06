@@ -33,7 +33,7 @@ export function TopBar(): React.ReactElement {
   return (
     <header>
       <Margin top='big' />
-      <Stacked width='100%' justifyContent='flex-start' alignItems='center'>
+      <Stacked width='100%' justifyContent='space-between' alignItems='center'>
         <FlexItem>
           <NodeStatus isSyncing={isSyncing} />
         </FlexItem>

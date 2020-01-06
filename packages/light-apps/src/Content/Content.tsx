@@ -20,10 +20,8 @@ export const Content = (): React.ReactElement => {
   useEffect(() => {
     allAccounts && setDefaultAccount(allAccounts[0]);
 
-    // FIXME?: this should rerender then redirect when allAccounts is set, but it doesnt, so doing it manually instead for now.
     if (defaultAccount) {
-      // history.push(`/manageAccounts/${defaultAccount}`)
-      history.push(`/transfer/${defaultAccount}`);
+      history.push(`/manageAccounts/${defaultAccount}`)
     }
   }, [allAccounts, defaultAccount])
 
@@ -43,11 +41,7 @@ export const Content = (): React.ReactElement => {
               <Route path='/addresses/:currentAccount' component={ManageAddresses} />
               <Route path='/manageAccounts/:currentAccount' component={AccountsOverview} />
               <Route path='/accounts/add' component={AddAccount} />
-              {
-                defaultAccount
-                  ? <Redirect to={`/manageAccounts/${defaultAccount}`} />
-                  : <Redirect exact from='/' to='/accounts/add/' />
-              }
+              <Redirect exact from='/' to='/accounts/add/' />
               <Redirect to='/' />
             </Switch>
             <TxQueueNotifier />

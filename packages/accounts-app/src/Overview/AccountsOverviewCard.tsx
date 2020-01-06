@@ -14,6 +14,7 @@ import {
   StackedHorizontal,
   StyledLinkButton,
   SubHeader,
+  WalletCard,
   WithSpaceAround,
   WithSpaceBetween,
 } from '@substrate/ui-components';
@@ -158,7 +159,7 @@ export function AccountsOverviewCard(props: Props): React.ReactElement {
 ``
   return (
     <>
-      <Card height='20rem'>
+      <Card>
         {confirmScreen ? (
           <>
             <Card.Content>
