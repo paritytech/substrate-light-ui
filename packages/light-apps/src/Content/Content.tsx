@@ -27,9 +27,12 @@ export const Content = (): React.ReactElement => {
 
   return (
     <>
-      <Route component={IdentityHeader} />
       <Route
-        path={['/accounts/add', '/addresses/:currentAccount', '/manageAccounts/:currentAccount']}
+        component={IdentityHeader}
+        path={['/addresses/:currentAccount', '/manageAccounts/:currentAccount', '/transfer/:currentAccount']}
+      />
+      <Route
+        path={['/addresses/:currentAccount', '/manageAccounts/:currentAccount']}
         render={(props): React.ReactElement => (
           <Fab onClick={(): void => props.history.push(`/transfer/${defaultAccount}`)} type='send' />
         )}
