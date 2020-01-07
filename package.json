@@ -50,7 +50,7 @@
   },
   "resolutions": {
     "react": "16.12",
-    "@types/styled-components": "4.1.8",
+    "@types/styled-components": "4.4.2",
     "typescript": "^3.7.2"
   },
   "dependencies": {
