@@ -166,7 +166,7 @@ export function BalanceOverview(props: Pick<Props, Exclude<keyof Props, keyof 'v
                 .chain(account => some(account.meta))
                 .chain(meta => some(meta.name))
                 .getOrElse(undefined)}
-              orientation='horizontal'
+              orientation='vertical'
               size='small'
             />
           </WithSpace>
@@ -179,7 +179,7 @@ export function BalanceOverview(props: Pick<Props, Exclude<keyof Props, keyof 'v
                 .chain(account => some(account.meta))
                 .chain(meta => some(meta.name))
                 .getOrElse(undefined)}
-              orientation='horizontal'
+              orientation='vertical'
               size='small'
             />
           </WithSpace>

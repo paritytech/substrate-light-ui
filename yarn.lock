@@ -2556,10 +2556,10 @@
     "@polkadot/ui-keyring" "^0.47.1"
     fp-ts "1.18.1"
 
-"@substrate/ui-components@^0.3.9":
-  version "0.3.9"
-  resolved "https://registry.yarnpkg.com/@substrate/ui-components/-/ui-components-0.3.9.tgz#1509c460f71546399da26e2ee69455ba2321295c"
-  integrity sha512-81SfPK9kA6apfLCGRuoY3hBxcOmXEe0CO2BDV7qBpzPBhQR5zjmijDd7Ft0BGSwL6cKqZSsWOOdjIWirUxT54w==
+"@substrate/ui-components@^0.3.10":
+  version "0.3.10"
+  resolved "https://registry.yarnpkg.com/@substrate/ui-components/-/ui-components-0.3.10.tgz#de0274f727a1c369ea84a0b389bef6f9f7cc8dcc"
+  integrity sha512-K7kzdiovunijcqg4iuGvAXMNwGQ/vf8FwsWN6ldctC0+m91RrS1j7OaXJBQ5Sm/qOBe+EHtR3BteVmFo57VQRA==
   dependencies:
     "@polkadot/react-identicon" "^0.47.1"
     "@types/recharts" "^1.1.16"

@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AccountsOverview, AddAccount, KeyringContext, ManageAddresses } from '@substrate/accounts-app';
+import { Accounts, AddAccount, KeyringContext, ManageAddresses } from '@substrate/accounts-app';
 import { Transfer } from '@substrate/transfer-app';
 import { Fab } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';
@@ -37,13 +37,6 @@ export const Content = (): React.ReactElement => {
         ]}
         component={IdentityHeader}
       />
-      <Switch>
-        <Route path='/addresses/:currentAccount' component={ManageAddresses} />
-        <Route path='/manageAccounts/:currentAccount' component={AccountsOverview} />
-        <Route path='/accounts/:currentAccount/add' component={AddAccount} />
-        <Route path='/transfer/:currentAccount' component={Transfer} />
-        <Redirect to='/' />
-      </Switch>
       <Route
         path={[
           '/accounts/:currentAccount/add',
@@ -53,6 +46,14 @@ export const Content = (): React.ReactElement => {
         ]}
         render={props => <Fab onClick={() => props.history.push(`/transfer/${defaultAccount}`)} type='send' />}
       />
+      <Switch>
+        <Route path='/addresses/:currentAccount' component={ManageAddresses} />
+        <Route path='/manageAccounts/:currentAccount' component={Accounts} />
+        <Route path='/accounts/:currentAccount/add' component={AddAccount} />
+        <Route path='/transfer/:currentAccount' component={Transfer} />
+        <Redirect exact from='/' to={`/manageAccounts/${defaultAccount}`} />
+        <Redirect to='/' />
+      </Switch>
       <TxQueueNotifier />
       <Signer />
     </>
