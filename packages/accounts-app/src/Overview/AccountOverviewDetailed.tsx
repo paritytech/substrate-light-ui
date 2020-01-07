@@ -4,12 +4,10 @@
 
 import { AccountId } from '@polkadot/types/interfaces';
 import { ApiContext, StakingContext } from '@substrate/context';
-import { AddressSummary, Margin, Stacked, SubHeader, WithSpace } from '@substrate/ui-components';
+import { AddressSummary, Card, WrapperDiv } from '@substrate/ui-components';
 import { fromNullable } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import Loader from 'semantic-ui-react/dist/commonjs/elements/Loader';
-import Card from 'semantic-ui-react/dist/commonjs/views/Card';
+import { RouteComponentProps } from 'react-router-dom';
 
 import { rewardDestinationOptions } from '../constants';
 import { BalanceOverview } from './BalanceOverview';
@@ -48,11 +46,7 @@ export function AccountOverviewDetailed(props: Props): React.ReactElement {
     return (
       <Card>
         <Card.Content>
-          {fromNullable(stakingInfo)
-            .map(stakingInfo => (
-              <BalanceOverview history={history} key={stakingInfo.accountId.toString()} {...stakingInfo} />
-            ))
-            .getOrElse(<Loader active inline />)}
+          <BalanceOverview history={history} key={stakingInfo.accountId.toString()} {...stakingInfo} />
         </Card.Content>
       </Card>
     );
@@ -60,30 +54,22 @@ export function AccountOverviewDetailed(props: Props): React.ReactElement {
 
   const renderNominationDetails = (): React.ReactElement => {
     return (
-      <Card>
+      <Card height='100%'>
         <Card.Content>
-          <SubHeader noMargin>Currently Nominating:</SubHeader>
-          <WithSpace style={{ height: '30rem', overflow: 'auto' }}>
-            {fromNullable(nominees)
-              .map(nominees =>
-                nominees.map((nomineeId: string, index: string) => (
-                  <AddressSummary address={nomineeId} key={index} orientation='horizontal' size='small' />
-                ))
-              )
-              .getOrElse(
-                <Stacked>
-                  Not Nominating Anyone.
-                  <Link to={`/manageAccounts/${currentAccount}/validators`}>View Validators</Link>
-                </Stacked>
-              )}
-          </WithSpace>
-          <WithSpace>
-            <SubHeader>Reward Destination: </SubHeader>
-            {fromNullable(stakingInfo)
-              .mapNullable(({ rewardDestination }) => rewardDestination)
-              .map(rewardDestination => rewardDestinationOptions[rewardDestination.toNumber()])
-              .getOrElse('Reward Destination Not Set...')}
-          </WithSpace>
+          <b>Nomination Details: </b>
+          {fromNullable(nominees)
+            .map(nominees =>
+              nominees.map((nomineeId: string, index: string) => (
+                <AddressSummary address={nomineeId} key={index} orientation='vertical' size='small' />
+              ))
+            )
+            .getOrElse('No Nominations Found.')}
+          <hr />
+          <b>Reward Destination: </b>
+          {fromNullable(stakingInfo)
+            .mapNullable(({ rewardDestination }) => rewardDestination)
+            .map(rewardDestination => rewardDestinationOptions[rewardDestination.toNumber()])
+            .getOrElse('Reward Destination Not Set...')}
         </Card.Content>
       </Card>
     );
@@ -112,26 +98,20 @@ export function AccountOverviewDetailed(props: Props): React.ReactElement {
       .getOrElse(undefined);
 
     return (
-      <Card.Group doubling stackable>
-        <Margin left='huge' />
-        <Card>
-          <Card.Content>
-            <AddressSummary
-              address={currentAccount}
-              bondingPair={bondingPair && bondingPair.toString()}
-              detailed
-              isNominator={isStashNominating}
-              isValidator={isStashValidating}
-              name={name}
-              size='small'
-            />
-          </Card.Content>
-        </Card>
-        <Margin left />
-        {renderBalanceDetails()}
-        <Margin left />
+      <WrapperDiv>
+        <AddressSummary
+          address={currentAccount}
+          bondingPair={bondingPair && bondingPair.toString()}
+          detailed
+          isNominator={isStashNominating}
+          isValidator={isStashValidating}
+          name={name}
+          orientation='vertical'
+          size='small'
+        />
+        {stakingInfo && renderBalanceDetails()}
         {renderNominationDetails()}
-      </Card.Group>
+      </WrapperDiv>
     );
   };
 

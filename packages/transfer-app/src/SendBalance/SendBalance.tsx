@@ -143,7 +143,7 @@ export function SendBalance(props: Props): React.ReactElement {
               value={sender}
               withLabel={false}
             />
-            <Balance address={currentAccount} />
+            <Balance address={currentAccount} orientation='vertical' />
           </Stacked>
         </WrapperDiv>
 
@@ -173,7 +173,7 @@ export function SendBalance(props: Props): React.ReactElement {
               value={receiver}
               withLabel={false}
             />
-            {recipientAddress && <Balance address={recipientAddress} />}
+            {recipientAddress && <Balance address={recipientAddress} orientation='vertical' />}
           </Stacked>
         </WrapperDiv>
 

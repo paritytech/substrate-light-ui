@@ -100,8 +100,8 @@ export function AccountsOverviewCard(props: Props): React.ReactElement {
     }
   };
 
-  const navToBalances = (): void => {
-    history.push(`/manageAccounts/${address}/balances`);
+  const navToDetails = (): void => {
+    history.push(`/manageAccounts/${address}/details`);
   };
 
   const renderConfirmBackup = (): React.ReactElement => {
@@ -158,7 +158,7 @@ export function AccountsOverviewCard(props: Props): React.ReactElement {
 
   return (
     <>
-      <Card height='100%'>
+      <Card height='80%' raised onClick={navToDetails}>
         {confirmScreen ? (
           <>
             <Card.Content>
@@ -168,7 +168,7 @@ export function AccountsOverviewCard(props: Props): React.ReactElement {
           </>
         ) : (
           <>
-            <Card.Content>
+            <Card.Content textAlign='right'>
               <AddressSummary
                 address={address}
                 bondingPair={bondingPair && bondingPair.toString()}
@@ -180,20 +180,15 @@ export function AccountsOverviewCard(props: Props): React.ReactElement {
               />
               <Margin bottom />
               <StackedHorizontal>
-                <StyledLinkButton onClick={navToBalances}>Show More</StyledLinkButton>
+                <StyledLinkButton onClick={handleForget}>
+                  <Icon name='remove' />
+                  Forget
+                </StyledLinkButton>
+                <StyledLinkButton onClick={handleBackup}>
+                  <Icon name='arrow alternate circle down' />
+                  Backup
+                </StyledLinkButton>
               </StackedHorizontal>
-              <WithSpaceAround>
-                <StackedHorizontal>
-                  <StyledLinkButton onClick={handleForget}>
-                    <Icon name='remove' />
-                    Forget
-                  </StyledLinkButton>
-                  <StyledLinkButton onClick={handleBackup}>
-                    <Icon name='arrow alternate circle down' />
-                    Backup
-                  </StyledLinkButton>
-                </StackedHorizontal>
-              </WithSpaceAround>
             </Card.Content>
           </>
         )}

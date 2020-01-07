@@ -106,8 +106,6 @@ export function Create(props: Props): React.ReactElement {
         onError(err);
       },
       values => {
-        // keyring.createFromUri(`${phrase.trim()}${derivePath}`, {}, pairType).address;
-        // keyring.addUri(`${seed}${derivePath}`, password, { name, tags }, pairType);
         const result = keyring.addUri(mnemonic.trim(), values.password, {
           name: values.name,
           tags: values.tags,
@@ -161,7 +159,7 @@ export function Create(props: Props): React.ReactElement {
 
   return (
     <Stacked>
-      {keyringReady && <AddressSummary address={address} name={name} size='small' />}
+      {keyringReady && <AddressSummary address={address} name={name} size='small' orientation='vertical' />}
       <Margin top />
       {step === 'copy'
         ? renderCopyStep({ mnemonic }, { goToNextStep })
