@@ -27,31 +27,19 @@ export const Content = (): React.ReactElement => {
 
   return (
     <>
+      <Route component={IdentityHeader} />
       <Route
-        path={[
-          '/accounts/:currentAccount/add',
-          '/addresses/:currentAccount',
-          '/manageAccounts/:currentAccount',
-          '/accounts/add',
-          '/transfer/:currentAccount',
-        ]}
-        component={IdentityHeader}
-      />
-      <Route
-        path={[
-          '/accounts/:currentAccount/add',
-          '/addresses/:currentAccount',
-          '/manageAccounts/:currentAccount',
-          '/accounts/add',
-        ]}
-        render={props => <Fab onClick={() => props.history.push(`/transfer/${defaultAccount}`)} type='send' />}
+        path={['/accounts/add', '/addresses/:currentAccount', '/manageAccounts/:currentAccount']}
+        render={(props): React.ReactElement => (
+          <Fab onClick={(): void => props.history.push(`/transfer/${defaultAccount}`)} type='send' />
+        )}
       />
       <Switch>
-        <Route path='/addresses/:currentAccount' component={ManageAddresses} />
-        <Route path='/manageAccounts/:currentAccount' component={Accounts} />
-        <Route path='/accounts/:currentAccount/add' component={AddAccount} />
-        <Route path='/transfer/:currentAccount' component={Transfer} />
         <Redirect exact from='/' to={`/manageAccounts/${defaultAccount}`} />
+        <Route path='/addresses/:currentAccount' component={ManageAddresses} />
+        <Route path='/manageAccounts/:currentAccount' component={defaultAccount ? Accounts : AddAccount} />
+        <Route path='/accounts/add' component={AddAccount} />
+        <Route path='/transfer/:currentAccount' component={Transfer} />
         <Redirect to='/' />
       </Switch>
       <TxQueueNotifier />

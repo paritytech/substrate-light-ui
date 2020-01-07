@@ -15,20 +15,21 @@ type Props = RouteComponentProps;
 export function AddAccount(props: Props): React.ReactElement {
   const { history, location } = props;
 
-  const currentAccount = location.pathname.split('/')[2];
   const activeTab = location.pathname.split('/')[4];
 
-  const navToCreate = () => {
-    history.push(`/accounts/${currentAccount}/add/generate`);
+  const navToCreate = (): void => {
+    history.push(`/accounts/add/generate`);
   };
 
-  const navToImportJson = () => {
-    history.push(`/accounts/${currentAccount}/add/json`);
+  const navToImportJson = (): void => {
+    history.push(`/accounts/add/json`);
   };
 
-  const navToImportSeed = () => {
-    history.push(`/accounts/${currentAccount}/add/phrase`);
+  const navToImportSeed = (): void => {
+    history.push(`/accounts/add/phrase`);
   };
+
+  console.log('HELLO');
 
   return (
     <WrapperDiv>
@@ -45,10 +46,10 @@ export function AddAccount(props: Props): React.ReactElement {
         </Menu.Item>
       </Menu>
       <Switch>
-        <Route path='/accounts/:currentAccount/add/generate' component={Create} />
-        <Route path='/accounts/:currentAccount/add/json' component={ImportWithJson} />
-        <Route path='/accounts/:currentAccount/add/phrase' component={ImportWithPhrase} />
-        <Redirect exact from='/accounts' to='/accounts/:currentAccount/add/generate' />
+        <Route path='/accounts/add/generate' component={Create} />
+        <Route path='/accounts/add/json' component={ImportWithJson} />
+        <Route path='/accounts/add/phrase' component={ImportWithPhrase} />
+        <Redirect to='/accounts/add/generate' />
       </Switch>
     </WrapperDiv>
   );
