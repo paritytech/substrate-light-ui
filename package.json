@@ -24,7 +24,7 @@
     "prebuild": "yarn clean",
     "build:ui": "lerna exec yarn build --stream --scope=@substrate/accounts-app --scope=@substrate/transfer-app --scope=@substrate/light-apps",
     "build:electron": "yarn build:ui && lerna run build --scope=@substrate/electron-app",
-    "build:extension": "yarn build:ui && lerna run build --scope=@substrate/extension-app",
+    "build:extension": "INLINE_RUNTIME_CHUNK=false yarn build:ui && lerna run build --scope=@substrate/extension-app",
     "clean": "polkadot-dev-clean-build",
     "fetch:substrate": "cd ./scripts && node fetchLatestSubstrate.js",
     "lint": "tsc --noEmit && eslint --ext ts,tsx .",

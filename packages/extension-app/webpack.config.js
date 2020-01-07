@@ -2,6 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+/* eslint-disable @typescript-eslint/no-var-requires */
+
 const path = require('path');
 const webpack = require('webpack');
 
@@ -11,6 +13,7 @@ const ManifestPlugin = require('webpack-extension-manifest-plugin');
 const pkgJson = require('./package.json');
 const manifest = require('./src/manifest.json');
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function createWebpack({ alias = {}, context }) {
   const ENV = process.env.NODE_ENV || 'development';
   const isProd = ENV === 'production';
@@ -77,8 +80,10 @@ function createWebpack({ alias = {}, context }) {
           PKG_VERSION: JSON.stringify(pkgJson.version),
         },
       }),
-      // If building in dev mode, copy directly from the output of
-      // create-react-app in light-apps
+      // If building in prod mode, copy directly from the output of
+      // create-react-app's build in light-apps.
+      // If building from dev mode, just use ./public/index.html, which shows
+      // an iframe listening to create-react-app's localhost:3000
       new CopyPlugin([{ from: ENV === 'production' ? '../light-apps/build' : 'public' }]),
       new ManifestPlugin({
         config: {
