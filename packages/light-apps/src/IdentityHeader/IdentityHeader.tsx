@@ -27,7 +27,7 @@ export function IdentityHeader(props: Props): React.ReactElement {
 
   const handleExpandHeader = () => {
     setExpandHeader(!expandHeader);
-  }
+  };
 
   // Change account
   const changeCurrentAccount = (account: string): void => {
