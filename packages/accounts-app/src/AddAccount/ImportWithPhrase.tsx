@@ -83,7 +83,6 @@ export function ImportWithPhrase(props: Props): React.ReactElement {
         tryCatch2v(
           () => {
             // This is inside tryCatch, because it might fail
-            // addUri(suri: string, password?: string, meta?: KeyringPair$Meta, type?: KeypairType): CreateResult;
             keyring.addUri(recoveryPhrase.trim(), password, { name, ...tags }, 'sr25519');
             history.push('/');
           },
