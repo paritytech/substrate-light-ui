@@ -3,7 +3,6 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { isFunction } from '@polkadot/util';
-// import { getKeyringAddress } from '@substrate/context';
 import { ErrorText, Form, Input, Margin, NavButton, Stacked, SuccessText, WrapperDiv } from '@substrate/ui-components';
 import React, { useContext, useState } from 'react';
 
@@ -28,7 +27,6 @@ export function SaveAddress(props: Props): React.ReactElement {
   const { keyring } = useContext(KeyringContext);
 
   const [address, setAddress] = useState();
-  // const keyringAddress = getKeyringAddress(keyring, address);
   const [name, setName] = useState();
 
   const [error, setError] = useState<string | undefined>(undefined);
