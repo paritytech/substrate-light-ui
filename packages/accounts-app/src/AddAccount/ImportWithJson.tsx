@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { KeyringAddress, KeyringJson } from '@polkadot/ui-keyring/types';
-import { AlertsContext, KeyringContext, handler } from '@substrate/context';
+import { AlertsContext, handler, KeyringContext } from '@substrate/context';
 import {
   Dropdown,
   ErrorText,
