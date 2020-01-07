@@ -12,6 +12,10 @@ tmp/
 .DS_Store
 .vscode
 
+# Yalc
+.yalc/
+yalc.lock
+
 # Logs
 lerna-debug.log
 npm-debug.log*
