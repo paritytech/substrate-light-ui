@@ -101,7 +101,9 @@ export function AccountsOverviewCard(props: Props): React.ReactElement {
   };
 
   const navToDetails = (): void => {
-    history.replace(`/manageAccounts/${address}/details`);
+    console.log(history);
+    console.log(address);
+    history.push(`/manageAccounts/${address}/details`);
   };
 
   const renderConfirmBackup = (): React.ReactElement => {

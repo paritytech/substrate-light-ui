@@ -4,7 +4,7 @@
 
 import { AccountId } from '@polkadot/types/interfaces';
 import { ApiContext, StakingContext } from '@substrate/context';
-import { AddressSummary, Margin, Stacked, SubHeader, WithSpace } from '@substrate/ui-components';
+import { AddressSummary, Margin, Stacked, SubHeader, WithSpace, WrapperDiv } from '@substrate/ui-components';
 import { fromNullable } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
@@ -37,7 +37,6 @@ export function AccountOverviewDetailed(props: Props): React.ReactElement {
   const stakingInfo = accountStakingMap[currentAccount];
 
   useEffect(() => {
-    console.log('i am here!');
     setNominees(
       stakingInfo &&
         stakingInfo.nominators &&
@@ -91,7 +90,6 @@ export function AccountOverviewDetailed(props: Props): React.ReactElement {
   };
 
   const renderGeneral = (): React.ReactElement => {
-    console.log('render general ())');
     const isStashNominating = fromNullable(stakingInfo)
       .mapNullable(({ nominators }) => nominators)
       .map(nominators => nominators.length > 0)
@@ -114,29 +112,30 @@ export function AccountOverviewDetailed(props: Props): React.ReactElement {
       .getOrElse(undefined);
 
     return (
-      <Card.Group doubling stackable>
-        <Margin left='huge' />
-        <Card>
-          <Card.Content>
-            <AddressSummary
-              address={currentAccount}
-              bondingPair={bondingPair && bondingPair.toString()}
-              detailed
-              isNominator={isStashNominating}
-              isValidator={isStashValidating}
-              name={name}
-              size='small'
-            />
-          </Card.Content>
-        </Card>
-        <Margin left />
-        {renderBalanceDetails()}
-        <Margin left />
-        {renderNominationDetails()}
-      </Card.Group>
+      <WrapperDiv>
+        <Card.Group doubling stackable>
+          <Margin left='huge' />
+          <Card>
+            <Card.Content>
+              <AddressSummary
+                address={currentAccount}
+                bondingPair={bondingPair && bondingPair.toString()}
+                detailed
+                isNominator={isStashNominating}
+                isValidator={isStashValidating}
+                name={name}
+                size='small'
+              />
+            </Card.Content>
+          </Card>
+          <Margin left />
+          {renderBalanceDetails()}
+          <Margin left />
+          {renderNominationDetails()}
+        </Card.Group>
+      </WrapperDiv>
     );
   };
 
-  console.log('accounts overview detailed');
   return renderGeneral();
 }

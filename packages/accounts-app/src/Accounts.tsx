@@ -9,12 +9,10 @@ import { AccountOverviewDetailed, AccountsOverview } from './Overview';
 
 export function Accounts(): React.ReactElement {
   return (
-    <>
-      <Switch>
-        <Route path='/manageAccounts/:currentAccount/overview' component={AccountsOverview} />
-        <Route path='/manageAccounts/:currentAccount/details' component={AccountOverviewDetailed} />
-        <Redirect from='/manageAccounts/:currentAccount' to='/manageAccounts/:currentAccount/details' />
-      </Switch>
-    </>
+    <Switch>
+      <Route path='/manageAccounts/:currentAccount/overview' component={AccountsOverview} />
+      <Route path='/manageAccounts/:currentAccount/details' component={AccountOverviewDetailed} />
+      <Redirect exact from='/manageAccounts/:currentAccount' to='/manageAccounts/:currentAccount/overview' />
+    </Switch>
   );
 }
