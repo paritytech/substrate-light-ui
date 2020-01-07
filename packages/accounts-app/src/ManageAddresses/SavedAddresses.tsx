@@ -12,6 +12,7 @@ import {
   StackedHorizontal,
   SubHeader,
   WithSpace,
+  WrapperDiv,
 } from '@substrate/ui-components';
 import React, { useEffect, useState } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
@@ -66,9 +67,11 @@ export function SavedAddresses(props: Props): React.ReactElement {
   }, []);
 
   return (
-    <Stacked>
-      <SubHeader> Select an address to edit its metadata. </SubHeader>
-      <WithSpace>{renderAllAddressesFromKeyring(addresses, currentAccount)}</WithSpace>
-    </Stacked>
+    <WrapperDiv>
+      <Stacked>
+        <SubHeader> Select an address to edit its metadata. </SubHeader>
+        <WithSpace>{renderAllAddressesFromKeyring(addresses, currentAccount)}</WithSpace>
+      </Stacked>
+    </WrapperDiv>
   );
 }

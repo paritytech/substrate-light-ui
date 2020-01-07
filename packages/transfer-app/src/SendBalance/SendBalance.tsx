@@ -132,54 +132,56 @@ export function SendBalance(props: Props): React.ReactElement {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <WrapperDiv>
-        <Stacked alignItems='flex-start' justifyContent='flex-start'>
-          <SubHeader textAlign='left'>Sender Account:</SubHeader>
-          <InputAddress
-            isDisabled
-            onChangeAddress={changeCurrentAccount}
-            type='account'
-            value={sender}
-            withLabel={false}
-          />
-          <Balance address={currentAccount} />
-        </Stacked>
-      </WrapperDiv>
+      <Stacked>
+        <WrapperDiv>
+          <Stacked alignItems='flex-start' justifyContent='flex-start'>
+            <SubHeader textAlign='left'>Sender Account:</SubHeader>
+            <InputAddress
+              isDisabled
+              onChangeAddress={changeCurrentAccount}
+              type='accounts'
+              value={sender}
+              withLabel={false}
+            />
+            <Balance address={currentAccount} />
+          </Stacked>
+        </WrapperDiv>
 
-      <WrapperDiv>
-        <Stacked alignItems='flex-start' justifyContent='flex-start'>
-          <SubHeader textAlign='left'>Amount:</SubHeader>
-          <Input
-            fluid
-            label='UNIT'
-            labelPosition='right'
-            min={0}
-            onChange={handler(setAmountAsString)}
-            placeholder='e.g. 1.00'
-            type='number'
-            value={amountAsString}
-          />
-        </Stacked>
-      </WrapperDiv>
+        <WrapperDiv>
+          <Stacked alignItems='flex-start' justifyContent='flex-start'>
+            <SubHeader textAlign='left'>Amount:</SubHeader>
+            <Input
+              fluid
+              label='UNIT'
+              labelPosition='right'
+              min={0}
+              onChange={handler(setAmountAsString)}
+              placeholder='e.g. 1.00'
+              type='number'
+              value={amountAsString}
+            />
+          </Stacked>
+        </WrapperDiv>
 
-      <WrapperDiv>
-        <Stacked alignItems='flex-start' justifyContent='flex-start'>
-          <SubHeader textAlign='left'>Recipient Address:</SubHeader>
-          <InputAddress
-            label={undefined}
-            onChangeAddress={changeRecipientAddress}
-            type='all'
-            value={receiver}
-            withLabel={false}
-          />
-          {recipientAddress && <Balance address={recipientAddress} />}
-        </Stacked>
-      </WrapperDiv>
+        <WrapperDiv>
+          <Stacked alignItems='flex-start' justifyContent='flex-start'>
+            <SubHeader textAlign='left'>Recipient Address:</SubHeader>
+            <InputAddress
+              label={undefined}
+              onChangeAddress={changeRecipientAddress}
+              type='addresses'
+              value={receiver}
+              withLabel={false}
+            />
+            {recipientAddress && <Balance address={recipientAddress} />}
+          </Stacked>
+        </WrapperDiv>
 
-      <WithSpaceAround>
-        <Validation values={validationResult} />
-      </WithSpaceAround>
-      <NavButton disabled={validationResult.isLeft()}>Submit</NavButton>
+        <WithSpaceAround>
+          <Validation values={validationResult} />
+        </WithSpaceAround>
+        <NavButton disabled={validationResult.isLeft()}>Submit</NavButton>
+      </Stacked>
     </Form>
   );
 }
