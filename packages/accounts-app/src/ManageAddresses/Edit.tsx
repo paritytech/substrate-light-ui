@@ -10,7 +10,6 @@ import { SaveAddress } from './SaveAddress';
 
 interface MatchParams {
   currentAccount: string;
-  editAddress: string;
 }
 
 type Props = RouteComponentProps<MatchParams>;
@@ -18,15 +17,15 @@ type Props = RouteComponentProps<MatchParams>;
 export function Edit(props: Props): React.ReactElement {
   const {
     match: {
-      params: { currentAccount, editAddress },
+      params: { currentAccount },
     },
   } = props;
   return (
     <Stacked>
-      <SubHeader>Rename this address in your address book.</SubHeader>
+      <SubHeader>Edit Address</SubHeader>
       <Margin top />
       <Link to={`/addresses/${currentAccount}`}>Add a New Address</Link>
-      <SaveAddress addressDisabled defaultAddress={editAddress} />
+      <SaveAddress addressDisabled />
     </Stacked>
   );
 }

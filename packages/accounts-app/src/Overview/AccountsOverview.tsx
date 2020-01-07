@@ -4,7 +4,7 @@
 
 import accountObservable from '@polkadot/ui-keyring/observable/accounts';
 import { SingleAddress } from '@polkadot/ui-keyring/observable/types';
-import { WalletCard } from '@substrate/ui-components';
+import { WrapperDiv } from '@substrate/ui-components';
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { map } from 'rxjs/operators';
@@ -26,7 +26,7 @@ export function AccountsOverview(props: Props): React.ReactElement {
   }, []);
 
   return (
-    <WalletCard header='Accounts' height='100%'>
+    <WrapperDiv>
       {allUnlockedAccounts.map((account, i) => {
         return (
           <AccountsOverviewCard
@@ -37,6 +37,6 @@ export function AccountsOverview(props: Props): React.ReactElement {
           />
         );
       })}
-    </WalletCard>
+    </WrapperDiv>
   );
 }

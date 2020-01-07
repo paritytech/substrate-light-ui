@@ -3,13 +3,23 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { handler } from '@substrate/context';
-import { ErrorText, Input, Margin, NavButton, Stacked, SubHeader, WrapperDiv } from '@substrate/ui-components';
+import {
+  Dropdown,
+  ErrorText,
+  Input,
+  Margin,
+  NavButton,
+  Stacked,
+  SubHeader,
+  WrapperDiv,
+} from '@substrate/ui-components';
 import { Either, left, right, tryCatch2v } from 'fp-ts/lib/Either';
 import { none, Option, some } from 'fp-ts/lib/Option';
 import React, { useContext, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
 import { KeyringContext } from '../KeyringContext';
+import { TagOptions, Tags } from './types';
 
 type Props = RouteComponentProps;
 
@@ -53,6 +63,19 @@ export function ImportWithPhrase(props: Props): React.ReactElement {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [recoveryPhrase, setRecoveryPhrase] = useState('');
+  const [tags, setTags] = useState<Tags>([]);
+  const [tagOptions, setTagOptions] = useState<TagOptions>([
+    { key: '0', text: 'stash', value: 'Stash' },
+    { key: '1', text: 'controller', value: 'Controller' },
+  ]);
+
+  const handleAddTag = (_event: React.SyntheticEvent, { value }: any): void => {
+    setTagOptions([...tagOptions, { key: value, text: value, value }]);
+  };
+
+  const handleOnChange = (_event: React.SyntheticEvent, { value }: any): void => {
+    setTags(value);
+  };
 
   const handleUnlockWithPhrase = (): void => {
     validate({ name, password, recoveryPhrase })
@@ -60,7 +83,8 @@ export function ImportWithPhrase(props: Props): React.ReactElement {
         tryCatch2v(
           () => {
             // This is inside tryCatch, because it might fail
-            keyring.createFromUri(recoveryPhrase.trim(), {}, 'sr25519');
+            keyring.addUri(recoveryPhrase.trim(), password, { name, ...tags }, 'sr25519');
+            history.push('/');
           },
           err => ({ createAccount: (err as Error).message })
         )
@@ -71,18 +95,39 @@ export function ImportWithPhrase(props: Props): React.ReactElement {
       );
   };
 
+  const renderSetTags = (): React.ReactElement => {
+    return (
+      <Stacked>
+        <SubHeader noMargin>Add Tags:</SubHeader>
+        <Dropdown
+          allowAdditions
+          closeOnChange
+          fluid
+          multiple
+          onAddItem={handleAddTag}
+          onChange={handleOnChange}
+          options={tagOptions}
+          search
+          selection
+          value={tags}
+        />
+      </Stacked>
+    );
+  };
+
   return (
     <Stacked justifyContent='space-between'>
       <SubHeader> Import Account from Mnemonic Recovery Phrase </SubHeader>
-      <WrapperDiv width='95%'>
+      <WrapperDiv>
         <SubHeader>Phrase</SubHeader>
-        <Input fluid onChange={handler(setRecoveryPhrase)} type='text' value={recoveryPhrase} />
+        <Input fluid onChange={handler(setRecoveryPhrase)} size='huge' type='text' value={recoveryPhrase} />
         <Margin top />
         <SubHeader>Name</SubHeader>
-        <Input fluid label='Name' onChange={handler(setName)} type='text' value={name} />
+        <Input fluid onChange={handler(setName)} type='text' value={name} />
         <Margin top />
         <SubHeader>Password</SubHeader>
-        <Input fluid label='Password' onChange={handler(setPassword)} type='password' value={password} />
+        <Input fluid onChange={handler(setPassword)} type='password' value={password} />
+        {renderSetTags()}
       </WrapperDiv>
       <Margin top />
       <NavButton onClick={handleUnlockWithPhrase} value='Restore' />

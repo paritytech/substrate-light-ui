@@ -2,26 +2,15 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { KeyringAddress } from '@polkadot/ui-keyring/types';
 import { isFunction } from '@polkadot/util';
-import { getKeyringAddress, handler } from '@substrate/context';
 import { ErrorText, Form, Input, Margin, NavButton, Stacked, SuccessText, WrapperDiv } from '@substrate/ui-components';
-import { Either } from 'fp-ts/lib/Either';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { KeyringContext } from '../../KeyringContext';
 
 interface Props {
   addressDisabled?: boolean;
-  defaultAddress?: string;
   onSave?: () => void;
-}
-
-/**
- * Get the address's name. Return `''` if the address doesn't exist.
- */
-function getAddressName(keyringAddress: Either<Error, KeyringAddress>): string {
-  return keyringAddress.map(keyringAddress => keyringAddress.meta.name || '').getOrElse('');
 }
 
 function renderError(error?: string): React.ReactElement {
@@ -33,19 +22,12 @@ function renderSuccess(success?: string): React.ReactElement {
 }
 
 export function SaveAddress(props: Props): React.ReactElement {
-  const { addressDisabled, defaultAddress = '', onSave } = props;
+  const { addressDisabled, onSave } = props;
 
   const { keyring } = useContext(KeyringContext);
 
-  const [address, setAddress] = useState(defaultAddress);
-  const keyringAddress = getKeyringAddress(keyring, address);
-  const [name, setName] = useState(getAddressName(keyringAddress));
-
-  useEffect(() => {
-    setAddress(defaultAddress);
-    setName(getAddressName(keyringAddress));
-    // eslint-disable-next-line
-  }, [defaultAddress, keyringAddress]); // No need for keyringAddress dep, because it already depends on defaultAddress
+  const [address, setAddress] = useState();
+  const [name, setName] = useState();
 
   const [error, setError] = useState<string | undefined>(undefined);
   const [success, setSuccess] = useState<string | undefined>(undefined);
@@ -58,6 +40,14 @@ export function SaveAddress(props: Props): React.ReactElement {
   const onSuccess = (value?: string): void => {
     setError(undefined);
     setSuccess(value);
+  };
+
+  const handleChangeAddress = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    setAddress(value);
+  };
+
+  const handleSetName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    setName(value);
   };
 
   const handleSubmit = (): void => {
@@ -89,14 +79,14 @@ export function SaveAddress(props: Props): React.ReactElement {
             disabled={addressDisabled}
             fluid
             label='Address'
-            onChange={handler(setAddress)}
+            onChange={handleChangeAddress}
             required
             placeholder='e.g. 5ErZS1o.....'
             type='text'
             value={address}
           />
           <Margin top />
-          <Input fluid label='Name' onChange={handler(setName)} required type='text' value={name} />
+          <Input fluid label='Name' onChange={handleSetName} required type='text' value={name} />
           <Margin top />
           <NavButton type='submit' value='Save Address' />
           {renderError(error)}
