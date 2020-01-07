@@ -37,13 +37,6 @@ export const Content = (): React.ReactElement => {
         ]}
         component={IdentityHeader}
       />
-      <Switch>
-        <Route path='/addresses/:currentAccount' component={ManageAddresses} />
-        <Route path='/manageAccounts/:currentAccount' component={AccountsOverview} />
-        <Route path='/accounts/:currentAccount/add' component={AddAccount} />
-        <Route path='/transfer/:currentAccount' component={Transfer} />
-        <Redirect to='/' />
-      </Switch>
       <Route
         path={[
           '/accounts/:currentAccount/add',
@@ -53,6 +46,14 @@ export const Content = (): React.ReactElement => {
         ]}
         render={props => <Fab onClick={() => props.history.push(`/transfer/${defaultAccount}`)} type='send' />}
       />
+      <Switch>
+        <Route path='/addresses/:currentAccount' component={ManageAddresses} />
+        <Route path='/manageAccounts/:currentAccount' component={AccountsOverview} />
+        <Route path='/accounts/:currentAccount/add' component={AddAccount} />
+        <Route path='/transfer/:currentAccount' component={Transfer} />
+        <Redirect exact from='/' to={`/manageAccounts/${defaultAccount}`} />
+        <Redirect to='/' />
+      </Switch>
       <TxQueueNotifier />
       <Signer />
     </>

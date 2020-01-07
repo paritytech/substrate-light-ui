@@ -12,8 +12,8 @@ export function Accounts(): React.ReactElement {
     <>
       <Switch>
         <Route path='/manageAccounts/:currentAccount/overview' component={AccountsOverview} />
-        <Route path='/manageAccounts/:currentAccount/balances' component={AccountOverviewDetailed} />
-        <Redirect from='/manageAccounts/:currentAccount' to='/manageAccounts/:currentAccount/overview' />
+        <Route path='/manageAccounts/:currentAccount/details' component={AccountOverviewDetailed} />
+        <Redirect from='/manageAccounts/:currentAccount' to='/manageAccounts/:currentAccount/details' />
       </Switch>
     </>
   );

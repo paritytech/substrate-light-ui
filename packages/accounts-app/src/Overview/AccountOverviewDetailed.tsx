@@ -37,6 +37,7 @@ export function AccountOverviewDetailed(props: Props): React.ReactElement {
   const stakingInfo = accountStakingMap[currentAccount];
 
   useEffect(() => {
+    console.log('i am here!');
     setNominees(
       stakingInfo &&
         stakingInfo.nominators &&
@@ -90,6 +91,7 @@ export function AccountOverviewDetailed(props: Props): React.ReactElement {
   };
 
   const renderGeneral = (): React.ReactElement => {
+    console.log('render general ())');
     const isStashNominating = fromNullable(stakingInfo)
       .mapNullable(({ nominators }) => nominators)
       .map(nominators => nominators.length > 0)
@@ -135,5 +137,6 @@ export function AccountOverviewDetailed(props: Props): React.ReactElement {
     );
   };
 
+  console.log('accounts overview detailed');
   return renderGeneral();
 }
