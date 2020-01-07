@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { KeyringAddress, KeyringJson } from '@polkadot/ui-keyring/types';
-import { AlertsContext, handler } from '@substrate/context';
+import { AlertsContext, KeyringContext, handler } from '@substrate/context';
 import {
   Dropdown,
   ErrorText,
@@ -17,7 +17,6 @@ import {
 } from '@substrate/ui-components';
 import React, { useContext, useState } from 'react';
 
-import { KeyringContext } from '../KeyringContext';
 import { TagOptions, Tags } from './types';
 
 type Step = 'upload' | 'password';

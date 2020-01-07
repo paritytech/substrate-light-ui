@@ -3,13 +3,13 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { mnemonicGenerate } from '@polkadot/util-crypto';
+import { KeyringContext } from '@substrate/context';
 import { AddressSummary, Margin, SizeType, Stacked } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
 import { none, Option, some } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { KeyringContext } from '../../KeyringContext';
 import { PhrasePartialRewriteError, Steps, TagOptions, Tags, UserInputError } from '../types';
 import { generateAddressFromMnemonic, getRandomInts, validateMeta, validateRewrite } from '../util';
 import { renderCopyStep, renderErrors, renderMetaStep, renderRewriteStep } from './subComponents';

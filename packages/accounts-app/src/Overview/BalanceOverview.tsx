@@ -9,6 +9,7 @@ import {
   AlertsContext,
   AllExtrinsicData,
   ApiContext,
+  KeyringContext,
   StakingContext,
   TxQueueContext,
   validate,
@@ -31,7 +32,6 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 
-import { KeyringContext } from '../KeyringContext';
 import { Errors } from '../types';
 
 interface Props extends DerivedStakingAccount {

@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { handler } from '@substrate/context';
+import { handler, KeyringContext } from '@substrate/context';
 import {
   Dropdown,
   ErrorText,
@@ -18,7 +18,6 @@ import { none, Option, some } from 'fp-ts/lib/Option';
 import React, { useContext, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { KeyringContext } from '../KeyringContext';
 import { TagOptions, Tags } from './types';
 
 type Props = RouteComponentProps;

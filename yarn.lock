@@ -2548,10 +2548,10 @@
     prop-types "^15.7.2"
     react-is "^16.6.3"
 
-"@substrate/context@^0.3.6":
-  version "0.3.6"
-  resolved "https://registry.yarnpkg.com/@substrate/context/-/context-0.3.6.tgz#3c9b945e0e913e3490c1e053cb067b41ad5f0969"
-  integrity sha512-9rMZ67hS/xjDJwPgUJ71gAtf3rhhqdK66UM0r90iV2FSG04kXZ/W5bqNEeiXHVFQomTv0JiwoAcy3WOi8Jk9Yw==
+"@substrate/context@^0.3.11":
+  version "0.3.11"
+  resolved "https://registry.yarnpkg.com/@substrate/context/-/context-0.3.11.tgz#cc16c59a0cbe0ff4fa10fc839c36511be73e79a9"
+  integrity sha512-wox/njc0kCFkJGE5tn5RX7/xCg6vh7UPW/q/IAPgtiuoB5Y3IejQF7dHTFABQr3pTPPhlRZbArhLnGFosoOtfg==
   dependencies:
     "@polkadot/ui-keyring" "^0.47.1"
     fp-ts "1.18.1"
@@ -3010,13 +3010,23 @@
   resolved "https://registry.yarnpkg.com/@types/store/-/store-2.0.2.tgz#6263d4f1aab225032ea55b17d94f3b725a21c943"
   integrity sha512-ZPHnXkzmGMfk+pHqAGzTSpA9CbsHmJLgkvOl5w52LZ0XTxB1ZIHWZzQ7lEtjTNWScBbsQekg8TjApMXkMe4nkw==
 
-"@types/styled-components@4.1.8", "@types/styled-components@4.4.1", "@types/styled-components@4.4.2":
+"@types/styled-components@4.1.8", "@types/styled-components@4.4.1":
   version "4.1.8"
   resolved "https://registry.yarnpkg.com/@types/styled-components/-/styled-components-4.1.8.tgz#15c8a53bb4b9066e528fafb7558963dee5690ae0"
   integrity sha512-NrG0wmB9Rafy5i00GFxUM/uEge148bX2QPr+Q/MI2fXrew6WOp1hN2A3YEG0AeT45z47CMdJ3BEffPsdQCWayA==
   dependencies:
     "@types/node" "*"
     "@types/react" "*"
+    csstype "^2.2.0"
+
+"@types/styled-components@4.4.2":
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/@types/styled-components/-/styled-components-4.4.2.tgz#709fa7afd7dc0963b8316a0159240f0fe19a026d"
+  integrity sha512-dngFx2PuGoy0MGE68eHayAmJvLSqWrnTe9w+DnQruu8PS+waWEsKmoBRhkzL2h2pK1OJhzJhVfuiz+oZa4etpA==
+  dependencies:
+    "@types/hoist-non-react-statics" "*"
+    "@types/react" "*"
+    "@types/react-native" "*"
     csstype "^2.2.0"
 
 "@types/webpack-env@^1.13.9":
