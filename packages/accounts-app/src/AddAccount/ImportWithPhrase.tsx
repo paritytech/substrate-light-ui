@@ -3,7 +3,16 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { handler } from '@substrate/context';
-import { Dropdown, ErrorText, Input, Margin, NavButton, Stacked, SubHeader, WrapperDiv } from '@substrate/ui-components';
+import {
+  Dropdown,
+  ErrorText,
+  Input,
+  Margin,
+  NavButton,
+  Stacked,
+  SubHeader,
+  WrapperDiv,
+} from '@substrate/ui-components';
 import { Either, left, right, tryCatch2v } from 'fp-ts/lib/Either';
 import { none, Option, some } from 'fp-ts/lib/Option';
 import React, { useContext, useState } from 'react';
@@ -75,7 +84,7 @@ export function ImportWithPhrase(props: Props): React.ReactElement {
           () => {
             // This is inside tryCatch, because it might fail
             // addUri(suri: string, password?: string, meta?: KeyringPair$Meta, type?: KeypairType): CreateResult;
-            keyring.addUri(recoveryPhrase.trim(), password, { name, ...tags}, 'sr25519');
+            keyring.addUri(recoveryPhrase.trim(), password, { name, ...tags }, 'sr25519');
             history.push('/');
           },
           err => ({ createAccount: (err as Error).message })
