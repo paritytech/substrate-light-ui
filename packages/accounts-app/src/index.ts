@@ -4,6 +4,5 @@
 
 export * from './Accounts';
 export * from './AddAccount';
-export * from './KeyringContext';
 export * from './ManageAddresses';
 export * from './Overview';

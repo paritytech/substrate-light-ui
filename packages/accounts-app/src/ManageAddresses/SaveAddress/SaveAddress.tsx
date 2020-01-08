@@ -3,10 +3,9 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { isFunction } from '@polkadot/util';
+import { KeyringContext } from '@substrate/context';
 import { ErrorText, Form, Input, Margin, NavButton, Stacked, SuccessText, WrapperDiv } from '@substrate/ui-components';
 import React, { useContext, useState } from 'react';
-
-import { KeyringContext } from '../../KeyringContext';
 
 interface Props {
   addressDisabled?: boolean;
