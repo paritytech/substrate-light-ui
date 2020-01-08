@@ -29,8 +29,6 @@ export function AddAccount(props: Props): React.ReactElement {
     history.push(`/accounts/add/phrase`);
   };
 
-  console.log('HELLO');
-
   return (
     <WrapperDiv>
       <Header>Add an Account</Header>
