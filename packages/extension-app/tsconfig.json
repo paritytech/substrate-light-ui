@@ -6,5 +6,6 @@
   "extends": "../../tsconfig",
   "include": [
     "./src"
-  ]
+  ],
+  "typeRoots": ["node_modules/@types", "src/background/ws.d.ts"]
 }
