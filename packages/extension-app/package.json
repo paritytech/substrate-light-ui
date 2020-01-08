@@ -7,7 +7,7 @@
   "private": true,
   "repository": "https://github.com/paritytech/substrate-light-ui.git",
   "scripts": {
-    "build": "NODE_ENV=production webpack",
+    "build": "rimraf build && NODE_ENV=production webpack",
     "package": "rm -rf ./master-build.zip && cd build && zip -r -FS ../master-build.zip *",
     "start": "webpack --watch"
   },

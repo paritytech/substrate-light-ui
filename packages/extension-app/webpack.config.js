@@ -80,11 +80,9 @@ function createWebpack({ alias = {}, context }) {
           PKG_VERSION: JSON.stringify(pkgJson.version),
         },
       }),
-      // If building in prod mode, copy directly from the output of
-      // create-react-app's build in light-apps.
-      // If building from dev mode, just use ./public/index.html, which shows
-      // an iframe listening to create-react-app's localhost:3000
-      new CopyPlugin([{ from: ENV === 'production' ? '../light-apps/build' : 'public' }]),
+      // If building in prod mode,also copy the output of create-react-app's
+      // build in light-apps. That will be the popup UI.
+      new CopyPlugin([{ from: 'public' }, { from: ENV === 'production' ? '../light-apps/build' : undefined }]),
       new ManifestPlugin({
         config: {
           base: manifest,
