@@ -82,7 +82,10 @@ function createWebpack({ alias = {}, context }) {
       }),
       // If building in prod mode,also copy the output of create-react-app's
       // build in light-apps. That will be the popup UI.
-      new CopyPlugin([{ from: 'public' }, { from: ENV === 'production' ? '../light-apps/build' : undefined }]),
+      new CopyPlugin([
+        { from: 'public' },
+        { force: true, from: ENV === 'production' ? '../light-apps/build' : undefined },
+      ]),
       new ManifestPlugin({
         config: {
           base: manifest,
