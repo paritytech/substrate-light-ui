@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { app, Menu, shell } from 'electron';
+import { app, Menu, MenuItemConstructorOptions, shell } from 'electron';
 
 import { logger } from '../util';
 
@@ -83,11 +83,9 @@ const template = [
       },
     ],
   },
-];
+] as MenuItemConstructorOptions[];
 
 export function initMenu(): void {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-  // @ts-ignore FIXME Not sure why TS is complaining about template here...
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
 }
