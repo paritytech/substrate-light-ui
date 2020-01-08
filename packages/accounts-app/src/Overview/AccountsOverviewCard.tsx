@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { AccountId } from '@polkadot/types/interfaces';
-import { AlertsContext, ApiContext, handler, StakingContext } from '@substrate/context';
+import { AlertsContext, ApiContext, handler, KeyringContext, StakingContext } from '@substrate/context';
 import {
   AddressSummary,
   Card,
@@ -22,8 +22,6 @@ import FileSaver from 'file-saver';
 import { fromNullable } from 'fp-ts/lib/Option';
 import H from 'history';
 import React, { useContext, useEffect, useState } from 'react';
-
-import { KeyringContext } from '../KeyringContext';
 
 interface Props {
   address: string;
