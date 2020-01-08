@@ -18,6 +18,13 @@ function createWebpack({ alias = {}, context }) {
   const ENV = process.env.NODE_ENV || 'development';
   const isProd = ENV === 'production';
 
+  const copyPlugin = [{ from: 'public' }];
+  // If building in prod mode,also copy the output of create-react-app's
+  // build in light-apps. That will be the popup UI.
+  if (ENV === 'production') {
+    copyPlugin.push({ force: true, from: '../light-apps/build' });
+  }
+
   return {
     context,
     devtool: false,
@@ -80,12 +87,7 @@ function createWebpack({ alias = {}, context }) {
           PKG_VERSION: JSON.stringify(pkgJson.version),
         },
       }),
-      // If building in prod mode,also copy the output of create-react-app's
-      // build in light-apps. That will be the popup UI.
-      new CopyPlugin([
-        { from: 'public' },
-        { force: true, from: ENV === 'production' ? '../light-apps/build' : undefined },
-      ]),
+      new CopyPlugin(copyPlugin),
       new ManifestPlugin({
         config: {
           base: manifest,
@@ -94,7 +96,7 @@ function createWebpack({ alias = {}, context }) {
           },
         },
       }),
-    ].filter(entry => entry),
+    ],
     watch: !isProd,
   };
 }
