@@ -54,6 +54,10 @@ function createWebpack({ alias = {}, context }) {
           ],
         },
         {
+          test: /\.js$/,
+          loader: require.resolve('@open-wc/webpack-import-meta-loader'),
+        },
+        {
           test: [/\.svg$/, /\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/, /\.woff2?$/],
           use: [
             {
