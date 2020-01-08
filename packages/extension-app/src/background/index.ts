@@ -2,7 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-const { start_client, init } = require('./polkadot_cli');
+const { start_client } = require('./polkadot_cli');
+const init = require('./polkadot_cli');
 const ws = require('./ws.js');
 
 async function start() {
