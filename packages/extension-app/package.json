@@ -1,0 +1,24 @@
+{
+  "name": "@substrate/extension-app",
+  "version": "0.2.0",
+  "author": "Parity Technologies <admin@parity.io>",
+  "description": "Substrate Light UI",
+  "license": "Apache-2.0",
+  "private": true,
+  "repository": "https://github.com/paritytech/substrate-light-ui.git",
+  "scripts": {
+    "build": "rimraf build && NODE_ENV=production webpack",
+    "package": "rm -rf ./master-build.zip && cd build && zip -r -FS ../master-build.zip *",
+    "start": "webpack --watch"
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^5.1.1",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10",
+    "webpack-extension-manifest-plugin": "^0.5.0"
+  },
+  "dependencies": {
+    "web-ext-types": "^3.2.1",
+    "webextension-polyfill": "^0.6.0"
+  }
+}

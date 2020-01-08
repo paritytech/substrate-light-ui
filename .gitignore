@@ -3,6 +3,7 @@ build/
 dist/
 packages/electron-app/static/substrate
 coverage/
+master-build.zip
 
 # node_modules
 node_modules/
