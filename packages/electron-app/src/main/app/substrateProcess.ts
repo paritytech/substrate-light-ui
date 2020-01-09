@@ -17,8 +17,9 @@ export function runSubstrate(): void {
     return;
   }
 
-  logger.info('Running `substrate --light`');
-  const substrate = spawn(bundledPath, ['--light']);
+  const substrateFlags = ['--light', '--rpc-cors', 'file://'];
+  logger.info(`Running ${'`'}substrate ${substrateFlags.join(' ')}${'`'}`);
+  const substrate = spawn(bundledPath, substrateFlags);
 
   substrate.stdout.on('data', data => {
     logger.info(data.toString());

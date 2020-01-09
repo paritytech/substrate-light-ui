@@ -47,7 +47,7 @@ yarn install
 ### Run the Electron App
 
 ```bash
-yarn run:electron
+yarn prod:electron
 ```
 
 The building might take some time, but you should see an Electron application after a while.
