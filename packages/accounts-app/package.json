@@ -13,8 +13,8 @@
     "test": "echo skipped"
   },
   "dependencies": {
-    "@substrate/context": "^0.3.11",
-    "@substrate/ui-components": "^0.3.10",
+    "@substrate/context": "^0.3.14",
+    "@substrate/ui-components": "^0.3.14",
     "@types/bn.js": "^4.11.5",
     "fp-ts": "1.18.1"
   }
