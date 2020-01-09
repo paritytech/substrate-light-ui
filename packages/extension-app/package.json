@@ -12,6 +12,7 @@
     "start": "webpack --watch"
   },
   "devDependencies": {
+    "@open-wc/webpack-import-meta-loader": "^0.4.1",
     "copy-webpack-plugin": "^5.1.1",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
