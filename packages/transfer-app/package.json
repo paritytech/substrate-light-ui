@@ -13,9 +13,6 @@
     "test": "echo skipped"
   },
   "dependencies": {
-    "@substrate/accounts-app": "^0.2.0",
-    "@substrate/context": "^0.3.14",
-    "@substrate/ui-components": "^0.3.14",
-    "fp-ts": "1.18.1"
+    "@substrate/accounts-app": "^0.2.0"
   }
 }

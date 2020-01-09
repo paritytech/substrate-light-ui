@@ -2612,32 +2612,18 @@
     prop-types "^15.7.2"
     react-is "^16.6.3"
 
-<<<<<<< HEAD
-"@substrate/context@^0.3.11":
-  version "0.3.13"
-  resolved "https://registry.yarnpkg.com/@substrate/context/-/context-0.3.13.tgz#64f06fae430a1ffeae3c72a833eb87b751ce9cee"
-  integrity sha512-kOVQFZ9fY+RmNVyhGXr95ttb26l72ox0cwa4fVfo+T9ApYXIZd8/kKAUqORx18eMu4MvKV8Jz5aW2gTLhGnoZg==
-=======
 "@substrate/context@^0.3.14":
   version "0.3.14"
   resolved "https://registry.yarnpkg.com/@substrate/context/-/context-0.3.14.tgz#3bde0e8c817935d89f805fbe9c5ea9022c081c81"
   integrity sha512-XBQZC4kqFjsKeyPCTbz/GPWXG8yIwO02Fnel7jFYUjDVPTpLdhX0SXYQ92xC7ADSuDRuqe9NWmgGJ6NydW8k3A==
->>>>>>> master
   dependencies:
     "@polkadot/ui-keyring" "^0.47.1"
     fp-ts "1.18.1"
 
-<<<<<<< HEAD
-"@substrate/ui-components@^0.3.10":
-  version "0.3.13"
-  resolved "https://registry.yarnpkg.com/@substrate/ui-components/-/ui-components-0.3.13.tgz#eb1699f7d1384346bed60683ccab04a7e67dffa1"
-  integrity sha512-nkof5PP1NnR+xrlE2vZxdpGfBA3/Sx8BNuwljx069axMtsBb7Y5SW1fKT4nYt+Z3WrBGCScn2QNtQZpGz1Op9g==
-=======
 "@substrate/ui-components@^0.3.14":
   version "0.3.14"
   resolved "https://registry.yarnpkg.com/@substrate/ui-components/-/ui-components-0.3.14.tgz#0a61ab24876e91cd44cc04e827f6984108846a06"
   integrity sha512-oMaOhgYxx4leiIL7Vhe8lzfdgotZ+E76GCmrTcVayswdWhs26LsoXR9rpYPQVSPVxZUWYd8i6hgE6tvvisJ8Rw==
->>>>>>> master
   dependencies:
     "@polkadot/react-identicon" "^0.47.1"
     "@types/recharts" "^1.1.16"
@@ -9134,6 +9120,17 @@ handlebars@^4.1.2, handlebars@^4.4.0, handlebars@^4.5.3:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.6.0.tgz#33af6c3eda930d7a924f5d8f1c6d8edc3180512e"
   integrity sha512-i1ZUP7Qp2JdkMaFon2a+b0m5geE8Z4ZTLaGkgrObkEd+OkUKyRbRWw4KxuFCoHfdETSY1yf9/574eVoNSiK7pw==
+  dependencies:
+    neo-async "^2.6.0"
+    optimist "^0.6.1"
+    source-map "^0.6.1"
+  optionalDependencies:
+    uglify-js "^3.1.4"
+
+handlebars@~4.5.3:
+  version "4.5.3"
+  resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.5.3.tgz#5cf75bd8714f7605713511a56be7c349becb0482"
+  integrity sha512-3yPecJoJHK/4c6aZhSvxOyG4vJKDshV36VHp0iVCDVh7o9w2vwi3NSnL2MMPj3YdduqaBcu7cGbggJQM0br9xA==
   dependencies:
     neo-async "^2.6.0"
     optimist "^0.6.1"
@@ -17632,13 +17629,13 @@ typedoc-plugin-no-inherit@^1.1.10:
   integrity sha512-BhSFAWlBTh9Bf6PSfruIqdQBM8gd/Gj8hVuRk5pVWkHu4I/SB24LzFr5gAo52ZlaQSeN72+VOkkRD6tNYl8Enw==
 
 typedoc@^0.15.6:
-  version "0.15.6"
-  resolved "https://registry.yarnpkg.com/typedoc/-/typedoc-0.15.6.tgz#d99a1c3db8c87a00437a8a89a0df03f9dc1995ad"
-  integrity sha512-TC3j7HXFfyq0/NyUL9oLgEXhgO4U8Kd7iyRgagkG3XxehgTjn6w20uJ/Hif1KPB/65VQZ8uMYYyxFXNj9um5Ow==
+  version "0.15.7"
+  resolved "https://registry.yarnpkg.com/typedoc/-/typedoc-0.15.7.tgz#a37c88292d63e87693a4e6a510e68248e5dbc8c7"
+  integrity sha512-dVQ9yd/4pF3kf2OeHVkjxieoH/Exqggtw1DZ9XbVZpvZCItRA4VfOxuVoW+bMauyEk0RDvAx6y/ixDY4loNBWA==
   dependencies:
     "@types/minimatch" "3.0.3"
     fs-extra "^8.1.0"
-    handlebars "^4.5.3"
+    handlebars "~4.5.3"
     highlight.js "^9.17.1"
     lodash "^4.17.15"
     marked "^0.8.0"
