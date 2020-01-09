@@ -46,12 +46,16 @@ yarn install
 
 ### Run the Electron App
 
+For now, you would need to bundle a Substrate node manually into the Electron app. To do so, first build a Substrate node for your platform (note: it can of course be a Polkadot/Kusama node, or any other Substrate node), and put it as `./packages/electron-app/static/substrate`:
+
 ```bash
-<<<<<<< HEAD
+cp /path/to/polkadot ./packages/electron-app/static/substrate
+```
+
+Then run:
+
+```bash
 yarn prod:electron
-=======
-yarn run:electron
->>>>>>> master
 ```
 
 The building might take some time, but you should see an Electron application after a while.
