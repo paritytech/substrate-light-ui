@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "allowJs": true,
     "resolveJsonModule": true,
     "outDir": "./build"
   },
@@ -7,5 +8,5 @@
   "include": [
     "./src"
   ],
-  "typeRoots": ["node_modules/@types", "src/background/ws.d.ts"]
+  "typeRoots": ["node_modules/@types", "typings"]
 }

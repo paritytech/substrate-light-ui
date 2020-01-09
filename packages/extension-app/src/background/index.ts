@@ -2,22 +2,22 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import init, { start_client } from './polkadot_cli';
-import ws from './ws';
+import init, { start_client } from '../../generated/polkadot_cli';
+import ws from '../../generated/ws';
 
 async function start(): Promise<void> {
   /* Load WASM */
   console.log('Loading WASM');
-  await init('./pkg/polkadot_cli_bg.wasm');
+  await init('../../generated/polkadot_cli_bg.wasm');
   console.log('Successfully loaded WASM');
 
   /* Build our client. */
   console.log('Starting client');
   const client = start_client(ws());
-  console.log('Client started');
+  console.log('Client started', JSON.stringify(client));
 
   /* A) Use the client directly */
-  client.rpcSubscribe('{"method":"chain_subscribeNewHeads","params":[],"id":1,"jsonrpc":"2.0"}', (r: any) =>
+  client.rpcSubscribe('{"method":"chain_subscribeNewHead","params":[],"id":1,"jsonrpc":"2.0"}', (r: any) =>
     console.log('[client] New chain head: ' + r)
   );
   client
