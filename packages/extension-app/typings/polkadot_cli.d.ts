@@ -1,1 +1,0 @@
-declare module 'polkadot_cli';

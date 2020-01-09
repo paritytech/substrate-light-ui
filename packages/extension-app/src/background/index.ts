@@ -2,8 +2,9 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import init, { start_client } from '../../generated/polkadot_cli.js';
-import ws from '../../generated/ws.js';
+// eslint-disable-next-line @typescript-eslint/camelcase
+import init, { start_client } from '../../generated/polkadot_cli';
+import ws from '../../generated/ws';
 
 async function start(): Promise<void> {
   /* Load WASM */
@@ -15,7 +16,7 @@ async function start(): Promise<void> {
   console.log('Starting client');
   const client = start_client(ws());
   console.log('Client started', JSON.stringify(client));
-  
+
   /* A) Use the client directly */
   // FIXME: use B
   client.rpcSubscribe('{"method":"chain_subscribeNewHead","params":[],"id":1,"jsonrpc":"2.0"}', (r: any) =>
@@ -24,7 +25,7 @@ async function start(): Promise<void> {
   client
     .rpcSend('{"method":"system_networkState","params":[],"id":1,"jsonrpc":"2.0"}')
     .then((r: any) => console.log('[client] Network state: ' + r));
-  
+
   /* B) Use WasmProviderLite */
   // const wasmProviderLite = new WasmProviderLite(client);
   // wasmProviderLite.send('system_networkState', []).then(r => {
@@ -35,5 +36,4 @@ async function start(): Promise<void> {
   // );
 }
 
-start()
-  .catch(error => console.error(`Something unexpected went wrong: ${error}`));
+start().catch(error => console.error(`Something unexpected went wrong: ${error}`));

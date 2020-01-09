@@ -1,11 +1,17 @@
 {
   "compilerOptions": {
     "allowJs": true,
+    "noImplicitAny": false,
+    "outDir": "./build",
     "resolveJsonModule": true,
-    "outDir": "./build"
+    "typeRoots": [
+      "./node_modules/@types",
+      "./typings/index.d.ts"
+    ]
   },
   "extends": "../../tsconfig",
   "include": [
-    "./src"
+    "./src",
+    "./typings/index.d.ts"
   ]
 }
