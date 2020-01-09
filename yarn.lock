@@ -2290,30 +2290,6 @@
     qrcode-generator "1.4.1"
     react-qr-reader "2.1.2"
 
-<<<<<<< HEAD
-"@polkadot/api-derive@^0.100.0-beta.20":
-  version "0.100.0-beta.20"
-  resolved "https://registry.yarnpkg.com/@polkadot/api-derive/-/api-derive-0.100.0-beta.20.tgz#9cece329e4dfc6155f691aca287d64b7f90d2d10"
-  integrity sha512-VCUHTxdVRhiHIr1Q4L80p2BNG+DQHUFP85u3fmkXKa2bCvcq1gLiRDvwN3WrNsoMcAyqYaK8u2/jtBUX6huPTA==
-  dependencies:
-    "@babel/runtime" "^7.7.7"
-    "@polkadot/api" "^0.100.0-beta.20"
-    "@polkadot/types" "^0.100.0-beta.20"
-
-"@polkadot/api@^0.100.0-beta.17", "@polkadot/api@^0.100.0-beta.20":
-  version "0.100.0-beta.20"
-  resolved "https://registry.yarnpkg.com/@polkadot/api/-/api-0.100.0-beta.20.tgz#e4c964941fd9e0bdb8b9c6c5d45b65804a16dd0e"
-  integrity sha512-lG6yGV1RNvMIsyuDAdv19LVwyPrHalOOm9GyNsLrWYIqAUiYheshs7OlN6svdHNtkaREIsXEgXd1nWYKnyP8uw==
-  dependencies:
-    "@babel/runtime" "^7.7.7"
-    "@polkadot/api-derive" "^0.100.0-beta.20"
-    "@polkadot/keyring" "^1.7.1"
-    "@polkadot/metadata" "^0.100.0-beta.20"
-    "@polkadot/rpc-core" "^0.100.0-beta.20"
-    "@polkadot/rpc-provider" "^0.100.0-beta.20"
-    "@polkadot/types" "^0.100.0-beta.20"
-    "@polkadot/util-crypto" "^1.7.1"
-=======
 "@polkadot/api-derive@^0.100.0-beta.22":
   version "0.100.0-beta.22"
   resolved "https://registry.yarnpkg.com/@polkadot/api-derive/-/api-derive-0.100.0-beta.22.tgz#929e173cc0f67edcff97fed538c95e0000a296a9"
@@ -2336,7 +2312,6 @@
     "@polkadot/rpc-provider" "^0.100.0-beta.22"
     "@polkadot/types" "^0.100.0-beta.22"
     "@polkadot/util-crypto" "^1.8.1"
->>>>>>> master
 
 "@polkadot/dev-react@^0.32.14":
   version "0.32.14"
@@ -2440,17 +2415,10 @@
   dependencies:
     "@babel/runtime" "^7.7.5"
 
-<<<<<<< HEAD
-"@polkadot/jsonrpc@^0.100.0-beta.20":
-  version "0.100.0-beta.20"
-  resolved "https://registry.yarnpkg.com/@polkadot/jsonrpc/-/jsonrpc-0.100.0-beta.20.tgz#fcb93082438c29f6d42d883846f1f568cb1b48a3"
-  integrity sha512-btKKpKqqEAaKcpr2hDVFW2u2J7F+iPHkeN0PB2MnUOQyMoCR+HNOYPGwArAlHDpzdQ/g9oVQKQoY12J7eyrmhw==
-=======
 "@polkadot/jsonrpc@^0.100.0-beta.22":
   version "0.100.0-beta.22"
   resolved "https://registry.yarnpkg.com/@polkadot/jsonrpc/-/jsonrpc-0.100.0-beta.22.tgz#a2f5709848b16768aa8cab72faffe61f41bad197"
   integrity sha512-JiiuqHgWRugDcDT0NsxzrrO1DavqNz+1xEjd3S+5DxuPRbejcAr9A8/nqTtXDUA7WCM7PpzujdUXTZTd2V/O4A==
->>>>>>> master
   dependencies:
     "@babel/runtime" "^7.7.7"
 
@@ -2463,17 +2431,6 @@
     "@polkadot/util" "^1.8.1"
     "@polkadot/util-crypto" "^1.8.1"
 
-<<<<<<< HEAD
-"@polkadot/metadata@^0.100.0-beta.20":
-  version "0.100.0-beta.20"
-  resolved "https://registry.yarnpkg.com/@polkadot/metadata/-/metadata-0.100.0-beta.20.tgz#03dbba770d4d9dc4665a8009cdd7037f3551fed5"
-  integrity sha512-By7o38AN9ZvsYp6fgZdThiB3sSgfUI3e2gxWEF8erg9WMY3hmQITw8rl0sd53seZZdAsGTnb6drLdsZu5mn5ug==
-  dependencies:
-    "@babel/runtime" "^7.7.7"
-    "@polkadot/types" "^0.100.0-beta.20"
-    "@polkadot/util" "^1.7.1"
-    "@polkadot/util-crypto" "^1.7.1"
-=======
 "@polkadot/metadata@^0.100.0-beta.22":
   version "0.100.0-beta.22"
   resolved "https://registry.yarnpkg.com/@polkadot/metadata/-/metadata-0.100.0-beta.22.tgz#9738c3cced6eca40e79b2373963a870ea87cf69e"
@@ -2483,7 +2440,6 @@
     "@polkadot/types" "^0.100.0-beta.22"
     "@polkadot/util" "^1.8.1"
     "@polkadot/util-crypto" "^1.8.1"
->>>>>>> master
 
 "@polkadot/react-identicon@^0.47.1":
   version "0.47.1"
@@ -2500,29 +2456,6 @@
     react-copy-to-clipboard "^5.0.2"
     styled-components "^4.4.1"
 
-<<<<<<< HEAD
-"@polkadot/rpc-core@^0.100.0-beta.20":
-  version "0.100.0-beta.20"
-  resolved "https://registry.yarnpkg.com/@polkadot/rpc-core/-/rpc-core-0.100.0-beta.20.tgz#36340cbd316d06078865a1876a3743cfb3021517"
-  integrity sha512-1jeP9NCHL7mw6qkB5a51crK/QqzLKBUVulAGFhriH3wSlUrXVxVHvEoAuym8a8w7w1uClcoLFb76bykGoiweTQ==
-  dependencies:
-    "@babel/runtime" "^7.7.7"
-    "@polkadot/jsonrpc" "^0.100.0-beta.20"
-    "@polkadot/rpc-provider" "^0.100.0-beta.20"
-    "@polkadot/types" "^0.100.0-beta.20"
-    "@polkadot/util" "^1.7.1"
-    rxjs "^6.5.4"
-
-"@polkadot/rpc-provider@^0.100.0-beta.20":
-  version "0.100.0-beta.20"
-  resolved "https://registry.yarnpkg.com/@polkadot/rpc-provider/-/rpc-provider-0.100.0-beta.20.tgz#d2198cc485bf7366acda6d802414fc3681cf4a91"
-  integrity sha512-/hjY3bdtbX3ALlLrCQO9E/Bz7WOa8FM8fHIxFPTfcFehSWhHMWaw2ySj07qbxNkwwZP+1kwkbQue+RPHZZkqvw==
-  dependencies:
-    "@babel/runtime" "^7.7.7"
-    "@polkadot/metadata" "^0.100.0-beta.20"
-    "@polkadot/util" "^1.7.1"
-    "@polkadot/util-crypto" "^1.7.1"
-=======
 "@polkadot/rpc-core@^0.100.0-beta.22":
   version "0.100.0-beta.22"
   resolved "https://registry.yarnpkg.com/@polkadot/rpc-core/-/rpc-core-0.100.0-beta.22.tgz#0405cce086eeb25cf7ec3ad51bd1e1c389c6e7e9"
@@ -2544,22 +2477,10 @@
     "@polkadot/metadata" "^0.100.0-beta.22"
     "@polkadot/util" "^1.8.1"
     "@polkadot/util-crypto" "^1.8.1"
->>>>>>> master
     eventemitter3 "^4.0.0"
     isomorphic-fetch "^2.2.1"
     websocket "^1.0.31"
 
-<<<<<<< HEAD
-"@polkadot/types@^0.100.0-beta.20":
-  version "0.100.0-beta.20"
-  resolved "https://registry.yarnpkg.com/@polkadot/types/-/types-0.100.0-beta.20.tgz#a79c15cdec504f964317ebf2e9941bc742e37dec"
-  integrity sha512-/vajJA8gW6s8DRQZ3bhQBqj+WBeoieMOS/+FKUvWxi92nJ5kr9nm7ddAUPez1Gxd1lbKUT1LGa11lemY6lAPAg==
-  dependencies:
-    "@babel/runtime" "^7.7.7"
-    "@polkadot/metadata" "^0.100.0-beta.20"
-    "@polkadot/util" "^1.7.1"
-    "@polkadot/util-crypto" "^1.7.1"
-=======
 "@polkadot/types@^0.100.0-beta.22":
   version "0.100.0-beta.22"
   resolved "https://registry.yarnpkg.com/@polkadot/types/-/types-0.100.0-beta.22.tgz#89f7909d7f13938d107ba51f59d62977e6e16923"
@@ -2569,7 +2490,6 @@
     "@polkadot/metadata" "^0.100.0-beta.22"
     "@polkadot/util" "^1.8.1"
     "@polkadot/util-crypto" "^1.8.1"
->>>>>>> master
     "@types/memoizee" "^0.4.3"
     memoizee "^0.4.14"
 
@@ -2693,17 +2613,17 @@
     react-is "^16.6.3"
 
 "@substrate/context@^0.3.11":
-  version "0.3.11"
-  resolved "https://registry.yarnpkg.com/@substrate/context/-/context-0.3.11.tgz#cc16c59a0cbe0ff4fa10fc839c36511be73e79a9"
-  integrity sha512-wox/njc0kCFkJGE5tn5RX7/xCg6vh7UPW/q/IAPgtiuoB5Y3IejQF7dHTFABQr3pTPPhlRZbArhLnGFosoOtfg==
+  version "0.3.13"
+  resolved "https://registry.yarnpkg.com/@substrate/context/-/context-0.3.13.tgz#64f06fae430a1ffeae3c72a833eb87b751ce9cee"
+  integrity sha512-kOVQFZ9fY+RmNVyhGXr95ttb26l72ox0cwa4fVfo+T9ApYXIZd8/kKAUqORx18eMu4MvKV8Jz5aW2gTLhGnoZg==
   dependencies:
     "@polkadot/ui-keyring" "^0.47.1"
     fp-ts "1.18.1"
 
 "@substrate/ui-components@^0.3.10":
-  version "0.3.12"
-  resolved "https://registry.yarnpkg.com/@substrate/ui-components/-/ui-components-0.3.12.tgz#0a4795598b790ea54e22eef8f544f7783c133704"
-  integrity sha512-BMaxE5sux+qlllxRppt4oL2vJQbyACn8pd3bgBX8/ybcyLEQZy6HBwOSCkdhhpLB/71X8jg3fOXtIe7wFXy3ag==
+  version "0.3.13"
+  resolved "https://registry.yarnpkg.com/@substrate/ui-components/-/ui-components-0.3.13.tgz#eb1699f7d1384346bed60683ccab04a7e67dffa1"
+  integrity sha512-nkof5PP1NnR+xrlE2vZxdpGfBA3/Sx8BNuwljx069axMtsBb7Y5SW1fKT4nYt+Z3WrBGCScn2QNtQZpGz1Op9g==
   dependencies:
     "@polkadot/react-identicon" "^0.47.1"
     "@types/recharts" "^1.1.16"
@@ -3045,9 +2965,9 @@
     "@types/node" "*"
 
 "@types/node@*", "@types/node@>= 8", "@types/node@^13.1.4":
-  version "13.1.5"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-13.1.5.tgz#4d5efc52a1d3e45d13e5ec9f911cbc5b089ccaec"
-  integrity sha512-wupvfmtbqRJzjCm1H2diy7wo31Gn1OzvqoxCfQuKM9eSecogzP0WTlrjdq7cf7jgSO2ZX6hxwgRPR8Wt7FA22g==
+  version "13.1.6"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-13.1.6.tgz#076028d0b0400be8105b89a0a55550c86684ffec"
+  integrity sha512-Jg1F+bmxcpENHP23sVKkNuU3uaxPnsBMW0cLjleiikFKomJQbsn0Cqk2yDvQArqzZN6ABfBkZ0To7pQ8sLdWDg==
 
 "@types/node@^12.0.12":
   version "12.12.24"
@@ -3096,15 +3016,9 @@
     "@types/react" "*"
 
 "@types/react-native@*", "@types/react-native@^0.60.28":
-<<<<<<< HEAD
-  version "0.60.29"
-  resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.60.29.tgz#3efe6b7d900129a7108acf869d15644304f0f069"
-  integrity sha512-VmfErwvd2bqGnsY8okUprKSzXoHtzxU5xKupFh+o0h7gPO3jQnN7wtLTbegAL4Es9H/3Gmmtpq3LRn/8RCpCpA==
-=======
   version "0.60.30"
   resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.60.30.tgz#33ab525194142a5e3b428e60f0e77e0d1dbd253d"
   integrity sha512-Ho41o+6NBlv1K5q2Z+NREST3UsGahXn4V1to2D2U4bcn1hO5MGjzOdkruzsnN10WiP8hW33jvQE6eERClgwvJg==
->>>>>>> master
   dependencies:
     "@types/prop-types" "*"
     "@types/react" "*"
@@ -6512,15 +6426,9 @@ data-urls@^1.0.0, data-urls@^1.1.0:
     whatwg-url "^7.0.0"
 
 date-fns@^2.0.1:
-<<<<<<< HEAD
-  version "2.8.1"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.8.1.tgz#2109362ccb6c87c3ca011e9e31f702bc09e4123b"
-  integrity sha512-EL/C8IHvYRwAHYgFRse4MGAPSqlJVlOrhVYZ75iQBKrnv+ZedmYsgwH3t+BCDuZDXpoo07+q9j4qgSSOa7irJg==
-=======
   version "2.9.0"
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.9.0.tgz#d0b175a5c37ed5f17b97e2272bbc1fa5aec677d2"
   integrity sha512-khbFLu/MlzLjEzy9Gh8oY1hNt/Dvxw3J6Rbc28cVoYWQaC1S3YI4xwkF9ZWcjDLscbZlY9hISMr66RFzZagLsA==
->>>>>>> master
 
 dateformat@^3.0.0:
   version "3.0.3"
