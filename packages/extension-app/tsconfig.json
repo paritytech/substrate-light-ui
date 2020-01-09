@@ -1,12 +1,10 @@
 {
   "compilerOptions": {
-    "allowJs": true,
     "resolveJsonModule": true,
     "outDir": "./build"
   },
   "extends": "../../tsconfig",
   "include": [
     "./src"
-  ],
-  "typeRoots": ["node_modules/@types", "typings"]
+  ]
 }

@@ -18,7 +18,7 @@ function createWebpack({ alias = {}, context }) {
   const ENV = process.env.NODE_ENV || 'development';
   const isProd = ENV === 'production';
 
-  const copyPlugin = [{ from: 'public' }];
+  const copyPlugin = [{ from: 'public' }, { from: 'generated/polkadot_cli_bg.wasm' }];
   // If building in prod mode,also copy the output of create-react-app's
   // build in light-apps. That will be the popup UI.
   if (ENV === 'production') {
