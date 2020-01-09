@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "allowJs": true,
-    "noImplicitAny": false,
     "outDir": "./build",
     "resolveJsonModule": true,
     "typeRoots": [
