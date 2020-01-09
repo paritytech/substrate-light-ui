@@ -49,7 +49,8 @@ function createWebpack({ alias = {}, context }) {
           exclude: /(node_modules)/,
           use: [
             {
-              loader: require.resolve('babel-loader')
+              loader: require.resolve('babel-loader'),
+              options: require('@polkadot/dev-react/config/babel')
             },
           ],
         },
