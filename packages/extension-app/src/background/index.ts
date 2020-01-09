@@ -2,8 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import init, { start_client } from '../../generated/polkadot_cli';
-import ws from '../../generated/ws';
+import init, { start_client } from '../../generated/polkadot_cli.js';
+import ws from '../../generated/ws.js';
 
 async function start(): Promise<void> {
   /* Load WASM */
