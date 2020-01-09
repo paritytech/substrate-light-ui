@@ -11,8 +11,5 @@
     "build": "tsc",
     "start": "yarn build --watch",
     "test": "echo skipped"
-  },
-  "dependencies": {
-    "@types/bn.js": "^4.11.5"
   }
 }

@@ -11,8 +11,5 @@
     "build": "tsc",
     "start": "yarn build --watch",
     "test": "echo skipped"
-  },
-  "dependencies": {
-    "@substrate/accounts-app": "^0.2.0"
   }
 }
