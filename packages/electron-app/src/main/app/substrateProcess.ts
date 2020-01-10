@@ -8,15 +8,18 @@ import { bundledPath, logger } from '../util';
 
 let substrateProc: ChildProcess;
 
-// TEMPORARY: change to runSubstrateLight once the light client is available.
-export const runSubstrateDev = (): void => {
+/**
+ * Create a process and run the bundled substrate node
+ */
+export function runSubstrate(): void {
   if (substrateProc) {
     logger.error('Unable to initialise Parity Substrate more than once');
     return;
   }
 
-  logger.info('Running `substrate --dev`');
-  const substrate = spawn(bundledPath, ['--dev']); // FIXME: --light
+  const substrateFlags = ['--light', '--rpc-cors', 'file://'];
+  logger.info(`Running ${'`'}substrate ${substrateFlags.join(' ')}${'`'}`);
+  const substrate = spawn(bundledPath, substrateFlags);
 
   substrate.stdout.on('data', data => {
     logger.info(data.toString());
@@ -33,11 +36,11 @@ export const runSubstrateDev = (): void => {
   });
 
   substrateProc = substrate;
-};
+}
 
-export const killSubstrate = (): void => {
+export function killSubstrate(): void {
   if (substrateProc) {
     logger.info('Killing Substrate');
     substrateProc.kill();
   }
-};
+}

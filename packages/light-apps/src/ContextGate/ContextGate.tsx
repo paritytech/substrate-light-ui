@@ -15,16 +15,17 @@ import {
 import { Loading } from '@substrate/ui-components';
 import React from 'react';
 
+// FIXME Use PostMessageProvider once we have an extension
+// https://github.com/paritytech/substrate-light-ui/issues/52
+const wsProvider = new WsProvider('ws://localhost:9944');
+
 export function ContextGate(props: { children: React.ReactNode }): React.ReactElement {
   const { children } = props;
 
   return (
     <AlertsContextProvider>
       <TxQueueContextProvider>
-        <ApiContextProvider
-          loading={<Loading active>Connecting to the node...</Loading>}
-          provider={new WsProvider('wss://kusama-rpc.polkadot.io/')}
-        >
+        <ApiContextProvider loading={<Loading active>Connecting to the node...</Loading>} provider={wsProvider}>
           <ApiContext.Consumer>
             {({ api, isReady, system }: Partial<ApiContextType>): React.ReactElement | boolean | undefined => {
               return (
