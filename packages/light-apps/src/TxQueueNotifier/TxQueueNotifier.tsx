@@ -46,7 +46,7 @@ export function TxQueueNotifier(): React.ReactElement | null {
 
   // Display notification on error
   useEffect(() => {
-    const subscription = errorObservable.subscribe((details: any) => {
+    const subscription = errorObservable.subscribe(details => {
       const { error } = details;
 
       const content = (
@@ -66,7 +66,7 @@ export function TxQueueNotifier(): React.ReactElement | null {
   }, [errorObservable, enqueue]);
 
   useEffect(() => {
-    const subscription = cancelObservable.subscribe((details: any) => {
+    const subscription = cancelObservable.subscribe(details => {
       const { msg } = details;
 
       const content = (

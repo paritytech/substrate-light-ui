@@ -5,6 +5,7 @@
 // eslint-disable-next-line @typescript-eslint/camelcase
 import init, { start_client } from '../../generated/polkadot_cli';
 import ws from '../../generated/ws';
+import { AnyJSON } from '../types';
 
 async function start(): Promise<void> {
   /* Load WASM */
@@ -19,12 +20,13 @@ async function start(): Promise<void> {
 
   /* A) Use the client directly */
   // FIXME: use B
-  client.rpcSubscribe('{"method":"chain_subscribeNewHead","params":[],"id":1,"jsonrpc":"2.0"}', (r: any) =>
+  // https://github.com/paritytech/substrate-light-ui/issues/52
+  client.rpcSubscribe('{"method":"chain_subscribeNewHead","params":[],"id":1,"jsonrpc":"2.0"}', (r: AnyJSON) =>
     console.log('[client] New chain head: ' + r)
   );
   client
     .rpcSend('{"method":"system_networkState","params":[],"id":1,"jsonrpc":"2.0"}')
-    .then((r: any) => console.log('[client] Network state: ' + r));
+    .then((r: AnyJSON) => console.log('[client] Network state: ' + r));
 
   /* B) Use WasmProviderLite */
   // const wasmProviderLite = new WasmProviderLite(client);

@@ -5,6 +5,7 @@
 import { ChildProcess, spawn } from 'child_process';
 
 import { bundledPath, logger } from '../util';
+import { IS_PROD, REACT_DEV_LOCALHOST } from './constants';
 
 let substrateProc: ChildProcess;
 
@@ -17,7 +18,10 @@ export function runSubstrate(): void {
     return;
   }
 
-  const substrateFlags = ['--light', '--rpc-cors', 'file://'];
+  // Run light client
+  // Allow connections from localhost in dev mode, or from file://
+  // (the index.html) in prod mode
+  const substrateFlags = ['--light', '--rpc-cors', IS_PROD ? 'file://' : REACT_DEV_LOCALHOST];
   logger.info(`Running ${'`'}substrate ${substrateFlags.join(' ')}${'`'}`);
   const substrate = spawn(bundledPath, substrateFlags);
 
