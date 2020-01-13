@@ -89,7 +89,6 @@ export default class PostMessageProvider implements ProviderInterface {
     this._eventemitter.on(type, sub);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private emit(type: ProviderInterfaceEmitted, ...args: any[]): void {
     this._eventemitter.emit(type, ...args);
   }
@@ -108,10 +107,13 @@ export default class PostMessageProvider implements ProviderInterface {
     return new PostMessageProvider();
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public send(method: string, params: any[], subInfos?: any): Promise<any> {
     if (subInfos) {
       const { callback, type } = subInfos;
+
+      console.log('rpc.sendSubscribe (subinfos) -> ', method, params, subInfos);
+      debugger;
+
       return this._sendRequest('rpc.sendSubscribe', { type, method, params }).then(
         <TSubscriptionId extends string>(subscriptionId: TSubscriptionId): TSubscriptionId => {
           this._subscriptions[`${type}::${subscriptionId}`] = callback;
@@ -119,6 +121,8 @@ export default class PostMessageProvider implements ProviderInterface {
         }
       );
     } else {
+      console.log('rpc.send -> ', method, params);
+      debugger;
       return this._sendRequest('rpc.send', { method, params });
     }
   }

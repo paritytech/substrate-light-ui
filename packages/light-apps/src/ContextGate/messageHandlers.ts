@@ -13,10 +13,8 @@ import {
 import { SubscriptionNotificationHandler } from './PostMessageProvider';
 
 interface Handler {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   resolve: (data: any) => void;
   reject: (error: Error) => void;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   subscriber?: (data: any) => void;
 }
 
@@ -54,8 +52,16 @@ export function sendMessage<TMessageType extends MessageTypes>(
       request: request || (null as PayloadTypes[TMessageType]),
     };
 
+    // @substrate/extension-app is listening for this message
     window.postMessage(transportRequestMessage, '*');
   });
 }
+
+// FIXME add handled for responses
+// window.addEventListener('message', ({ data, source }): void => {
+//   if (data.id) {
+//     handleResponse(data);
+//   }
+// })
 
 export const subscriptionNotificationHandler = new SubscriptionNotificationHandler();
