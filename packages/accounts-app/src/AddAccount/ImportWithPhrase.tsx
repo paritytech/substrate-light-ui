@@ -5,6 +5,7 @@
 import { handler, KeyringContext } from '@substrate/context';
 import {
   Dropdown,
+  DropdownProps,
   ErrorText,
   Input,
   Margin,
@@ -68,12 +69,13 @@ export function ImportWithPhrase(props: Props): React.ReactElement {
     { key: '1', text: 'controller', value: 'Controller' },
   ]);
 
-  const handleAddTag = (_event: React.SyntheticEvent, { value }: any): void => {
-    setTagOptions([...tagOptions, { key: value, text: value, value }]);
+  const handleAddTag = (_event: React.SyntheticEvent, { value }: DropdownProps): void => {
+    const valueStr = value as string;
+    setTagOptions([...tagOptions, { key: valueStr, text: valueStr, value: valueStr }]);
   };
 
-  const handleOnChange = (_event: React.SyntheticEvent, { value }: any): void => {
-    setTags(value);
+  const handleOnChange = (_event: React.SyntheticEvent, { value }: DropdownProps): void => {
+    setTags(value as Tags);
   };
 
   const handleUnlockWithPhrase = (): void => {

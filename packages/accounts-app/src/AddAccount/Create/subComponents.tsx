@@ -1,6 +1,7 @@
 import { handler } from '@substrate/context';
 import {
   Dropdown,
+  DropdownProps,
   ErrorText,
   FadedText,
   Input,
@@ -24,7 +25,7 @@ import { TagOptions, Tags } from '../types';
 export function renderSetName(name: string, setName: React.Dispatch<React.SetStateAction<string>>): React.ReactElement {
   return (
     <Stacked>
-      <SubHeader noMargin> Give it a name </SubHeader>
+      <SubHeader noMargin>Give it a name</SubHeader>
       <Input autoFocus fluid min={1} onChange={handler(setName)} type='text' value={name} />
     </Stacked>
   );
@@ -81,10 +82,10 @@ export function renderRewriteStep(
 
   return (
     <Stacked>
-      <SubHeader> Copy Your Mnemonic Somewhere Safe </SubHeader>
-      <FadedText> If someone gets hold of this mnemonic they could drain your account</FadedText>
+      <SubHeader>Copy Your Mnemonic Somewhere Safe</SubHeader>
+      <FadedText>If someone gets hold of this mnemonic they could drain your account</FadedText>
       <Margin top />
-      <FadedText> Rewrite Mnemonic Below </FadedText>
+      <FadedText>Rewrite Mnemonic Below</FadedText>
       <MnemonicRewriteParts
         randomFourWords={randomFourWords}
         firstWord={firstWord}
@@ -98,7 +99,7 @@ export function renderRewriteStep(
       />
       <WithSpaceAround>
         <StackedHorizontal>
-          <StyledLinkButton onClick={goToPreviousStep}> Back </StyledLinkButton>
+          <StyledLinkButton onClick={goToPreviousStep}>Back</StyledLinkButton>
           <StyledNavButton onClick={goToNextStep}>Next</StyledNavButton>
         </StackedHorizontal>
       </WithSpaceAround>
@@ -117,8 +118,8 @@ export function renderMetaStep(
   setters: {
     setName: React.Dispatch<React.SetStateAction<string>>;
     setPassword: React.Dispatch<React.SetStateAction<string>>;
-    handleAddTag: (event: React.SyntheticEvent, data: any) => void; // FIXME any
-    handleOnChange: (event: React.SyntheticEvent, data: any) => void; // FIXME any
+    handleAddTag: (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => void;
+    handleOnChange: (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => void;
     createNewAccount: () => void;
     goToPreviousStep: () => void;
   }
@@ -150,8 +151,8 @@ export function renderMetaStep(
         )}
         <WithSpaceAround>
           <StackedHorizontal justifyContent='space-between'>
-            <StyledLinkButton onClick={goToPreviousStep}> Back </StyledLinkButton>
-            <StyledNavButton onClick={createNewAccount}> Save </StyledNavButton>
+            <StyledLinkButton onClick={goToPreviousStep}>Back</StyledLinkButton>
+            <StyledNavButton onClick={createNewAccount}>Save</StyledNavButton>
           </StackedHorizontal>
         </WithSpaceAround>
       </Stacked>
@@ -188,14 +189,13 @@ export function renderCopyStep(
   */
   return (
     <Stacked>
-      <SubHeader> Copy the following mnemonic phrase</SubHeader>
+      <SubHeader>Copy the following mnemonic phrase</SubHeader>
       <FadedText>
-        {' '}
         Your private key will be generated from this phrase. Anyone with access to this phrase can have full control
-        your funds so make sure to keep it a secure and secret.{' '}
+        your funds so make sure to keep it a secure and secret.
       </FadedText>
       <MnemonicPhraseList phrase={mnemonic} />
-      <NavButton onClick={goToNextStep}> Next </NavButton>
+      <NavButton onClick={goToNextStep}>Next</NavButton>
     </Stacked>
   );
 }

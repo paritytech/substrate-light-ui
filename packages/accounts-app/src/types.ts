@@ -10,9 +10,6 @@ export type Accounts = {
   controller: string;
 };
 
-type Error = string;
-export type Errors = Array<Error>;
-
 export type RecentlyOffline = Array<[AccountId, BlockNumber, BN]>;
 
 export type AccountOfflineStatusesMap = Record<string, OfflineStatus[]>;

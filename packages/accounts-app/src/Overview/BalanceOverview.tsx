@@ -32,8 +32,6 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 
-import { Errors } from '../types';
-
 interface Props extends DerivedStakingAccount {
   history: H.History;
 }
@@ -48,7 +46,7 @@ export function BalanceOverview(props: Pick<Props, Exclude<keyof Props, keyof 'v
   const [controllerBalance, setControllerBalance] = useState<DerivedBalances>();
   const [controllerNonce, setControllerNonce] = useState<Index>();
   const [unbondAmount, setUnbondAmount] = useState<BN>(new BN(0));
-  const [status, setStatus] = useState<Either<Errors, AllExtrinsicData>>();
+  const [status, setStatus] = useState<Either<string[], AllExtrinsicData>>();
 
   useEffect(() => {
     if (!controllerId) {
@@ -67,8 +65,8 @@ export function BalanceOverview(props: Pick<Props, Exclude<keyof Props, keyof 'v
     return (): void => subscription.unsubscribe();
   }, [api.derive.balances, api.query.system, controllerId]);
 
-  const _validate = useCallback((): Either<Errors, AllExtrinsicData> => {
-    const errors: Errors = [];
+  const _validate = useCallback((): Either<string[], AllExtrinsicData> => {
+    const errors: string[] = [];
 
     if (!controllerNonce) {
       errors.push('Calculating account nonce...');
@@ -89,6 +87,10 @@ export function BalanceOverview(props: Pick<Props, Exclude<keyof Props, keyof 'v
       errors.push('There was an issue constructing the extrinsic...');
     }
 
+    if (!controllerId) {
+      return left(['`controllerId` is undefined']);
+    }
+
     if (errors.length) {
       return left(errors);
     }
@@ -97,16 +99,17 @@ export function BalanceOverview(props: Pick<Props, Exclude<keyof Props, keyof 'v
       amountAsString: unbondAmount.toString(),
       accountNonce: controllerNonce,
       currentBalance: controllerBalance,
+      // FIXME https://github.com/paritytech/substrate-light-ui/issues/709
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
       extrinsic,
       fees: derivedBalanceFees,
-      currentAccount: controllerId!.toString(),
+      currentAccount: controllerId.toString(),
     });
 
     return values.fold(
       () => left(errors),
-      (allExtrinsicData: any) => right(allExtrinsicData)
+      allExtrinsicData => right(allExtrinsicData)
     );
   }, [api, controllerBalance, controllerId, controllerNonce, derivedBalanceFees, unbondAmount]);
 
@@ -134,8 +137,8 @@ export function BalanceOverview(props: Pick<Props, Exclude<keyof Props, keyof 'v
       .map(_validate)
       .map(status =>
         status.fold(
-          (errors: any) => alert({ type: 'error', content: Object.values(errors) }),
-          (allExtrinsicData: any) => {
+          errors => alert({ type: 'error', content: Object.values(errors) }),
+          allExtrinsicData => {
             const { extrinsic, amount, allFees, allTotal } = allExtrinsicData;
             const details = {
               amount,

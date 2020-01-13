@@ -41,11 +41,11 @@ export function SaveAddress(props: Props): React.ReactElement {
     setSuccess(value);
   };
 
-  const handleChangeAddress = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeAddress = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>): void => {
     setAddress(value);
   };
 
-  const handleSetName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSetName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>): void => {
     setName(value);
   };
 
