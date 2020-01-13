@@ -9,6 +9,7 @@ import { AnyFunction } from '@polkadot/types/types';
 import EventEmitter from 'eventemitter3';
 
 import { SendRequest, TransportSubscriptionNotification } from '../../../extension-app/src/types';
+import { sendMessage, subscriptionNotificationHandler } from './messageHandlers';
 
 type ProviderInterfaceEmitted = 'connected' | 'disconnected' | 'error';
 
@@ -37,15 +38,11 @@ export default class PostMessageProvider implements ProviderInterface {
   // the subscriptions based on subscription id + type
   private _subscriptions: Record<string, AnyFunction> = {}; // {[(type,subscriptionId)]: callback}
 
-  /**
-   * @param {function}  sendRequest  The function to be called to send requests to the node
-   * @param {function}  subscriptionNotificationHandler  Channel for receiving subscription messages
-   */
-  public constructor(sendRequest: SendRequest, subscriptionNotificationHandler: SubscriptionNotificationHandler) {
+  public constructor() {
     this._eventemitter = new EventEmitter();
-    this._sendRequest = sendRequest;
+    this._sendRequest = sendMessage; /* sendRequest()  The function to be called to send requests to the node */
     this._subscriptionNotificationHandler = subscriptionNotificationHandler;
-    this._subscriptionNotificationHandler.on('message', this.onSubscriptionNotification.bind(this));
+    this._subscriptionNotificationHandler.on('message', this.onSubscriptionNotification.bind(this)); /* subscriptionNotificationHandler() Channel for receiving subscription messages */
 
     // Give subscribers time to subscribe
     setTimeout((): void => {
@@ -105,7 +102,7 @@ export default class PostMessageProvider implements ProviderInterface {
    * @description Returns a clone of the object
    */
   public clone(): PostMessageProvider {
-    return new PostMessageProvider(this._sendRequest, this._subscriptionNotificationHandler);
+    return new PostMessageProvider();
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
