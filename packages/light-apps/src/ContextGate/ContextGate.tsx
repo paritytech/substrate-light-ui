@@ -14,7 +14,6 @@ import {
 import { Loading } from '@substrate/ui-components';
 import React from 'react';
 
-import { sendMessage, subscriptionNotificationHandler } from './messageHandlers';
 import PostMessageProvider from './PostMessageProvider';
 
 export function ContextGate(props: { children: React.ReactNode }): React.ReactElement {
@@ -25,7 +24,7 @@ export function ContextGate(props: { children: React.ReactNode }): React.ReactEl
       <TxQueueContextProvider>
         <ApiContextProvider
           loading={<Loading active>Connecting to the node...</Loading>}
-          provider={new PostMessageProvider(sendMessage, subscriptionNotificationHandler)}
+          provider={new PostMessageProvider()}
         >
           <ApiContext.Consumer>
             {({ api, isReady, system }: Partial<ApiContextType>): React.ReactElement | boolean | undefined => {

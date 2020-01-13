@@ -53,6 +53,7 @@ export function sendMessage<TMessageType extends MessageTypes>(
       origin: 'page',
       request: request || (null as PayloadTypes[TMessageType]),
     };
+
     window.postMessage(transportRequestMessage, '*');
   });
 }

@@ -42,7 +42,10 @@ export default class PostMessageProvider implements ProviderInterface {
     this._eventemitter = new EventEmitter();
     this._sendRequest = sendMessage; /* sendRequest()  The function to be called to send requests to the node */
     this._subscriptionNotificationHandler = subscriptionNotificationHandler;
-    this._subscriptionNotificationHandler.on('message', this.onSubscriptionNotification.bind(this)); /* subscriptionNotificationHandler() Channel for receiving subscription messages */
+    this._subscriptionNotificationHandler.on(
+      'message',
+      this.onSubscriptionNotification.bind(this)
+    ); /* subscriptionNotificationHandler() Channel for receiving subscription messages */
 
     // Give subscribers time to subscribe
     setTimeout((): void => {
