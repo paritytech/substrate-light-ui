@@ -1,22 +1,29 @@
-// Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
+// Copyright 2018-2020 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { ChildProcess, spawn } from 'child_process';
 
 import { bundledPath, logger } from '../util';
+import { IS_PROD, REACT_DEV_LOCALHOST } from './constants';
 
 let substrateProc: ChildProcess;
 
-// TEMPORARY: change to runSubstrateLight once the light client is available.
-export const runSubstrateDev = (): void => {
+/**
+ * Create a process and run the bundled substrate node
+ */
+export function runSubstrate(): void {
   if (substrateProc) {
     logger.error('Unable to initialise Parity Substrate more than once');
     return;
   }
 
-  logger.info('Running `substrate --dev`');
-  const substrate = spawn(bundledPath, ['--dev']); // FIXME: --light
+  // Run light client
+  // Allow connections from localhost in dev mode, or from file://
+  // (the index.html) in prod mode
+  const substrateFlags = ['--light', '--rpc-cors', IS_PROD ? 'file://' : REACT_DEV_LOCALHOST];
+  logger.info(`Running ${'`'}substrate ${substrateFlags.join(' ')}${'`'}`);
+  const substrate = spawn(bundledPath, substrateFlags);
 
   substrate.stdout.on('data', data => {
     logger.info(data.toString());
@@ -33,11 +40,11 @@ export const runSubstrateDev = (): void => {
   });
 
   substrateProc = substrate;
-};
+}
 
-export const killSubstrate = (): void => {
+export function killSubstrate(): void {
   if (substrateProc) {
     logger.info('Killing Substrate');
     substrateProc.kill();
   }
-};
+}

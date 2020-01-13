@@ -1,4 +1,4 @@
-// Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
+// Copyright 2018-2020 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
@@ -8,15 +8,14 @@ import url from 'url';
 
 import { productName } from '../../electron-builder.json';
 import { version } from '../../package.json';
+import { IS_PROD, REACT_DEV_LOCALHOST } from './app/constants';
 import { isSubstrateRunning } from './app/isSubstrateRunning';
 import { initMenu } from './app/menu';
-import { killSubstrate, runSubstrateDev } from './app/substrateProcess';
+import { killSubstrate, runSubstrate } from './app/substrateProcess';
 import { logger, staticPath } from './util';
 
 // https://electronjs.org/docs/tutorial/security#electron-security-warnings
 process.env.ELECTRON_ENABLE_SECURITY_WARNINGS = 'true';
-
-const REACT_DEV_LOCALHOST = 'http://localhost:3000';
 
 let sluiApp: Electron.BrowserWindow | undefined;
 
@@ -33,8 +32,8 @@ function createWindow(): void {
     width: 560,
     webPreferences: {
       allowRunningInsecureContent: false,
-      contextIsolation: true, // prevent context sharing between renderer<->main processes
-      devTools: true,
+      contextIsolation: true, // prevent context sharing between renderer<->main processes https://electronjs.org/docs/tutorial/security#isolation-for-untrusted-content
+      devTools: !IS_PROD,
       enableBlinkFeatures: '', // https://electronjs.org/docs/tutorial/security#9-do-not-use-enableblinkfeatures
       enableRemoteModule: false,
       experimentalFeatures: false, // Do not set to true
@@ -74,7 +73,7 @@ app.once('ready', (): void => {
   isSubstrateRunning()
     .then(running => {
       if (!running) {
-        return runSubstrateDev();
+        return runSubstrate();
       }
     })
     .then(createWindow)

@@ -1,10 +1,10 @@
-// Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
+// Copyright 2018-2020 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { mnemonicGenerate } from '@polkadot/util-crypto';
 import { KeyringContext } from '@substrate/context';
-import { AddressSummary, Margin, SizeType, Stacked } from '@substrate/ui-components';
+import { AddressSummary, DropdownProps, Margin, SizeType, Stacked } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
 import { none, Option, some } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
@@ -149,12 +149,13 @@ export function Create(props: Props): React.ReactElement {
     }
   };
 
-  const handleOnChange = (_event: React.SyntheticEvent, { value }: any): void => {
-    setTags(value);
+  const handleOnChange = (_event: React.SyntheticEvent, { value }: DropdownProps): void => {
+    setTags(value as Tags);
   };
 
-  const handleAddTag = (_event: React.SyntheticEvent, { value }: any): void => {
-    setTagOptions([...tagOptions, { key: value, text: value, value }]);
+  const handleAddTag = (_event: React.SyntheticEvent, { value }: DropdownProps): void => {
+    const valueStr = value as string;
+    setTagOptions([...tagOptions, { key: valueStr, text: valueStr, value: valueStr }]);
   };
 
   return (

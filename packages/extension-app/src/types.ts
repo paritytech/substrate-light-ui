@@ -23,11 +23,6 @@ export interface TransportRequestMessage<TMessageType extends MessageTypes> {
 }
 
 export interface PayloadTypes {
-  'authorize.tab': MessageAuthorize;
-  'authorize.approve': MessageAuthorizeApprove;
-  'authorize.reject': MessageAuthorizeReject;
-  'authorize.requests': MessageAuthorizeRequests;
-  'authorize.subscribe': MessageAuthorizeSubscribe;
   'accounts.create': MessageAccountCreate;
   'accounts.edit': MessageAccountEdit;
   'accounts.forget': MessageAccountForget;
@@ -193,3 +188,4 @@ export interface SendRequest {
     subscriber?: (data: any) => void
   ): Promise<ResponseTypes[TMessageType]>;
 }
+export type AnyJSON = string | number | boolean | null | { [property: string]: AnyJSON } | AnyJSON[];

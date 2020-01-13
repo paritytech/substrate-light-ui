@@ -1,4 +1,4 @@
-// Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
+// Copyright 2018-2020 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
@@ -41,11 +41,11 @@ export function SaveAddress(props: Props): React.ReactElement {
     setSuccess(value);
   };
 
-  const handleChangeAddress = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeAddress = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>): void => {
     setAddress(value);
   };
 
-  const handleSetName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSetName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>): void => {
     setName(value);
   };
 

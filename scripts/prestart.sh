@@ -2,6 +2,7 @@
 
 # FIXME: this is an interim solution until paritytech/substrate-light-ui#10 gets merged
 # which is currently blocked by facebook/create-react-app#5645
+# https://github.com/paritytech/substrate-light-ui/issues/10
 
 echo Prebuilding Dependent Apps...
 

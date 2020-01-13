@@ -1,4 +1,4 @@
-// Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
+// Copyright 2018-2020 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
@@ -6,6 +6,7 @@ import { KeyringAddress, KeyringJson } from '@polkadot/ui-keyring/types';
 import { AlertsContext, handler, KeyringContext } from '@substrate/context';
 import {
   Dropdown,
+  DropdownProps,
   ErrorText,
   Input,
   InputFile,
@@ -47,12 +48,13 @@ export function ImportWithJson(): React.ReactElement {
     }
   };
 
-  const handleAddTag = (_event: React.SyntheticEvent, { value }: any): void => {
-    setTagOptions([...tagOptions, { key: value, text: value, value }]);
+  const handleAddTag = (_event: React.SyntheticEvent, { value }: DropdownProps): void => {
+    const valueStr = value as string;
+    setTagOptions([...tagOptions, { key: valueStr, text: valueStr, value: valueStr }]);
   };
 
-  const handleOnChange = (_event: React.SyntheticEvent, { value }: any): void => {
-    setTags(value);
+  const handleOnChange = (_event: React.SyntheticEvent, { value }: DropdownProps): void => {
+    setTags(value as Tags);
   };
 
   const handleFileUploaded = (file: string | null): void => {

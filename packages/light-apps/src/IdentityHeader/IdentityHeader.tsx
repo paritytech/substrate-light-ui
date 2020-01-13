@@ -1,4 +1,4 @@
-// Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
+// Copyright 2018-2020 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
@@ -25,7 +25,7 @@ export function IdentityHeader(props: Props): React.ReactElement {
 
   const currentPath = location.pathname.split('/')[1];
 
-  const handleExpandHeader = () => {
+  const handleExpandHeader = (): void => {
     setExpandHeader(!expandHeader);
   };
 

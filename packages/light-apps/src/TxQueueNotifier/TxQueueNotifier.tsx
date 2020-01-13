@@ -1,4 +1,4 @@
-// Copyright 2018-2019 @paritytech/substrate-light-ui authors & contributors
+// Copyright 2018-2020 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
@@ -46,7 +46,7 @@ export function TxQueueNotifier(): React.ReactElement | null {
 
   // Display notification on error
   useEffect(() => {
-    const subscription = errorObservable.subscribe((details: any) => {
+    const subscription = errorObservable.subscribe(details => {
       const { error } = details;
 
       const content = (
@@ -66,7 +66,7 @@ export function TxQueueNotifier(): React.ReactElement | null {
   }, [errorObservable, enqueue]);
 
   useEffect(() => {
-    const subscription = cancelObservable.subscribe((details: any) => {
+    const subscription = cancelObservable.subscribe(details => {
       const { msg } = details;
 
       const content = (
