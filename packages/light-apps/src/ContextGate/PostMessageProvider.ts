@@ -8,7 +8,7 @@ import { ProviderInterface } from '@polkadot/rpc-provider/types';
 import { AnyFunction } from '@polkadot/types/types';
 import EventEmitter from 'eventemitter3';
 
-import { SendRequest, TransportSubscriptionNotification } from './types';
+import { SendRequest, TransportSubscriptionNotification } from '../../../extension-app/src/types';
 
 type ProviderInterfaceEmitted = 'connected' | 'disconnected' | 'error';
 

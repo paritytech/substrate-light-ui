@@ -6,8 +6,6 @@
 import init, { start_client } from '../../generated/polkadot_cli';
 import ws from '../../generated/ws';
 
-import PostMessageProvider from '../PostMessageProvider';
-
 async function start(): Promise<void> {
   /* Load WASM */
   console.log('Loading WASM');
@@ -29,13 +27,13 @@ async function start(): Promise<void> {
   //   .then((r: any) => console.log('[client] Network state: ' + r));
 
   /* B) Use WasmProviderLite */
-  const wasmProviderLite = new PostMessageProvider(client);
-  wasmProviderLite.send('system_networkState', []).then(r => {
-    console.log('[WasmProviderLite] system_networkState resolved with', r);
-  });
-  wasmProviderLite.subscribe('n/a', 'chain_subscribeNewHead', [], (err: any, r: any) =>
-    console.log('[WasmProviderLite] Subscription notification : new chain head: ', r)
-  );
+  // const wasmProviderLite = new PostMessageProvider(client);
+  // wasmProviderLite.send('system_networkState', []).then(r => {
+  //   console.log('[WasmProviderLite] system_networkState resolved with', r);
+  // });
+  // wasmProviderLite.subscribe('n/a', 'chain_subscribeNewHead', [], (err: any, r: any) =>
+  //   console.log('[WasmProviderLite] Subscription notification : new chain head: ', r)
+  // );
 }
 
 start().catch(error => console.error(`Something unexpected went wrong: ${error}`));

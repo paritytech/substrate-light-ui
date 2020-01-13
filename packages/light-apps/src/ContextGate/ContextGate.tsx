@@ -2,7 +2,6 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { WsProvider } from '@polkadot/api';
 import {
   AlertsContextProvider,
   ApiContext,
@@ -15,6 +14,9 @@ import {
 import { Loading } from '@substrate/ui-components';
 import React from 'react';
 
+import { sendMessage, subscriptionNotificationHandler } from './messageHandlers';
+import PostMessageProvider from './PostMessageProvider';
+
 export function ContextGate(props: { children: React.ReactNode }): React.ReactElement {
   const { children } = props;
 
@@ -23,7 +25,7 @@ export function ContextGate(props: { children: React.ReactNode }): React.ReactEl
       <TxQueueContextProvider>
         <ApiContextProvider
           loading={<Loading active>Connecting to the node...</Loading>}
-          provider={new WsProvider('wss://kusama-rpc.polkadot.io/')}
+          provider={new PostMessageProvider(sendMessage, subscriptionNotificationHandler)}
         >
           <ApiContext.Consumer>
             {({ api, isReady, system }: Partial<ApiContextType>): React.ReactElement | boolean | undefined => {
