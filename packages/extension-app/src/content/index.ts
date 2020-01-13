@@ -2,9 +2,15 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+/// <reference types="chrome" />
+
+// import {
+//   TransportRequestMessage
+// } from '@substrate/extension-app/src/types';
+
 import extension from 'extensionizer';
 
-const port = extension.runtime.connect({ name: 'content' });
+const port: chrome.runtime.Port = extension.runtime.connect({ name: 'content' });
 
 // send messages from @extension-app back to @light-apps
 port.onMessage.addListener((data: any) => {
@@ -17,7 +23,7 @@ window.addEventListener('message', ({ data, source }): void => {
     return;
   }
 
-  port.postMessage(data);
+  port.postMessage(data); // data here is TransportRequestMessage<TMessageType>
 });
 
 const script = document.createElement('script');

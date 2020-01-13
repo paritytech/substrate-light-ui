@@ -4,13 +4,12 @@
 
 /// <reference types="chrome" />
 
-import Coder from '@polkadot/rpc-core';
 import extension from 'extensionizer';
 
 // eslint-disable-next-line @typescript-eslint/camelcase
 import init, { start_client } from '../../generated/polkadot_cli';
 import ws from '../../generated/ws';
-import { AnyJSON } from '../types';
+import { AnyJSON, TransportRequestMessage } from '../types';
 import handlers from './handlers';
 
 // listen to all messages on the extension port and handle appropriately
@@ -19,17 +18,13 @@ extension.runtime.onConnect.addListener((port: any): void => {
   port.onDisconnect.addListener((): void => console.log(`Disconnected from ${port.name}`));
 });
 
-const handler = () => {
-
-}
+const handler = () => {};
 
 class WasmRunner {
   public _client: any = undefined;
-  private _coder: Coder;
 
   constructor() {
     this.start();
-    this._coder = new Coder();
   }
 
   public start = async (): Promise<void> => {
@@ -43,7 +38,7 @@ class WasmRunner {
     const client = start_client(ws());
     this._client = client;
     console.log('Client started', JSON.stringify(client));
-  
+
     /* A) Use the client directly */
     // client.rpcSubscribe('{"method":"chain_subscribeNewHead","params":[],"id":1,"jsonrpc":"2.0"}', (r: AnyJSON) =>
     //   console.log('[client] New chain head: ' + r)
@@ -51,31 +46,39 @@ class WasmRunner {
     // client
     //   .rpcSend('{"method":"system_networkState","params":[],"id":1,"jsonrpc":"2.0"}')
     //   .then((r: AnyJSON) => console.log('[client] Network state: ' + r));
-  }
+  };
 
-  public rpcProxySend = (method: string, params: any[]) => {
-    const payload = {
-      method,
-      params,
-      id: ,
-      jsonrpc: "2.0"
+  public rpcProxySend = (transportRequestMessage: TransportRequestMessage<any>) => {
+    const { id, request } = transportRequestMessage;
+
+    if (request !== 'rpc.send') {
+      return;
     }
+
+    const payload = {
+      method: request.method,
+      params: request.params,
+      id: id,
+      jsonrpc: '2.0',
+    };
 
     if (!this._client) {
       console.error('Client not yet started...');
-      return;
     } else {
-      this._client.rpcSend(JSON.stringify(payload));
+      this._client.rpcSend(JSON.stringify(payload), (r: AnyJSON) => {
+        console.log(`Got a response! ${JSON.stringify(r)}`);
+        // TODO window.postMessage(r)
+      });
     }
-  }
+  };
 
   public rpcProxySubscribe = (payload: string, cb: () => any, port: chrome.runtime.Port) => {
     if (!this._client) {
       return;
     }
 
-    this._client.rpcSubscribe()
-  }
+    this._client.rpcSubscribe();
+  };
 }
 
 const wasmRunner = new WasmRunner();

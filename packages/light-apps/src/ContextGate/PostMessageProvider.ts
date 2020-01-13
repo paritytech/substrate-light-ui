@@ -111,8 +111,8 @@ export default class PostMessageProvider implements ProviderInterface {
     if (subInfos) {
       const { callback, type } = subInfos;
 
-      console.log('rpc.sendSubscribe (subinfos) -> ', method, params, subInfos);
-      debugger;
+      // console.log('rpc.sendSubscribe (subinfos) -> ', method, params, subInfos);
+      // debugger;
 
       return this._sendRequest('rpc.sendSubscribe', { type, method, params }).then(
         <TSubscriptionId extends string>(subscriptionId: TSubscriptionId): TSubscriptionId => {
@@ -121,8 +121,8 @@ export default class PostMessageProvider implements ProviderInterface {
         }
       );
     } else {
-      console.log('rpc.send -> ', method, params);
-      debugger;
+      // console.log('rpc.send -> ', method, params);
+      // debugger;
       return this._sendRequest('rpc.send', { method, params });
     }
   }
