@@ -16,7 +16,7 @@ window.addEventListener('message', ({ data, source }): void => {
   }
 
   port.postMessage(data);
-})
+});
 
 const script = document.createElement('script');
 
@@ -26,6 +26,6 @@ script.onload = () => {
   if (script.parentNode) {
     script.parentNode.removeChild(script);
   }
-}
+};
 
 (document.head || document.documentElement).appendChild(script);
