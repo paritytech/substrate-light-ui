@@ -9,7 +9,7 @@ import { AnyFunction } from '@polkadot/types/types';
 import EventEmitter from 'eventemitter3';
 
 import { SendRequest, TransportSubscriptionNotification } from '../../../extension-app/src/types';
-import { sendMessage, subscriptionNotificationHandler } from './messageHandlers';
+import { sendMessage } from './messageHandlers';
 
 type ProviderInterfaceEmitted = 'connected' | 'disconnected' | 'error';
 
@@ -17,6 +17,7 @@ type ProviderInterfaceEmitted = 'connected' | 'disconnected' | 'error';
 // from the extension. It then dispatches the event to its subscriber,
 // PostMessageProvider.
 export class SubscriptionNotificationHandler extends EventEmitter {}
+const subscriptionNotificationHandler = new SubscriptionNotificationHandler();
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ProviderInterfaceEmitCb = (value?: any) => any;
@@ -111,7 +112,7 @@ export default class PostMessageProvider implements ProviderInterface {
     if (subInfos) {
       const { callback, type } = subInfos;
 
-      // console.log('rpc.sendSubscribe (subinfos) -> ', method, params, subInfos);
+      console.log('rpc.sendSubscribe (subinfos) -> ', method, params, subInfos);
       // debugger;
 
       return this._sendRequest('rpc.sendSubscribe', { type, method, params }).then(
@@ -121,7 +122,7 @@ export default class PostMessageProvider implements ProviderInterface {
         }
       );
     } else {
-      // console.log('rpc.send -> ', method, params);
+      console.log(`rpc.send -> method: ${method}, params: ${params}`);
       // debugger;
       return this._sendRequest('rpc.send', { method, params });
     }

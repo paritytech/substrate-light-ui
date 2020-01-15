@@ -10,8 +10,6 @@ import {
   TransportRequestMessage,
 } from '@substrate/extension-app/src/types';
 
-import { SubscriptionNotificationHandler } from './PostMessageProvider';
-
 interface Handler {
   resolve: (data: any) => void;
   reject: (error: Error) => void;
@@ -52,16 +50,17 @@ export function sendMessage<TMessageType extends MessageTypes>(
       request: request || (null as PayloadTypes[TMessageType]),
     };
 
+    console.log(`(sendRquest) sending a message..... ${JSON.stringify(transportRequestMessage)}`);
+
     // @substrate/extension-app is listening for this message
     window.postMessage(transportRequestMessage, '*');
   });
 }
 
 // FIXME add handled for responses
-// window.addEventListener('message', ({ data, source }): void => {
-//   if (data.id) {
-//     handleResponse(data);
-//   }
-// })
-
-export const subscriptionNotificationHandler = new SubscriptionNotificationHandler();
+window.addEventListener('message', ({ data, source }): void => {
+  if (data.id) {
+    // handleResponse(data);
+    console.log('@light-apps needs to handle response with this data: ', data);
+  }
+})

@@ -14,11 +14,14 @@ const port: chrome.runtime.Port = extension.runtime.connect({ name: 'content' })
 
 // send messages from @extension-app back to @light-apps
 port.onMessage.addListener((data: any) => {
+  console.log('port.onMessage() listenere...');
   window.postMessage({ ...data, origin: 'content' }, '*');
 });
 
 // send messages from @light-apps to @extension-app
 window.addEventListener('message', ({ data, source }): void => {
+  console.log('window.addEventListener()');
+
   if (source !== window || data.origin !== 'page') {
     return;
   }
