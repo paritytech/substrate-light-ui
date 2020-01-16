@@ -1,8 +1,5 @@
 {
-  "exclude": [
-    "**/build/**/*",
-    "**/node_modules/**/*"
-  ],
+  "exclude": ["**/build/**/*", "**/node_modules/**/*"],
   "compilerOptions": {
     "declaration": true,
     "downlevelIteration": true,
@@ -10,6 +7,7 @@
     "jsx": "react",
     "skipLibCheck": true,
     "strict": true,
-    "target": "es5"
+    "target": "es5",
+    "typeRoots": ["node_modules/@types", "node_modules/web-ext-types"]
   }
 }
