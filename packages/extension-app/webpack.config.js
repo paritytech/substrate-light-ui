@@ -30,7 +30,6 @@ function createWebpack({ alias = {}, context }) {
     devtool: false,
     entry: {
       background: './src/background/index.ts',
-      content: './src/content/index.ts',
       page: './src/page/index.ts'
     },
     mode: ENV,

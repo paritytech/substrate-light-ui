@@ -66,8 +66,6 @@ class WasmRunner {
   public rpcProxySend = (transportRequestMessage: TransportRequestMessage<any>, port: chrome.runtime.Port) => {
     const { id, message, request: { method, params } } = transportRequestMessage;
 
-    console.log('rpcproxySend!');
-
     if (message !== 'rpc.send') {
       return;
     }
@@ -75,20 +73,20 @@ class WasmRunner {
     const payload = {
       method,
       params,
-      id: id,
+      id,
       jsonrpc: '2.0',
     };
 
     if (!this._client) {
       console.error('Client not yet started...');
     } else {
-      
       console.log('RPC Send => ', JSON.stringify(payload));
 
-      this._client.rpcSend(JSON.stringify(payload), (r: AnyJSON) => {
-        console.log(`Got a response! ${JSON.stringify(r)}`);
-        // TODO window.postMessage(r)
-      });
+      this._client.rpcSend(JSON.stringify(payload))
+        .then((r: AnyJSON) => {
+          console.log(`Got a response! ${JSON.stringify(r)}`);
+          // TODO window.postMessage(r)
+        });
     }
   };
 
