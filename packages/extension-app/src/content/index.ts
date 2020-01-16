@@ -3,6 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import extension from 'extensionizer';
+console.log('i am here in content');
 
 const port = extension.runtime.connect({ name: 'content' });
 
@@ -15,8 +16,9 @@ port.onMessage.addListener((data: any) => {
 // @light-apps posts to window, this gets it and passes it to the extension runtime port.
 window.addEventListener('message', ({ data, source }): void => {
   console.log('window.addEventListener()');
+  console.log(data);
 
-  if (source !== window || data.origin !== 'page') {
+  if (source !== window || data.origin !== 'SLUI') {
     return;
   }
 
@@ -25,9 +27,10 @@ window.addEventListener('message', ({ data, source }): void => {
 
 // inject our data injector
 const script = document.createElement('script');
-
+console.log('world hello!');
 script.src = extension.extension.getURL('page.js');
 script.onload = (): void => {
+  console.log('hello world!');
   // remove the injecting tag when loaded
   if (script.parentNode) {
     script.parentNode.removeChild(script);

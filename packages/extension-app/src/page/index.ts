@@ -4,13 +4,6 @@
 
 import { TransportResponseMessage, TransportSubscriptionNotification, ResponseMessage } from '../types';
 
-// when sending a message from the injector to the extension, we
-//  - create an event - this we send to the loader
-//  - the loader takes this event and uses port.postMessage to background
-//  - on response, the loader creates a reponse event
-//  - this injector, listens on the events, maps it to the original
-//  - resolves/rejects the promise with the result (or sub data)
-
 interface Handler {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   resolve: (data: any) => void;
@@ -51,6 +44,7 @@ function handleNotification (data: TransportSubscriptionNotification): void {
 
 // setup a response listener (events created by the loader for extension responses)
 window.addEventListener('message', ({ data, source }): void => {
+  console.log('window got a message page.ts -> ', data, source);
   // only allow messages from our window, by the loader
   if (source !== window || data.origin !== 'content') {
     return;

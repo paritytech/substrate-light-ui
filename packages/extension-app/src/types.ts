@@ -18,7 +18,7 @@ export type MessageTypes = keyof PayloadTypes;
 export interface TransportRequestMessage<TMessageType extends MessageTypes> {
   id: string;
   message: TMessageType;
-  origin: 'page' | 'popup';
+  origin: 'SLUI';
   request: PayloadTypes[TMessageType];
 }
 

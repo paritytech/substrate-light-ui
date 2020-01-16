@@ -122,7 +122,7 @@ export default class PostMessageProvider implements ProviderInterface {
         }
       );
     } else {
-      console.log(`rpc.send -> method: ${method}, params: ${params}`);
+      console.log(`PostMessageProvider send() -> method: ${method}, params: ${params}`);
       // debugger;
       return this._sendRequest('rpc.send', { method, params });
     }

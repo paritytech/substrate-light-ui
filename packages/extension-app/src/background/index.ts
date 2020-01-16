@@ -10,11 +10,25 @@ import init, { start_client } from '../../generated/polkadot_cli';
 import ws from '../../generated/ws';
 import { AnyJSON, MessageTypes, MessageRpcSend, MessageRpcSendSubscribe, TransportRequestMessage } from '../types';
 
+// listen to all messages on the extension port and handle appropriately
+extension.runtime.onConnect.addListener((port: any): void => {
+  console.log('extension.runtime.onconnect() -> ', port);
+  console.log('Port name: ', port.name);
+  port.onMessage.addListener((data: any): void => {
+    console.log('background extensino.runtime.onConnect listner s=> ',  data);
+    handler(data, port);
+  });
+  port.onMessageExternal.addListener((data: any): void => {
+    console.log('on message external inside runtime on connect callback');
+  });
+  port.onDisconnect.addListener((): void => console.log(`Disconnected from ${port.name}`));
+});
+
 class WasmRunner {
   public _client: any = undefined;
 
   constructor() {
-    this.start();
+    // this.start();
   }
 
   public start = async (): Promise<void> => {
@@ -74,25 +88,16 @@ class WasmRunner {
 
 const wasmRunner = new WasmRunner();
 
-// listen to all messages on the extension port and handle appropriately
-extension.runtime.onConnect.addListener((port: any): void => {
-  console.log('background -> ', port);
-  port.onMessage.addListener((data: any): void => {
-    console.log('background extensino.runtime.onConnect listner => ',  data);
-    handler(data, port);
-  });
-  port.onDisconnect.addListener((): void => console.log(`Disconnected from ${port.name}`));
-});
-
 function handler<TMessageType extends MessageTypes> ({ id, message, request }: TransportRequestMessage<TMessageType>, port: chrome.runtime.Port): void {
   const sender: chrome.runtime.MessageSender | undefined = port.sender;
+
+  console.log('background handler... sender -> ', sender);
 
   switch(message) {
     case 'rpc.send':
       return wasmRunner.rpcProxySend(request as MessageRpcSend, port);
     case 'rpc.sendSubscribe':
       return wasmRunner.rpcProxySubscribe(request as MessageRpcSendSubscribe, sendMessage, port);
-
     default:
       throw new Error(`Unable to handle message of type ${message}`);
   }

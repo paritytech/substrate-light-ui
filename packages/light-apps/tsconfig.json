@@ -16,9 +16,10 @@
     "noEmit": true,
     "resolveJsonModule": true,
     "skipLibCheck": false,
+    "typeRoots": ["./index.d.ts"]
   },
   "extends": "../../tsconfig",
   "include": [
-    "src"
+    "src", "index.d.ts"
   ]
 }

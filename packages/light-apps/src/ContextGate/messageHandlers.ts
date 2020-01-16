@@ -2,6 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+/// <reference types="chrome" />
+
 import {
   MessageTypes,
   NullMessageTypes,
@@ -9,6 +11,12 @@ import {
   ResponseTypes,
   TransportRequestMessage,
 } from '@substrate/extension-app/src/types';
+
+// @ts-ignore
+import extension from 'extensionizer';
+
+const port = extension.runtime.connect('hbgnfgbgnplkgimgijglbfgmmeghbkbd', { name: 'content' });
+port.postMessage('hello!');
 
 interface Handler {
   resolve: (data: any) => void;
@@ -46,14 +54,13 @@ export function sendMessage<TMessageType extends MessageTypes>(
     const transportRequestMessage: TransportRequestMessage<TMessageType> = {
       id,
       message,
-      origin: 'page',
+      origin: 'SLUI',
       request: request || (null as PayloadTypes[TMessageType]),
     };
 
-    console.log(`(sendRquest) sending a message..... ${JSON.stringify(transportRequestMessage)}`);
+    console.log(`messageHandler() -> ${JSON.stringify(transportRequestMessage)}`);
 
-    // @substrate/extension-app is listening for this message
-    window.postMessage(transportRequestMessage, '*');
+    port.postMessage(transportRequestMessage);
   });
 }
 
