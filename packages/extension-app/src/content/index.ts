@@ -2,17 +2,9 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-/// <reference types="chrome" />
-
-// import {
-//   TransportRequestMessage
-// } from '@substrate/extension-app/src/types';
-
 import extension from 'extensionizer';
 
-const port: chrome.runtime.Port = extension.runtime.connect({ name: 'content' });
-
-console.log(port);
+const port = extension.runtime.connect({ name: 'content' });
 
 // send messages from @extension-app back to @light-apps
 port.onMessage.addListener((data: any) => {
@@ -20,7 +12,7 @@ port.onMessage.addListener((data: any) => {
   window.postMessage({ ...data, origin: 'content' }, '*');
 });
 
-// send messages from @light-apps to @extension-app
+// @light-apps posts to window, this gets it and passes it to the extension runtime port.
 window.addEventListener('message', ({ data, source }): void => {
   console.log('window.addEventListener()');
 
@@ -31,11 +23,12 @@ window.addEventListener('message', ({ data, source }): void => {
   port.postMessage(data); // data here is TransportRequestMessage<TMessageType>
 });
 
+// inject our data injector
 const script = document.createElement('script');
 
-// FIXME getURL() is deprecated
 script.src = extension.extension.getURL('page.js');
-script.onload = () => {
+script.onload = (): void => {
+  // remove the injecting tag when loaded
   if (script.parentNode) {
     script.parentNode.removeChild(script);
   }
