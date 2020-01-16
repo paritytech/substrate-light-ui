@@ -3,5 +3,3 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 export * from './AccountsOverview';
-export * from './AccountOverviewDetailed';
-export * from './BalanceOverview';

@@ -67,7 +67,7 @@ export function Backup(props: Props): React.ReactElement {
       <WithSpaceAround>
         <SubHeader> Please Confirm You Want to Backup this Account </SubHeader>
         <FadedText>
-          By pressing confirm you will be downloading a JSON keyfile that can later be used to unlock your account.{' '}
+          By pressing confirm you will be downloading a JSON keyfile that can later be used to unlock your account.
         </FadedText>
         <Modal.Actions>
           <Stacked>
