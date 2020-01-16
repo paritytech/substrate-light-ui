@@ -8,7 +8,7 @@ import extension from 'extensionizer';
 // eslint-disable-next-line @typescript-eslint/camelcase
 import init, { start_client } from '../../generated/polkadot_cli';
 import ws from '../../generated/ws';
-import { AnyJSON, MessageTypes, MessageRpcSend, MessageRpcSendSubscribe, TransportRequestMessage } from '../types';
+import { AnyJSON, MessageTypes, TransportRequestMessage } from '../types';
 
 // listen to all messages on the extension port and handle appropriately
 extension.runtime.onConnect.addListener((port: any): void => {
@@ -24,11 +24,31 @@ extension.runtime.onConnect.addListener((port: any): void => {
   port.onDisconnect.addListener((): void => console.log(`Disconnected from ${port.name}`));
 });
 
+function handler<TMessageType extends MessageTypes> (payload: TransportRequestMessage<TMessageType>, port: chrome.runtime.Port): void {
+  const sender: chrome.runtime.MessageSender | undefined = port.sender;
+  const { id, message, request } = payload;
+
+  console.log('*** background handler *** ');
+
+  console.log('sender -> ', sender);
+  console.log('message -> ', message);
+  console.log('request -> ', request);
+
+  switch(message) {
+    case 'rpc.send':
+      return wasmRunner.rpcProxySend(payload, port);
+    case 'rpc.sendSubscribe':
+      return wasmRunner.rpcProxySubscribe(payload, () => {console.log('TODO implement the rpc subscribe callback...')}, port);
+    default:
+      throw new Error(`Unable to handle message of type ${message}`);
+  }
+}
+
 class WasmRunner {
   public _client: any = undefined;
 
   constructor() {
-    // this.start();
+    this.start();
   }
 
   public start = async (): Promise<void> => {
@@ -62,9 +82,9 @@ class WasmRunner {
     if (!this._client) {
       console.error('Client not yet started...');
     } else {
-      // client
-      //   .rpcSend('{"method":"system_networkState","params":[],"id":1,"jsonrpc":"2.0"}')
-      //   .then((r: AnyJSON) => console.log('[client] Network state: ' + r));
+      
+      console.log('RPC Send => ', JSON.stringify(payload));
+
       this._client.rpcSend(JSON.stringify(payload), (r: AnyJSON) => {
         console.log(`Got a response! ${JSON.stringify(r)}`);
         // TODO window.postMessage(r)
@@ -72,7 +92,7 @@ class WasmRunner {
     }
   };
 
-  public rpcProxySubscribe = (payload: string, cb: () => any, port: chrome.runtime.Port) => {
+  public rpcProxySubscribe = (transportRequestMessage: TransportRequestMessage<any>, cb: () => any, port: chrome.runtime.Port) => {
     console.log('trying to rpc proxy subscribe...');
 
     if (!this._client) {
@@ -87,18 +107,3 @@ class WasmRunner {
 }
 
 const wasmRunner = new WasmRunner();
-
-function handler<TMessageType extends MessageTypes> ({ id, message, request }: TransportRequestMessage<TMessageType>, port: chrome.runtime.Port): void {
-  const sender: chrome.runtime.MessageSender | undefined = port.sender;
-
-  console.log('background handler... sender -> ', sender);
-
-  switch(message) {
-    case 'rpc.send':
-      return wasmRunner.rpcProxySend(request as MessageRpcSend, port);
-    case 'rpc.sendSubscribe':
-      return wasmRunner.rpcProxySubscribe(request as MessageRpcSendSubscribe, sendMessage, port);
-    default:
-      throw new Error(`Unable to handle message of type ${message}`);
-  }
-}

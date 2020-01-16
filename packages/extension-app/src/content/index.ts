@@ -27,10 +27,8 @@ window.addEventListener('message', ({ data, source }): void => {
 
 // inject our data injector
 const script = document.createElement('script');
-console.log('world hello!');
 script.src = extension.extension.getURL('page.js');
 script.onload = (): void => {
-  console.log('hello world!');
   // remove the injecting tag when loaded
   if (script.parentNode) {
     script.parentNode.removeChild(script);
