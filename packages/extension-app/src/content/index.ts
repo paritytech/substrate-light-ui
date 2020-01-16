@@ -12,6 +12,8 @@ import extension from 'extensionizer';
 
 const port: chrome.runtime.Port = extension.runtime.connect({ name: 'content' });
 
+console.log(port);
+
 // send messages from @extension-app back to @light-apps
 port.onMessage.addListener((data: any) => {
   console.log('port.onMessage() listenere...');
