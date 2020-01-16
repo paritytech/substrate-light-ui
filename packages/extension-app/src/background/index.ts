@@ -6,7 +6,7 @@
 
 import extension from 'extensionizer';
 // eslint-disable-next-line @typescript-eslint/camelcase
-import init, { start_client } from '../../generated/polkadot_cli';
+import init, { Client, start_client } from '../../generated/polkadot_cli';
 import ws from '../../generated/ws';
 import { AnyJSON, MessageTypes, TransportRequestMessage } from '../types';
 
@@ -45,7 +45,7 @@ function handler<TMessageType extends MessageTypes> (payload: TransportRequestMe
 }
 
 class WasmRunner {
-  public _client: any = undefined;
+  public client: Client | undefined;
 
   constructor() {
     this.start();
@@ -59,8 +59,10 @@ class WasmRunner {
 
     /* Build our client. */
     console.log('Starting client');
-    const client = start_client(ws());
-    this._client = client;
+    start_client(ws()).then((_client: Client) => {
+      console.log('Client => ', _client);
+      this.client = _client
+    });
   };
 
   public rpcProxySend = (transportRequestMessage: TransportRequestMessage<any>, port: chrome.runtime.Port) => {
@@ -77,12 +79,14 @@ class WasmRunner {
       jsonrpc: '2.0',
     };
 
-    if (!this._client) {
+    if (!this.client) {
       console.error('Client not yet started...');
     } else {
       console.log('RPC Send => ', JSON.stringify(payload));
+      console.log('client => ', this.client);
+      console.log('client methods => ', this.client.rpcSend);
 
-      this._client.rpcSend(JSON.stringify(payload))
+      this.client.rpcSend(JSON.stringify(payload))
         .then((r: AnyJSON) => {
           console.log(`Got a response! ${JSON.stringify(r)}`);
           // TODO window.postMessage(r)
@@ -93,14 +97,14 @@ class WasmRunner {
   public rpcProxySubscribe = (transportRequestMessage: TransportRequestMessage<any>, cb: () => any, port: chrome.runtime.Port) => {
     console.log('trying to rpc proxy subscribe...');
 
-    if (!this._client) {
+    if (!this.client) {
       return;
     }
 
     // client.rpcSubscribe('{"method":"chain_subscribeNewHead","params":[],"id":1,"jsonrpc":"2.0"}', (r: AnyJSON) =>
     //   console.log('[client] New chain head: ' + r)
 
-    this._client.rpcSubscribe();
+    this.client.rpcSubscribe();
   };
 }
 

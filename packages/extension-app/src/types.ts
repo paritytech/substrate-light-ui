@@ -16,7 +16,7 @@ export type SigningRequest = [string, MessageExtrinsicSign, string];
 export type MessageTypes = keyof PayloadTypes;
 
 export interface TransportRequestMessage<TMessageType extends MessageTypes> {
-  id: string;
+  id: number;
   message: TMessageType;
   origin: 'SLUI';
   request: PayloadTypes[TMessageType];

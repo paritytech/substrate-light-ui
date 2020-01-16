@@ -47,7 +47,7 @@ export function sendMessage<TMessageType extends MessageTypes>(
   subscriber?: (data: any) => void
 ): Promise<ResponseTypes[TMessageType]> {
   return new Promise((resolve, reject): void => {
-    const id = `${Date.now()}.${++idCounter}`;
+    const id = ++idCounter;
 
     handlers[id] = { resolve, reject, subscriber };
 
