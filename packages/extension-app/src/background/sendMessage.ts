@@ -8,10 +8,8 @@ import {
   MessageTypes,
   NullMessageTypes,
   PayloadTypes,
-  ResponseMessage,
   ResponseTypes,
   TransportRequestMessage,
-  TransportResponseMessage
 } from '@substrate/extension-app/src/types';
 
 // @ts-ignore
@@ -64,38 +62,3 @@ export function sendMessage<TMessageType extends MessageTypes>(
     port.postMessage(transportRequestMessage);
   });
 }
-
-function handleResponse<TResponseMessage extends ResponseMessage> (data: TransportResponseMessage<TResponseMessage>): void {
-  console.log('handle response data ... -> ', data);
-
-  const handler = handlers[data.id];
-
-  if (!handler) {
-    console.error(`Unknown response: ${JSON.stringify(data)}`);
-    return;
-  }
-
-  if (!handler.subscriber) {
-    console.log('handler is not a subscriber');
-    delete handlers[data.id];
-  }
-
-  if (data.subscription) {
-    (handler.subscriber as Function)(data.subscription);
-  } else if (data.error) {
-    handler.reject(new Error(data.error));
-  } else {
-    console.log('resolving data response...', data);
-    handler.resolve(data.result);
-  }
-}
-
-port.onMessage.addListener((message: string) => {
-  const data = JSON.parse(JSON.parse(message)); // fixme wtf...
-
-  if (data.id) {
-    handleResponse(data);
-  } else {
-    console.log('data.id not defined...');
-  }
-});
