@@ -4,25 +4,12 @@
 
 /// <reference types="chrome" />
 
+// @ts-ignore
 import extension from 'extensionizer';
 // eslint-disable-next-line @typescript-eslint/camelcase
 import init, { Client, start_client } from '../../generated/polkadot_cli';
 import ws from '../../generated/ws';
 import { AnyJSON, MessageTypes, TransportRequestMessage } from '../types';
-
-// listen to all messages on the extension port and handle appropriately
-extension.runtime.onConnect.addListener((port: any): void => {
-  console.log('extension.runtime.onconnect() -> ', port);
-  console.log('Port name: ', port.name);
-  port.onMessage.addListener((data: any): void => {
-    console.log('background extensino.runtime.onConnect listner s=> ',  data);
-    handler(data, port);
-  });
-  port.onMessageExternal.addListener((data: any): void => {
-    console.log('on message external inside runtime on connect callback');
-  });
-  port.onDisconnect.addListener((): void => console.log(`Disconnected from ${port.name}`));
-});
 
 function handler<TMessageType extends MessageTypes> (payload: TransportRequestMessage<TMessageType>, port: chrome.runtime.Port): void {
   const sender: chrome.runtime.MessageSender | undefined = port.sender;
@@ -44,6 +31,17 @@ function handler<TMessageType extends MessageTypes> (payload: TransportRequestMe
   }
 }
 
+// listen to all messages on the extension port and handle appropriately
+extension.runtime.onConnect.addListener((port: any): void => {
+  console.log('extension.runtime.onconnect() -> ', port);
+  console.log('Port name: ', port.name);
+  port.onMessage.addListener((data: any): void => {
+    console.log('background extensino.runtime.onConnect listner s=> ',  data);
+    handler(data, port);
+  });
+  port.onDisconnect.addListener((): void => console.log(`Disconnected from ${port.name}`));
+});
+
 class WasmRunner {
   public client: Client | undefined;
 
@@ -59,9 +57,10 @@ class WasmRunner {
 
     /* Build our client. */
     console.log('Starting client');
+
     start_client(ws()).then((_client: Client) => {
-      console.log('Client => ', _client);
-      this.client = _client
+      console.log('Client started...', _client);
+      this.client = _client;
     });
   };
 
@@ -89,7 +88,7 @@ class WasmRunner {
       this.client.rpcSend(JSON.stringify(payload))
         .then((r: AnyJSON) => {
           console.log(`Got a response! ${JSON.stringify(r)}`);
-          // TODO window.postMessage(r)
+          port.postMessage(JSON.stringify(r));
         });
     }
   };
@@ -104,7 +103,7 @@ class WasmRunner {
     // client.rpcSubscribe('{"method":"chain_subscribeNewHead","params":[],"id":1,"jsonrpc":"2.0"}', (r: AnyJSON) =>
     //   console.log('[client] New chain head: ' + r)
 
-    this.client.rpcSubscribe();
+    // this.client.rpcSubscribe();
   };
 }
 

@@ -155,7 +155,7 @@ export interface TransportSubscriptionNotification {
 export interface TransportResponseMessage<TMessage extends ResponseMessage> {
   error?: string;
   id: string;
-  response?: TMessage;
+  result?: TMessage;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   subscription?: any;
 }

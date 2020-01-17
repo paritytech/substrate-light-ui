@@ -28,6 +28,9 @@ export function ContextGate(props: { children: React.ReactNode }): React.ReactEl
         >
           <ApiContext.Consumer>
             {({ api, isReady, system }: Partial<ApiContextType>): React.ReactElement | boolean | undefined => {
+              console.log('api => ', api);
+              console.log('ready => ', isReady);
+              console.log('system => ', system);
               return (
                 api &&
                 isReady &&

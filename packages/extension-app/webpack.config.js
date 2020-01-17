@@ -29,8 +29,7 @@ function createWebpack({ alias = {}, context }) {
     context,
     devtool: false,
     entry: {
-      background: './src/background/index.ts',
-      page: './src/page/index.ts'
+      background: './src/background/index.ts'
     },
     mode: ENV,
     output: {

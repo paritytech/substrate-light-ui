@@ -8,15 +8,16 @@ import {
   MessageTypes,
   NullMessageTypes,
   PayloadTypes,
+  ResponseMessage,
   ResponseTypes,
   TransportRequestMessage,
+  TransportResponseMessage
 } from '@substrate/extension-app/src/types';
 
 // @ts-ignore
 import extension from 'extensionizer';
 
-const port = extension.runtime.connect('hbgnfgbgnplkgimgijglbfgmmeghbkbd', { name: 'content' });
-port.postMessage('hello!');
+const port = extension.runtime.connect('hbgnfgbgnplkgimgijglbfgmmeghbkbd', { name: 'SLUI' });
 
 interface Handler {
   resolve: (data: any) => void;
@@ -58,16 +59,49 @@ export function sendMessage<TMessageType extends MessageTypes>(
       request: request || (null as PayloadTypes[TMessageType]),
     };
 
-    console.log(`messageHandler() -> ${JSON.stringify(transportRequestMessage)}`);
+    console.log(`(transportRequestMessage) -> ${JSON.stringify(transportRequestMessage)}`);
 
     port.postMessage(transportRequestMessage);
   });
 }
 
-// FIXME add handled for responses
-window.addEventListener('message', ({ data, source }): void => {
-  if (data.id) {
-    // handleResponse(data);
-    console.log('@light-apps needs to handle response with this data: ', data);
+function handleResponse<TResponseMessage extends ResponseMessage> (data: TransportResponseMessage<TResponseMessage>): void {
+  console.log('handle response data ... -> ', data);
+
+  const handler = handlers[data.id];
+
+  console.log(`handleResponse handler => ${JSON.stringify(handler)}`);
+
+  if (!handler) {
+    console.error(`Unknown response: ${JSON.stringify(data)}`);
+    return;
   }
-})
+
+  if (!handler.subscriber) {
+    console.log('handler is not a subscriber');
+    delete handlers[data.id];
+  }
+
+  if (data.subscription) {
+    (handler.subscriber as Function)(data.subscription);
+  } else if (data.error) {
+    handler.reject(new Error(data.error));
+  } else {
+    console.log('resolving data response...', data);
+    handler.resolve(data.result);
+  }
+}
+
+port.onMessage.addListener((message: string) => {
+  const data = JSON.parse(JSON.parse(message)); // fixme wtf...
+  console.log('json parsed the data => ', data);
+
+  console.log('this guys handler => ', handlers[data.id]);
+
+  if (data.id) {
+    console.log('data has id => ', data.id);
+    handleResponse(data);
+  } else {
+    console.log('data.id not defined...');
+  }
+});
