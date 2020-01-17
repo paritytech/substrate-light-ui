@@ -108,7 +108,7 @@ export default class PostMessageProvider implements ProviderInterface {
     return new PostMessageProvider();
   }
 
-  public send(method: string, params: any[], subInfos?: any): Promise<any> {
+  public async send(method: string, params: any[], subInfos?: any): Promise<any> {
     if (subInfos) {
       const { callback, type } = subInfos;
 
@@ -123,8 +123,12 @@ export default class PostMessageProvider implements ProviderInterface {
       );
     } else {
       console.log(`PostMessageProvider send() -> method: ${method}, params: ${params}`);
-      // debugger;
-      return this._sendRequest('rpc.send', { method, params });
+      
+      this._sendRequest('rpc.send', { method, params })
+        .then(result => {
+          console.log('PostMessageProvider result -> ', JSON.stringify(result))
+          return result;
+        });
     }
   }
 
