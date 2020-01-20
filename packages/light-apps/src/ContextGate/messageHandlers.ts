@@ -92,17 +92,19 @@ function handleResponse<TResponseMessage extends ResponseMessage> (data: Transpo
   }
 }
 
-const handleNotification = (data: TransportSubscriptionNotification) => {
+const handleSubscriptionNotification = (data: TransportSubscriptionNotification) => {
   console.log('handle notiication => ', data);
   subscriptionNotificationHandler.emit('message', data);
 }
 
 port.onMessage.addListener((message: string) => {
-  const data = JSON.parse(JSON.parse(message)); // fixme wtf...
-
+  console.log('raw message -> ', message);
+  const data = JSON.parse(message);
+  console.log('heres the data => ', data);
   if (data.id) {
     handleResponse(data);
   } else {
-    handleNotification(data);
+    console.log('data for notificatio -> ', data);
+    handleSubscriptionNotification(data as TransportSubscriptionNotification);
   }
 });

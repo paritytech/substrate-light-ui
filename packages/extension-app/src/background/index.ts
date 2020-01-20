@@ -10,11 +10,15 @@ import extension from 'extensionizer';
 import init, { Client, start_client } from '../../generated/polkadot_cli';
 import ws from '../../generated/ws';
 import { sendMessage } from './sendMessage';
-import { AnyJSON, MessageTypes, MessageRpcSend, PayloadTypes, TransportRequestMessage } from '../types';
+import { AnyJSON, MessageTypes, MessageRpcSend, PayloadTypes, TransportRequestMessage, TransportSubscriptionNotification } from '../types';
+
+extension.browserAction.setBadgeBackgroundColor({ color: '#d90000' });
 
 // listen to all messages on the extension port and handle appropriately
 extension.runtime.onConnect.addListener((port: any): void => {
   port.onMessage.addListener((data: any): void => {
+    console.log('port data -> ', data);
+
     handler(
       data, 
       port
@@ -25,13 +29,20 @@ extension.runtime.onConnect.addListener((port: any): void => {
 
 function handler<TMessageType extends MessageTypes> (payload: TransportRequestMessage<TMessageType>, port: chrome.runtime.Port): void {
   // const sender: chrome.runtime.MessageSender | undefined = port.sender;
-  const { message } = payload;
+  const { id, message, request } = payload;
 
   console.log('*** background handler *** ');
 
-  const subscriptionCallback = (message: string) => {
-    console.log('subscrtion callback => ', message);
-    port.postMessage(message);
+  const subscriptionCallback = (result: string) => {
+    const transportSubscriptionNotification = {
+      subscriptionId: id,
+      type: message,
+      result
+    }
+    
+    console.log('transport subscription NOtification => ', transportSubscriptionNotification);
+
+    port.postMessage(JSON.stringify(transportSubscriptionNotification));
   }
 
   switch(message) {
@@ -84,9 +95,9 @@ class WasmRunner {
       console.error('Client not yet started...');
     } else {
       this.client.rpcSend(JSON.stringify(payload))
-        .then((r: AnyJSON) => {
+        .then((r: string) => {
           console.log(`Got a response! ${JSON.stringify(r)}`);
-          port.postMessage(JSON.stringify(r));
+          port.postMessage(r);
         });
     }
   };
@@ -110,9 +121,9 @@ class WasmRunner {
         jsonrpc: '2.0',
       };
 
-      this.client.rpcSubscribe(JSON.stringify(payload), (r: AnyJSON) => {
+      this.client.rpcSubscribe(JSON.stringify(payload), (r: string) => {
         console.log('new subsscription resutl -> ', r);
-        cb(JSON.stringify(r));
+        cb(r);
       });
     };
   }
