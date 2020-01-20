@@ -11,11 +11,13 @@ import {
   ResponseMessage,
   ResponseTypes,
   TransportRequestMessage,
-  TransportResponseMessage
+  TransportResponseMessage,
+  TransportSubscriptionNotification
 } from '@substrate/extension-app/src/types';
 
 // @ts-ignore
 import extension from 'extensionizer';
+import { subscriptionNotificationHandler } from './PostMessageProvider';
 
 const port = extension.runtime.connect('hbgnfgbgnplkgimgijglbfgmmeghbkbd', { name: 'SLUI' });
 
@@ -90,12 +92,17 @@ function handleResponse<TResponseMessage extends ResponseMessage> (data: Transpo
   }
 }
 
+const handleNotification = (data: TransportSubscriptionNotification) => {
+  console.log('handle notiication => ', data);
+  subscriptionNotificationHandler.emit('message', data);
+}
+
 port.onMessage.addListener((message: string) => {
   const data = JSON.parse(JSON.parse(message)); // fixme wtf...
 
   if (data.id) {
     handleResponse(data);
   } else {
-    console.log('data.id not defined...');
+    handleNotification(data);
   }
 });

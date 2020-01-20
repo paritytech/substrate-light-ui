@@ -16,8 +16,8 @@ type ProviderInterfaceEmitted = 'connected' | 'disconnected' | 'error';
 // This EventEmitter gets triggered when subscription messages are received
 // from the extension. It then dispatches the event to its subscriber,
 // PostMessageProvider.
-export class SubscriptionNotificationHandler extends EventEmitter {}
-const subscriptionNotificationHandler = new SubscriptionNotificationHandler();
+class SubscriptionNotificationHandler extends EventEmitter {}
+export const subscriptionNotificationHandler = new SubscriptionNotificationHandler();
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ProviderInterfaceEmitCb = (value?: any) => any;
@@ -55,7 +55,13 @@ export default class PostMessageProvider implements ProviderInterface {
   }
 
   private onSubscriptionNotification(message: TransportSubscriptionNotification): void {
+    console.log('@light-apps: on subscription notificatoin -=> ', message);
+
     const { subscriptionId, result, type } = message;
+
+    console.log(' all the subs => ', this._subscriptions);
+    console.log('sub => ', this._subscriptions[`${type}::${subscriptionId}`]);
+
     if (!this._subscriptions[`${type}::${subscriptionId}`]) {
       console.error('Received notification for unknown subscription id', message);
       return;
@@ -113,12 +119,12 @@ export default class PostMessageProvider implements ProviderInterface {
       const { callback, type } = subInfos;
 
       console.log('rpc.sendSubscribe (subinfos) -> ', method, params, subInfos);
-      // debugger;
 
-      return this._sendRequest('rpc.sendSubscribe', { type, method, params }).then(
-        <TSubscriptionId extends string>(subscriptionId: TSubscriptionId): TSubscriptionId => {
-          this._subscriptions[`${type}::${subscriptionId}`] = callback;
-          return subscriptionId;
+      this._sendRequest('rpc.sendSubscribe', { type, method, params })
+        .then(
+          <TSubscriptionId extends string>(subscriptionId: TSubscriptionId): TSubscriptionId => {
+            this._subscriptions[`${type}::${subscriptionId}`] = callback;
+            return subscriptionId;
         }
       );
     } else {
@@ -143,14 +149,14 @@ export default class PostMessageProvider implements ProviderInterface {
    * @summary Allows unsubscribing to subscriptions made with [[subscribe]].
    */
   public async unsubscribe(type: string, method: string, id: number): Promise<boolean> {
-    if (!this._subscriptions[`${type}::${id}`]) {
+    if (!this._subscriptions[id]) {
       console.error('Tried unsubscribing to unexisting subscription', id);
       return false;
     }
 
     delete this._subscriptions[`${type}::${id}`];
 
-    const result = await this.send(method, [id]);
+    const result = await this.send(method, [`${type}::${id}`]);
 
     return result as boolean;
   }

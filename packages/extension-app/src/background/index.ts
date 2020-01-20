@@ -14,33 +14,31 @@ import { AnyJSON, MessageTypes, MessageRpcSend, PayloadTypes, TransportRequestMe
 
 // listen to all messages on the extension port and handle appropriately
 extension.runtime.onConnect.addListener((port: any): void => {
-  console.log('extension.runtime.onconnect() -> ', port);
-  console.log('Port name: ', port.name);
-
-  port.onMessage.addListener((message: any): void => {
+  port.onMessage.addListener((data: any): void => {
     handler(
-      message, 
-      (message) => {
-        console.log('subscription callback message => ', message);
-        port.postMessage(message);
-      },
+      data, 
       port
     );
   });
   port.onDisconnect.addListener((): void => console.log(`Disconnected from ${port.name}`));
 });
 
-function handler<TMessageType extends MessageTypes> (payload: TransportRequestMessage<TMessageType>, messageCb: (message: string) => void, port: chrome.runtime.Port): void {
-  const sender: chrome.runtime.MessageSender | undefined = port.sender;
-  const { id, message, request } = payload;
+function handler<TMessageType extends MessageTypes> (payload: TransportRequestMessage<TMessageType>, port: chrome.runtime.Port): void {
+  // const sender: chrome.runtime.MessageSender | undefined = port.sender;
+  const { message } = payload;
 
   console.log('*** background handler *** ');
+
+  const subscriptionCallback = (message: string) => {
+    console.log('subscrtion callback => ', message);
+    port.postMessage(message);
+  }
 
   switch(message) {
     case 'rpc.send':
       return wasmRunner.rpcProxySend(payload, port);
     case 'rpc.sendSubscribe':
-      return wasmRunner.rpcProxySubscribe(payload, messageCb, port);
+      return wasmRunner.rpcProxySubscribe(payload, subscriptionCallback, port);
     default:
       throw new Error(`Unable to handle message of type ${message}`);
   }
@@ -97,6 +95,11 @@ class WasmRunner {
     console.log('trying to rpc proxy subscribe...');
     const { id, message, request: { method, params } } = transportRequestMessage;
 
+    if (message !== 'rpc.sendSubscribe') {
+      console.log('message needs to be rpc.sendSUBSCRIBE IN HERE');
+      return;
+    }
+
     if (!this.client) {
       console.error('Client not yet started...');
     } else {
@@ -109,7 +112,6 @@ class WasmRunner {
 
       this.client.rpcSubscribe(JSON.stringify(payload), (r: AnyJSON) => {
         console.log('new subsscription resutl -> ', r);
-        console.log('callback -> ', JSON.stringify(cb));
         cb(JSON.stringify(r));
       });
     };
