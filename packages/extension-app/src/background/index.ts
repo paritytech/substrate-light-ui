@@ -10,7 +10,25 @@ import extension from 'extensionizer';
 import init, { Client, start_client } from '../../generated/polkadot_cli';
 import ws from '../../generated/ws';
 import { sendMessage } from './sendMessage';
-import { AnyJSON, MessageTypes, TransportRequestMessage, MessageRpcSend } from '../types';
+import { AnyJSON, MessageTypes, MessageRpcSend, PayloadTypes, TransportRequestMessage } from '../types';
+
+// listen to all messages on the extension port and handle appropriately
+extension.runtime.onConnect.addListener((port: any): void => {
+  console.log('extension.runtime.onconnect() -> ', port);
+  console.log('Port name: ', port.name);
+
+  port.onMessage.addListener((message: any): void => {
+    handler(
+      message, 
+      (message) => {
+        console.log('subscription callback message => ', message);
+        port.postMessage(message);
+      },
+      port
+    );
+  });
+  port.onDisconnect.addListener((): void => console.log(`Disconnected from ${port.name}`));
+});
 
 function handler<TMessageType extends MessageTypes> (payload: TransportRequestMessage<TMessageType>, messageCb: (message: string) => void, port: chrome.runtime.Port): void {
   const sender: chrome.runtime.MessageSender | undefined = port.sender;
@@ -27,17 +45,6 @@ function handler<TMessageType extends MessageTypes> (payload: TransportRequestMe
       throw new Error(`Unable to handle message of type ${message}`);
   }
 }
-
-// listen to all messages on the extension port and handle appropriately
-extension.runtime.onConnect.addListener((port: any): void => {
-  console.log('extension.runtime.onconnect() -> ', port);
-  console.log('Port name: ', port.name);
-  port.onMessage.addListener((message: any): void => {
-    console.log('background extensino.runtime.onConnect listner s=> ',  message);
-    handler(message, (message) => { port.postMessage(message) }, port);
-  });
-  port.onDisconnect.addListener((): void => console.log(`Disconnected from ${port.name}`));
-});
 
 class WasmRunner {
   public client: Client | undefined;
@@ -91,28 +98,22 @@ class WasmRunner {
     const { id, message, request: { method, params } } = transportRequestMessage;
 
     if (!this.client) {
-      return;
-    }
+      console.error('Client not yet started...');
+    } else {
+      const payload = {
+        method,
+        params,
+        id,
+        jsonrpc: '2.0',
+      };
 
-    if (message !== 'rpc.sendSubscribe') {
-      return;
-    }
-
-    const payload = {
-      method,
-      params,
-      id,
-      jsonrpc: '2.0',
+      this.client.rpcSubscribe(JSON.stringify(payload), (r: AnyJSON) => {
+        console.log('new subsscription resutl -> ', r);
+        console.log('callback -> ', JSON.stringify(cb));
+        cb(JSON.stringify(r));
+      });
     };
-
-    // client.rpcSubscribe('{"method":"chain_subscribeNewHead","params":[],"id":1,"jsonrpc":"2.0"}', (r: AnyJSON) =>
-    //   console.log('[client] New chain head: ' + r)
-
-    this.client.rpcSubscribe(JSON.stringify(payload), (r: AnyJSON) => {
-      console.log('new subsscription resutl -> ', JSON.stringify(r));
-      cb(JSON.stringify(r));
-    });
-  };
+  }
 }
 
 const wasmRunner = new WasmRunner();
