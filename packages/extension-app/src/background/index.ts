@@ -9,7 +9,6 @@ import extension from 'extensionizer';
 // eslint-disable-next-line @typescript-eslint/camelcase
 import init, { Client, start_client } from '../../generated/polkadot_cli';
 import ws from '../../generated/ws';
-import { sendMessage } from './sendMessage';
 import { AnyJSON, MessageTypes, MessageRpcSend, PayloadTypes, TransportRequestMessage, TransportSubscriptionNotification } from '../types';
 
 extension.browserAction.setBadgeBackgroundColor({ color: '#d90000' });
@@ -17,8 +16,6 @@ extension.browserAction.setBadgeBackgroundColor({ color: '#d90000' });
 // listen to all messages on the extension port and handle appropriately
 extension.runtime.onConnect.addListener((port: any): void => {
   port.onMessage.addListener((data: any): void => {
-    console.log('port data -> ', data);
-
     handler(
       data, 
       port
@@ -96,7 +93,6 @@ class WasmRunner {
     } else {
       this.client.rpcSend(JSON.stringify(payload))
         .then((r: string) => {
-          console.log(`Got a response! ${JSON.stringify(r)}`);
           port.postMessage(r);
         });
     }

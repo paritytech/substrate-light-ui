@@ -68,8 +68,6 @@ export function sendMessage<TMessageType extends MessageTypes>(
 }
 
 function handleResponse<TResponseMessage extends ResponseMessage> (data: TransportResponseMessage<TResponseMessage>): void {
-  console.log('handle response data ... -> ', data);
-
   const handler = handlers[data.id];
 
   if (!handler) {
@@ -78,7 +76,6 @@ function handleResponse<TResponseMessage extends ResponseMessage> (data: Transpo
   }
 
   if (!handler.subscriber) {
-    console.log('handler is not a subscriber');
     delete handlers[data.id];
   }
 
@@ -87,24 +84,21 @@ function handleResponse<TResponseMessage extends ResponseMessage> (data: Transpo
   } else if (data.error) {
     handler.reject(new Error(data.error));
   } else {
-    console.log('resolving data response...', data);
     handler.resolve(data.result);
   }
 }
 
 const handleSubscriptionNotification = (data: TransportSubscriptionNotification) => {
-  console.log('handle notiication => ', data);
   subscriptionNotificationHandler.emit('message', data);
 }
 
 port.onMessage.addListener((message: string) => {
-  console.log('raw message -> ', message);
   const data = JSON.parse(message);
-  console.log('heres the data => ', data);
+  console.log('message handler data ==> ', data);
   if (data.id) {
     handleResponse(data);
   } else {
-    console.log('data for notificatio -> ', data);
+    console.log('data for notifications -> ', data);
     handleSubscriptionNotification(data as TransportSubscriptionNotification);
   }
 });

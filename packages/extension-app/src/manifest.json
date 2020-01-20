@@ -4,6 +4,7 @@
   "homepage_url": "https://github.com/paritytech/substrate-light-ui",
   "name": "slui",
   "short_name": "slui",
+  "version": "0.2.0",
   "manifest_version": 2,
   "permissions": ["storage"],
   "background": {
