@@ -14,34 +14,32 @@ import { Loading } from '@substrate/ui-components';
 import React from 'react';
 
 import PostMessageProvider from './PostMessageProvider';
+import { HealthContextProvider } from './context/HealthContext';
+import { HealthGate } from './HealthGate';
 
 export function ContextGate(props: { children: React.ReactNode }): React.ReactElement {
   const { children } = props;
 
+  const wsProvider = new PostMessageProvider();
+
   return (
     <AlertsContextProvider>
       <TxQueueContextProvider>
-        <ApiContextProvider
-          loading={<Loading active>Connecting to the node...</Loading>}
-          provider={new PostMessageProvider()}
-        >
-          <ApiContext.Consumer>
-            {({ api, isReady, system }: Partial<ApiContextType>): React.ReactElement | boolean | undefined => {
-              console.log('api: ', api);
-              console.log('api isReady: ', isReady);
-              console.log('system: ', system);
-              return (
-                api &&
-                isReady &&
-                system && (
-                  <KeyringContextProvider api={api} isReady={isReady} system={system}>
-                    {children}
-                  </KeyringContextProvider>
-                )
-              );
-            }}
-          </ApiContext.Consumer>
-        </ApiContextProvider>
+        <HealthContextProvider provider={wsProvider}>
+          <HealthGate>
+            <ApiContextProvider loading={<Loading active>Initializing chain...</Loading>} provider={wsProvider.clone()}>
+              <ApiContext.Consumer>
+                {({ api, isReady, system }: ApiContextType): React.ReactElement | null =>
+                  api && isReady && system ? (
+                    <KeyringContextProvider api={api} isReady={isReady} system={system}>
+                      {children}
+                    </KeyringContextProvider>
+                  ) : null
+                }
+              </ApiContext.Consumer>
+            </ApiContextProvider>
+          </HealthGate>
+        </HealthContextProvider>
       </TxQueueContextProvider>
     </AlertsContextProvider>
   );

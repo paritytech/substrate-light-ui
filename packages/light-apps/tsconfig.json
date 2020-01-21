@@ -15,11 +15,10 @@
     "moduleResolution": "node",
     "noEmit": true,
     "resolveJsonModule": true,
-    "skipLibCheck": false,
-    "typeRoots": ["./index.d.ts"]
+    "skipLibCheck": false
   },
   "extends": "../../tsconfig",
   "include": [
-    "src", "index.d.ts"
+    "src"
   ]
 }

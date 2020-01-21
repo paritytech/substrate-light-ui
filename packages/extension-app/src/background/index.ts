@@ -93,7 +93,6 @@ class WasmRunner {
     } else {
       this.client.rpcSend(JSON.stringify(payload))
         .then((r: string) => {
-          console.log('rpc.send got response from client');
           port.postMessage(r);
         });
     }
@@ -120,11 +119,15 @@ class WasmRunner {
 
       this.client.rpcSubscribe(JSON.stringify(payload), (r: string) => {
         const subscriptionResult = JSON.parse(r);
-        subscriptionResult.id = subscriptionResult.subscription;
+        const result = {
+          ...subscriptionResult,
+          id: subscriptionResult.params.subscription,
+          subscription: subscriptionResult.params.subscription
+        }
         
-        console.log('new subsscription resutl -> ', subscriptionResult);
+        console.log('rpc.subscribe result -> ', result);
         
-        cb(JSON.stringify(subscriptionResult)); // port.postMessage
+        cb(JSON.stringify(result)); // port.postMessage
       });
     };
   }

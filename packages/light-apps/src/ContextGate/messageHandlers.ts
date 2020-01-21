@@ -6,6 +6,7 @@
 
 import {
   MessageTypes,
+  MessageRpcSendResponse,
   NullMessageTypes,
   PayloadTypes,
   ResponseMessage,
@@ -13,7 +14,7 @@ import {
   TransportRequestMessage,
   TransportResponseMessage,
   TransportSubscriptionNotification
-} from '@substrate/extension-app/src/types';
+} from '../../../extension-app/src/types';
 
 // @ts-ignore
 import extension from 'extensionizer';
@@ -67,7 +68,7 @@ export function sendMessage<TMessageType extends MessageTypes>(
   });
 }
 
-function handleResponse<TResponseMessage extends ResponseMessage> (data: TransportResponseMessage<TResponseMessage>): void {
+function handleResponse<TResponseMessage extends MessageRpcSendResponse> (data: TransportResponseMessage<TResponseMessage>): void {
   const handler = handlers[data.id];
 
   if (!handler) {
@@ -78,6 +79,8 @@ function handleResponse<TResponseMessage extends ResponseMessage> (data: Transpo
   if (!handler.subscriber) {
     delete handlers[data.id];
   }
+
+  console.log('handleResponse() -> ', data);
 
   if (data.subscription) {
     console.log('data was subscription!');
@@ -95,8 +98,8 @@ const handleSubscriptionNotification = (data: TransportSubscriptionNotification)
 
 port.onMessage.addListener((message: string) => {
   const data = JSON.parse(message);
-  console.log('message handler data ==> ', data);
-  if (data.id || data.subscription) {
+  console.log('message handler data => ', data);
+  if (data.id) {
     handleResponse(data);
   } else {
     console.log('data for notifications -> ', data);
