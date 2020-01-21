@@ -6,7 +6,7 @@ import { logger } from '@polkadot/util';
 import { Loading } from '@substrate/ui-components';
 import React, { useContext } from 'react';
 
-import { HealthContext, HealthContextType } from './HealthContext';
+import { HealthContext, HealthContextType } from './context/HealthContext';
 
 const STATUS_GOOD = 0;
 const STATUS_WARN = 1;
