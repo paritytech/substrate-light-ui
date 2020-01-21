@@ -14,6 +14,9 @@ import {
 import { Loading } from '@substrate/ui-components';
 import React from 'react';
 
+import { HealthContextProvider } from './context/HealthContext';
+import { HealthGate } from './HealthGate';
+
 // FIXME Use PostMessageProvider once we have an extension
 // https://github.com/paritytech/substrate-light-ui/issues/52
 const wsProvider = new WsProvider('wss://kusama-rpc.polkadot.io');
@@ -24,21 +27,21 @@ export function ContextGate(props: { children: React.ReactNode }): React.ReactEl
   return (
     <AlertsContextProvider>
       <TxQueueContextProvider>
-        <ApiContextProvider loading={<Loading active>Connecting to the node...</Loading>} provider={wsProvider}>
-          <ApiContext.Consumer>
-            {({ api, isReady, system }: Partial<ApiContextType>): React.ReactElement | boolean | undefined => {
-              return (
-                api &&
-                isReady &&
-                system && (
-                  <KeyringContextProvider api={api} isReady={isReady} system={system}>
-                    {children}
-                  </KeyringContextProvider>
-                )
-              );
-            }}
-          </ApiContext.Consumer>
-        </ApiContextProvider>
+        <HealthContextProvider provider={wsProvider}>
+          <HealthGate>
+            <ApiContextProvider loading={<Loading active>Initializing chain...</Loading>} provider={wsProvider.clone()}>
+              <ApiContext.Consumer>
+                {({ api, isReady, system }: ApiContextType): React.ReactElement | null =>
+                  api && isReady && system ? (
+                    <KeyringContextProvider api={api} isReady={isReady} system={system}>
+                      {children}
+                    </KeyringContextProvider>
+                  ) : null
+                }
+              </ApiContext.Consumer>
+            </ApiContextProvider>
+          </HealthGate>
+        </HealthContextProvider>
       </TxQueueContextProvider>
     </AlertsContextProvider>
   );
