@@ -80,6 +80,7 @@ function handleResponse<TResponseMessage extends ResponseMessage> (data: Transpo
   }
 
   if (data.subscription) {
+    console.log('data was subscription!');
     (handler.subscriber as Function)(data.subscription);
   } else if (data.error) {
     handler.reject(new Error(data.error));
@@ -95,7 +96,7 @@ const handleSubscriptionNotification = (data: TransportSubscriptionNotification)
 port.onMessage.addListener((message: string) => {
   const data = JSON.parse(message);
   console.log('message handler data ==> ', data);
-  if (data.id) {
+  if (data.id || data.subscription) {
     handleResponse(data);
   } else {
     console.log('data for notifications -> ', data);

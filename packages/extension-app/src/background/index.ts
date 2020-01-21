@@ -9,7 +9,7 @@ import extension from 'extensionizer';
 // eslint-disable-next-line @typescript-eslint/camelcase
 import init, { Client, start_client } from '../../generated/polkadot_cli';
 import ws from '../../generated/ws';
-import { AnyJSON, MessageTypes, MessageRpcSend, PayloadTypes, TransportRequestMessage, TransportSubscriptionNotification } from '../types';
+import { MessageTypes, TransportRequestMessage } from '../types';
 
 extension.browserAction.setBadgeBackgroundColor({ color: '#d90000' });
 
@@ -17,7 +17,7 @@ extension.browserAction.setBadgeBackgroundColor({ color: '#d90000' });
 extension.runtime.onConnect.addListener((port: any): void => {
   port.onMessage.addListener((data: any): void => {
     handler(
-      data, 
+      data,
       port
     );
   });
@@ -93,6 +93,7 @@ class WasmRunner {
     } else {
       this.client.rpcSend(JSON.stringify(payload))
         .then((r: string) => {
+          console.log('rpc.send got response from client');
           port.postMessage(r);
         });
     }
@@ -118,8 +119,12 @@ class WasmRunner {
       };
 
       this.client.rpcSubscribe(JSON.stringify(payload), (r: string) => {
-        console.log('new subsscription resutl -> ', r);
-        cb(r);
+        const subscriptionResult = JSON.parse(r);
+        subscriptionResult.id = subscriptionResult.subscription;
+        
+        console.log('new subsscription resutl -> ', subscriptionResult);
+        
+        cb(JSON.stringify(subscriptionResult)); // port.postMessage
       });
     };
   }

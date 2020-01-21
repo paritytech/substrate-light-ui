@@ -122,7 +122,7 @@ export default class PostMessageProvider implements ProviderInterface {
 
       return this._sendRequest('rpc.sendSubscribe', { type, method, params })
         .then(result => {
-            console.log('inside send subscribe result !! ', result);
+            console.log('inside send subscribe !! ', result);
             this._subscriptions[`${type}::${result.subscriptionId}`] = callback;
             return result.subscriptionId;
         }
@@ -130,6 +130,7 @@ export default class PostMessageProvider implements ProviderInterface {
     } else {
       return this._sendRequest('rpc.send', { method, params })
         .then(result => {
+          console.log('rpc send got a result => ', result);
           return result;
         });
     }
@@ -138,6 +139,8 @@ export default class PostMessageProvider implements ProviderInterface {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async subscribe(type: string, method: string, params: any[], callback: AnyFunction): Promise<number> {
     const id = await this.send(method, params, { type, callback });
+
+    console.log('subscription id => ', id);
 
     return id as number;
   }
