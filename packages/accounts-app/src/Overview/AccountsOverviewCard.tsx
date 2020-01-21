@@ -2,8 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AccountId } from '@polkadot/types/interfaces';
-import { AlertsContext, ApiContext, handler, KeyringContext, StakingContext } from '@substrate/context';
+import { AlertsContext, handler, KeyringContext } from '@substrate/context';
 import {
   AddressSummary,
   Card,
@@ -19,42 +18,22 @@ import {
   WithSpaceBetween,
 } from '@substrate/ui-components';
 import FileSaver from 'file-saver';
-import { fromNullable } from 'fp-ts/lib/Option';
-import H from 'history';
-import React, { useContext, useEffect, useState } from 'react';
+import { History } from 'history';
+import React, { useContext, useState } from 'react';
 
 interface Props {
   address: string;
-  history: H.History;
+  history: History;
   name?: string;
 }
 
 export function AccountsOverviewCard(props: Props): React.ReactElement {
   const { address, history, name } = props;
-  const { api } = useContext(ApiContext);
   const { keyring } = useContext(KeyringContext);
   const { enqueue } = useContext(AlertsContext);
-  const { accountStakingMap } = useContext(StakingContext);
-  const [bondingPair, setBondingPair] = useState<AccountId>();
   const [confirmScreen, setConfirmScreen] = useState();
+  const [showDetails, setShowDetails] = useState(false);
   const [password, setPassword] = useState();
-
-  const derivedStakingInfo = accountStakingMap[address];
-
-  useEffect(() => {
-    const accountType = fromNullable(derivedStakingInfo).map(stakingInfo =>
-      api.createType('AccountId', address) === stakingInfo.controllerId ? 'controller' : 'stash'
-    );
-    const bondingPair = fromNullable(derivedStakingInfo)
-      .map(stakingInfo =>
-        accountType.fold(undefined, accountType =>
-          accountType === 'controller' ? stakingInfo.stashId : stakingInfo.controllerId
-        )
-      )
-      .getOrElse(undefined);
-
-    setBondingPair(bondingPair);
-  }, [address, api, derivedStakingInfo]);
 
   const handleBackup = (): void => {
     if (confirmScreen !== 'backup') {
@@ -76,13 +55,13 @@ export function AccountsOverviewCard(props: Props): React.ReactElement {
     }
   };
 
-  const handleCancel = (): void => {
+  function handleCancel(): void {
     if (confirmScreen) {
       setConfirmScreen(null);
     }
-  };
+  }
 
-  const handleForget = (): void => {
+  function handleForget(): void {
     if (confirmScreen !== 'forget') {
       setConfirmScreen('forget');
       return;
@@ -96,18 +75,18 @@ export function AccountsOverviewCard(props: Props): React.ReactElement {
     } catch (e) {
       enqueue({ content: e.message, type: 'error' });
     }
-  };
+  }
 
-  const navToDetails = (): void => {
-    history.push(`/manageAccounts/${address}/details`);
-  };
+  function handleShowDetails(): void {
+    setShowDetails(!showDetails);
+  }
 
   const renderConfirmBackup = (): React.ReactElement => {
     return (
       <WithSpaceAround>
         <SubHeader>Please Confirm You Want to Backup this Account</SubHeader>
         <FadedText>
-          By pressing confirm you will be downloading a JSON keyfile that can later be used to unlock your account.{' '}
+          By pressing confirm you will be downloading a JSON keyfile that can later be used to unlock your account.
         </FadedText>
         <Card.Description>
           <Stacked>
@@ -135,17 +114,19 @@ export function AccountsOverviewCard(props: Props): React.ReactElement {
     return (
       <WithSpaceAround>
         <Stacked>
-          <SubHeader> Please Confirm You Want to Forget this Account </SubHeader>
-          <b>By pressing confirm, you will be removing this account from your Saved Accounts. </b>
+          <SubHeader>Please Confirm You Want to Forget this Account</SubHeader>
+          <strong>By pressing confirm, you will be removing this account from your Saved Accounts.</strong>
           <Margin top />
-          <FadedText> You can restore this later from your mnemonic phrase or json backup file. </FadedText>
+          <FadedText>You can restore this later from your mnemonic phrase or json backup file.</FadedText>
           <Card.Description>
             <StackedHorizontal>
               <StyledLinkButton onClick={handleCancel}>
-                <Icon name='remove' color='red' /> <FadedText> Cancel </FadedText>{' '}
+                <Icon name='remove' color='red' />
+                <FadedText>Cancel</FadedText>
               </StyledLinkButton>
               <StyledLinkButton onClick={handleForget}>
-                <Icon name='checkmark' color='green' /> <FadedText> Confirm Forget </FadedText>{' '}
+                <Icon name='checkmark' color='green' />
+                <FadedText>Confirm Forget</FadedText>
               </StyledLinkButton>
             </StackedHorizontal>
           </Card.Description>
@@ -156,7 +137,7 @@ export function AccountsOverviewCard(props: Props): React.ReactElement {
 
   return (
     <>
-      <Card height='80%' raised onClick={navToDetails}>
+      <Card height='80%' raised>
         {confirmScreen ? (
           <>
             <Card.Content>
@@ -169,23 +150,32 @@ export function AccountsOverviewCard(props: Props): React.ReactElement {
             <Card.Content textAlign='right'>
               <AddressSummary
                 address={address}
-                bondingPair={bondingPair && bondingPair.toString()}
                 alignItems='center'
+                detailed={showDetails}
                 justifyContent='center'
                 name={name}
                 orientation='horizontal'
                 size='small'
               />
               <Margin bottom />
+
               <StackedHorizontal>
-                <StyledLinkButton onClick={handleForget}>
-                  <Icon name='remove' />
-                  Forget
+                <StyledLinkButton onClick={handleShowDetails}>
+                  <Icon name={showDetails ? 'up arrow' : 'down arrow'} />
+                  {showDetails ? 'Hide Details' : 'Show Details'}
                 </StyledLinkButton>
-                <StyledLinkButton onClick={handleBackup}>
-                  <Icon name='arrow alternate circle down' />
-                  Backup
-                </StyledLinkButton>
+                {showDetails && (
+                  <>
+                    <StyledLinkButton onClick={handleForget}>
+                      <Icon name='remove' />
+                      Forget
+                    </StyledLinkButton>
+                    <StyledLinkButton onClick={handleBackup}>
+                      <Icon name='arrow alternate circle down' />
+                      Backup
+                    </StyledLinkButton>
+                  </>
+                )}
               </StackedHorizontal>
             </Card.Content>
           </>

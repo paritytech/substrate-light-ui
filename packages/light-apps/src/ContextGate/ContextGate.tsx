@@ -8,7 +8,6 @@ import {
   ApiContextProvider,
   ApiContextType,
   KeyringContextProvider,
-  StakingContextProvider,
   TxQueueContextProvider,
 } from '@substrate/context';
 import { Loading } from '@substrate/ui-components';
@@ -28,15 +27,16 @@ export function ContextGate(props: { children: React.ReactNode }): React.ReactEl
         >
           <ApiContext.Consumer>
             {({ api, isReady, system }: Partial<ApiContextType>): React.ReactElement | boolean | undefined => {
+              console.log('api: ', api);
+              console.log('api isReady: ', isReady);
+              console.log('system: ', system);
               return (
                 api &&
                 isReady &&
                 system && (
-                  <StakingContextProvider>
-                    <KeyringContextProvider api={api} isReady={isReady} system={system}>
-                      {children}
-                    </KeyringContextProvider>
-                  </StakingContextProvider>
+                  <KeyringContextProvider api={api} isReady={isReady} system={system}>
+                    {children}
+                  </KeyringContextProvider>
                 )
               );
             }}

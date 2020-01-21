@@ -3,16 +3,14 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
-import { AccountOverviewDetailed, AccountsOverview } from './Overview';
+import { AccountsOverview } from './Overview';
 
 export function Accounts(): React.ReactElement {
   return (
     <Switch>
-      <Route path='/manageAccounts/:currentAccount/overview' component={AccountsOverview} />
-      <Route path='/manageAccounts/:currentAccount/details' component={AccountOverviewDetailed} />
-      <Redirect exact from='/manageAccounts/:currentAccount' to='/manageAccounts/:currentAccount/overview' />
+      <Route path='/manageAccounts/:currentAccount' component={AccountsOverview} />
     </Switch>
   );
 }
