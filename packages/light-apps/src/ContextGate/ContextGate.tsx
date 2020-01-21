@@ -14,7 +14,7 @@ import {
 import { Loading } from '@substrate/ui-components';
 import React from 'react';
 
-import { HealthContextProvider } from './HealthContext';
+import { HealthContextProvider } from './context/HealthContext';
 import { HealthGate } from './HealthGate';
 
 // FIXME Use PostMessageProvider once we have an extension
