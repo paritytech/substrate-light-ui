@@ -7,12 +7,59 @@ import { ProviderInterface } from '@polkadot/rpc-provider/types';
 import { TypeRegistry } from '@polkadot/types';
 import { Header, Health } from '@polkadot/types/interfaces';
 import React, { useEffect, useRef, useState } from 'react';
-import { interval } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { combineLatest, interval, merge } from 'rxjs';
+import { map, startWith, switchMap } from 'rxjs/operators';
 
 export interface HealthContextType {
-  header?: Header;
-  health?: Health;
+  /**
+   * Best block
+   */
+  best: number;
+  /**
+   * Node has peers
+   */
+  hasPeers: boolean;
+  /**
+   * Able to connect to the node
+   */
+  isNodeConnected: boolean;
+  /**
+   * Node is syncing (major or minor)
+   */
+  isSyncing: boolean;
+}
+
+/**
+ * Get the health status of the node
+ *
+ * @param header - The latest header of the light node
+ * @param health - The health of the light node
+ */
+function getNodeStatus(header: Header | undefined, health: Health | undefined): HealthContextType {
+  let best = 0;
+  let isNodeConnected = false;
+  let hasPeers = false;
+  let isSyncing = false;
+
+  if (health && header) {
+    isNodeConnected = true;
+    best = header.number.toNumber();
+
+    if (health.peers.gten(1)) {
+      hasPeers = true;
+    }
+
+    if (health.isSyncing.isTrue) {
+      isSyncing = true;
+    }
+  }
+
+  return {
+    best,
+    hasPeers,
+    isNodeConnected,
+    isSyncing,
+  };
 }
 
 export const HealthContext: React.Context<HealthContextType> = React.createContext({} as HealthContextType);
@@ -24,22 +71,32 @@ export interface HealthContextProviderProps {
 
 export function HealthContextProvider(props: HealthContextProviderProps): React.ReactElement {
   const { children = null, provider } = props;
-  const [health, setHealth] = useState<Health | undefined>(undefined);
-  const [header, setHeader] = useState<Header | undefined>(undefined);
+  const [status, setStatus] = useState<HealthContextType>({
+    best: 0,
+    hasPeers: false,
+    isNodeConnected: false,
+    isSyncing: false,
+  });
 
   const registryRef = useRef(new TypeRegistry());
   const rpcRef = useRef(new Rpc(registryRef.current, provider));
   const rpc = rpcRef.current;
 
   useEffect(() => {
-    rpc.system.health().subscribe(setHealth);
-
-    // Don't use rpc.chain.subsribeNewHead, because that header doesn't get
-    // updated when doing a major sync
-    interval(2000)
-      .pipe(switchMap(() => rpc.chain.getHeader()))
-      .subscribe(setHeader);
+    combineLatest([
+      rpc.system.health(),
+      merge(
+        rpc.chain.subscribeNewHeads(),
+        // Header doesn't get updated when doing a major sync, so we also poll
+        interval(2000).pipe(switchMap(() => rpc.chain.getHeader()))
+      ),
+    ])
+      .pipe(
+        startWith([undefined, undefined]),
+        map(([health, header]) => getNodeStatus(header, health))
+      )
+      .subscribe(setStatus);
   }, [rpc]);
 
-  return <HealthContext.Provider value={{ header, health }}>{children}</HealthContext.Provider>;
+  return <HealthContext.Provider value={status}>{children}</HealthContext.Provider>;
 }
