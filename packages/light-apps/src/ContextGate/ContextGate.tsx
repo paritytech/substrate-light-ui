@@ -19,7 +19,7 @@ import { HealthGate } from './HealthGate';
 
 // FIXME Use PostMessageProvider once we have an extension
 // https://github.com/paritytech/substrate-light-ui/issues/52
-const wsProvider = new WsProvider('ws://localhost:9944');
+const wsProvider = new WsProvider('wss://kusama-rpc.polkadot.io');
 
 export function ContextGate(props: { children: React.ReactNode }): React.ReactElement {
   const { children } = props;
@@ -29,7 +29,7 @@ export function ContextGate(props: { children: React.ReactNode }): React.ReactEl
       <TxQueueContextProvider>
         <HealthContextProvider provider={wsProvider}>
           <HealthGate>
-            <ApiContextProvider provider={wsProvider} loading={<Loading active>Initializing the interface...</Loading>}>
+            <ApiContextProvider loading={<Loading active>Initializing chain...</Loading>} provider={wsProvider.clone()}>
               <ApiContext.Consumer>
                 {({ api, isReady, system }: ApiContextType): React.ReactElement | null =>
                   api && isReady && system ? (
