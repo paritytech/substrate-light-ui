@@ -25,6 +25,7 @@ export interface Status {
 const l = logger('health');
 
 /**
+ * Transform the health information into a color-coded overlay
  *
  * @param header - The latest header of the light node
  * @param health - The health of the light node
