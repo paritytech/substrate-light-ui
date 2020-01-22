@@ -4,20 +4,20 @@
 
 /// <reference types="chrome" />
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// @ts-ignore
+import extension from 'extensionizer';
+
 import {
-  MessageTypes,
   MessageRpcSendResponse,
+  MessageTypes,
   NullMessageTypes,
   PayloadTypes,
-  ResponseMessage,
   ResponseTypes,
   TransportRequestMessage,
   TransportResponseMessage,
-  TransportSubscriptionNotification
+  TransportSubscriptionNotification,
 } from '../../../extension-app/src/types';
-
-// @ts-ignore
-import extension from 'extensionizer';
 import { subscriptionNotificationHandler } from './PostMessageProvider';
 
 const port = extension.runtime.connect('hbgnfgbgnplkgimgijglbfgmmeghbkbd', { name: 'SLUI' });
@@ -68,7 +68,9 @@ export function sendMessage<TMessageType extends MessageTypes>(
   });
 }
 
-function handleResponse<TResponseMessage extends MessageRpcSendResponse> (data: TransportResponseMessage<TResponseMessage>): void {
+function handleResponse<TResponseMessage extends MessageRpcSendResponse>(
+  data: TransportResponseMessage<TResponseMessage>
+): void {
   const handler = handlers[data.id];
 
   if (!handler) {
@@ -94,7 +96,7 @@ function handleResponse<TResponseMessage extends MessageRpcSendResponse> (data: 
 
 const handleSubscriptionNotification = (data: TransportSubscriptionNotification) => {
   subscriptionNotificationHandler.emit('message', data);
-}
+};
 
 port.onMessage.addListener((message: string) => {
   const data = JSON.parse(message);

@@ -4,83 +4,82 @@
 
 /// <reference types="chrome" />
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 import extension from 'extensionizer';
+
 // eslint-disable-next-line @typescript-eslint/camelcase
-import init, { Client, start_client } from '../../generated/polkadot_cli';
+import init, { start_client } from '../../generated/polkadot_cli';
 import ws from '../../generated/ws';
-import { MessageTypes, TransportRequestMessage } from '../types';
+import { MessageTypes, TransportRequestMessage, WasmClient } from '../types';
 
 extension.browserAction.setBadgeBackgroundColor({ color: '#d90000' });
 
-// listen to all messages on the extension port and handle appropriately
-extension.runtime.onConnect.addListener((port: any): void => {
-  port.onMessage.addListener((data: any): void => {
-    handler(
-      data,
-      port
-    );
+let client: WasmClient;
+let isClientReady = false;
+
+const start = async (): Promise<void> => {
+  /* Load WASM */
+  console.log('Loading WASM');
+  await init('./polkadot_cli_bg.wasm');
+  console.log('Successfully loaded WASM');
+
+  /* Build our client. */
+  console.log('Starting client');
+
+  start_client(ws()).then((_client: WasmClient) => {
+    console.log('Client started...', _client);
+    client = _client;
   });
-  port.onDisconnect.addListener((): void => console.log(`Disconnected from ${port.name}`));
+};
+
+start().then(() => {
+  isClientReady = true;
 });
 
-function handler<TMessageType extends MessageTypes> (payload: TransportRequestMessage<TMessageType>, port: chrome.runtime.Port): void {
-  // const sender: chrome.runtime.MessageSender | undefined = port.sender;
-  const { id, message, request } = payload;
+const rpcProxySend = (transportRequestMessage: TransportRequestMessage<any>, port: chrome.runtime.Port) => {
+  const {
+    id,
+    message,
+    request: { method, params },
+  } = transportRequestMessage;
 
-  console.log('*** background handler *** ');
-
-  const subscriptionCallback = (result: string) => {
-    const transportSubscriptionNotification = {
-      subscriptionId: id,
-      type: message,
-      result
-    }
-    
-    console.log('transport subscription NOtification => ', transportSubscriptionNotification);
-
-    port.postMessage(JSON.stringify(transportSubscriptionNotification));
+  if (message !== 'rpc.send') {
+    return;
   }
 
-  switch(message) {
-    case 'rpc.send':
-      return wasmRunner.rpcProxySend(payload, port);
-    case 'rpc.sendSubscribe':
-      return wasmRunner.rpcProxySubscribe(payload, subscriptionCallback, port);
-    default:
-      throw new Error(`Unable to handle message of type ${message}`);
-  }
-}
-
-class WasmRunner {
-  public client: Client | undefined;
-
-  constructor() {
-    this.start();
-  }
-
-  public start = async (): Promise<void> => {
-    /* Load WASM */
-    console.log('Loading WASM');
-    await init('./polkadot_cli_bg.wasm');
-    console.log('Successfully loaded WASM');
-
-    /* Build our client. */
-    console.log('Starting client');
-
-    start_client(ws()).then((_client: Client) => {
-      console.log('Client started...', _client);
-      this.client = _client;
-    });
+  const payload = {
+    method,
+    params,
+    id,
+    jsonrpc: '2.0',
   };
 
-  public rpcProxySend = (transportRequestMessage: TransportRequestMessage<any>, port: chrome.runtime.Port) => {
-    const { id, message, request: { method, params } } = transportRequestMessage;
+  if (!isClientReady) {
+    console.error('Client not yet started...');
+  } else {
+    client.rpcSend(JSON.stringify(payload)).then((r: string) => {
+      port.postMessage(r);
+    });
+  }
+};
 
-    if (message !== 'rpc.send') {
-      return;
-    }
+const rpcProxySubscribe = (transportRequestMessage: TransportRequestMessage<any>, cb: (message: string) => void) => {
+  console.log('trying to rpc proxy subscribe...');
+  const {
+    id,
+    message,
+    request: { method, params },
+  } = transportRequestMessage;
 
+  if (message !== 'rpc.sendSubscribe') {
+    console.log('message needs to be rpc.sendSUBSCRIBE IN HERE');
+    return;
+  }
+
+  if (!isClientReady) {
+    console.error('Client not yet started...');
+  } else {
     const payload = {
       method,
       params,
@@ -88,49 +87,55 @@ class WasmRunner {
       jsonrpc: '2.0',
     };
 
-    if (!this.client) {
-      console.error('Client not yet started...');
-    } else {
-      this.client.rpcSend(JSON.stringify(payload))
-        .then((r: string) => {
-          port.postMessage(r);
-        });
-    }
-  };
-
-  public rpcProxySubscribe = (transportRequestMessage: TransportRequestMessage<any>, cb: (message: string) => void, port: chrome.runtime.Port) => {
-    console.log('trying to rpc proxy subscribe...');
-    const { id, message, request: { method, params } } = transportRequestMessage;
-
-    if (message !== 'rpc.sendSubscribe') {
-      console.log('message needs to be rpc.sendSUBSCRIBE IN HERE');
-      return;
-    }
-
-    if (!this.client) {
-      console.error('Client not yet started...');
-    } else {
-      const payload = {
-        method,
-        params,
-        id,
-        jsonrpc: '2.0',
+    client.rpcSubscribe(JSON.stringify(payload), (r: string) => {
+      const subscriptionResult = JSON.parse(r);
+      const result = {
+        ...subscriptionResult,
+        id: subscriptionResult.params.subscription,
+        subscription: subscriptionResult.params.subscription,
       };
 
-      this.client.rpcSubscribe(JSON.stringify(payload), (r: string) => {
-        const subscriptionResult = JSON.parse(r);
-        const result = {
-          ...subscriptionResult,
-          id: subscriptionResult.params.subscription,
-          subscription: subscriptionResult.params.subscription
-        }
-        
-        console.log('rpc.subscribe result -> ', result);
-        
-        cb(JSON.stringify(result)); // port.postMessage
-      });
+      console.log('rpc.subscribe result -> ', result);
+
+      cb(JSON.stringify(result)); // port.postMessage
+    });
+  }
+};
+
+function handler<TMessageType extends MessageTypes>(
+  payload: TransportRequestMessage<TMessageType>,
+  port: chrome.runtime.Port
+): void {
+  const { id, message } = payload;
+
+  console.log('*** background handler *** ');
+
+  const subscriptionCallback = (result: string) => {
+    const transportSubscriptionNotification = {
+      subscriptionId: id,
+      type: message,
+      result,
     };
+
+    console.log('transport subscription NOtification => ', transportSubscriptionNotification);
+
+    port.postMessage(JSON.stringify(transportSubscriptionNotification));
+  };
+
+  switch (message) {
+    case 'rpc.send':
+      return rpcProxySend(payload, port);
+    case 'rpc.sendSubscribe':
+      return rpcProxySubscribe(payload, subscriptionCallback);
+    default:
+      throw new Error(`Unable to handle message of type ${message}`);
   }
 }
 
-const wasmRunner = new WasmRunner();
+// listen to all messages on the extension port and handle appropriately
+extension.runtime.onConnect.addListener((port: any): void => {
+  port.onMessage.addListener((data: any): void => {
+    handler(data, port);
+  });
+  port.onDisconnect.addListener((): void => console.log(`Disconnected from ${port.name}`));
+});

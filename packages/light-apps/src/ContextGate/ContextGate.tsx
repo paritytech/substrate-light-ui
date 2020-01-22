@@ -13,9 +13,9 @@ import {
 import { Loading } from '@substrate/ui-components';
 import React from 'react';
 
-import PostMessageProvider from './PostMessageProvider';
 import { HealthContextProvider } from './context/HealthContext';
 import { HealthGate } from './HealthGate';
+import PostMessageProvider from './PostMessageProvider';
 
 export function ContextGate(props: { children: React.ReactNode }): React.ReactElement {
   const { children } = props;

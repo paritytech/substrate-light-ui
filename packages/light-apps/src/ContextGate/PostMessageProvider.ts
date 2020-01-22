@@ -120,19 +120,16 @@ export default class PostMessageProvider implements ProviderInterface {
 
       console.log('(subinfos) -> ', method, params, subInfos);
 
-      return this._sendRequest('rpc.sendSubscribe', { type, method, params })
-        .then(result => {
-            console.log('inside send subscribe !! ', result);
-            this._subscriptions[`${type}::${result.subscriptionId}`] = callback;
-            return result.subscriptionId;
-        }
-      );
+      return this._sendRequest('rpc.sendSubscribe', { type, method, params }).then(result => {
+        console.log('inside send subscribe !! ', result);
+        this._subscriptions[`${type}::${result.subscriptionId}`] = callback;
+        return result.subscriptionId;
+      });
     } else {
-      return this._sendRequest('rpc.send', { method, params })
-        .then(result => {
-          console.log('rpc send got a result => ', result);
-          return result;
-        });
+      return this._sendRequest('rpc.send', { method, params }).then(result => {
+        console.log('rpc send got a result => ', result);
+        return result;
+      });
     }
   }
 

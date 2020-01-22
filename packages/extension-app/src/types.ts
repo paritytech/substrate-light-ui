@@ -6,6 +6,12 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.;
 
+export interface WasmClient {
+  free(): void;
+  rpcSend(rpc: string): Promise<string>;
+  rpcSubscribe(rpc: string, callback: any): Promise<string>;
+}
+
 export type MessageTypes = keyof PayloadTypes;
 
 export interface TransportRequestMessage<TMessageType extends MessageTypes> {
