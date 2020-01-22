@@ -10,7 +10,7 @@ export const DEFAULT_HTTP_PORT = '9933';
 /**
  * Production mode or not
  */
-export const IS_PROD = process.env.NODE_EV === 'production';
+export const IS_PROD = process.env.NODE_ENV === 'production';
 
 /**
  * `yarn start` in `./packages/light-apps`
