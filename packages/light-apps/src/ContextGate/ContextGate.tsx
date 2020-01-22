@@ -60,7 +60,7 @@ function getProvider(env: Env): ProviderInterface {
       return new PostMessageProvider();
     default:
       // We fallback to the remote node provided by W3F
-      return new WsProvider('wss://kusama-rpc.polkadot.io/');
+      return new PostMessageProvider();
   }
 }
 

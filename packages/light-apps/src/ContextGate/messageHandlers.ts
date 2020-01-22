@@ -2,12 +2,6 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-/// <reference types="chrome" />
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-// @ts-ignore
-import extension from 'extensionizer';
-
 import {
   MessageRpcSendResponse,
   MessageTypes,
@@ -19,8 +13,6 @@ import {
   TransportSubscriptionNotification,
 } from '../../../extension-app/src/types';
 import { subscriptionNotificationHandler } from './PostMessageProvider';
-
-const port = extension.runtime.connect('hbgnfgbgnplkgimgijglbfgmmeghbkbd', { name: 'SLUI' });
 
 interface Handler {
   resolve: (data: any) => void;
@@ -58,13 +50,13 @@ export function sendMessage<TMessageType extends MessageTypes>(
     const transportRequestMessage: TransportRequestMessage<TMessageType> = {
       id,
       message,
-      origin: 'SLUI',
+      origin: 'PostMessageProvider',
       request: request || null,
     };
 
-    console.log(`(transportRequestMessage) -> ${JSON.stringify(transportRequestMessage)}`);
+    console.log(`(window.postMessage) -> ${JSON.stringify(transportRequestMessage)}`);
 
-    port.postMessage(transportRequestMessage);
+    window.postMessage(transportRequestMessage, '*');
   });
 }
 
@@ -98,13 +90,22 @@ const handleSubscriptionNotification = (data: TransportSubscriptionNotification)
   subscriptionNotificationHandler.emit('message', data);
 };
 
-port.onMessage.addListener((message: string) => {
-  const data = JSON.parse(message);
-  console.log('message handler data => ', data);
-  if (data.id) {
-    handleResponse(data);
-  } else {
-    console.log('data for notifications -> ', data);
-    handleSubscriptionNotification(data as TransportSubscriptionNotification);
+window.addEventListener('message', ({ data }) => {
+  if (data && data.origin === 'PostMessageProvider') {
+    return;
+  }
+
+  console.log("window.addEventListener('message')", data);
+  try {
+    const parsedData = JSON.parse(data);
+    console.log('message handler data => ', parsedData);
+    if (parsedData.id) {
+      handleResponse(parsedData);
+    } else {
+      console.log('data for notifications -> ', parsedData);
+      handleSubscriptionNotification(parsedData as TransportSubscriptionNotification);
+    }
+  } catch (err) {
+    data && console.warn('ignoring message', data);
   }
 });

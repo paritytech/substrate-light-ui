@@ -16,16 +16,18 @@ const port = extension.runtime.connect({ name: 'content' });
 // send any messages from the extension back to the page
 port.onMessage.addListener((data: object): void => {
   console.log('BACKGROUND->CONTENT', data);
-  window.postMessage({ ...data, origin: 'content' }, '*');
+
+  window.postMessage({ ...data, origin: 'background' }, '*');
 });
 
 // all messages from the page, pass them to the extension
 window.addEventListener('message', ({ data, source }): void => {
-  console.log('CONTENT->BACKGROUND', data, source);
   // only allow messages from our window, by the inject
-  if (source !== window || data.origin !== 'page') {
+  if (source !== window || data.origin !== 'PostMessageProvider') {
     return;
   }
+
+  console.log('CONTENT->BACKGROUND', data, source);
 
   port.postMessage(data);
 });
