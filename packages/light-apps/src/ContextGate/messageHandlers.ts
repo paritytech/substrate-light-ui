@@ -59,7 +59,7 @@ export function sendMessage<TMessageType extends MessageTypes>(
       id,
       message,
       origin: 'SLUI',
-      request: request || (null as PayloadTypes[TMessageType]),
+      request: request || null,
     };
 
     console.log(`(transportRequestMessage) -> ${JSON.stringify(transportRequestMessage)}`);
