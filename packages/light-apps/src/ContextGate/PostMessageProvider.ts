@@ -4,30 +4,26 @@
 
 /* Author: Axel Chalon @axelchalon */
 
-import { ProviderInterface } from '@polkadot/rpc-provider/types';
+import { ProviderInterface, ProviderInterfaceEmitCb, ProviderInterfaceEmitted } from '@polkadot/rpc-provider/types';
 import { AnyFunction, AnyJson } from '@polkadot/types/types';
 import EventEmitter from 'eventemitter3';
 
 import { TransportSubscriptionNotification } from '../../../extension-app/src/types';
 
+type CallbackHandler = (error?: null | Error, value?: AnyJson) => void;
+
+interface SubscriptionHandler {
+  callback: CallbackHandler;
+  type: string;
+}
+
 interface Handler {
   resolve: (data: any) => void;
   reject: (error: Error) => void;
-  subscriber?: (data: any) => void;
+  subscriber?: ProviderInterfaceEmitCb;
 }
 
 type Handlers = Record<string, Handler>;
-
-type ProviderInterfaceEmitted = 'connected' | 'disconnected' | 'error';
-
-// This EventEmitter gets triggered when subscription messages are received
-// from the extension. It then dispatches the event to its subscriber,
-// PostMessageProvider.
-class SubscriptionNotificationHandler extends EventEmitter { }
-export const subscriptionNotificationHandler = new SubscriptionNotificationHandler();
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type ProviderInterfaceEmitCb = (value?: any) => any;
 
 /**
  * @name PostMessageProvider
@@ -39,8 +35,6 @@ export default class PostMessageProvider implements ProviderInterface {
   private handlers: Handlers = {};
   private id = 1;
 
-  private _subscriptionNotificationHandler: SubscriptionNotificationHandler;
-
   // Subscription IDs are (historically) not guaranteed to be globally unique;
   // only unique for a given subscription method; which is why we identify
   // the subscriptions based on subscription id + type
@@ -48,12 +42,6 @@ export default class PostMessageProvider implements ProviderInterface {
 
   public constructor() {
     this.eventemitter = new EventEmitter();
-
-    this._subscriptionNotificationHandler = subscriptionNotificationHandler;
-    this._subscriptionNotificationHandler.on(
-      'message',
-      this.onSubscriptionNotification.bind(this)
-    ); /* subscriptionNotificationHandler() Channel for receiving subscription messages */
 
     window.addEventListener('message', ({ data }) => {
       if (data && data.origin === 'PostMessageProvider') {
@@ -68,7 +56,7 @@ export default class PostMessageProvider implements ProviderInterface {
           this.handleResponse(parsedData);
         } else {
           console.log('data for notifications -> ', parsedData);
-          this.handleSubscriptionNotification(parsedData as TransportSubscriptionNotification);
+          this.onSubscriptionNotification(parsedData);
         }
       } catch (err) {
         data && console.warn('ignoring message', data);
@@ -110,8 +98,6 @@ export default class PostMessageProvider implements ProviderInterface {
    */
   public disconnect(): void {
     console.error('PostMessageProvider.disconnect() is not implemented.');
-    // noop -- the underlying WsProvider connection will be closed when the page
-    // closes
   }
 
   /**
@@ -201,10 +187,6 @@ export default class PostMessageProvider implements ProviderInterface {
     delete this.subscriptions[`${type}::${id}`];
 
     return Promise.resolve(true);
-  }
-
-  handleSubscriptionNotification(data: TransportSubscriptionNotification) {
-    subscriptionNotificationHandler.emit('message', data);
   }
 
   handleResponse(data: any): void {

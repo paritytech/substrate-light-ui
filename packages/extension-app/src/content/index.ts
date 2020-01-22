@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 /**
- * This file is only injected on http://localhost:3000
+ * This file is only injected in http://localhost:3000
  */
 
 import extension from 'extensionizer';
