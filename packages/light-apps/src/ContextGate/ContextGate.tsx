@@ -10,11 +10,13 @@ import {
   ApiContextProvider,
   ApiContextType,
   KeyringContextProvider,
-  StakingContextProvider,
   TxQueueContextProvider,
 } from '@substrate/context';
 import { Loading } from '@substrate/ui-components';
 import React from 'react';
+
+import { HealthContextProvider } from './context/HealthContext';
+import { HealthGate } from './HealthGate';
 
 const ELECTRON_ENV = 'ELECTRON_ENV';
 const EXTENSION_ENV = 'EXTENSION_ENV';
@@ -71,23 +73,21 @@ export function ContextGate(props: { children: React.ReactNode }): React.ReactEl
   return (
     <AlertsContextProvider>
       <TxQueueContextProvider>
-        <ApiContextProvider loading={<Loading active>Connecting to the node...</Loading>} provider={wsProvider}>
-          <ApiContext.Consumer>
-            {({ api, isReady, system }: Partial<ApiContextType>): React.ReactElement | boolean | undefined => {
-              return (
-                api &&
-                isReady &&
-                system && (
-                  <StakingContextProvider>
+        <HealthContextProvider provider={wsProvider}>
+          <HealthGate>
+            <ApiContextProvider loading={<Loading active>Initializing chain...</Loading>} provider={wsProvider.clone()}>
+              <ApiContext.Consumer>
+                {({ api, isReady, system }: ApiContextType): React.ReactElement | null =>
+                  api && isReady && system ? (
                     <KeyringContextProvider api={api} isReady={isReady} system={system}>
                       {children}
                     </KeyringContextProvider>
-                  </StakingContextProvider>
-                )
-              );
-            }}
-          </ApiContext.Consumer>
-        </ApiContextProvider>
+                  ) : null
+                }
+              </ApiContext.Consumer>
+            </ApiContextProvider>
+          </HealthGate>
+        </HealthContextProvider>
       </TxQueueContextProvider>
     </AlertsContextProvider>
   );

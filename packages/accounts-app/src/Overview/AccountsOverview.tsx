@@ -15,19 +15,19 @@ type Props = RouteComponentProps;
 
 export function AccountsOverview(props: Props): React.ReactElement {
   const { history } = props;
-  const [allUnlockedAccounts, setAllUnlocked] = useState<SingleAddress[]>([]);
+  const [allAccounts, setAllAccounts] = useState<SingleAddress[]>([]);
 
   useEffect(() => {
-    const accountsSub =
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      accountObservable.subject.pipe(map(Object.values)).subscribe(setAllUnlocked);
+    const accountsSub = accountObservable.subject
+      .pipe(map(accounts => Object.values(accounts)))
+      .subscribe(setAllAccounts);
 
     return (): void => accountsSub.unsubscribe();
   }, []);
 
   return (
     <WrapperDiv>
-      {allUnlockedAccounts.map((account, i) => {
+      {allAccounts.map((account, i) => {
         return (
           <AccountsOverviewCard
             address={account.json.address}
