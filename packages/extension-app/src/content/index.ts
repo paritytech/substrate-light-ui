@@ -6,14 +6,12 @@
  * This file is only injected in http://localhost:3000
  */
 
-// connect to the extension
+// Connect to the extension
 const port = browser.runtime.connect();
 
 // send any messages from the extension back to the page
 port.onMessage.addListener((data): void => {
-  console.log('BACKGROUND->CONTENT', data);
-
-  window.postMessage(data, '*');
+  window.postMessage(data, 'http://localhost:3000');
 });
 
 // all messages from the page, pass them to the extension
@@ -22,8 +20,6 @@ window.addEventListener('message', ({ data, source }): void => {
   if (source !== window || data.origin !== 'PostMessageProvider') {
     return;
   }
-
-  console.log('CONTENT->BACKGROUND', data, source);
 
   port.postMessage(data);
 });

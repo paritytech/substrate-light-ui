@@ -7,7 +7,7 @@ import { ProviderInterface } from '@polkadot/rpc-provider/types';
 import { TypeRegistry } from '@polkadot/types';
 import { Header, Health } from '@polkadot/types/interfaces';
 import React, { useEffect, useRef, useState } from 'react';
-import { combineLatest, interval, merge } from 'rxjs';
+import { combineLatest, interval, merge, Subscription } from 'rxjs';
 import { map, startWith, switchMap } from 'rxjs/operators';
 
 export interface HealthContextType {
@@ -83,19 +83,25 @@ export function HealthContextProvider(props: HealthContextProviderProps): React.
   const rpc = rpcRef.current;
 
   useEffect(() => {
-    combineLatest([
-      rpc.system.health(),
-      merge(
-        rpc.chain.subscribeNewHeads(),
-        // Header doesn't get updated when doing a major sync, so we also poll
-        interval(2000).pipe(switchMap(() => rpc.chain.getHeader()))
-      ),
-    ])
-      .pipe(
-        startWith([undefined, undefined]),
-        map(([health, header]) => getNodeStatus(header, health))
-      )
-      .subscribe(setStatus);
+    let sub: Subscription | undefined;
+
+    rpc.provider.on('connected', () => {
+      sub = combineLatest([
+        rpc.system.health(),
+        merge(
+          rpc.chain.subscribeNewHeads(),
+          // Header doesn't get updated when doing a major sync, so we also poll
+          interval(2000).pipe(switchMap(() => rpc.chain.getHeader()))
+        ),
+      ])
+        .pipe(
+          startWith([undefined, undefined]),
+          map(([health, header]) => getNodeStatus(header, health))
+        )
+        .subscribe(setStatus);
+    });
+
+    return (): void => sub && sub.unsubscribe();
   }, [rpc]);
 
   return <HealthContext.Provider value={status}>{children}</HealthContext.Provider>;

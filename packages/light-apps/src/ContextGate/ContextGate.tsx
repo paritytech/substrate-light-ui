@@ -17,7 +17,7 @@ import React from 'react';
 
 import { HealthContextProvider } from './context/HealthContext';
 import { HealthGate } from './HealthGate';
-import PostMessageProvider from './PostMessageProvider';
+import { PostMessageProvider } from './postMessage';
 
 const ELECTRON_ENV = 'ELECTRON_ENV';
 const EXTENSION_ENV = 'EXTENSION_ENV';
@@ -54,13 +54,19 @@ function getProvider(env: Env): ProviderInterface {
     case ELECTRON_ENV:
       // We use the local light node embedded in the electron app
       return new WsProvider('ws://127.0.0.1:9944');
-    case EXTENSION_ENV:
+    case EXTENSION_ENV: {
       // We use a PostMessageProvider to communicate directly with the
       // background script
-      return new PostMessageProvider();
+      const port = browser.runtime.connect();
+
+      return new PostMessageProvider(port);
+    }
     default:
-      // We fallback to the remote node provided by W3F
-      return new PostMessageProvider();
+      return process.env.NODE_ENV === 'development'
+        ? // With http://localhost:3000, we deliberatelyuse a PostMessageProvider
+          new PostMessageProvider('window')
+        : // We fallback to the remote node provided by W3F
+          new WsProvider('wss://kusama-rpc.polkadot.io/');
   }
 }
 
