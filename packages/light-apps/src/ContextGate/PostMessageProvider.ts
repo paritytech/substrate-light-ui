@@ -4,26 +4,38 @@
 
 /* Author: Axel Chalon @axelchalon */
 
-import { ProviderInterface, ProviderInterfaceEmitCb, ProviderInterfaceEmitted } from '@polkadot/rpc-provider/types';
+import RpcCoder from '@polkadot/rpc-provider/coder';
+import {
+  JsonRpcResponse,
+  ProviderInterface,
+  ProviderInterfaceEmitCb,
+  ProviderInterfaceEmitted,
+} from '@polkadot/rpc-provider/types';
 import { AnyFunction, AnyJson } from '@polkadot/types/types';
 import EventEmitter from 'eventemitter3';
 
-import { TransportSubscriptionNotification } from '../../../extension-app/src/types';
-
+/**
+ * @see https://github.com/polkadot-js/api/blob/master/packages/rpc-provider/src/ws/Provider.ts#L16
+ */
 type CallbackHandler = (error?: null | Error, value?: AnyJson) => void;
 
+/**
+ * @see https://github.com/polkadot-js/api/blob/master/packages/rpc-provider/src/ws/Provider.ts#L16
+ */
 interface SubscriptionHandler {
   callback: CallbackHandler;
   type: string;
 }
 
+/**
+ * @see https://github.com/polkadot-js/api/blob/master/packages/rpc-provider/src/ws/Provider.ts#L23
+ */
 interface Handler {
-  resolve: (data: any) => void;
-  reject: (error: Error) => void;
-  subscriber?: ProviderInterfaceEmitCb;
+  callback: CallbackHandler;
+  method: string;
+  params: AnyJson[];
+  subscription?: SubscriptionHandler;
 }
-
-type Handlers = Record<string, Handler>;
 
 /**
  * @name PostMessageProvider
@@ -32,8 +44,8 @@ type Handlers = Record<string, Handler>;
  */
 export default class PostMessageProvider implements ProviderInterface {
   private eventemitter: EventEmitter;
-  private handlers: Handlers = {};
-  private id = 1;
+  private handlers: Record<string, Handler> = {};
+  private coder = new RpcCoder();
 
   // Subscription IDs are (historically) not guaranteed to be globally unique;
   // only unique for a given subscription method; which is why we identify
@@ -43,25 +55,7 @@ export default class PostMessageProvider implements ProviderInterface {
   public constructor() {
     this.eventemitter = new EventEmitter();
 
-    window.addEventListener('message', ({ data }) => {
-      if (data && data.origin === 'PostMessageProvider') {
-        return;
-      }
-
-      console.log("window.addEventListener('message')", data);
-      try {
-        const parsedData = JSON.parse(data);
-        console.log('message handler data => ', parsedData);
-        if (parsedData.id) {
-          this.handleResponse(parsedData);
-        } else {
-          console.log('data for notifications -> ', parsedData);
-          this.onSubscriptionNotification(parsedData);
-        }
-      } catch (err) {
-        data && console.warn('ignoring message', data);
-      }
-    });
+    window.addEventListener('message', this.handleMessage.bind(this));
 
     // Give subscribers time to subscribe
     setTimeout((): void => {
@@ -69,25 +63,59 @@ export default class PostMessageProvider implements ProviderInterface {
     });
   }
 
-  private onSubscriptionNotification(message: TransportSubscriptionNotification): void {
-    console.log('@light-apps: on subscription notificatoin -=> ', message);
-
-    const { subscriptionId, result, type } = message;
-
-    console.log(' all the subs => ', this.subscriptions);
-    console.log('sub => ', this.subscriptions[`${type}::${subscriptionId}`]);
-
-    if (!this.subscriptions[`${type}::${subscriptionId}`]) {
-      console.error('Received notification for unknown subscription id', message);
+  /**
+   * Handle the `addListener('message')` callback
+   */
+  private handleMessage({ data }: MessageEvent): void {
+    // We don't do anything with messages that don't come from our background
+    // script
+    if (!data || data.origin !== 'background') {
       return;
     }
 
-    this.subscriptions[`${type}::${subscriptionId}`](null, result);
+    console.log("window.addEventListener('message')", data);
+    if (data.method) {
+      this.handleSingle(data);
+    } else {
+      this.handleSubscribe(data);
+    }
+  }
+
+  private handleSingle(response: JsonRpcResponse): void {
+    console.log('handleSingle', response);
+    // const handler = this.handlers[response.id];
+    // if (!handler) {
+    //   return;
+    // }
+    // const { method, params, subscription } = handler;
+    // handler.callback(null, response);
+    // console.log('handleSingle() -> ', data);
+    // if (data.subscription) {
+    //   console.log('data was subscription!');
+    //   (handler.subscriber as Function)(data.subscription);
+    // } else if (data.error) {
+    //   handler.reject(new Error(data.error));
+    // } else {
+    //   handler.resolve(data.result);
+    // }
+  }
+
+  private handleSubscribe(message: JsonRpcResponse): void {
+    console.log('handleSubscribe', message);
+
+    // console.log('handleSubscribe', message);
+    // const { subscriptionId, result, type } = message;
+    // console.log('sub => ', this.subscriptions[`${type}::${subscriptionId}`]);
+    // if (!this.subscriptions[`${type}::${subscriptionId}`]) {
+    //   console.error('Received notification for unknown subscription id', message);
+    //   return;
+    // }
+    // this.subscriptions[`${type}::${subscriptionId}`](null, result);
   }
 
   /**
    * @summary Whether the node is connected or not.
-   * @return {boolean} true if connected
+   * @return true if connected
    */
   public isConnected(): boolean {
     return true; // underlying WsProvider connects on first RPC request
@@ -97,13 +125,13 @@ export default class PostMessageProvider implements ProviderInterface {
    * @description Manually disconnect from the connection, clearing autoconnect logic
    */
   public disconnect(): void {
-    console.error('PostMessageProvider.disconnect() is not implemented.');
+    window.removeEventListener('message', this.handleMessage.bind(this));
   }
 
   /**
    * @summary Listens on events after having subscribed using the [[subscribe]] function.
-   * @param  {ProviderInterfaceEmitted} type Event
-   * @param  {ProviderInterfaceEmitCb}  sub  Callback
+   * @param type Event
+   * @param sub  Callback
    */
   public on(type: ProviderInterfaceEmitted, sub: ProviderInterfaceEmitCb): void {
     this.eventemitter.on(type, sub);
@@ -127,52 +155,40 @@ export default class PostMessageProvider implements ProviderInterface {
     return new PostMessageProvider();
   }
 
-  private _sendRequest(message: string, request?: AnyJson, subscriber?: (data: any) => void): Promise<number> {
-    return new Promise((resolve, reject) => {
-      this.id++;
+  public send(method: string, params: AnyJson[], subscription?: SubscriptionHandler): Promise<AnyJson> {
+    return new Promise((resolve, reject): void => {
+      try {
+        const jsonRpc = this.coder.encodeObject(method, params);
+        const id = this.coder.getId();
+        const callback = (error?: Error | null, result?: AnyJson): void => {
+          error ? reject(error) : resolve(result);
+        };
 
-      this.handlers[this.id] = { resolve, reject, subscriber };
+        this.handlers[id] = {
+          callback,
+          method,
+          params,
+          subscription,
+        };
 
-      const transportRequestMessage = {
-        id: this.id,
-        message,
-        origin: 'PostMessageProvider',
-        request: request || null,
-      };
-
-      console.log(`(window.postMessage) -> ${JSON.stringify(transportRequestMessage)}`);
-
-      window.postMessage(transportRequestMessage, '*');
-
-      return this.id;
+        window.postMessage(
+          {
+            origin: 'PostMessageProvider',
+            jsonRpc,
+            type: subscription ? 'rpc.sendSubscribe' : 'rpc.send',
+          },
+          '*'
+        );
+      } catch (error) {
+        reject(error);
+      }
     });
-  }
-
-  public async send(method: string, params: AnyJson[], subInfos?: any): Promise<number> {
-    if (subInfos) {
-      const { callback, type } = subInfos;
-
-      console.log('(subinfos) -> ', method, params, subInfos);
-
-      return this._sendRequest('rpc.sendSubscribe', { type, method, params }).then(result => {
-        console.log('inside send subscribe !! ', result);
-        this.subscriptions[`${type}::${result}`] = callback;
-
-        return result;
-      });
-    } else {
-      return this._sendRequest('rpc.send', { method, params }).then(result => {
-        console.log('rpc send got a result => ', result);
-
-        return result;
-      });
-    }
   }
 
   public async subscribe(type: string, method: string, params: AnyJson[], callback: AnyFunction): Promise<number> {
     const id = await this.send(method, params, { type, callback });
 
-    return id;
+    return id as number;
   }
 
   /**
@@ -187,29 +203,5 @@ export default class PostMessageProvider implements ProviderInterface {
     delete this.subscriptions[`${type}::${id}`];
 
     return Promise.resolve(true);
-  }
-
-  handleResponse(data: any): void {
-    const handler = this.handlers[data.id];
-
-    if (!handler) {
-      console.error(`Unknown response: ${JSON.stringify(data)}`);
-      return;
-    }
-
-    if (!handler.subscriber) {
-      delete this.handlers[data.id];
-    }
-
-    console.log('handleResponse() -> ', data);
-
-    if (data.subscription) {
-      console.log('data was subscription!');
-      (handler.subscriber as Function)(data.subscription);
-    } else if (data.error) {
-      handler.reject(new Error(data.error));
-    } else {
-      handler.resolve(data.result);
-    }
   }
 }

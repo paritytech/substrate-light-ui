@@ -6,18 +6,14 @@
  * This file is only injected in http://localhost:3000
  */
 
-import extension from 'extensionizer';
-
-console.log('INJECTING content script');
-
 // connect to the extension
-const port = extension.runtime.connect({ name: 'content' });
+const port = browser.runtime.connect();
 
 // send any messages from the extension back to the page
-port.onMessage.addListener((data: object): void => {
+port.onMessage.addListener((data): void => {
   console.log('BACKGROUND->CONTENT', data);
 
-  window.postMessage({ ...data, origin: 'background' }, '*');
+  window.postMessage(data, '*');
 });
 
 // all messages from the page, pass them to the extension
