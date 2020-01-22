@@ -9,14 +9,14 @@ import { AnyFunction } from '@polkadot/types/types';
 import EventEmitter from 'eventemitter3';
 
 import { SendRequest, TransportSubscriptionNotification } from '../../../extension-app/src/types';
-import { sendMessage } from './messageHandlers';
+import { sendMessage, handleResponse, handleSubscriptionNotification } from './messageHandlers';
 
 type ProviderInterfaceEmitted = 'connected' | 'disconnected' | 'error';
 
 // This EventEmitter gets triggered when subscription messages are received
 // from the extension. It then dispatches the event to its subscriber,
 // PostMessageProvider.
-class SubscriptionNotificationHandler extends EventEmitter {}
+class SubscriptionNotificationHandler extends EventEmitter { }
 export const subscriptionNotificationHandler = new SubscriptionNotificationHandler();
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -28,6 +28,8 @@ type ProviderInterfaceEmitCb = (value?: any) => any;
  * @description Extension provider to be used by dapps
  */
 export default class PostMessageProvider implements ProviderInterface {
+  private id: number = 1
+  
   private _eventemitter: EventEmitter;
 
   private _sendRequest: SendRequest;
@@ -47,6 +49,26 @@ export default class PostMessageProvider implements ProviderInterface {
       'message',
       this.onSubscriptionNotification.bind(this)
     ); /* subscriptionNotificationHandler() Channel for receiving subscription messages */
+
+    window.addEventListener('message', ({ data }) => {
+      if (data && data.origin === 'PostMessageProvider') {
+        return;
+      }
+
+      console.log("window.addEventListener('message')", data);
+      try {
+        const parsedData = JSON.parse(data);
+        console.log('message handler data => ', parsedData);
+        if (parsedData.id) {
+          handleResponse(parsedData);
+        } else {
+          console.log('data for notifications -> ', parsedData);
+          handleSubscriptionNotification(parsedData as TransportSubscriptionNotification);
+        }
+      } catch (err) {
+        data && console.warn('ignoring message', data);
+      }
+    });
 
     // Give subscribers time to subscribe
     setTimeout((): void => {

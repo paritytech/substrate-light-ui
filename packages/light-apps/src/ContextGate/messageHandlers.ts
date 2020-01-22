@@ -60,7 +60,7 @@ export function sendMessage<TMessageType extends MessageTypes>(
   });
 }
 
-function handleResponse<TResponseMessage extends MessageRpcSendResponse>(
+export function handleResponse<TResponseMessage extends MessageRpcSendResponse>(
   data: TransportResponseMessage<TResponseMessage>
 ): void {
   const handler = handlers[data.id];
@@ -86,26 +86,6 @@ function handleResponse<TResponseMessage extends MessageRpcSendResponse>(
   }
 }
 
-const handleSubscriptionNotification = (data: TransportSubscriptionNotification) => {
+export const handleSubscriptionNotification = (data: TransportSubscriptionNotification) => {
   subscriptionNotificationHandler.emit('message', data);
 };
-
-window.addEventListener('message', ({ data }) => {
-  if (data && data.origin === 'PostMessageProvider') {
-    return;
-  }
-
-  console.log("window.addEventListener('message')", data);
-  try {
-    const parsedData = JSON.parse(data);
-    console.log('message handler data => ', parsedData);
-    if (parsedData.id) {
-      handleResponse(parsedData);
-    } else {
-      console.log('data for notifications -> ', parsedData);
-      handleSubscriptionNotification(parsedData as TransportSubscriptionNotification);
-    }
-  } catch (err) {
-    data && console.warn('ignoring message', data);
-  }
-});
