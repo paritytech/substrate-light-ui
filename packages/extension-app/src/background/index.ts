@@ -114,7 +114,7 @@ start()
       port.onMessage.addListener((response): void => {
         handler(response as PayloadRequest, port);
       });
-      port.onDisconnect.addListener((): void => l.log(`Disconnected from ${port}`));
+      port.onDisconnect.addListener((): void => l.log(`Disconnected from ${JSON.stringify(port)}`));
     });
   })
   .catch(error => l.error(error));

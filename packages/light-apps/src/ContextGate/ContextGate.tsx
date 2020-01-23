@@ -42,7 +42,11 @@ function detectEnvironment(): Env {
   // Detect EXTENSION_ENV
   // Chrome extensions have the global `chrome` object, Firefox have the
   // `browser` one (WebExtension one).
-  if (typeof chrome !== 'undefined' || typeof browser !== 'undefined') {
+  if (
+    // https://stackoverflow.com/questions/7507277/detecting-if-code-is-being-run-as-a-chrome-extension
+    (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.id) ||
+    typeof browser !== 'undefined'
+  ) {
     return EXTENSION_ENV;
   }
 
