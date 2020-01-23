@@ -111,7 +111,7 @@ export class PostMessageProvider implements ProviderInterface {
       return;
     }
 
-    console.log('handleMessage=', JSON.stringify(data));
+    l.log('DOWN ⬇️', JSON.stringify(data));
 
     const jsonRpc = data.jsonRpc;
 
@@ -142,22 +142,19 @@ export class PostMessageProvider implements ProviderInterface {
 
   private handleSubscribe(jsonRpc: JsonRpcResponse): void {
     const subId = `${jsonRpc.method}::${jsonRpc.params.subscription}`;
-    let sub = this.subscriptions[subId];
 
-    if (!sub) {
+    if (!this.subscriptions[subId]) {
       const handler = this.handlers[jsonRpc.id];
       if (!handler || !handler.subscription) {
-        l.warn((): string => `handleSubscribe: handler ${jsonRpc.id} doesn't have a subscription`);
+        l.warn(`handleSubscribe: handler ${jsonRpc.id} doesn't have a subscription, but it should have`);
 
         return;
       }
 
-      sub = handler.subscription;
-
-      return;
+      this.subscriptions[subId] = handler.subscription;
     }
 
-    sub.callback(null, jsonRpc.params.result);
+    this.subscriptions[subId].callback(null, jsonRpc.params.result);
   }
 
   /**
@@ -202,7 +199,7 @@ export class PostMessageProvider implements ProviderInterface {
     return new PostMessageProvider(this.source.source);
   }
 
-  public send(method: string, params: AnyJson[], subscription?: SubscriptionHandler): Promise<AnyJson> {
+  private sendRequest(method: string, params: AnyJson[], subscription?: SubscriptionHandler): Promise<AnyJson> {
     return new Promise((resolve, reject): void => {
       try {
         const jsonRpc = this.coder.encodeObject(method, params);
@@ -216,6 +213,8 @@ export class PostMessageProvider implements ProviderInterface {
           subscription,
         };
 
+        l.log('UP ⬆️', JSON.stringify(jsonRpc));
+
         this.source.postMessage({
           origin: 'PostMessageProvider',
           jsonRpc,
@@ -225,6 +224,17 @@ export class PostMessageProvider implements ProviderInterface {
         reject(error);
       }
     });
+  }
+
+  public async send(method: string, params: AnyJson[], subscription?: SubscriptionHandler): Promise<AnyJson> {
+    if (subscription) {
+      const subscriptionId = (await this.sendRequest(method, params)) as number;
+      this.subscriptions[`${subscription.type}::${subscriptionId}`] = subscription;
+
+      return subscriptionId;
+    } else {
+      return this.sendRequest(method, params);
+    }
   }
 
   public async subscribe(type: string, method: string, params: AnyJson[], callback: CallbackHandler): Promise<number> {

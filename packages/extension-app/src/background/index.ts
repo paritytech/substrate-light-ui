@@ -60,7 +60,7 @@ function rpcProxySend(jsonRpc: JsonRpcRequest, port: browser.runtime.Port): void
         type: 'rpc.send',
       });
     } catch (error) {
-      console.error(`rpcProxySend: cannot parse ${res}`);
+      l.error(`rpcProxySend: cannot parse ${res}`);
     }
   });
 }
@@ -74,7 +74,7 @@ function rpcProxySubscribe(jsonRpc: JsonRpcRequest, port: browser.runtime.Port):
         type: 'rpc.sendSubscribe',
       });
     } catch (error) {
-      console.error(`rpcProxySubscribe: cannot parse ${res}`);
+      l.error(`rpcProxySubscribe: cannot parse ${res}`);
     }
   });
 }
@@ -87,7 +87,7 @@ function rpcProxySubscribe(jsonRpc: JsonRpcRequest, port: browser.runtime.Port):
  */
 function handler(payload: PayloadRequest | undefined, port: browser.runtime.Port): void {
   if (!payload) {
-    console.warn('handler: Received empty handler, ignoring');
+    l.warn('handler: Received empty handler, ignoring');
     return;
   }
 
@@ -104,7 +104,7 @@ function handler(payload: PayloadRequest | undefined, port: browser.runtime.Port
     case 'rpc.sendSubscribe':
       return rpcProxySubscribe(jsonRpc, port);
     default:
-      console.warn(`Unable to handle message of type ${type}`);
+      l.warn(`Unable to handle message of type ${type}`);
   }
 }
 
@@ -115,7 +115,7 @@ start()
       port.onMessage.addListener((response): void => {
         handler(response as PayloadRequest, port);
       });
-      port.onDisconnect.addListener((): void => console.log(`Disconnected from ${port.name}`));
+      port.onDisconnect.addListener((): void => l.log(`Disconnected from ${port.name}`));
     });
   })
-  .catch(error => console.error(error));
+  .catch(error => l.error(error));
