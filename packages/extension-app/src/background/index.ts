@@ -46,10 +46,8 @@ const start = async (): Promise<void> => {
   /* Build our client. */
   l.log('Starting client');
 
-  start_client(ws()).then((_client: WasmClient) => {
-    l.log('Client started...', _client);
-    client = _client;
-  });
+  client = await start_client(ws());
+  l.log('Client started...', client);
 };
 
 function rpcProxySend(jsonRpc: JsonRpcRequest, port: browser.runtime.Port): void {
@@ -116,7 +114,7 @@ start()
       port.onMessage.addListener((response): void => {
         handler(response as PayloadRequest, port);
       });
-      port.onDisconnect.addListener((): void => l.log(`Disconnected from ${port.name}`));
+      port.onDisconnect.addListener((): void => l.log(`Disconnected from ${port}`));
     });
   })
   .catch(error => l.error(error));
