@@ -4,6 +4,7 @@
 
 import { JsonRpcRequest, JsonRpcResponse } from '@polkadot/rpc-provider/types';
 import { logger } from '@polkadot/util';
+import extensionizer from 'extensionizer';
 
 // eslint-disable-next-line @typescript-eslint/camelcase
 import init, { start_client } from '../../generated/polkadot_cli';
@@ -110,7 +111,7 @@ function handler(payload: PayloadRequest | undefined, port: browser.runtime.Port
 
 start()
   .then(() => {
-    browser.runtime.onConnect.addListener((port): void => {
+    extensionizer.runtime.onConnect.addListener((port: browser.runtime.Port): void => {
       // Listen to all messages on the extension port and handle appropriately
       port.onMessage.addListener((response): void => {
         handler(response as PayloadRequest, port);

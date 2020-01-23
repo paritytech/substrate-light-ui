@@ -13,6 +13,7 @@ import {
   TxQueueContextProvider,
 } from '@substrate/context';
 import { Loading } from '@substrate/ui-components';
+import extensionizer from 'extensionizer';
 import React from 'react';
 
 import { HealthContextProvider } from './context/HealthContext';
@@ -57,7 +58,7 @@ function getProvider(env: Env): ProviderInterface {
     case EXTENSION_ENV: {
       // We use a PostMessageProvider to communicate directly with the
       // background script
-      const port = browser.runtime.connect();
+      const port = extensionizer.runtime.connect();
 
       return new PostMessageProvider(port);
     }
