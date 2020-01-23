@@ -82,7 +82,7 @@ export function ContextGate(props: { children: React.ReactNode }): React.ReactEl
       <TxQueueContextProvider>
         <HealthContextProvider provider={wsProvider}>
           <HealthGate>
-            <ApiContextProvider loading={<Loading active>Initializing chain...</Loading>} provider={wsProvider.clone()}>
+            <ApiContextProvider loading={<Loading active>Initializing chain...</Loading>} provider={wsProvider}>
               <ApiContext.Consumer>
                 {({ api, isReady, system }: ApiContextType): React.ReactElement | null =>
                   api && isReady && system ? (
