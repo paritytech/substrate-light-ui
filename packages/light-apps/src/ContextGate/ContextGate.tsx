@@ -68,8 +68,8 @@ function getProvider(env: Env): ProviderInterface {
     }
     default:
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return (window as any).injectedWeb3 && (window as any).injectedWeb3.slui
-        ? // If we detect our extension, use the PostMessageProvider
+      return process.env.NODE_ENV === 'development'
+        ? // With http://localhost:3000, we deliberatelyuse a PostMessageProvider
           new PostMessageProvider('window')
         : // We fallback to the remote node provided by W3F
           new WsProvider('wss://kusama-rpc.polkadot.io/');
