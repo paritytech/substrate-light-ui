@@ -67,7 +67,6 @@ function getProvider(env: Env): ProviderInterface {
       return new PostMessageProvider(port);
     }
     default:
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return process.env.NODE_ENV === 'development'
         ? // With http://localhost:3000, we deliberatelyuse a PostMessageProvider
           new PostMessageProvider('window')
