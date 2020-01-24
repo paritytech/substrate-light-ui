@@ -4,8 +4,8 @@
     "lib": ["DOM", "ESNext"],
     "outDir": "./build",
     "resolveJsonModule": true,
-    "typeRoots": ["./node_modules/@types", "./typings/index.d.ts"]
+    "typeRoots": ["../../node_modules/@types", "./src/index.d.ts"]
   },
   "extends": "../../tsconfig",
-  "include": ["./src", "./typings/index.d.ts"]
+  "include": ["./src", "./src/index.d.ts"]
 }
