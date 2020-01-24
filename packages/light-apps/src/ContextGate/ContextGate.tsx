@@ -13,8 +13,6 @@ import {
   TxQueueContextProvider,
 } from '@substrate/context';
 import { Loading } from '@substrate/ui-components';
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-// @ts-ignore
 import extensionizer from 'extensionizer';
 import React from 'react';
 
@@ -69,8 +67,9 @@ function getProvider(env: Env): ProviderInterface {
       return new PostMessageProvider(port);
     }
     default:
-      return process.env.NODE_ENV === 'development'
-        ? // With http://localhost:3000, we deliberatelyuse a PostMessageProvider
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return (window as any).injectedWeb3 && (window as any).injectedWeb3.slui
+        ? // If we detect our extension, use the PostMessageProvider
           new PostMessageProvider('window')
         : // We fallback to the remote node provided by W3F
           new WsProvider('wss://kusama-rpc.polkadot.io/');
