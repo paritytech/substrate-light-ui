@@ -3,9 +3,8 @@
     "allowJs": true,
     "lib": ["DOM", "ESNext"],
     "outDir": "./build",
-    "resolveJsonModule": true,
-    "typeRoots": ["../../node_modules/@types", "./src/index.d.ts"]
+    "resolveJsonModule": true
   },
   "extends": "../../tsconfig",
-  "include": ["./src", "./src/index.d.ts"]
+  "include": ["./src"]
 }

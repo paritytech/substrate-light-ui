@@ -13,8 +13,6 @@ import {
   TxQueueContextProvider,
 } from '@substrate/context';
 import { Loading } from '@substrate/ui-components';
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-// @ts-ignore
 import extensionizer from 'extensionizer';
 import React from 'react';
 

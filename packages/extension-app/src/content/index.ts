@@ -9,7 +9,7 @@
 import extensionizer from 'extensionizer';
 
 // Connect to the extension
-const port: browser.runtime.Port = extensionizer.runtime.connect();
+const port = extensionizer.runtime.connect();
 
 // send any messages from the extension back to the page
 port.onMessage.addListener((data): void => {
