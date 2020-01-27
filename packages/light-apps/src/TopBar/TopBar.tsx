@@ -2,33 +2,48 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { Compact } from '@polkadot/types';
+import { BlockNumber, Header } from '@polkadot/types/interfaces';
 import substrateLogo from '@polkadot/ui-assets/polkadot-circle.svg';
 import { ApiContext } from '@substrate/context';
-import { FadedText, Margin, Stacked, StackedHorizontal } from '@substrate/ui-components';
+import { Circle, FadedText, Loading, Margin, Stacked, StackedHorizontal, SubHeader } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { BlockCounter, NodeStatus } from './TopBar.styles';
+import { HealthContext } from '../ContextGate/context';
+
+const GREEN = '#79c879';
+const RED = '#ff0000';
+
+export function renderBlockCounter(blockNumber?: Compact<BlockNumber>, chainName?: string): React.ReactElement {
+  return (
+    <>
+      <SubHeader noMargin>{chainName ? chainName.toString() : <Loading active />}</SubHeader>
+      <div>Block #: {blockNumber ? blockNumber.toString() : <Loading active />}</div>
+    </>
+  );
+}
+
+export function renderNodeStatus(isSyncing: boolean): React.ReactElement {
+  return (
+    <StackedHorizontal>
+      {isSyncing ? <Circle fill={GREEN} radius={10} /> : <Circle fill={RED} radius={10} />}
+      <Margin left='small' />
+      <p>Status: {isSyncing ? 'Syncing' : 'Synced'}</p>
+    </StackedHorizontal>
+  );
+}
 
 export function TopBar(): React.ReactElement {
-  const {
-    api,
-    system: {
-      chain,
-      health: { isSyncing },
-      name,
-      version,
-    },
-  } = useContext(ApiContext);
+  const { api, system } = useContext(ApiContext);
+  const { isSyncing } = useContext(HealthContext);
+  const [header, setHeader] = useState<Header>();
 
-  const [blockNumber, setBlockNumber] = useState();
   useEffect(() => {
-    const chainHeadSub = api.rpc.chain.subscribeNewHeads().subscribe(header => setBlockNumber(header.number));
+    const sub = api.rpc.chain.subscribeNewHeads().subscribe(setHeader);
 
-    return (): void => {
-      chainHeadSub.unsubscribe();
-    };
-  }, [api, setBlockNumber]);
+    return (): void => sub.unsubscribe();
+  }, [api]);
 
   return (
     <header>
@@ -36,12 +51,14 @@ export function TopBar(): React.ReactElement {
         <Link to='/'>
           <img alt='Polkadot Logo' src={substrateLogo} width={50} />
         </Link>
-        <FadedText>
-          {name} {version}
-        </FadedText>
+        {system && (
+          <FadedText>
+            {system.name} {system.version}
+          </FadedText>
+        )}
         <Stacked>
-          <NodeStatus isSyncing={isSyncing} />
-          <BlockCounter blockNumber={blockNumber} chainName={chain} />
+          {renderNodeStatus(isSyncing)}
+          {renderBlockCounter(header?.number, system?.chain)}
         </Stacked>
       </StackedHorizontal>
       <Margin bottom />
