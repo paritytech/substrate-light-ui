@@ -13,7 +13,7 @@
   },
   "devDependencies": {
     "@open-wc/webpack-import-meta-loader": "^0.4.1",
-    "@types/chrome": "^0.0.91",
+    "@types/chrome": "^0.0.92",
     "@types/firefox-webext-browser": "^70.0.1",
     "copy-webpack-plugin": "^5.1.1",
     "webpack": "^4.41.5",

@@ -26,7 +26,7 @@
     "@substrate/context": "^0.3.14",
     "@substrate/transfer-app": "^0.2.0",
     "@substrate/ui-components": "^0.3.14",
-    "@types/chrome": "^0.0.91",
+    "@types/chrome": "^0.0.92",
     "@types/file-saver": "^2.0.0",
     "@types/filesystem": "^0.0.29",
     "@types/react-dom": "^16.0.11",
