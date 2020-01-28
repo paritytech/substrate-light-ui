@@ -5,12 +5,14 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
+import { AddAccount } from './AddAccount';
 import { AccountsOverview } from './Overview';
 
 export function Accounts(): React.ReactElement {
   return (
     <Switch>
-      <Route path='/manageAccounts/:currentAccount' component={AccountsOverview} />
+      <Route exact path='/accounts' component={AccountsOverview} />
+      <Route path='/accounts/add' component={AddAccount} />
     </Switch>
   );
 }

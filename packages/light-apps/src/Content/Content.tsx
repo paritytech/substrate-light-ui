@@ -2,11 +2,11 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Accounts, AddAccount, ManageAddresses } from '@substrate/accounts-app';
+import { Accounts, ManageAddresses } from '@substrate/accounts-app';
 import { Transfer } from '@substrate/transfer-app';
 import { Fab } from '@substrate/ui-components';
-import React, { useContext, useEffect, useState } from 'react';
-import { Link, Redirect, Route, Switch, useHistory } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { Link, Redirect, Route, Switch } from 'react-router-dom';
 
 import { KeyringContext } from '../context/KeyringContext';
 import { IdentityHeader } from '../IdentityHeader';
@@ -14,38 +14,24 @@ import { Signer } from '../Signer';
 import { TxQueueNotifier } from '../TxQueueNotifier';
 
 export function Content(): React.ReactElement {
-  const history = useHistory();
-  const { accounts } = useContext(KeyringContext);
-  const [defaultAccount, setDefaultAccount] = useState<string>();
-
-  useEffect(() => {
-    const accountsList = Object.keys(accounts);
-    accountsList.length && setDefaultAccount(accountsList[0]);
-
-    if (defaultAccount) {
-      history.push(`/manageAccounts/${defaultAccount}`);
-    }
-  }, [accounts, defaultAccount, history]);
+  const { currentAccount } = useContext(KeyringContext);
 
   return (
     <>
-      <Route
-        component={IdentityHeader}
-        path={['/addresses/:currentAccount', '/manageAccounts/:currentAccount', '/transfer/:currentAccount']}
-      />
-      <Route
-        path={['/addresses/:currentAccount', '/manageAccounts/:currentAccount']}
-        render={(): React.ReactElement => (
-          <Link to={`/transfer/${defaultAccount}`}>
-            <Fab type='send' />
-          </Link>
-        )}
-      />
+      <Route component={IdentityHeader} path={['/addresses', '/accounts', '/transfer/:currentAccount']} />
+      {currentAccount && (
+        <Route
+          render={(): React.ReactElement => (
+            <Link to={`/transfer/${currentAccount}`}>
+              <Fab type='send' />
+            </Link>
+          )}
+        />
+      )}
       <Switch>
-        <Redirect exact from='/' to={`/manageAccounts/${defaultAccount}`} />
-        <Route path='/addresses/:currentAccount' component={ManageAddresses} />
-        <Route path='/manageAccounts/:currentAccount' component={defaultAccount ? Accounts : AddAccount} />
-        <Route path='/accounts/add' component={AddAccount} />
+        <Redirect exact from='/' to='accounts' />
+        <Route path='/addresses' component={ManageAddresses} />
+        <Route path='/accounts' component={Accounts} />
         <Route path='/transfer/:currentAccount' component={Transfer} />
         <Redirect to='/' />
       </Switch>

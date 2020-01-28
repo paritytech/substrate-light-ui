@@ -12,8 +12,10 @@ import React, { useEffect, useState } from 'react';
 interface KeyringContext {
   accounts: SubjectInfo;
   addresses: SubjectInfo;
+  currentAccount?: string;
   keyring: typeof keyring;
   keyringReady: boolean;
+  setCurrentAccount: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
 interface KeyringContextProps extends KeyringOptions {
@@ -31,6 +33,7 @@ export function KeyringContextProvider(props: KeyringContextProps): React.ReactE
   const [keyringReady, setKeyringReady] = useState(false);
   const [accounts, setAccounts] = useState<SubjectInfo>({});
   const [addresses, setAddresses] = useState<SubjectInfo>({});
+  const [currentAccount, setCurrentAccount] = useState<string>();
 
   useEffect(() => {
     keyring.loadAll({
@@ -38,7 +41,12 @@ export function KeyringContextProvider(props: KeyringContextProps): React.ReactE
       ss58Format: ss58Format || DEFAULT_SS58_PREFIX,
       type: 'ed25519',
     } as KeyringOptions);
-    const accountsSub = accountObservable.subject.subscribe(setAccounts);
+    const accountsSub = accountObservable.subject.subscribe(acc => {
+      setAccounts(acc);
+      // FIXME Save currentAccount into localStorage, so that subsequent loads
+      // loads the same account
+      setCurrentAccount(Object.keys(acc)[0]);
+    });
     const addressesSub = addressObservable.subject.subscribe(setAddresses);
 
     setKeyringReady(true);
@@ -54,8 +62,10 @@ export function KeyringContextProvider(props: KeyringContextProps): React.ReactE
       value={{
         accounts,
         addresses,
+        currentAccount,
         keyring,
         keyringReady,
+        setCurrentAccount,
       }}
     >
       {children}
