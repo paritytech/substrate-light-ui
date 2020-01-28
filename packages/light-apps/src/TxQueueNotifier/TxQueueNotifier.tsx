@@ -25,7 +25,6 @@ export function TxQueueNotifier(): React.ReactElement | null {
               methodCall={methodCall}
               recipientAddress={recipientAddress}
               senderAddress={senderPair.address}
-              // FIXME Maybe should a loader when we don't have a symbol?
               tokenSymbol={system?.properties?.tokenSymbol.toString()}
             />
           </StackedHorizontal>
