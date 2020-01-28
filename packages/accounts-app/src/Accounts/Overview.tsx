@@ -7,7 +7,7 @@ import React, { useContext } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
 import { KeyringContext } from '../../../light-apps/src/context/KeyringContext';
-import { AccountsOverviewCard } from './AccountsOverviewCard';
+import { AccountsOverviewCard } from './OverviewCard';
 
 type Props = RouteComponentProps;
 

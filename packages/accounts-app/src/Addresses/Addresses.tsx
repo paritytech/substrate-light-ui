@@ -7,14 +7,14 @@ import { Route, Switch } from 'react-router-dom';
 
 import { Add } from './Add';
 import { Edit } from './Edit';
-import { SavedAddresses } from './SavedAddresses';
+import { Overview } from './Overview';
 
-export function ManageAddresses(): React.ReactElement {
+export function Addresses(): React.ReactElement {
   return (
     <Switch>
-      <Route path='/addresses/:currentAccount/edit' component={Edit} />
-      <Route path='/addresses/:currentAccount/add' component={Add} />
-      <Route path='/addresses/:currentAccount' component={SavedAddresses} />
+      <Route path='/addresses/edit' component={Edit} />
+      <Route path='/addresses/add' component={Add} />
+      <Route path='/addresses' component={Overview} />
     </Switch>
   );
 }

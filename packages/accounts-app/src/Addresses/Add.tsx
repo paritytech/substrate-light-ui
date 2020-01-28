@@ -10,7 +10,7 @@ import { SaveAddress } from './SaveAddress';
 export function Add(): React.ReactElement {
   return (
     <Stacked>
-      <SubHeader> Enter an address and save it with a name for later use. </SubHeader>
+      <SubHeader>Enter an address and save it with a name for later use.</SubHeader>
       <Margin top />
       <SaveAddress />
     </Stacked>

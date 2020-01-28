@@ -4,7 +4,7 @@
 
 import { Margin, Stacked, SubHeader } from '@substrate/ui-components';
 import React from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { SaveAddress } from './SaveAddress';
 
@@ -12,19 +12,12 @@ interface MatchParams {
   currentAccount: string;
 }
 
-type Props = RouteComponentProps<MatchParams>;
-
-export function Edit(props: Props): React.ReactElement {
-  const {
-    match: {
-      params: { currentAccount },
-    },
-  } = props;
+export function Edit(): React.ReactElement {
   return (
     <Stacked>
       <SubHeader>Edit Address</SubHeader>
       <Margin top />
-      <Link to={`/addresses/${currentAccount}`}>Add a New Address</Link>
+      <Link to='addresses'>Add a New Address</Link>
       <SaveAddress addressDisabled />
     </Stacked>
   );
