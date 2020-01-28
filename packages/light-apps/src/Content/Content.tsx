@@ -3,28 +3,29 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { Accounts, AddAccount, ManageAddresses } from '@substrate/accounts-app';
-import { KeyringContext } from '@substrate/context';
 import { Transfer } from '@substrate/transfer-app';
 import { Fab } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';
-import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
+import { Link, Redirect, Route, Switch, useHistory } from 'react-router-dom';
 
+import { KeyringContext } from '../context/KeyringContext';
 import { IdentityHeader } from '../IdentityHeader';
 import { Signer } from '../Signer';
 import { TxQueueNotifier } from '../TxQueueNotifier';
 
-export const Content = (): React.ReactElement => {
+export function Content(): React.ReactElement {
   const history = useHistory();
-  const { allAccounts } = useContext(KeyringContext);
+  const { accounts } = useContext(KeyringContext);
   const [defaultAccount, setDefaultAccount] = useState<string>();
 
   useEffect(() => {
-    allAccounts && setDefaultAccount(allAccounts[0]);
+    const accountsList = Object.keys(accounts);
+    accountsList.length && setDefaultAccount(accountsList[0]);
 
     if (defaultAccount) {
       history.push(`/manageAccounts/${defaultAccount}`);
     }
-  }, [allAccounts, defaultAccount, history]);
+  }, [accounts, defaultAccount, history]);
 
   return (
     <>
@@ -34,8 +35,10 @@ export const Content = (): React.ReactElement => {
       />
       <Route
         path={['/addresses/:currentAccount', '/manageAccounts/:currentAccount']}
-        render={(props): React.ReactElement => (
-          <Fab onClick={(): void => props.history.push(`/transfer/${defaultAccount}`)} type='send' />
+        render={(): React.ReactElement => (
+          <Link to={`/transfer/${defaultAccount}`}>
+            <Fab type='send' />
+          </Link>
         )}
       />
       <Switch>
@@ -50,4 +53,4 @@ export const Content = (): React.ReactElement => {
       <Signer />
     </>
   );
-};
+}

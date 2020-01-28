@@ -10,13 +10,13 @@ import {
   ApiContextProvider,
   ApiContextType,
   HealthContextProvider,
-  KeyringContextProvider,
   TxQueueContextProvider,
 } from '@substrate/context';
 import { Loading } from '@substrate/ui-components';
 import extensionizer from 'extensionizer';
 import React from 'react';
 
+import { KeyringContextProvider } from '../context/KeyringContext';
 import { HealthGate } from './HealthGate';
 import { PostMessageProvider } from './postMessage';
 
@@ -92,7 +92,10 @@ export function ContextGate(props: { children: React.ReactNode }): React.ReactEl
               <ApiContext.Consumer>
                 {({ api, isReady, system }: ApiContextType): React.ReactElement | null =>
                   api && isReady && system ? (
-                    <KeyringContextProvider api={api} isReady={isReady} system={system}>
+                    <KeyringContextProvider
+                      genesisHash={api.genesisHash}
+                      ss58Format={system.properties.ss58Format.unwrapOr(undefined)?.toNumber()}
+                    >
                       {children}
                     </KeyringContextProvider>
                   ) : null
