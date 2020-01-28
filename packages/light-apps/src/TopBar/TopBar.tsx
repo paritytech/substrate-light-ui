@@ -5,12 +5,10 @@
 import { Compact } from '@polkadot/types';
 import { BlockNumber, Header } from '@polkadot/types/interfaces';
 import substrateLogo from '@polkadot/ui-assets/polkadot-circle.svg';
-import { ApiContext } from '@substrate/context';
+import { ApiContext, HealthContext } from '@substrate/context';
 import { Circle, FadedText, Loading, Margin, Stacked, StackedHorizontal, SubHeader } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-
-import { HealthContext } from '../ContextGate/context';
 
 const GREEN = '#79c879';
 const RED = '#ff0000';

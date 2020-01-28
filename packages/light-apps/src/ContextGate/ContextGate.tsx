@@ -9,6 +9,7 @@ import {
   ApiContext,
   ApiContextProvider,
   ApiContextType,
+  HealthContextProvider,
   KeyringContextProvider,
   TxQueueContextProvider,
 } from '@substrate/context';
@@ -16,7 +17,6 @@ import { Loading } from '@substrate/ui-components';
 import extensionizer from 'extensionizer';
 import React from 'react';
 
-import { HealthContextProvider } from './context/HealthContext';
 import { HealthGate } from './HealthGate';
 import { PostMessageProvider } from './postMessage';
 
