@@ -10,7 +10,7 @@ import { BlockHash, ChainProperties, Header, Health } from '@polkadot/types/inte
 import { logger } from '@polkadot/util';
 import React, { useEffect, useRef, useState } from 'react';
 import { combineLatest, interval, merge } from 'rxjs';
-import { filter, switchMap } from 'rxjs/operators';
+import { filter, switchMap, take } from 'rxjs/operators';
 
 import { providerConnected } from './util';
 
@@ -28,43 +28,24 @@ export interface SystemContextType {
   version: Text;
 }
 
-const INIT_ERROR = new Error('Please wait for `isSystemReady` before fetching this property');
-
 const l = logger('system-context');
 
 export const SystemContext: React.Context<SystemContextType> = React.createContext({} as SystemContextType);
 
 export interface SystemContextProviderProps {
-  children?: React.ReactNode;
+  children?: React.ReactElement;
   provider: ProviderInterface;
 }
 
 export function SystemContextProvider(props: SystemContextProviderProps): React.ReactElement {
   const { children = null, provider } = props;
-  const [state, setState] = useState<SystemContextType>({
-    get chain(): never {
-      throw INIT_ERROR;
-    },
-    get genesisHash(): never {
-      throw INIT_ERROR;
-    },
-    get header(): never {
-      throw INIT_ERROR;
-    },
-    get health(): never {
-      throw INIT_ERROR;
-    },
-    isSystemReady: false,
-    get name(): never {
-      throw INIT_ERROR;
-    },
-    get properties(): never {
-      throw INIT_ERROR;
-    },
-    get version(): never {
-      throw INIT_ERROR;
-    },
-  });
+  const [chain, setChain] = useState<Text>();
+  const [genesisHash, setGenesisHash] = useState<BlockHash>();
+  const [header, setHeader] = useState<Header>();
+  const [health, setHealth] = useState<Health>();
+  const [name, setName] = useState<Text>();
+  const [properties, setProperties] = useState<ChainProperties>();
+  const [version, setVersion] = useState<Text>();
 
   const registryRef = useRef(new TypeRegistry());
   const rpcRef = useRef(new Rpc(registryRef.current, provider));
@@ -81,21 +62,16 @@ export function SystemContextProvider(props: SystemContextProviderProps): React.
           combineLatest([
             rpc.system.chain(),
             rpc.chain.getBlockHash(0),
-            merge(
-              rpc.chain.subscribeNewHeads(),
-              // Header doesn't get updated when doing a major sync, so we also poll
-              interval(2000).pipe(switchMap(() => rpc.chain.getHeader()))
-            ),
-            rpc.system.health(),
             rpc.system.name(),
             rpc.system.properties(),
             rpc.system.version(),
           ])
-        )
+        ),
+        take(1)
       )
-      .subscribe(([chain, genesisHash, header, health, name, properties, version]) => {
+      .subscribe(([_chain, _genesisHash, _name, _properties, _version]) => {
         l.log(
-          `Rpc connected to chain "${chain}" with properties ${JSON.stringify(properties)} via ${
+          `Rpc connected to chain "${_chain}" with properties ${JSON.stringify(_properties)} via ${
             // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
             // @ts-ignore WsProvider.endpoint is private, but we still use it
             // here, to have a nice log
@@ -103,22 +79,53 @@ export function SystemContextProvider(props: SystemContextProviderProps): React.
           }`
         );
 
-        setState({
-          isSystemReady: chain && genesisHash && header && health && name && properties && !!version,
-          chain,
-          genesisHash,
-          header,
-          health,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-          // @ts-ignore Somehow, combineLatest cannot handle that many arguments
-          name,
-          properties,
-          version,
-        });
+        setChain(_chain);
+        setGenesisHash(_genesisHash);
+        setName(_name);
+        setProperties(_properties);
+        setVersion(_version);
       });
 
     return (): void => sub.unsubscribe();
   }, [provider, rpc]);
 
-  return <SystemContext.Provider value={state}>{children}</SystemContext.Provider>;
+  useEffect(() => {
+    const sub = providerConnected(provider)
+      .pipe(
+        filter(connected => !!connected),
+        switchMap(() =>
+          combineLatest([
+            merge(
+              rpc.chain.subscribeNewHeads(),
+              // Header doesn't get updated when doing a major sync, so we also poll
+              interval(2000).pipe(switchMap(() => rpc.chain.getHeader()))
+            ),
+            rpc.system.health(),
+          ])
+        )
+      )
+      .subscribe(([_header, _health]) => {
+        setHeader(_header);
+        setHealth(_health);
+      });
+
+    return (): void => sub.unsubscribe();
+  }, [provider, rpc]);
+
+  return (
+    <SystemContext.Provider
+      value={{
+        chain: chain as Text,
+        genesisHash: genesisHash as BlockHash,
+        header: header as Header,
+        health: health as Health,
+        isSystemReady: !!(chain && genesisHash && header && health && name && properties && version),
+        name: name as Text,
+        properties: properties as ChainProperties,
+        version: version as Text,
+      }}
+    >
+      {children}
+    </SystemContext.Provider>
+  );
 }

@@ -3,9 +3,10 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { logger } from '@polkadot/util';
-import { HealthContext, HealthContextType } from '@substrate/context';
 import { Loading } from '@substrate/ui-components';
 import React, { useContext } from 'react';
+
+import { HealthContext, HealthContextType } from '../../context';
 
 const STATUS_GOOD = 0;
 const STATUS_WARN = 1;

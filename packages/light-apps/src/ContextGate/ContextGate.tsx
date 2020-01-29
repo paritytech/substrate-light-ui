@@ -9,7 +9,7 @@ import extensionizer from 'extensionizer';
 import React from 'react';
 
 import { ApiContextProvider, HealthContextProvider, KeyringContextProvider, SystemContextProvider } from '../context';
-import { HealthGate, SystemGate } from './gates';
+import { ApiGate, HealthGate, KeyringGate, SystemGate } from './gates';
 import { PostMessageProvider } from './postMessage';
 
 const ELECTRON_ENV = 'ELECTRON_ENV';
@@ -64,13 +64,13 @@ function getProvider(env: Env): ProviderInterface {
         ? // If we detect the extension, use PostMessageProvider
           new PostMessageProvider('window')
         : // We fallback to the remote node provided by W3F
-          new WsProvider('ws://localhost:9944');
+          new WsProvider('wss://kusama-rpc.polkadot.io/');
   }
 }
 
 const wsProvider = getProvider(detectEnvironment());
 
-export function ContextGate(props: { children: React.ReactNode }): React.ReactElement {
+export function ContextGate(props: { children: React.ReactElement }): React.ReactElement {
   const { children } = props;
 
   // const wsProvider = new PostMessageProvider();
@@ -81,11 +81,15 @@ export function ContextGate(props: { children: React.ReactNode }): React.ReactEl
         <SystemContextProvider provider={wsProvider}>
           <SystemGate>
             <KeyringContextProvider>
-              <HealthContextProvider provider={wsProvider}>
-                <HealthGate>
-                  <ApiContextProvider provider={wsProvider}>{children}</ApiContextProvider>
-                </HealthGate>
-              </HealthContextProvider>
+              <KeyringGate>
+                <HealthContextProvider provider={wsProvider}>
+                  <HealthGate>
+                    <ApiContextProvider provider={wsProvider}>
+                      <ApiGate>{children}</ApiGate>
+                    </ApiContextProvider>
+                  </HealthGate>
+                </HealthContextProvider>
+              </KeyringGate>
             </KeyringContextProvider>
           </SystemGate>
         </SystemContextProvider>

@@ -7,6 +7,7 @@ import accountObservable from '@polkadot/ui-keyring/observable/accounts';
 import addressObservable from '@polkadot/ui-keyring/observable/addresses';
 import { SubjectInfo } from '@polkadot/ui-keyring/observable/types';
 import { KeyringOptions } from '@polkadot/ui-keyring/types';
+import { logger } from '@polkadot/util';
 import React, { useContext, useEffect, useState } from 'react';
 
 import { SystemContext } from '../context';
@@ -21,7 +22,7 @@ interface KeyringContext {
 }
 
 interface KeyringContextProps extends KeyringOptions {
-  children: React.ReactNode;
+  children: React.ReactElement;
 }
 
 export const KeyringContext = React.createContext({} as KeyringContext);
@@ -29,6 +30,8 @@ export const KeyringContext = React.createContext({} as KeyringContext);
 // Most chains (including Kusama) put the ss58 prefix in the chain properties.
 // Just in case, we default to 42
 const DEFAULT_SS58_PREFIX = 42;
+
+const l = logger('keyring-context');
 
 export function KeyringContextProvider(props: KeyringContextProps): React.ReactElement {
   const { children, ...rest } = props;
@@ -39,12 +42,15 @@ export function KeyringContextProvider(props: KeyringContextProps): React.ReactE
   const [currentAccount, setCurrentAccount] = useState<string>();
 
   useEffect(() => {
+    const ss58Format = properties.ss58Format.unwrapOr(undefined)?.toNumber() || DEFAULT_SS58_PREFIX;
+
     keyring.loadAll({
       genesisHash,
-      ss58Format: properties.ss58Format.unwrapOr(undefined)?.toNumber() || DEFAULT_SS58_PREFIX,
+      ss58Format,
       type: 'ed25519',
       ...rest,
     } as KeyringOptions);
+
     const accountsSub = accountObservable.subject.subscribe(acc => {
       setAccounts(acc);
       // FIXME Save currentAccount into localStorage, so that subsequent loads
@@ -54,12 +60,15 @@ export function KeyringContextProvider(props: KeyringContextProps): React.ReactE
     const addressesSub = addressObservable.subject.subscribe(setAddresses);
 
     setIsKeyringReady(true);
+    l.log(`Keyring initialized with ss58Format=${ss58Format}`);
 
     return (): void => {
       accountsSub.unsubscribe();
       addressesSub.unsubscribe();
     };
-  }, [genesisHash, properties.ss58Format, rest]);
+    // Only run effect once
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <KeyringContext.Provider
