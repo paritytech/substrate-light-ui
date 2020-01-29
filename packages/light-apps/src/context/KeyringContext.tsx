@@ -7,14 +7,16 @@ import accountObservable from '@polkadot/ui-keyring/observable/accounts';
 import addressObservable from '@polkadot/ui-keyring/observable/addresses';
 import { SubjectInfo } from '@polkadot/ui-keyring/observable/types';
 import { KeyringOptions } from '@polkadot/ui-keyring/types';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+
+import { SystemContext } from '../context';
 
 interface KeyringContext {
   accounts: SubjectInfo;
   addresses: SubjectInfo;
   currentAccount?: string;
   keyring: typeof keyring;
-  keyringReady: boolean;
+  isKeyringReady: boolean;
   setCurrentAccount: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
@@ -29,17 +31,19 @@ export const KeyringContext = React.createContext({} as KeyringContext);
 const DEFAULT_SS58_PREFIX = 42;
 
 export function KeyringContextProvider(props: KeyringContextProps): React.ReactElement {
-  const { children, genesisHash, ss58Format } = props;
-  const [keyringReady, setKeyringReady] = useState(false);
+  const { children, ...rest } = props;
+  const { genesisHash, properties } = useContext(SystemContext);
+  const [isKeyringReady, setIsKeyringReady] = useState(false);
   const [accounts, setAccounts] = useState<SubjectInfo>({});
   const [addresses, setAddresses] = useState<SubjectInfo>({});
   const [currentAccount, setCurrentAccount] = useState<string>();
 
   useEffect(() => {
     keyring.loadAll({
-      genesisHash: genesisHash,
-      ss58Format: ss58Format || DEFAULT_SS58_PREFIX,
+      genesisHash,
+      ss58Format: properties.ss58Format.unwrapOr(undefined)?.toNumber() || DEFAULT_SS58_PREFIX,
       type: 'ed25519',
+      ...rest,
     } as KeyringOptions);
     const accountsSub = accountObservable.subject.subscribe(acc => {
       setAccounts(acc);
@@ -49,13 +53,13 @@ export function KeyringContextProvider(props: KeyringContextProps): React.ReactE
     });
     const addressesSub = addressObservable.subject.subscribe(setAddresses);
 
-    setKeyringReady(true);
+    setIsKeyringReady(true);
 
     return (): void => {
       accountsSub.unsubscribe();
       addressesSub.unsubscribe();
     };
-  }, [genesisHash, ss58Format]);
+  }, [genesisHash, properties.ss58Format, rest]);
 
   return (
     <KeyringContext.Provider
@@ -63,8 +67,8 @@ export function KeyringContextProvider(props: KeyringContextProps): React.ReactE
         accounts,
         addresses,
         currentAccount,
+        isKeyringReady,
         keyring,
-        keyringReady,
         setCurrentAccount,
       }}
     >

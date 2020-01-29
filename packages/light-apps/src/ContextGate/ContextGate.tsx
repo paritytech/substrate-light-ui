@@ -4,20 +4,12 @@
 
 import { WsProvider } from '@polkadot/api';
 import { ProviderInterface } from '@polkadot/rpc-provider/types';
-import {
-  AlertsContextProvider,
-  ApiContext,
-  ApiContextProvider,
-  ApiContextType,
-  HealthContextProvider,
-  TxQueueContextProvider,
-} from '@substrate/context';
-import { Loading } from '@substrate/ui-components';
+import { AlertsContextProvider, TxQueueContextProvider } from '@substrate/context';
 import extensionizer from 'extensionizer';
 import React from 'react';
 
-import { KeyringContextProvider } from '../context/KeyringContext';
-import { HealthGate } from './HealthGate';
+import { ApiContextProvider, HealthContextProvider, KeyringContextProvider, SystemContextProvider } from '../context';
+import { HealthGate, SystemGate } from './gates';
 import { PostMessageProvider } from './postMessage';
 
 const ELECTRON_ENV = 'ELECTRON_ENV';
@@ -86,24 +78,17 @@ export function ContextGate(props: { children: React.ReactNode }): React.ReactEl
   return (
     <AlertsContextProvider>
       <TxQueueContextProvider>
-        <HealthContextProvider provider={wsProvider}>
-          <HealthGate>
-            <ApiContextProvider loading={<Loading active>Initializing chain...</Loading>} provider={wsProvider}>
-              <ApiContext.Consumer>
-                {({ api, isReady, system }: ApiContextType): React.ReactElement | null =>
-                  api && isReady && system ? (
-                    <KeyringContextProvider
-                      genesisHash={api.genesisHash}
-                      ss58Format={system.properties.ss58Format.unwrapOr(undefined)?.toNumber()}
-                    >
-                      {children}
-                    </KeyringContextProvider>
-                  ) : null
-                }
-              </ApiContext.Consumer>
-            </ApiContextProvider>
-          </HealthGate>
-        </HealthContextProvider>
+        <SystemContextProvider provider={wsProvider}>
+          <SystemGate>
+            <KeyringContextProvider>
+              <HealthContextProvider provider={wsProvider}>
+                <HealthGate>
+                  <ApiContextProvider provider={wsProvider}>{children}</ApiContextProvider>
+                </HealthGate>
+              </HealthContextProvider>
+            </KeyringContextProvider>
+          </SystemGate>
+        </SystemContextProvider>
       </TxQueueContextProvider>
     </AlertsContextProvider>
   );
