@@ -79,8 +79,6 @@ const wsProvider = getProvider(detectEnvironment());
 export function ContextGate(props: { children: React.ReactElement }): React.ReactElement {
   const { children } = props;
 
-  // const wsProvider = new PostMessageProvider();
-
   return (
     <AlertsContextProvider>
       <TxQueueContextProvider>
