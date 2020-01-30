@@ -3,6 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { SingleAddress } from '@polkadot/ui-keyring/observable/types';
+import { KeyringContext } from '@substrate/context';
 import {
   AddressSummary,
   CopyButton,
@@ -15,8 +16,6 @@ import {
 } from '@substrate/ui-components';
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-
-import { KeyringContext } from '../../../light-apps/src/context/KeyringContext';
 
 function renderAllAddressesFromKeyring(addresses: SingleAddress[]): React.ReactElement {
   return addresses.length ? (

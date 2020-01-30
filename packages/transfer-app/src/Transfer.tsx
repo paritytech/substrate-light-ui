@@ -2,13 +2,12 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { TxQueueContext } from '@substrate/context';
+import { KeyringContext, TxQueueContext } from '@substrate/context';
 import { Header, WrapperDiv } from '@substrate/ui-components';
 import { findFirst } from 'fp-ts/lib/Array';
 import React, { useContext } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { KeyringContext } from '../../light-apps/src/context/KeyringContext';
 import { SendBalance } from './SendBalance';
 import { TxQueue } from './TxQueue';
 

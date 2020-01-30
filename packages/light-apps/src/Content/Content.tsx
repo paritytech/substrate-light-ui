@@ -3,12 +3,12 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { Accounts, ManageAddresses } from '@substrate/accounts-app';
+import { KeyringContext } from '@substrate/context';
 import { Transfer } from '@substrate/transfer-app';
 import { Fab } from '@substrate/ui-components';
 import React, { useContext } from 'react';
 import { Link, Redirect, Route, Switch } from 'react-router-dom';
 
-import { KeyringContext } from '../context/KeyringContext';
 import { IdentityHeader } from '../IdentityHeader';
 import { Signer } from '../Signer';
 import { TxQueueNotifier } from '../TxQueueNotifier';

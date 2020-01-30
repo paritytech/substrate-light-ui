@@ -4,11 +4,17 @@
 
 import { WsProvider } from '@polkadot/api';
 import { ProviderInterface } from '@polkadot/rpc-provider/types';
-import { AlertsContextProvider, TxQueueContextProvider } from '@substrate/context';
+import {
+  AlertsContextProvider,
+  ApiContextProvider,
+  HealthContextProvider,
+  KeyringContextProvider,
+  SystemContextProvider,
+  TxQueueContextProvider,
+} from '@substrate/context';
 import extensionizer from 'extensionizer';
 import React from 'react';
 
-import { ApiContextProvider, HealthContextProvider, KeyringContextProvider, SystemContextProvider } from '../context';
 import { ApiGate, HealthGate, KeyringGate, SystemGate } from './gates';
 import { PostMessageProvider } from './postMessage';
 
@@ -64,7 +70,7 @@ function getProvider(env: Env): ProviderInterface {
         ? // If we detect the extension, use PostMessageProvider
           new PostMessageProvider('window')
         : // We fallback to the remote node provided by W3F
-          new WsProvider('wss://kusama-rpc.polkadot.io/');
+          new WsProvider('ws://127.0.0.1:9944');
   }
 }
 

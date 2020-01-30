@@ -2,13 +2,13 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AlertsContext, ApiContext, TxQueueContext } from '@substrate/context';
+import { AlertsContext, SystemContext, TxQueueContext } from '@substrate/context';
 import { Alert, Message, StackedHorizontal, TxSummary } from '@substrate/ui-components';
 import React, { useContext, useEffect } from 'react';
 
 export function TxQueueNotifier(): React.ReactElement | null {
   const { enqueue } = useContext(AlertsContext);
-  const { system } = useContext(ApiContext);
+  const { properties } = useContext(SystemContext);
   const { cancelObservable, errorObservable, successObservable } = useContext(TxQueueContext);
 
   // Display notification on success
@@ -25,7 +25,7 @@ export function TxQueueNotifier(): React.ReactElement | null {
               methodCall={methodCall}
               recipientAddress={recipientAddress}
               senderAddress={senderPair.address}
-              tokenSymbol={system?.properties?.tokenSymbol.toString()}
+              tokenSymbol={properties.tokenSymbol.unwrapOr(undefined)?.toString()}
             />
           </StackedHorizontal>
         </Alert>
@@ -38,7 +38,7 @@ export function TxQueueNotifier(): React.ReactElement | null {
     });
 
     return (): void => subscription.unsubscribe();
-  }, [enqueue, successObservable, system]);
+  }, [enqueue, properties, successObservable]);
 
   // Display notification on error
   useEffect(() => {
