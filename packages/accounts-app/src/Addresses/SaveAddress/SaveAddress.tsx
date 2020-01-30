@@ -2,15 +2,13 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { isFunction } from '@polkadot/util';
 import { KeyringContext } from '@substrate/context';
 import { ErrorText, Form, Input, Margin, NavButton, Stacked, SuccessText, WrapperDiv } from '@substrate/ui-components';
 import React, { useContext, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
-interface Props {
-  addressDisabled?: boolean;
-  onSave?: () => void;
+interface MatchParams {
+  address?: string;
 }
 
 function renderError(error?: string): React.ReactElement {
@@ -21,17 +19,19 @@ function renderSuccess(success?: string): React.ReactElement {
   return <SuccessText>{success}</SuccessText>;
 }
 
-export function SaveAddress(props: Props): React.ReactElement {
-  const { addressDisabled, onSave } = props;
+export function SaveAddress(): React.ReactElement {
+  const { address: currentAddress } = useParams<MatchParams>();
   const history = useHistory();
+  const { keyring, addresses } = useContext(KeyringContext);
 
-  const { keyring } = useContext(KeyringContext);
+  // We're in Edit mode if the URL contains the currentAddress
+  const isEditing = !!currentAddress;
 
-  const [address, setAddress] = useState();
-  const [name, setName] = useState();
+  const [address, setAddress] = useState(currentAddress || '');
+  const [name, setName] = useState(currentAddress ? addresses[currentAddress].json.meta.name : '');
 
-  const [error, setError] = useState<string | undefined>(undefined);
-  const [success, setSuccess] = useState<string | undefined>(undefined);
+  const [error, setError] = useState<string>();
+  const [success, setSuccess] = useState<string>();
 
   const onError = (value?: string): void => {
     setError(value);
@@ -64,10 +64,6 @@ export function SaveAddress(props: Props): React.ReactElement {
 
       onSuccess('Successfully saved address');
 
-      if (onSave && isFunction(onSave)) {
-        onSave();
-      }
-
       history.push('/addresses');
     } catch (e) {
       onError(e.message);
@@ -79,7 +75,7 @@ export function SaveAddress(props: Props): React.ReactElement {
       <Stacked>
         <WrapperDiv>
           <Input
-            disabled={addressDisabled}
+            disabled={isEditing}
             fluid
             label='Address'
             onChange={handleChangeAddress}

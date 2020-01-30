@@ -7,11 +7,7 @@ import { Balance, CopyButton, Icon, InputAddress, Margin, Menu } from '@substrat
 import React, { useContext } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 
-interface MatchParams {
-  currentAccount: string;
-}
-
-type Props = RouteComponentProps<MatchParams>;
+type Props = RouteComponentProps;
 
 export function IdentityHeader(props: Props): React.ReactElement | null {
   const { match } = props;

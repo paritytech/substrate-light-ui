@@ -35,7 +35,7 @@ function randomlyPickFour(phrase: string): Array<Array<string>> {
 }
 
 export function Create(props: Props): React.ReactElement {
-  const { location } = props;
+  const { location, history } = props;
 
   const { keyring, isKeyringReady } = useContext(KeyringContext);
 
@@ -115,6 +115,8 @@ export function Create(props: Props): React.ReactElement {
         const blob = new Blob([JSON.stringify(json)], { type: 'application/json; charset=utf-8' });
 
         FileSaver.saveAs(blob, `${values.name}-${result.pair.address}.json`);
+
+        history.push('/');
       }
     );
   };

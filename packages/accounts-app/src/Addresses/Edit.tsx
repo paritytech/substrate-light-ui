@@ -15,7 +15,7 @@ export function Edit(): React.ReactElement {
       <Stacked>
         <SubHeader>Edit Address</SubHeader>
         <Margin top />
-        <SaveAddress addressDisabled />
+        <SaveAddress />
       </Stacked>
     </>
   );

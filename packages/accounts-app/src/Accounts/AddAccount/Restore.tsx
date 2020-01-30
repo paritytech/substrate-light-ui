@@ -24,7 +24,7 @@ export function Restore(props: Props): React.ReactElement {
           With Phrase
         </Menu.Item>
       </Menu>
-      {screen === 'JSON' ? <ImportWithJson /> : <ImportWithPhrase {...props} />}
+      {screen === 'JSON' ? <ImportWithJson {...props} /> : <ImportWithPhrase {...props} />}
     </>
   );
 }

@@ -4,16 +4,20 @@
 
 import { KeyringContext } from '@substrate/context';
 import React, { useContext } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 
 import { AddAccount } from './AddAccount';
 import { AccountsOverview } from './Overview';
 
-export function Accounts(): React.ReactElement {
+type Props = RouteComponentProps;
+
+export function Accounts(props: Props): React.ReactElement {
+  const { location } = props;
   const { accounts } = useContext(KeyringContext);
 
-  if (!Object.keys(accounts).length) {
-    return <Route path='/accounts/add' component={AddAccount} />;
+  // Redirect to Add Account page if we have no accounts
+  if (!Object.keys(accounts).length && !location.pathname.startsWith('/accounts/add')) {
+    return <Redirect to='/accounts/add' />;
   }
 
   return (

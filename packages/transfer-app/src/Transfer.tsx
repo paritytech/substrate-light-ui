@@ -12,7 +12,7 @@ import { SendBalance } from './SendBalance';
 import { TxQueue } from './TxQueue';
 
 interface MatchParams {
-  currentAccount: string;
+  sender: string;
 }
 
 type Props = RouteComponentProps<MatchParams>;
@@ -20,7 +20,7 @@ type Props = RouteComponentProps<MatchParams>;
 export function Transfer(props: Props): React.ReactElement {
   const {
     match: {
-      params: { currentAccount },
+      params: { sender },
     },
   } = props;
   const { accounts, addresses } = useContext(KeyringContext);
@@ -30,18 +30,18 @@ export function Transfer(props: Props): React.ReactElement {
   // currentAccount. If not found, then take the currentAccount
   const firstDifferentAddress = findFirst(
     Object.values(addresses).concat(Object.values(accounts)),
-    ({ json }) => json.address !== currentAccount
+    ({ json }) => json.address !== sender
   )
     .map(({ json: { address } }) => address)
-    .getOrElse(currentAccount);
+    .getOrElse(sender);
 
   return (
     <WrapperDiv>
       <Header>Send Funds</Header>
       {txQueue.length ? (
-        <TxQueue currentAccount={currentAccount} />
+        <TxQueue currentAccount={sender} />
       ) : (
-        <SendBalance currentAccount={currentAccount} recipientAddress={firstDifferentAddress} />
+        <SendBalance currentAccount={sender} recipientAddress={firstDifferentAddress} />
       )}
     </WrapperDiv>
   );

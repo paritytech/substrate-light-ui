@@ -17,12 +17,16 @@ import {
   WrapperDiv,
 } from '@substrate/ui-components';
 import React, { useContext, useState } from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 
 import { TagOptions, Tags } from './types';
 
+type Props = RouteComponentProps;
+
 type Step = 'upload' | 'password';
 
-export function ImportWithJson(): React.ReactElement {
+export function ImportWithJson(props: Props): React.ReactElement {
+  const { history } = props;
   const { enqueue } = useContext(AlertsContext);
   const { keyring } = useContext(KeyringContext);
 
@@ -92,6 +96,8 @@ export function ImportWithJson(): React.ReactElement {
       }
 
       keyring.restoreAccount(json, inputPassword);
+
+      history.push('/');
     } catch (e) {
       enqueue({
         content: e.message,
