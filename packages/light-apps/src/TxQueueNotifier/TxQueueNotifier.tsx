@@ -8,11 +8,7 @@ import React, { useContext, useEffect } from 'react';
 
 export function TxQueueNotifier(): React.ReactElement | null {
   const { enqueue } = useContext(AlertsContext);
-  const {
-    system: {
-      properties: { tokenSymbol },
-    },
-  } = useContext(ApiContext);
+  const { system } = useContext(ApiContext);
   const { cancelObservable, errorObservable, successObservable } = useContext(TxQueueContext);
 
   // Display notification on success
@@ -29,7 +25,7 @@ export function TxQueueNotifier(): React.ReactElement | null {
               methodCall={methodCall}
               recipientAddress={recipientAddress}
               senderAddress={senderPair.address}
-              tokenSymbol={tokenSymbol.toString()}
+              tokenSymbol={system?.properties?.tokenSymbol.toString()}
             />
           </StackedHorizontal>
         </Alert>
@@ -42,7 +38,7 @@ export function TxQueueNotifier(): React.ReactElement | null {
     });
 
     return (): void => subscription.unsubscribe();
-  }, [enqueue, successObservable, tokenSymbol]);
+  }, [enqueue, successObservable, system]);
 
   // Display notification on error
   useEffect(() => {
