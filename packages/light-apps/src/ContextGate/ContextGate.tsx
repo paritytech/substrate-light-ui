@@ -70,7 +70,7 @@ function getProvider(env: Env): ProviderInterface {
         ? // If we detect the extension, use PostMessageProvider
           new PostMessageProvider('window')
         : // We fallback to the remote node provided by W3F
-          new WsProvider('ws://127.0.0.1:9944');
+          new WsProvider('wss://kusama-rpc.polkadot.io');
   }
 }
 

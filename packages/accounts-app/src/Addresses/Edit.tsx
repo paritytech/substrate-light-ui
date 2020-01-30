@@ -8,17 +8,15 @@ import { Link } from 'react-router-dom';
 
 import { SaveAddress } from './SaveAddress';
 
-interface MatchParams {
-  currentAccount: string;
-}
-
 export function Edit(): React.ReactElement {
   return (
-    <Stacked>
-      <SubHeader>Edit Address</SubHeader>
-      <Margin top />
-      <Link to='addresses'>Add a New Address</Link>
-      <SaveAddress addressDisabled />
-    </Stacked>
+    <>
+      <Link to='/addresses'>&larr; Back</Link>
+      <Stacked>
+        <SubHeader>Edit Address</SubHeader>
+        <Margin top />
+        <SaveAddress addressDisabled />
+      </Stacked>
+    </>
   );
 }

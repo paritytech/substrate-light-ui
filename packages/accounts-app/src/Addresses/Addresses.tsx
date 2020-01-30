@@ -12,8 +12,8 @@ import { Overview } from './Overview';
 export function Addresses(): React.ReactElement {
   return (
     <Switch>
-      <Route path='/addresses/edit' component={Edit} />
       <Route path='/addresses/add' component={Add} />
+      <Route path='/addresses/:address' component={Edit} />
       <Route path='/addresses' component={Overview} />
     </Switch>
   );

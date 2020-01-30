@@ -6,6 +6,7 @@ import { isFunction } from '@polkadot/util';
 import { KeyringContext } from '@substrate/context';
 import { ErrorText, Form, Input, Margin, NavButton, Stacked, SuccessText, WrapperDiv } from '@substrate/ui-components';
 import React, { useContext, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 interface Props {
   addressDisabled?: boolean;
@@ -22,6 +23,7 @@ function renderSuccess(success?: string): React.ReactElement {
 
 export function SaveAddress(props: Props): React.ReactElement {
   const { addressDisabled, onSave } = props;
+  const history = useHistory();
 
   const { keyring } = useContext(KeyringContext);
 
@@ -65,6 +67,8 @@ export function SaveAddress(props: Props): React.ReactElement {
       if (onSave && isFunction(onSave)) {
         onSave();
       }
+
+      history.push('/addresses');
     } catch (e) {
       onError(e.message);
     }

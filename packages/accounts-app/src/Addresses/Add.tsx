@@ -4,15 +4,19 @@
 
 import { Margin, Stacked, SubHeader } from '@substrate/ui-components';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { SaveAddress } from './SaveAddress';
 
 export function Add(): React.ReactElement {
   return (
-    <Stacked>
-      <SubHeader>Enter an address and save it with a name for later use.</SubHeader>
-      <Margin top />
-      <SaveAddress />
-    </Stacked>
+    <>
+      <Link to='/addresses'>&larr; Back</Link>
+      <Stacked>
+        <SubHeader>Enter an address and save it with a name for later use.</SubHeader>
+        <Margin top />
+        <SaveAddress />
+      </Stacked>
+    </>
   );
 }

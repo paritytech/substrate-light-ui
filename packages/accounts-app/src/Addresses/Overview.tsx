@@ -10,6 +10,7 @@ import {
   Margin,
   Stacked,
   StackedHorizontal,
+  StyledLinkButton,
   SubHeader,
   WithSpace,
   WrapperDiv,
@@ -50,6 +51,9 @@ export function Overview(): React.ReactElement {
       <Stacked>
         <SubHeader>Select an address to edit its metadata.</SubHeader>
         <WithSpace>{renderAllAddressesFromKeyring(Object.values(addresses))}</WithSpace>
+        <Link to='/addresses/add'>
+          <StyledLinkButton>Add Address</StyledLinkButton>
+        </Link>
       </Stacked>
     </WrapperDiv>
   );
