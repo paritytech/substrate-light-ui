@@ -2721,9 +2721,9 @@
     fp-ts "1.18.1"
 
 "@substrate/ui-components@^0.3.15":
-  version "0.3.15"
-  resolved "https://registry.yarnpkg.com/@substrate/ui-components/-/ui-components-0.3.15.tgz#222311aac76cfd8fba681b4af6ba8b346f33d5ac"
-  integrity sha512-wdzHRTadgwSMnKYrl2L2Ey9wrPMRQj39mZpX42ahIoAgSb5M5UOc9uZoaVvmpuYbArAEisfnp5ZTYuK9F/4gig==
+  version "0.3.16"
+  resolved "https://registry.yarnpkg.com/@substrate/ui-components/-/ui-components-0.3.16.tgz#47123359da91a1ddc41216d897700953b70c2e23"
+  integrity sha512-QlsId6ykpETetGWHlF2Eg2u6QboCUi/9OC+hsnQUFMHTyYocBUDLFJThTMtCR7IskuqeGsIAQE8AW4U17Dd4Zw==
   dependencies:
     "@polkadot/react-identicon" "^0.47.1"
     "@types/recharts" "^1.1.16"
@@ -15308,7 +15308,7 @@ react-transition-group@^2.5.0:
     prop-types "^15.6.2"
     react-lifecycles-compat "^3.0.4"
 
-react@^16.12.0:
+react@16.12, react@^16.12.0:
   version "16.12.0"
   resolved "https://registry.yarnpkg.com/react/-/react-16.12.0.tgz#0c0a9c6a142429e3614834d5a778e18aa78a0b83"
   integrity sha512-fglqy3k5E+81pA8s+7K0/T3DBCF0ZDOher1elBFzF7O6arXJgzyu/FW+COxFvAWXJoJN9KIZbT2LXlukwphYTA==
@@ -17824,7 +17824,7 @@ typedoc@^0.15.6:
     typedoc-default-themes "^0.6.3"
     typescript "3.7.x"
 
-typescript@3.7.x, typescript@^3.0.3, typescript@^3.6.4, typescript@^3.7.4, typescript@^3.7.5:
+typescript@3.7.x, typescript@^3.0.3, typescript@^3.6.4, typescript@^3.7.2, typescript@^3.7.4, typescript@^3.7.5:
   version "3.7.5"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.7.5.tgz#0692e21f65fd4108b9330238aac11dd2e177a1ae"
   integrity sha512-/P5lkRXkWHNAbcJIiHPfRoKqyd7bsyCma1hZNUGfn20qm64T6ZBlrzprymeu918H+mB/0rIg2gGK/BXkhhYgBw==
