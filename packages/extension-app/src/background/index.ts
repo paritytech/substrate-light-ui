@@ -46,7 +46,7 @@ const start = async (): Promise<void> => {
   /* Build our client. */
   l.log('Starting client');
 
-  client = await start_client(ws());
+  client = await start_client('westend', ws());
   l.log('Client started...', client);
 };
 
