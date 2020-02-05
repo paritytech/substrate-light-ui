@@ -5,7 +5,7 @@
 import { Compact } from '@polkadot/types';
 import { BlockNumber, Header } from '@polkadot/types/interfaces';
 import substrateLogo from '@polkadot/ui-assets/polkadot-circle.svg';
-import { ApiContext, HealthContext } from '@substrate/context';
+import { ApiContext, HealthContext, SystemContext } from '@substrate/context';
 import { Circle, FadedText, Loading, Margin, Stacked, StackedHorizontal, SubHeader } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -33,8 +33,9 @@ export function renderNodeStatus(isSyncing: boolean): React.ReactElement {
 }
 
 export function TopBar(): React.ReactElement {
-  const { api, system } = useContext(ApiContext);
+  const { api } = useContext(ApiContext);
   const { isSyncing } = useContext(HealthContext);
+  const { chain, name, version } = useContext(SystemContext);
   const [header, setHeader] = useState<Header>();
 
   useEffect(() => {
@@ -49,14 +50,12 @@ export function TopBar(): React.ReactElement {
         <Link to='/'>
           <img alt='Polkadot Logo' src={substrateLogo} width={50} />
         </Link>
-        {system && (
-          <FadedText>
-            {system.name} {system.version}
-          </FadedText>
-        )}
+        <FadedText>
+          {name} {version}
+        </FadedText>
         <Stacked>
           {renderNodeStatus(isSyncing)}
-          {renderBlockCounter(header?.number, system?.chain)}
+          {renderBlockCounter(header?.number, chain.toString())}
         </Stacked>
       </StackedHorizontal>
       <Margin bottom />

@@ -177,8 +177,12 @@ export class PostMessageProvider implements ProviderInterface {
    * @param type Event
    * @param sub  Callback
    */
-  public on(type: ProviderInterfaceEmitted, sub: ProviderInterfaceEmitCb): void {
+  public on(type: ProviderInterfaceEmitted, sub: ProviderInterfaceEmitCb): () => void {
     this.eventemitter.on(type, sub);
+
+    return (): void => {
+      this.eventemitter.removeListener(type, sub);
+    };
   }
 
   private emit(type: ProviderInterfaceEmitted, ...args: AnyJson[]): void {

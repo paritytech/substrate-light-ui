@@ -35,9 +35,9 @@ function randomlyPickFour(phrase: string): Array<Array<string>> {
 }
 
 export function Create(props: Props): React.ReactElement {
-  const { location } = props;
+  const { location, history } = props;
 
-  const { keyring, keyringReady } = useContext(KeyringContext);
+  const { keyring, isKeyringReady } = useContext(KeyringContext);
 
   const [address, setAddress] = useState();
   const [errors, setErrors] = useState<Option<Array<string>>>(none);
@@ -61,11 +61,11 @@ export function Create(props: Props): React.ReactElement {
   const [whichAccount, setWhichAccount] = useState();
 
   useEffect(() => {
-    if (keyringReady) {
+    if (isKeyringReady) {
       const _address = generateAddressFromMnemonic(keyring, mnemonic);
       setAddress(_address);
     }
-  }, [keyring, keyringReady, mnemonic]);
+  }, [isKeyringReady, keyring, mnemonic]);
 
   useEffect(() => {
     // pick random four from the mnemonic to make sure user copied it right
@@ -115,6 +115,8 @@ export function Create(props: Props): React.ReactElement {
         const blob = new Blob([JSON.stringify(json)], { type: 'application/json; charset=utf-8' });
 
         FileSaver.saveAs(blob, `${values.name}-${result.pair.address}.json`);
+
+        history.push('/');
       }
     );
   };
@@ -160,7 +162,7 @@ export function Create(props: Props): React.ReactElement {
 
   return (
     <Stacked>
-      {keyringReady && <AddressSummary address={address} name={name} size='small' orientation='vertical' />}
+      {isKeyringReady && <AddressSummary address={address} name={name} size='small' orientation='vertical' />}
       <Margin top />
       {step === 'copy'
         ? renderCopyStep({ mnemonic }, { goToNextStep })

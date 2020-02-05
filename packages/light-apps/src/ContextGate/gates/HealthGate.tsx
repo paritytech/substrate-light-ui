@@ -21,7 +21,7 @@ export interface Status {
   message?: string;
 }
 
-const l = logger('health');
+const l = logger('health-gate');
 
 /**
  * Transform the health information into a color-coded overlay
@@ -69,7 +69,7 @@ export function HealthGate({ children }: { children?: React.ReactElement }): Rea
     case STATUS_ERROR:
     case STATUS_WARN:
       return <Loading active>{status.message}</Loading>;
-    default:
-      return children || null;
   }
+
+  return children || null;
 }
