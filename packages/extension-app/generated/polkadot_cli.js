@@ -179,6 +179,17 @@ function debugString(val) {
     // TODO we could test for more things here, like `Set`s and `Map`s.
     return className;
 }
+function __wbg_adapter_26(arg0, arg1) {
+    wasm._dyn_core__ops__function__FnMut_____Output___R_as_wasm_bindgen__closure__WasmClosure___describe__invoke__hd6adc17da9535d7a(arg0, arg1);
+}
+
+function __wbg_adapter_29(arg0, arg1, arg2) {
+    wasm._dyn_core__ops__function__FnMut__A____Output___R_as_wasm_bindgen__closure__WasmClosure___describe__invoke__hfff4a1cdfa58a0f1(arg0, arg1, addHeapObject(arg2));
+}
+
+function __wbg_adapter_32(arg0, arg1) {
+    wasm._dyn_core__ops__function__FnMut_____Output___R_as_wasm_bindgen__closure__WasmClosure___describe__invoke__h0e3fbe8b1cb1dd53(arg0, arg1);
+}
 
 let stack_pointer = 32;
 
@@ -187,39 +198,30 @@ function addBorrowedObject(obj) {
     heap[--stack_pointer] = obj;
     return stack_pointer;
 }
-function __wbg_adapter_26(arg0, arg1, arg2) {
+function __wbg_adapter_35(arg0, arg1, arg2) {
     try {
-        wasm._dyn_core__ops__function__FnMut___A____Output___R_as_wasm_bindgen__closure__WasmClosure___describe__invoke__hb48075bcf3474328(arg0, arg1, addBorrowedObject(arg2));
+        wasm._dyn_core__ops__function__FnMut___A____Output___R_as_wasm_bindgen__closure__WasmClosure___describe__invoke__h7d37935d075da9f0(arg0, arg1, addBorrowedObject(arg2));
     } finally {
         heap[stack_pointer++] = undefined;
     }
 }
 
-function __wbg_adapter_29(arg0, arg1) {
-    wasm._dyn_core__ops__function__FnMut_____Output___R_as_wasm_bindgen__closure__WasmClosure___describe__invoke__he8dd691d17a63682(arg0, arg1);
-}
-
-function __wbg_adapter_32(arg0, arg1) {
-    wasm._dyn_core__ops__function__FnMut_____Output___R_as_wasm_bindgen__closure__WasmClosure___describe__invoke__h151067034a0b989e(arg0, arg1);
-}
-
-function __wbg_adapter_35(arg0, arg1) {
-    wasm._dyn_core__ops__function__FnMut_____Output___R_as_wasm_bindgen__closure__WasmClosure___describe__invoke__hd58c9ec31dab02b5(arg0, arg1);
-}
-
-function __wbg_adapter_38(arg0, arg1, arg2) {
-    wasm._dyn_core__ops__function__FnMut__A____Output___R_as_wasm_bindgen__closure__WasmClosure___describe__invoke__hfff4a1cdfa58a0f1(arg0, arg1, addHeapObject(arg2));
+function __wbg_adapter_38(arg0, arg1) {
+    wasm._dyn_core__ops__function__FnMut_____Output___R_as_wasm_bindgen__closure__WasmClosure___describe__invoke__ha293d338a9526fd0(arg0, arg1);
 }
 
 /**
 * Starts the client.
 *
 * You must pass a libp2p transport that supports .
+* @param {string} chain_spec
 * @param {any} wasm_ext
 * @returns {any}
 */
-export function start_client(wasm_ext) {
-    var ret = wasm.start_client(addHeapObject(wasm_ext));
+export function start_client(chain_spec, wasm_ext) {
+    var ptr0 = passStringToWasm0(chain_spec, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+    var len0 = WASM_VECTOR_LEN;
+    var ret = wasm.start_client(ptr0, len0, addHeapObject(wasm_ext));
     return takeObject(ret);
 }
 
@@ -345,7 +347,7 @@ function init(module) {
         var ret = getObject(arg0);
         return addHeapObject(ret);
     };
-    imports.wbg.__wbg_listenon_1b7fcd27a0e79a0f = function(arg0, arg1, arg2) {
+    imports.wbg.__wbg_listenon_520cfa5498a60f30 = function(arg0, arg1, arg2) {
         try {
             var ret = getObject(arg0).listen_on(getStringFromWasm0(arg1, arg2));
             return addHeapObject(ret);
@@ -353,7 +355,7 @@ function init(module) {
             handleError(e)
         }
     };
-    imports.wbg.__wbg_dial_56ba96e7474d3644 = function(arg0, arg1, arg2) {
+    imports.wbg.__wbg_dial_b9459578aa5bfaf8 = function(arg0, arg1, arg2) {
         try {
             var ret = getObject(arg0).dial(getStringFromWasm0(arg1, arg2));
             return addHeapObject(ret);
@@ -361,46 +363,46 @@ function init(module) {
             handleError(e)
         }
     };
-    imports.wbg.__wbg_read_56f5899d44e112b9 = function(arg0) {
+    imports.wbg.__wbg_read_b6ce34a8247f4db1 = function(arg0) {
         var ret = getObject(arg0).read;
         return addHeapObject(ret);
     };
-    imports.wbg.__wbg_close_125cd1a9aee84fe5 = function(arg0) {
+    imports.wbg.__wbg_close_ec36d6eaae5e956f = function(arg0) {
         getObject(arg0).close();
     };
-    imports.wbg.__wbg_newaddrs_fdb008ad7d21e8d1 = function(arg0, arg1) {
+    imports.wbg.__wbg_newaddrs_54e9b598f47d7b07 = function(arg0, arg1) {
         var ret = getObject(arg1).new_addrs;
         var ptr0 = isLikeNone(ret) ? 0 : passArrayJsValueToWasm0(ret, wasm.__wbindgen_malloc);
         var len0 = WASM_VECTOR_LEN;
         getInt32Memory0()[arg0 / 4 + 1] = len0;
         getInt32Memory0()[arg0 / 4 + 0] = ptr0;
     };
-    imports.wbg.__wbg_newconnections_b5c5108b0d761637 = function(arg0, arg1) {
+    imports.wbg.__wbg_newconnections_ffbebdc2a99c2d8a = function(arg0, arg1) {
         var ret = getObject(arg1).new_connections;
         var ptr0 = isLikeNone(ret) ? 0 : passArrayJsValueToWasm0(ret, wasm.__wbindgen_malloc);
         var len0 = WASM_VECTOR_LEN;
         getInt32Memory0()[arg0 / 4 + 1] = len0;
         getInt32Memory0()[arg0 / 4 + 0] = ptr0;
     };
-    imports.wbg.__wbg_localaddr_01c78ede1cde5c0c = function(arg0, arg1) {
+    imports.wbg.__wbg_localaddr_a153013f8f6cd99a = function(arg0, arg1) {
         var ret = getObject(arg1).local_addr;
         var ptr0 = passStringToWasm0(ret, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
         getInt32Memory0()[arg0 / 4 + 1] = len0;
         getInt32Memory0()[arg0 / 4 + 0] = ptr0;
     };
-    imports.wbg.__wbg_observedaddr_aee4d2546025fb87 = function(arg0, arg1) {
+    imports.wbg.__wbg_observedaddr_28423d8063e649b7 = function(arg0, arg1) {
         var ret = getObject(arg1).observed_addr;
         var ptr0 = passStringToWasm0(ret, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
         getInt32Memory0()[arg0 / 4 + 1] = len0;
         getInt32Memory0()[arg0 / 4 + 0] = ptr0;
     };
-    imports.wbg.__wbg_connection_ec0675a8a42c0b16 = function(arg0) {
+    imports.wbg.__wbg_connection_bdb964fb567fe038 = function(arg0) {
         var ret = getObject(arg0).connection;
         return addHeapObject(ret);
     };
-    imports.wbg.__wbg_expiredaddrs_86d25aaefc2b6bce = function(arg0, arg1) {
+    imports.wbg.__wbg_expiredaddrs_23b577aa94c95747 = function(arg0, arg1) {
         var ret = getObject(arg1).expired_addrs;
         var ptr0 = isLikeNone(ret) ? 0 : passArrayJsValueToWasm0(ret, wasm.__wbindgen_malloc);
         var len0 = WASM_VECTOR_LEN;
@@ -411,7 +413,7 @@ function init(module) {
         var ret = getObject(arg0) === null;
         return ret;
     };
-    imports.wbg.__wbg_write_70547e7eff87d019 = function(arg0, arg1, arg2) {
+    imports.wbg.__wbg_write_f465b09dcd05698b = function(arg0, arg1, arg2) {
         try {
             var ret = getObject(arg0).write(getArrayU8FromWasm0(arg1, arg2));
             return addHeapObject(ret);
@@ -419,7 +421,7 @@ function init(module) {
             handleError(e)
         }
     };
-    imports.wbg.__wbg_shutdown_0cd23c714eb4fcec = function(arg0) {
+    imports.wbg.__wbg_shutdown_f8d9ee54e293ffc4 = function(arg0) {
         try {
             getObject(arg0).shutdown();
         } catch (e) {
@@ -937,7 +939,64 @@ function init(module) {
         var ret = wasm.memory;
         return addHeapObject(ret);
     };
-    imports.wbg.__wbindgen_closure_wrapper506 = function(arg0, arg1, arg2) {
+    imports.wbg.__wbindgen_closure_wrapper11319 = function(arg0, arg1, arg2) {
+
+        const state = { a: arg0, b: arg1, cnt: 1 };
+        const real = () => {
+            state.cnt++;
+            const a = state.a;
+            state.a = 0;
+            try {
+                return __wbg_adapter_26(a, state.b, );
+            } finally {
+                if (--state.cnt === 0) wasm.__wbindgen_export_2.get(4183)(a, state.b);
+                else state.a = a;
+            }
+        }
+        ;
+        real.original = state;
+        var ret = real;
+        return addHeapObject(ret);
+    };
+    imports.wbg.__wbindgen_closure_wrapper511 = function(arg0, arg1, arg2) {
+
+        const state = { a: arg0, b: arg1, cnt: 1 };
+        const real = () => {
+            state.cnt++;
+            const a = state.a;
+            state.a = 0;
+            try {
+                return __wbg_adapter_38(a, state.b, );
+            } finally {
+                if (--state.cnt === 0) wasm.__wbindgen_export_2.get(155)(a, state.b);
+                else state.a = a;
+            }
+        }
+        ;
+        real.original = state;
+        var ret = real;
+        return addHeapObject(ret);
+    };
+    imports.wbg.__wbindgen_closure_wrapper10338 = function(arg0, arg1, arg2) {
+
+        const state = { a: arg0, b: arg1, cnt: 1 };
+        const real = (arg0) => {
+            state.cnt++;
+            const a = state.a;
+            state.a = 0;
+            try {
+                return __wbg_adapter_29(a, state.b, arg0);
+            } finally {
+                if (--state.cnt === 0) wasm.__wbindgen_export_2.get(3807)(a, state.b);
+                else state.a = a;
+            }
+        }
+        ;
+        real.original = state;
+        var ret = real;
+        return addHeapObject(ret);
+    };
+    imports.wbg.__wbindgen_closure_wrapper11616 = function(arg0, arg1, arg2) {
 
         const state = { a: arg0, b: arg1, cnt: 1 };
         const real = () => {
@@ -947,7 +1006,7 @@ function init(module) {
             try {
                 return __wbg_adapter_32(a, state.b, );
             } finally {
-                if (--state.cnt === 0) wasm.__wbindgen_export_2.get(157)(a, state.b);
+                if (--state.cnt === 0) wasm.__wbindgen_export_2.get(4240)(a, state.b);
                 else state.a = a;
             }
         }
@@ -956,45 +1015,7 @@ function init(module) {
         var ret = real;
         return addHeapObject(ret);
     };
-    imports.wbg.__wbindgen_closure_wrapper13163 = function(arg0, arg1, arg2) {
-
-        const state = { a: arg0, b: arg1, cnt: 1 };
-        const real = () => {
-            state.cnt++;
-            const a = state.a;
-            state.a = 0;
-            try {
-                return __wbg_adapter_29(a, state.b, );
-            } finally {
-                if (--state.cnt === 0) wasm.__wbindgen_export_2.get(5909)(a, state.b);
-                else state.a = a;
-            }
-        }
-        ;
-        real.original = state;
-        var ret = real;
-        return addHeapObject(ret);
-    };
-    imports.wbg.__wbindgen_closure_wrapper13440 = function(arg0, arg1, arg2) {
-
-        const state = { a: arg0, b: arg1, cnt: 1 };
-        const real = () => {
-            state.cnt++;
-            const a = state.a;
-            state.a = 0;
-            try {
-                return __wbg_adapter_35(a, state.b, );
-            } finally {
-                if (--state.cnt === 0) wasm.__wbindgen_export_2.get(5965)(a, state.b);
-                else state.a = a;
-            }
-        }
-        ;
-        real.original = state;
-        var ret = real;
-        return addHeapObject(ret);
-    };
-    imports.wbg.__wbindgen_closure_wrapper10098 = function(arg0, arg1, arg2) {
+    imports.wbg.__wbindgen_closure_wrapper512 = function(arg0, arg1, arg2) {
 
         const state = { a: arg0, b: arg1, cnt: 1 };
         const real = (arg0) => {
@@ -1002,28 +1023,9 @@ function init(module) {
             const a = state.a;
             state.a = 0;
             try {
-                return __wbg_adapter_38(a, state.b, arg0);
+                return __wbg_adapter_35(a, state.b, arg0);
             } finally {
-                if (--state.cnt === 0) wasm.__wbindgen_export_2.get(3839)(a, state.b);
-                else state.a = a;
-            }
-        }
-        ;
-        real.original = state;
-        var ret = real;
-        return addHeapObject(ret);
-    };
-    imports.wbg.__wbindgen_closure_wrapper505 = function(arg0, arg1, arg2) {
-
-        const state = { a: arg0, b: arg1, cnt: 1 };
-        const real = (arg0) => {
-            state.cnt++;
-            const a = state.a;
-            state.a = 0;
-            try {
-                return __wbg_adapter_26(a, state.b, arg0);
-            } finally {
-                if (--state.cnt === 0) wasm.__wbindgen_export_2.get(157)(a, state.b);
+                if (--state.cnt === 0) wasm.__wbindgen_export_2.get(155)(a, state.b);
                 else state.a = a;
             }
         }
