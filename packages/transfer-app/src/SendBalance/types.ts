@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { DerivedBalances, DerivedFees } from '@polkadot/api-derive/types';
+import { DerivedBalancesAll, DerivedFees } from '@polkadot/api-derive/types';
 import { SubmittableExtrinsic } from '@polkadot/api/submittable/types';
 import { Balance, Index } from '@polkadot/types/interfaces';
 import BN from 'bn.js';
@@ -21,9 +21,9 @@ export interface UserInputs {
  */
 export interface SubResults {
   accountNonce: Index;
-  currentBalance: DerivedBalances;
+  currentBalance: DerivedBalancesAll;
   fees: DerivedFees;
-  recipientBalance?: DerivedBalances;
+  recipientBalance?: DerivedBalancesAll;
 }
 
 /**
