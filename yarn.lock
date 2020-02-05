@@ -2725,18 +2725,18 @@
     prop-types "^15.7.2"
     react-is "^16.6.3"
 
-"@substrate/context@^0.3.17":
-  version "0.3.17"
-  resolved "https://registry.yarnpkg.com/@substrate/context/-/context-0.3.17.tgz#4c236525d5da0057f35cc6f64795051240d6c259"
-  integrity sha512-ZZ26VEVQRA4FugXHAWAMos1nUT1DwCazWI6Z03GN+3d3+bo8x3K41ZhaihjFu522cX68N2yVDUGxjFGAolfnmQ==
+"@substrate/context@^0.3.18":
+  version "0.3.18"
+  resolved "https://registry.yarnpkg.com/@substrate/context/-/context-0.3.18.tgz#abe79022e1c72ade956932c3a6b704ea94fa4647"
+  integrity sha512-oAX6h5ed4OVlkVMlcVVP29No+aodcThgJtq8o+xcKlYteq0lCamNACtTDyttUHuMskOjGUY8LxxnsauI6xNL8Q==
   dependencies:
     "@polkadot/ui-keyring" "^0.49.0-beta.1"
     fp-ts "1.18.1"
 
-"@substrate/ui-components@^0.3.17":
-  version "0.3.17"
-  resolved "https://registry.yarnpkg.com/@substrate/ui-components/-/ui-components-0.3.17.tgz#e445627c29a124a4d35788fed25121db1155f6ef"
-  integrity sha512-8LFQbYKNVX3FDVdQYOaV4SOycjznOcvf36qLIQEgzu7s4ndn7tQN+wpjB/bAYflGDD2DZRMDb4nM5HBJSR7a/Q==
+"@substrate/ui-components@^0.3.18":
+  version "0.3.18"
+  resolved "https://registry.yarnpkg.com/@substrate/ui-components/-/ui-components-0.3.18.tgz#9499d0754f664c2290ef3c9c6e96f2780956c226"
+  integrity sha512-USNfbHYYIn432QOkstigXaKsWZjNWaUn8hxFxIrYifwbrFIvK9jWNK5Yc04LCe3U3SohDVuImwgtRUzI4L8+XA==
   dependencies:
     "@polkadot/react-identicon" "^0.47.1"
     "@types/recharts" "^1.1.16"
