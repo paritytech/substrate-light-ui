@@ -59,6 +59,8 @@ export class PostMessageProvider implements ProviderInterface {
 
   private handlers: Record<string, Handler> = {};
 
+  private _isConnected = false;
+
   /**
    * Represents either `window.postMessage` or `port.postMessage`
    */
@@ -106,8 +108,10 @@ export class PostMessageProvider implements ProviderInterface {
     if (data.type === 'pong') {
       // If we receive a pong from the background script, it means that the
       // WASM client is ready
+      this._isConnected = true;
       this.emit('connected');
       clearInterval(this.pingInterval);
+
       return;
     }
 
@@ -162,7 +166,7 @@ export class PostMessageProvider implements ProviderInterface {
    * @return true if connected
    */
   public isConnected(): boolean {
-    return true; // underlying WsProvider connects on first RPC request
+    return this._isConnected;
   }
 
   /**
@@ -232,7 +236,7 @@ export class PostMessageProvider implements ProviderInterface {
 
   public async send(method: string, params: AnyJson[], subscription?: SubscriptionHandler): Promise<AnyJson> {
     if (subscription) {
-      const subscriptionId = (await this.sendRequest(method, params)) as number;
+      const subscriptionId = (await this.sendRequest(method, params, subscription)) as number;
       this.subscriptions[`${subscription.type}::${subscriptionId}`] = subscription;
 
       return subscriptionId;
