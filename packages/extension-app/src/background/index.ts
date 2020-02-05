@@ -59,7 +59,7 @@ function rpcProxySend(jsonRpc: JsonRpcRequest, port: browser.runtime.Port): void
         type: 'rpc.send',
       });
     } catch (error) {
-      l.error(`rpcProxySend: cannot parse ${res}`);
+      l.error(`rpcProxySend: Error with ${res} - ${error.message}`);
     }
   });
 }
@@ -73,7 +73,7 @@ function rpcProxySubscribe(jsonRpc: JsonRpcRequest, port: browser.runtime.Port):
         type: 'rpc.sendSubscribe',
       });
     } catch (error) {
-      l.error(`rpcProxySubscribe: cannot parse ${res}`);
+      l.error(`rpcProxySubscribe: Error with ${res} - ${error.message}`);
     }
   });
 }
@@ -111,10 +111,24 @@ start()
   .then(() => {
     extensionizer.runtime.onConnect.addListener((port: browser.runtime.Port): void => {
       // Listen to all messages on the extension port and handle appropriately
-      port.onMessage.addListener((response): void => {
+      function messageListener(response: object): void {
         handler(response as PayloadRequest, port);
-      });
-      port.onDisconnect.addListener((): void => l.log(`Disconnected from ${JSON.stringify(port)}`));
+      }
+      port.onMessage.addListener(messageListener);
+
+      // Gracefully handle port disconnects
+      function disconnectListener(): void {
+        if (port.onMessage.hasListener(messageListener)) {
+          port.onMessage.removeListener(messageListener);
+
+          l.log(`Disconnected from ${JSON.stringify(port)}`);
+        }
+
+        if (port.onDisconnect.hasListener(disconnectListener)) {
+          port.onDisconnect.removeListener(disconnectListener);
+        }
+      }
+      port.onDisconnect.addListener(disconnectListener);
     });
   })
   .catch(error => l.error(error));
