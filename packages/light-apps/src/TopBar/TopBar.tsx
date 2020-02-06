@@ -3,11 +3,11 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { Compact } from '@polkadot/types';
-import { BlockNumber, Header } from '@polkadot/types/interfaces';
+import { BlockNumber } from '@polkadot/types/interfaces';
 import substrateLogo from '@polkadot/ui-assets/polkadot-circle.svg';
-import { ApiContext, HealthContext, SystemContext } from '@substrate/context';
-import { Circle, FadedText, Loading, Margin, Stacked, StackedHorizontal, SubHeader } from '@substrate/ui-components';
-import React, { useContext, useEffect, useState } from 'react';
+import { HealthContext, SystemContext } from '@substrate/context';
+import { Circle, FadedText, Margin, Stacked, StackedHorizontal, SubHeader } from '@substrate/ui-components';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
 const GREEN = '#79c879';
@@ -16,8 +16,8 @@ const RED = '#ff0000';
 export function renderBlockCounter(blockNumber?: Compact<BlockNumber>, chainName?: string): React.ReactElement {
   return (
     <>
-      <SubHeader noMargin>{chainName ? chainName.toString() : <Loading active />}</SubHeader>
-      <div>Block #: {blockNumber ? blockNumber.toString() : <Loading active />}</div>
+      <SubHeader noMargin>{chainName ? chainName.toString() : 'Loading...'}</SubHeader>
+      <div>Block #: {blockNumber ? blockNumber.toString() : 'Loading...'}</div>
     </>
   );
 }
@@ -33,16 +33,8 @@ export function renderNodeStatus(isSyncing: boolean): React.ReactElement {
 }
 
 export function TopBar(): React.ReactElement {
-  const { api } = useContext(ApiContext);
   const { isSyncing } = useContext(HealthContext);
-  const { chain, name, version } = useContext(SystemContext);
-  const [header, setHeader] = useState<Header>();
-
-  useEffect(() => {
-    const sub = api.rpc.chain.subscribeNewHeads().subscribe(setHeader);
-
-    return (): void => sub.unsubscribe();
-  }, [api]);
+  const { chain, header, name, version } = useContext(SystemContext);
 
   return (
     <header>
@@ -55,7 +47,7 @@ export function TopBar(): React.ReactElement {
         </FadedText>
         <Stacked>
           {renderNodeStatus(isSyncing)}
-          {renderBlockCounter(header?.number, chain.toString())}
+          {renderBlockCounter(header.number, chain.toString())}
         </Stacked>
       </StackedHorizontal>
       <Margin bottom />
