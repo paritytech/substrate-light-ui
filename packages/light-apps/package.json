@@ -24,7 +24,7 @@
     "@substrate/accounts-app": "^0.2.0",
     "@substrate/context": "^0.3.18",
     "@substrate/transfer-app": "^0.2.0",
-    "@substrate/ui-components": "^0.3.18",
+    "@substrate/ui-components": "^0.3.19",
     "@types/chrome": "^0.0.93",
     "@types/file-saver": "^2.0.0",
     "@types/filesystem": "^0.0.29",
