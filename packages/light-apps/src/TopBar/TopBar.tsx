@@ -2,10 +2,10 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Compact } from '@polkadot/types';
+import { Compact, Text } from '@polkadot/types';
 import { BlockNumber } from '@polkadot/types/interfaces';
 import substrateLogo from '@polkadot/ui-assets/polkadot-circle.svg';
-import { HealthContext, SystemContext } from '@substrate/context';
+import { SystemContext } from '@substrate/context';
 import { Circle, FadedText, Margin, Stacked, StackedHorizontal, SubHeader } from '@substrate/ui-components';
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
@@ -13,11 +13,11 @@ import { Link } from 'react-router-dom';
 const GREEN = '#79c879';
 const RED = '#ff0000';
 
-export function renderBlockCounter(blockNumber?: Compact<BlockNumber>, chainName?: string): React.ReactElement {
+export function renderBlockCounter(blockNumber: Compact<BlockNumber>, chain: Text): React.ReactElement {
   return (
     <>
-      <SubHeader noMargin>{chainName ? chainName.toString() : 'Loading...'}</SubHeader>
-      <div>Block #: {blockNumber ? blockNumber.toString() : 'Loading...'}</div>
+      <SubHeader noMargin>{chain.toString()}</SubHeader>
+      <div>Block #{blockNumber.toString()}</div>
     </>
   );
 }
@@ -33,8 +33,7 @@ export function renderNodeStatus(isSyncing: boolean): React.ReactElement {
 }
 
 export function TopBar(): React.ReactElement {
-  const { isSyncing } = useContext(HealthContext);
-  const { chain, header, name, version } = useContext(SystemContext);
+  const { chain, header, health, name, version } = useContext(SystemContext);
 
   return (
     <header>
@@ -46,8 +45,8 @@ export function TopBar(): React.ReactElement {
           {name} {version}
         </FadedText>
         <Stacked>
-          {renderNodeStatus(isSyncing)}
-          {renderBlockCounter(header.number, chain.toString())}
+          {renderNodeStatus(health.isSyncing.toJSON())}
+          {renderBlockCounter(header.number, chain)}
         </Stacked>
       </StackedHorizontal>
       <Margin bottom />
