@@ -39,7 +39,7 @@
   "devDependencies": {
     "@polkadot/dev": "^0.32.13",
     "@polkadot/dev-react": "^0.32.14",
-    "@polkadot/extension-dapp": "^0.14.1",
+    "@polkadot/extension-dapp": "^0.21.1",
     "concurrently": "^5.0.2",
     "eslint-config-prettier": "^6.7.0",
     "eslint-plugin-prettier": "^3.1.1",
