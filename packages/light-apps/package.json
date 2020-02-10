@@ -20,7 +20,7 @@
   "homepage": "./",
   "dependencies": {
     "@polkadot/api": "^1.1.0-beta.17",
-    "@polkadot/ui-assets": "^0.48.1",
+    "@polkadot/ui-assets": "^0.49.1",
     "@substrate/accounts-app": "^0.2.0",
     "@substrate/context": "^0.3.18",
     "@substrate/transfer-app": "^0.2.0",
