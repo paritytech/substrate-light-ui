@@ -51,6 +51,7 @@
     "typescript": "^3.7.5"
   },
   "resolutions": {
+    "kind-of": ">=6.0.3",
     "react": "16.12",
     "@types/styled-components": "4.4.2",
     "typescript": "^3.7.2"
