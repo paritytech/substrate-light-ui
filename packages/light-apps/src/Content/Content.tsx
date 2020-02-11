@@ -22,7 +22,7 @@ export function Content(): React.ReactElement {
       {currentAccount && (
         <Route
           render={(): React.ReactElement => (
-            <Link to={'/transfer'}>
+            <Link to='/transfer'>
               <Fab type='send' />
             </Link>
           )}
