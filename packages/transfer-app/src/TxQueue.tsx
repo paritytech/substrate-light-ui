@@ -2,15 +2,9 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { PendingExtrinsic, TxQueueContext } from '@substrate/context';
+import { KeyringContext, PendingExtrinsic, TxQueueContext } from '@substrate/context';
 import { FlexItem, Icon, NavButton, Stacked, SubHeader, TxDetails, TxSummary } from '@substrate/ui-components';
 import React, { useContext } from 'react';
-
-import { AllExtrinsicData } from './SendBalance/types';
-
-interface Props extends Partial<AllExtrinsicData> {
-  currentAccount: string;
-}
 
 function renderDetails(currentAccount: string, txQueue: PendingExtrinsic[]): React.ReactElement {
   const {
@@ -67,12 +61,19 @@ function renderTxStatus(txQueue: PendingExtrinsic[]): React.ReactElement {
   }
 }
 
-export function TxQueue(props: Props): React.ReactElement | null {
-  const { currentAccount } = props;
+export function TxQueue(): React.ReactElement | null {
+  const { currentAccount } = useContext(KeyringContext);
   const { clear, txQueue } = useContext(TxQueueContext);
 
   // The parent component will redirect to SendBalance if empty txQueue
-  if (!txQueue.length) return null;
+  if (!txQueue.length) {
+    throw new Error('Unreachable code, the parent component will redirect to SendBalance if empty txQueue. qed.');
+  }
+
+  // The parent component will redirect to SendBalance if empty txQueue
+  if (!currentAccount) {
+    throw new Error('Unreachable code, parent will redirect away from transfer if no currentAccount. qed.');
+  }
 
   return (
     <Stacked>

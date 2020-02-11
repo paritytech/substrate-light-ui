@@ -22,7 +22,7 @@ export function Content(): React.ReactElement {
       {currentAccount && (
         <Route
           render={(): React.ReactElement => (
-            <Link to={`/transfer/${currentAccount}`}>
+            <Link to={'/transfer'}>
               <Fab type='send' />
             </Link>
           )}
@@ -32,7 +32,7 @@ export function Content(): React.ReactElement {
         <Redirect exact from='/' to='/accounts' />
         <Route path='/addresses' component={Addresses} />
         <Route path='/accounts' component={Accounts} />
-        <Route path='/transfer/:sender' component={Transfer} />
+        <Route path='/transfer' component={Transfer} />
         <Redirect to='/' />
       </Switch>
       <TxQueueNotifier />

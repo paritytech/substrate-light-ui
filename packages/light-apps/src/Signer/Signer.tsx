@@ -70,46 +70,42 @@ export function Signer(): React.ReactElement | null {
       open
       size='tiny'
     >
-      <>
-        <Modal.Header color='lightBlue1' textAlign='left'>
-          Sign transaction
-        </Modal.Header>
-        <Modal.Content>
-          <Stacked alignItems='flex-start'>
-            <p>By signing this transaction you are confirming that you wish to: </p>
-            <TxSummary
-              amount={pendingTx.details.amount}
-              methodCall={pendingTx.extrinsic.method.meta.name.toString()}
-              recipientAddress={pendingTx.details.recipientAddress}
-              senderAddress={senderPair.address}
-            />
-            {senderPair.isLocked && (
-              <>
-                <Margin top />
-                <Input fluid label='Password' onChange={handlePasswordChange} type='password' value={inputPassword} />
-                <Margin top />
-              </>
-            )}
-            {error && <ErrorText>{error}</ErrorText>}
-            <TxDetails
-              allFees={pendingTx.details.allFees}
-              allTotal={pendingTx.details.allTotal}
-              amount={pendingTx.details.amount}
-              recipientAddress={pendingTx.details.recipientAddress}
-              senderAddress={senderPair.address}
-            />
-          </Stacked>
-        </Modal.Content>
-        <Modal.Actions>
-          <StackedHorizontal justifyContent='flex-end'>
-            <StyledLinkButton onClick={clear} type='button'>
-              Cancel
-            </StyledLinkButton>
-            <Margin left='small' />
-            <NavButton disabled={senderPair.isLocked && !inputPassword}>OK</NavButton>
-          </StackedHorizontal>
-        </Modal.Actions>
-      </>
+      <Modal.Header color='lightBlue1'>Sign transaction</Modal.Header>
+      <Modal.Content>
+        <Stacked alignItems='flex-start'>
+          <p>By signing this transaction you are confirming that you wish to:</p>
+          <TxSummary
+            amount={pendingTx.details.amount}
+            methodCall={pendingTx.extrinsic.method.meta.name.toString()}
+            recipientAddress={pendingTx.details.recipientAddress}
+            senderAddress={senderPair.address}
+          />
+          {senderPair.isLocked && (
+            <>
+              <Margin top />
+              <Input fluid label='Password' onChange={handlePasswordChange} type='password' value={inputPassword} />
+              <Margin top />
+            </>
+          )}
+          {error && <ErrorText>{error}</ErrorText>}
+          <TxDetails
+            allFees={pendingTx.details.allFees}
+            allTotal={pendingTx.details.allTotal}
+            amount={pendingTx.details.amount}
+            recipientAddress={pendingTx.details.recipientAddress}
+            senderAddress={senderPair.address}
+          />
+        </Stacked>
+      </Modal.Content>
+      <Modal.Actions>
+        <StackedHorizontal justifyContent='flex-end'>
+          <StyledLinkButton onClick={clear} type='button'>
+            Cancel
+          </StyledLinkButton>
+          <Margin left='small' />
+          <NavButton disabled={senderPair.isLocked && !inputPassword}>OK</NavButton>
+        </StackedHorizontal>
+      </Modal.Actions>
     </Modal>
   );
 }

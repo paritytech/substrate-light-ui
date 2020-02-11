@@ -1,11 +1,13 @@
-// Copyright 2018-2020 @paritytech/substrate-light-ui authors & contributors
+// Copyright 2018-2020 @paritytech/Nomidot authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { DerivedBalancesAll, DerivedFees } from '@polkadot/api-derive/types';
+import { DerivedBalancesAll, DerivedFees, DerivedStakingAccount } from '@polkadot/api-derive/types';
 import { SubmittableExtrinsic } from '@polkadot/api/submittable/types';
 import { Balance, Index } from '@polkadot/types/interfaces';
 import BN from 'bn.js';
+
+export type AccountDerivedStakingMap = Record<string, DerivedStakingAccount>;
 
 /**
  * Form fields inputted by the user
@@ -26,18 +28,15 @@ export interface SubResults {
   recipientBalance?: DerivedBalancesAll;
 }
 
+export interface WithExtrinsic {
+  extrinsic: SubmittableExtrinsic<'rxjs'>;
+}
+
 /**
  * Amount as Balance
  */
 export interface WithAmount {
   amount: Balance;
-}
-
-/**
- * Amount as Balance and Extrinsic
- */
-export interface WithAmountExtrinsic extends WithAmount {
-  extrinsic: SubmittableExtrinsic<'rxjs'>;
 }
 
 /**
@@ -57,10 +56,10 @@ export interface WithDerived {
 /**
  * Everything above
  */
-export type AllExtrinsicData = SubResults & UserInputs & WithAmountExtrinsic & WithDerived;
+export type AllExtrinsicData = SubResults & UserInputs & WithExtrinsic & WithAmount & WithDerived;
 
 /**
  * Form errors and warnings
  */
-export type Errors = Partial<Record<keyof (SubResults & UserInputs & WithAmountExtrinsic), string>>;
+export type Errors = Partial<Record<keyof (SubResults & UserInputs & WithExtrinsic & WithAmount), string>>;
 export type Warnings = string[];
