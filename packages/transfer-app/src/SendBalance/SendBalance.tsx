@@ -5,7 +5,7 @@
 import { DerivedBalancesAll, DerivedFees } from '@polkadot/api-derive/types';
 import ApiRx from '@polkadot/api/rx';
 import { Index } from '@polkadot/types/interfaces';
-import { AllExtrinsicData, ApiContext, Errors, handler, KeyringContext, TxQueueContext } from '@substrate/context';
+import { ApiContext, handler, KeyringContext, TxQueueContext } from '@substrate/context';
 import {
   Balance,
   Form,
@@ -22,6 +22,7 @@ import { zip } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { InputAddress } from '../Transfer.styles';
+import { AllExtrinsicData, Errors } from './types';
 import { validate } from './validate';
 import { Validation } from './Validation';
 
