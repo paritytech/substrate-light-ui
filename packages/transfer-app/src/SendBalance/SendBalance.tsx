@@ -3,16 +3,9 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { DerivedBalancesAll, DerivedFees } from '@polkadot/api-derive/types';
+import ApiRx from '@polkadot/api/rx';
 import { Index } from '@polkadot/types/interfaces';
-import {
-  AllExtrinsicData,
-  ApiContext,
-  Errors,
-  handler,
-  KeyringContext,
-  TxQueueContext,
-  validate,
-} from '@substrate/context';
+import { ApiContext, handler, KeyringContext, TxQueueContext } from '@substrate/context';
 import {
   Balance,
   Form,
@@ -29,49 +22,56 @@ import { zip } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { InputAddress } from '../Transfer.styles';
+import { AllExtrinsicData, Errors } from './types';
+import { validate } from './validate';
 import { Validation } from './Validation';
 
-interface Props {
-  currentAccount: string;
-  recipientAddress: string;
+/**
+ * Check if an address is valid, with the current api.
+ */
+function isAddressValid(api: ApiRx, address: string): boolean {
+  try {
+    api.createType('Address', address);
+
+    return true;
+  } catch (e) {
+    return false;
+  }
 }
 
-export function SendBalance(props: Props): React.ReactElement {
+export function SendBalance(): React.ReactElement {
   const { api } = useContext(ApiContext);
   const { enqueue } = useContext(TxQueueContext);
-  const { keyring } = useContext(KeyringContext);
+  const { accounts, addresses, currentAccount, keyring, setCurrentAccount } = useContext(KeyringContext);
 
-  const { currentAccount, recipientAddress } = props;
+  const senderAddress = currentAccount || Object.keys(accounts)[0];
 
   const [amountAsString, setAmountAsString] = useState('');
   const [accountNonce, setAccountNonce] = useState<Index>();
   const [currentBalance, setCurrentBalance] = useState<DerivedBalancesAll>();
   const [extrinsic, setExtrinsic] = useState();
   const [fees, setFees] = useState<DerivedFees>();
-  const [receiver, setReceiver] = useState<string>();
+  const [receiver, setReceiver] = useState<string>((Object.keys(addresses) || Object.keys(accounts))[0]);
   const [recipientBalance, setRecipientBalance] = useState<DerivedBalancesAll>();
-  const [sender, setSender] = useState<string>();
   const [validationResult, setValidationResult] = useState<Either<Errors, AllExtrinsicData>>(
     left({ fees: 'fetching fees...' })
   );
 
+  const isReceiverValid = isAddressValid(api, receiver);
+
   // Subscribe to sender's & receivers's balances, nonce and some fees
   useEffect(() => {
-    if (!recipientAddress) {
+    if (!isReceiverValid) {
       return;
     }
 
-    setSender(currentAccount);
-    setReceiver(recipientAddress);
-
-    const _extrinsic = api.tx.balances.transfer(recipientAddress, amountAsString);
-    setExtrinsic(_extrinsic);
+    setExtrinsic(api.tx.balances.transfer(receiver, amountAsString));
 
     const subscription = zip(
       api.derive.balances.fees(),
-      api.derive.balances.votingBalance(currentAccount),
-      api.derive.balances.votingBalance(recipientAddress),
-      api.query.system.accountNonce<Index>(currentAccount)
+      api.derive.balances.votingBalance(senderAddress),
+      api.derive.balances.votingBalance(receiver),
+      api.query.system.accountNonce(senderAddress)
     )
       .pipe(take(1))
       .subscribe(([fees, currentBalance, recipientBalance, accountNonce]) => {
@@ -82,7 +82,7 @@ export function SendBalance(props: Props): React.ReactElement {
       });
 
     return (): void => subscription.unsubscribe();
-  }, [amountAsString, api, currentAccount, recipientAddress]);
+  }, [amountAsString, api, currentAccount, isReceiverValid, receiver, senderAddress]);
 
   useEffect(() => {
     const values = validate({
@@ -93,28 +93,11 @@ export function SendBalance(props: Props): React.ReactElement {
       fees,
       recipientBalance,
       currentAccount,
-      recipientAddress,
+      recipientAddress: receiver,
     });
 
     setValidationResult(values);
-  }, [
-    amountAsString,
-    accountNonce,
-    currentBalance,
-    fees,
-    recipientBalance,
-    currentAccount,
-    recipientAddress,
-    extrinsic,
-  ]);
-
-  const changeCurrentAccount = (newCurrentAccount: string): void => {
-    setSender(newCurrentAccount);
-  };
-
-  const changeRecipientAddress = (newRecipientAddress: string): void => {
-    setReceiver(newRecipientAddress);
-  };
+  }, [amountAsString, accountNonce, currentBalance, fees, recipientBalance, extrinsic, currentAccount, receiver]);
 
   const handleSubmit = (): void => {
     validationResult.fold(
@@ -130,7 +113,7 @@ export function SendBalance(props: Props): React.ReactElement {
           allFees,
           allTotal,
           methodCall: extrinsic.meta.name.toString(),
-          senderPair: keyring.getPair(currentAccount),
+          senderPair: keyring.getPair(senderAddress),
           recipientAddress: rcptAddress,
         });
       }
@@ -144,13 +127,13 @@ export function SendBalance(props: Props): React.ReactElement {
           <Stacked alignItems='flex-start' justifyContent='flex-start'>
             <SubHeader textAlign='left'>Sender Account:</SubHeader>
             <InputAddress
-              isDisabled
-              onChangeAddress={changeCurrentAccount}
+              accounts={accounts}
+              addresses={addresses}
+              onChangeAddress={setCurrentAccount}
               type='accounts'
-              value={sender}
-              withLabel={false}
+              value={senderAddress}
             />
-            <Balance address={currentAccount} orientation='vertical' />
+            <Balance address={senderAddress} orientation='vertical' />
           </Stacked>
         </WrapperDiv>
 
@@ -173,14 +156,8 @@ export function SendBalance(props: Props): React.ReactElement {
         <WrapperDiv>
           <Stacked alignItems='flex-start' justifyContent='flex-start'>
             <SubHeader textAlign='left'>Recipient Address:</SubHeader>
-            <InputAddress
-              label={undefined}
-              onChangeAddress={changeRecipientAddress}
-              type='addresses'
-              value={receiver}
-              withLabel={false}
-            />
-            {recipientAddress && <Balance address={recipientAddress} orientation='vertical' />}
+            <Input fluid onChange={handler(setReceiver)} value={receiver} />
+            {isReceiverValid && <Balance address={receiver} orientation='vertical' />}
           </Stacked>
         </WrapperDiv>
 
