@@ -10,6 +10,9 @@ import extensionizer from 'extensionizer';
 import init, { start_client } from '../../generated/polkadot_cli';
 import ws from '../../generated/ws';
 import { WasmClient } from '../types';
+// FIXME chainSpec should be uploadable by user.
+// https://github.com/paritytech/substrate-light-ui/issues/766
+import chainSpec from './chainSpec/westend.json';
 
 export type PayloadType = 'ping' | 'pong' | 'rpc.send' | 'rpc.sendSubscribe';
 
@@ -46,7 +49,7 @@ const start = async (): Promise<void> => {
   /* Build our client. */
   l.log('Starting client');
 
-  client = await start_client('westend', ws());
+  client = await start_client(JSON.stringify(chainSpec), ws());
   l.log('Client started...', client);
 };
 

@@ -22,6 +22,7 @@ export function IdentityHeader(props: Props): React.ReactElement | null {
   return (
     <Menu stackable widths={6}>
       <Menu.Item>
+        Current Account:
         <InputAddress fluid onChangeAddress={setCurrentAccount} value={currentAccount} />
         <CopyButton value={currentAccount} />
       </Menu.Item>
