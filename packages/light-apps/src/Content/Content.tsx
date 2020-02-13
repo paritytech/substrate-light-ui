@@ -2,15 +2,15 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Accounts, Addresses } from '@substrate/accounts-app';
 import { KeyringContext } from '@substrate/context';
-import { Transfer } from '@substrate/transfer-app';
 import { Fab } from '@substrate/ui-components';
 import React, { useContext } from 'react';
 import { Link, Redirect, Route, Switch } from 'react-router-dom';
 
+import { Accounts } from '../Accounts';
 import { IdentityHeader } from '../IdentityHeader';
 import { Signer } from '../Signer';
+import { Transfer } from '../Transfer';
 import { TxQueueNotifier } from '../TxQueueNotifier';
 
 export function Content(): React.ReactElement {
@@ -30,7 +30,6 @@ export function Content(): React.ReactElement {
       )}
       <Switch>
         <Redirect exact from='/' to='/accounts' />
-        <Route path='/addresses' component={Addresses} />
         <Route path='/accounts' component={Accounts} />
         <Route path='/transfer' component={Transfer} />
         <Redirect to='/' />

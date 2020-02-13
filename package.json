@@ -22,7 +22,7 @@
   },
   "scripts": {
     "prebuild": "yarn clean",
-    "build:ui": "lerna exec yarn build --stream --scope=@substrate/accounts-app --scope=@substrate/transfer-app --scope=@substrate/light-apps",
+    "build:ui": "lerna exec yarn build --stream --scope=@substrate/ui-components --scope=@substrate/light-apps",
     "build:electron": "yarn build:ui && lerna run build --scope=@substrate/electron-app",
     "build:extension": "INLINE_RUNTIME_CHUNK=false yarn build:ui && lerna run build --scope=@substrate/extension-app",
     "clean": "polkadot-dev-clean-build",
@@ -31,7 +31,7 @@
     "package:electron": "yarn build:electron && lerna run package --scope=@substrate/electron-app",
     "package:extension": "yarn build:extension && lerna run package --scope=@substrate/extension-app",
     "prod:electron": "yarn build:electron && lerna run electron --scope=@substrate/electron-app",
-    "start:ui": "./scripts/prestart.sh && lerna exec yarn start --parallel --scope=@substrate/accounts-app --scope=@substrate/transfer-app --scope=@substrate/light-apps",
+    "start:ui": "./scripts/prestart.sh && cd packages/light-apps && yarn start",
     "start:electron": "concurrently \"yarn:start:ui\" \"lerna run start --scope=@substrate/electron-app\"",
     "start:extension": "concurrently \"yarn:start:ui\" \"lerna run start --scope=@substrate/extension-app\"",
     "test": "CI=true lerna run test --parallel"
