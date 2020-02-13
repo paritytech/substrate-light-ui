@@ -3,9 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import SUIBreadcrumb, {
-  BreadcrumbProps,
-} from 'semantic-ui-react/dist/commonjs/collections/Breadcrumb/Breadcrumb';
+import SUIBreadcrumb, { BreadcrumbProps } from 'semantic-ui-react/dist/commonjs/collections/Breadcrumb/Breadcrumb';
 
 import { substrateLightTheme } from './globalStyle';
 import { Circle, FadedText, Margin, Stacked, StackedHorizontal } from './index';
@@ -13,10 +11,7 @@ import { SUIBreadcrumbSize } from './types';
 
 interface Props {
   activeLabel: string;
-  onClick?: (
-    event: React.MouseEvent<HTMLElement>,
-    data: BreadcrumbProps
-  ) => void;
+  onClick?: (event: React.MouseEvent<HTMLElement>, data: BreadcrumbProps) => void;
   sectionLabels: Array<string>;
   size?: SUIBreadcrumbSize;
 }

@@ -18,10 +18,7 @@ storiesOf('Button', module)
   .addDecorator(withTheme)
   .add('NavButton | no children', () => <NavButton />)
   .add('NavButton | with child string', () => (
-    <NavButton onClick={action('clicked')}>
-      {' '}
-      {text('child', 'Button')}{' '}
-    </NavButton>
+    <NavButton onClick={action('clicked')}> {text('child', 'Button')} </NavButton>
   ))
   .add('NavButton | with value prop', () => (
     <NavButton onClick={action('clicked')} value={text('value', 'Button')}>

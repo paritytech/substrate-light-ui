@@ -12,11 +12,4 @@ import { withTheme } from './customDecorators';
 storiesOf('Address Segment', module)
   .addDecorator(withKnobs)
   .addDecorator(withTheme)
-  .add('with address', () => (
-    <Address
-      address={text(
-        'address',
-        'ExuzF7kjvyUsk6TMH4MhKA4AE7DY6NCts4SDj9Q3HS1dP5W'
-      )}
-    />
-  ));
+  .add('with address', () => <Address address={text('address', 'ExuzF7kjvyUsk6TMH4MhKA4AE7DY6NCts4SDj9Q3HS1dP5W')} />);

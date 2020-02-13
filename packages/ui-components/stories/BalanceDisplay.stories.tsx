@@ -20,10 +20,7 @@ storiesOf('Balance', module)
   .add('summary', () => (
     <WrapperDiv>
       <Balance
-        address={text(
-          'address',
-          'ExuzF7kjvyUsk6TMH4MhKA4AE7DY6NCts4SDj9Q3HS1dP5W'
-        )}
+        address={text('address', 'ExuzF7kjvyUsk6TMH4MhKA4AE7DY6NCts4SDj9Q3HS1dP5W')}
         detailed={boolean('detailed', false)}
         orientation={select('orientation', orientations, orientations[0])}
       />

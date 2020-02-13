@@ -3,14 +3,9 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import IdentityIcon from '@polkadot/react-identicon';
-import {
-  SingleAddress,
-  SubjectInfo,
-} from '@polkadot/ui-keyring/observable/types';
+import { SingleAddress, SubjectInfo } from '@polkadot/ui-keyring/observable/types';
 import React from 'react';
-import Dropdown, {
-  DropdownProps,
-} from 'semantic-ui-react/dist/commonjs/modules/Dropdown';
+import Dropdown, { DropdownProps } from 'semantic-ui-react/dist/commonjs/modules/Dropdown';
 import { DropdownItemProps } from 'semantic-ui-react/dist/commonjs/modules/Dropdown/DropdownItem';
 import styled from 'styled-components';
 
@@ -59,21 +54,11 @@ function renderDropdownItemText(address: SingleAddress): React.ReactElement {
 }
 
 export function InputAddress(props: InputAddressProps): React.ReactElement {
-  const {
-    accounts = {},
-    addresses = {},
-    onChangeAddress,
-    types = ['accounts'],
-    value,
-    ...rest
-  } = props;
+  const { accounts = {}, addresses = {}, onChangeAddress, types = ['accounts'], value, ...rest } = props;
 
   const currentAddress = getAddressFromString(accounts, addresses, value);
 
-  function handleChange(
-    _event: React.MouseEvent<HTMLDivElement, Event>,
-    data: DropdownItemProps
-  ): void {
+  function handleChange(_event: React.MouseEvent<HTMLDivElement, Event>, data: DropdownItemProps): void {
     if (data.value && onChangeAddress) {
       onChangeAddress(data.value.toString());
     }
@@ -96,24 +81,16 @@ export function InputAddress(props: InputAddressProps): React.ReactElement {
       <DropdownWrapper>
         <IdentityIcon value={value} size={20} />
         <Margin right='small' />
-        <Dropdown
-          labeled
-          text={currentAddress ? currentAddress.json.meta.name : 'Loading...'}
-          value={value}
-          {...rest}
-        >
+        <Dropdown labeled text={currentAddress ? currentAddress.json.meta.name : 'Loading...'} value={value} {...rest}>
           <Dropdown.Menu>
             {types.includes('accounts') && Object.keys(accounts).length > 0 && (
               <Dropdown.Header>My accounts</Dropdown.Header>
             )}
-            {types.includes('accounts') &&
-              Object.values(accounts).map(renderDropdownItem)}
-            {types.includes('addresses') &&
-              Object.keys(addresses).length > 0 && (
-                <Dropdown.Header>My addresses</Dropdown.Header>
-              )}
-            {types.includes('addresses') &&
-              Object.values(addresses).map(renderDropdownItem)}
+            {types.includes('accounts') && Object.values(accounts).map(renderDropdownItem)}
+            {types.includes('addresses') && Object.keys(addresses).length > 0 && (
+              <Dropdown.Header>My addresses</Dropdown.Header>
+            )}
+            {types.includes('addresses') && Object.values(addresses).map(renderDropdownItem)}
           </Dropdown.Menu>
         </Dropdown>
       </DropdownWrapper>

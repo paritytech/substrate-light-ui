@@ -37,9 +37,7 @@ function sizeValues(size: MarginPropsValue): string {
 /**
  * Get value from prop.
  */
-const getMarginValue = (position: keyof MarginProps) => (
-  props: MarginProps
-): string => sizeValues(props[position]);
+const getMarginValue = (position: keyof MarginProps) => (props: MarginProps): string => sizeValues(props[position]);
 
 export const Margin = styled.div<MarginProps>`
   margin-bottom: ${getMarginValue('bottom')}

@@ -29,9 +29,7 @@ const Container = styled.div`
   align-items: center;
   border-width: 2px;
   border-radius: 2px;
-  border-color: ${(
-    props: ThemedStyledProps<Partial<DropzoneState>, string>
-  ): string => getColor(props)};
+  border-color: ${(props: ThemedStyledProps<Partial<DropzoneState>, string>): string => getColor(props)};
   border-style: dashed;
   background-color: #fafafa;
   color: #bdbdbd;
@@ -59,19 +57,14 @@ export function InputFile(props: Props): React.ReactElement {
     [props]
   );
 
-  const {
-    getRootProps,
-    getInputProps,
-    isDragActive,
-    isDragAccept,
-    isDragReject,
-  } = useDropzone({ accept: defaultAccept, onDrop });
+  const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({
+    accept: defaultAccept,
+    onDrop,
+  });
 
   return (
     <div className='container'>
-      <Container
-        {...getRootProps({ isDragActive, isDragAccept, isDragReject })}
-      >
+      <Container {...getRootProps({ isDragActive, isDragAccept, isDragReject })}>
         <input {...getInputProps()} />
         <p>Drag &apos;n&apos; drop some files here, or click to select files</p>
       </Container>

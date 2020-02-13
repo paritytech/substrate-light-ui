@@ -3,9 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import SUIModal, {
-  ModalProps as SUIModalProps,
-} from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
+import SUIModal, { ModalProps as SUIModalProps } from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
 import styled from 'styled-components';
 
 import { FadedText, SubHeader } from './Shared.styles';

@@ -5,12 +5,8 @@
 import { AccountId, AccountIndex, Address } from '@polkadot/types/interfaces';
 
 // FIXME: UI utils should be reused from @polkadot-js/ui, once it's there
-export default function toShortAddress(
-  _address?: AccountId | AccountIndex | Address | string | null
-): string {
+export default function toShortAddress(_address?: AccountId | AccountIndex | Address | string | null): string {
   const address = (_address || '').toString();
 
-  return address.length > 15
-    ? `${address.slice(0, 7)}…${address.slice(-7)}`
-    : address;
+  return address.length > 15 ? `${address.slice(0, 7)}…${address.slice(-7)}` : address;
 }

@@ -7,10 +7,7 @@ import { storiesOf } from '@storybook/react';
 import React from 'react';
 
 import { AddressSummary } from '../src/stateful/AddressSummary';
-import {
-  OrientationType,
-  SizeType,
-} from '../src/stateful/AddressSummary/types';
+import { OrientationType, SizeType } from '../src/stateful/AddressSummary/types';
 import { withApi, withTheme } from './customDecorators';
 
 const orientations: Array<OrientationType> = ['horizontal', 'vertical'];
@@ -22,10 +19,7 @@ storiesOf('Address Sumary', module)
   .addDecorator(withTheme)
   .add('summary', () => (
     <AddressSummary
-      address={text(
-        'address',
-        'ExuzF7kjvyUsk6TMH4MhKA4AE7DY6NCts4SDj9Q3HS1dP5W'
-      )}
+      address={text('address', 'ExuzF7kjvyUsk6TMH4MhKA4AE7DY6NCts4SDj9Q3HS1dP5W')}
       name={text('name', 'Joe Schmoe')}
       orientation={select('orientation', orientations, orientations[0])}
       size={select('size', sizes, sizes[0])}

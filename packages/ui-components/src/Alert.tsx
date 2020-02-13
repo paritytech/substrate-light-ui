@@ -3,31 +3,16 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import {
-  Message as SUIMessage,
-  MessageProps as AlertProps,
-} from 'semantic-ui-react';
+import { Message as SUIMessage, MessageProps as AlertProps } from 'semantic-ui-react';
 import styled from 'styled-components';
 
 import { StyledProps } from './globalStyle';
 
 const colors = {
-  error: (props: StyledProps): [string, string] => [
-    props.theme.redOrange,
-    props.theme.coral,
-  ],
-  info: (props: StyledProps): [string, string] => [
-    props.theme.robinEggBlue,
-    props.theme.neonBlue,
-  ],
-  success: (props: StyledProps): [string, string] => [
-    props.theme.lightBlue1,
-    props.theme.purple,
-  ],
-  warning: (props: StyledProps): [string, string] => [
-    props.theme.orangeYellow,
-    props.theme.tangerine,
-  ],
+  error: (props: StyledProps): [string, string] => [props.theme.redOrange, props.theme.coral],
+  info: (props: StyledProps): [string, string] => [props.theme.robinEggBlue, props.theme.neonBlue],
+  success: (props: StyledProps): [string, string] => [props.theme.lightBlue1, props.theme.purple],
+  warning: (props: StyledProps): [string, string] => [props.theme.orangeYellow, props.theme.tangerine],
 };
 
 type AlertType = keyof typeof colors;
@@ -39,9 +24,7 @@ type AlertType = keyof typeof colors;
 function gradientColor(index: 0 | 1) {
   return function(props: AlertProps & StyledProps): string {
     // Check if props.{error, info, warning} is set.
-    const alertType = ['error', 'info', 'warning'].find(type => props[type]) as
-      | AlertType
-      | undefined;
+    const alertType = ['error', 'info', 'warning'].find(type => props[type]) as AlertType | undefined;
     if (alertType) {
       return colors[alertType](props)[index];
     }
@@ -53,11 +36,7 @@ function gradientColor(index: 0 | 1) {
 
 const StyledAlert = styled(SUIMessage)`
   &&& {
-    background-image: linear-gradient(
-      107deg,
-      ${gradientColor(0)},
-      ${gradientColor(1)} 71%
-    );
+    background-image: linear-gradient(107deg, ${gradientColor(0)}, ${gradientColor(1)} 71%);
     bottom: 0;
     left: 0;
     box-shadow: none;

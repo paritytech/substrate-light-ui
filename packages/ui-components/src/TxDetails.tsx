@@ -7,13 +7,7 @@ import React from 'react';
 import { SemanticShorthandItem } from 'semantic-ui-react';
 import { AccordionPanelProps } from 'semantic-ui-react/dist/commonjs/modules/Accordion/AccordionPanel';
 
-import {
-  Accordion,
-  AccordionProps,
-  DEFAULT_TOKEN_SYMBOL,
-  Stacked,
-  SubHeader,
-} from './';
+import { Accordion, AccordionProps, DEFAULT_TOKEN_SYMBOL, Stacked, SubHeader } from './';
 
 interface TxDetailsProps extends AccordionProps {
   allFees: BN;

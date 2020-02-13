@@ -12,14 +12,7 @@ import { SUIInputSize } from '../src/types';
 import { withTheme } from './customDecorators';
 
 const inputTypes = ['number', 'password', 'text'];
-const sizes: SUIInputSize[] = [
-  'mini',
-  'small',
-  'large',
-  'big',
-  'huge',
-  'massive',
-];
+const sizes: SUIInputSize[] = ['mini', 'small', 'large', 'big', 'huge', 'massive'];
 
 storiesOf('Input', module)
   .addDecorator(withKnobs)

@@ -3,9 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import SUISegment, {
-  SegmentProps,
-} from 'semantic-ui-react/dist/commonjs/elements/Segment';
+import SUISegment, { SegmentProps } from 'semantic-ui-react/dist/commonjs/elements/Segment';
 import styled from 'styled-components';
 
 import { theme } from './globalStyle';
@@ -19,8 +17,7 @@ const StyledFlexSegment = styled(SUISegment)`
     width: ${(props): string => props.width || '80%'};
     margin: 0.3rem auto;
     box-shadow: 0 2px 2px 0 rgba(${theme.black}, 0.3);
-    background-color: ${(props): string =>
-      props.backgroundColor || theme.white};
+    background-color: ${(props): string => props.backgroundColor || theme.white};
   }
 `;
 

@@ -18,12 +18,7 @@ export function TextArea(props: TextAreaProps): React.ReactElement {
 
   return (
     <Form>
-      <SUITextArea
-        placeholder={placeholder}
-        rows={rows}
-        style={{ minHeight: '100px' }}
-        value={value}
-      />
+      <SUITextArea placeholder={placeholder} rows={rows} style={{ minHeight: '100px' }} value={value} />
     </Form>
   );
 }

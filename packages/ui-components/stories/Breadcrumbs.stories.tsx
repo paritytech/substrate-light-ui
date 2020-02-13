@@ -10,14 +10,7 @@ import React from 'react';
 import { Breadcrumbs, WrapperDiv } from '../src';
 import { withTheme } from './customDecorators';
 
-const sectionLabels = [
-  'Welcome',
-  'Stash',
-  'Controller',
-  'Confirm',
-  'Claim',
-  'Bond',
-];
+const sectionLabels = ['Welcome', 'Stash', 'Controller', 'Confirm', 'Claim', 'Bond'];
 
 storiesOf('Breadcrumbs', module)
   .addDecorator(withKnobs)

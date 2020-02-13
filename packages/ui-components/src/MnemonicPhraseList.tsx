@@ -4,12 +4,7 @@
 
 import React from 'react';
 
-import {
-  DynamicSizeText,
-  FadedText,
-  StackedHorizontal,
-  WithSpace,
-} from './index';
+import { DynamicSizeText, FadedText, StackedHorizontal, WithSpace } from './index';
 import { WrapperDiv } from './Shared.styles';
 
 interface Props {
