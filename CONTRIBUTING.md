@@ -31,7 +31,7 @@ When contributing to this repository, please first check whether the issue has a
 5. You may merge the Pull Request in once you have the sign-off of two other developers, or if you
    do not have permission to do that, you may request the second reviewer to merge it for you.
 
-**N.B.** We mostly manage dependency version update with Dependabot. The only exception is with `@polkadot/**` dependencies, which we update running these [scripts][updateScripts] locally. Checkout the dependencies locally into the same root directory as `substrate-light-apps`, update the Directories array in `./update.sh` as relevant at the time of running [e.g. `DIRECTORIES=( "dev" "common" "api" "ui" "light-apps" )`] and run `./update.sh`.
+**N.B.** We mostly manage dependency version update with Dependabot. The only exception is with `@polkadot/**` dependencies, which we update running these [scripts][updatescripts] locally. Checkout the dependencies locally into the same root directory as `substrate-light-apps`, update the Directories array in `./update.sh` as relevant at the time of running [e.g. `DIRECTORIES=( "dev" "common" "api" "ui" "light-apps" )`] and run `./update.sh`.
 
 We do this to make sure all `@polkadot/**` dependencies are updated together as otherwise "things will break."
 
@@ -55,21 +55,21 @@ orientation.
 Examples of behavior that contributes to creating a positive environment
 include:
 
-* Using welcoming and inclusive language
-* Being respectful of differing viewpoints and experiences
-* Gracefully accepting constructive criticism
-* Focusing on what is best for the community
-* Showing empathy towards other community members
+- Using welcoming and inclusive language
+- Being respectful of differing viewpoints and experiences
+- Gracefully accepting constructive criticism
+- Focusing on what is best for the community
+- Showing empathy towards other community members
 
 Examples of unacceptable behavior by participants include:
 
-* The use of sexualized language or imagery and unwelcome sexual attention or
-advances
-* Trolling, insulting/derogatory comments, and personal or political attacks
-* Public or private harassment
-* Publishing others' private information, such as a physical or electronic
+- The use of sexualized language or imagery and unwelcome sexual attention or
+  advances
+- Trolling, insulting/derogatory comments, and personal or political attacks
+- Public or private harassment
+- Publishing others' private information, such as a physical or electronic
   address, without explicit permission
-* Other conduct which could reasonably be considered inappropriate in a
+- Other conduct which could reasonably be considered inappropriate in a
   professional setting
 
 ### Our Responsibilities
@@ -113,20 +113,13 @@ available at [http://contributor-covenant.org/version/1/4][version]
 
 [homepage]: http://contributor-covenant.org
 [version]: http://contributor-covenant.org/version/1/4/
-[updateScripts]: https://gist.github.com/jacogr/9f0c8b33a7f14d944925787643dbf55b
+[updatescripts]: https://gist.github.com/jacogr/9f0c8b33a7f14d944925787643dbf55b
 
 ## Styleguides
 
-All TypeScript code must adhere to the [semistandard style](https://github.com/Flet/semistandard). These rules are programmatically enforced by [`tslint`](https://github.com/bukalapak/tslint-config-semistandard).
+All TypeScript code must adhere to our [linting configuration](./eslintrc.js). These rules are programmatically enforced by [`eslint`](https://eslint.org/).
 
-Moreover, we follow the following rules:
-
-- Put brackets around arguments in closures, even if there's only one argument.
-
-```diff
-- const f = x => x + 1;
-+ const f = (x) => x + 1;
-```
+Additionnally, we follow the following rules, not yet enforced by the linter:
 
 - Add a blank line before a function's `return` statement.
 
@@ -137,26 +130,3 @@ function f () {
   return x;
 }
 ```
-
-- Separate imports into 2 blocks: absolute imports and relative imports.
-
-```diff
-import { a } from 'react';
-+
-import { b } from '../my/moduleB';
-```
-
-- Sort imports alphabetically by package name. The character '@' comes before alphanumerical characters.
-
-```diff
-- import { a, b } from 'react';
-- import { c, d } from '@polkadot/api';
-+ import { c, d } from '@polkadot/api';
-+ import { a, b } from 'react';
-```
-
-- React class properties and methods follow eslint's [`react/sort-comp`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/sort-comp.md#rule-details) rule for ordering. However, we do make some exceptions:
-
-  - Closures such as `handleButtonClick = () => { /* code goes here */}` are often used instead of methods in React to avoid binding with `this`. These properties are considered as methods.
-  - If a function is used for rendering, then we prefix the function name with `render`, and add it *after* the `render` function. Render functions often contain JSX.
-  - All methods should be public, for consistency.
