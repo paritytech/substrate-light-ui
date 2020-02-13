@@ -1,6 +1,7 @@
 # Generated files
 build/
 dist/
+lib/
 packages/electron-app/static/substrate
 coverage/
 master-build.zip
