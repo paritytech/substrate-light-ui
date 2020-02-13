@@ -36,13 +36,6 @@ export function IdentityHeader(props: Props): React.ReactElement | null {
           <Icon color='black' name='id card' />
         </Menu.Item>
       </Link>
-      <Link to='/addresses'>
-        <Menu.Item active={match.path === '/addresses'}>
-          Address Book
-          <Margin left='small' />
-          <Icon color='black' name='id card' />
-        </Menu.Item>
-      </Link>
     </Menu>
   );
 }

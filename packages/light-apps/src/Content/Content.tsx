@@ -18,7 +18,7 @@ export function Content(): React.ReactElement {
 
   return (
     <>
-      <Route component={IdentityHeader} path={['/addresses', '/accounts', '/transfer']} />
+      <Route component={IdentityHeader} path={['/accounts', '/transfer']} />
       {currentAccount && (
         <Route
           render={(): React.ReactElement => (
