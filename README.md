@@ -3,7 +3,7 @@
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=paritytech/substrate-light-ui)](https://dependabot.com)
 <a href="https://codeclimate.com/github/paritytech/substrate-light-ui/maintainability"><img src="https://api.codeclimate.com/v1/badges/bdff9a9d1f154523d3b9/maintainability" /></a>
 
-# Lichen (Working Title)
+# Lichen (working title, previously "Substrate Light UI")
 
 Lichen is a light-client-based, in-browser wallet for Substrate.
 
