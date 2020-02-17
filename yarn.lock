@@ -9785,6 +9785,11 @@ fp-ts@1.18.1:
   resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-1.18.1.tgz#c76ef38250125afbda5ad712a92750cc3e6ca6d9"
   integrity sha512-esfGgsuc0S9Q23YnoWQH4DrnBIJ7LCbA7AsUKFwawVsYmVZ7Cl+3cjd8nAhJLWwpUKDRsBsMJOf+uX4ZakZMsQ==
 
+fp-ts@2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-2.5.0.tgz#adca3b90452196274f7b074f12f9c02741624c1a"
+  integrity sha512-xkC9ZKl/i2cU+8FAsdyLcTvPRXphp42FcK5WmZpB47VXb4gggC3DHlVDKNLdbC+U8zz6yp1b0bj0mZg0axmZYQ==
+
 fragment-cache@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/fragment-cache/-/fragment-cache-0.2.1.tgz#4290fad27f13e89be7f33799c6bc5a0abfff0d19"
