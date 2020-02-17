@@ -37,7 +37,7 @@
     "test": "CI=true lerna run test --parallel"
   },
   "devDependencies": {
-    "@polkadot/dev": "^0.32.13",
+    "@polkadot/dev": "^0.40.17",
     "@polkadot/dev-react": "^0.32.14",
     "@polkadot/extension-dapp": "^0.14.1",
     "concurrently": "^5.0.2",
