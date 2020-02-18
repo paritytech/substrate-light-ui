@@ -8,7 +8,7 @@
   "repository": "https://github.com/paritytech/substrate-light-ui.git",
   "scripts": {
     "start": "BROWSER=none SKIP_PREFLIGHT_CHECK=true react-scripts start",
-    "build": "react-scripts build",
+    "build": "SKIP_PREFLIGHT_CHECK=true react-scripts build",
     "test": "jest --coverage"
   },
   "browserslist": [
