@@ -53,10 +53,10 @@
   "resolutions": {
     "kind-of": ">=6.0.3",
     "react": "16.12",
-    "@types/styled-components": "4.4.2",
+    "@types/styled-components": "4.4.3",
     "typescript": "^3.7.2"
   },
   "dependencies": {
-    "@types/styled-components": "4.4.2"
+    "@types/styled-components": "4.4.3"
   }
 }
