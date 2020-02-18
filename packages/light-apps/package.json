@@ -23,7 +23,7 @@
     "@polkadot/ui-assets": "^0.51.1",
     "@substrate/context": "^0.3.20",
     "@substrate/ui-components": "^0.3.20",
-    "@types/chrome": "^0.0.93",
+    "@types/chrome": "^0.0.95",
     "@types/file-saver": "^2.0.0",
     "@types/filesystem": "^0.0.29",
     "@types/react-dom": "^16.0.11",
