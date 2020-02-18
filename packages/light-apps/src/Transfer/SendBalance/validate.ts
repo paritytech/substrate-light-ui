@@ -48,7 +48,7 @@ export function validateDerived(
 ): Either<Errors, AllExtrinsicData> {
   const { accountNonce, amount = new BN(0), currentBalance, extrinsic, fees, recipientBalance } = values;
 
-  const txLength = SIGNATURE_SIZE + compactToU8a(accountNonce).length + extrinsic.encodedLength;
+  const txLength = SIGNATURE_SIZE + compactToU8a(accountNonce[0]).length + extrinsic.encodedLength;
   const allFees = fees.transactionBaseFee.add(fees.transactionByteFee.muln(txLength));
 
   let isCreation = false;

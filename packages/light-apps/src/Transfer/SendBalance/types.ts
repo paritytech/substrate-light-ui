@@ -4,7 +4,8 @@
 
 import { DerivedBalancesAll, DerivedFees, DerivedStakingAccount } from '@polkadot/api-derive/types';
 import { SubmittableExtrinsic } from '@polkadot/api/submittable/types';
-import { Balance, Index } from '@polkadot/types/interfaces';
+import { AccountData, Balance, Index } from '@polkadot/types/interfaces';
+import { ITuple } from '@polkadot/types/types';
 import BN from 'bn.js';
 
 export type AccountDerivedStakingMap = Record<string, DerivedStakingAccount>;
@@ -22,7 +23,7 @@ export interface UserInputs {
  * Results from api subscription (nonce, balance, fees)
  */
 export interface SubResults {
-  accountNonce: Index;
+  accountNonce: ITuple<[Index, AccountData]>;
   currentBalance: DerivedBalancesAll;
   fees: DerivedFees;
   recipientBalance?: DerivedBalancesAll;

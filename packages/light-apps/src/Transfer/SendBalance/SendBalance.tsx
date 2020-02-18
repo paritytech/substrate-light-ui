@@ -4,7 +4,8 @@
 
 import { DerivedBalancesAll, DerivedFees } from '@polkadot/api-derive/types';
 import ApiRx from '@polkadot/api/rx';
-import { Index } from '@polkadot/types/interfaces';
+import { AccountData, Index } from '@polkadot/types/interfaces';
+import { ITuple } from '@polkadot/types/types';
 import { ApiContext, handler, KeyringContext, TxQueueContext } from '@substrate/context';
 import {
   Balance,
@@ -47,7 +48,7 @@ export function SendBalance(): React.ReactElement {
   const senderAddress = currentAccount || Object.keys(accounts)[0];
 
   const [amountAsString, setAmountAsString] = useState('');
-  const [accountNonce, setAccountNonce] = useState<Index>();
+  const [accountNonce, setAccountNonce] = useState<ITuple<[Index, AccountData]>>();
   const [currentBalance, setCurrentBalance] = useState<DerivedBalancesAll>();
   const [extrinsic, setExtrinsic] = useState();
   const [fees, setFees] = useState<DerivedFees>();
@@ -71,7 +72,7 @@ export function SendBalance(): React.ReactElement {
       api.derive.balances.fees(),
       api.derive.balances.votingBalance(senderAddress),
       api.derive.balances.votingBalance(receiver),
-      api.query.system.accountNonce(senderAddress)
+      api.query.system.account(senderAddress)
     )
       .pipe(take(1))
       .subscribe(([fees, currentBalance, recipientBalance, accountNonce]) => {
