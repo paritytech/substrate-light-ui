@@ -3464,21 +3464,6 @@
     "@polkadot/ui-keyring" "^0.49.0-beta.1"
     fp-ts "1.18.1"
 
-"@substrate/ui-components@^0.3.20":
-  version "0.3.20"
-  resolved "https://registry.yarnpkg.com/@substrate/ui-components/-/ui-components-0.3.20.tgz#bbc1c1d6dc5200336e7fd2a0e934f2de8e771d48"
-  integrity sha512-e1j4ovstyhsZc0ehUwPHD2nCuE3Jfpykusn2yJBK9+7G4BakgiUSm6fH+yijqWn2MYonCkqP29SFDhpUtahkIA==
-  dependencies:
-    "@polkadot/react-identicon" "^0.47.1"
-    "@types/recharts" "^1.1.16"
-    "@types/styled-components" "^4.4.2"
-    babel-loader "^8.0.6"
-    react-dropzone "10.1.3"
-    recharts "^1.6.0"
-    semantic-ui-css "^2.4.1"
-    semantic-ui-react "^0.88.1"
-    styled-components "^4.4.1"
-
 "@svgr/babel-plugin-add-jsx-attribute@^4.2.0":
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/@svgr/babel-plugin-add-jsx-attribute/-/babel-plugin-add-jsx-attribute-4.2.0.tgz#dadcb6218503532d6884b210e7f3c502caaa44b1"

@@ -3,24 +3,37 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import { Dimmer, Loader } from 'semantic-ui-react';
+import { Dimmer, DimmerDimmableProps, Loader } from 'semantic-ui-react';
+import styled from 'styled-components';
 
-type LoadingProps = {
+import { Stacked } from './Shared.styles';
+
+interface LoadingProps extends DimmerDimmableProps {
   active: boolean;
-  children?: React.ReactNode | string;
-  inline?: boolean;
-  inverted?: boolean;
-};
+  loadingText?: string;
+}
+
+// Stretch vertically, assuming parent is flex
+const Strechted = styled(Dimmer.Dimmable)`
+  flex-grow: 1;
+`;
 
 export function Loading(props: LoadingProps): React.ReactElement {
-  const { active, children, inline = false, inverted = false } = props;
+  const { active, children, loadingText, ...rest } = props;
+
   return (
-    <React.Fragment>
-      <Dimmer active={active}>
-        <Loader active={active} inline={inline} inverted={inverted}>
-          {children}
-        </Loader>
-      </Dimmer>
-    </React.Fragment>
+    <>
+      {active && (
+        <Dimmer.Dimmable as={Strechted} {...rest}>
+          <Stacked>
+            <Dimmer active>
+              <Loader active inverted />
+              <p>{loadingText}</p>
+            </Dimmer>
+          </Stacked>
+        </Dimmer.Dimmable>
+      )}
+      {children}
+    </>
   );
 }

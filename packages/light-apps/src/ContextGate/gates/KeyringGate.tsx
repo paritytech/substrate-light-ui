@@ -12,5 +12,9 @@ import React, { useContext } from 'react';
 export function KeyringGate({ children }: { children?: React.ReactElement }): React.ReactElement | null {
   const { isKeyringReady } = useContext(KeyringContext);
 
-  return isKeyringReady ? children || null : <Loading active>Setting up keyring...</Loading>;
+  return (
+    <Loading active={!isKeyringReady} loadingText='Setting up keyring...'>
+      {isKeyringReady && children}
+    </Loading>
+  );
 }

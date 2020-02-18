@@ -21,34 +21,12 @@ import {
   WrapperDivProps,
 } from './StyleProps';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const Input = styled<any>(SUIInput)`
+export const Input = styled(SUIInput)`
   width: ${(props): string => props.width || '100%'};
 `;
 
 export const Container = styled(SUIContainer)`
   padding: ${MARGIN_SIZES.large};
-`;
-
-/**
- * Fixed-width container
- */
-export const FixedWidthContainer = styled(Container)`
-  @media only screen and (min-width: 320px) and (max-width: 479px) {
-    width: 300px;
-  }
-
-  @media only screen and (min-width: 480px) and (max-width: 767px) {
-    width: 400px;
-  }
-
-  @media only screen and (min-width: 768px) and (max-width: 991px) {
-    width: 700px;
-  }
-
-  @media only screen and (min-width: 992px) {
-    width: 950px;
-  }
 `;
 
 export const BoldText = styled.b`
@@ -212,23 +190,15 @@ export const VoteYayButton = styled.button`
 export const Stacked = styled.div<StackProps>`
   align-items: ${(props): string => props.alignItems || 'center'};
   display: flex;
-  flex: 1;
   flex-direction: column;
   justify-content: ${(props): string => props.justifyContent || 'center'};
-  text-align: ${(props): string => props.textAlign || 'center'};
 `;
 
 export const StackedHorizontal = styled.div<StackProps>`
   align-items: ${(props): string => props.alignItems || 'center'};
   display: flex;
-  flex: 1;
   flex-direction: row;
-  flex-grow: 1;
-  flex-wrap: wrap;
-  margin: ${(props): string | number => props.margin || 0}
   justify-content: ${(props): string => props.justifyContent || 'center'};
-  text-align: ${(props): string => props.textAlign || 'center'};
-
 `;
 
 export const SubHeader = styled.h3<SubHeaderProps>`

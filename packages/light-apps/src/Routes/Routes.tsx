@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { KeyringContext } from '@substrate/context';
-import { Fab } from '@substrate/ui-components';
+import { Container, Fab } from '@substrate/ui-components';
 import React, { useContext } from 'react';
 import { Link, Redirect, Route, Switch } from 'react-router-dom';
 
@@ -13,11 +13,11 @@ import { Signer } from '../Signer';
 import { Transfer } from '../Transfer';
 import { TxQueueNotifier } from '../TxQueueNotifier';
 
-export function Content(): React.ReactElement {
+export function Routes(): React.ReactElement {
   const { currentAccount } = useContext(KeyringContext);
 
   return (
-    <>
+    <Container>
       <Route component={IdentityHeader} path={['/accounts', '/transfer']} />
       {currentAccount && (
         <Route
@@ -36,6 +36,6 @@ export function Content(): React.ReactElement {
       </Switch>
       <TxQueueNotifier />
       <Signer />
-    </>
+    </Container>
   );
 }

@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { KeyringContext } from '@substrate/context';
-import { StackedHorizontal, StyledLinkButton } from '@substrate/ui-components';
+import { Stacked, StyledLinkButton } from '@substrate/ui-components';
 import React, { useContext } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 
@@ -16,7 +16,7 @@ export function AccountsOverview(props: Props): React.ReactElement {
   const { accounts } = useContext(KeyringContext);
 
   return (
-    <StackedHorizontal>
+    <Stacked>
       {Object.values(accounts).map(account => {
         return (
           <AccountsOverviewCard
@@ -30,6 +30,6 @@ export function AccountsOverview(props: Props): React.ReactElement {
       <Link to='/accounts/add'>
         <StyledLinkButton>Add Account</StyledLinkButton>
       </Link>
-    </StackedHorizontal>
+    </Stacked>
   );
 }

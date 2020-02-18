@@ -15,6 +15,7 @@ import {
 import extensionizer from 'extensionizer';
 import React from 'react';
 
+import { TopBar } from '../TopBar';
 import { ApiGate, HealthGate, KeyringGate, SystemGate } from './gates';
 import { PostMessageProvider } from './postMessage';
 
@@ -80,24 +81,27 @@ export function ContextGate(props: { children: React.ReactElement }): React.Reac
   const { children } = props;
 
   return (
-    <AlertsContextProvider>
-      <TxQueueContextProvider>
-        <SystemContextProvider provider={wsProvider}>
-          <SystemGate>
-            <KeyringContextProvider>
-              <KeyringGate>
-                <HealthContextProvider provider={wsProvider}>
-                  <HealthGate>
-                    <ApiContextProvider provider={wsProvider}>
-                      <ApiGate>{children}</ApiGate>
-                    </ApiContextProvider>
-                  </HealthGate>
-                </HealthContextProvider>
-              </KeyringGate>
-            </KeyringContextProvider>
-          </SystemGate>
-        </SystemContextProvider>
-      </TxQueueContextProvider>
-    </AlertsContextProvider>
+    <SystemContextProvider provider={wsProvider}>
+      <>
+        <TopBar />
+        <SystemGate>
+          <KeyringContextProvider>
+            <KeyringGate>
+              <HealthContextProvider provider={wsProvider}>
+                <HealthGate>
+                  <ApiContextProvider provider={wsProvider}>
+                    <ApiGate>
+                      <AlertsContextProvider>
+                        <TxQueueContextProvider>{children} </TxQueueContextProvider>
+                      </AlertsContextProvider>
+                    </ApiGate>
+                  </ApiContextProvider>
+                </HealthGate>
+              </HealthContextProvider>
+            </KeyringGate>
+          </KeyringContextProvider>
+        </SystemGate>
+      </>
+    </SystemContextProvider>
   );
 }

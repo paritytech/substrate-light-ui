@@ -4,15 +4,14 @@
 
 import 'semantic-ui-css/semantic.min.css';
 
-import { FixedWidthContainer, GlobalStyle, substrateLightTheme } from '@substrate/ui-components';
+import { GlobalStyle, substrateLightTheme } from '@substrate/ui-components';
 import React from 'react';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';
-import { ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 
 import { Alerts } from './Alerts';
-import { Content } from './Content';
 import { ContextGate } from './ContextGate';
-import { TopBar } from './TopBar';
+import { Routes } from './Routes';
 
 // Use MemoryRouter for production viewing in file:// protocol
 // https://github.com/facebook/create-react-app/issues/3591
@@ -21,20 +20,24 @@ import { TopBar } from './TopBar';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const Router: any = process.env.NODE_ENV === 'production' ? MemoryRouter : BrowserRouter;
 
+// Let this div take up whole screen
+const FullScreen = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+`;
+
 export function App(): React.ReactElement {
   return (
     <Router>
       <ThemeProvider theme={substrateLightTheme}>
-        <FixedWidthContainer>
-          <GlobalStyle />
+        <GlobalStyle />
+        <FullScreen>
           <ContextGate>
-            <>
-              <TopBar />
-              <Content />
-            </>
+            <Routes />
           </ContextGate>
-          <Alerts />
-        </FixedWidthContainer>
+        </FullScreen>
+        <Alerts />
       </ThemeProvider>
     </Router>
   );
