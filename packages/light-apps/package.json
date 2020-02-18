@@ -7,8 +7,8 @@
   "private": true,
   "repository": "https://github.com/paritytech/substrate-light-ui.git",
   "scripts": {
-    "start": "BROWSER=none NODE_ENV=development react-scripts start",
-    "build": "react-scripts build",
+    "start": "BROWSER=none SKIP_PREFLIGHT_CHECK=true react-scripts start",
+    "build": "SKIP_PREFLIGHT_CHECK=true react-scripts build",
     "test": "jest --coverage"
   },
   "browserslist": [
@@ -19,8 +19,8 @@
   ],
   "homepage": "./",
   "dependencies": {
-    "@polkadot/api": "^1.1.0-beta.17",
-    "@polkadot/ui-assets": "^0.48.1",
+    "@polkadot/api": "^1.3.1",
+    "@polkadot/ui-assets": "^0.51.1",
     "@substrate/context": "^0.3.20",
     "@substrate/ui-components": "^0.3.20",
     "@types/chrome": "^0.0.93",
