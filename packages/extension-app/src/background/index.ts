@@ -53,7 +53,10 @@ const start = async (): Promise<void> => {
   l.log('Client started...', client);
 };
 
-function rpcProxySend(jsonRpc: JsonRpcRequest, port: browser.runtime.Port): void {
+function rpcProxySend(
+  jsonRpc: JsonRpcRequest,
+  port: browser.runtime.Port
+): void {
   client.rpcSend(JSON.stringify(jsonRpc)).then((res: string) => {
     try {
       port.postMessage({
@@ -67,7 +70,10 @@ function rpcProxySend(jsonRpc: JsonRpcRequest, port: browser.runtime.Port): void
   });
 }
 
-function rpcProxySubscribe(jsonRpc: JsonRpcRequest, port: browser.runtime.Port): void {
+function rpcProxySubscribe(
+  jsonRpc: JsonRpcRequest,
+  port: browser.runtime.Port
+): void {
   client.rpcSubscribe(JSON.stringify(jsonRpc), (res: string) => {
     try {
       port.postMessage({
@@ -87,7 +93,10 @@ function rpcProxySubscribe(jsonRpc: JsonRpcRequest, port: browser.runtime.Port):
  * @param payload - The message we received from the content script
  * @param port - The port representing the content script
  */
-function handler(payload: PayloadRequest | undefined, port: browser.runtime.Port): void {
+function handler(
+  payload: PayloadRequest | undefined,
+  port: browser.runtime.Port
+): void {
   if (!payload) {
     l.warn('handler: Received empty handler, ignoring');
     return;
@@ -112,26 +121,28 @@ function handler(payload: PayloadRequest | undefined, port: browser.runtime.Port
 
 start()
   .then(() => {
-    extensionizer.runtime.onConnect.addListener((port: browser.runtime.Port): void => {
-      // Listen to all messages on the extension port and handle appropriately
-      function messageListener(response: object): void {
-        handler(response as PayloadRequest, port);
-      }
-      port.onMessage.addListener(messageListener);
-
-      // Gracefully handle port disconnects
-      function disconnectListener(): void {
-        if (port.onMessage.hasListener(messageListener)) {
-          port.onMessage.removeListener(messageListener);
-
-          l.log(`Disconnected from ${JSON.stringify(port)}`);
+    extensionizer.runtime.onConnect.addListener(
+      (port: browser.runtime.Port): void => {
+        // Listen to all messages on the extension port and handle appropriately
+        function messageListener(response: object): void {
+          handler(response as PayloadRequest, port);
         }
+        port.onMessage.addListener(messageListener);
 
-        if (port.onDisconnect.hasListener(disconnectListener)) {
-          port.onDisconnect.removeListener(disconnectListener);
+        // Gracefully handle port disconnects
+        function disconnectListener(): void {
+          if (port.onMessage.hasListener(messageListener)) {
+            port.onMessage.removeListener(messageListener);
+
+            l.log(`Disconnected from ${JSON.stringify(port)}`);
+          }
+
+          if (port.onDisconnect.hasListener(disconnectListener)) {
+            port.onDisconnect.removeListener(disconnectListener);
+          }
         }
+        port.onDisconnect.addListener(disconnectListener);
       }
-      port.onDisconnect.addListener(disconnectListener);
-    });
+    );
   })
   .catch(error => l.error(error));

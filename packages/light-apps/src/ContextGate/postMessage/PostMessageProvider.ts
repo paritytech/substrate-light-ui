@@ -16,7 +16,11 @@ import { logger } from '@polkadot/util';
 import EventEmitter from 'eventemitter3';
 
 import { PayloadResponse } from '../../../../extension-app/src/background';
-import { portPostMessage, PostMessageSource, windowPostMessage } from './sources';
+import {
+  portPostMessage,
+  PostMessageSource,
+  windowPostMessage,
+} from './sources';
 
 /**
  * @see https://github.com/polkadot-js/api/blob/master/packages/rpc-provider/src/ws/Provider.ts#L16
@@ -79,7 +83,8 @@ export class PostMessageProvider implements ProviderInterface {
   public constructor(source: 'window' | browser.runtime.Port) {
     this.eventemitter = new EventEmitter();
 
-    this.source = source === 'window' ? windowPostMessage() : portPostMessage(source);
+    this.source =
+      source === 'window' ? windowPostMessage() : portPostMessage(source);
 
     this.source.onMessage(this.handleMessage.bind(this));
 
@@ -150,7 +155,9 @@ export class PostMessageProvider implements ProviderInterface {
     if (!this.subscriptions[subId]) {
       const handler = this.handlers[jsonRpc.id];
       if (!handler || !handler.subscription) {
-        l.warn(`handleSubscribe: handler ${jsonRpc.id} doesn't have a subscription, but it should have`);
+        l.warn(
+          `handleSubscribe: handler ${jsonRpc.id} doesn't have a subscription, but it should have`
+        );
 
         return;
       }
@@ -181,7 +188,10 @@ export class PostMessageProvider implements ProviderInterface {
    * @param type Event
    * @param sub  Callback
    */
-  public on(type: ProviderInterfaceEmitted, sub: ProviderInterfaceEmitCb): () => void {
+  public on(
+    type: ProviderInterfaceEmitted,
+    sub: ProviderInterfaceEmitCb
+  ): () => void {
     this.eventemitter.on(type, sub);
 
     return (): void => {
@@ -207,7 +217,11 @@ export class PostMessageProvider implements ProviderInterface {
     return new PostMessageProvider(this.source.source);
   }
 
-  private sendRequest(method: string, params: AnyJson[], subscription?: SubscriptionHandler): Promise<AnyJson> {
+  private sendRequest(
+    method: string,
+    params: AnyJson[],
+    subscription?: SubscriptionHandler
+  ): Promise<AnyJson> {
     return new Promise((resolve, reject): void => {
       try {
         const jsonRpc = this.coder.encodeObject(method, params);
@@ -234,10 +248,20 @@ export class PostMessageProvider implements ProviderInterface {
     });
   }
 
-  public async send(method: string, params: AnyJson[], subscription?: SubscriptionHandler): Promise<AnyJson> {
+  public async send(
+    method: string,
+    params: AnyJson[],
+    subscription?: SubscriptionHandler
+  ): Promise<AnyJson> {
     if (subscription) {
-      const subscriptionId = (await this.sendRequest(method, params, subscription)) as number;
-      this.subscriptions[`${subscription.type}::${subscriptionId}`] = subscription;
+      const subscriptionId = (await this.sendRequest(
+        method,
+        params,
+        subscription
+      )) as number;
+      this.subscriptions[
+        `${subscription.type}::${subscriptionId}`
+      ] = subscription;
 
       return subscriptionId;
     } else {
@@ -245,7 +269,12 @@ export class PostMessageProvider implements ProviderInterface {
     }
   }
 
-  public async subscribe(type: string, method: string, params: AnyJson[], callback: CallbackHandler): Promise<number> {
+  public async subscribe(
+    type: string,
+    method: string,
+    params: AnyJson[],
+    callback: CallbackHandler
+  ): Promise<number> {
     const id = await this.send(method, params, { type, callback });
 
     return id as number;
@@ -254,7 +283,11 @@ export class PostMessageProvider implements ProviderInterface {
   /**
    * @summary Allows unsubscribing to subscriptions made with [[subscribe]].
    */
-  public async unsubscribe(type: string, method: string, id: number): Promise<boolean> {
+  public async unsubscribe(
+    type: string,
+    method: string,
+    id: number
+  ): Promise<boolean> {
     const subscription = `${type}::${id}`;
 
     // FIXME This now could happen with re-subscriptions. The issue is that with a re-sub
@@ -262,7 +295,9 @@ export class PostMessageProvider implements ProviderInterface {
     // a slight complication in solving - since we cannot rely on the send id, but rather
     // need to find the actual subscription id to map it
     if (!this.subscriptions[subscription]) {
-      l.debug((): string => `Unable to find active subscription=${subscription}`);
+      l.debug(
+        (): string => `Unable to find active subscription=${subscription}`
+      );
 
       return false;
     }

@@ -15,7 +15,13 @@ interface NavButtonProps extends StyledNavButtonProps {
 }
 
 export function NavButton(props: NavButtonProps): React.ReactElement {
-  const { children, fontSize = 'medium', fontWeight = '300', value, ...rest } = props;
+  const {
+    children,
+    fontSize = 'medium',
+    fontWeight = '300',
+    value,
+    ...rest
+  } = props;
 
   return (
     <StyledNavButton {...rest}>

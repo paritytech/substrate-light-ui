@@ -26,7 +26,10 @@ import Modal from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
  * @param keyringPair - The pair to unlock
  * @param password - The password to use to unlock
  */
-function unlockAccount(keyringPair: KeyringPair, password: string): Either<Error, KeyringPair> {
+function unlockAccount(
+  keyringPair: KeyringPair,
+  password: string
+): Either<Error, KeyringPair> {
   if (!keyringPair.isLocked) {
     return right(keyringPair);
   }
@@ -45,7 +48,9 @@ export function Signer(): React.ReactElement | null {
   const [inputPassword, setInputPassword] = useState('');
   const [error, setError] = useState('');
 
-  const pendingTx = txQueue.find(({ status: { isAskingForConfirm } }) => isAskingForConfirm);
+  const pendingTx = txQueue.find(
+    ({ status: { isAskingForConfirm } }) => isAskingForConfirm
+  );
 
   if (!pendingTx) {
     return null;
@@ -53,7 +58,9 @@ export function Signer(): React.ReactElement | null {
 
   const { senderPair } = pendingTx.details;
 
-  const handlePasswordChange = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>): void => {
+  const handlePasswordChange = ({
+    target: { value },
+  }: React.ChangeEvent<HTMLInputElement>): void => {
     setError('');
     setInputPassword(value);
   };
@@ -73,7 +80,9 @@ export function Signer(): React.ReactElement | null {
       <Modal.Header color='lightBlue1'>Sign transaction</Modal.Header>
       <Modal.Content>
         <Stacked alignItems='flex-start'>
-          <p>By signing this transaction you are confirming that you wish to:</p>
+          <p>
+            By signing this transaction you are confirming that you wish to:
+          </p>
           <TxSummary
             amount={pendingTx.details.amount}
             methodCall={pendingTx.extrinsic.method.meta.name.toString()}
@@ -83,7 +92,13 @@ export function Signer(): React.ReactElement | null {
           {senderPair.isLocked && (
             <>
               <Margin top />
-              <Input fluid label='Password' onChange={handlePasswordChange} type='password' value={inputPassword} />
+              <Input
+                fluid
+                label='Password'
+                onChange={handlePasswordChange}
+                type='password'
+                value={inputPassword}
+              />
               <Margin top />
             </>
           )}
@@ -103,7 +118,9 @@ export function Signer(): React.ReactElement | null {
             Cancel
           </StyledLinkButton>
           <Margin left='small' />
-          <NavButton disabled={senderPair.isLocked && !inputPassword}>OK</NavButton>
+          <NavButton disabled={senderPair.isLocked && !inputPassword}>
+            OK
+          </NavButton>
         </StackedHorizontal>
       </Modal.Actions>
     </Modal>

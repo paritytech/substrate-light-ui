@@ -29,7 +29,9 @@ const template = [
   // { role: 'fileMenu' }
   {
     label: 'File',
-    submenu: [process.platform === 'darwin' ? { role: 'close' } : { role: 'quit' }],
+    submenu: [
+      process.platform === 'darwin' ? { role: 'close' } : { role: 'quit' },
+    ],
   },
   // { role: 'editMenu' }
   {
@@ -42,7 +44,12 @@ const template = [
       { role: 'copy' },
       { role: 'paste' },
       ...(process.platform === 'darwin'
-        ? [{ role: 'pasteAndMatchStyle' }, { role: 'delete' }, { role: 'selectAll' }, { type: 'separator' }]
+        ? [
+            { role: 'pasteAndMatchStyle' },
+            { role: 'delete' },
+            { role: 'selectAll' },
+            { type: 'separator' },
+          ]
         : [{ role: 'delete' }, { type: 'separator' }, { role: 'selectAll' }]),
     ],
   },
@@ -68,7 +75,12 @@ const template = [
       { role: 'minimize' },
       { role: 'zoom' },
       ...(process.platform === 'darwin'
-        ? [{ type: 'separator' }, { role: 'front' }, { type: 'separator' }, { role: 'window' }]
+        ? [
+            { type: 'separator' },
+            { role: 'front' },
+            { type: 'separator' },
+            { role: 'window' },
+          ]
         : [{ role: 'close' }]),
     ],
   },
@@ -78,7 +90,9 @@ const template = [
       {
         label: 'Learn More',
         click(): void {
-          shell.openExternal('https://github.com/paritytech/substrate-light-ui').catch(logger.error);
+          shell
+            .openExternal('https://github.com/paritytech/substrate-light-ui')
+            .catch(logger.error);
         },
       },
     ],

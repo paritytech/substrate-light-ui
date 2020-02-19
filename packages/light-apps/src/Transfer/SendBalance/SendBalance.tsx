@@ -6,7 +6,12 @@ import { DerivedBalancesAll, DerivedFees } from '@polkadot/api-derive/types';
 import ApiRx from '@polkadot/api/rx';
 import { AccountData, Index } from '@polkadot/types/interfaces';
 import { ITuple } from '@polkadot/types/types';
-import { ApiContext, handler, KeyringContext, TxQueueContext } from '@substrate/context';
+import {
+  ApiContext,
+  handler,
+  KeyringContext,
+  TxQueueContext,
+} from '@substrate/context';
 import {
   Balance,
   Form,
@@ -43,20 +48,32 @@ function isAddressValid(api: ApiRx, address: string): boolean {
 export function SendBalance(): React.ReactElement {
   const { api } = useContext(ApiContext);
   const { enqueue } = useContext(TxQueueContext);
-  const { accounts, addresses, currentAccount, keyring, setCurrentAccount } = useContext(KeyringContext);
+  const {
+    accounts,
+    addresses,
+    currentAccount,
+    keyring,
+    setCurrentAccount,
+  } = useContext(KeyringContext);
 
   const senderAddress = currentAccount || Object.keys(accounts)[0];
 
   const [amountAsString, setAmountAsString] = useState('');
-  const [accountNonce, setAccountNonce] = useState<ITuple<[Index, AccountData]>>();
+  const [accountNonce, setAccountNonce] = useState<
+    ITuple<[Index, AccountData]>
+  >();
   const [currentBalance, setCurrentBalance] = useState<DerivedBalancesAll>();
   const [extrinsic, setExtrinsic] = useState();
   const [fees, setFees] = useState<DerivedFees>();
-  const [receiver, setReceiver] = useState<string>((Object.keys(addresses) || Object.keys(accounts))[0]);
-  const [recipientBalance, setRecipientBalance] = useState<DerivedBalancesAll>();
-  const [validationResult, setValidationResult] = useState<Either<Errors, AllExtrinsicData>>(
-    left({ fees: 'fetching fees...' })
+  const [receiver, setReceiver] = useState<string>(
+    (Object.keys(addresses) || Object.keys(accounts))[0]
   );
+  const [recipientBalance, setRecipientBalance] = useState<
+    DerivedBalancesAll
+  >();
+  const [validationResult, setValidationResult] = useState<
+    Either<Errors, AllExtrinsicData>
+  >(left({ fees: 'fetching fees...' }));
 
   const isReceiverValid = isAddressValid(api, receiver);
 
@@ -83,7 +100,14 @@ export function SendBalance(): React.ReactElement {
       });
 
     return (): void => subscription.unsubscribe();
-  }, [amountAsString, api, currentAccount, isReceiverValid, receiver, senderAddress]);
+  }, [
+    amountAsString,
+    api,
+    currentAccount,
+    isReceiverValid,
+    receiver,
+    senderAddress,
+  ]);
 
   useEffect(() => {
     const values = validate({
@@ -98,7 +122,16 @@ export function SendBalance(): React.ReactElement {
     });
 
     setValidationResult(values);
-  }, [amountAsString, accountNonce, currentBalance, fees, recipientBalance, extrinsic, currentAccount, receiver]);
+  }, [
+    amountAsString,
+    accountNonce,
+    currentBalance,
+    fees,
+    recipientBalance,
+    extrinsic,
+    currentAccount,
+    receiver,
+  ]);
 
   const handleSubmit = (): void => {
     validationResult.fold(
@@ -107,7 +140,13 @@ export function SendBalance(): React.ReactElement {
       },
       (allExtrinsicData: AllExtrinsicData) => {
         // If everything is correct, then submit the extrinsic
-        const { extrinsic, amount, allFees, allTotal, recipientAddress: rcptAddress } = allExtrinsicData;
+        const {
+          extrinsic,
+          amount,
+          allFees,
+          allTotal,
+          recipientAddress: rcptAddress,
+        } = allExtrinsicData;
 
         enqueue(extrinsic, {
           amount,
@@ -158,7 +197,9 @@ export function SendBalance(): React.ReactElement {
           <Stacked alignItems='flex-start' justifyContent='flex-start'>
             <SubHeader textAlign='left'>Recipient Address:</SubHeader>
             <Input fluid onChange={handler(setReceiver)} value={receiver} />
-            {isReceiverValid && <Balance address={receiver} orientation='vertical' />}
+            {isReceiverValid && (
+              <Balance address={receiver} orientation='vertical' />
+            )}
           </Stacked>
         </WrapperDiv>
 

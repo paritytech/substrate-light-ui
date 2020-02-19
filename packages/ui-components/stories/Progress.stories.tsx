@@ -15,6 +15,9 @@ storiesOf('Progress Bar', module)
   .addDecorator(withTheme)
   .add('Primary', () => (
     <WrapperDiv>
-      <Progress disabled={boolean('disable', false)} percent={number('percent complete', 50)} />
+      <Progress
+        disabled={boolean('disable', false)}
+        percent={number('percent complete', 50)}
+      />
     </WrapperDiv>
   ));

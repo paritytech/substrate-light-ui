@@ -44,7 +44,8 @@ function createWindow(): void {
       plugins: false,
       sandbox: true, // isolate all BrowserWindow instance environments
       safeDialogs: true,
-      safeDialogsMessage: 'Electron consecutive dialog protection was triggered',
+      safeDialogsMessage:
+        'Electron consecutive dialog protection was triggered',
       webSecurity: true, // https://electronjs.org/docs/tutorial/security#5-do-not-disable-websecurity
       webviewTag: false, // Associated with `will-attach-webview`
     },

@@ -6,7 +6,12 @@ import { Keyring } from '@polkadot/ui-keyring';
 import { mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
 import { Either, left, right } from 'fp-ts/lib/Either';
 
-import { PhrasePartialRewrite, PhrasePartialRewriteError, UserInput, UserInputError } from './types';
+import {
+  PhrasePartialRewrite,
+  PhrasePartialRewriteError,
+  UserInput,
+  UserInputError,
+} from './types';
 
 /**
  * Fischer Yates shuffle numbers between 0 and @max
@@ -36,7 +41,10 @@ export function getRandomInts(max: number): number[] {
 /**
  * Derive public address from mnemonic key
  */
-export function generateAddressFromMnemonic(keyring: Keyring, mnemonic: string): string {
+export function generateAddressFromMnemonic(
+  keyring: Keyring,
+  mnemonic: string
+): string {
   const keypair = naclKeypairFromSeed(mnemonicToSeed(mnemonic));
 
   return keyring.encodeAddress(keypair.publicKey);
@@ -45,7 +53,11 @@ export function generateAddressFromMnemonic(keyring: Keyring, mnemonic: string):
 /**
  * Validate user inputs
  */
-export function validateMeta(values: UserInput, step: string, whichAccount: string): Either<UserInputError, UserInput> {
+export function validateMeta(
+  values: UserInput,
+  step: string,
+  whichAccount: string
+): Either<UserInputError, UserInput> {
   const errors = {} as UserInputError;
 
   if (whichAccount) {
@@ -65,7 +77,8 @@ export function validateMeta(values: UserInput, step: string, whichAccount: stri
   }
   // Should not tag an account as both a stash and controller
   if (values.tags.includes('stash') && values.tags.includes('controller')) {
-    errors.tags = 'Each account should be either a Stash or a Controller, not both.';
+    errors.tags =
+      'Each account should be either a Stash or a Controller, not both.';
   }
 
   return Object.keys(errors).length ? left(errors) : right(values);
@@ -83,7 +96,8 @@ export function validateRewrite(
   const { firstWord, secondWord, thirdWord, fourthWord } = values;
 
   if (!firstWord || !secondWord || !thirdWord || !fourthWord) {
-    errors.emptyFields = 'All fields must be set to be sure you copied the phrase correctly.';
+    errors.emptyFields =
+      'All fields must be set to be sure you copied the phrase correctly.';
   }
 
   if (

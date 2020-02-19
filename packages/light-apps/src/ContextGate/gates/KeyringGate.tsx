@@ -9,7 +9,11 @@ import React, { useContext } from 'react';
 /**
  * A gate that shows a loading screen if the node is not connected yet
  */
-export function KeyringGate({ children }: { children?: React.ReactElement }): React.ReactElement | null {
+export function KeyringGate({
+  children,
+}: {
+  children?: React.ReactElement;
+}): React.ReactElement | null {
   const { isKeyringReady } = useContext(KeyringContext);
 
   return (

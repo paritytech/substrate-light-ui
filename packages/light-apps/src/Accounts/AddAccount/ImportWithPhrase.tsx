@@ -69,12 +69,21 @@ export function ImportWithPhrase(props: Props): React.ReactElement {
     { key: '1', text: 'controller', value: 'Controller' },
   ]);
 
-  const handleAddTag = (_event: React.SyntheticEvent, { value }: DropdownProps): void => {
+  const handleAddTag = (
+    _event: React.SyntheticEvent,
+    { value }: DropdownProps
+  ): void => {
     const valueStr = value as string;
-    setTagOptions([...tagOptions, { key: valueStr, text: valueStr, value: valueStr }]);
+    setTagOptions([
+      ...tagOptions,
+      { key: valueStr, text: valueStr, value: valueStr },
+    ]);
   };
 
-  const handleOnChange = (_event: React.SyntheticEvent, { value }: DropdownProps): void => {
+  const handleOnChange = (
+    _event: React.SyntheticEvent,
+    { value }: DropdownProps
+  ): void => {
     setTags(value as Tags);
   };
 
@@ -84,7 +93,12 @@ export function ImportWithPhrase(props: Props): React.ReactElement {
         tryCatch2v(
           () => {
             // This is inside tryCatch, because it might fail
-            keyring.addUri(recoveryPhrase.trim(), password, { name, ...tags }, 'sr25519');
+            keyring.addUri(
+              recoveryPhrase.trim(),
+              password,
+              { name, ...tags },
+              'sr25519'
+            );
             history.push('/');
           },
           err => ({ createAccount: (err as Error).message })
@@ -121,13 +135,24 @@ export function ImportWithPhrase(props: Props): React.ReactElement {
       <SubHeader> Import Account from Mnemonic Recovery Phrase </SubHeader>
       <WrapperDiv>
         <SubHeader>Phrase</SubHeader>
-        <Input fluid onChange={handler(setRecoveryPhrase)} size='huge' type='text' value={recoveryPhrase} />
+        <Input
+          fluid
+          onChange={handler(setRecoveryPhrase)}
+          size='huge'
+          type='text'
+          value={recoveryPhrase}
+        />
         <Margin top />
         <SubHeader>Name</SubHeader>
         <Input fluid onChange={handler(setName)} type='text' value={name} />
         <Margin top />
         <SubHeader>Password</SubHeader>
-        <Input fluid onChange={handler(setPassword)} type='password' value={password} />
+        <Input
+          fluid
+          onChange={handler(setPassword)}
+          type='password'
+          value={password}
+        />
         {renderSetTags()}
       </WrapperDiv>
       <Margin top />

@@ -56,7 +56,11 @@ export function displayStatus(health: HealthContextType): Status {
 /**
  * A gate that shows a loading screen if the node is still syncing
  */
-export function HealthGate({ children }: { children?: React.ReactElement }): React.ReactElement {
+export function HealthGate({
+  children,
+}: {
+  children?: React.ReactElement;
+}): React.ReactElement {
   const health = useContext(HealthContext);
   const status = displayStatus(health);
 

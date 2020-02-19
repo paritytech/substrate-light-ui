@@ -3,7 +3,9 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import SUICard, { CardProps as SUICardProps } from 'semantic-ui-react/dist/commonjs/views/Card';
+import SUICard, {
+  CardProps as SUICardProps,
+} from 'semantic-ui-react/dist/commonjs/views/Card';
 import styled from 'styled-components';
 
 type CardProps = SUICardProps;

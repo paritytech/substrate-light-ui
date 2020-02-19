@@ -18,5 +18,12 @@ interface ProgressProps {
 export function Progress(props: ProgressProps): React.ReactElement {
   const { color = 'blue', disabled, percent, size } = props;
 
-  return <SUIProgress color={color} disabled={disabled} percent={percent} size={size} />;
+  return (
+    <SUIProgress
+      color={color}
+      disabled={disabled}
+      percent={percent}
+      size={size}
+    />
+  );
 }

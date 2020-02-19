@@ -5,6 +5,8 @@
 import { KeyringContextProvider } from '@substrate/context';
 import React from 'react';
 
-export const withKeyring = (storyFn: () => React.ReactElement): React.ReactElement => {
+export const withKeyring = (
+  storyFn: () => React.ReactElement
+): React.ReactElement => {
   return <KeyringContextProvider>{storyFn()}</KeyringContextProvider>;
 };

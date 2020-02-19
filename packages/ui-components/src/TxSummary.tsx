@@ -35,7 +35,9 @@ export function TxSummary({
     <StackedHorizontal>
       {methodCall} {amount.toString()} {tokenSymbol} from
       {smallIcon(senderAddress)}
-      {recipientAddress && <React.Fragment>to {smallIcon(recipientAddress)}</React.Fragment>}
+      {recipientAddress && (
+        <React.Fragment>to {smallIcon(recipientAddress)}</React.Fragment>
+      )}
     </StackedHorizontal>
   );
 }

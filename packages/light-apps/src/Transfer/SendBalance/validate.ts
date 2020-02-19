@@ -8,7 +8,14 @@ import BN from 'bn.js';
 import { Either, left, right } from 'fp-ts/lib/Either';
 import { none, Option, some } from 'fp-ts/lib/Option';
 
-import { AllExtrinsicData, Errors, SubResults, UserInputs, WithAmount, WithExtrinsic } from './types';
+import {
+  AllExtrinsicData,
+  Errors,
+  SubResults,
+  UserInputs,
+  WithAmount,
+  WithExtrinsic,
+} from './types';
 
 const MAX_SIZE_MB = 10;
 const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024;
@@ -46,30 +53,52 @@ function validateAmount(
 export function validateDerived(
   values: SubResults & UserInputs & WithExtrinsic & WithAmount
 ): Either<Errors, AllExtrinsicData> {
-  const { accountNonce, amount = new BN(0), currentBalance, extrinsic, fees, recipientBalance } = values;
+  const {
+    accountNonce,
+    amount = new BN(0),
+    currentBalance,
+    extrinsic,
+    fees,
+    recipientBalance,
+  } = values;
 
-  const txLength = SIGNATURE_SIZE + compactToU8a(accountNonce[0]).length + extrinsic.encodedLength;
-  const allFees = fees.transactionBaseFee.add(fees.transactionByteFee.muln(txLength));
+  const txLength =
+    SIGNATURE_SIZE +
+    compactToU8a(accountNonce[0]).length +
+    extrinsic.encodedLength;
+  const allFees = fees.transactionBaseFee.add(
+    fees.transactionByteFee.muln(txLength)
+  );
 
   let isCreation = false;
   let isNoEffect = false;
 
   if (recipientBalance !== undefined) {
-    isCreation = recipientBalance.votingBalance.isZero() && fees.creationFee.gtn(0);
-    isNoEffect = amount.add(recipientBalance.votingBalance).lte(fees.existentialDeposit);
+    isCreation =
+      recipientBalance.votingBalance.isZero() && fees.creationFee.gtn(0);
+    isNoEffect = amount
+      .add(recipientBalance.votingBalance)
+      .lte(fees.existentialDeposit);
   }
 
-  const allTotal = amount.add(allFees).add(isCreation ? fees.creationFee : new BN(0));
+  const allTotal = amount
+    .add(allFees)
+    .add(isCreation ? fees.creationFee : new BN(0));
 
   const hasAvailable = currentBalance.freeBalance.gte(allTotal);
-  const isRemovable = currentBalance.votingBalance.sub(allTotal).lte(fees.existentialDeposit);
-  const isReserved = currentBalance.freeBalance.isZero() && currentBalance.reservedBalance.gtn(0);
+  const isRemovable = currentBalance.votingBalance
+    .sub(allTotal)
+    .lte(fees.existentialDeposit);
+  const isReserved =
+    currentBalance.freeBalance.isZero() &&
+    currentBalance.reservedBalance.gtn(0);
   const overLimit = txLength >= MAX_SIZE_BYTES;
 
   const errors = {} as Errors;
 
   if (!hasAvailable) {
-    errors.amount = 'The selected account does not have the required balance available for this transaction.';
+    errors.amount =
+      'The selected account does not have the required balance available for this transaction.';
   }
   if (overLimit) {
     errors.amount = `This transaction will be rejected by the node as it is greater than the maximum size of ${MAX_SIZE_MB}MB.`;
@@ -102,7 +131,8 @@ function validateExtrinsic() {
     const errors = {} as Errors;
     if (!extrinsic) {
       // FIXME: code should never reach here
-      errors.extrinsic = 'Extrinsic was not defined. Please refresh and try again or raise an issue.';
+      errors.extrinsic =
+        'Extrinsic was not defined. Please refresh and try again or raise an issue.';
       left(errors);
     }
 
@@ -116,7 +146,14 @@ function validateExtrinsic() {
 function validateSubResults(
   values: Partial<SubResults & WithExtrinsic & UserInputs>
 ): Either<Errors, SubResults & WithExtrinsic & UserInputs> {
-  const { accountNonce, currentBalance, extrinsic, fees, recipientBalance, ...rest } = values;
+  const {
+    accountNonce,
+    currentBalance,
+    extrinsic,
+    fees,
+    recipientBalance,
+    ...rest
+  } = values;
   const errors = {} as Errors;
 
   if (!accountNonce) {
@@ -132,8 +169,13 @@ function validateSubResults(
   }
 
   // FIXME: check for more methods as necessary
-  if (!recipientBalance && extrinsic && extrinsic.method.methodName === 'transfer') {
-    errors.recipientBalance = "Please wait while we fetch the recipient's balance.";
+  if (
+    !recipientBalance &&
+    extrinsic &&
+    extrinsic.method.methodName === 'transfer'
+  ) {
+    errors.recipientBalance =
+      "Please wait while we fetch the recipient's balance.";
   }
 
   return Object.keys(errors).length
@@ -154,14 +196,24 @@ function validateSubResults(
 function validateUserInputs(
   values: Partial<SubResults & UserInputs & WithExtrinsic>
 ): Either<Errors, Partial<SubResults> & UserInputs> {
-  const { amountAsString, currentAccount, recipientAddress, extrinsic, ...rest } = values;
+  const {
+    amountAsString,
+    currentAccount,
+    recipientAddress,
+    extrinsic,
+    ...rest
+  } = values;
   const errors = {} as Errors;
 
   if (!currentAccount) {
     errors.currentAccount = 'Please enter a sender account.';
   }
 
-  if (!recipientAddress && extrinsic && extrinsic.method.methodName === 'transfer') {
+  if (
+    !recipientAddress &&
+    extrinsic &&
+    extrinsic.method.methodName === 'transfer'
+  ) {
     errors.recipientAddress = 'Please enter a recipient address.';
   }
 
@@ -190,7 +242,14 @@ function validateUserInputs(
  * @see https://github.com/polkadot-js/apps/blob/master/packages/ui-signer/src/Checks/index.tsx#L158-L168
  */
 export function validateWarnings(values: AllExtrinsicData): Option<string[]> {
-  const { fees, hasAvailable, isCreation, isNoEffect, isRemovable, isReserved } = values;
+  const {
+    fees,
+    hasAvailable,
+    isCreation,
+    isNoEffect,
+    isRemovable,
+    isReserved,
+  } = values;
 
   const warnings = [];
 
@@ -201,7 +260,9 @@ export function validateWarnings(values: AllExtrinsicData): Option<string[]> {
   }
 
   if (isNoEffect) {
-    warnings.push('The final recipient balance is less than the existential amount and will not be reflected.');
+    warnings.push(
+      'The final recipient balance is less than the existential amount and will not be reflected.'
+    );
   }
 
   if (isCreation) {
@@ -211,7 +272,9 @@ export function validateWarnings(values: AllExtrinsicData): Option<string[]> {
   }
 
   if (isReserved) {
-    warnings.push('This account does have a reserved/locked balance, not taken into account');
+    warnings.push(
+      'This account does have a reserved/locked balance, not taken into account'
+    );
   }
 
   return warnings.length > 0 ? some(warnings) : none;
@@ -221,7 +284,9 @@ export function validateWarnings(values: AllExtrinsicData): Option<string[]> {
  * Validate everything. The order of validation should be easily readable
  * from the `.chain()` syntax.
  */
-export function validate(values: Partial<UserInputs & WithExtrinsic & SubResults>): Either<Errors, AllExtrinsicData> {
+export function validate(
+  values: Partial<UserInputs & WithExtrinsic & SubResults>
+): Either<Errors, AllExtrinsicData> {
   return validateUserInputs(values)
     .chain(validateSubResults)
     .chain(validateAmount)

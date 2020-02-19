@@ -9,7 +9,11 @@ import React, { useContext } from 'react';
 /**
  * A gate that shows a loading screen if the node is not connected yet
  */
-export function SystemGate({ children }: { children?: React.ReactElement }): React.ReactElement {
+export function SystemGate({
+  children,
+}: {
+  children?: React.ReactElement;
+}): React.ReactElement {
   const { isSystemReady } = useContext(SystemContext);
 
   return (

@@ -2,7 +2,11 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { DerivedBalancesAll, DerivedFees, DerivedStakingAccount } from '@polkadot/api-derive/types';
+import {
+  DerivedBalancesAll,
+  DerivedFees,
+  DerivedStakingAccount,
+} from '@polkadot/api-derive/types';
 import { SubmittableExtrinsic } from '@polkadot/api/submittable/types';
 import { AccountData, Balance, Index } from '@polkadot/types/interfaces';
 import { ITuple } from '@polkadot/types/types';
@@ -57,10 +61,16 @@ export interface WithDerived {
 /**
  * Everything above
  */
-export type AllExtrinsicData = SubResults & UserInputs & WithExtrinsic & WithAmount & WithDerived;
+export type AllExtrinsicData = SubResults &
+  UserInputs &
+  WithExtrinsic &
+  WithAmount &
+  WithDerived;
 
 /**
  * Form errors and warnings
  */
-export type Errors = Partial<Record<keyof (SubResults & UserInputs & WithExtrinsic & WithAmount), string>>;
+export type Errors = Partial<
+  Record<keyof (SubResults & UserInputs & WithExtrinsic & WithAmount), string>
+>;
 export type Warnings = string[];

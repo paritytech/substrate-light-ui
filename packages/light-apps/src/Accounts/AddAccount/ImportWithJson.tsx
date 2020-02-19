@@ -52,19 +52,30 @@ export function ImportWithJson(props: Props): React.ReactElement {
     }
   };
 
-  const handleAddTag = (_event: React.SyntheticEvent, { value }: DropdownProps): void => {
+  const handleAddTag = (
+    _event: React.SyntheticEvent,
+    { value }: DropdownProps
+  ): void => {
     const valueStr = value as string;
-    setTagOptions([...tagOptions, { key: valueStr, text: valueStr, value: valueStr }]);
+    setTagOptions([
+      ...tagOptions,
+      { key: valueStr, text: valueStr, value: valueStr },
+    ]);
   };
 
-  const handleOnChange = (_event: React.SyntheticEvent, { value }: DropdownProps): void => {
+  const handleOnChange = (
+    _event: React.SyntheticEvent,
+    { value }: DropdownProps
+  ): void => {
     setTags(value as Tags);
   };
 
   const handleFileUploaded = (file: string | null): void => {
     try {
       if (!file) {
-        throw new Error('File was empty. Make sure you uploaded the correct file and try again.');
+        throw new Error(
+          'File was empty. Make sure you uploaded the correct file and try again.'
+        );
       }
 
       checkAndAddTags(JSON.parse(file));
@@ -84,7 +95,10 @@ export function ImportWithJson(props: Props): React.ReactElement {
       const json = JSON.parse(jsonString);
 
       const isAlreadyInKeyring =
-        keyring.getAccounts().filter((account: KeyringAddress) => account.address === json.address).length > 0;
+        keyring
+          .getAccounts()
+          .filter((account: KeyringAddress) => account.address === json.address)
+          .length > 0;
 
       if (isAlreadyInKeyring) {
         setErrorText('You have already unlocked this account in your keyring!');
@@ -134,7 +148,12 @@ export function ImportWithJson(props: Props): React.ReactElement {
       ) : (
         <>
           <WrapperDiv>
-            <Input fluid label='Password' onChange={handler(setInputPassword)} type='password' />
+            <Input
+              fluid
+              label='Password'
+              onChange={handler(setInputPassword)}
+              type='password'
+            />
             <Margin top />
             {renderSetTags()}
           </WrapperDiv>

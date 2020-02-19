@@ -12,7 +12,10 @@ import { FadedText } from './Shared.styles';
 
 type Props = {
   accounts?: InjectedAccountWithMeta[];
-  onSelectAccount?: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, data: CardProps) => void;
+  onSelectAccount?: (
+    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+    data: CardProps
+  ) => void;
 };
 
 function renderEmpty(): React.ReactElement {
@@ -54,5 +57,7 @@ export function AccountsList(props: Props): React.ReactElement {
     );
   };
 
-  return <Container>{accounts ? renderAccountsListItem() : renderEmpty()}</Container>;
+  return (
+    <Container>{accounts ? renderAccountsListItem() : renderEmpty()}</Container>
+  );
 }

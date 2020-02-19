@@ -3,7 +3,13 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { Color } from './globalStyle';
-import { FlexAlign, FlexDirection, FlexJustify, FontSize, MarginSize } from './types';
+import {
+  FlexAlign,
+  FlexDirection,
+  FlexJustify,
+  FontSize,
+  MarginSize,
+} from './types';
 
 export interface HeaderProps {
   color?: Color;
@@ -23,7 +29,8 @@ export interface FlexItemProps {
   padding?: MarginSize;
 }
 
-export interface StyledNavButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface StyledNavButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   negative?: boolean;
 }
 
