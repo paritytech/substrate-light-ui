@@ -13,4 +13,9 @@ import { withTheme } from './customDecorators';
 storiesOf('Fab', module)
   .addDecorator(withKnobs)
   .addDecorator(withTheme)
-  .add('Fab', () => <Fab onClick={action('clicked')} type={select('fab type', ['add', 'send'], 'send')} />);
+  .add('Fab', () => (
+    <Fab
+      onClick={action('clicked')}
+      type={select('fab type', ['add', 'send'], 'send')}
+    />
+  ));

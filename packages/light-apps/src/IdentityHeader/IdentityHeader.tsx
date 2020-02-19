@@ -3,7 +3,13 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { KeyringContext } from '@substrate/context';
-import { Balance, CopyButton, Icon, Margin, Menu } from '@substrate/ui-components';
+import {
+  Balance,
+  CopyButton,
+  Icon,
+  Margin,
+  Menu,
+} from '@substrate/ui-components';
 import React, { useContext } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 
@@ -23,7 +29,11 @@ export function IdentityHeader(props: Props): React.ReactElement | null {
     <Menu stackable widths={6}>
       <Menu.Item>
         Current Account:
-        <InputAddress fluid onChangeAddress={setCurrentAccount} value={currentAccount} />
+        <InputAddress
+          fluid
+          onChangeAddress={setCurrentAccount}
+          value={currentAccount}
+        />
         <CopyButton value={currentAccount} />
       </Menu.Item>
       <Menu.Item>

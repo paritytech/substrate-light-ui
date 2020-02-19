@@ -18,7 +18,8 @@ import { Routes } from './Routes';
 // FIXME Don't use any, but we have the following error:
 // JSX element type 'Router' does not have any construct or call signatures.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const Router: any = process.env.NODE_ENV === 'production' ? MemoryRouter : BrowserRouter;
+const Router: any =
+  process.env.NODE_ENV === 'production' ? MemoryRouter : BrowserRouter;
 
 // Let this div take up whole screen
 const FullScreen = styled.div`

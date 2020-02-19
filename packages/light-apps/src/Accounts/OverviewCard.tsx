@@ -45,11 +45,16 @@ export function AccountsOverviewCard(props: Props): React.ReactElement {
     try {
       const pair = keyring.getPair(address);
       const json = keyring.backupAccount(pair, password);
-      const blob = new Blob([JSON.stringify(json)], { type: 'application/json; charset=utf-8' });
+      const blob = new Blob([JSON.stringify(json)], {
+        type: 'application/json; charset=utf-8',
+      });
 
       FileSaver.saveAs(blob, `${address}.json`);
 
-      enqueue({ content: 'Successfully backed up account to json keyfile!', type: 'success' });
+      enqueue({
+        content: 'Successfully backed up account to json keyfile!',
+        type: 'success',
+      });
     } catch (e) {
       enqueue({ content: e.message, type: 'error' });
     }
@@ -86,12 +91,20 @@ export function AccountsOverviewCard(props: Props): React.ReactElement {
       <WithSpaceAround>
         <SubHeader>Please Confirm You Want to Backup this Account</SubHeader>
         <FadedText>
-          By pressing confirm you will be downloading a JSON keyfile that can later be used to unlock your account.
+          By pressing confirm you will be downloading a JSON keyfile that can
+          later be used to unlock your account.
         </FadedText>
         <Card.Description>
           <Stacked>
-            <FadedText>Please encrypt your account first with the account&apos;s password.</FadedText>
-            <Input onChange={handler(setPassword)} type='password' value={password} />
+            <FadedText>
+              Please encrypt your account first with the account&apos;s
+              password.
+            </FadedText>
+            <Input
+              onChange={handler(setPassword)}
+              type='password'
+              value={password}
+            />
             <StackedHorizontal>
               <WithSpaceBetween>
                 <StyledLinkButton onClick={handleCancel}>
@@ -115,9 +128,15 @@ export function AccountsOverviewCard(props: Props): React.ReactElement {
       <WithSpaceAround>
         <Stacked>
           <SubHeader>Please Confirm You Want to Forget this Account</SubHeader>
-          <strong>By pressing confirm, you will be removing this account from your Saved Accounts.</strong>
+          <strong>
+            By pressing confirm, you will be removing this account from your
+            Saved Accounts.
+          </strong>
           <Margin top />
-          <FadedText>You can restore this later from your mnemonic phrase or json backup file.</FadedText>
+          <FadedText>
+            You can restore this later from your mnemonic phrase or json backup
+            file.
+          </FadedText>
           <Card.Description>
             <StackedHorizontal>
               <StyledLinkButton onClick={handleCancel}>
@@ -142,7 +161,9 @@ export function AccountsOverviewCard(props: Props): React.ReactElement {
           <>
             <Card.Content>
               <SubHeader>Are You Sure?</SubHeader>
-              {confirmScreen === 'backup' ? renderConfirmBackup() : renderConfirmForget()}
+              {confirmScreen === 'backup'
+                ? renderConfirmBackup()
+                : renderConfirmForget()}
             </Card.Content>
           </>
         ) : (

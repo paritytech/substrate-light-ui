@@ -21,7 +21,11 @@ export function runSubstrate(): void {
   // Run light client
   // Allow connections from localhost in dev mode, or from file://
   // (the index.html) in prod mode
-  const substrateFlags = ['--light', '--rpc-cors', IS_PROD ? 'file://' : REACT_DEV_LOCALHOST];
+  const substrateFlags = [
+    '--light',
+    '--rpc-cors',
+    IS_PROD ? 'file://' : REACT_DEV_LOCALHOST,
+  ];
   logger.info(`Running ${'`'}substrate ${substrateFlags.join(' ')}${'`'}`);
   const substrate = spawn(bundledPath, substrateFlags);
 
@@ -36,7 +40,9 @@ export function runSubstrate(): void {
     logger.error(`Substrate process errored: ${error.toString()}`);
   });
   substrate.on('exit', code => {
-    logger.debug(`Substrate process exited with code: ${code && code.toString()}`);
+    logger.debug(
+      `Substrate process exited with code: ${code && code.toString()}`
+    );
   });
 
   substrateProc = substrate;

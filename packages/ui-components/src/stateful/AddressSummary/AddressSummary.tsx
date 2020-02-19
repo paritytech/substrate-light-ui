@@ -6,7 +6,13 @@ import IdentityIcon from '@polkadot/react-identicon';
 import React from 'react';
 
 import { Margin } from '../../Margin';
-import { DynamicSizeText, FadedText, Stacked, StackedHorizontal, SubHeader } from '../../Shared.styles';
+import {
+  DynamicSizeText,
+  FadedText,
+  Stacked,
+  StackedHorizontal,
+  SubHeader,
+} from '../../Shared.styles';
 import { FlexAlign, FlexJustify, FontSize } from '../../types';
 import { Balance } from '../Balance';
 import { OrientationType, SizeType } from './types';
@@ -38,7 +44,9 @@ const ICON_SIZES = {
 };
 
 function renderIcon(address: string, size: SizeType): React.ReactElement {
-  return <IdentityIcon value={address} theme={'substrate'} size={ICON_SIZES[size]} />;
+  return (
+    <IdentityIcon value={address} theme={'substrate'} size={ICON_SIZES[size]} />
+  );
 }
 
 type FontSizeType = {
@@ -58,7 +66,11 @@ function renderAccountType(type: string): React.ReactElement {
 
 function renderBadge(type: string): React.ReactElement {
   // FIXME make it an actual badge
-  return type === 'nominator' ? <SubHeader>nominator</SubHeader> : <SubHeader>validator</SubHeader>;
+  return type === 'nominator' ? (
+    <SubHeader>nominator</SubHeader>
+  ) : (
+    <SubHeader>validator</SubHeader>
+  );
 }
 
 function renderBondingPair(bondingPair: string): React.ReactElement {
@@ -97,7 +109,10 @@ function renderDetails(
   return (
     <>
       <Stacked alignItems='flex-start'>
-        <DynamicSizeText fontSize={FONT_SIZES[size] as FontSize}> {noPlaceholderName ? null : name} </DynamicSizeText>
+        <DynamicSizeText fontSize={FONT_SIZES[size] as FontSize}>
+          {' '}
+          {noPlaceholderName ? null : name}{' '}
+        </DynamicSizeText>
         {withShortAddress && renderShortAddress(address)}
         {type && renderAccountType(type)}
       </Stacked>
@@ -134,7 +149,10 @@ export function AddressSummary(props: AddressSummaryProps): React.ReactElement {
         {renderDetails(address, props)}
       </Stacked>
     ) : (
-      <StackedHorizontal alignItems={alignItems} justifyContent={justifyContent}>
+      <StackedHorizontal
+        alignItems={alignItems}
+        justifyContent={justifyContent}
+      >
         {renderIcon(address, size)}
         <Margin left />
         {renderDetails(address, props)}

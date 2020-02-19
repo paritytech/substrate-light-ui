@@ -33,7 +33,11 @@ function downloadSubstrate() {
   console.error(
     '`downloadSubstrate()` unimplemented. See https://github.com/paritytech/substrate-light-ui/issues/313.'
   );
-  console.error(`As a workaround, please put manually the substrate binary in ${path.resolve(BUNDLED_PATH)}`);
+  console.error(
+    `As a workaround, please put manually the substrate binary in ${path.resolve(
+      BUNDLED_PATH
+    )}`
+  );
 }
 
 if (existsSync(BUNDLED_PATH)) {
@@ -48,10 +52,18 @@ if (existsSync(BUNDLED_PATH)) {
       }
 
       if (!semver.satisfies(version, versionRequirement)) {
-        console.log('Bundled Parity Substrate %s is older than required version %s', version, versionRequirement);
+        console.log(
+          'Bundled Parity Substrate %s is older than required version %s',
+          version,
+          versionRequirement
+        );
         return downloadSubstrate();
       } else {
-        console.log('Bundled Parity Substrate %s matches required version %s', version, versionRequirement);
+        console.log(
+          'Bundled Parity Substrate %s matches required version %s',
+          version,
+          versionRequirement
+        );
       }
     })
     .catch(e => {

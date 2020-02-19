@@ -4,7 +4,14 @@
 
 import React from 'react';
 
-import { Input, Labelled, Margin, Stacked, StackedHorizontal, WrapperDiv } from './index';
+import {
+  Input,
+  Labelled,
+  Margin,
+  Stacked,
+  StackedHorizontal,
+  WrapperDiv,
+} from './index';
 
 interface Props {
   firstWord: string;

@@ -6,7 +6,12 @@ import { Text } from '@polkadot/types';
 import { Header, Health } from '@polkadot/types/interfaces';
 import substrateLogo from '@polkadot/ui-assets/polkadot-circle.svg';
 import { SystemContext } from '@substrate/context';
-import { Circle, Container, Margin, StackedHorizontal } from '@substrate/ui-components';
+import {
+  Circle,
+  Container,
+  Margin,
+  StackedHorizontal,
+} from '@substrate/ui-components';
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -37,7 +42,11 @@ function renderHealth(header?: Header, health?: Health): React.ReactElement {
   return (
     <div>
       <StackedHorizontal>
-        {health.isSyncing.isTrue ? <Circle fill={GREEN} radius={10} /> : <Circle fill={RED} radius={10} />}
+        {health.isSyncing.isTrue ? (
+          <Circle fill={GREEN} radius={10} />
+        ) : (
+          <Circle fill={RED} radius={10} />
+        )}
         <Margin left='small' />
         <p>Status: {health.isSyncing.isTrue ? 'Syncing' : 'Synced'}</p>
       </StackedHorizontal>

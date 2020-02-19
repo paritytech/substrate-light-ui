@@ -2,11 +2,26 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { KeyringContext, PendingExtrinsic, TxQueueContext } from '@substrate/context';
-import { FlexItem, Icon, NavButton, Stacked, SubHeader, TxDetails, TxSummary } from '@substrate/ui-components';
+import {
+  KeyringContext,
+  PendingExtrinsic,
+  TxQueueContext,
+} from '@substrate/context';
+import {
+  FlexItem,
+  Icon,
+  NavButton,
+  Stacked,
+  SubHeader,
+  TxDetails,
+  TxSummary,
+} from '@substrate/ui-components';
 import React, { useContext } from 'react';
 
-function renderDetails(currentAccount: string, txQueue: PendingExtrinsic[]): React.ReactElement {
+function renderDetails(
+  currentAccount: string,
+  txQueue: PendingExtrinsic[]
+): React.ReactElement {
   const {
     details: { allFees, allTotal, amount, recipientAddress },
   } = txQueue[0];
@@ -22,7 +37,10 @@ function renderDetails(currentAccount: string, txQueue: PendingExtrinsic[]): Rea
   );
 }
 
-function renderSummary(currentAccount: string, txQueue: PendingExtrinsic[]): React.ReactElement {
+function renderSummary(
+  currentAccount: string,
+  txQueue: PendingExtrinsic[]
+): React.ReactElement {
   const {
     details: { amount, recipientAddress },
     extrinsic: {
@@ -67,12 +85,16 @@ export function TxQueue(): React.ReactElement | null {
 
   // The parent component will redirect to SendBalance if empty txQueue
   if (!txQueue.length) {
-    throw new Error('Unreachable code, the parent component will redirect to SendBalance if empty txQueue. qed.');
+    throw new Error(
+      'Unreachable code, the parent component will redirect to SendBalance if empty txQueue. qed.'
+    );
   }
 
   // The parent component will redirect to SendBalance if empty txQueue
   if (!currentAccount) {
-    throw new Error('Unreachable code, parent will redirect away from transfer if no currentAccount. qed.');
+    throw new Error(
+      'Unreachable code, parent will redirect away from transfer if no currentAccount. qed.'
+    );
   }
 
   return (
@@ -89,7 +111,10 @@ export function TxQueue(): React.ReactElement | null {
         {txQueue[0].status.isFinalized ? (
           <NavButton onClick={clear}>New Transfer</NavButton>
         ) : (
-          <p>Please wait until the transaction is validated before making a new transfer..</p>
+          <p>
+            Please wait until the transaction is validated before making a new
+            transfer..
+          </p>
         )}
       </FlexItem>
     </Stacked>

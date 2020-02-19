@@ -17,14 +17,24 @@ export function Restore(props: Props): React.ReactElement {
   return (
     <>
       <Menu secondary>
-        <Menu.Item active={screen === 'JSON'} onClick={(): void => setScreen('JSON')}>
+        <Menu.Item
+          active={screen === 'JSON'}
+          onClick={(): void => setScreen('JSON')}
+        >
           With JSON
         </Menu.Item>
-        <Menu.Item active={screen === 'Phrase'} onClick={(): void => setScreen('Phrase')}>
+        <Menu.Item
+          active={screen === 'Phrase'}
+          onClick={(): void => setScreen('Phrase')}
+        >
           With Phrase
         </Menu.Item>
       </Menu>
-      {screen === 'JSON' ? <ImportWithJson {...props} /> : <ImportWithPhrase {...props} />}
+      {screen === 'JSON' ? (
+        <ImportWithJson {...props} />
+      ) : (
+        <ImportWithPhrase {...props} />
+      )}
     </>
   );
 }

@@ -75,10 +75,14 @@ export const WithPadding = styled.div`
 `;
 
 export const Header = styled.h2<HeaderProps>`
-  color: ${(props): string => (props.color ? polkadotOfficialTheme[props.color] : polkadotOfficialTheme.grey)};
+  color: ${(props): string =>
+    props.color
+      ? polkadotOfficialTheme[props.color]
+      : polkadotOfficialTheme.grey};
   font-weight: 300;
   font-size: ${FONT_SIZES.big};
-  margin: ${(props): string => (props.margin ? MARGIN_SIZES[props.margin] : `${MARGIN_SIZES.big} 0`)};
+  margin: ${(props): string =>
+    props.margin ? MARGIN_SIZES[props.margin] : `${MARGIN_SIZES.big} 0`};
   padding: ${MARGIN_SIZES.small} ${MARGIN_SIZES.medium};
   text-align: ${(props): string => props.textAlign || 'center'};
 `;
@@ -104,7 +108,10 @@ export const RefreshButton = styled.button`
 export const StyledNavLink = styled.span<StyledNavLinkProps>`
   background: none;
   border: none;
-  color: ${(props): string => (props.inverted ? polkadotOfficialTheme.white : polkadotOfficialTheme.hotPink)};
+  color: ${(props): string =>
+    props.inverted
+      ? polkadotOfficialTheme.white
+      : polkadotOfficialTheme.hotPink};
   font-size: ${FONT_SIZES.medium};
   font-weight: 300;
 
@@ -158,7 +165,11 @@ export const StyledNavButton = styled.button<StyledNavButtonProps>`
 `;
 
 export const VoteNayButton = styled.button`
-  background-image: linear-gradient(107deg, ${polkadotOfficialTheme.hotPink}, ${polkadotOfficialTheme.hotPink});
+  background-image: linear-gradient(
+    107deg,
+    ${polkadotOfficialTheme.hotPink},
+    ${polkadotOfficialTheme.hotPink}
+  );
   border: none;
   border-radius: 8px;
   box-shadow: 0 4px 6px 0 rgba(${polkadotOfficialTheme.black}, 0.3);
@@ -173,7 +184,11 @@ export const VoteNayButton = styled.button`
 `;
 
 export const VoteYayButton = styled.button`
-  background-image: linear-gradient(107deg, ${polkadotOfficialTheme.lightBlue1}, ${polkadotOfficialTheme.lightBlue2});
+  background-image: linear-gradient(
+    107deg,
+    ${polkadotOfficialTheme.lightBlue1},
+    ${polkadotOfficialTheme.lightBlue2}
+  );
   border: none;
   border-radius: 8px;
   box-shadow: 0 4px 6px 0 rgba(${polkadotOfficialTheme.black}, 0.3);
@@ -205,7 +220,8 @@ export const SubHeader = styled.h3<SubHeaderProps>`
   color: ${polkadotOfficialTheme.black};
   font-weight: 200;
   font-size: ${FONT_SIZES.medium};
-  margin: ${(props): string => (props.noMargin ? '0 0' : '1rem auto 0.3rem auto')};
+  margin: ${(props): string =>
+    props.noMargin ? '0 0' : '1rem auto 0.3rem auto'};
   text-align: ${(props): string => props.textAlign || 'left'};
 `;
 

@@ -22,11 +22,21 @@ import React from 'react';
 
 import { TagOptions, Tags } from '../types';
 
-export function renderSetName(name: string, setName: React.Dispatch<React.SetStateAction<string>>): React.ReactElement {
+export function renderSetName(
+  name: string,
+  setName: React.Dispatch<React.SetStateAction<string>>
+): React.ReactElement {
   return (
     <Stacked>
       <SubHeader noMargin>Give it a name</SubHeader>
-      <Input autoFocus fluid min={1} onChange={handler(setName)} type='text' value={name} />
+      <Input
+        autoFocus
+        fluid
+        min={1}
+        onChange={handler(setName)}
+        type='text'
+        value={name}
+      />
     </Stacked>
   );
 }
@@ -38,12 +48,20 @@ export function renderSetPassword(
   return (
     <Stacked>
       <SubHeader noMargin> Encrypt it with a passphrase </SubHeader>
-      <Input fluid min={8} onChange={handler(setPassword)} type='password' value={password} />
+      <Input
+        fluid
+        min={8}
+        onChange={handler(setPassword)}
+        type='password'
+        value={password}
+      />
     </Stacked>
   );
 }
 
-export function renderErrors(errors: Option<Array<string>>): React.ReactElement | null {
+export function renderErrors(
+  errors: Option<Array<string>>
+): React.ReactElement | null {
   return errors.fold(null, errStrings => (
     <>
       {errStrings.map(err => (
@@ -70,7 +88,13 @@ export function renderRewriteStep(
     goToNextStep: () => void;
   }
 ): React.ReactElement {
-  const { randomFourWords, firstWord, secondWord, thirdWord, fourthWord } = values;
+  const {
+    randomFourWords,
+    firstWord,
+    secondWord,
+    thirdWord,
+    fourthWord,
+  } = values;
   const {
     goToNextStep,
     goToPreviousStep,
@@ -83,7 +107,9 @@ export function renderRewriteStep(
   return (
     <Stacked>
       <SubHeader>Copy Your Mnemonic Somewhere Safe</SubHeader>
-      <FadedText>If someone gets hold of this mnemonic they could drain your account</FadedText>
+      <FadedText>
+        If someone gets hold of this mnemonic they could drain your account
+      </FadedText>
       <Margin top />
       <FadedText>Rewrite Mnemonic Below</FadedText>
       <MnemonicRewriteParts
@@ -118,8 +144,14 @@ export function renderMetaStep(
   setters: {
     setName: React.Dispatch<React.SetStateAction<string>>;
     setPassword: React.Dispatch<React.SetStateAction<string>>;
-    handleAddTag: (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => void;
-    handleOnChange: (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => void;
+    handleAddTag: (
+      event: React.SyntheticEvent<HTMLElement, Event>,
+      data: DropdownProps
+    ) => void;
+    handleOnChange: (
+      event: React.SyntheticEvent<HTMLElement, Event>,
+      data: DropdownProps
+    ) => void;
     createNewAccount: () => void;
     goToPreviousStep: () => void;
   }
@@ -191,8 +223,9 @@ export function renderCopyStep(
     <Stacked>
       <SubHeader>Copy the following mnemonic phrase</SubHeader>
       <FadedText>
-        Your private key will be generated from this phrase. Anyone with access to this phrase can have full control
-        your funds so make sure to keep it a secure and secret.
+        Your private key will be generated from this phrase. Anyone with access
+        to this phrase can have full control your funds so make sure to keep it
+        a secure and secret.
       </FadedText>
       <MnemonicPhraseList phrase={mnemonic} />
       <NavButton onClick={goToNextStep}>Next</NavButton>

@@ -26,7 +26,9 @@ export async function isSubstrateRunning(): Promise<boolean> {
     };
 
     await axios(options);
-    logger.info(`Another instance of substrate is already running on ${host}, skip running local instance`);
+    logger.info(
+      `Another instance of substrate is already running on ${host}, skip running local instance`
+    );
     return true;
   } catch {
     logger.debug(`Cannot find any running instance of substrate on ${host}`);

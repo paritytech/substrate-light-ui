@@ -4,15 +4,37 @@
 
 import { mnemonicGenerate } from '@polkadot/util-crypto';
 import { KeyringContext } from '@substrate/context';
-import { AddressSummary, DropdownProps, Margin, SizeType, Stacked } from '@substrate/ui-components';
+import {
+  AddressSummary,
+  DropdownProps,
+  Margin,
+  SizeType,
+  Stacked,
+} from '@substrate/ui-components';
 import FileSaver from 'file-saver';
 import { none, Option, some } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { PhrasePartialRewriteError, Steps, TagOptions, Tags, UserInputError } from '../types';
-import { generateAddressFromMnemonic, getRandomInts, validateMeta, validateRewrite } from '../util';
-import { renderCopyStep, renderErrors, renderMetaStep, renderRewriteStep } from './subComponents';
+import {
+  PhrasePartialRewriteError,
+  Steps,
+  TagOptions,
+  Tags,
+  UserInputError,
+} from '../types';
+import {
+  generateAddressFromMnemonic,
+  getRandomInts,
+  validateMeta,
+  validateRewrite,
+} from '../util';
+import {
+  renderCopyStep,
+  renderErrors,
+  renderMetaStep,
+  renderRewriteStep,
+} from './subComponents';
 
 interface Props extends RouteComponentProps {
   identiconSize?: SizeType;
@@ -81,18 +103,26 @@ export function Create(props: Props): React.ReactElement {
 
   const validation = validateMeta({ name, password, tags }, step, whichAccount);
 
-  const handleSetFirstWord = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleSetFirstWord = ({
+    target: { value },
+  }: React.ChangeEvent<HTMLInputElement>): void => {
     setFirstWord(value);
   };
 
-  const handleSetSecondWord = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleSetSecondWord = ({
+    target: { value },
+  }: React.ChangeEvent<HTMLInputElement>): void => {
     setSecondWord(value);
   };
-  const handleSetThirdWord = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleSetThirdWord = ({
+    target: { value },
+  }: React.ChangeEvent<HTMLInputElement>): void => {
     setThirdWord(value);
   };
 
-  const handleSetFourthWord = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleSetFourthWord = ({
+    target: { value },
+  }: React.ChangeEvent<HTMLInputElement>): void => {
     setFourthWord(value);
   };
 
@@ -112,7 +142,9 @@ export function Create(props: Props): React.ReactElement {
         });
 
         const json = result.json;
-        const blob = new Blob([JSON.stringify(json)], { type: 'application/json; charset=utf-8' });
+        const blob = new Blob([JSON.stringify(json)], {
+          type: 'application/json; charset=utf-8',
+        });
 
         FileSaver.saveAs(blob, `${values.name}-${result.pair.address}.json`);
 
@@ -132,7 +164,10 @@ export function Create(props: Props): React.ReactElement {
     }
 
     if (step === 'rewrite') {
-      validateRewrite({ firstWord, secondWord, thirdWord, fourthWord }, randomFourWords).fold(
+      validateRewrite(
+        { firstWord, secondWord, thirdWord, fourthWord },
+        randomFourWords
+      ).fold(
         err => onError(err),
         () => setStep('meta')
       );
@@ -151,18 +186,34 @@ export function Create(props: Props): React.ReactElement {
     }
   };
 
-  const handleOnChange = (_event: React.SyntheticEvent, { value }: DropdownProps): void => {
+  const handleOnChange = (
+    _event: React.SyntheticEvent,
+    { value }: DropdownProps
+  ): void => {
     setTags(value as Tags);
   };
 
-  const handleAddTag = (_event: React.SyntheticEvent, { value }: DropdownProps): void => {
+  const handleAddTag = (
+    _event: React.SyntheticEvent,
+    { value }: DropdownProps
+  ): void => {
     const valueStr = value as string;
-    setTagOptions([...tagOptions, { key: valueStr, text: valueStr, value: valueStr }]);
+    setTagOptions([
+      ...tagOptions,
+      { key: valueStr, text: valueStr, value: valueStr },
+    ]);
   };
 
   return (
     <Stacked>
-      {isKeyringReady && <AddressSummary address={address} name={name} size='small' orientation='vertical' />}
+      {isKeyringReady && (
+        <AddressSummary
+          address={address}
+          name={name}
+          size='small'
+          orientation='vertical'
+        />
+      )}
       <Margin top />
       {step === 'copy'
         ? renderCopyStep({ mnemonic }, { goToNextStep })
@@ -180,7 +231,14 @@ export function Create(props: Props): React.ReactElement {
           )
         : renderMetaStep(
             { name, password, tags, tagOptions, whichAccount },
-            { setName, setPassword, handleAddTag, handleOnChange, createNewAccount, goToPreviousStep }
+            {
+              setName,
+              setPassword,
+              handleAddTag,
+              handleOnChange,
+              createNewAccount,
+              goToPreviousStep,
+            }
           )}
       {renderErrors(errors)}
     </Stacked>

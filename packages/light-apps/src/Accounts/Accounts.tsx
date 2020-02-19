@@ -16,7 +16,10 @@ export function Accounts(props: Props): React.ReactElement {
   const { accounts } = useContext(KeyringContext);
 
   // Redirect to Add Account page if we have no accounts
-  if (!Object.keys(accounts).length && !location.pathname.startsWith('/accounts/add')) {
+  if (
+    !Object.keys(accounts).length &&
+    !location.pathname.startsWith('/accounts/add')
+  ) {
     return <Redirect to='/accounts/add' />;
   }
 

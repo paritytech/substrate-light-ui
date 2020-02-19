@@ -77,7 +77,9 @@ function getProvider(env: Env): ProviderInterface {
 
 const wsProvider = getProvider(detectEnvironment());
 
-export function ContextGate(props: { children: React.ReactElement }): React.ReactElement {
+export function ContextGate(props: {
+  children: React.ReactElement;
+}): React.ReactElement {
   const { children } = props;
 
   return (
@@ -92,7 +94,9 @@ export function ContextGate(props: { children: React.ReactElement }): React.Reac
                   <ApiContextProvider provider={wsProvider}>
                     <ApiGate>
                       <AlertsContextProvider>
-                        <TxQueueContextProvider>{children} </TxQueueContextProvider>
+                        <TxQueueContextProvider>
+                          {children}{' '}
+                        </TxQueueContextProvider>
                       </AlertsContextProvider>
                     </ApiGate>
                   </ApiContextProvider>

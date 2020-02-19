@@ -2,14 +2,25 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { AlertsContext, SystemContext, TxQueueContext } from '@substrate/context';
-import { Alert, Message, StackedHorizontal, TxSummary } from '@substrate/ui-components';
+import {
+  AlertsContext,
+  SystemContext,
+  TxQueueContext,
+} from '@substrate/context';
+import {
+  Alert,
+  Message,
+  StackedHorizontal,
+  TxSummary,
+} from '@substrate/ui-components';
 import React, { useContext, useEffect } from 'react';
 
 export function TxQueueNotifier(): React.ReactElement | null {
   const { enqueue } = useContext(AlertsContext);
   const { properties } = useContext(SystemContext);
-  const { cancelObservable, errorObservable, successObservable } = useContext(TxQueueContext);
+  const { cancelObservable, errorObservable, successObservable } = useContext(
+    TxQueueContext
+  );
 
   // Display notification on success
   useEffect(() => {
@@ -25,7 +36,9 @@ export function TxQueueNotifier(): React.ReactElement | null {
               methodCall={methodCall}
               recipientAddress={recipientAddress}
               senderAddress={senderPair.address}
-              tokenSymbol={properties.tokenSymbol.unwrapOr(undefined)?.toString()}
+              tokenSymbol={properties.tokenSymbol
+                .unwrapOr(undefined)
+                ?.toString()}
             />
           </StackedHorizontal>
         </Alert>

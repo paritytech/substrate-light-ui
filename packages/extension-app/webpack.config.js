@@ -18,7 +18,10 @@ function createWebpack({ alias = {}, context }) {
   const ENV = process.env.NODE_ENV || 'development';
   const isProd = ENV === 'production';
 
-  const copyPlugin = [{ from: 'public' }, { from: 'generated/polkadot_cli_bg.wasm' }];
+  const copyPlugin = [
+    { from: 'public' },
+    { from: 'generated/polkadot_cli_bg.wasm' },
+  ];
   // If building in prod mode,also copy the output of create-react-app's
   // build in light-apps. That will be the popup UI.
   if (ENV === 'production') {
@@ -60,7 +63,14 @@ function createWebpack({ alias = {}, context }) {
           loader: require.resolve('@open-wc/webpack-import-meta-loader'),
         },
         {
-          test: [/\.svg$/, /\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/, /\.woff2?$/],
+          test: [
+            /\.svg$/,
+            /\.bmp$/,
+            /\.gif$/,
+            /\.jpe?g$/,
+            /\.png$/,
+            /\.woff2?$/,
+          ],
           use: [
             {
               loader: require.resolve('url-loader'),
