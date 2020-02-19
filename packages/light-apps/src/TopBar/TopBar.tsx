@@ -2,54 +2,64 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Compact, Text } from '@polkadot/types';
-import { BlockNumber } from '@polkadot/types/interfaces';
+import { Text } from '@polkadot/types';
+import { Header, Health } from '@polkadot/types/interfaces';
 import substrateLogo from '@polkadot/ui-assets/polkadot-circle.svg';
 import { SystemContext } from '@substrate/context';
-import { Circle, FadedText, Margin, Stacked, StackedHorizontal, SubHeader } from '@substrate/ui-components';
+import { Circle, Container, Margin, StackedHorizontal } from '@substrate/ui-components';
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
 const GREEN = '#79c879';
 const RED = '#ff0000';
 
-export function renderBlockCounter(blockNumber: Compact<BlockNumber>, chain: Text): React.ReactElement {
-  return (
-    <>
-      <SubHeader noMargin>{chain.toString()}</SubHeader>
-      <div>Block #{blockNumber.toString()}</div>
-    </>
-  );
-}
-
-export function renderNodeStatus(isSyncing: boolean): React.ReactElement {
+/**
+ * Render logo based on the chain.
+ *
+ * @todo FIXME we can render different logos for differenct chains.
+ */
+function renderLogo(chain?: Text): React.ReactElement {
   return (
     <StackedHorizontal>
-      {isSyncing ? <Circle fill={GREEN} radius={10} /> : <Circle fill={RED} radius={10} />}
-      <Margin left='small' />
-      <p>Status: {isSyncing ? 'Syncing' : 'Synced'}</p>
+      <Link to='/'>
+        <img alt='Polkadot Logo' src={substrateLogo} width={50} />
+      </Link>
+      <p>Lichen{chain ? ` on ${chain.toString()}` : ''}</p>
     </StackedHorizontal>
   );
 }
 
-export function TopBar(): React.ReactElement {
-  const { chain, header, health, name, version } = useContext(SystemContext);
+function renderHealth(header?: Header, health?: Health): React.ReactElement {
+  if (!header || !health) {
+    return <div />;
+  }
 
   return (
-    <header>
-      <StackedHorizontal justifyContent='space-between' alignItems='center'>
-        <Link to='/'>
-          <img alt='Polkadot Logo' src={substrateLogo} width={50} />
-        </Link>
-        <FadedText>
-          {name} {version}
-        </FadedText>
-        <Stacked>
-          {renderNodeStatus(health.isSyncing.toJSON())}
-          {renderBlockCounter(header.number, chain)}
-        </Stacked>
+    <div>
+      <StackedHorizontal>
+        {health.isSyncing.isTrue ? <Circle fill={GREEN} radius={10} /> : <Circle fill={RED} radius={10} />}
+        <Margin left='small' />
+        <p>Status: {health.isSyncing.isTrue ? 'Syncing' : 'Synced'}</p>
       </StackedHorizontal>
-      <Margin bottom />
-    </header>
+      <p>Block #{header.number.toString()}</p>
+    </div>
+  );
+}
+
+function renderProvider(): React.ReactElement {
+  return <p>CHOOSE PROVIDER</p>;
+}
+
+export function TopBar(): React.ReactElement {
+  const { chain, header, health } = useContext(SystemContext);
+
+  return (
+    <Container as='header'>
+      <StackedHorizontal justifyContent='space-between' alignItems='center'>
+        {renderLogo(chain)}
+        {renderHealth(header, health)}
+        {renderProvider()}
+      </StackedHorizontal>
+    </Container>
   );
 }

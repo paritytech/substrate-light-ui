@@ -12,7 +12,9 @@ import React, { useContext } from 'react';
 export function ApiGate({ children }: { children?: React.ReactElement }): React.ReactElement {
   const { isApiReady } = useContext(ApiContext);
 
-  // Wrapping children around <></>
-  // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/18051#issuecomment-449628575
-  return isApiReady ? <>{children}</> : <Loading active>Initializing API...</Loading>;
+  return (
+    <Loading active={!isApiReady} loadingText='Initializing API...'>
+      {isApiReady && children}
+    </Loading>
+  );
 }

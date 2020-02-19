@@ -2,7 +2,6 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { logger } from '@polkadot/util';
 import { HealthContext, HealthContextType } from '@substrate/context';
 import { Loading } from '@substrate/ui-components';
 import React, { useContext } from 'react';
@@ -20,8 +19,6 @@ export interface Status {
   code: STATUS_CODE;
   message?: string;
 }
-
-const l = logger('health-gate');
 
 /**
  * Transform the health information into a color-coded overlay
@@ -59,17 +56,15 @@ export function displayStatus(health: HealthContextType): Status {
 /**
  * A gate that shows a loading screen if the node is still syncing
  */
-export function HealthGate({ children }: { children?: React.ReactElement }): React.ReactElement | null {
+export function HealthGate({ children }: { children?: React.ReactElement }): React.ReactElement {
   const health = useContext(HealthContext);
   const status = displayStatus(health);
 
-  l.debug(status);
+  const showLoading = [STATUS_ERROR, STATUS_WARN].includes(status.code);
 
-  switch (status.code) {
-    case STATUS_ERROR:
-    case STATUS_WARN:
-      return <Loading active>{status.message}</Loading>;
-  }
-
-  return children || null;
+  return (
+    <Loading active={showLoading} loadingText={status.message}>
+      {!showLoading && children}
+    </Loading>
+  );
 }

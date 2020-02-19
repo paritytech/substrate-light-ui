@@ -18,7 +18,7 @@ export function MnemonicPhraseList(props: Props): React.ReactElement {
 
   return (
     <WrapperDiv margin='0' padding='0'>
-      <StackedHorizontal margin='0' justifyContent='space-around'>
+      <StackedHorizontal justifyContent='space-around'>
         <ol>
           {firstHalf.map((word: string) => {
             return (

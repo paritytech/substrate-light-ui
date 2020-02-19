@@ -30,9 +30,6 @@ export interface StyledNavButtonProps extends React.ButtonHTMLAttributes<HTMLBut
 export interface StackProps {
   alignItems?: FlexAlign;
   justifyContent?: FlexJustify;
-  margin?: string;
-  textAlign?: string; // FIXME Use union of possible string
-  width?: string;
 }
 
 export interface StyledNavLinkProps {

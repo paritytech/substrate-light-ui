@@ -11,13 +11,13 @@ export const GlobalStyle = createGlobalStyle`
 
   body {
     height: 100%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
     margin: 0;
     padding: 0;
     font-family: 'Montseratt', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-    -webkit-font-smoothing: antialiased;
+  }
+
+  #root {
+    height: 100%;
   }
 `;
 
