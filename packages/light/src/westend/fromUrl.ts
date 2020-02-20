@@ -23,7 +23,7 @@ export function fromUrl(url = './kusamaCc3.wasm'): LightClient {
         return client;
       }
 
-      console.log(`Loading ${name}-${version} WASM from ${url}...`);
+      console.log(`Loading light client "${name}-${version}" from ${url}...`);
       await init(url);
       console.log('Successfully loaded WASM, starting client...');
 

@@ -8,12 +8,12 @@ import { LightClient, WasmRpcClient } from '../types';
 import ws from '../ws';
 import chainSpec from './kusama.json';
 
-const name = 'kusamacc3';
+const name = 'kusamaCc3';
 const version = 'v0.7.20';
 let client: WasmRpcClient;
 
 /**
- * Create a light client by fetching the
+ * Create a light client by fetching the WASM blob from an URL.
  */
 export function fromUrl(url = './kusamaCc3.wasm'): LightClient {
   return {
@@ -23,7 +23,7 @@ export function fromUrl(url = './kusamaCc3.wasm'): LightClient {
         return client;
       }
 
-      console.log(`Loading ${name}-${version} WASM from ${url}...`);
+      console.log(`Loading light client "${name}-${version}" from ${url}...`);
       await init(url);
       console.log('Successfully loaded WASM, starting client...');
 
