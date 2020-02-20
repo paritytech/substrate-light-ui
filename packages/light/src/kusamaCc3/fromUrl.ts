@@ -15,7 +15,7 @@ let client: WasmRpcClient;
 /**
  * Create a light client by fetching the WASM blob from an URL.
  */
-export function fromUrl(url = './kusamaCc3.wasm'): LightClient {
+export function fromUrl(url: string): LightClient {
   return {
     name,
     async startClient(): Promise<WasmRpcClient> {

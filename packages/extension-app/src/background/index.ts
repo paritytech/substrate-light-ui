@@ -4,10 +4,18 @@
 
 import { JsonRpcRequest, JsonRpcResponse } from '@polkadot/rpc-provider/types';
 import { logger } from '@polkadot/util';
-import { kusamaCc3, LightClient, WasmRpcClient } from '@substrate/light';
+import {
+  kusamaCc3,
+  LightClient,
+  WasmRpcClient,
+  westend,
+} from '@substrate/light';
 import extensionizer from 'extensionizer';
 
-export type MessageAction =
+// We bundled the .wasm file inside the extension
+const KUSAMA_CC3_WASM = './wasm/kusamaCc3.wasm';
+
+export type MessageType =
   | 'ping'
   | 'pong'
   | 'provider.switch'
@@ -17,19 +25,19 @@ export type MessageAction =
 /**
  * The message that the content script sends to the background script
  */
-export interface PayloadRequest {
-  jsonRpc: JsonRpcRequest;
+export interface MessageRequest {
+  jsonRpc: JsonRpcRequest | string;
   origin: 'content';
-  type: MessageAction;
+  type: MessageType;
 }
 
 /**
  * The message that the background script sends to the content script
  */
-export interface PayloadResponse {
-  jsonRpc: JsonRpcResponse;
+export interface MessageResponse {
+  jsonRpc: JsonRpcResponse | boolean;
   origin: 'background';
-  type: MessageAction;
+  type: MessageType;
 }
 
 const l = logger('background');
@@ -88,7 +96,7 @@ function rpcProxySubscribe(
  * @param port - The port representing the content script
  */
 function handler(
-  payload: PayloadRequest | undefined,
+  payload: MessageRequest | undefined,
   port: browser.runtime.Port
 ): void {
   if (!payload) {
@@ -108,12 +116,19 @@ function handler(
       // Destroy old light client
       _client.free();
       // Start a new one
+      const clientPromise =
+        jsonRpc === 'kusamaCc3'
+          ? kusamaCc3.fromUrl(KUSAMA_CC3_WASM)
+          : westend.fromUrl(KUSAMA_CC3_WASM);
+
+      clientPromise.startClient().then(error => console.error(error));
+
       break;
     }
     case 'rpc.send':
-      return rpcProxySend(_client, jsonRpc, port);
+      return rpcProxySend(_client, jsonRpc as JsonRpcRequest, port);
     case 'rpc.sendSubscribe':
-      return rpcProxySubscribe(_client, jsonRpc, port);
+      return rpcProxySubscribe(_client, jsonRpc as JsonRpcRequest, port);
     default:
       l.warn(`Unable to handle message of type ${type}`);
   }
@@ -123,7 +138,7 @@ extensionizer.runtime.onConnect.addListener(
   (port: browser.runtime.Port): void => {
     // Listen to all messages on the extension port and handle appropriately
     function messageListener(response: object): void {
-      handler(response as PayloadRequest, port);
+      handler(response as MessageRequest, port);
     }
     port.onMessage.addListener(messageListener);
 
@@ -143,6 +158,5 @@ extensionizer.runtime.onConnect.addListener(
   }
 );
 
-start(kusamaCc3.fromUrl('./wasm/kusamaCc3.wasm')).catch(error =>
-  console.error(error)
-);
+// At the beginning, just run Kusama
+start(kusamaCc3.fromUrl(KUSAMA_CC3_WASM)).catch(error => console.error(error));
