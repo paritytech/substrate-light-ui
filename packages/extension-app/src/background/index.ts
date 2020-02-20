@@ -4,13 +4,13 @@
 
 import { JsonRpcRequest, JsonRpcResponse } from '@polkadot/rpc-provider/types';
 import { logger } from '@polkadot/util';
-import { kusamacc3, LightClient, WasmRpcClient } from '@substrate/light';
+import { kusamaCc3, LightClient, WasmRpcClient } from '@substrate/light';
 import extensionizer from 'extensionizer';
 
-export type PayloadType =
+export type MessageAction =
   | 'ping'
   | 'pong'
-  | 'provider'
+  | 'provider.switch'
   | 'rpc.send'
   | 'rpc.sendSubscribe';
 
@@ -20,7 +20,7 @@ export type PayloadType =
 export interface PayloadRequest {
   jsonRpc: JsonRpcRequest;
   origin: 'content';
-  type: PayloadType;
+  type: MessageAction;
 }
 
 /**
@@ -29,7 +29,7 @@ export interface PayloadRequest {
 export interface PayloadResponse {
   jsonRpc: JsonRpcResponse;
   origin: 'background';
-  type: PayloadType;
+  type: MessageAction;
 }
 
 const l = logger('background');
@@ -104,6 +104,12 @@ function handler(
         origin: 'background',
         type: 'pong',
       });
+    case 'provider.switch': {
+      // Destroy old light client
+      _client.free();
+      // Start a new one
+      break;
+    }
     case 'rpc.send':
       return rpcProxySend(_client, jsonRpc, port);
     case 'rpc.sendSubscribe':
@@ -137,4 +143,6 @@ extensionizer.runtime.onConnect.addListener(
   }
 );
 
-start(kusamacc3).catch(error => console.error(error));
+start(kusamaCc3.fromUrl('./wasm/kusamaCc3.wasm')).catch(error =>
+  console.error(error)
+);

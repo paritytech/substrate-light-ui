@@ -8,10 +8,8 @@ const path = require('path');
 const webpack = require('webpack');
 
 const CopyPlugin = require('copy-webpack-plugin');
-const ManifestPlugin = require('webpack-extension-manifest-plugin');
 
 const pkgJson = require('./package.json');
-const manifest = require('./src/manifest.json');
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function createWebpack({ alias = {}, context }) {
@@ -19,13 +17,16 @@ function createWebpack({ alias = {}, context }) {
   const isProd = ENV === 'production';
 
   const copyPlugin = [
-    { from: 'public' },
-    { from: 'generated/polkadot_cli_bg.wasm' },
+    { from: 'static' },
+    {
+      from: '../light/src/generated/kusamaCc3/kusamaCc3.wasm',
+      to: 'wasm',
+    },
   ];
   // If building in prod mode,also copy the output of create-react-app's
   // build in light-apps. That will be the popup UI.
   if (ENV === 'production') {
-    copyPlugin.push({ force: true, from: '../light-apps/build' });
+    copyPlugin.push({ force: true, from: '../light-apps/build', to: 'popup' });
   }
 
   return {
@@ -103,14 +104,6 @@ function createWebpack({ alias = {}, context }) {
         },
       }),
       new CopyPlugin(copyPlugin),
-      new ManifestPlugin({
-        config: {
-          base: manifest,
-          extend: {
-            version: pkgJson.version,
-          },
-        },
-      }),
     ],
     watch: !isProd,
   };
