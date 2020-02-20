@@ -4,17 +4,15 @@
 
 import { JsonRpcRequest, JsonRpcResponse } from '@polkadot/rpc-provider/types';
 import { logger } from '@polkadot/util';
+import { kusamacc3, LightClient, WasmRpcClient } from '@substrate/light';
 import extensionizer from 'extensionizer';
 
-// eslint-disable-next-line @typescript-eslint/camelcase
-import init, { start_client } from '../../generated/polkadot_cli';
-import ws from '../../generated/ws';
-import { WasmClient } from '../types';
-// FIXME chainSpec should be uploadable by user.
-// https://github.com/paritytech/substrate-light-ui/issues/766
-import chainSpec from './chainSpec/westend.json';
-
-export type PayloadType = 'ping' | 'pong' | 'rpc.send' | 'rpc.sendSubscribe';
+export type PayloadType =
+  | 'ping'
+  | 'pong'
+  | 'provider'
+  | 'rpc.send'
+  | 'rpc.sendSubscribe';
 
 /**
  * The message that the content script sends to the background script
@@ -34,26 +32,21 @@ export interface PayloadResponse {
   type: PayloadType;
 }
 
-let client: WasmClient;
 const l = logger('background');
+
+// Store the client here. For now, we can only allow one light client running
+// at a time.
+let _client: WasmRpcClient;
 
 /**
  * Start a WASM client
  */
-const start = async (): Promise<void> => {
-  /* Load WASM */
-  l.log('Loading WASM');
-  await init('./polkadot_cli_bg.wasm');
-  l.log('Successfully loaded WASM');
-
-  /* Build our client. */
-  l.log('Starting client');
-
-  client = await start_client(JSON.stringify(chainSpec), ws());
-  l.log('Client started...', client);
-};
+async function start(lightClient: LightClient): Promise<void> {
+  _client = await lightClient.startClient();
+}
 
 function rpcProxySend(
+  client: WasmRpcClient,
   jsonRpc: JsonRpcRequest,
   port: browser.runtime.Port
 ): void {
@@ -71,6 +64,7 @@ function rpcProxySend(
 }
 
 function rpcProxySubscribe(
+  client: WasmRpcClient,
   jsonRpc: JsonRpcRequest,
   port: browser.runtime.Port
 ): void {
@@ -111,38 +105,36 @@ function handler(
         type: 'pong',
       });
     case 'rpc.send':
-      return rpcProxySend(jsonRpc, port);
+      return rpcProxySend(_client, jsonRpc, port);
     case 'rpc.sendSubscribe':
-      return rpcProxySubscribe(jsonRpc, port);
+      return rpcProxySubscribe(_client, jsonRpc, port);
     default:
       l.warn(`Unable to handle message of type ${type}`);
   }
 }
 
-start()
-  .then(() => {
-    extensionizer.runtime.onConnect.addListener(
-      (port: browser.runtime.Port): void => {
-        // Listen to all messages on the extension port and handle appropriately
-        function messageListener(response: object): void {
-          handler(response as PayloadRequest, port);
-        }
-        port.onMessage.addListener(messageListener);
+extensionizer.runtime.onConnect.addListener(
+  (port: browser.runtime.Port): void => {
+    // Listen to all messages on the extension port and handle appropriately
+    function messageListener(response: object): void {
+      handler(response as PayloadRequest, port);
+    }
+    port.onMessage.addListener(messageListener);
 
-        // Gracefully handle port disconnects
-        function disconnectListener(): void {
-          if (port.onMessage.hasListener(messageListener)) {
-            port.onMessage.removeListener(messageListener);
+    // Gracefully handle port disconnects
+    function disconnectListener(): void {
+      if (port.onMessage.hasListener(messageListener)) {
+        port.onMessage.removeListener(messageListener);
 
-            l.log(`Disconnected from ${JSON.stringify(port)}`);
-          }
-
-          if (port.onDisconnect.hasListener(disconnectListener)) {
-            port.onDisconnect.removeListener(disconnectListener);
-          }
-        }
-        port.onDisconnect.addListener(disconnectListener);
+        l.log(`Disconnected from ${JSON.stringify(port)}`);
       }
-    );
-  })
-  .catch(error => l.error(error));
+
+      if (port.onDisconnect.hasListener(disconnectListener)) {
+        port.onDisconnect.removeListener(disconnectListener);
+      }
+    }
+    port.onDisconnect.addListener(disconnectListener);
+  }
+);
+
+start(kusamacc3).catch(error => console.error(error));
