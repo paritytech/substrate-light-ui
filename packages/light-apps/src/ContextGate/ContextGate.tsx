@@ -13,7 +13,10 @@ import {
 import React from 'react';
 
 import { TopBar } from '../TopBar';
-import { ProviderContextProvider } from './context/ProviderContext';
+import {
+  ProviderContext,
+  ProviderContextProvider,
+} from './context/ProviderContext';
 import { ApiGate, HealthGate, KeyringGate, SystemGate } from './gates';
 
 export function ContextGate(props: {
@@ -23,30 +26,36 @@ export function ContextGate(props: {
 
   return (
     <ProviderContextProvider>
-      <SystemContextProvider>
-        <>
-          <TopBar />
-          <SystemGate>
-            <KeyringContextProvider>
-              <KeyringGate>
-                <HealthContextProvider>
-                  <HealthGate>
-                    <ApiContextProvider>
-                      <ApiGate>
-                        <AlertsContextProvider>
-                          <TxQueueContextProvider>
-                            {children}{' '}
-                          </TxQueueContextProvider>
-                        </AlertsContextProvider>
-                      </ApiGate>
-                    </ApiContextProvider>
-                  </HealthGate>
-                </HealthContextProvider>
-              </KeyringGate>
-            </KeyringContextProvider>
-          </SystemGate>
-        </>
-      </SystemContextProvider>
+      <ProviderContext.Consumer>
+        {({ provider }): React.ReactElement | null =>
+          provider ? (
+            <SystemContextProvider provider={provider}>
+              <>
+                <TopBar />
+                <SystemGate>
+                  <KeyringContextProvider>
+                    <KeyringGate>
+                      <HealthContextProvider provider={provider}>
+                        <HealthGate>
+                          <ApiContextProvider provider={provider}>
+                            <ApiGate>
+                              <AlertsContextProvider>
+                                <TxQueueContextProvider>
+                                  {children}
+                                </TxQueueContextProvider>
+                              </AlertsContextProvider>
+                            </ApiGate>
+                          </ApiContextProvider>
+                        </HealthGate>
+                      </HealthContextProvider>
+                    </KeyringGate>
+                  </KeyringContextProvider>
+                </SystemGate>
+              </>
+            </SystemContextProvider>
+          ) : null
+        }
+      </ProviderContext.Consumer>
     </ProviderContextProvider>
   );
 }

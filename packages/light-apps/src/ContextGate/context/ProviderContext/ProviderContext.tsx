@@ -22,9 +22,13 @@ export interface ProviderContextType {
    */
   provider: ProviderInterface | undefined;
   /**
+   * Current provider JSON.
+   */
+  providerJSON: ProviderJSON | undefined;
+  /**
    * Set a new provider.
    */
-  setProvider(provider: ProviderJSON): void;
+  setProviderJSON(provider: ProviderJSON): void;
 }
 
 export const ProviderContext: React.Context<ProviderContextType> = React.createContext(
@@ -36,7 +40,7 @@ export interface ProviderContextProviderProps {
 }
 
 /**
- * From a JSON-data of a provider, instantiate an actual provider.
+ * From the JSON data of a provider, instantiate an actual provider.
  *
  * @param input - The JSON data used to create a provider.
  */
@@ -55,24 +59,27 @@ function createProvider(input: ProviderJSON): ProviderInterface {
   );
 }
 
-const defaultProvider = createProvider({
+const defaultProvider = {
   payload: 'wss://kusama-rpc.polkadot.io',
   type: 'WsProvider',
-});
+} as ProviderJSON;
 
 export function ProviderContextProvider(
   props: ProviderContextProviderProps
 ): React.ReactElement {
   const { children = null } = props;
-  const [provider, setProvider] = useState<ProviderInterface>(defaultProvider);
+  const [providerJSON, setProviderJSON] = useState<ProviderJSON>(
+    defaultProvider
+  );
+
+  const provider = createProvider(providerJSON);
 
   return (
     <ProviderContext.Provider
       value={{
         provider,
-        setProvider(input: ProviderJSON): void {
-          setProvider(createProvider(input));
-        },
+        providerJSON,
+        setProviderJSON,
       }}
     >
       {children}
