@@ -22,7 +22,8 @@ linux-test:
     - export PATH=$HOME/.yarn/bin:$PATH
     - yarn install
     - yarn test
-    - yarn build:ui
+    - ./scripts/prestart.sh
     - yarn lint
+    - yarn build:extension
   tags:
     - linux-docker

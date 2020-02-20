@@ -15,7 +15,7 @@ import { AnyJson } from '@polkadot/types/types';
 import { logger } from '@polkadot/util';
 import EventEmitter from 'eventemitter3';
 
-import { PayloadResponse } from '../../../../extension-app/src/background';
+import { MessageResponse } from '../../../../extension-app/src/background';
 import {
   portPostMessage,
   PostMessageSource,
@@ -104,11 +104,11 @@ export class PostMessageProvider implements ProviderInterface {
   private handleMessage(message: object): void {
     // We don't do anything with messages that don't come from our background
     // script
-    if (!message || (message as PayloadResponse).origin !== 'background') {
+    if (!message || (message as MessageResponse).origin !== 'background') {
       return;
     }
 
-    const data = message as PayloadResponse;
+    const data = message as MessageResponse;
 
     if (data.type === 'pong') {
       // If we receive a pong from the background script, it means that the
@@ -122,7 +122,7 @@ export class PostMessageProvider implements ProviderInterface {
 
     l.log('DOWN ⬇️', JSON.stringify(data));
 
-    const jsonRpc = data.jsonRpc;
+    const jsonRpc = data.jsonRpc as JsonRpcResponse;
 
     // A subscription response has a `method` field
     if (jsonRpc.method) {

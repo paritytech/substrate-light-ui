@@ -121,7 +121,7 @@ function handler(
           ? kusamaCc3.fromUrl(KUSAMA_CC3_WASM)
           : westend.fromUrl(KUSAMA_CC3_WASM);
 
-      clientPromise.startClient().then(error => console.error(error));
+      clientPromise.startClient().catch(error => console.error(error));
 
       break;
     }
