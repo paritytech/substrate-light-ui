@@ -40,7 +40,10 @@ export function ChooseProvider(): React.ReactElement {
 
   return (
     <TopDropdown
-      onChange={(_event: any, { value }: any): void => {
+      onChange={(
+        _event: React.SyntheticEvent,
+        { value }: DropdownProps
+      ): void => {
         console.log(value);
         setProviderJSON(JSON.parse(value as string));
       }}

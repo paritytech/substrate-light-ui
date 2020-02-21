@@ -129,7 +129,13 @@ function handler(
           ? kusamaCc3.fromUrl(KUSAMA_CC3_WASM)
           : westend.fromUrl(KUSAMA_CC3_WASM);
 
-      clientPromise.startClient().catch(error => console.error(error));
+      clientPromise
+        .startClient()
+        .then(client => {
+          // Replace our cached client with the new one
+          _client = client;
+        })
+        .catch(error => console.error(error));
 
       break;
     }

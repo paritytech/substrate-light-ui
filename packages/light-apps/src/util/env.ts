@@ -17,7 +17,7 @@ type Env = typeof ELECTRON_ENV | typeof EXTENSION_ENV | typeof BROWSER_ENV;
  * Detect whether light-apps is running in Electron, in an Extension popup, or
  * as a regular browser webpage.
  */
-function detectEnvironment(): Env {
+export function detectEnvironment(): Env {
   // Detect ELECTRON_ENV
   // https://github.com/electron/electron/issues/2288#issuecomment-337858978
   const userAgent = navigator.userAgent.toLowerCase();
@@ -42,7 +42,7 @@ function detectEnvironment(): Env {
 /**
  * Depending on the environment, the provider we use is different.
  */
-function getProvider(env: Env): ProviderInterface {
+export function getProvider(env: Env): ProviderInterface {
   switch (env) {
     case ELECTRON_ENV:
       // We use the local light node embedded in the electron app
@@ -58,8 +58,8 @@ function getProvider(env: Env): ProviderInterface {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return (window as any).injectedWeb3 && (window as any).injectedWeb3.slui
         ? // If we detect the extension, use PostMessageProvider
-        new PostMessageProvider('window')
+          new PostMessageProvider('window')
         : // We fallback to the remote node provided by W3F
-        new WsProvider('wss://kusama-rpc.polkadot.io');
+          new WsProvider('wss://kusama-rpc.polkadot.io');
   }
 }

@@ -19,6 +19,8 @@
  * https://github.com/paritytech/substrate/blob/master/bin/node/cli/browser-demo/ws.js
  */
 
+/* eslint-disable */
+
 export default () => {
   return {
     dial: dial,
