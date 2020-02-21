@@ -4,7 +4,7 @@
 
 import { AnyFunction, Callback } from '@polkadot/types/types';
 
-import { MessageRequest } from '../../../../extension-app/src/background';
+import { MessageRequest } from '../../../../extension-app/src/background/messages';
 
 export interface PostMessageSource {
   onMessage: (callback: Callback<object>) => void;

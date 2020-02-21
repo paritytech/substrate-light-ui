@@ -15,7 +15,7 @@ import { AnyJson } from '@polkadot/types/types';
 import { logger } from '@polkadot/util';
 import EventEmitter from 'eventemitter3';
 
-import { MessageResponse } from '../../../../extension-app/src/background';
+import { MessageResponse } from '../../../../extension-app/src/background/messages';
 import {
   portPostMessage,
   PostMessageSource,
