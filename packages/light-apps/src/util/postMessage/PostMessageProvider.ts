@@ -92,7 +92,8 @@ export class PostMessageProvider implements ProviderInterface {
     this.pingInterval = setInterval(() => {
       l.log('Trying to connect to the background script...');
       this.source.postMessage({
-        origin: 'PostMessageProvider',
+        origin: 'content',
+        jsonRpc: undefined,
         type: 'ping',
       });
     }, 2000);
@@ -238,7 +239,7 @@ export class PostMessageProvider implements ProviderInterface {
         l.log('UP ⬆️', JSON.stringify(jsonRpc));
 
         this.source.postMessage({
-          origin: 'PostMessageProvider',
+          origin: 'content',
           jsonRpc,
           type: subscription ? 'rpc.sendSubscribe' : 'rpc.send',
         });
@@ -278,6 +279,21 @@ export class PostMessageProvider implements ProviderInterface {
     const id = await this.send(method, params, { type, callback });
 
     return id as number;
+  }
+
+  /**
+   * Switch Provider.
+   *
+   * FIXME Once we just the same PostMessageProvider as @polkadot-js/extension,
+   * this method should be removed, and transformed just into sending a regular
+   * message.
+   */
+  public switch(provider: string): void {
+    this.source.postMessage({
+      origin: 'content',
+      jsonRpc: provider,
+      type: 'provider.switch',
+    });
   }
 
   /**

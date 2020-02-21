@@ -26,7 +26,7 @@ export type MessageType =
  * The message that the content script sends to the background script
  */
 export interface MessageRequest {
-  jsonRpc: JsonRpcRequest | string;
+  jsonRpc?: JsonRpcRequest | string;
   origin: 'content';
   type: MessageType;
 }
@@ -60,6 +60,7 @@ function rpcProxySend(
 ): void {
   client.rpcSend(JSON.stringify(jsonRpc)).then((res: string) => {
     try {
+      console.log('RETURNING', JSON.parse(res));
       port.postMessage({
         jsonRpc: JSON.parse(res),
         origin: 'background',
@@ -104,7 +105,12 @@ function handler(
     return;
   }
 
-  const { jsonRpc, type } = payload;
+  const { jsonRpc, origin, type } = payload;
+
+  if (origin !== 'content') {
+    l.warn(`handler: received message with origin ${origin}, ignorning`);
+    return;
+  }
 
   switch (type) {
     case 'ping':
@@ -113,9 +119,11 @@ function handler(
         type: 'pong',
       });
     case 'provider.switch': {
+      l.log('Killing WASM light client...');
       // Destroy old light client
       _client.free();
       // Start a new one
+      l.log(`Running new WASM light client: ${jsonRpc}`);
       const clientPromise =
         jsonRpc === 'kusamaCc3'
           ? kusamaCc3.fromUrl(KUSAMA_CC3_WASM)

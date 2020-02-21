@@ -4,9 +4,11 @@
 
 import { AnyFunction, Callback } from '@polkadot/types/types';
 
+import { MessageRequest } from '../../../../extension-app/src/background';
+
 export interface PostMessageSource {
   onMessage: (callback: Callback<object>) => void;
-  postMessage: (message: object) => void;
+  postMessage: (message: MessageRequest) => void;
   source: 'window' | browser.runtime.Port;
   unsubscribe: (listener: AnyFunction) => void;
 }

@@ -4,7 +4,7 @@
 
 import { WsProvider } from '@polkadot/api';
 import { ProviderInterface } from '@polkadot/rpc-provider/types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { PostMessageProvider } from '../../../util';
 
@@ -73,6 +73,12 @@ export function ProviderContextProvider(
   );
 
   const provider = createProvider(providerJSON);
+
+  useEffect(() => {
+    if (providerJSON.type === 'PostMessageProvider') {
+      (provider as PostMessageProvider).switch(providerJSON.payload);
+    }
+  }, [provider, providerJSON]);
 
   return (
     <ProviderContext.Provider
