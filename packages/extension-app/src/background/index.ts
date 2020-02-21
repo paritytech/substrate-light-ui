@@ -2,151 +2,14 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { JsonRpcRequest, JsonRpcResponse } from '@polkadot/rpc-provider/types';
 import { logger } from '@polkadot/util';
-import {
-  kusamaCc3,
-  LightClient,
-  WasmRpcClient,
-  westend,
-} from '@substrate/light';
+import { kusamaCc3 } from '@substrate/light';
 import extensionizer from 'extensionizer';
 
-// We bundled the .wasm file inside the extension
-const KUSAMA_CC3_WASM = './wasm/kusamaCc3.wasm';
-
-export type MessageType =
-  | 'ping'
-  | 'pong'
-  | 'provider.switch'
-  | 'rpc.send'
-  | 'rpc.sendSubscribe';
-
-/**
- * The message that the content script sends to the background script
- */
-export interface MessageRequest {
-  jsonRpc?: JsonRpcRequest | string;
-  origin: 'content';
-  type: MessageType;
-}
-
-/**
- * The message that the background script sends to the content script
- */
-export interface MessageResponse {
-  jsonRpc: JsonRpcResponse | boolean;
-  origin: 'background';
-  type: MessageType;
-}
+import { KUSAMA_CC3_WASM, start } from './client';
+import { handler, MessageRequest } from './messages';
 
 const l = logger('background');
-
-// Store the client here. For now, we can only allow one light client running
-// at a time.
-let _client: WasmRpcClient;
-
-/**
- * Start a WASM client
- */
-async function start(lightClient: LightClient): Promise<void> {
-  _client = await lightClient.startClient();
-}
-
-function rpcProxySend(
-  client: WasmRpcClient,
-  jsonRpc: JsonRpcRequest,
-  port: browser.runtime.Port
-): void {
-  client.rpcSend(JSON.stringify(jsonRpc)).then((res: string) => {
-    try {
-      console.log('RETURNING', JSON.parse(res));
-      port.postMessage({
-        jsonRpc: JSON.parse(res),
-        origin: 'background',
-        type: 'rpc.send',
-      });
-    } catch (error) {
-      l.error(`rpcProxySend: Error with ${res} - ${error.message}`);
-    }
-  });
-}
-
-function rpcProxySubscribe(
-  client: WasmRpcClient,
-  jsonRpc: JsonRpcRequest,
-  port: browser.runtime.Port
-): void {
-  client.rpcSubscribe(JSON.stringify(jsonRpc), (res: string) => {
-    try {
-      port.postMessage({
-        jsonRpc: { id: jsonRpc.id, ...JSON.parse(res) },
-        origin: 'background',
-        type: 'rpc.sendSubscribe',
-      });
-    } catch (error) {
-      l.error(`rpcProxySubscribe: Error with ${res} - ${error.message}`);
-    }
-  });
-}
-
-/**
- * Handle a message from the content script
- *
- * @param payload - The message we received from the content script
- * @param port - The port representing the content script
- */
-function handler(
-  payload: MessageRequest | undefined,
-  port: browser.runtime.Port
-): void {
-  if (!payload) {
-    l.warn('handler: Received empty handler, ignoring');
-    return;
-  }
-
-  const { jsonRpc, origin, type } = payload;
-
-  if (origin !== 'content') {
-    l.warn(`handler: received message with origin ${origin}, ignorning`);
-    return;
-  }
-
-  switch (type) {
-    case 'ping':
-      return port.postMessage({
-        origin: 'background',
-        type: 'pong',
-      });
-    case 'provider.switch': {
-      l.log('Killing WASM light client...');
-      // Destroy old light client
-      _client.free();
-      // Start a new one
-      l.log(`Running new WASM light client: ${jsonRpc}`);
-      const clientPromise =
-        jsonRpc === 'kusamaCc3'
-          ? kusamaCc3.fromUrl(KUSAMA_CC3_WASM)
-          : westend.fromUrl(KUSAMA_CC3_WASM);
-
-      clientPromise
-        .startClient()
-        .then(client => {
-          // Replace our cached client with the new one
-          _client = client;
-        })
-        .catch(error => console.error(error));
-
-      break;
-    }
-    case 'rpc.send':
-      return rpcProxySend(_client, jsonRpc as JsonRpcRequest, port);
-    case 'rpc.sendSubscribe':
-      return rpcProxySubscribe(_client, jsonRpc as JsonRpcRequest, port);
-    default:
-      l.warn(`Unable to handle message of type ${type}`);
-  }
-}
 
 extensionizer.runtime.onConnect.addListener(
   (port: browser.runtime.Port): void => {
@@ -173,4 +36,4 @@ extensionizer.runtime.onConnect.addListener(
 );
 
 // At the beginning, just run Kusama
-start(kusamaCc3.fromUrl(KUSAMA_CC3_WASM)).catch(error => console.error(error));
+start(kusamaCc3.fromUrl(KUSAMA_CC3_WASM));
