@@ -15,6 +15,8 @@ import {
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
+import { ChooseProvider } from './ChooseProvider';
+
 const GREEN = '#79c879';
 const RED = '#ff0000';
 
@@ -55,10 +57,6 @@ function renderHealth(header?: Header, health?: Health): React.ReactElement {
   );
 }
 
-function renderProvider(): React.ReactElement {
-  return <p>CHOOSE PROVIDER</p>;
-}
-
 export function TopBar(): React.ReactElement {
   const { chain, header, health } = useContext(SystemContext);
 
@@ -67,7 +65,7 @@ export function TopBar(): React.ReactElement {
       <StackedHorizontal justifyContent='space-between' alignItems='center'>
         {renderLogo(chain)}
         {renderHealth(header, health)}
-        {renderProvider()}
+        <ChooseProvider />
       </StackedHorizontal>
     </Container>
   );
