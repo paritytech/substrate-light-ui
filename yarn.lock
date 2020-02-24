@@ -3457,9 +3457,9 @@
     util-deprecate "^1.0.2"
 
 "@substrate/context@^0.3.20":
-  version "0.3.20"
-  resolved "https://registry.yarnpkg.com/@substrate/context/-/context-0.3.20.tgz#f5e5ce7cd474a237638134c85a104cc688b9ae5f"
-  integrity sha512-W5pm/hTg7ehnqTpCxoLBG3hr8m/9NhY0fyLf0ViZl9EIEZBeRJBGGvkKUoSnlhurgXLQzoYISqiJWUNT7P9M/w==
+  version "0.3.21"
+  resolved "https://registry.yarnpkg.com/@substrate/context/-/context-0.3.21.tgz#8a6f9809368a42e86df67cff91664d8f2c8f13a6"
+  integrity sha512-XVqVBR/d1X+c5GDiYFaKGV3JsC7DCVR23J0MuIJzkwSa1NZGuy4p/JZR+zk3FDCgytV5YYC6AgIDG2IqPRykTQ==
   dependencies:
     "@polkadot/ui-keyring" "^0.49.0-beta.1"
     fp-ts "1.18.1"
@@ -20566,9 +20566,9 @@ typedoc@^0.16.9:
     typescript "3.7.x"
 
 typescript@3.7.x, typescript@^3.0.3, typescript@^3.6.4, typescript@^3.7.2, typescript@^3.7.5:
-  version "3.7.5"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.7.5.tgz#0692e21f65fd4108b9330238aac11dd2e177a1ae"
-  integrity sha512-/P5lkRXkWHNAbcJIiHPfRoKqyd7bsyCma1hZNUGfn20qm64T6ZBlrzprymeu918H+mB/0rIg2gGK/BXkhhYgBw==
+  version "3.8.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.8.2.tgz#91d6868aaead7da74f493c553aeff76c0c0b1d5a"
+  integrity sha512-EgOVgL/4xfVrCMbhYKUQTdF37SQn4Iw73H5BgCrF1Abdun7Kwy/QZsE/ssAy0y4LxBbvua3PIbFsbRczWWnDdQ==
 
 u2f-api@0.2.7:
   version "0.2.7"
