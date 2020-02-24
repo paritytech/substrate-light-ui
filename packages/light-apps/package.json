@@ -31,7 +31,7 @@
     "eventemitter3": "^4.0.0",
     "extensionizer": "^1.0.1",
     "file-saver": "^2.0.0",
-    "fp-ts": "1.18.1",
+    "fp-ts": "2.5.1",
     "react": "^16.12.0",
     "react-dom": "^16.6.3",
     "react-router-dom": "^5.0.0",
