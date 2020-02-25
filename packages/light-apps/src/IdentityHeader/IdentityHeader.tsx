@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { KeyringContext } from '@substrate/context';
+import { ApiContext, KeyringContext } from '@substrate/context';
 import {
   Balance,
   CopyButton,
@@ -19,6 +19,7 @@ type Props = RouteComponentProps;
 
 export function IdentityHeader(props: Props): React.ReactElement | null {
   const { match } = props;
+  const { api } = useContext(ApiContext);
   const { currentAccount, setCurrentAccount } = useContext(KeyringContext);
 
   if (!currentAccount) {
@@ -37,7 +38,7 @@ export function IdentityHeader(props: Props): React.ReactElement | null {
         <CopyButton value={currentAccount} />
       </Menu.Item>
       <Menu.Item>
-        <Balance address={currentAccount} fontSize='medium' />
+        <Balance address={currentAccount} api={api} fontSize='medium' />
       </Menu.Item>
       <Link to='/accounts'>
         <Menu.Item active={match.path === '/accounts'}>

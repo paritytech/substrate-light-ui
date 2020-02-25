@@ -173,7 +173,7 @@ export function SendBalance(): React.ReactElement {
               type='accounts'
               value={senderAddress}
             />
-            <Balance address={senderAddress} orientation='vertical' />
+            <Balance address={senderAddress} api={api} orientation='vertical' />
           </Stacked>
         </WrapperDiv>
 
@@ -198,7 +198,7 @@ export function SendBalance(): React.ReactElement {
             <SubHeader textAlign='left'>Recipient Address:</SubHeader>
             <Input fluid onChange={handler(setReceiver)} value={receiver} />
             {isReceiverValid && (
-              <Balance address={receiver} orientation='vertical' />
+              <Balance address={receiver} api={api} orientation='vertical' />
             )}
           </Stacked>
         </WrapperDiv>
