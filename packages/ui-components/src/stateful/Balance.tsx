@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-// import { DerivedBalances, DerivedStakingAccount } from '@polkadot/api-derive/types';
+import ApiRx from '@polkadot/api/rx';
 import { ApiContext } from '@substrate/context';
 import React, { useContext, useEffect, useState } from 'react';
 import { combineLatest, of } from 'rxjs';
@@ -15,6 +15,7 @@ interface BalanceProps
     Exclude<keyof BalanceDisplayProps, 'balance'>
   > {
   address: string;
+  api: ApiRx;
   detailed?: boolean;
   orientation?: 'horizontal' | 'vertical';
 }
