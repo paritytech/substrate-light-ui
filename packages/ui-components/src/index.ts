@@ -30,7 +30,6 @@ export {
 } from 'semantic-ui-react';
 
 export * from './Accordion';
-export * from './AccountsList';
 export * from './Address';
 export * from './Alert';
 export * from './BalanceDisplay';

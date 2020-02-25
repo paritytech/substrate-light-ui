@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { mnemonicGenerate } from '@polkadot/util-crypto';
-import { KeyringContext } from '@substrate/context';
+import { ApiContext, KeyringContext } from '@substrate/context';
 import {
   AddressSummary,
   DropdownProps,
@@ -59,6 +59,7 @@ function randomlyPickFour(phrase: string): Array<Array<string>> {
 export function Create(props: Props): React.ReactElement {
   const { location, history } = props;
 
+  const { api } = useContext(ApiContext);
   const { keyring, isKeyringReady } = useContext(KeyringContext);
 
   const [address, setAddress] = useState();
@@ -209,6 +210,7 @@ export function Create(props: Props): React.ReactElement {
       {isKeyringReady && (
         <AddressSummary
           address={address}
+          api={api}
           name={name}
           size='small'
           orientation='vertical'

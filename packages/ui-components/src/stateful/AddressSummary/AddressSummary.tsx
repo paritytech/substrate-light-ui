@@ -2,6 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import ApiRx from '@polkadot/api/rx';
 import IdentityIcon from '@polkadot/react-identicon';
 import React from 'react';
 
@@ -20,6 +21,7 @@ import { OrientationType, SizeType } from './types';
 type AddressSummaryProps = {
   address?: string; // TODO support AccountId
   alignItems?: FlexAlign;
+  api: ApiRx;
   bondingPair?: string; // TODO support AccountId
   detailed?: boolean;
   isNominator?: boolean;
@@ -90,6 +92,7 @@ function renderShortAddress(address: string): string {
 
 function renderDetails(
   address: string,
+  api: ApiRx,
   summaryProps: Exclude<AddressSummaryProps, keyof 'address'>
 ): React.ReactElement {
   const {
@@ -123,6 +126,7 @@ function renderDetails(
         {!noBalance && (
           <Balance
             address={address}
+            api={api}
             detailed={detailed}
             orientation={orientation}
             fontSize={FONT_SIZES[size] as FontSize}
@@ -136,6 +140,7 @@ function renderDetails(
 export function AddressSummary(props: AddressSummaryProps): React.ReactElement {
   const {
     address,
+    api,
     alignItems = 'center',
     justifyContent = 'flex-start',
     orientation = 'vertical',
@@ -146,7 +151,7 @@ export function AddressSummary(props: AddressSummaryProps): React.ReactElement {
     orientation === 'vertical' ? (
       <Stacked justifyContent={justifyContent}>
         {renderIcon(address, size)}
-        {renderDetails(address, props)}
+        {renderDetails(address, api, props)}
       </Stacked>
     ) : (
       <StackedHorizontal
@@ -155,7 +160,7 @@ export function AddressSummary(props: AddressSummaryProps): React.ReactElement {
       >
         {renderIcon(address, size)}
         <Margin left />
-        {renderDetails(address, props)}
+        {renderDetails(address, api, props)}
       </StackedHorizontal>
     )
   ) : (

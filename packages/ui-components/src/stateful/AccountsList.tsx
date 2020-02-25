@@ -2,16 +2,19 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import ApiRx from '@polkadot/api/rx';
 import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
 import React from 'react';
 import List from 'semantic-ui-react/dist/commonjs/elements/List/List';
 import { CardProps } from 'semantic-ui-react/dist/commonjs/views/Card';
 
-import { AddressSummary, Card, Container } from './index';
-import { FadedText } from './Shared.styles';
+import { Card } from '../Card';
+import { Container, FadedText } from '../Shared.styles';
+import { AddressSummary } from './AddressSummary';
 
 type Props = {
   accounts?: InjectedAccountWithMeta[];
+  api: ApiRx;
   onSelectAccount?: (
     event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
     data: CardProps
@@ -23,7 +26,7 @@ function renderEmpty(): React.ReactElement {
 }
 
 export function AccountsList(props: Props): React.ReactElement {
-  const { accounts, onSelectAccount } = props;
+  const { accounts, api, onSelectAccount } = props;
 
   const renderAccountsListItem = (): React.ReactElement => {
     return (
@@ -42,6 +45,7 @@ export function AccountsList(props: Props): React.ReactElement {
                     <AddressSummary
                       address={address}
                       alignItems='center'
+                      api={api}
                       justifyContent='center'
                       orientation='horizontal'
                       size='small'
