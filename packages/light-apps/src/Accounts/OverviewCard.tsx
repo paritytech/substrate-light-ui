@@ -37,9 +37,9 @@ export function AccountsOverviewCard(props: Props): React.ReactElement {
   const { api } = useContext(ApiContext);
   const { keyring } = useContext(KeyringContext);
   const { enqueue } = useContext(AlertsContext);
-  const [confirmScreen, setConfirmScreen] = useState();
+  const [confirmScreen, setConfirmScreen] = useState<'backup' | 'forget'>();
   const [showDetails, setShowDetails] = useState(false);
-  const [password, setPassword] = useState();
+  const [password, setPassword] = useState('');
 
   const handleBackup = (): void => {
     if (confirmScreen !== 'backup') {
@@ -68,7 +68,7 @@ export function AccountsOverviewCard(props: Props): React.ReactElement {
 
   function handleCancel(): void {
     if (confirmScreen) {
-      setConfirmScreen(null);
+      setConfirmScreen(undefined);
     }
   }
 

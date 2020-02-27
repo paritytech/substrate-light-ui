@@ -4,6 +4,7 @@
 
 import { DerivedBalancesAll, DerivedFees } from '@polkadot/api-derive/types';
 import ApiRx from '@polkadot/api/rx';
+import { SubmittableExtrinsic } from '@polkadot/api/submittable/types';
 import { AccountData, Index } from '@polkadot/types/interfaces';
 import { ITuple } from '@polkadot/types/types';
 import {
@@ -63,7 +64,7 @@ export function SendBalance(): React.ReactElement {
     ITuple<[Index, AccountData]>
   >();
   const [currentBalance, setCurrentBalance] = useState<DerivedBalancesAll>();
-  const [extrinsic, setExtrinsic] = useState();
+  const [extrinsic, setExtrinsic] = useState<SubmittableExtrinsic<'rxjs'>>();
   const [fees, setFees] = useState<DerivedFees>();
   const [receiver, setReceiver] = useState<string>(
     (Object.keys(addresses) || Object.keys(accounts))[0]

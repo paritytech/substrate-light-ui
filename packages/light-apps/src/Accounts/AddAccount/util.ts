@@ -56,7 +56,7 @@ export function generateAddressFromMnemonic(
 export function validateMeta(
   values: UserInput,
   step: string,
-  whichAccount: string
+  whichAccount?: string
 ): Either<UserInputError, UserInput> {
   const errors = {} as UserInputError;
 

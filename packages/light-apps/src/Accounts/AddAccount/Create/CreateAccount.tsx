@@ -47,11 +47,11 @@ function randomlyPickFour(phrase: string): Array<Array<string>> {
   const [first, second, third, fourth] = getRandomInts(ceil);
 
   const randomFour = [
-    [first, phraseArray[first - 1]],
-    [second, phraseArray[second - 1]],
-    [third, phraseArray[third - 1]],
-    [fourth, phraseArray[fourth - 1]],
-  ] as Array<Array<string>>;
+    [first.toString(), phraseArray[first - 1]],
+    [second.toString(), phraseArray[second - 1]],
+    [third.toString(), phraseArray[third - 1]],
+    [fourth.toString(), phraseArray[fourth - 1]],
+  ];
 
   return randomFour;
 }
@@ -62,7 +62,7 @@ export function Create(props: Props): React.ReactElement {
   const { api } = useContext(ApiContext);
   const { keyring, isKeyringReady } = useContext(KeyringContext);
 
-  const [address, setAddress] = useState();
+  const [address, setAddress] = useState<string>();
   const [errors, setErrors] = useState<Option<Array<string>>>(none);
   const [mnemonic] = useState(mnemonicGenerate());
   const [name, setName] = useState('');
@@ -75,13 +75,13 @@ export function Create(props: Props): React.ReactElement {
   ]);
   const [tags, setTags] = useState<Tags>([]);
 
-  const [firstWord, setFirstWord] = useState();
-  const [secondWord, setSecondWord] = useState();
-  const [thirdWord, setThirdWord] = useState();
-  const [fourthWord, setFourthWord] = useState();
+  const [firstWord, setFirstWord] = useState('');
+  const [secondWord, setSecondWord] = useState('');
+  const [thirdWord, setThirdWord] = useState('');
+  const [fourthWord, setFourthWord] = useState('');
 
-  const [randomFourWords, setRandomFourWords] = useState();
-  const [whichAccount, setWhichAccount] = useState();
+  const [randomFourWords, setRandomFourWords] = useState<string[][]>([]);
+  const [whichAccount, setWhichAccount] = useState<'stash' | 'controller'>();
 
   useEffect(() => {
     if (isKeyringReady) {

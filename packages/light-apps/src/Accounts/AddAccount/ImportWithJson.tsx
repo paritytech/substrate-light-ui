@@ -30,7 +30,7 @@ export function ImportWithJson(props: Props): React.ReactElement {
   const { enqueue } = useContext(AlertsContext);
   const { keyring } = useContext(KeyringContext);
 
-  const [errorText, setErrorText] = useState();
+  const [errorText, setErrorText] = useState<string>();
   const [step, setStep] = useState('upload' as Step);
   const [inputPassword, setInputPassword] = useState('');
   const [jsonString, setJsonString] = useState('');
