@@ -22,7 +22,7 @@
   },
   "scripts": {
     "prebuild": "yarn clean",
-    "build:ui": "lerna exec yarn build --stream --scope=@substrate/ui-components --scope=@substrate/light-apps",
+    "build:ui": "lerna exec yarn build --stream --scope=@substrate/ui-components --scope=@substrate/light --scope=@substrate/light-apps",
     "build:electron": "yarn build:ui && lerna run build --scope=@substrate/electron-app",
     "build:extension": "INLINE_RUNTIME_CHUNK=false yarn build:ui && lerna run build --scope=@substrate/extension-app",
     "clean": "polkadot-dev-clean-build",
@@ -37,20 +37,16 @@
     "test": "CI=true lerna run test --parallel"
   },
   "devDependencies": {
-    "@polkadot/dev": "^0.40.18",
+    "@polkadot/dev": "^0.41.6",
     "@polkadot/dev-react": "^0.34.2",
-    "@polkadot/extension-dapp": "^0.14.1",
     "concurrently": "^5.0.2",
     "eslint-config-prettier": "^6.7.0",
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-simple-import-sort": "^5.0.0",
-    "ncp": "^2.0.0",
-    "node-fetch": "^2.5.0",
-    "prettier": "^1.19.1",
-    "semver": "^7.1.1",
-    "typescript": "^3.7.5"
+    "prettier": "^1.19.1"
   },
   "resolutions": {
-    "kind-of": ">=6.0.3"
+    "kind-of": ">=6.0.3",
+    "typescript": "^3.8.2"
   }
 }
