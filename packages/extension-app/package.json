@@ -1,6 +1,6 @@
 {
   "name": "@substrate/extension-app",
-  "version": "0.4.0",
+  "version": "0.3.0",
   "author": "Parity Technologies <admin@parity.io>",
   "description": "Substrate Light UI",
   "license": "Apache-2.0",
@@ -19,8 +19,8 @@
     "webpack-extension-manifest-plugin": "^0.5.0"
   },
   "dependencies": {
-    "@polkadot/extension-inject": "^0.14.1",
-    "@substrate/light": "^0.4.0",
+    "@polkadot/extension-inject": "^0.21.1",
+    "@substrate/light": "^0.3.0",
     "extensionizer": "^1.0.1",
     "web-ext-types": "^3.2.1"
   }
