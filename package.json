@@ -37,7 +37,7 @@
     "test": "CI=true lerna run test --parallel"
   },
   "devDependencies": {
-    "@polkadot/dev": "^0.41.6",
+    "@polkadot/dev": "^0.50.16",
     "@polkadot/dev-react": "^0.34.2",
     "concurrently": "^5.0.2",
     "eslint-config-prettier": "^6.7.0",
