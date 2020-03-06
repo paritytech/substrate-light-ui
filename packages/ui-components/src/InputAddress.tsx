@@ -2,13 +2,12 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
 import IdentityIcon from '@polkadot/react-identicon';
-import { AccountId } from '@polkadot/types/interfaces';
 import {
   SingleAddress,
   SubjectInfo,
 } from '@polkadot/ui-keyring/observable/types';
-import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
 import React from 'react';
 import Dropdown, {
   DropdownProps,
@@ -49,7 +48,13 @@ function getExtensionAddressFromString(
   allAccounts: InjectedAccountWithMeta[],
   address: string
 ): InjectedAccountWithMeta | undefined {
-  return allAccounts && allAccounts.find((injectedAccount: InjectedAccountWithMeta) => injectedAccount.address === address);
+  return (
+    allAccounts &&
+    allAccounts.find(
+      (injectedAccount: InjectedAccountWithMeta) =>
+        injectedAccount.address === address
+    )
+  );
 }
 
 const DropdownItemText = styled.span`
@@ -61,7 +66,9 @@ const DropdownWrapper = styled.div`
   flex-direction: row;
 `;
 
-function renderDropdownItemText(account: SingleAddress | InjectedAccountWithMeta): React.ReactElement {
+function renderDropdownItemText(
+  account: SingleAddress | InjectedAccountWithMeta
+): React.ReactElement {
   if (isInstanceOfInjectedExtension(account)) {
     return (
       <DropdownItemText>
@@ -93,8 +100,11 @@ export function InputAddress(props: InputAddressProps): React.ReactElement {
   } = props;
 
   const currentAddress = fromKeyring
-    ? getKeyringAddressFromString(accounts as SubjectInfo, addresses as SubjectInfo, value)
-    : getExtensionAddressFromString(accounts as InjectedAccountWithMeta[], value);
+    ? getKeyringAddressFromString(accounts as SubjectInfo, addresses, value)
+    : getExtensionAddressFromString(
+        accounts as InjectedAccountWithMeta[],
+        value
+      );
 
   function handleChange(
     _event: React.MouseEvent<HTMLDivElement, Event>,
@@ -105,7 +115,9 @@ export function InputAddress(props: InputAddressProps): React.ReactElement {
     }
   }
 
-  function renderDropdownItem(account: SingleAddress | InjectedAccountWithMeta): React.ReactElement {
+  function renderDropdownItem(
+    account: SingleAddress | InjectedAccountWithMeta
+  ): React.ReactElement {
     if (isInstanceOfInjectedExtension(account)) {
       return (
         <Dropdown.Item
@@ -113,9 +125,9 @@ export function InputAddress(props: InputAddressProps): React.ReactElement {
           key={account.address}
           onClick={handleChange}
           value={account.address}
-          text={renderDropdownItemText(account as InjectedAccountWithMeta)}
+          text={renderDropdownItemText(account)}
         />
-      )
+      );
     } else {
       return (
         <Dropdown.Item
@@ -123,7 +135,7 @@ export function InputAddress(props: InputAddressProps): React.ReactElement {
           key={account.json.address}
           onClick={handleChange}
           value={account.json.address}
-          text={renderDropdownItemText(account as SingleAddress)}
+          text={renderDropdownItemText(account)}
         />
       );
     }
@@ -136,11 +148,13 @@ export function InputAddress(props: InputAddressProps): React.ReactElement {
         <Margin right='small' />
         <Dropdown
           labeled
-          text={currentAddress
-            ? isInstanceOfInjectedExtension(currentAddress)
-              ? currentAddress.meta.name
-              : currentAddress.json.meta.name
-            : 'Loading...'}
+          text={
+            currentAddress
+              ? isInstanceOfInjectedExtension(currentAddress)
+                ? currentAddress.meta.name
+                : currentAddress.json.meta.name
+              : 'Loading...'
+          }
           value={value}
           {...rest}
         >
