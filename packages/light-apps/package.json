@@ -1,6 +1,6 @@
 {
   "name": "@substrate/light-apps",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "author": "Parity Technologies <admin@parity.io>",
   "description": "User interface optimized for the Substrate light client",
   "license": "Apache-2.0",
@@ -23,7 +23,7 @@
     "@polkadot/extension-dapp": "^0.21.1",
     "@polkadot/ui-assets": "^0.51.1",
     "@substrate/context": "^0.3.21",
-    "@substrate/ui-components": "^0.3.1",
+    "@substrate/ui-components": "^0.3.2",
     "@types/chrome": "^0.0.98",
     "@types/file-saver": "^2.0.0",
     "@types/filesystem": "^0.0.29",

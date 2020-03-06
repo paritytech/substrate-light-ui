@@ -1,6 +1,6 @@
 {
   "name": "@substrate/ui-components",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "author": "Parity Technologies <admin@parity.io>",
   "description": "UI components shared across Substrate Light UI",
   "files": [
