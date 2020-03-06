@@ -10,20 +10,44 @@ import React from 'react';
 import { InputAddress } from '../src/InputAddress';
 import { withTheme } from './customDecorators';
 
-const SAMPLE_ACCOUNT = 'ExuzF7kjvyUsk6TMH4MhKA4AE7DY6NCts4SDj9Q3HS1dP5W';
+const SAMPLE_ACCOUNT_1 = 'ExuzF7kjvyUsk6TMH4MhKA4AE7DY6NCts4SDj9Q3HS1dP5W';
+const SAMPLE_ACCOUNT_2 = 'HqFz5RBczgtKrHQGav7DFZwSwrDXxKjLWc95mMDidVdfpwC';
+
+const KEYRING_ACCOUNTS = {
+  [SAMPLE_ACCOUNT_1]: {
+    json: { address: SAMPLE_ACCOUNT_1, meta: { name: 'Foo' } },
+    option: { key: 'foo', name: 'foo', value: 'baz' },
+  },
+  [SAMPLE_ACCOUNT_2]: {
+    json: { address: SAMPLE_ACCOUNT_2, meta: { name: 'Bar' } },
+    option: { key: 'bar', name: 'bar', value: 'baz' },
+  },
+}
+
+const EXTENSION_ACCOUNTS = [{
+  address: SAMPLE_ACCOUNT_1,
+  meta: {
+      genesisHash: '0xac71396b27f84ab0634df7633bc42cc681005c77502a810cb0aa5c19297491dc',
+      name: 'Foo',
+      source: 'polkadot-js',
+  }
+}];
 
 storiesOf('InputAddress', module)
   .addDecorator(withKnobs)
   .addDecorator(withTheme)
-  .add('input address', () => (
+  .add('input address from keyring', () => (
     <InputAddress
-      accounts={{
-        [SAMPLE_ACCOUNT]: {
-          json: { address: SAMPLE_ACCOUNT, meta: {} },
-          option: { key: 'foo', name: 'bar', value: 'baz' },
-        },
-      }}
+      accounts={KEYRING_ACCOUNTS}
       onChangeAddress={action('onChange clicked')}
-      value={text('address', SAMPLE_ACCOUNT)}
+      value={text('address', SAMPLE_ACCOUNT_1)}
     />
+  ))
+  .add('input address from extension', () => (
+    <InputAddress
+      accounts={EXTENSION_ACCOUNTS}
+      fromKeyring={false}
+      onChangeAddress={action('onChange clicked')}
+      value={text('address', SAMPLE_ACCOUNT_1)}
+      />
   ));

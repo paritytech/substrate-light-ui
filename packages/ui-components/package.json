@@ -18,6 +18,7 @@
     "storybook": "start-storybook -p 9001 -c .storybook"
   },
   "dependencies": {
+    "@polkadot/extension-dapp": "^0.22.1",
     "@polkadot/react-identicon": "^0.51.1",
     "@types/react-copy-to-clipboard": "^4.3.0",
     "@types/recharts": "^1.1.16",

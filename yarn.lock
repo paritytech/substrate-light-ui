@@ -2786,6 +2786,21 @@
     "@babel/runtime" "^7.8.3"
     "@polkadot/extension-inject" "^0.21.1"
 
+"@polkadot/extension-dapp@^0.22.1":
+  version "0.22.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/extension-dapp/-/extension-dapp-0.22.1.tgz#9c459825458052a52c201941f3157f9a138c3a7c"
+  integrity sha512-K2QFFPZ18UXPCbmLXbL3G+fpgufCQUs4TLdU9tYnO35AeyKo1f6seLZ9scqrRXTgCan8hOlrmnPzVDptKzQCpw==
+  dependencies:
+    "@babel/runtime" "^7.8.4"
+    "@polkadot/extension-inject" "0.22.1"
+
+"@polkadot/extension-inject@0.22.1":
+  version "0.22.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/extension-inject/-/extension-inject-0.22.1.tgz#ddab02f87027e11a6063a1ea34585ef3220a564b"
+  integrity sha512-r5iaCp+KxqJcBtw9CX6qvCU2pkQqq8IE902ARfCObpLGdAK8VsrIzJ4MwLkupyP3LZikRoFabYnGvuy6simKZw==
+  dependencies:
+    "@babel/runtime" "^7.8.4"
+
 "@polkadot/extension-inject@^0.21.1":
   version "0.21.1"
   resolved "https://registry.yarnpkg.com/@polkadot/extension-inject/-/extension-inject-0.21.1.tgz#fc6595ae25f0ae37c2c416fd8a81fbef43dc7752"
