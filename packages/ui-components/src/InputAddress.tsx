@@ -51,21 +51,20 @@ function getExtensionAddressFromString(
 ): InjectedAccountWithMeta | undefined {
   return (
     allAccounts &&
-    allAccounts.find(
-      (injectedAccount: InjectedAccountWithMeta) => {
-        // match public keys
-        let current = decodeAddress(injectedAccount.address)
-        let target = decodeAddress(address);
-        let isEqual = true;
-        for (let i = 0; i < current.length; i++) {
-          if (current[i] !== target[i]) {
-            isEqual = false;
-            break;
-          }
+    allAccounts.find((injectedAccount: InjectedAccountWithMeta) => {
+      // match public keys
+      const current = decodeAddress(injectedAccount.address);
+      const target = decodeAddress(address);
+      let isEqual = true;
+      for (let i = 0; i < current.length; i++) {
+        if (current[i] !== target[i]) {
+          isEqual = false;
+          break;
         }
+      }
 
-        return isEqual ? injectedAccount : undefined;
-      })
+      return isEqual ? injectedAccount : undefined;
+    })
   );
 }
 
