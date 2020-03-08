@@ -28,10 +28,10 @@ export interface InputAddressProps extends DropdownProps {
   addresses?: SubjectInfo;
   onChangeAddress?: (address: string) => void;
   types?: AddressType[];
-  margin?: string,
-  padding?: string,
-  height?: string,
-  width?: string,
+  margin?: string;
+  padding?: string;
+  height?: string;
+  width?: string;
   value: string;
 }
 
@@ -157,7 +157,12 @@ export function InputAddress(props: InputAddressProps): React.ReactElement {
   }
 
   return (
-    <WrapperDiv margin={props.margin} padding={props.padding} width={props.width} height={props.height}>
+    <WrapperDiv
+      margin={props.margin}
+      padding={props.padding}
+      width={props.width}
+      height={props.height}
+    >
       <DropdownWrapper>
         <IdentityIcon value={value} size={20} />
         <Margin right='small' />
