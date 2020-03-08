@@ -52,6 +52,8 @@ storiesOf('InputAddress', module)
     <InputAddress
       accounts={KEYRING_ACCOUNTS}
       onChangeAddress={action('onChange clicked')}
+      height={text('height', '15px')}
+      width={text('width', '15px')}
       value={text('address', SAMPLE_ACCOUNT_1)}
     />
   ))
@@ -60,6 +62,8 @@ storiesOf('InputAddress', module)
       accounts={EXTENSION_ACCOUNTS}
       fromKeyring={false}
       onChangeAddress={action('onChange clicked')}
+      height={text('height', '15px')}
+      width={text('width', '15px')}
       value={text('address', SAMPLE_ACCOUNT_1)}
     />
   ));
