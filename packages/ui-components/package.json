@@ -1,6 +1,6 @@
 {
   "name": "@substrate/ui-components",
-  "version": "0.3.2",
+  "version": "0.3.24",
   "author": "Parity Technologies <admin@parity.io>",
   "description": "UI components shared across Substrate Light UI",
   "files": [
@@ -41,5 +41,6 @@
   "peerDependencies": {
     "@polkadot/api": "^1.4.2",
     "react": "^16.9"
-  }
+  },
+  "gitHead": "6f8b3b9b686880614332bf2633223bf79e60be69"
 }

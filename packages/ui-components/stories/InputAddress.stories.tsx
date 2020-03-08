@@ -34,6 +34,15 @@ const EXTENSION_ACCOUNTS = [
       source: 'polkadot-js',
     },
   },
+  {
+    address: SAMPLE_ACCOUNT_2,
+    meta: {
+      genesisHash:
+        '0xac71396b27f84ab0634df7633bc42cc681005c77502a810cb0aa5c19297491dc',
+      name: 'Bar',
+      source: 'polkadot-js',
+    },
+  },
 ];
 
 storiesOf('InputAddress', module)

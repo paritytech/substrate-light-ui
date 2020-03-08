@@ -8,6 +8,7 @@ import {
   SingleAddress,
   SubjectInfo,
 } from '@polkadot/ui-keyring/observable/types';
+import { decodeAddress } from '@polkadot/util-crypto';
 import React from 'react';
 import Dropdown, {
   DropdownProps,
@@ -50,10 +51,20 @@ function getExtensionAddressFromString(
 ): InjectedAccountWithMeta | undefined {
   return (
     allAccounts &&
-    allAccounts.find(
-      (injectedAccount: InjectedAccountWithMeta) =>
-        injectedAccount.address === address
-    )
+    allAccounts.find((injectedAccount: InjectedAccountWithMeta) => {
+      // match public keys
+      const current = decodeAddress(injectedAccount.address);
+      const target = decodeAddress(address);
+      let isEqual = true;
+      for (let i = 0; i < current.length; i++) {
+        if (current[i] !== target[i]) {
+          isEqual = false;
+          break;
+        }
+      }
+
+      return isEqual ? injectedAccount : undefined;
+    })
   );
 }
 
