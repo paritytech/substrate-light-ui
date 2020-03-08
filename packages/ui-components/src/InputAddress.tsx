@@ -8,7 +8,7 @@ import {
   SingleAddress,
   SubjectInfo,
 } from '@polkadot/ui-keyring/observable/types';
-import { decodeAddress, encodeAddress } from '@polkadot/util-crypto';
+import { decodeAddress } from '@polkadot/util-crypto';
 import React from 'react';
 import Dropdown, {
   DropdownProps,
