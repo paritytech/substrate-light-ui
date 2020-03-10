@@ -8541,9 +8541,9 @@ electron-webpack@^2.6.2:
     yargs "^13.2.4"
 
 electron@^8.0.0:
-  version "8.0.2"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-8.0.2.tgz#8dfd62fd42529fed94040b643660f2a82b4f8e95"
-  integrity sha512-hiQaFtFhd9X2Vjs01l3GXb8hPWSCa31o/kXydo+RC7vwcx9AGuzG7jWIq8vidzAWsF/YPM0LFVjFRZrfkqi03Q==
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-8.1.0.tgz#5b5ce0e2db633299261512e06d914e65a95326f8"
+  integrity sha512-6Z/aUDbP4UIhqaBQzRb5wSMTLhY7wPtqikfWqpaJpuHzMaT2mS+fkbnxUU2fHkETPdMj0GAWwFkVWCEJX0g+EQ==
   dependencies:
     "@electron/get" "^1.0.1"
     "@types/node" "^12.0.12"
@@ -20403,9 +20403,9 @@ typedoc@^0.16.11, typedoc@^0.16.9:
     typescript "3.7.x"
 
 typescript@3.7.x, typescript@^3.0.3, typescript@^3.6.4, typescript@^3.7.5, typescript@^3.8.2, typescript@^3.8.3:
-  version "3.8.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.8.2.tgz#91d6868aaead7da74f493c553aeff76c0c0b1d5a"
-  integrity sha512-EgOVgL/4xfVrCMbhYKUQTdF37SQn4Iw73H5BgCrF1Abdun7Kwy/QZsE/ssAy0y4LxBbvua3PIbFsbRczWWnDdQ==
+  version "3.8.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.8.3.tgz#409eb8544ea0335711205869ec458ab109ee1061"
+  integrity sha512-MYlEfn5VrLNsgudQTVJeNaQFUAI7DkhnOjdpAp4T+ku1TfQClewlbSuTVHiA+8skNBgaf02TL/kLOvig4y3G8w==
 
 u2f-api@0.2.7:
   version "0.2.7"
