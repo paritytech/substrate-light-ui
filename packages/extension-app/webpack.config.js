@@ -55,7 +55,7 @@ function createWebpack({ alias = {}, context }) {
           use: [
             {
               loader: require.resolve('babel-loader'),
-              options: require('@polkadot/dev-react/config/babel'),
+              options: require('@polkadot/dev/config/babel'),
             },
           ],
         },
