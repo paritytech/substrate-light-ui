@@ -1,12 +1,12 @@
 module.exports = {
   env: {
     browser: true,
+    node: true,
     jest: true,
   },
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',
-    'semistandard',
     'prettier',
     'plugin:prettier/recommended',
     'plugin:import/typescript',

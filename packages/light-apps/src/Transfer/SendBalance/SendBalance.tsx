@@ -5,8 +5,7 @@
 import { DerivedBalancesAll, DerivedFees } from '@polkadot/api-derive/types';
 import ApiRx from '@polkadot/api/rx';
 import { SubmittableExtrinsic } from '@polkadot/api/submittable/types';
-import { AccountData, Index } from '@polkadot/types/interfaces';
-import { ITuple } from '@polkadot/types/types';
+import { AccountInfo } from '@polkadot/types/interfaces';
 import {
   ApiContext,
   handler,
@@ -60,9 +59,7 @@ export function SendBalance(): React.ReactElement {
   const senderAddress = currentAccount || Object.keys(accounts)[0];
 
   const [amountAsString, setAmountAsString] = useState('');
-  const [accountNonce, setAccountNonce] = useState<
-    ITuple<[Index, AccountData]>
-  >();
+  const [accountNonce, setAccountNonce] = useState<AccountInfo>();
   const [currentBalance, setCurrentBalance] = useState<DerivedBalancesAll>();
   const [extrinsic, setExtrinsic] = useState<SubmittableExtrinsic<'rxjs'>>();
   const [fees, setFees] = useState<DerivedFees>();
@@ -93,11 +90,11 @@ export function SendBalance(): React.ReactElement {
       api.query.system.account(senderAddress)
     )
       .pipe(take(1))
-      .subscribe(([fees, currentBalance, recipientBalance, accountNonce]) => {
+      .subscribe(([fees, currentBalance, recipientBalance, account]) => {
         setFees(fees);
         setCurrentBalance(currentBalance);
         setRecipientBalance(recipientBalance);
-        setAccountNonce(accountNonce);
+        setAccountNonce(account);
       });
 
     return (): void => subscription.unsubscribe();
