@@ -1,6 +1,6 @@
 {
   "name": "@substrate/light",
-  "version": "0.3.1",
+  "version": "0.3.27",
   "author": "Parity Technologies <admin@parity.io>",
   "description": "WASM light clients from various chains, bundled in a single package.",
   "files": [
@@ -11,7 +11,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "repository": "https://github.com/paritytech/substrate-light-ui",
+  "repository": "https://github.com/paritytech/substrate-light-ui.git",
   "scripts": {
     "build": "rimraf lib && mkdir lib && cp -r src/generated lib/generated && tsc"
   }

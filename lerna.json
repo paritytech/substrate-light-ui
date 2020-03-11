@@ -1,8 +1,11 @@
 {
+  "command": {
+    "version": {
+      "message": "chore(release): Publish %s"
+    }
+  },
   "npmClient": "yarn",
   "useWorkspaces": true,
-  "packages": [
-    "packages/*"
-  ],
+  "packages": ["packages/*"],
   "version": "0.3.27"
 }

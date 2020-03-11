@@ -40,6 +40,5 @@
   "peerDependencies": {
     "@polkadot/api": "^1.4.2",
     "react": "^16.9"
-  },
-  "gitHead": "6f8b3b9b686880614332bf2633223bf79e60be69"
+  }
 }
