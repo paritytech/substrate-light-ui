@@ -8,6 +8,7 @@ import RpcCoder from '@polkadot/rpc-provider/coder';
 import {
   JsonRpcResponse,
   ProviderInterface,
+  ProviderInterfaceCallback,
   ProviderInterfaceEmitCb,
   ProviderInterfaceEmitted,
 } from '@polkadot/rpc-provider/types';
@@ -25,13 +26,8 @@ import {
 /**
  * @see https://github.com/polkadot-js/api/blob/master/packages/rpc-provider/src/ws/Provider.ts#L16
  */
-type CallbackHandler = (error?: null | Error, value?: AnyJson) => void;
-
-/**
- * @see https://github.com/polkadot-js/api/blob/master/packages/rpc-provider/src/ws/Provider.ts#L16
- */
 interface SubscriptionHandler {
-  callback: CallbackHandler;
+  callback: ProviderInterfaceCallback;
   type: string;
 }
 
@@ -274,7 +270,7 @@ export class PostMessageProvider implements ProviderInterface {
     type: string,
     method: string,
     params: AnyJson[],
-    callback: CallbackHandler
+    callback: ProviderInterfaceCallback
   ): Promise<number> {
     const id = await this.send(method, params, { type, callback });
 

@@ -64,7 +64,7 @@ export function validateDerived(
 
   const txLength =
     SIGNATURE_SIZE +
-    compactToU8a(accountNonce[0]).length +
+    compactToU8a(accountNonce.nonce).length +
     extrinsic.encodedLength;
   const allFees = fees.transactionBaseFee.add(
     fees.transactionByteFee.muln(txLength)

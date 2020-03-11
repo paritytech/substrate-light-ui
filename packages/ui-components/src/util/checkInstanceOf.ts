@@ -6,6 +6,7 @@ import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
 import { SingleAddress } from '@polkadot/ui-keyring/observable/types';
 
 export function isInstanceOfSingleAddress(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   object: any
 ): object is SingleAddress {
   // very loose check
@@ -13,6 +14,7 @@ export function isInstanceOfSingleAddress(
 }
 
 export function isInstanceOfInjectedExtension(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   object: any
 ): object is InjectedAccountWithMeta {
   return 'meta' in object && 'address' in object;
