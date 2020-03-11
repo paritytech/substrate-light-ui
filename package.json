@@ -1,8 +1,7 @@
 {
   "name": "@substrate/light-ui",
-  "version": "0.3.0",
   "author": "Parity Technologies <admin@parity.io>",
-  "description": "User interface optimized for the Substrate light client",
+  "description": "Minimal, WASM-light-client-bundled Substrate wallet for balance transfers",
   "license": "Apache-2.0",
   "private": true,
   "repository": "https://github.com/paritytech/substrate-light-ui.git",
@@ -14,31 +13,25 @@
       "**/electron-builder",
       "**/electron-builder/**",
       "**/electron-webpack",
-      "**/electron-webpack/**",
-      "**/jest",
-      "**/webpack",
-      "**/webpack-dev-server"
+      "**/electron-webpack/**"
     ]
   },
   "scripts": {
-    "prebuild": "yarn clean",
-    "build:ui": "lerna exec yarn build --stream --scope=@substrate/ui-components --scope=@substrate/light --scope=@substrate/light-apps",
+    "build:ui": "yarn clean && lerna exec yarn build --stream --scope=@substrate/ui-components --scope=@substrate/light --scope=@substrate/light-apps",
     "build:electron": "yarn build:ui && lerna run build --scope=@substrate/electron-app",
     "build:extension": "INLINE_RUNTIME_CHUNK=false yarn build:ui && lerna run build --scope=@substrate/extension-app",
-    "clean": "polkadot-dev-clean-build",
-    "fetch:substrate": "cd ./packages/electron-app/scripts && node fetchLatestSubstrate.js",
+    "clean": "rimraf packages/**/build packages/**/lib packages/**/dist",
     "lint": "tsc --noEmit && eslint --ext js,ts,tsx .",
     "package:electron": "yarn build:electron && lerna run package --scope=@substrate/electron-app",
     "package:extension": "yarn build:extension && lerna run package --scope=@substrate/extension-app",
-    "prod:electron": "yarn build:electron && lerna run electron --scope=@substrate/electron-app",
+    "run:electron": "yarn build:electron && lerna run electron --scope=@substrate/electron-app",
     "start:ui": "./scripts/prestart.sh && cd packages/light-apps && yarn start",
-    "start:electron": "concurrently \"yarn:start:ui\" \"lerna run start --scope=@substrate/electron-app\"",
-    "start:extension": "concurrently \"yarn:start:ui\" \"lerna run start --scope=@substrate/extension-app\"",
+    "start:electron": "lerna run start --scope=@substrate/electron-app",
+    "start:extension": "lerna run start --scope=@substrate/extension-app",
     "test": "CI=true lerna run test --parallel"
   },
   "devDependencies": {
     "@polkadot/dev": "^0.50.29",
-    "concurrently": "^5.0.2",
     "eslint-config-prettier": "^6.7.0",
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-simple-import-sort": "^5.0.0",

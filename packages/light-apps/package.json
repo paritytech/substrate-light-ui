@@ -2,22 +2,22 @@
   "name": "@substrate/light-apps",
   "version": "0.3.27",
   "author": "Parity Technologies <admin@parity.io>",
-  "description": "User interface optimized for the Substrate light client",
+  "description": "Minimal, WASM-light-client-bundled Substrate wallet for balance transfers",
+  "homepage": "./",
   "license": "Apache-2.0",
   "private": true,
   "repository": "https://github.com/paritytech/substrate-light-ui.git",
-  "scripts": {
-    "start": "BROWSER=none SKIP_PREFLIGHT_CHECK=true react-scripts start",
-    "build": "SKIP_PREFLIGHT_CHECK=true react-scripts build",
-    "test": "jest --coverage"
-  },
   "browserslist": [
     ">0.2%",
     "not dead",
     "not ie <= 11",
     "not op_mini all"
   ],
-  "homepage": "./",
+  "scripts": {
+    "start": "BROWSER=none SKIP_PREFLIGHT_CHECK=true react-scripts start",
+    "build": "SKIP_PREFLIGHT_CHECK=true react-scripts build",
+    "test": "jest --coverage"
+  },
   "dependencies": {
     "@polkadot/api": "^1.5.1",
     "@polkadot/extension-dapp": "^0.22.1",
