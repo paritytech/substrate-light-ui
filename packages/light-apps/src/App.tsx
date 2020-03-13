@@ -3,6 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import 'semantic-ui-css/semantic.min.css';
+import 'tachyons/css/tachyons.css';
 
 import { GlobalStyle, substrateLightTheme } from '@substrate/ui-components';
 import React from 'react';

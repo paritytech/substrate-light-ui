@@ -37,6 +37,7 @@ export * from './Breadcrumbs';
 export * from './Card';
 export * from './Circle';
 export * from './CopyButton';
+export * from './ConnectedNodes';
 export * from './constants';
 export * from './Fab';
 export * from './FlexSegment';

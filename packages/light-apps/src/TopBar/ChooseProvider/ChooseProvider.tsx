@@ -32,7 +32,32 @@ const options = [
 ];
 
 const TopDropdown = styled(Dropdown)`
-  z-index: 1000;
+  &&& {
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &&& > .text {
+    max-width: 30vw;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  &&& .menu {
+    width: calc(100% + 2rem + 4px);
+    left: calc(-1rem - 2px);
+    border: 1px solid #1e1e1e;
+    top: calc(100% + 0.5rem + 1px);
+    background: #1e1e1e;
+    .item {
+      color: white;
+      transition: background-color 0.1s;
+      &:hover {
+        background-color: #333333;
+      }
+    }
+  }
 `;
 
 export function ChooseProvider(): React.ReactElement {
@@ -50,6 +75,7 @@ export function ChooseProvider(): React.ReactElement {
       options={options}
       placeholder='Select Network'
       value={JSON.stringify(providerJSON)}
+      fluid
     />
   );
 }

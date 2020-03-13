@@ -65,3 +65,7 @@ export interface WrapperDivProps {
   width?: string;
   height?: string;
 }
+
+export interface NodeSelectorProps {
+  fluid?: boolean;
+}

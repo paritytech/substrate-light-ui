@@ -5,6 +5,7 @@
 import SUIContainer from 'semantic-ui-react/dist/commonjs/elements/Container';
 import SUIInput from 'semantic-ui-react/dist/commonjs/elements/Input';
 import styled from 'styled-components';
+import tachyons from 'tachyons-components';
 
 import { FONT_SIZES, MARGIN_SIZES } from './constants';
 import { polkadotOfficialTheme } from './globalStyle';
@@ -19,6 +20,7 @@ import {
   WithSpaceAroundProps,
   WithSpaceBetweenProps,
   WrapperDivProps,
+  NodeSelectorProps,
 } from './StyleProps';
 
 export const Input = styled(SUIInput)`
@@ -234,4 +236,23 @@ export const WrapperDiv = styled.div<WrapperDivProps>`
   padding: ${(props): string => props.padding || '1rem'};
   width: ${(props): string => props.width || '30rem'};
   height: ${(props): string => props.height || '100%'};
+`;
+
+export const BlackBlock = styled.div`
+  background-color: ${polkadotOfficialTheme.black};
+  color: ${polkadotOfficialTheme.white};
+`;
+export const NodesBlock = styled.span<NodeSelectorProps>`
+  width: ${(props): string => (props.fluid ? '100%' : '')};
+  position: relative;
+  display: flex;
+  align-items: center;
+  color: inherit important!;
+`;
+export const NodeSelector = styled.div<NodeSelectorProps>`
+  width: ${(props): string => (props.fluid ? '100%' : '')};
+`;
+export const NodesConnector = styled.div<NodeSelectorProps>`
+  width: ${(props): string => (props.fluid ? '50%' : '100px')};
+  min-width: 2rem;
 `;
