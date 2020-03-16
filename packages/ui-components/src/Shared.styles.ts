@@ -13,6 +13,7 @@ import {
   DynamicSizeTextProps,
   FlexItemProps,
   HeaderProps,
+  NodeSelectorProps,
   StackProps,
   StyledNavButtonProps,
   StyledNavLinkProps,
@@ -20,7 +21,6 @@ import {
   WithSpaceAroundProps,
   WithSpaceBetweenProps,
   WrapperDivProps,
-  NodeSelectorProps,
 } from './StyleProps';
 
 export const Input = styled(SUIInput)`
