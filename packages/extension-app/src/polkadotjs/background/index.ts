@@ -1,6 +1,8 @@
-// Copyright 2018-2020 @paritytech/substrate-light-ui authors & contributors
+// Copyright 2019-2020 @paritytech/extension authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
+
+// Runs in the extension background, handling all keyring access
 
 import keyring from '@polkadot/ui-keyring';
 import ExtensionStore from '@polkadot/ui-keyring/stores/Extension';
@@ -8,7 +10,7 @@ import { assert } from '@polkadot/util';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import extension from 'extensionizer';
 
-import { PORT_CONTENT, PORT_EXTENSION } from '../polkadotjs/defaults';
+import { PORT_CONTENT, PORT_EXTENSION } from '../defaults';
 import handlers from './handlers';
 
 // listen to all messages and handle appropriately

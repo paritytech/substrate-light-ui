@@ -5,9 +5,11 @@
     "downlevelIteration": true,
     "esModuleInterop": true,
     "jsx": "react",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "es5",
+    "target": "ES2015",
     "typeRoots": ["node_modules/@types", "node_modules/web-ext-types"]
   }
 }

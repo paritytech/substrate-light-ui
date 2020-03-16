@@ -19,6 +19,7 @@
     "webpack-extension-manifest-plugin": "^0.5.0"
   },
   "dependencies": {
+    "@polkadot/extension": "^0.22.1",
     "@polkadot/extension-inject": "^0.22.1",
     "@substrate/light": "^0.3.27",
     "extensionizer": "^1.0.1",
