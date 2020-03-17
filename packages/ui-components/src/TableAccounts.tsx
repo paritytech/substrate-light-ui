@@ -5,7 +5,7 @@
 import React from 'react';
 import {
   Table as SUITable,
-  TabProps as SUITableProps,
+  TableProps as SUITableProps,
 } from 'semantic-ui-react';
 import styled from 'styled-components';
 
@@ -15,12 +15,59 @@ const StyledTable = styled<typeof SUITable>(SUITable)`
   &&& {
     background-color: #ffffff;
     border-radius: 2px;
-    box-shadow: 0 4px 5px 1px rgba(0, 0, 0, 0.3);
+  }
+  &&& thead th {
+    border-left: none;
+    border-right: none;
+  }
+  &&&.striped {
+    border: none;
+    &.selectable {
+      tbody tr {
+        transition: box-shadow 0.2s;
+      }
+      tbody tr:hover {
+        box-shadow: 0 -8px 12px rgba(210, 210, 210, 0.6);
+      }
+      tbody tr:hover {
+        box-shadow: 0 -8px 12px rgba(210, 210, 210, 0.6);
+      }
+      tbody tr td:last-child {
+        opacity: 0.5;
+        transition: opacity 0.2s;
+      }
+      tbody tr:hover td {
+        opacity: 1;
+      }
+    }
+    thead th {
+      border-bottom: none;
+    }
+    tbody tr:nth-child(2n) {
+      background-color: white !important;
+    }
+    tbody tr:nth-child(2n-1) {
+      background-color: #f4f4f4 !important;
+    }
+    tr td {
+      border-top: none;
+    }
+    tr {
+      border-bottom: none;
+    }
   }
 `;
 
 export function TableAccounts(props: TableProps): React.ReactElement {
-  return <StyledTable {...props} />;
+  const { striped = true, selectable = true, sortable = true } = props;
+  return (
+    <StyledTable
+      striped={striped}
+      selectable={selectable}
+      sortable={sortable}
+      {...props}
+    />
+  );
 }
 
 TableAccounts.Header = SUITable.Header;
