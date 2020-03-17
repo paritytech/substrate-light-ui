@@ -59,6 +59,8 @@ export * from './Progress';
 export * from './Shared.styles';
 export * from './stateful';
 export * from './TableAccounts';
+export * from './TableCellAddress';
+export * from './TableRowsAccount';
 export * from './TextArea';
 export * from './TxDetails';
 export * from './TxSummary';

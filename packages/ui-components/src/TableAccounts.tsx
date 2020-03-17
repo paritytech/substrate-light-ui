@@ -59,9 +59,15 @@ const StyledTable = styled<typeof SUITable>(SUITable)`
 `;
 
 export function TableAccounts(props: TableProps): React.ReactElement {
-  const { striped = true, selectable = true, sortable = true } = props;
+  const {
+    striped = true,
+    selectable = true,
+    sortable = true,
+    basic = true,
+  } = props;
   return (
     <StyledTable
+      basic={basic}
       striped={striped}
       selectable={selectable}
       sortable={sortable}

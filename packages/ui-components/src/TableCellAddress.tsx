@@ -3,11 +3,12 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import Identicon from '@polkadot/react-identicon';
+import { IdentityProps } from '@polkadot/react-identicon/types';
 import React from 'react';
 
-interface TableCellAddressProps {
+interface TableCellAddressProps extends IdentityProps {
   address?: string;
-  publicKey?: string;
+  identityNetwork?: IdentityProps;
   accountName?: string;
   shortAddress?: string;
 }
@@ -15,20 +16,14 @@ interface TableCellAddressProps {
 export function TableCellAddress(
   props: TableCellAddressProps
 ): React.ReactElement {
-  const { address, publicKey, accountName, shortAddress } = props;
+  const { address, accountName, shortAddress, theme = 'polkadot' } = props;
   return (
     <div className='flex items-center'>
       <div>
-        <Identicon
-          size='32'
-          state={{
-            address: address,
-            publicKey: publicKey,
-          }}
-        />
+        <Identicon size={32} value={address} theme={theme} />
       </div>
       <div className='flex flex-column justify-center ml3'>
-        <div className='f5 fw5'>{accountName}</div>
+        <div className='f4 fw5'>{accountName}</div>
         <div className='f6 fw1 code silver'>{shortAddress}</div>
       </div>
     </div>
