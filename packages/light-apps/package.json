@@ -19,7 +19,7 @@
     "test": "jest --coverage"
   },
   "dependencies": {
-    "@polkadot/api": "^1.6.2",
+    "@polkadot/api": "^1.7.1",
     "@polkadot/extension-dapp": "^0.22.1",
     "@polkadot/ui-assets": "^0.51.1",
     "@substrate/context": "^0.3.21",
