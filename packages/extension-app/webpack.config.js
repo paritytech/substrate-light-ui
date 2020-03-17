@@ -39,8 +39,8 @@ function createWebpack({ alias = {}, context }) {
     },
     mode: ENV,
     output: {
-      chunkFilename: '[name].js',
-      filename: '[name].js',
+      chunkFilename: '[name]/index.js',
+      filename: '[name]/index.js',
       path: path.join(context, 'build'),
     },
     resolve: {

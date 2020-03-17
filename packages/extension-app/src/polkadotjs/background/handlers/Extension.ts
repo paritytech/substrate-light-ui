@@ -224,46 +224,46 @@ export default class Extension {
   public async handle<TMessageType extends MessageTypes>(id: string, type: TMessageType, request: RequestTypes[TMessageType], port: chrome.runtime.Port): Promise<ResponseTypes[keyof ResponseTypes]> {
     switch (type) {
       case 'pri(authorize.approve)':
-        return this.authorizeApprove(request);
+        return this.authorizeApprove(request as any);
 
       case 'pri(authorize.reject)':
-        return this.authorizeReject(request);
+        return this.authorizeReject(request as any);
 
       case 'pri(authorize.subscribe)':
         return this.authorizeSubscribe(id, port);
 
       case 'pri(accounts.create.external)':
-        return this.accountsCreateExternal(request);
+        return this.accountsCreateExternal(request as any);
 
       case 'pri(accounts.create.suri)':
-        return this.accountsCreateSuri(request);
+        return this.accountsCreateSuri(request as any);
 
       case 'pri(accounts.edit)':
-        return this.accountsEdit(request);
+        return this.accountsEdit(request as any);
 
       case 'pri(accounts.export)':
-        return this.accountsExport(request);
+        return this.accountsExport(request as any);
 
       case 'pri(accounts.forget)':
-        return this.accountsForget(request);
+        return this.accountsForget(request as any);
 
       case 'pri(accounts.subscribe)':
         return this.accountsSubscribe(id, port);
 
       case 'pri(seed.create)':
-        return this.seedCreate(request);
+        return this.seedCreate(request as any);
 
       case 'pri(seed.validate)':
-        return this.seedValidate(request);
+        return this.seedValidate(request as any);
 
       case 'pri(signing.approve.password)':
-        return this.signingApprovePassword(request);
+        return this.signingApprovePassword(request as any);
 
       case 'pri(signing.approve.signature)':
-        return this.signingApproveSignature(request);
+        return this.signingApproveSignature(request as any);
 
       case 'pri(signing.cancel)':
-        return this.signingCancel(request);
+        return this.signingCancel(request as any);
 
       case 'pri(signing.subscribe)':
         return this.signingSubscribe(id, port);

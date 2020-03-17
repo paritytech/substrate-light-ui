@@ -4,9 +4,7 @@
 
 import { WsProvider } from '@polkadot/api';
 import { ProviderInterface } from '@polkadot/rpc-provider/types';
-import React, { useEffect, useState } from 'react';
-
-import { PostMessageProvider } from '../../../util';
+import React, { useState } from 'react';
 
 /**
  * JSON-serializable data to instantiate a provider.
@@ -50,7 +48,7 @@ function createProvider(input: ProviderJSON): ProviderInterface {
       return new WsProvider(input.payload);
     }
     case 'PostMessageProvider': {
-      return new PostMessageProvider('window');
+      throw new Error(' FIXME createProvider');
     }
   }
 
@@ -74,11 +72,12 @@ export function ProviderContextProvider(
 
   const provider = createProvider(providerJSON);
 
-  useEffect(() => {
-    if (providerJSON.type === 'PostMessageProvider') {
-      (provider as PostMessageProvider).switch(providerJSON.payload);
-    }
-  }, [provider, providerJSON]);
+  // FIXME
+  // useEffect(() => {
+  //   if (providerJSON.type === 'PostMessageProvider') {
+  //     (provider as PostMessageProvider).switch(providerJSON.payload);
+  //   }
+  // }, [provider, providerJSON]);
 
   return (
     <ProviderContext.Provider

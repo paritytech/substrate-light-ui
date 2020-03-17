@@ -208,7 +208,7 @@ export type ResponseTypes = {
 
 interface TransportResponseMessageSub<
   TMessageType extends MessageTypesWithSubscriptions
-  > {
+> {
   error?: string;
   id: string;
   response?: ResponseTypes[TMessageType];
@@ -217,7 +217,7 @@ interface TransportResponseMessageSub<
 
 interface TransportResponseMessageNoSub<
   TMessageType extends MessageTypesWithNoSubscriptions
-  > {
+> {
   error?: string;
   id: string;
   response?: ResponseTypes[TMessageType];
@@ -225,7 +225,7 @@ interface TransportResponseMessageNoSub<
 
 export type TransportResponseMessage<
   TMessageType extends MessageTypes
-  > = TMessageType extends MessageTypesWithNoSubscriptions
+> = TMessageType extends MessageTypesWithNoSubscriptions
   ? TransportResponseMessageNoSub<TMessageType>
   : TMessageType extends MessageTypesWithSubscriptions
   ? TransportResponseMessageSub<TMessageType>

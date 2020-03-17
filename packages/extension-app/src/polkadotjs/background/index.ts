@@ -22,7 +22,9 @@ extension.runtime.onConnect.addListener((port): void => {
   );
 
   // message and disconnect handlers
-  port.onMessage.addListener((data): void => handlers(data, port));
+  port.onMessage.addListener((data): void =>
+    handlers(data as any, port as any)
+  );
   port.onDisconnect.addListener((): void =>
     console.log(`Disconnected from ${port.name}`)
   );

@@ -21,9 +21,7 @@ extension.runtime.onConnect.addListener((port): void => {
 
   // message and disconnect handlers
   // FIXME any
-  port.onMessage.addListener((data): void =>
-    handler(data as any, (port as unknown) as chrome.runtime.Port)
-  );
+  port.onMessage.addListener((data): void => handler(data as any, port as any));
   port.onDisconnect.addListener((): void =>
     console.log(`Disconnected from ${port.name}`)
   );

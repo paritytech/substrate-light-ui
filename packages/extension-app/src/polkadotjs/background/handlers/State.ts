@@ -123,6 +123,7 @@ export default class State {
   }
 
   private popupOpen(): void {
+    // @ts-ignore
     extension.windows.create({ ...WINDOW_OPTS }, (window?: chrome.windows.Window): void => {
       if (window) {
         this.#windows.push(window.id);
