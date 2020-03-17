@@ -9,7 +9,7 @@ import { cryptoWaitReady } from '@polkadot/util-crypto';
 import extension from 'extensionizer';
 
 import { PORT_CONTENT, PORT_EXTENSION } from '../polkadotjs/defaults';
-import handlers from './handlers';
+import { handler } from './handler';
 
 // listen to all messages and handle appropriately
 extension.runtime.onConnect.addListener((port): void => {
@@ -20,7 +20,10 @@ extension.runtime.onConnect.addListener((port): void => {
   );
 
   // message and disconnect handlers
-  port.onMessage.addListener((data): void => handlers(data, port));
+  // FIXME any
+  port.onMessage.addListener((data): void =>
+    handler(data as any, (port as unknown) as chrome.runtime.Port)
+  );
   port.onDisconnect.addListener((): void =>
     console.log(`Disconnected from ${port.name}`)
   );

@@ -1,37 +1,33 @@
-// Copyright 2019-2020 @paritytech/substrate-light-ui authors & contributors
+// Copyright 2019-2020 @polkadot/extension authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-/**
- * This content script is only injected in http://localhost:3000
- */
+import extension from 'extensionizer';
 
-import extensionizer from 'extensionizer';
+import { PORT_CONTENT } from '../polkadotjs/defaults';
 
-// Connect to the extension
-const port = extensionizer.runtime.connect();
+// connect to the extension
+const port = extension.runtime.connect({ name: PORT_CONTENT });
 
 // send any messages from the extension back to the page
 port.onMessage.addListener((data): void => {
-  window.postMessage(data, '*');
+  window.postMessage({ ...data, origin: 'content' }, '*');
 });
 
 // all messages from the page, pass them to the extension
 window.addEventListener('message', ({ data, source }): void => {
   // only allow messages from our window, by the inject
-  if (source !== window || data.origin !== 'content') {
+  if (source !== window || data.origin !== 'page') {
     return;
   }
 
   port.postMessage(data);
 });
 
-// Copied from https://github.com/polkadot-js/extension/blob/ce37e2a8f2c537b7711f501c06fd355de7d5c95c/packages/extension/src/content.ts#L27-L38
-
 // inject our data injector
 const script = document.createElement('script');
 
-script.src = extensionizer.extension.getURL('page.js');
+script.src = extension.extension.getURL('page.js');
 script.onload = (): void => {
   // remove the injecting tag when loaded
   if (script.parentNode) {
