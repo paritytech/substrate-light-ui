@@ -3,6 +3,8 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import 'tachyons/css/tachyons.min.css';
+import '../src/assets/fonts/Inter/inter.css';
+import '../src/assets/fonts/Roboto_Mono/roboto_mono.css';
 
 import { createGlobalStyle } from 'styled-components';
 
@@ -15,12 +17,18 @@ export const GlobalStyle = createGlobalStyle`
     height: 100%;
     margin: 0;
     padding: 0;
-    font-family: 'Montseratt', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    font-family: 'Inter', 'Montseratt', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   }
 
   #root {
     height: 100%;
   }
+
+  code, .code, th, button {
+    font-family: 'Roboto Mono' !Important;
+  }
+
+
 `;
 
 // ordered darkest to lightest
