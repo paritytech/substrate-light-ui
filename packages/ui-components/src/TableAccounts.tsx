@@ -9,7 +9,9 @@ import {
 } from 'semantic-ui-react';
 import styled from 'styled-components';
 
-type TableProps = SUITableProps;
+interface TableProps extends SUITableProps {
+  wrapClass?: string;
+}
 
 const StyledTable = styled<typeof SUITable>(SUITable)`
   &&& {
@@ -19,6 +21,15 @@ const StyledTable = styled<typeof SUITable>(SUITable)`
   &&& thead th {
     border-left: none;
     border-right: none;
+    font-weight: 500;
+    &:nth-child(3), &:nth-last-child(2) {
+      border-left: 1px solid;
+    }
+  }
+  &&& tr td {
+    &:nth-child(3), &:nth-last-child(2) {
+      border-left: 1px solid;
+    }
   }
   &&&.striped {
     border: none;
@@ -33,7 +44,7 @@ const StyledTable = styled<typeof SUITable>(SUITable)`
         box-shadow: 0 -8px 12px rgba(210, 210, 210, 0.6);
       }
       tbody tr td:last-child {
-        opacity: 0.5;
+        opacity: 0.4;
         transition: opacity 0.2s;
       }
       tbody tr:hover td {
@@ -49,11 +60,12 @@ const StyledTable = styled<typeof SUITable>(SUITable)`
     tbody tr:nth-child(2n-1) {
       background-color: #f4f4f4 !important;
     }
-    tr td {
-      border-top: none;
-    }
     tr {
       border-bottom: none;
+    }
+    tr td {
+      border-top: none;
+      font-weight: 300;
     }
   }
 `;
@@ -64,15 +76,21 @@ export function TableAccounts(props: TableProps): React.ReactElement {
     selectable = true,
     sortable = true,
     basic = true,
+    unstackable = true,
+    wrapClass = 'ph6 pv3',
+    ...rest
   } = props;
   return (
-    <StyledTable
-      basic={basic}
-      striped={striped}
-      selectable={selectable}
-      sortable={sortable}
-      {...props}
-    />
+    <div className={wrapClass}>
+      <StyledTable
+        unstackable={unstackable}
+        basic={basic}
+        striped={striped}
+        selectable={selectable}
+        sortable={sortable}
+        {...rest}
+      />
+    </div>
   );
 }
 

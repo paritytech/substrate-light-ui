@@ -24,7 +24,7 @@ export function TableCellAddress(
       </div>
       <div className='flex flex-column justify-center ml3'>
         <div className='f4 fw5'>{accountName}</div>
-        <div className='f6 fw1 code silver'>{shortAddress}</div>
+        <div className='f6 fw3 code mid-gray'>{shortAddress}</div>
       </div>
     </div>
   );

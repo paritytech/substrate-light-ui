@@ -58,9 +58,9 @@ export function RowAccount(props: RowProps): React.ReactElement {
           <TableAccounts.Cell>{fundsBonded}</TableAccounts.Cell>
         </>
       )}
-      <TableAccounts.Cell>{nTx}</TableAccounts.Cell>
+      <TableAccounts.Cell className='bl1 b--red'>{nTx}</TableAccounts.Cell>
       <TableAccounts.Cell>
-        <Button.Group size='mini' className='child'>
+        <Button.Group fluid size='mini' basic>
           <Button onClick={onSend}>Send</Button>
           <Button onClick={onForget}>Forget</Button>
         </Button.Group>
@@ -79,9 +79,9 @@ export function RowHeader(props: HeaderProps): React.ReactElement {
         <TableAccounts.HeaderCell>Transferable</TableAccounts.HeaderCell>
         {isExpanded && (
           <>
-            <TableAccounts.Cell>Locked</TableAccounts.Cell>
-            <TableAccounts.Cell>Reserved</TableAccounts.Cell>
-            <TableAccounts.Cell>Bonded</TableAccounts.Cell>
+            <TableAccounts.HeaderCell>Locked</TableAccounts.HeaderCell>
+            <TableAccounts.HeaderCell>Reserved</TableAccounts.HeaderCell>
+            <TableAccounts.HeaderCell>Bonded</TableAccounts.HeaderCell>
           </>
         )}
         <TableAccounts.HeaderCell>TX</TableAccounts.HeaderCell>

@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { boolean, object, withKnobs } from '@storybook/addon-knobs';
+import { boolean, object, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 
@@ -14,6 +14,9 @@ storiesOf('TableAccounts', module)
   .addDecorator(withKnobs)
   .addDecorator(withTheme)
   .add('TableRowAccount', () => {
+    const wrapClass = text('wrapClass', 'ph6 pv3');
+    const className = text('className', '');
+    const isExpanded = boolean('isExpanded', true);
     const rowProps = object('RowAccountProps', [
       {
         address: 'GSveuiyCpFG1maA4SrSBPjdc4F6Rz9VjRCep2bqjnute7Aw',
@@ -82,9 +85,8 @@ storiesOf('TableAccounts', module)
         nTx: '7',
       },
     ]);
-    const isExpanded = boolean('isExpanded', false);
     return (
-      <TableAccounts>
+      <TableAccounts wrapClass={wrapClass} className={className}>
         <RowHeader isExpanded={isExpanded} />
         <TableAccounts.Body>
           {rowProps.map((r, i) => {
