@@ -6,12 +6,7 @@ import { DerivedBalancesAll, DerivedFees } from '@polkadot/api-derive/types';
 import ApiRx from '@polkadot/api/rx';
 import { SubmittableExtrinsic } from '@polkadot/api/submittable/types';
 import { AccountInfo } from '@polkadot/types/interfaces';
-import {
-  ApiContext,
-  handler,
-  KeyringContext,
-  TxQueueContext,
-} from '@substrate/context';
+import { ApiContext, handler, TxQueueContext } from '@substrate/context';
 import {
   Balance,
   Form,
@@ -27,6 +22,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { zip } from 'rxjs';
 import { take } from 'rxjs/operators';
 
+import { KeyringContext } from '../../ContextGate/context';
 import { InputAddress } from '../Transfer.styles';
 import { AllExtrinsicData, Errors } from './types';
 import { validate } from './validate';
