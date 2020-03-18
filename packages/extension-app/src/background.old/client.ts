@@ -6,7 +6,7 @@ import { logger } from '@polkadot/util';
 import { LightClient, WasmRpcClient } from '@substrate/light';
 
 // We bundled the .wasm file inside the extension
-export const KUSAMA_CC3_WASM = './wasm/kusamaCc3.wasm';
+export const KUSAMA_CC3_WASM = './wasm/kusama_cc3.wasm';
 
 const l = logger('background');
 

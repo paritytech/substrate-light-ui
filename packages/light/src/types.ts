@@ -22,13 +22,18 @@ export interface WasmRpcClient {
 }
 
 /**
- * An interface representing a light client compiled to WASM.
+ * An interface representing a light client compiled to WASM, along with some
+ * metadata.
  */
 export interface LightClient {
   /**
    * An identifier for the light client.
    */
   name: string;
+  /**
+   * Network on which the client is running.
+   */
+  network: string;
   /**
    * Start running the light client.
    */

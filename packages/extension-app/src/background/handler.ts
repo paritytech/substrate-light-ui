@@ -12,8 +12,9 @@ import {
   TransportRequestMessage,
 } from '../polkadotjs/background/types';
 import { PORT_EXTENSION } from '../polkadotjs/defaults';
+import { providerList } from './clients';
 
-const state = new State();
+const state = new State(providerList);
 const extension = new Extension(state);
 const tabs = new Tabs(state);
 

@@ -3,12 +3,12 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 // eslint-disable-next-line @typescript-eslint/camelcase
-import init, { start_client } from '../generated/kusamaCc3/kusamaCc3';
+import init, { start_client } from '../generated/kusama_cc3/kusama_cc3';
 import { LightClient, WasmRpcClient } from '../types';
 import ws from '../ws';
 import chainSpec from './kusama.json';
 
-const name = 'kusamaCc3';
+const name = 'kusama_cc3';
 const version = 'v0.7.20';
 let client: WasmRpcClient;
 
@@ -18,6 +18,7 @@ let client: WasmRpcClient;
 export function fromUrl(url: string): LightClient {
   return {
     name,
+    network: 'kusama',
     async startClient(): Promise<WasmRpcClient> {
       if (client) {
         return client;
