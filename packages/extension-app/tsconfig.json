@@ -2,8 +2,7 @@
   "compilerOptions": {
     "allowJs": true,
     "lib": ["DOM", "ESNext"],
-    "outDir": "./build",
-    "resolveJsonModule": true
+    "outDir": "./build"
   },
   "extends": "../../tsconfig",
   "include": ["./src"]
