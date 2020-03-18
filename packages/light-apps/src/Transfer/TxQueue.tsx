@@ -2,11 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import {
-  KeyringContext,
-  PendingExtrinsic,
-  TxQueueContext,
-} from '@substrate/context';
+import { PendingExtrinsic, TxQueueContext } from '@substrate/context';
 import {
   FlexItem,
   Icon,
@@ -17,6 +13,8 @@ import {
   TxSummary,
 } from '@substrate/ui-components';
 import React, { useContext } from 'react';
+
+import { KeyringContext } from '../ContextGate/context';
 
 function renderDetails(
   currentAccount: string,
