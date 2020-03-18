@@ -1,14 +1,11 @@
 {
   "compilerOptions": {
     "allowJs": false,
-    "declaration": false,
-    "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "esnext",
-    "noEmit": true,
-    "skipLibCheck": false
+    "noEmit": true
   },
   "extends": "../../tsconfig",
   "include": ["src"]
