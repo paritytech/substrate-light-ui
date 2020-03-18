@@ -10,7 +10,7 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "ES2015",
+    "target": "es5",
     "typeRoots": ["node_modules/@types", "node_modules/web-ext-types"]
   }
 }
