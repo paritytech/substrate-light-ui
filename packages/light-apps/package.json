@@ -20,9 +20,9 @@
   },
   "dependencies": {
     "@polkadot/api": "^1.7.1",
-    "@polkadot/extension-dapp": "^0.22.1",
+    "@polkadot/extension-dapp": "^0.23.0-beta.4",
     "@polkadot/ui-assets": "^0.51.1",
-    "@substrate/context": "^0.3.21",
+    "@substrate/context": "^0.3.22",
     "@substrate/ui-components": "^0.3.27",
     "@types/chrome": "^0.0.100",
     "@types/file-saver": "^2.0.0",
