@@ -6,14 +6,7 @@ import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 import Dropdown from 'semantic-ui-react/dist/commonjs/modules/Dropdown';
-import styled from 'styled-components';
 
-import {
-  BlackBlock,
-  NodesBlock,
-  NodesConnector,
-  NodeSelector,
-} from '../src/Shared.styles';
 import { withTheme } from './customDecorators';
 
 const dropdownValues = [
@@ -44,38 +37,4 @@ storiesOf('Dropdown', module)
       selection={boolean('selection', true)}
       vertical={boolean('vertical', true)}
     />
-  ))
-  .add('connected dropdown nodes', () => {
-    const X = styled(Dropdown)`
-      &&& {
-        background: black;
-        color: white;
-        border: 1px solid white;
-      }
-    `;
-    return (
-      <NodesBlock>
-        <NodeSelector>
-          <X
-            defaultValue='Restore'
-            placeholder='Select Node'
-            fluid
-            options={dropdownValues}
-            selection={boolean('selection', true)}
-            vertical={boolean('vertical', true)}
-          />
-        </NodeSelector>
-        <NodesConnector />
-        <NodeSelector>
-          <X
-            defaultValue='Restore'
-            placeholder='Select Node'
-            fluid
-            options={dropdownValues}
-            selection={boolean('selection', true)}
-            vertical={boolean('vertical', true)}
-          />
-        </NodeSelector>
-      </NodesBlock>
-    );
-  });
+  ));
