@@ -74,7 +74,6 @@ export function TableAccounts(props: TableProps): React.ReactElement {
   const {
     striped = true,
     selectable = true,
-    sortable = true,
     basic = true,
     unstackable = true,
     wrapClass = 'ph6 pv3',
@@ -87,7 +86,6 @@ export function TableAccounts(props: TableProps): React.ReactElement {
         basic={basic}
         striped={striped}
         selectable={selectable}
-        sortable={sortable}
         {...rest}
       />
     </div>

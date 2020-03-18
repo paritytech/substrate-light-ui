@@ -2,22 +2,19 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { boolean, object, text, withKnobs } from '@storybook/addon-knobs';
+import { boolean, object, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 
 import { TableAccounts } from '../src/TableAccounts';
-import { RowAccount, RowHeader } from '../src/TableRowsAccount';
+import { RowAccount } from '../src/TableRowAccount';
 import { withTheme } from './customDecorators';
 
 storiesOf('TableAccounts', module)
   .addDecorator(withKnobs)
   .addDecorator(withTheme)
-  .add('TableRowAccount', () => {
-    const wrapClass = text('wrapClass', 'ph6 pv3');
-    const className = text('className', '');
-    const isExpanded = boolean('isExpanded', true);
-    const rowProps = object('RowAccountProps', [
+  .add('TableAccounts', () => {
+    const rowProps = object('accounts', [
       {
         address: 'GSveuiyCpFG1maA4SrSBPjdc4F6Rz9VjRCep2bqjnute7Aw',
         name: 'Account Name',
@@ -75,19 +72,37 @@ storiesOf('TableAccounts', module)
       },
       {
         address: 'E2gMvExoiEJ64fyzBNZZQjvnRXx3hbZLjnsAqaDjnr4Tc4v',
-        name: 'tmp',
+        name: 'TMP',
         shortAddress: 'shrtAddrs2',
-        fundsTotal: '809.287',
-        fundsTransferable: '809.287',
-        fundsLocked: '0',
-        fundsReserved: '0',
-        fundsBonded: '0',
-        nTx: '7',
+        fundsTotal: '1234',
+        fundsTransferable: '1',
+        fundsLocked: '2',
+        fundsReserved: '3',
+        fundsBonded: '4',
+        nTx: '0',
       },
     ]);
+    const isExpanded = boolean('isExpanded', false);
     return (
-      <TableAccounts wrapClass={wrapClass} className={className}>
-        <RowHeader isExpanded={isExpanded} />
+      <TableAccounts>
+        <TableAccounts.Header>
+          <TableAccounts.Row>
+            <TableAccounts.HeaderCell />
+            <TableAccounts.HeaderCell>Funds</TableAccounts.HeaderCell>
+            <TableAccounts.HeaderCell>Transferable</TableAccounts.HeaderCell>
+            {isExpanded && (
+              <>
+                <TableAccounts.HeaderCell>Locked</TableAccounts.HeaderCell>
+
+                <TableAccounts.HeaderCell>Reserved</TableAccounts.HeaderCell>
+                <TableAccounts.HeaderCell>Bonded</TableAccounts.HeaderCell>
+              </>
+            )}
+            <TableAccounts.HeaderCell>TX</TableAccounts.HeaderCell>
+            <TableAccounts.HeaderCell />
+          </TableAccounts.Row>
+        </TableAccounts.Header>
+
         <TableAccounts.Body>
           {rowProps.map((r, i) => {
             return <RowAccount key={i} {...r} isExpanded={isExpanded} />;

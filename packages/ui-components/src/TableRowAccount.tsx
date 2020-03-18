@@ -3,12 +3,12 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import { Button } from 'semantic-ui-react';
+import { Button, TableHeaderProps } from 'semantic-ui-react';
 
 import { TableAccounts } from './TableAccounts';
 import { TableCellAddress } from './TableCellAddress';
 
-interface HeaderProps {
+interface HeaderProps extends TableHeaderProps {
   isExpanded?: boolean;
 }
 interface RowProps extends HeaderProps {
@@ -66,27 +66,5 @@ export function RowAccount(props: RowProps): React.ReactElement {
         </Button.Group>
       </TableAccounts.Cell>
     </TableAccounts.Row>
-  );
-}
-
-export function RowHeader(props: HeaderProps): React.ReactElement {
-  const { isExpanded = false } = props;
-  return (
-    <TableAccounts.Header>
-      <TableAccounts.Row>
-        <TableAccounts.HeaderCell />
-        <TableAccounts.HeaderCell>Funds</TableAccounts.HeaderCell>
-        <TableAccounts.HeaderCell>Transferable</TableAccounts.HeaderCell>
-        {isExpanded && (
-          <>
-            <TableAccounts.HeaderCell>Locked</TableAccounts.HeaderCell>
-            <TableAccounts.HeaderCell>Reserved</TableAccounts.HeaderCell>
-            <TableAccounts.HeaderCell>Bonded</TableAccounts.HeaderCell>
-          </>
-        )}
-        <TableAccounts.HeaderCell>TX</TableAccounts.HeaderCell>
-        <TableAccounts.HeaderCell />
-      </TableAccounts.Row>
-    </TableAccounts.Header>
   );
 }
