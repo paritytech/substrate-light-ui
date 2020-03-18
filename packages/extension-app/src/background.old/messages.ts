@@ -4,7 +4,7 @@
 
 import { JsonRpcRequest, JsonRpcResponse } from '@polkadot/rpc-provider/types';
 import { logger } from '@polkadot/util';
-import { kusamaCc3, WasmRpcClient, westend } from '@substrate/light';
+import { kusama_cc3, WasmRpcClient, westend } from '@substrate/light';
 
 import { getClient, KUSAMA_CC3_WASM, start } from './client';
 
@@ -102,7 +102,7 @@ export function handler(
     case 'provider.switch': {
       const lightClient =
         jsonRpc === 'kusamaCc3'
-          ? kusamaCc3.fromUrl(KUSAMA_CC3_WASM)
+          ? kusama_cc3.fromUrl(KUSAMA_CC3_WASM)
           : westend.fromUrl(KUSAMA_CC3_WASM);
 
       start(lightClient);

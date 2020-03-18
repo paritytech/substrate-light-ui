@@ -1,24 +1,24 @@
-// Copyright 2019-2020 @polkadot/extension authors & contributors
+// Copyright 2019-2020 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { assert } from '@polkadot/util';
 
-import Extension from '../polkadotjs/background/handlers/Extension';
-import State from '../polkadotjs/background/handlers/State';
-import Tabs from '../polkadotjs/background/handlers/Tabs';
+import Extension from '../../polkadotjs/background/handlers/Extension';
 import {
   MessageTypes,
   TransportRequestMessage,
-} from '../polkadotjs/background/types';
-import { PORT_EXTENSION } from '../polkadotjs/defaults';
-import { providerList } from './clients';
+} from '../../polkadotjs/background/types';
+import { PORT_EXTENSION } from '../../polkadotjs/defaults';
+import { providerList } from '../clients';
+import { State } from './State';
+import { Tabs } from './Tabs';
 
 const state = new State(providerList);
 const extension = new Extension(state);
 const tabs = new Tabs(state);
 
-export function handler<TMessageType extends MessageTypes>(
+export function handlers<TMessageType extends MessageTypes>(
   { id, message, request }: TransportRequestMessage<TMessageType>,
   port: chrome.runtime.Port
 ): void {

@@ -21,6 +21,6 @@ window.addEventListener('message', ({ data, source }): void => {
 });
 
 injectExtension(enable, {
-  name: 'polkadot-js',
+  name: 'slui',
   version: process.env.PKG_VERSION as string,
 });

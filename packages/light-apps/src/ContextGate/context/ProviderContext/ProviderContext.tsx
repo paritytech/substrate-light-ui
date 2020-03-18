@@ -3,18 +3,20 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { WsProvider } from '@polkadot/api';
+import { ProviderMeta } from '@polkadot/extension-inject/types';
 import { ProviderInterface } from '@polkadot/rpc-provider/types';
+import { logger } from '@polkadot/util';
 import React, { useEffect, useState } from 'react';
+
+const l = logger('provider-context');
 
 /**
  * Interface describing a Provider, lazily loaded.
  */
-export interface LazyProvider {
+export interface LazyProvider extends ProviderMeta {
   description: string;
   id: string;
-  lazy: () => ProviderInterface;
-  network: string;
-  type: 'WsProvider' | 'PostMessageProvider' | 'WasmProvider';
+  start: () => Promise<ProviderInterface>;
 }
 
 export interface ProviderContextType {
@@ -43,9 +45,11 @@ export interface ProviderContextProviderProps {
 export const DEFAULT_PROVIDER: LazyProvider = {
   description: 'Remote node hosted by W3F',
   id: 'kusama-WsProvider',
-  lazy: () => new WsProvider('wss://kusama-rpc.polkadot.io'),
   network: 'kusama',
-  type: 'WsProvider',
+  node: 'light',
+  source: 'slui',
+  start: () => Promise.resolve(new WsProvider('wss://kusama-rpc.polkadot.io')),
+  transport: 'WsProvider',
 };
 
 export function ProviderContextProvider(
@@ -53,10 +57,15 @@ export function ProviderContextProvider(
 ): React.ReactElement {
   const { children = null } = props;
   const [lazy, setLazyProvider] = useState<LazyProvider>(DEFAULT_PROVIDER);
-  const [provider, setProvider] = useState(DEFAULT_PROVIDER.lazy());
+  const [provider, setProvider] = useState<ProviderInterface>(
+    new WsProvider('wss://kusama-rpc.polkadot.io')
+  );
 
   useEffect(() => {
-    setProvider(lazy.lazy());
+    lazy
+      .start()
+      .then(setProvider)
+      .catch(l.error);
   }, [lazy]);
 
   return (

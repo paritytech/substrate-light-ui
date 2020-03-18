@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { logger } from '@polkadot/util';
-import { kusamaCc3 } from '@substrate/light';
+import { kusama_cc3 } from '@substrate/light';
 import extensionizer from 'extensionizer';
 
 import { KUSAMA_CC3_WASM, start } from './client';
@@ -36,4 +36,4 @@ extensionizer.runtime.onConnect.addListener(
 );
 
 // At the beginning, just run Kusama
-start(kusamaCc3.fromUrl(KUSAMA_CC3_WASM));
+start(kusama_cc3.fromUrl(KUSAMA_CC3_WASM));
