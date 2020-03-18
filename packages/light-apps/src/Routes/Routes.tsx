@@ -2,12 +2,12 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { KeyringContext } from '@substrate/context';
 import { Container, Fab } from '@substrate/ui-components';
 import React, { useContext } from 'react';
 import { Link, Redirect, Route, Switch } from 'react-router-dom';
 
 import { Accounts } from '../Accounts';
+import { KeyringContext } from '../ContextGate/context';
 import { IdentityHeader } from '../IdentityHeader';
 import { Signer } from '../Signer';
 import { Transfer } from '../Transfer';

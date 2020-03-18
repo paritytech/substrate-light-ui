@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { KeyringAddress, KeyringJson } from '@polkadot/ui-keyring/types';
-import { AlertsContext, handler, KeyringContext } from '@substrate/context';
+import { AlertsContext, handler } from '@substrate/context';
 import {
   Dropdown,
   DropdownProps,
@@ -19,6 +19,7 @@ import {
 import React, { useContext, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
+import { KeyringContext } from '../../ContextGate/context';
 import { TagOptions, Tags } from './types';
 
 type Props = RouteComponentProps;

@@ -6,7 +6,6 @@ import {
   AlertsContextProvider,
   ApiContextProvider,
   HealthContextProvider,
-  KeyringContextProvider,
   SystemContextProvider,
   TxQueueContextProvider,
 } from '@substrate/context';
@@ -14,9 +13,10 @@ import React from 'react';
 
 import { TopBar } from '../TopBar';
 import {
+  KeyringContextProvider,
   ProviderContext,
   ProviderContextProvider,
-} from './context/ProviderContext';
+} from './context';
 import { ApiGate, HealthGate, KeyringGate, SystemGate } from './gates';
 
 export function ContextGate(props: {
