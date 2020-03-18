@@ -68,4 +68,5 @@ export interface WrapperDivProps {
 
 export interface NodeSelectorProps {
   fluid?: boolean;
+  className?: string;
 }

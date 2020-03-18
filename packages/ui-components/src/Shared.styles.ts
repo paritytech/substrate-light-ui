@@ -245,8 +245,6 @@ export const BlackBlock = styled.div`
 export const NodesBlock = styled.span<NodeSelectorProps>`
   width: ${(props): string => (props.fluid ? '100%' : '')};
   position: relative;
-  display: flex;
-  align-items: center;
   color: inherit important!;
 `;
 export const NodeSelector = styled.div<NodeSelectorProps>`
@@ -254,5 +252,6 @@ export const NodeSelector = styled.div<NodeSelectorProps>`
 `;
 export const NodesConnector = styled.div<NodeSelectorProps>`
   width: ${(props): string => (props.fluid ? '50%' : '100px')};
+  transform: translateY(-50%);
   min-width: 2rem;
 `;

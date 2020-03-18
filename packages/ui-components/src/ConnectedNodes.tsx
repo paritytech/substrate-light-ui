@@ -5,24 +5,30 @@
 import React from 'react';
 
 import { NodesBlock, NodesConnector, NodeSelector } from './Shared.styles';
+import { NodeSelectorProps } from './StyleProps';
 
-interface ConnectedNodesProps {
+interface ConnectedNodesProps extends NodeSelectorProps {
   children?: React.ReactNode;
-  fluid?: boolean;
   nodesClassName?: string;
   connectorClassName?: string;
 }
 const defaultProps = {
-  nodesClassName: 'ba br2 pv2 ph3 b--silver',
+  nodesClassName: 'flex ba br2 pv2 ph3 b--silver',
   connectorClassName: 'bb b--silver',
 };
 
 export function ConnectedNodes(
   props: ConnectedNodesProps = defaultProps
 ): React.ReactElement {
-  const { children, fluid, nodesClassName, connectorClassName } = props;
+  const {
+    children,
+    fluid,
+    nodesClassName,
+    connectorClassName,
+    className = 'flex items-center',
+  } = props;
   return (
-    <NodesBlock fluid={fluid}>
+    <NodesBlock fluid={fluid} className={className}>
       {React.Children.map(children, (child, i) => {
         return (
           <>

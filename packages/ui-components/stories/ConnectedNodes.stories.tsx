@@ -6,7 +6,7 @@ import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 
-import { ConnectedNodes } from '../src/ConnectedNodes';
+import { ConnectedNodes } from '../src';
 import { withTheme } from './customDecorators';
 
 storiesOf('ConnectedNodes', module)
@@ -15,6 +15,7 @@ storiesOf('ConnectedNodes', module)
   .add('connected nodes', () => (
     <ConnectedNodes
       fluid={boolean('fluid', false)}
+      className={text('className', 'flex items-center')}
       nodesClassName={text('nodeClassName', 'ba br2 pv2 ph3 b--silver')}
       connectorClassName={text('connectorClassName', 'bb b--silver')}
     >
