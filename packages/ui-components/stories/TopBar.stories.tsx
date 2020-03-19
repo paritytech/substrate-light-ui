@@ -12,24 +12,24 @@ import {
   ConnectedNodes,
   Dropdown,
   Margin,
-  Menu,
   MeasureApp,
+  Menu,
 } from '../src';
 import { withTheme } from './customDecorators';
 
 export const TopBarStory = () => {
   const nodeOptions = [
     {
-      text: 'Kusama CC3 (from extension Light Client)',
-      value: 'Kusama CC3 (from extension Light Client)',
+      text: 'Kusama CC3 (Light Client)',
+      value: 'Kusama CC3 (Light Client)',
     },
     {
-      text: 'Westend (from extension Light Client)',
-      value: 'Westend (from extension Light Client)',
+      text: 'Westend (Light Client)',
+      value: 'Westend Light Client)',
     },
     {
-      text: 'Kusama CC3 (from centralized remote node)',
-      value: 'Kusama CC3 (from centralized remote node)',
+      text: 'Kusama CC3 (Remote Node)',
+      value: 'Kusama CC3 (Remote Node)',
     },
   ];
 
@@ -45,6 +45,7 @@ export const TopBarStory = () => {
           fluid
           simple
           item
+          defaultValue='Kusama CC3 (Light Client)'
         />
       </Menu>
     );
@@ -64,7 +65,7 @@ export const TopBarStory = () => {
   }
 
   return (
-    <BlackBlock className='flex justify-center'>
+    <BlackBlock className='flex justify-center pv2 mb5'>
       <MeasureApp className='items-center'>
         <RenderLogo />
         <ConnectedNodes

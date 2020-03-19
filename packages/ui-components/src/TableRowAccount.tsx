@@ -42,7 +42,7 @@ export function RowAccount(props: RowProps): React.ReactElement {
   } = props;
   return (
     <TableAccounts.Row>
-      <TableAccounts.Cell collapsing>
+      <TableAccounts.Cell>
         <TableCellAddress
           address={address}
           accountName={name}

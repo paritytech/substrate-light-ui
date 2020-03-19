@@ -12,6 +12,7 @@ import styled from 'styled-components';
 interface TableProps extends SUITableProps {
   wrapClass?: string;
 }
+import { polkadotOfficialTheme } from './globalStyle';
 
 const StyledTable = styled<typeof SUITable>(SUITable)`
   &&& {
@@ -23,12 +24,12 @@ const StyledTable = styled<typeof SUITable>(SUITable)`
     border-right: none;
     font-weight: 500;
     &:nth-child(3), &:nth-last-child(2) {
-      border-left: 1px solid;
+      border-left: 1px solid ${polkadotOfficialTheme.black};
     }
   }
   &&& tr td {
     &:nth-child(3), &:nth-last-child(2) {
-      border-left: 1px solid;
+      border-left: 1px solid ${polkadotOfficialTheme.black};
     }
   }
   &&&.striped {

@@ -5,7 +5,6 @@
 import SUIContainer from 'semantic-ui-react/dist/commonjs/elements/Container';
 import SUIInput from 'semantic-ui-react/dist/commonjs/elements/Input';
 import styled from 'styled-components';
-import tachyons from 'tachyons-components';
 
 import { FONT_SIZES, MARGIN_SIZES } from './constants';
 import { polkadotOfficialTheme } from './globalStyle';
@@ -30,7 +29,7 @@ export const Input = styled(SUIInput)`
 export const MeasureApp = styled.div`
   display: flex;
   width: 100%;
-  padding: 2rem;
+  padding: 0 calc(50vw - 600px);
 `;
 export const Container = styled(SUIContainer)`
   padding: ${MARGIN_SIZES.large};
