@@ -76,7 +76,7 @@ export function TableAccounts(props: TableProps): React.ReactElement {
     selectable = true,
     basic = true,
     unstackable = true,
-    wrapClass = 'ph6 pv3',
+    wrapClass,
     ...rest
   } = props;
   return (
