@@ -32,7 +32,8 @@ const StyleTab = {
       }
     }
     &:hover {
-      background: ${polkadotOfficialTheme.eggShell};
+      background: ${polkadotOfficialTheme.white};
+      cursor: pointer;
     }
   `,
 }

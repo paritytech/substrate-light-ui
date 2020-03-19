@@ -2,12 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import {
-  AlertsContext,
-  ApiContext,
-  handler,
-  KeyringContext,
-} from '@substrate/context';
+import { AlertsContext, ApiContext, handler } from '@substrate/context';
 import {
   AddressSummary,
   Card,
@@ -25,6 +20,8 @@ import {
 import FileSaver from 'file-saver';
 import { History } from 'history';
 import React, { useContext, useState } from 'react';
+
+import { KeyringContext } from '../ContextGate/context';
 
 interface Props {
   address: string;
