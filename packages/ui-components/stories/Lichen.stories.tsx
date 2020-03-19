@@ -9,20 +9,23 @@ import { Button, Icon } from 'semantic-ui-react';
 
 import { MeasureApp } from '../src';
 import { withTheme } from './customDecorators';
+import { MenuTabsStory } from './Menu.stories';
 import { TableAccountsStory } from './TableAccounts.stories';
 import { TopBarStory } from './TopBar.stories';
 
 // TODO:
 // component: button.substrate
+// component: menu.substrate
 
 storiesOf('Apps/Lichen', module)
   .addDecorator(withKnobs)
   .addDecorator(withTheme)
   .add('start', () => (
     <>
+      <MenuTabsStory />
       <TopBarStory />
       <MeasureApp className='flex-column'>
-        <div className='flex items-center mb3'>
+        <div className='flex items-center mb2'>
           <h2 className='inline-flex mr3 mb0'> Your Accounts </h2>
           <Button basic icon labelPosition='right'>
             <Icon name='plus' />

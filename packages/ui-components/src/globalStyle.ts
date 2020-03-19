@@ -24,7 +24,7 @@ export const GlobalStyle = createGlobalStyle`
     height: 100%;
   }
 
-  code, .code, th, button {
+  code, .code, th, button, .menu .item {
     font-family: 'Roboto Mono' !Important;
   }
 
