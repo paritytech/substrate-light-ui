@@ -27,6 +27,11 @@ export const Input = styled(SUIInput)`
   width: ${(props): string => props.width || '100%'};
 `;
 
+export const MeasureApp = styled.div`
+  display: flex;
+  width: 100%;
+  padding: 2rem;
+`;
 export const Container = styled(SUIContainer)`
   padding: ${MARGIN_SIZES.large};
 `;
