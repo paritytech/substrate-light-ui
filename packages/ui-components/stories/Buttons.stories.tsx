@@ -16,29 +16,16 @@ import { withTheme } from './customDecorators';
 storiesOf('Button', module)
   .addDecorator(withKnobs)
   .addDecorator(withTheme)
-  .add('NavButton | no children', () => <NavButton />)
-  .add('NavButton | with child string', () => (
-    <NavButton onClick={action('clicked')}>
-      {' '}
-      {text('child', 'Button')}{' '}
-    </NavButton>
-  ))
-  .add('NavButton | with value prop', () => (
-    <NavButton onClick={action('clicked')} value={text('value', 'Button')}>
-      {' '}
-      This should be ignored{' '}
-    </NavButton>
-  ))
-  .add('NavButton | with font props', () => (
+  .add('NavButton', () => (
     <NavButton
-      fontSize={select('font size', FONT_SIZES, 'medium') as FontSize}
+      fontSize={select('font size', FONT_SIZES, 'large') as FontSize}
       fontWeight={text('font weight', '500')}
       onClick={action('clicked')}
     >
-      {text('child', 'Button')}
+      {text('children', 'Click Me!')}
     </NavButton>
   ))
-  .add('VoteButtons | ', () => (
+  .add('VoteButtons', () => (
     <React.Fragment>
       <VoteYayButton onClick={action('Yay')}> Yay </VoteYayButton>
       <VoteNayButton onClick={action('Nay')}> Nay </VoteNayButton>

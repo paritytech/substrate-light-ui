@@ -13,9 +13,12 @@ import {
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 
-import { Input } from '../src';
+import { Input, NavButton } from '../src';
 import { SUIInputSize } from '../src/types';
 import { withTheme } from './customDecorators';
+
+//TODO
+//input address
 
 const inputTypes = ['number', 'password', 'text'];
 const sizes: SUIInputSize[] = [
@@ -38,7 +41,7 @@ export const InputTransferFundsStory = () => {
   return (
     <>
       <Input
-        textLabel={text('textLabel', 'Amount')}
+        textLabel='Amount'
         label='KSM'
         labelPosition='right'
         onChange={action('typed')}
@@ -55,6 +58,7 @@ export const InputTransferFundsStory = () => {
         type='number'
         placeholder='0'
       />
+      <NavButton wrapClass='mt3'>Submit Transaction</NavButton>
     </>
   );
 };

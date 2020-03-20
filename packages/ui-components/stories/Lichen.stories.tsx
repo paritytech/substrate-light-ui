@@ -15,8 +15,8 @@ import { TableAccountsStory } from './TableAccounts.stories';
 import { TopBarStory } from './TopBar.stories';
 
 // TODO:
-// component: button.substrate
-// component: menu.substrate
+// signal color
+// table transfer
 
 storiesOf('Apps/Lichen', module)
   .addDecorator(withKnobs)

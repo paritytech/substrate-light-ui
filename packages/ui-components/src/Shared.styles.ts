@@ -136,32 +136,43 @@ export const StyledLinkButton = styled.button`
   }
 `;
 
+export const ButtonShadow = styled.div`
+  position: absolute;
+  z-index: -1;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  transform: translateY(50%);
+  width: calc(100% - 24px);
+  height: 50%;
+  margin: auto;
+  border-radius: 9999px;
+  background-color: ${polkadotOfficialTheme.grey};
+  filter: blur(10px);
+  opacity: 0.4;
+  transition: filter 0.3s, transform 0.3s;
+`;
+
 export const StyledNavButton = styled.button<StyledNavButtonProps>`
-  background-image: linear-gradient(
-    107deg,
-    ${(props): string =>
-      props.disabled
-        ? polkadotOfficialTheme.grey
-        : props.negative
-        ? polkadotOfficialTheme.grey
-        : polkadotOfficialTheme.neonBlue},
-    ${(props): string =>
-      props.disabled
-        ? polkadotOfficialTheme.grey
-        : props.negative
-        ? polkadotOfficialTheme.lightBlue2
-        : polkadotOfficialTheme.lightBlue1}
-  );
+  position: relative;
+  background-color: ${polkadotOfficialTheme.grey};
   border: none;
-  border-radius: 15px;
-  box-shadow: 0 4px 6px 0 rgba(${polkadotOfficialTheme.black}, 0.3);
+  border-radius: 9999px;
   color: ${polkadotOfficialTheme.white};
   fontsize: ${FONT_SIZES.large};
-  height: 42px;
-  width: 134px;
+  padding: 1em 3em;
+  outline: none;
+  transition: background-color 0.3s;
 
   :hover {
+    background-color: ${polkadotOfficialTheme.black};
+
     cursor: ${(props): string => (props.disabled ? 'not-allowed' : 'pointer')};
+
+    ${ButtonShadow} {
+      filter: blur(8px);
+      transform: translateY(40%);
+    }
   }
 `;
 
