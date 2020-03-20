@@ -42,6 +42,7 @@ export * from './Fab';
 export * from './FlexSegment';
 export * from './globalStyle';
 export * from './Icon';
+export * from './Input';
 export * from './InputAddress';
 export * from './InputFile';
 export * from './Labelled';

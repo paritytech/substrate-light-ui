@@ -3,7 +3,6 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import SUIContainer from 'semantic-ui-react/dist/commonjs/elements/Container';
-import SUIInput from 'semantic-ui-react/dist/commonjs/elements/Input';
 import styled from 'styled-components';
 
 import { FONT_SIZES, MARGIN_SIZES } from './constants';
@@ -21,10 +20,6 @@ import {
   WithSpaceBetweenProps,
   WrapperDivProps,
 } from './StyleProps';
-
-export const Input = styled(SUIInput)`
-  width: ${(props): string => props.width || '100%'};
-`;
 
 export const MeasureApp = styled.div`
   display: flex;

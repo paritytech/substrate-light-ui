@@ -26,11 +26,11 @@ export const GlobalStyle = createGlobalStyle`
   body, h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
     font-family: 'Inter', 'Montseratt', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   }
+  code, .code, th, button, .menu .item, label, [type="number"] {
+    font-family: 'Roboto Mono' !Important;
+  }
   h2 {
     font-weight: 600;
-  }
-  code, .code, th, button, .menu .item {
-    font-family: 'Roboto Mono' !Important;
   }
 
 

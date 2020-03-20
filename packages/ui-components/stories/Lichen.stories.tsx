@@ -9,6 +9,7 @@ import { Button, Icon } from 'semantic-ui-react';
 
 import { MeasureApp } from '../src';
 import { withTheme } from './customDecorators';
+import { InputTransferFundsStory } from './Input.stories';
 import { MenuTabsStory } from './Menu.stories';
 import { TableAccountsStory } from './TableAccounts.stories';
 import { TopBarStory } from './TopBar.stories';
@@ -20,19 +21,31 @@ import { TopBarStory } from './TopBar.stories';
 storiesOf('Apps/Lichen', module)
   .addDecorator(withKnobs)
   .addDecorator(withTheme)
-  .add('start', () => (
+  .add('Accounts', () => (
     <>
       <MenuTabsStory />
       <TopBarStory />
       <MeasureApp className='flex-column'>
         <div className='flex items-center mb2'>
-          <h2 className='inline-flex mr3 mb0'> Your Accounts </h2>
+          <h2 className='inline-flex mr3 mb0'>Your Accounts </h2>
           <Button basic icon labelPosition='right'>
             <Icon name='plus' />
             Add New
           </Button>
         </div>
         <TableAccountsStory />
+      </MeasureApp>
+    </>
+  ))
+  .add('Send Funds', () => (
+    <>
+      <MenuTabsStory activeItem='Send Funds' />
+      <TopBarStory />
+      <MeasureApp className='flex-column'>
+        <div className='flex items-center mb2'>
+          <h2 className='inline-flex mr3 mb0'>Send Funds</h2>
+        </div>
+        <InputTransferFundsStory />
       </MeasureApp>
     </>
   ));

@@ -3,7 +3,13 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { action } from '@storybook/addon-actions';
-import { boolean, select, text, withKnobs } from '@storybook/addon-knobs';
+import {
+  boolean,
+  object,
+  select,
+  text,
+  withKnobs,
+} from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 
@@ -20,22 +26,58 @@ const sizes: SUIInputSize[] = [
   'huge',
   'massive',
 ];
+const labelPositions: string[] = [
+  'left',
+  'right',
+  'left corner',
+  'right corner',
+  null,
+];
+
+export const InputTransferFundsStory = () => {
+  return (
+    <>
+      <Input
+        textLabel={text('textLabel', 'Amount')}
+        label='KSM'
+        labelPosition='right'
+        onChange={action('typed')}
+        placeholder='0'
+        size='massive'
+        type='number'
+      />
+      <Input textLabel='From' />
+      <Input textLabel='To' />
+      <Input
+        label='Tips Icon'
+        labelPosition='right'
+        textLabel='Tip'
+        type='number'
+        placeholder='0'
+      />
+    </>
+  );
+};
 
 storiesOf('Input', module)
   .addDecorator(withKnobs)
   .addDecorator(withTheme)
-  .add('raw input', () => <Input />)
-  .add('with props', () => (
-    <Input
-      disabled={boolean('disabled', false)}
-      focus={boolean('focus', false)}
-      inverted={boolean('inverted', false)}
-      icon={{ name: 'search', link: true }}
-      label={text('label', 'Kg')}
-      labelPosition='left'
-      onChange={action('typed')}
-      placeholder='placeholder...'
-      size={select('size', sizes, 'small')}
-      type={select('input type', inputTypes, 'text')}
-    />
-  ));
+  .add('Input', () => (
+    <>
+      <Input
+        disabled={boolean('disabled', false)}
+        focus={boolean('focus', false)}
+        inverted={boolean('inverted', false)}
+        icon={object('icon', { name: 'search', link: true })}
+        textLabel={text('textLabel', 'Amount')}
+        label={text('label', null)}
+        labelPosition={select('labelPosition', labelPositions, null)}
+        onChange={action('typed')}
+        placeholder='placeholder...'
+        size={select('size', sizes, 'small')}
+        type={select('input type', inputTypes, 'text')}
+        wrapClass={text('wrapCLass', 'mb2')}
+      />
+    </>
+  ))
+  .add('Inputs Transfer Funds', () => <InputTransferFundsStory />);
