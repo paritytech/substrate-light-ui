@@ -24,6 +24,16 @@ const StyledTable = styled<typeof SUITable>(SUITable)`
     border-left: none;
     border-right: none;
     font-weight: 500;
+    &:nth-child(3),
+    &:nth-last-child(2) {
+      border-left: 1px solid ${polkadotOfficialTheme.grey};
+    }
+  }
+  &&& tr td {
+    &:nth-child(3),
+    &:nth-last-child(2) {
+      border-left: 1px solid ${polkadotOfficialTheme.grey};
+    }
   }
   &&& .rowTotal {
     background-color: transparent !important;
