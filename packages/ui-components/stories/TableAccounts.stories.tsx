@@ -7,7 +7,7 @@ import { storiesOf } from '@storybook/react';
 import React from 'react';
 
 import { TableAccounts } from '../src/TableAccounts';
-import { RowAccount } from '../src/TableRowAccount';
+import { RowAccount, RowAccountsTotal } from '../src/TableRowAccount';
 import { withTheme } from './customDecorators';
 
 export const TableAccountsStory = () => {
@@ -105,6 +105,7 @@ export const TableAccountsStory = () => {
         {rowProps.map((r, i) => {
           return <RowAccount key={i} {...r} isExpanded={isExpanded} />;
         })}
+        <RowAccountsTotal isExpanded={isExpanded} />
       </TableAccounts.Body>
     </TableAccounts>
   );

@@ -68,3 +68,32 @@ export function RowAccount(props: RowProps): React.ReactElement {
     </TableAccounts.Row>
   );
 }
+export function RowAccountsTotal(props: RowProps): React.ReactElement {
+  const {
+    isExpanded = false,
+    fundsTotal = '0',
+    fundsTransferable = '0',
+    fundsLocked = '0',
+    fundsReserved = '0',
+    fundsBonded = '0',
+    nTx = '0',
+  } = props;
+  return (
+    <TableAccounts.Row className='rowTotal'>
+      <TableAccounts.Cell>
+        <TableCellAddress accountName={<span className='f3 fw6'>Total</span>} />
+      </TableAccounts.Cell>
+      <TableAccounts.Cell>{fundsTotal}</TableAccounts.Cell>
+      <TableAccounts.Cell>{fundsTransferable}</TableAccounts.Cell>
+      {isExpanded && (
+        <>
+          <TableAccounts.Cell>{fundsLocked}</TableAccounts.Cell>
+          <TableAccounts.Cell>{fundsReserved}</TableAccounts.Cell>
+          <TableAccounts.Cell>{fundsBonded}</TableAccounts.Cell>
+        </>
+      )}
+      <TableAccounts.Cell className='bl1 b--red'>{nTx}</TableAccounts.Cell>
+      <TableAccounts.Cell />
+    </TableAccounts.Row>
+  );
+}

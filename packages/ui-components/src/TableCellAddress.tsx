@@ -9,7 +9,7 @@ import React from 'react';
 interface TableCellAddressProps extends IdentityProps {
   address?: string;
   identityNetwork?: IdentityProps;
-  accountName?: string;
+  accountName?: string | React.ReactElement;
   shortAddress?: string;
 }
 

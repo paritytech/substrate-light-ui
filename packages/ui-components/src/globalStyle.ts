@@ -17,13 +17,18 @@ export const GlobalStyle = createGlobalStyle`
     height: 100%;
     margin: 0;
     padding: 0;
-    font-family: 'Inter', 'Montseratt', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   }
 
   #root {
     height: 100%;
   }
 
+  body, h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
+    font-family: 'Inter', 'Montseratt', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  }
+  h2 {
+    font-weight: 600;
+  }
   code, .code, th, button, .menu .item {
     font-family: 'Roboto Mono' !Important;
   }

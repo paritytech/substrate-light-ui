@@ -24,15 +24,28 @@ const StyledTable = styled<typeof SUITable>(SUITable)`
     border-left: none;
     border-right: none;
     font-weight: 500;
-    &:nth-child(3),
-    &:nth-last-child(2) {
-      border-left: 1px solid ${polkadotOfficialTheme.black};
-    }
   }
-  &&& tr td {
-    &:nth-child(3),
-    &:nth-last-child(2) {
-      border-left: 1px solid ${polkadotOfficialTheme.black};
+  &&& .rowTotal {
+    background-color: transparent !important;
+    &:hover {
+      background: transparent !important;
+    }
+    td {
+      &:not(:last-child) {
+        border-top: 2px solid black;
+        border-bottom: 2px solid black;
+      }
+      &:first-child {
+        border-left: 2px solid black;
+        border-radius: 4px 0 0 4px;
+      }
+      &:nth-last-child(2) {
+        border-right: 2px solid black;
+        border-radius: 0 4px 4px 0;
+      }
+    }
+    [class^='Identicon'] {
+      opacity: 0;
     }
   }
   &&&.striped {
@@ -41,10 +54,7 @@ const StyledTable = styled<typeof SUITable>(SUITable)`
       tbody tr {
         transition: box-shadow 0.2s;
       }
-      tbody tr:hover {
-        box-shadow: 0 -8px 12px rgba(210, 210, 210, 0.6);
-      }
-      tbody tr:hover {
+      tbody tr:not(.rowTotal):hover {
         box-shadow: 0 -8px 12px rgba(210, 210, 210, 0.6);
       }
       tbody tr td:last-child {
@@ -61,7 +71,7 @@ const StyledTable = styled<typeof SUITable>(SUITable)`
     tbody tr:nth-child(2n) {
       background-color: white !important;
     }
-    tbody tr:nth-child(2n-1) {
+    tbody tr:not(.rowTotal):nth-child(2n-1) {
       background-color: #f4f4f4 !important;
     }
     tr {
