@@ -12,10 +12,12 @@ import {
 } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
+import { Select } from 'semantic-ui-react';
 
 import { Input, NavButton } from '../src';
 import { SUIInputSize } from '../src/types';
 import { withTheme } from './customDecorators';
+import { InputAddressStory } from './InputAddress.stories';
 
 //TODO
 //input address
@@ -49,8 +51,8 @@ export const InputTransferFundsStory = () => {
         size='massive'
         type='number'
       />
-      <Input textLabel='From' />
       <Input textLabel='To' />
+      <InputAddressStory />
       <Input
         label='Tips Icon'
         labelPosition='right'
@@ -84,4 +86,4 @@ storiesOf('Input', module)
       />
     </>
   ))
-  .add('Inputs Transfer Funds', () => <InputTransferFundsStory />);
+  .add('Input | Transfer Funds', () => <InputTransferFundsStory />);
