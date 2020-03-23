@@ -31,8 +31,6 @@ jobs:
       - run: yarn install
       - run: yarn package:extension
       - uses: actions/upload-artifact@v1
-        env:
-          SHA7: ${GITHUB_SHA:7} # Short version of sha
         with:
-          name: slui-pr-${{ github.event.number }}-${{ env.SHA7 }}
+          name: slui-pr-${{ github.event.number }}-${{ github.sha }}
           path: ./packages/extension-app/master-build.zip
