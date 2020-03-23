@@ -46,8 +46,10 @@ const StyledMenu = styled<typeof SUIMenu>(SUIMenu)`
   &&& {
     ${props => (props.tabs ? StyleTab.menu : '')};
     ${props => (props.shadow ? StyleTab.shadow : 'box-shadow: none')};
+    &.medium .item {
+      height: 48px;
+    }
     .item {
-      height: ${props => (props.size === 'medium' ? '48' : '32')}px;
       ${props => (props.tabs ? StyleTab.item : '')};
     }
   }
@@ -55,8 +57,8 @@ const StyledMenu = styled<typeof SUIMenu>(SUIMenu)`
 `;
 
 export function Menu(props: MenuProps): React.ReactElement {
-  const { shadow = true, size = 'medium', ...rest } = props;
-  return <StyledMenu shadow={shadow} size={size} {...rest} />;
+  const { shadow = true, ...rest } = props;
+  return <StyledMenu shadow={shadow} {...rest} />;
 }
 
 Menu.Divider = SUIDivider;

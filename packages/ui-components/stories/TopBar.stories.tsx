@@ -65,7 +65,7 @@ export const TopBarStory = () => {
   }
 
   return (
-    <BlackBlock className='flex justify-center pv2 mb5'>
+    <BlackBlock className='flex justify-center pv2 mb4'>
       <MeasureApp className='items-center'>
         <RenderLogo />
         <ConnectedNodes

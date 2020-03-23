@@ -14,7 +14,7 @@ export const MenuTabsStory = (props: { activeItem?: string }) => {
   const { activeItem = 'Accounts' } = props;
   const tabs = boolean('tabs', true);
   return (
-    <Menu borderless tabs={tabs}>
+    <Menu borderless tabs={tabs} size='large'>
       <MeasureApp className='items-center'>
         <Menu.Item active={activeItem === 'Accounts'}>Accounts</Menu.Item>
         <Menu.Item active={activeItem === 'Send Funds'}>Send Funds</Menu.Item>

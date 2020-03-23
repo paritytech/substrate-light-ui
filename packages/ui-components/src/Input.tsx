@@ -33,6 +33,8 @@ const StyledInput = styled<typeof SUIInput>(SUIInput)`
       } 
     }
     &.labeled .label {
+      min-width: 100px;
+      text-align: center;
       font-weight: 300;
       color: black;
       background: ${polkadotOfficialTheme.black};
