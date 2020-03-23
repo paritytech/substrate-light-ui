@@ -14,7 +14,7 @@ import { storiesOf } from '@storybook/react';
 import React from 'react';
 import { Select } from 'semantic-ui-react';
 
-import { Input, NavButton } from '../src';
+import { Input } from '../src';
 import { SUIInputSize } from '../src/types';
 import { withTheme } from './customDecorators';
 import { InputAddressStory } from './InputAddress.stories';
@@ -60,7 +60,6 @@ export const InputTransferFundsStory = () => {
         type='number'
         placeholder='0'
       />
-      <NavButton wrapClass='mt3'>Submit Transaction</NavButton>
     </>
   );
 };

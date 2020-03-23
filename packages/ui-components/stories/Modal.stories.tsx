@@ -2,17 +2,67 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { withKnobs } from '@storybook/addon-knobs';
+import { action } from '@storybook/addon-actions';
+import { text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
+import { Button } from 'semantic-ui-react';
 
-import { Container, Icon, Modal, Transition } from '../src';
+import {
+  Container,
+  Icon,
+  Input,
+  Menu,
+  Modal,
+  NavButton,
+  Transition,
+} from '../src';
 import { withTheme } from './customDecorators';
+import { NewMnemonicStory } from './MnemonicPhraseList.stories';
+
+export const ModalNewAccountStory = () => {
+  return (
+    <Modal
+    open
+      trigger={
+        <Button basic icon labelPosition='right'>
+          <Icon name='plus' />
+          Add New
+        </Button>
+      }
+    >
+      <Modal.Header>Add Account</Modal.Header>
+      <Modal.Content>
+        <div className='w-100'>
+          <Input textLabel='Name' onChange={action('typed')} />
+          <Menu borderless shadow={false} text size='large'>
+            <Menu.Item active>Create New</Menu.Item>
+            <Menu.Item>JSON</Menu.Item>
+            <Menu.Item>Signer</Menu.Item>
+            <Menu.Item>Mnemonic</Menu.Item>
+          </Menu>
+
+          <Menu borderless shadow={false} tabs size='tiny'>
+            <Menu.Item active>12 words</Menu.Item>
+            <Menu.Item>24 words</Menu.Item>
+          </Menu>
+          {/* TODO framed box with actions */}
+          <div className='ba'>
+            <NewMnemonicStory />
+          </div>
+          <NavButton wrapClass='flex mt4 mb3 w-100 justify-around'>
+            Next
+          </NavButton>
+        </div>
+      </Modal.Content>
+    </Modal>
+  );
+};
 
 storiesOf('Modal', module)
   .addDecorator(withKnobs)
   .addDecorator(withTheme)
-  .add('with transition', () => (
+  .add('Transition', () => (
     <Container>
       <Transition animation='slide up' duration={500} transitionOnMount visible>
         <Modal dimmer open>
@@ -24,4 +74,5 @@ storiesOf('Modal', module)
         </Modal>
       </Transition>
     </Container>
-  ));
+  ))
+  .add('New Account', () => <ModalNewAccountStory />);

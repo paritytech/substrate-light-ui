@@ -12,9 +12,16 @@ import { withTheme } from './customDecorators';
 const SAMPLE_PHRASE =
   'glass decrease speak taxi pencil spice carpet danger planet will cage park';
 
+export const NewMnemonicStory = () => {
+  const SAMPLE_PHRASE =
+    'glass decrease speak taxi pencil spice carpet danger planet will cage park';
+  return <MnemonicPhraseList phrase={text('mnemonic phrase', SAMPLE_PHRASE)} />;
+};
+
 storiesOf('Mnemonic Phrase List', module)
   .addDecorator(withKnobs)
   .addDecorator(withTheme)
   .add('with mnemonic', () => (
     <MnemonicPhraseList phrase={text('mnemonic phrase', SAMPLE_PHRASE)} />
-  ));
+  ))
+  .add('new', () => <NewMnemonicStory />);

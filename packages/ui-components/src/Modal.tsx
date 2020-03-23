@@ -17,6 +17,7 @@ const StyledModal = styled(SUIModal)`
     position: ${(props): string => props.position || 'relative'};
     bottom: ${(props): string | undefined => props.bottom || undefined};
     right: ${(props): string | undefined => props.right || undefined};
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1)
   }
 `;
 
@@ -26,18 +27,21 @@ const StyledContent = styled(SUIModal.Content)`
     align-items: ${(props): string => props.alignItems || 'center'};
     justify-content: ${(props): string => props.justifyContent || 'center'};
     min-width: 100%;
+    padding-top: 1rem;
   }
 `;
 
-const StyledActions = styled(StyledContent)`
-  margin-top: 2rem;
-`;
+const StyledActions = styled(StyledContent)``;
 
 const StyledHeader = styled(SUIModal.Header)`
   &&& {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    padding-top: 2rem;
+    padding-bottom: 0;
+    border-bottom: none;
+    font-size: 1.75rem !important;
     font-weight: 200;
   }
 `;

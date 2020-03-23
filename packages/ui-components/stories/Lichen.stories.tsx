@@ -5,13 +5,13 @@
 import { withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
-import { Button, Icon, Table } from 'semantic-ui-react';
+import { Button, Icon } from 'semantic-ui-react';
 
-import { TableCellAddress } from '../src';
-import { MeasureApp, Menu } from '../src';
+import { MeasureApp, NavButton } from '../src';
 import { withTheme } from './customDecorators';
 import { InputTransferFundsStory } from './Input.stories';
 import { MenuTabsStory } from './Menu.stories';
+import { ModalNewAccountStory } from './Modal.stories';
 import { TableAccountsStory } from './TableAccounts.stories';
 import { TableTxSummaryStory } from './TableTxSummary.stories';
 import { TopBarStory } from './TopBar.stories';
@@ -30,10 +30,7 @@ storiesOf('Apps/Lichen', module)
       <MeasureApp className='flex-column'>
         <div className='flex items-center mb2'>
           <h2 className='inline-flex mr3 mb0'>Your Accounts </h2>
-          <Button basic icon labelPosition='right'>
-            <Icon name='plus' />
-            Add New
-          </Button>
+          <ModalNewAccountStory />
         </div>
         <TableAccountsStory />
       </MeasureApp>
@@ -54,6 +51,9 @@ storiesOf('Apps/Lichen', module)
         </div>
         <div className='w-60 pl5'>
           <TableTxSummaryStory />
+          <NavButton wrapClass='flex mt4 justify-around'>
+            Submit Transaction
+          </NavButton>
         </div>
       </MeasureApp>
     </>
