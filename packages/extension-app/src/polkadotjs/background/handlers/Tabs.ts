@@ -30,6 +30,12 @@ export default class Tabs {
     this.#state = state;
   }
 
+  // FIXME add to extension-base
+  protected get state(): State {
+    return this.#state;
+  }
+
+
   private authorize(url: string, request: RequestAuthorizeTab): Promise<boolean> {
     return this.#state.authorizeUrl(url, request);
   }

@@ -13,10 +13,12 @@ import { TypeRegistry } from '@polkadot/types';
 import { SignerPayloadJSON, SignerPayloadRaw } from '@polkadot/types/types';
 import { KeypairType } from '@polkadot/util-crypto/types';
 
+// FIXME add to extension-base
 type KeysWithDefinedValues<T> = {
   [K in keyof T]: T[K] extends undefined ? never : K;
 }[keyof T];
 
+// FIXME add to extension-base
 type NoUndefinedValues<T> = {
   [K in KeysWithDefinedValues<T>]: T[K];
 };
@@ -208,7 +210,7 @@ export type ResponseTypes = {
 
 interface TransportResponseMessageSub<
   TMessageType extends MessageTypesWithSubscriptions
-> {
+  > {
   error?: string;
   id: string;
   response?: ResponseTypes[TMessageType];
@@ -217,7 +219,7 @@ interface TransportResponseMessageSub<
 
 interface TransportResponseMessageNoSub<
   TMessageType extends MessageTypesWithNoSubscriptions
-> {
+  > {
   error?: string;
   id: string;
   response?: ResponseTypes[TMessageType];
@@ -225,7 +227,7 @@ interface TransportResponseMessageNoSub<
 
 export type TransportResponseMessage<
   TMessageType extends MessageTypes
-> = TMessageType extends MessageTypesWithNoSubscriptions
+  > = TMessageType extends MessageTypesWithNoSubscriptions
   ? TransportResponseMessageNoSub<TMessageType>
   : TMessageType extends MessageTypesWithSubscriptions
   ? TransportResponseMessageSub<TMessageType>

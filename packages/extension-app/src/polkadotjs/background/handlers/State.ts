@@ -160,6 +160,7 @@ export default class State {
     };
   }
 
+  // FIXME add to extension-base
   private stripUrl(url: string): string {
     assert(url && (url.startsWith('http:') || url.startsWith('https:')), `Invalid url ${url}, expected to start with http: or https:`);
 
@@ -192,6 +193,11 @@ export default class State {
   private updateIconSign(shouldClose?: boolean): void {
     this.signSubject.next(this.allSignRequests);
     this.updateIcon(shouldClose);
+  }
+
+  // FIXME add to extension-base
+  public get injectedProviders(): Map<chrome.runtime.Port, ProviderInterface> {
+    return this.#injectedProviders
   }
 
   public async authorizeUrl(url: string, request: RequestAuthorizeTab): Promise<boolean> {
