@@ -12,18 +12,22 @@ import styled from 'styled-components';
 import { polkadotOfficialTheme } from './globalStyle';
 
 interface MenuProps extends SUIMenuProps {
-  tabs: boolean;
+  tabs?: boolean;
+  shadow?: boolean;
 }
 
 const StyleTab = {
-  menu: `
-    border: none;
-    margin-bottom: 0;
+  shadow: `
     box-shadow: inset 0 -12px 12px -10px rgba(0, 0, 0, 0.25);
   `,
+  menu: `
+    min-height: 0;
+    border: none;
+    margin-bottom: 0;
+  `,
   item: `
+    border-radius: 0;
     // TODO: height
-    height: 48px;
     &.active {
       background: ${polkadotOfficialTheme.black};
       color: ${polkadotOfficialTheme.white};
@@ -36,12 +40,14 @@ const StyleTab = {
       cursor: pointer;
     }
   `,
-}
+};
 
 const StyledMenu = styled<typeof SUIMenu>(SUIMenu)`
   &&& {
     ${props => (props.tabs ? StyleTab.menu : '')};
+    ${props => (props.shadow ? StyleTab.shadow : 'box-shadow: none')};
     .item {
+      height: ${props => (props.size === 'medium' ? '48' : '32')}px;
       ${props => (props.tabs ? StyleTab.item : '')};
     }
   }
@@ -49,7 +55,8 @@ const StyledMenu = styled<typeof SUIMenu>(SUIMenu)`
 `;
 
 export function Menu(props: MenuProps): React.ReactElement {
-  return <StyledMenu {...props} />;
+  const { shadow = true, size = 'medium', ...rest } = props;
+  return <StyledMenu shadow={shadow} size={size} {...rest} />;
 }
 
 Menu.Divider = SUIDivider;
