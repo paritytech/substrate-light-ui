@@ -15,7 +15,7 @@ interface TableProps extends SUITableProps {
   wrapClass?: string;
 }
 
-// TODO: in shared
+// TODO: in shared?
 const StyledTable = styled<typeof SUITable>(SUITable)`
   &&& {
     background-color: #ffffff;
