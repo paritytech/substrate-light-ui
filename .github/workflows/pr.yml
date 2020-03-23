@@ -24,9 +24,13 @@ jobs:
       - run: yarn install
       - run: yarn test
 
-  build-extension:
+  package-extension:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
       - run: yarn install
-      - run: yarn build:extension
+      - run: yarn package:extension
+      - uses: actions/upload-artifact@v1
+        with:
+          name: slui-pr-${{ github.event.number }}-${{ github.sha }}
+          path: ./packages/extension-app/master-build.zip
