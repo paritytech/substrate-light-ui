@@ -1,4 +1,4 @@
-// Copyright 2418-2424 @paritytech/lichen authors & contributors
+// Copyright 2018-2024 @paritytech/lichen authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
