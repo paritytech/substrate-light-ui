@@ -23,8 +23,9 @@ extension.runtime.onConnect.addListener((port): void => {
   );
 
   // message and disconnect handlers
-  // FIXME any
   port.onMessage.addListener((data): void =>
+    // FIXME this is due to incompatibility between @types/chrome and web-ext-types
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     handlers(data as any, port as any)
   );
   port.onDisconnect.addListener((): void =>
