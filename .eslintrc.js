@@ -34,7 +34,6 @@ module.exports = {
     // prettier
     'prettier/prettier': 'error',
     'simple-import-sort/sort': 'error',
-    '@typescript-eslint/camelcase': 'warn',
     '@typescript-eslint/no-unused-vars': [
       'error',
       {

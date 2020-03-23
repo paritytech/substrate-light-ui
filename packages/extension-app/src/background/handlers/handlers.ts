@@ -2,22 +2,25 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { assert } from '@polkadot/util';
-
-import Extension from '../../polkadotjs/background/handlers/Extension';
+import Popup from '@polkadot/extension-base/background/handlers/Extension';
+import Tabs from '@polkadot/extension-base/background/handlers/Tabs';
 import {
   MessageTypes,
   TransportRequestMessage,
-} from '../../polkadotjs/background/types';
-import { PORT_EXTENSION } from '../../polkadotjs/defaults';
+} from '@polkadot/extension-base/background/types';
+import { PORT_EXTENSION } from '@polkadot/extension-base/defaults';
+import { assert } from '@polkadot/util';
+
 import { providerList } from '../clients';
 import { State } from './State';
-import { Tabs } from './Tabs';
 
 const state = new State(providerList);
-const extension = new Extension(state);
+const popup = new Popup(state);
 const tabs = new Tabs(state);
 
+/**
+ * Handle messages from tabs and popup.
+ */
 export function handlers<TMessageType extends MessageTypes>(
   { id, message, request }: TransportRequestMessage<TMessageType>,
   port: chrome.runtime.Port
@@ -32,7 +35,7 @@ export function handlers<TMessageType extends MessageTypes>(
   console.log(` [in] ${source}`); // :: ${JSON.stringify(request)}`);
 
   const promise = isExtension
-    ? extension.handle(id, message, request, port)
+    ? popup.handle(id, message, request, port)
     : tabs.handle(id, message, request, from, port);
 
   promise

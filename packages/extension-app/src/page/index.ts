@@ -2,9 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { enable, handleResponse } from '@polkadot/extension-base/page';
 import { injectExtension } from '@polkadot/extension-inject';
-
-import { enable, handleResponse } from '../polkadotjs/page';
 
 // setup a response listener (events created by the loader for extension responses)
 window.addEventListener('message', ({ data, source }): void => {

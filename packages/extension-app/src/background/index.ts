@@ -2,13 +2,16 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import {
+  PORT_CONTENT,
+  PORT_EXTENSION,
+} from '@polkadot/extension-base/defaults';
 import keyring from '@polkadot/ui-keyring';
 import ExtensionStore from '@polkadot/ui-keyring/stores/Extension';
 import { assert } from '@polkadot/util';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import extension from 'extensionizer';
 
-import { PORT_CONTENT, PORT_EXTENSION } from '../polkadotjs/defaults';
 import { handlers } from './handlers';
 
 // listen to all messages and handle appropriately

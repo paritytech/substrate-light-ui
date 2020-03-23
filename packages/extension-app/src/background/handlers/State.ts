@@ -2,14 +2,12 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { ProviderInterfaceCallback } from '@polkadot/rpc-provider/types';
+import StateBase from '@polkadot/extension-base/background/handlers/State';
+import { RequestAuthorizeTab } from '@polkadot/extension-base/background/types';
 import { assert } from '@polkadot/util';
 
-import StateBase from '../../polkadotjs/background/handlers/State';
-import { RequestAuthorizeTab } from '../../polkadotjs/background/types';
-
 export class State extends StateBase {
-  // FIXME Same as parent, use protected
+  // FIXME Same as parent, use protected in @polkadot/extension-base
   private myStripUrl(url: string): string {
     assert(
       url && (url.startsWith('http:') || url.startsWith('https:')),
@@ -50,26 +48,5 @@ export class State extends StateBase {
     }
 
     return super.ensureUrlAuthorized(url);
-  }
-
-  /**
-   * Subscribe to whether the provider is connected or not.
-   */
-  public rpcSubscribeConnected(
-    _request: null,
-    cb: ProviderInterfaceCallback,
-    port: chrome.runtime.Port
-  ): boolean {
-    const provider = this.injectedProviders.get(port);
-
-    assert(
-      provider,
-      'Cannot call pub(rpc.subscribeConnected) before provider has been set'
-    );
-
-    provider.on('connected', () => cb(null, true));
-    provider.on('disconnected', () => cb(null, false));
-
-    return provider.isConnected();
   }
 }

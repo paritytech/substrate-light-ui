@@ -15,6 +15,9 @@ import { assert, logger } from '@polkadot/util';
 import { LightClient, WasmRpcClient } from '@substrate/light';
 import EventEmitter from 'eventemitter3';
 
+// FIXME Update to prettier2.0
+/* eslint-disable prettier/prettier */
+
 // Same as https://github.com/polkadot-js/api/blob/57ca9a9c3204339e1e1f693fcacc33039868dc27/packages/rpc-provider/src/ws/Provider.ts#L17
 interface SubscriptionHandler {
   callback: ProviderInterfaceCallback;
