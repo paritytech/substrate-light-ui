@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { action } from '@storybook/addon-actions';
-import { text, withKnobs } from '@storybook/addon-knobs';
+import { withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 import { Button } from 'semantic-ui-react';
@@ -20,7 +20,7 @@ import {
 import { withTheme } from './customDecorators';
 import { NewMnemonicStory } from './MnemonicPhraseList.stories';
 
-export const ModalNewAccountStory = () => {
+export const ModalNewAccountStory = (): JSX.Element => {
   return (
     <Modal
       trigger={
@@ -46,7 +46,7 @@ export const ModalNewAccountStory = () => {
             <Menu.Item>24 words</Menu.Item>
           </Menu>
           {/* TODO framed box with actions */}
-          <div className='ba'>
+          <div className='ba pa4'>
             <NewMnemonicStory />
           </div>
           <NavButton wrapClass='flex mt4 mb3 w-100 justify-around'>
