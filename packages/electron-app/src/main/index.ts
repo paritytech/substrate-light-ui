@@ -63,7 +63,7 @@ function createWindow(): void {
     )
     .catch(logger.error);
 
-  sluiApp.on('closed', function() {
+  sluiApp.on('closed', function () {
     sluiApp = undefined;
     killSubstrate();
   });
@@ -72,7 +72,7 @@ function createWindow(): void {
 // eslint-
 app.once('ready', (): void => {
   isSubstrateRunning()
-    .then(running => {
+    .then((running) => {
       if (!running) {
         return runSubstrate();
       }

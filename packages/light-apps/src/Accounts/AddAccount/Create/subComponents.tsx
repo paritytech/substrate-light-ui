@@ -62,9 +62,9 @@ export function renderSetPassword(
 export function renderErrors(
   errors: Option<Array<string>>
 ): React.ReactElement | null {
-  return errors.fold(null, errStrings => (
+  return errors.fold(null, (errStrings) => (
     <>
-      {errStrings.map(err => (
+      {errStrings.map((err) => (
         <ErrorText key={err}>{err}</ErrorText>
       ))}
     </>

@@ -123,7 +123,7 @@ export function validateDerived(
  * Add the extrinsic object, no validation done here.
  */
 function validateExtrinsic() {
-  return function(
+  return function (
     values: SubResults & UserInputs & WithExtrinsic & WithAmount
   ): Either<Errors, SubResults & UserInputs & WithExtrinsic & WithAmount> {
     const { extrinsic } = values;
