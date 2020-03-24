@@ -12,7 +12,6 @@ import {
 } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
-import { Select } from 'semantic-ui-react';
 
 import { Input } from '../src';
 import { SUIInputSize } from '../src/types';
@@ -31,15 +30,9 @@ const sizes: SUIInputSize[] = [
   'huge',
   'massive',
 ];
-const labelPositions: string[] = [
-  'left',
-  'right',
-  'left corner',
-  'right corner',
-  null,
-];
+const labelPositions = ['left', 'right', 'left corner', 'right corner', null];
 
-export const InputTransferFundsStory = () => {
+export const InputTransferFundsStory = (): React.ReactElement => {
   return (
     <>
       <Input

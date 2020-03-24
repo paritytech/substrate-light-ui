@@ -169,7 +169,7 @@ export const StyledNavButton = styled.button<StyledNavButtonProps>`
 
     cursor: ${(props): string => (props.disabled ? 'not-allowed' : 'pointer')};
 
-    ${ButtonShadow} { 
+    ${ButtonShadow} {
       filter: blur(8px);
       transform: translateY(40%);
     }

@@ -9,7 +9,7 @@ import {
 } from 'semantic-ui-react';
 import styled from 'styled-components';
 
-import { polkadotOfficialTheme, typography } from './globalStyle';
+import { polkadotOfficialTheme } from './globalStyle';
 
 interface TableProps extends SUITableProps {
   wrapClass?: string;

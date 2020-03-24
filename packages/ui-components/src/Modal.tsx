@@ -17,7 +17,7 @@ const StyledModal = styled(SUIModal)`
     position: ${(props): string => props.position || 'relative'};
     bottom: ${(props): string | undefined => props.bottom || undefined};
     right: ${(props): string | undefined => props.right || undefined};
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1)
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   }
 `;
 

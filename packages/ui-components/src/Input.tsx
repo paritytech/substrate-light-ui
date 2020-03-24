@@ -11,7 +11,8 @@ import styled from 'styled-components';
 import { polkadotOfficialTheme } from './globalStyle';
 
 interface InputProps extends SUIInputProps {
-  lable?: string;
+  input?: string | null;
+  label?: string | null;
   wrapClass?: string;
 }
 
@@ -21,7 +22,7 @@ const StyleTab = {
 
 const StyledInput = styled<typeof SUIInput>(SUIInput)`
   &&& {
-    ${props => (props.tabs ? StyleTab.menu : '')};
+    ${(props): string => (props.tabs ? StyleTab.menu : '')};
     > input {
       border: none;
       border-bottom: 1px solid black;
@@ -30,7 +31,7 @@ const StyledInput = styled<typeof SUIInput>(SUIInput)`
 
       &[type='number'] {
         text-align: center;
-      } 
+      }
     }
     &.labeled .label {
       min-width: 100px;
@@ -39,7 +40,6 @@ const StyledInput = styled<typeof SUIInput>(SUIInput)`
       color: black;
       background: ${polkadotOfficialTheme.black};
       color: ${polkadotOfficialTheme.eggShell};
-
     }
   }
   width: ${(props): string => props.width || '100%'};
