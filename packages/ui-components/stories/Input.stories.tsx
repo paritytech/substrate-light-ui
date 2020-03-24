@@ -61,21 +61,32 @@ storiesOf('Input', module)
   .addDecorator(withKnobs)
   .addDecorator(withTheme)
   .add('Input', () => (
-    <>
-      <Input
-        disabled={boolean('disabled', false)}
-        focus={boolean('focus', false)}
-        inverted={boolean('inverted', false)}
-        icon={object('icon', { name: 'search', link: true })}
-        textLabel={text('textLabel', 'Amount')}
-        label={text('label', null)}
-        labelPosition={select('labelPosition', labelPositions, null)}
-        onChange={action('typed')}
-        placeholder='placeholder...'
-        size={select('size', sizes, 'small')}
-        type={select('input type', inputTypes, 'text')}
-        wrapClass={text('wrapCLass', 'mb2')}
-      />
-    </>
+    <Input
+      borderless={boolean('borderless', false)}
+      disabled={boolean('disabled', false)}
+      focus={boolean('focus', false)}
+      inverted={boolean('inverted', false)}
+      icon={object('icon', { name: 'search', link: true })}
+      textLabel={text('textLabel', 'Amount')}
+      label={text('label', null)}
+      labelPosition={select('labelPosition', labelPositions, null)}
+      onChange={action('typed')}
+      placeholder='placeholder...'
+      size={select('size', sizes, 'small')}
+      type={select('input type', inputTypes, 'text')}
+      wrapClass={text('wrapCLass', 'mb2')}
+    />
   ))
+  .add('Input | Mnemonic Word', () => {
+    return (
+      <Input
+        wrapClass={text('wrapCLass', 'code red')}
+        textLabel='1'
+        value={text('value', 'word')}
+        borderless={true}
+        textLabelInline
+        fake={boolean('fake', true)}
+      />
+    );
+  })
   .add('Input | Transfer Funds', () => <InputTransferFundsStory />);

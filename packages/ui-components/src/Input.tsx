@@ -11,46 +11,74 @@ import styled from 'styled-components';
 import { polkadotOfficialTheme } from './globalStyle';
 
 interface InputProps extends SUIInputProps {
+  borderless?: boolean;
+  fake?: boolean;
   input?: string | null;
-  label?: string | null;
+  textLabelInline?: boolean;
+  textLabel?: string | number | null;
   wrapClass?: string;
 }
 
-const StyleTab = {
-  menu: '',
+//TODO: clean up
+const styles = {
+  inputField: `
+    padding: 0.65em 0.7em;
+    background: ${polkadotOfficialTheme.eggShell};
+    line-height: 1.2;
+  `,
 };
+
+const StyledFakeInput = styled.span`
+  display: inline-block;
+  ${styles.inputField}
+`;
 
 const StyledInput = styled<typeof SUIInput>(SUIInput)`
   &&& {
-    ${(props): string => (props.tabs ? StyleTab.menu : '')};
     > input {
+      ${styles.inputField}
+
       border: none;
-      border-bottom: 1px solid black;
       border-radius: 0;
-      background: ${polkadotOfficialTheme.eggShell};
+      ${(props): string =>
+        props.borderless ? '' : 'border-bottom: 1px solid black;'};
 
       &[type='number'] {
         text-align: center;
       }
     }
     &.labeled .label {
-      min-width: 100px;
-      text-align: center;
       font-weight: 300;
       color: black;
-      background: ${polkadotOfficialTheme.black};
+      background: ${polkadotOfficialTheme.white};
       color: ${polkadotOfficialTheme.eggShell};
     }
   }
   width: ${(props): string => props.width || '100%'};
 `;
 
+const StyledLabel = styled.label`
+  display: ${(props): string => (props.textLabelInline ? 'inline-flex' : 'flex')};
+  margin-right: 0.5em;
+`;
+
 export function Input(props: InputProps): React.ReactElement {
-  const { textLabel, wrapClass = 'mb3', ...rest } = props;
+  const {
+    textLabel,
+    wrapClass = 'mb3',
+    textLabelInline = false,
+    value,
+    fake,
+    ...rest
+  } = props;
   return (
     <div className={wrapClass}>
-      {textLabel && <label className='flex fw5 f6'>{textLabel}</label>}
-      <StyledInput {...rest} />
+      {textLabel && <StyledLabel textLabelInline={textLabelInline}>{textLabel}</StyledLabel>}
+      {fake ? (
+        <StyledFakeInput>{value}</StyledFakeInput>
+      ) : (
+        <StyledInput value={value} {...rest} />
+      )}
     </div>
   );
 }
