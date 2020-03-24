@@ -5,7 +5,6 @@
 import { withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
-import { Button, Icon } from 'semantic-ui-react';
 
 import { MeasureApp, NavButton } from '../src';
 import { withTheme } from './customDecorators';

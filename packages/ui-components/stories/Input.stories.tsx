@@ -36,23 +36,15 @@ export const InputTransferFundsStory = (): React.ReactElement => {
   return (
     <>
       <Input
+        fluid
         textLabel='Amount'
-        label='KSM'
-        labelPosition='right'
         onChange={action('typed')}
         placeholder='0'
         size='massive'
         type='number'
       />
-      <Input textLabel='To' />
+      <Input fluid textLabel='Tip' type='number' placeholder='0' />
       <InputAddressStory />
-      <Input
-        label='Tips Icon'
-        labelPosition='right'
-        textLabel='Tip'
-        type='number'
-        placeholder='0'
-      />
     </>
   );
 };
@@ -73,11 +65,11 @@ storiesOf('Input', module)
       onChange={action('typed')}
       placeholder='placeholder...'
       size={select('size', sizes, 'small')}
-      type={select('input type', inputTypes, 'text')}
+      type={select('type', inputTypes, 'text')}
       wrapClass={text('wrapCLass', 'mb2')}
     />
   ))
-  .add('Input | Mnemonic Word', () => {
+  .add('Mnemonic Word', () => {
     return (
       <Input
         wrapClass={text('wrapCLass', 'code red')}
@@ -89,4 +81,4 @@ storiesOf('Input', module)
       />
     );
   })
-  .add('Input | Transfer Funds', () => <InputTransferFundsStory />);
+  .add('Transfer Funds', () => <InputTransferFundsStory />);
