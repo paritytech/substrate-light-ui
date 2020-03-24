@@ -27,8 +27,7 @@
     "recharts": "^1.6.0",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.88.1",
-    "styled-components": "^4.4.1",
-    "tachyons-components": "^1.0.1"
+    "styled-components": "^4.4.1"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^5.2.5",

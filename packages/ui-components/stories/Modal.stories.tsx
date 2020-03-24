@@ -23,7 +23,6 @@ import { NewMnemonicStory } from './MnemonicPhraseList.stories';
 export const ModalNewAccountStory = () => {
   return (
     <Modal
-    open
       trigger={
         <Button basic icon labelPosition='right'>
           <Icon name='plus' />

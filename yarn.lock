@@ -19128,11 +19128,6 @@ table@^5.2.3:
     slice-ansi "^2.1.0"
     string-width "^3.0.0"
 
-tachyons-components@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/tachyons-components/-/tachyons-components-1.0.1.tgz#97c0d20e6d022b9b99a8b5d5f68579e2423d77a4"
-  integrity sha512-GiKXffqY01EQ8WWLecofD6uSYss8MbnlXmcishG5M7IbUyctytMVK8SK9jzmsXhwzFpXHOn48C2Ax9Y2r+BKew==
-
 tachyons@^4.11.1:
   version "4.11.1"
   resolved "https://registry.yarnpkg.com/tachyons/-/tachyons-4.11.1.tgz#4e3666e7299e47aea7d820e0580dd4dc07cf3feb"

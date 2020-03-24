@@ -42,7 +42,6 @@
     "store": "^2.0.12",
     "symbol-observable": "^1.2.0",
     "tachyons": "^4.11.1",
-    "tachyons-components": "^1.0.1",
     "web-ext-types": "^3.2.1"
   }
 }
