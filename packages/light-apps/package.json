@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@polkadot/api": "^1.8.1",
-    "@polkadot/extension-dapp": "^0.23.0-beta.8",
+    "@polkadot/extension-dapp": "^0.23.0-beta.9",
     "@polkadot/ui-assets": "^0.51.1",
     "@substrate/context": "^0.3.22",
     "@substrate/ui-components": "^0.3.27",

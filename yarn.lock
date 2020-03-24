@@ -2632,10 +2632,10 @@
     webpack-cli "^3.3.11"
     yargs "^15.3.1"
 
-"@polkadot/extension-base@^0.23.0-beta.8":
-  version "0.23.0-beta.8"
-  resolved "https://registry.yarnpkg.com/@polkadot/extension-base/-/extension-base-0.23.0-beta.8.tgz#51992b1766fa2956bfa55a2e5096db9ec40f2c47"
-  integrity sha512-88SJydW7aj3uhBLf9awBjm+7j7D32X4rckrs62Q+v6f007IgmoSKqfBbNshm0YLme5ihFu3eyZ74mJ6gkGEYAw==
+"@polkadot/extension-base@^0.23.0-beta.9":
+  version "0.23.0-beta.9"
+  resolved "https://registry.yarnpkg.com/@polkadot/extension-base/-/extension-base-0.23.0-beta.9.tgz#73450328f1a3563fd0776eb130227d2c8105fc70"
+  integrity sha512-pdy/RJ1SuLlRo1d0kGWa1a1MSD4w5YBBQLpN4qkEoJ/72VX+i1VcoMxiqHLv44NYN4QhLUvkZiU7KfKw+1xtaA==
   dependencies:
     "@babel/runtime" "^7.9.2"
     "@polkadot/api" "^1.8.1"
@@ -2643,18 +2643,18 @@
     "@polkadot/ui-keyring" "^0.52.0-beta.18"
     extensionizer "^1.0.1"
 
-"@polkadot/extension-dapp@^0.23.0-beta.8":
-  version "0.23.0-beta.8"
-  resolved "https://registry.yarnpkg.com/@polkadot/extension-dapp/-/extension-dapp-0.23.0-beta.8.tgz#7a473c8f31e0f3a278d58e58ffe97a862a399d53"
-  integrity sha512-0//ce7QZetzgYCUdgZJi4LAlaVVjiqMP/ksfKngls5WtTFPL94vSDYCahNlBsO7UT2orbbuHlwlSR8uSh71e2g==
+"@polkadot/extension-dapp@^0.23.0-beta.9":
+  version "0.23.0-beta.9"
+  resolved "https://registry.yarnpkg.com/@polkadot/extension-dapp/-/extension-dapp-0.23.0-beta.9.tgz#e527bcf2dbfd142573ff3def4697c617442104ba"
+  integrity sha512-AaOKKThGNPO7Nn2brOjGqTi4+Ud1UthG4sJpr/wOMCJ6RKrcEDINzgWD1dhUYZA6n8GJ8x7mlUXSn4Y9CYAGEA==
   dependencies:
     "@babel/runtime" "^7.9.2"
-    "@polkadot/extension-inject" "0.23.0-beta.8"
+    "@polkadot/extension-inject" "0.23.0-beta.9"
 
-"@polkadot/extension-inject@0.23.0-beta.8":
-  version "0.23.0-beta.8"
-  resolved "https://registry.yarnpkg.com/@polkadot/extension-inject/-/extension-inject-0.23.0-beta.8.tgz#029766d32d2947f003575e934abb4566e46b48cc"
-  integrity sha512-dJAP3MSoyPHMI6+0m/vQBhvuuD/XbkzDBrUDQohzocp6k4llc1MC8gbu29IRjhuDnCElRApWpwe6PuE4dmpyYg==
+"@polkadot/extension-inject@0.23.0-beta.9":
+  version "0.23.0-beta.9"
+  resolved "https://registry.yarnpkg.com/@polkadot/extension-inject/-/extension-inject-0.23.0-beta.9.tgz#03a3d893200239c2c52fe5a2e2c8c449f1e608cd"
+  integrity sha512-SMWzS0ZZvpioPVavcWrG6hmf6VtgTfJyxz/SJ5f2ukVa1BgcwwcEsuHrVmqj3GjCTuLz1H5eRPICY6+WbAEL+Q==
   dependencies:
     "@babel/runtime" "^7.9.2"
 
