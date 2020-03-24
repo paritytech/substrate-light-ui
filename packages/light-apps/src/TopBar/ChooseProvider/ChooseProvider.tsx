@@ -53,7 +53,6 @@ export function ChooseProvider(): React.ReactElement {
         _event: React.SyntheticEvent,
         { value }: DropdownProps
       ): void => {
-        console.log('VALUE', value);
         setLazyProvider(allProviders[value as string]);
       }}
       options={Object.values(allProviders).map(lazy => ({
