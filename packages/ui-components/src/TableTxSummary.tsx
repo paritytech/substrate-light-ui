@@ -20,21 +20,17 @@ const StyledTable = styled<typeof SUITable>(SUITable)`
   &&& {
     border: none;
     .signal {
-      color: ${polkadotOfficialTheme.hotPink};
+      color: ${polkadotOfficialTheme.signal};
     }
   }
   &&& tr td {
     border: none;
     font-size: 1.2rem;
     font-weight: 600;
-    &.currency {
-      text-align: center;
-      border-left: 1px solid black;
-    }
   }
   &&& tr:nth-child(3) td,
   &&& tr:nth-child(3) th {
-    border-top: 1px solid black;
+    border-top: 1px solid lightgray;
   }
 `;
 

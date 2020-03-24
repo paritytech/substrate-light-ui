@@ -33,7 +33,7 @@ export const ModalNewAccountStory = (): JSX.Element => {
       <Modal.Header>Add Account</Modal.Header>
       <Modal.Content>
         <div className='w-100'>
-          <Input textLabel='Name' onChange={action('typed')} />
+          <Input fluid textLabel='Name' onChange={action('typed')} />
           <Menu borderless shadow={false} text size='large'>
             <Menu.Item active>Create New</Menu.Item>
             <Menu.Item>JSON</Menu.Item>

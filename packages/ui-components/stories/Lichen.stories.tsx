@@ -17,7 +17,6 @@ import { TopBarStory } from './TopBar.stories';
 
 // TODO:
 // signal color
-// table transfer
 
 storiesOf('Apps/Lichen', module)
   .addDecorator(withKnobs)

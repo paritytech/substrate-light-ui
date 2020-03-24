@@ -147,15 +147,16 @@ export const ButtonShadow = styled.div`
   height: 50%;
   margin: auto;
   border-radius: 9999px;
-  background-color: ${polkadotOfficialTheme.grey};
+  background-color: ${polkadotOfficialTheme.signal};
   filter: blur(10px);
   opacity: 0.4;
+  transform: translateY(0%);
   transition: filter 0.3s, transform 0.3s;
 `;
 
 export const StyledNavButton = styled.button<StyledNavButtonProps>`
   position: relative;
-  background-color: ${polkadotOfficialTheme.grey};
+  background-color: ${polkadotOfficialTheme.signal};
   border: none;
   border-radius: 9999px;
   color: ${polkadotOfficialTheme.white};
@@ -165,7 +166,7 @@ export const StyledNavButton = styled.button<StyledNavButtonProps>`
   transition: background-color 0.3s;
 
   :hover {
-    background-color: ${polkadotOfficialTheme.black};
+    opacity: 0.9;
 
     cursor: ${(props): string => (props.disabled ? 'not-allowed' : 'pointer')};
 

@@ -68,6 +68,7 @@ export const polkadotOfficialTheme = {
   black: '#1E1E1E',
   grey: '#B5AEAE',
   hotPink: '#E6007A',
+  signal: 'red',
   lightBlue2: '#51a0ec',
   lightBlue1: '#53a0fd',
   neonBlue: '#0ed2f7',

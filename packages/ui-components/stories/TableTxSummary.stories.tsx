@@ -26,7 +26,7 @@ export const TableTxSummaryStory = () => {
       <Menu borderless tabs size='small' shadow={false}>
         <Menu.Item active>Transaction Details</Menu.Item>
       </Menu>
-      <div className='ba b--black pa4 pb5'>
+      <div className='bg-near-white pa4 pb5'>
         <TableTxSummary wrapClass={wrapClass}>
           <TableTxSummary.Body>
             <TableTxSummary.Row>
@@ -47,22 +47,19 @@ export const TableTxSummaryStory = () => {
             </TableTxSummary.Row>
             <TableTxSummary.Row>
               <TableTxSummary.HeaderCell>Ammount</TableTxSummary.HeaderCell>
-              <TableTxSummary.Cell>298371</TableTxSummary.Cell>
-              <TableTxSummary.Cell className='signal currency' rowspan='3'>
-                KSM
+              <TableTxSummary.Cell>
+                298371 <span className='fw2'>KSM</span>
               </TableTxSummary.Cell>
             </TableTxSummary.Row>
             <TableTxSummary.Row>
               <TableTxSummary.HeaderCell>Tip</TableTxSummary.HeaderCell>
-              <TableTxSummary.Cell>1</TableTxSummary.Cell>
+              <TableTxSummary.Cell>1 <span className='fw2'>KSM</span></TableTxSummary.Cell>
             </TableTxSummary.Row>
             <TableTxSummary.Row>
-              <TableTxSummary.HeaderCell className='signal'>
+              <TableTxSummary.HeaderCell className='signal' colspan='2'>
                 Total
+                <div className='f2 mt3'>298372 KSM</div>
               </TableTxSummary.HeaderCell>
-              <TableTxSummary.Cell className='signal'>
-                298372
-              </TableTxSummary.Cell>
             </TableTxSummary.Row>
           </TableTxSummary.Body>
         </TableTxSummary>

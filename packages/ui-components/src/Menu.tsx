@@ -27,7 +27,9 @@ const StyleTab = {
   `,
   item: `
     border-radius: 0;
-    // TODO: height
+    &:hover {
+      cursor: pointer;
+    }
     &.active {
       background: ${polkadotOfficialTheme.black};
       color: ${polkadotOfficialTheme.white};
@@ -35,9 +37,8 @@ const StyleTab = {
         background: ${polkadotOfficialTheme.black};
       }
     }
-    &:hover {
-      background: ${polkadotOfficialTheme.white};
-      cursor: pointer;
+    &:not(.active):hover {
+      color: ${polkadotOfficialTheme.signal};
     }
   `,
 };

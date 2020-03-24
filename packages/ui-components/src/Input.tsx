@@ -19,7 +19,6 @@ interface InputProps extends SUIInputProps {
   wrapClass?: string;
 }
 
-//TODO: clean up
 const styles = {
   inputFieldText: `
     padding: 0.65em 0.7em;
@@ -30,14 +29,9 @@ const styles = {
     margin-top: 0.25rem;
     padding: 0.65em 0.7em;
     padding-left: 1rem;
-    border-left: 2px solid black;
+    border-left: 2px solid ${polkadotOfficialTheme.signal};
     font-weight: 600;
     line-height: 1.2;
-    .label:first-child {
-      border-left: 2px solid red;
-      border-radius: 0;
-      background: transparent;
-    }
   `,
 };
 

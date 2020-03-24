@@ -74,6 +74,9 @@ const StyledTable = styled<typeof SUITable>(SUITable)`
       }
       tbody tr:hover td {
         opacity: 1;
+        .ui.basic.buttons .button:hover {
+          color: ${polkadotOfficialTheme.signal} !important;
+        }
       }
     }
     thead th {
