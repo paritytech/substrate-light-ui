@@ -3,32 +3,35 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { WsProvider } from '@polkadot/api';
+import { ProviderMeta } from '@polkadot/extension-inject/types';
 import { ProviderInterface } from '@polkadot/rpc-provider/types';
+import { logger } from '@polkadot/util';
 import React, { useEffect, useState } from 'react';
 
-import { PostMessageProvider } from '../../../util';
+const l = logger('provider-context');
 
 /**
- * JSON-serializable data to instantiate a provider.
+ * Interface describing a Provider, lazily loaded.
  */
-export interface ProviderJSON {
-  payload: string;
-  type: 'WsProvider' | 'PostMessageProvider' | 'WasmProvider';
+export interface LazyProvider extends ProviderMeta {
+  description: string;
+  id: string;
+  start: () => Promise<ProviderInterface>;
 }
 
 export interface ProviderContextType {
+  /**
+   * Current lazy provider.
+   */
+  lazy: LazyProvider | undefined;
   /**
    * Current provider.
    */
   provider: ProviderInterface | undefined;
   /**
-   * Current provider JSON.
-   */
-  providerJSON: ProviderJSON | undefined;
-  /**
    * Set a new provider.
    */
-  setProviderJSON(provider: ProviderJSON): void;
+  setLazyProvider(provider: LazyProvider): void;
 }
 
 export const ProviderContext: React.Context<ProviderContextType> = React.createContext(
@@ -39,53 +42,38 @@ export interface ProviderContextProviderProps {
   children?: React.ReactElement;
 }
 
-/**
- * From the JSON data of a provider, instantiate an actual provider.
- *
- * @param input - The JSON data used to create a provider.
- */
-function createProvider(input: ProviderJSON): ProviderInterface {
-  switch (input.type) {
-    case 'WsProvider': {
-      return new WsProvider(input.payload);
-    }
-    case 'PostMessageProvider': {
-      return new PostMessageProvider('window');
-    }
-  }
-
-  throw new Error(
-    `createProvider: unrecognized provider ${JSON.stringify(input)}`
-  );
-}
-
-const defaultProvider = {
-  payload: 'wss://kusama-rpc.polkadot.io',
-  type: 'WsProvider',
-} as ProviderJSON;
+export const DEFAULT_PROVIDER: LazyProvider = {
+  description: 'Remote node hosted by W3F',
+  id: 'kusama-WsProvider',
+  network: 'kusama',
+  node: 'light',
+  source: 'slui',
+  start: () => Promise.resolve(new WsProvider('wss://kusama-rpc.polkadot.io')),
+  transport: 'WsProvider',
+};
 
 export function ProviderContextProvider(
   props: ProviderContextProviderProps
 ): React.ReactElement {
   const { children = null } = props;
-  const [providerJSON, setProviderJSON] = useState<ProviderJSON>(
-    defaultProvider
+  const [lazy, setLazyProvider] = useState<LazyProvider>(DEFAULT_PROVIDER);
+  const [provider, setProvider] = useState<ProviderInterface>(
+    new WsProvider('wss://kusama-rpc.polkadot.io')
   );
 
-  const provider = createProvider(providerJSON);
-
   useEffect(() => {
-    if (providerJSON.type === 'PostMessageProvider') {
-      (provider as PostMessageProvider).switch(providerJSON.payload);
-    }
-  }, [provider, providerJSON]);
+    lazy
+      .start()
+      .then(setProvider)
+      .catch(l.error);
+  }, [lazy]);
 
   return (
     <ProviderContext.Provider
       value={{
         provider,
-        providerJSON,
-        setProviderJSON,
+        lazy,
+        setLazyProvider,
       }}
     >
       {children}

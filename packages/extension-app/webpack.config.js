@@ -19,7 +19,7 @@ function createWebpack({ alias = {}, context }) {
   const copyPlugin = [
     { from: 'static' },
     {
-      from: '../light/src/generated/kusamaCc3/kusamaCc3.wasm',
+      from: '../light/src/generated/kusama_cc3/kusama_cc3.wasm',
       to: 'wasm',
     },
   ];
@@ -39,8 +39,8 @@ function createWebpack({ alias = {}, context }) {
     },
     mode: ENV,
     output: {
-      chunkFilename: '[name].js',
-      filename: '[name].js',
+      chunkFilename: '[name]/index.js',
+      filename: '[name]/index.js',
       path: path.join(context, 'build'),
     },
     resolve: {

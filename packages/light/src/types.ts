@@ -2,6 +2,9 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+/**
+ * A simple interface to communicate via JSONRPC with the WASM light client.
+ */
 export interface WasmRpcClient {
   /**
    * Destroy the WASM light client.
@@ -22,13 +25,18 @@ export interface WasmRpcClient {
 }
 
 /**
- * An interface representing a light client compiled to WASM.
+ * An interface representing a light client compiled to WASM, along with some
+ * metadata.
  */
 export interface LightClient {
   /**
    * An identifier for the light client.
    */
   name: string;
+  /**
+   * Network on which the client is running.
+   */
+  network: string;
   /**
    * Start running the light client.
    */

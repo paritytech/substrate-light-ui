@@ -4,9 +4,6 @@
 
 import { WsProvider } from '@polkadot/api';
 import { ProviderInterface } from '@polkadot/rpc-provider/types';
-import extensionizer from 'extensionizer';
-
-import { PostMessageProvider } from './postMessage';
 
 const ELECTRON_ENV = 'ELECTRON_ENV';
 const EXTENSION_ENV = 'EXTENSION_ENV';
@@ -48,17 +45,13 @@ export function getProvider(env: Env): ProviderInterface {
       // We use the local light node embedded in the electron app
       return new WsProvider('ws://127.0.0.1:9944');
     case EXTENSION_ENV: {
-      // We use a PostMessageProvider to communicate directly with the
-      // background script
-      const port = extensionizer.runtime.connect();
-
-      return new PostMessageProvider(port);
+      throw new Error('FIXME EXTENSION_ENV');
     }
     default:
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return (window as any).injectedWeb3 && (window as any).injectedWeb3.slui
         ? // If we detect the extension, use PostMessageProvider
-          new PostMessageProvider('window')
+          new WsProvider('wss://kusama-rpc.polkadot.io')
         : // We fallback to the remote node provided by W3F
           new WsProvider('wss://kusama-rpc.polkadot.io');
   }

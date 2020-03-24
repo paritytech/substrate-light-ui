@@ -2,38 +2,47 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { logger } from '@polkadot/util';
-import { kusamaCc3 } from '@substrate/light';
-import extensionizer from 'extensionizer';
+import {
+  PORT_CONTENT,
+  PORT_EXTENSION,
+} from '@polkadot/extension-base/defaults';
+import keyring from '@polkadot/ui-keyring';
+import ExtensionStore from '@polkadot/ui-keyring/stores/Extension';
+import { assert } from '@polkadot/util';
+import { cryptoWaitReady } from '@polkadot/util-crypto';
+import extension from 'extensionizer';
 
-import { KUSAMA_CC3_WASM, start } from './client';
-import { handler, MessageRequest } from './messages';
+import { handlers } from './handlers';
 
-const l = logger('background');
+// listen to all messages and handle appropriately
+extension.runtime.onConnect.addListener((port): void => {
+  // shouldn't happen, however... only listen to what we know about
+  assert(
+    [PORT_CONTENT, PORT_EXTENSION].includes(port.name),
+    `Unknown connection from ${port.name}`
+  );
 
-extensionizer.runtime.onConnect.addListener(
-  (port: browser.runtime.Port): void => {
-    // Listen to all messages on the extension port and handle appropriately
-    function messageListener(response: object): void {
-      handler(response as MessageRequest, port);
-    }
-    port.onMessage.addListener(messageListener);
+  // message and disconnect handlers
+  port.onMessage.addListener((data): void =>
+    // FIXME this is due to incompatibility between @types/chrome and web-ext-types
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    handlers(data as any, port as any)
+  );
+  port.onDisconnect.addListener((): void =>
+    console.log(`Disconnected from ${port.name}`)
+  );
+});
 
-    // Gracefully handle port disconnects
-    function disconnectListener(): void {
-      if (port.onMessage.hasListener(messageListener)) {
-        port.onMessage.removeListener(messageListener);
+// initial setup
+cryptoWaitReady()
+  .then((): void => {
+    console.log('crypto initialized');
 
-        l.log(`Disconnected from ${JSON.stringify(port)}`);
-      }
+    // load all the keyring data
+    keyring.loadAll({ store: new ExtensionStore(), type: 'sr25519' });
 
-      if (port.onDisconnect.hasListener(disconnectListener)) {
-        port.onDisconnect.removeListener(disconnectListener);
-      }
-    }
-    port.onDisconnect.addListener(disconnectListener);
-  }
-);
-
-// At the beginning, just run Kusama
-start(kusamaCc3.fromUrl(KUSAMA_CC3_WASM));
+    console.log('initialization completed');
+  })
+  .catch((error): void => {
+    console.error('initialization failed', error);
+  });

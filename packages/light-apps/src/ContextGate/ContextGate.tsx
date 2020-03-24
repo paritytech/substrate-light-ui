@@ -13,6 +13,7 @@ import React from 'react';
 
 import { TopBar } from '../TopBar';
 import {
+  ExtensionContextProvider,
   KeyringContextProvider,
   ProviderContext,
   ProviderContextProvider,
@@ -25,37 +26,39 @@ export function ContextGate(props: {
   const { children } = props;
 
   return (
-    <ProviderContextProvider>
-      <ProviderContext.Consumer>
-        {({ provider }): React.ReactElement | null =>
-          provider ? (
-            <SystemContextProvider provider={provider}>
-              <>
-                <TopBar />
-                <SystemGate>
-                  <KeyringContextProvider>
-                    <KeyringGate>
-                      <HealthContextProvider provider={provider}>
-                        <HealthGate>
-                          <ApiContextProvider provider={provider}>
-                            <ApiGate>
-                              <AlertsContextProvider>
-                                <TxQueueContextProvider>
-                                  {children}
-                                </TxQueueContextProvider>
-                              </AlertsContextProvider>
-                            </ApiGate>
-                          </ApiContextProvider>
-                        </HealthGate>
-                      </HealthContextProvider>
-                    </KeyringGate>
-                  </KeyringContextProvider>
-                </SystemGate>
-              </>
-            </SystemContextProvider>
-          ) : null
-        }
-      </ProviderContext.Consumer>
-    </ProviderContextProvider>
+    <ExtensionContextProvider originName='slui'>
+      <ProviderContextProvider>
+        <ProviderContext.Consumer>
+          {({ provider }): React.ReactElement | null =>
+            provider ? (
+              <SystemContextProvider provider={provider}>
+                <>
+                  <TopBar />
+                  <SystemGate>
+                    <KeyringContextProvider>
+                      <KeyringGate>
+                        <HealthContextProvider provider={provider}>
+                          <HealthGate>
+                            <ApiContextProvider provider={provider}>
+                              <ApiGate>
+                                <AlertsContextProvider>
+                                  <TxQueueContextProvider>
+                                    {children}
+                                  </TxQueueContextProvider>
+                                </AlertsContextProvider>
+                              </ApiGate>
+                            </ApiContextProvider>
+                          </HealthGate>
+                        </HealthContextProvider>
+                      </KeyringGate>
+                    </KeyringContextProvider>
+                  </SystemGate>
+                </>
+              </SystemContextProvider>
+            ) : null
+          }
+        </ProviderContext.Consumer>
+      </ProviderContextProvider>
+    </ExtensionContextProvider>
   );
 }
