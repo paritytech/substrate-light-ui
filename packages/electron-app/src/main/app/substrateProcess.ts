@@ -29,17 +29,17 @@ export function runSubstrate(): void {
   logger.info(`Running ${'`'}substrate ${substrateFlags.join(' ')}${'`'}`);
   const substrate = spawn(bundledPath, substrateFlags);
 
-  substrate.stdout.on('data', data => {
+  substrate.stdout.on('data', (data) => {
     logger.info(data.toString());
   });
-  substrate.stderr.on('data', error => {
+  substrate.stderr.on('data', (error) => {
     // Substrate outputs in stderr, so we .info here
     logger.info(error.toString());
   });
-  substrate.on('error', error => {
+  substrate.on('error', (error) => {
     logger.error(`Substrate process errored: ${error.toString()}`);
   });
-  substrate.on('exit', code => {
+  substrate.on('exit', (code) => {
     logger.debug(
       `Substrate process exited with code: ${code && code.toString()}`
     );

@@ -129,7 +129,7 @@ export function SendBalance(): React.ReactElement {
 
   const handleSubmit = (): void => {
     validationResult.fold(
-      error => {
+      (error) => {
         console.error(error);
       },
       (allExtrinsicData: AllExtrinsicData) => {

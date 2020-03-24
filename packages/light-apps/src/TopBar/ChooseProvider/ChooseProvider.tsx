@@ -55,7 +55,7 @@ export function ChooseProvider(): React.ReactElement {
       ): void => {
         setLazyProvider(allProviders[value as string]);
       }}
-      options={Object.values(allProviders).map(lazy => ({
+      options={Object.values(allProviders).map((lazy) => ({
         key: lazy.id,
         text: `${lazy.network} (${lazy.description})`,
         value: lazy.id,

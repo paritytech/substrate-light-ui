@@ -36,7 +36,7 @@ function renderWarnings(warnings: Warnings): React.ReactElement {
     <>
       <SubHeader textAlign='left'>Warnings</SubHeader>
       <List>
-        {warnings.map(warning => (
+        {warnings.map((warning) => (
           <List.Item key={warning}>{warning}</List.Item>
         ))}
       </List>

@@ -62,10 +62,7 @@ export function ProviderContextProvider(
   );
 
   useEffect(() => {
-    lazy
-      .start()
-      .then(setProvider)
-      .catch(l.error);
+    lazy.start().then(setProvider).catch(l.error);
   }, [lazy]);
 
   return (

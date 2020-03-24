@@ -54,7 +54,7 @@ export function KeyringContextProvider(
       ...rest,
     } as KeyringOptions);
 
-    const accountsSub = accountObservable.subject.subscribe(acc => {
+    const accountsSub = accountObservable.subject.subscribe((acc) => {
       setAccounts(acc);
       // FIXME Save currentAccount into localStorage, so that subsequent loads
       // loads the same account

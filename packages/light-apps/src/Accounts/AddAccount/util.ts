@@ -66,12 +66,12 @@ export function validateMeta(
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
   // @ts-ignore
-  values.tags = values.tags.map(tag => tag.toLowerCase());
+  values.tags = values.tags.map((tag) => tag.toLowerCase());
 
   if (step === 'meta') {
     (['name', 'password'] as Exclude<keyof UserInput, 'tags'>[])
-      .filter(key => !values[key])
-      .forEach(key => {
+      .filter((key) => !values[key])
+      .forEach((key) => {
         errors[key] = `Field "${key}" cannot be empty`;
       });
   }
