@@ -5,7 +5,6 @@
 // eslint-disable-next-line @typescript-eslint/camelcase
 import init, { start_client } from '../generated/kusama_cc3/kusama_cc3';
 import { LightClient, WasmRpcClient } from '../types';
-import ws from '../ws';
 import chainSpec from './westend.json';
 
 const name = 'westend';
@@ -28,7 +27,7 @@ export function fromUrl(url: string): LightClient {
       await init(url);
       console.log('Successfully loaded WASM, starting client...');
 
-      client = await start_client(JSON.stringify(chainSpec), ws());
+      client = await start_client(JSON.stringify(chainSpec), 'INFO');
 
       return client;
     },
