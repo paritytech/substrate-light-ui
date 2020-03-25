@@ -9,7 +9,7 @@ import React from 'react';
 import { Menu, TableCellAddress, TableTxSummary } from '../src';
 import { withTheme } from './customDecorators';
 
-export const TableTxSummaryStory = () => {
+export const TableTxSummaryStory = (): React.ReactElement => {
   const wrapClass = text('wrapClass', '');
   const fromProps = object('fromAccount', {
     address: 'GSveuiyCpFG1maA4SrSBPjdc4F6Rz9VjRCep2bqjnute7Aw',
@@ -53,7 +53,9 @@ export const TableTxSummaryStory = () => {
             </TableTxSummary.Row>
             <TableTxSummary.Row>
               <TableTxSummary.HeaderCell>Tip</TableTxSummary.HeaderCell>
-              <TableTxSummary.Cell>1 <span className='fw2'>KSM</span></TableTxSummary.Cell>
+              <TableTxSummary.Cell>
+                1 <span className='fw2'>KSM</span>
+              </TableTxSummary.Cell>
             </TableTxSummary.Row>
             <TableTxSummary.Row>
               <TableTxSummary.HeaderCell className='signal' colspan='2'>

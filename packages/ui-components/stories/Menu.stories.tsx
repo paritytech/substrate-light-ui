@@ -10,7 +10,9 @@ import { MeasureApp } from '../src';
 import { Menu } from '../src';
 import { withTheme } from './customDecorators';
 
-export const MenuTabsStory = (props: { activeItem?: string }) => {
+export const MenuTabsStory = (props: {
+  activeItem?: string;
+}): React.ReactElement => {
   const { activeItem = 'Accounts' } = props;
   const tabs = boolean('tabs', true);
   return (

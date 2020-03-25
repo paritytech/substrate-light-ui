@@ -10,7 +10,7 @@ import { TableAccounts } from '../src/TableAccounts';
 import { RowAccount, RowAccountsTotal } from '../src/TableRowAccount';
 import { withTheme } from './customDecorators';
 
-export const TableAccountsStory = () => {
+export const TableAccountsStory = (): React.ReactElement => {
   const wrapClass = text('wrapClass', '');
   const isExpanded = boolean('isExpanded', false);
   const rowProps = object('accounts', [

@@ -22,7 +22,6 @@ export function MnemonicPhraseList(props: Props): React.ReactElement {
             fake={true}
             key={word}
             textLabel={i + 1}
-            textLabelInline
             value={word}
             wrapClass='code red inline-flex items-center mr3 mb3'
           />

@@ -45,7 +45,7 @@ const EXTENSION_ACCOUNTS = [
   },
 ];
 
-export const InputAddressStory = () => {
+export const InputAddressStory = (): React.ReactElement => {
   return (
     <>
       <InputAddress

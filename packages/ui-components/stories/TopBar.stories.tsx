@@ -17,7 +17,7 @@ import {
 } from '../src';
 import { withTheme } from './customDecorators';
 
-export const TopBarStory = () => {
+export const TopBarStory = (): React.ReactElement => {
   const nodeOptions = [
     {
       text: 'Kusama CC3 (Light Client)',

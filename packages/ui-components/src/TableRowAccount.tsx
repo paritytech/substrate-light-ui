@@ -21,7 +21,9 @@ interface RowProps extends HeaderProps {
   fundsReserved?: string;
   fundsBonded?: string;
   nTx?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSend?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onForget?: any;
 }
 

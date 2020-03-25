@@ -45,13 +45,13 @@ const StyleTab = {
 
 const StyledMenu = styled<typeof SUIMenu>(SUIMenu)`
   &&& {
-    ${props => (props.tabs ? StyleTab.menu : '')};
-    ${props => (props.shadow ? StyleTab.shadow : 'box-shadow: none')};
+    ${(props): string => (props.tabs ? StyleTab.menu : '')};
+    ${(props): string => (props.shadow ? StyleTab.shadow : 'box-shadow: none')};
     &.medium .item {
       height: 48px;
     }
     .item {
-      ${props => (props.tabs ? StyleTab.item : '')};
+      ${(props): string => (props.tabs ? StyleTab.item : '')};
     }
   }
   box-shadow: 0 0 0 ${polkadotOfficialTheme.white};

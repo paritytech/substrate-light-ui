@@ -30,7 +30,6 @@ const sizes: SUIInputSize[] = [
   'huge',
   'massive',
 ];
-const labelPositions = ['left', 'right', 'left corner', 'right corner', null];
 
 export const InputTransferFundsStory = (): React.ReactElement => {
   return (
@@ -57,16 +56,24 @@ storiesOf('Input', module)
       borderless={boolean('borderless', false)}
       disabled={boolean('disabled', false)}
       focus={boolean('focus', false)}
+      fluid={boolean('fluid', true)}
       inverted={boolean('inverted', false)}
       icon={object('icon', { name: 'search', link: true })}
       textLabel={text('textLabel', 'Amount')}
-      label={text('label', null)}
-      labelPosition={select('labelPosition', labelPositions, null)}
       onChange={action('typed')}
       placeholder='placeholder...'
       size={select('size', sizes, 'small')}
       type={select('type', inputTypes, 'text')}
       wrapClass={text('wrapCLass', 'mb2')}
+    />
+  ))
+  .add('With Label', () => (
+    <Input
+      label='label'
+      labelPosition='left'
+      textLabel='Input with'
+      onChange={action('typed')}
+      placeholder='placeholder...'
     />
   ))
   .add('Mnemonic Word', () => {
@@ -76,7 +83,6 @@ storiesOf('Input', module)
         textLabel='1'
         value={text('value', 'word')}
         borderless={true}
-        textLabelInline
         fake={boolean('fake', true)}
       />
     );
