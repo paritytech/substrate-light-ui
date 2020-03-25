@@ -14,7 +14,6 @@ interface InputProps extends SUIInputProps {
   borderless?: boolean;
   fake?: boolean;
   input?: string | null;
-  textLabelInline?: boolean;
   textLabel?: string | number | null;
   wrapClass?: string;
 }
@@ -63,25 +62,14 @@ const StyledInput = styled<typeof SUIInput>(SUIInput)`
 `;
 
 const StyledLabel = styled.label`
-  display: ${(props): string =>
-    props.textLabelInline ? 'inline-flex' : 'flex'};
   margin-right: 0.5em;
 `;
 
 export function Input(props: InputProps): React.ReactElement {
-  const {
-    textLabel,
-    wrapClass = 'mb3',
-    textLabelInline = false,
-    value,
-    fake,
-    ...rest
-  } = props;
+  const { textLabel, wrapClass = 'mb3', value, fake, ...rest } = props;
   return (
     <div className={wrapClass}>
-      {textLabel && (
-        <StyledLabel textLabelInline={textLabelInline}>{textLabel}</StyledLabel>
-      )}
+      {textLabel && <StyledLabel>{textLabel}</StyledLabel>}
       {fake ? (
         <StyledFakeInput>{value}</StyledFakeInput>
       ) : (
