@@ -33,7 +33,7 @@ export function Circle(props: CircleProps): React.ReactElement {
     text-align: center;
     vertical-align: center;
     box-shadow: ${withShadow &&
-      '0 6px 6px 0 rgba(0, 0, 0, 0.24), 0 0 6px 0 rgba(0, 0, 0, 0.12)'};
+    '0 6px 6px 0 rgba(0, 0, 0, 0.24), 0 0 6px 0 rgba(0, 0, 0, 0.12)'};
   `;
 
   const WhiteText = styled.p`

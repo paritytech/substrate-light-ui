@@ -22,7 +22,7 @@ function getBinaryVersion(binaryPath) {
       // eslint-disable-next-line @typescript-eslint/prefer-regexp-exec
       return stdout.match(/\d+\.\d+\.\d+/)[0];
     })
-    .catch(error => {
+    .catch((error) => {
       console.error(error);
       process.exit(1);
     });
@@ -43,7 +43,7 @@ function downloadSubstrate() {
 if (existsSync(BUNDLED_PATH)) {
   // Bundled Parity Substrate was found, we check if the version matches the minimum requirements
   getBinaryVersion(BUNDLED_PATH)
-    .then(version => {
+    .then((version) => {
       console.log('Substrate version -> ', version);
 
       if (!version) {
@@ -66,7 +66,7 @@ if (existsSync(BUNDLED_PATH)) {
         );
       }
     })
-    .catch(e => {
+    .catch((e) => {
       console.error(e);
       process.exit(1);
     });

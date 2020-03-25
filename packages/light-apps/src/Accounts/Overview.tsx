@@ -17,7 +17,7 @@ export function AccountsOverview(props: Props): React.ReactElement {
 
   return (
     <Stacked>
-      {Object.values(accounts).map(account => {
+      {Object.values(accounts).map((account) => {
         return (
           <AccountsOverviewCard
             address={account.json.address}

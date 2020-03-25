@@ -54,7 +54,7 @@ export function InputFile(props: Props): React.ReactElement {
         props.onChange && props.onChange(reader.result as string);
       };
 
-      acceptedFiles.forEach(file => reader.readAsBinaryString(file));
+      acceptedFiles.forEach((file) => reader.readAsBinaryString(file));
     },
     [props]
   );

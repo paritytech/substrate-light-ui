@@ -134,10 +134,10 @@ export function Create(props: Props): React.ReactElement {
 
   const createNewAccount = (): void => {
     validation.fold(
-      err => {
+      (err) => {
         onError(err);
       },
-      values => {
+      (values) => {
         const result = keyring.addUri(mnemonic.trim(), values.password, {
           name: values.name,
           tags: values.tags,
@@ -160,7 +160,7 @@ export function Create(props: Props): React.ReactElement {
 
     if (step === 'copy') {
       validateMeta({ name, password, tags }, step, whichAccount).fold(
-        err => onError(err),
+        (err) => onError(err),
         () => setStep('rewrite')
       );
     }
@@ -170,7 +170,7 @@ export function Create(props: Props): React.ReactElement {
         { firstWord, secondWord, thirdWord, fourthWord },
         randomFourWords
       ).fold(
-        err => onError(err),
+        (err) => onError(err),
         () => setStep('meta')
       );
     }

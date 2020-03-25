@@ -70,7 +70,7 @@ export function Signer(): React.ReactElement | null {
       as={Form}
       onSubmit={(): void => {
         unlockAccount(senderPair, inputPassword).fold(
-          err => setError(err.message),
+          (err) => setError(err.message),
           () => submit(pendingTx.id)
         );
       }}

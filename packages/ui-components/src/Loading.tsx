@@ -10,6 +10,7 @@ import { Stacked } from './Shared.styles';
 
 interface LoadingProps extends React.HTMLAttributes<HTMLDivElement> {
   active: boolean;
+  inline?: boolean;
   loadingText?: string;
 }
 
@@ -24,14 +25,14 @@ const Inverted = styled.div`
 `;
 
 export function Loading(props: LoadingProps): React.ReactElement {
-  const { active, children, loadingText, ...rest } = props;
+  const { active, children, inline, loadingText, ...rest } = props;
 
   return (
     <>
       {active && (
         <Inverted {...rest}>
           <Stacked>
-            <Loader active />
+            <Loader active inline={inline} />
             <p>{loadingText}</p>
           </Stacked>
         </Inverted>

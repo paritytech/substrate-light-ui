@@ -1,35 +1,16 @@
+import { web3UseRpcProvider } from '@polkadot/extension-dapp';
+import { ProviderMeta } from '@polkadot/extension-inject/types';
+import { ProviderInterface } from '@polkadot/rpc-provider/types';
 import { Dropdown, DropdownProps } from '@substrate/ui-components';
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import { ProviderContext } from '../../ContextGate/context';
-
-const options = [
-  {
-    key: 'PostMessageProvider|kusamaCc3',
-    text: 'Kusama CC3 (from extension Light Client)',
-    value: JSON.stringify({
-      payload: 'kusamaCc3',
-      type: 'PostMessageProvider',
-    }),
-  },
-  {
-    key: 'PostMessageProvider|westend',
-    text: 'Westend (from extension Light Client)',
-    value: JSON.stringify({
-      payload: 'westend',
-      type: 'PostMessageProvider',
-    }),
-  },
-  {
-    key: 'WsProvider|kusamaCc3',
-    text: 'Kusama CC3 (from centralized remote node)',
-    value: JSON.stringify({
-      payload: 'wss://kusama-rpc.polkadot.io',
-      type: 'WsProvider',
-    }),
-  },
-];
+import {
+  DEFAULT_PROVIDER,
+  ExtensionContext,
+  LazyProvider,
+  ProviderContext,
+} from '../../ContextGate/context';
 
 const TopDropdown = styled(Dropdown)`
   &&& {
@@ -60,8 +41,36 @@ const TopDropdown = styled(Dropdown)`
   }
 `;
 
+/**
+ * Convert a ProviderMeta from the extension to a LazyProvider used by our
+ * ProviderContext.
+ */
+function toLazyProvider(meta: ProviderMeta, key: string): LazyProvider {
+  return {
+    ...meta,
+    description: `${meta.node} node from from ${meta.source} extension`,
+    id: `${meta.network}-PostMessageProvider`,
+    async start(): Promise<ProviderInterface> {
+      const { provider } = await web3UseRpcProvider('slui', key);
+
+      return provider;
+    },
+  };
+}
+
 export function ChooseProvider(): React.ReactElement {
-  const { providerJSON, setProviderJSON } = useContext(ProviderContext);
+  const { lazy, setLazyProvider } = useContext(ProviderContext);
+  const { providers } = useContext(ExtensionContext);
+
+  const allProviders: Record<string, LazyProvider> = {
+    [DEFAULT_PROVIDER.id]: DEFAULT_PROVIDER,
+    ...Object.entries(providers).reduce((acc, [key, value]) => {
+      const lazyProvider = toLazyProvider(value, key);
+      acc[lazyProvider.id] = lazyProvider;
+
+      return acc;
+    }, {} as Record<string, LazyProvider>),
+  };
 
   return (
     <TopDropdown
@@ -69,13 +78,15 @@ export function ChooseProvider(): React.ReactElement {
         _event: React.SyntheticEvent,
         { value }: DropdownProps
       ): void => {
-        console.log(value);
-        setProviderJSON(JSON.parse(value as string));
+        setLazyProvider(allProviders[value as string]);
       }}
-      options={options}
+      options={Object.values(allProviders).map((lazy) => ({
+        key: lazy.id,
+        text: `${lazy.network} (${lazy.description})`,
+        value: lazy.id,
+      }))}
       placeholder='Select Network'
-      value={JSON.stringify(providerJSON)}
-      fluid
+      value={lazy?.id}
     />
   );
 }

@@ -40,8 +40,8 @@ function validate(values: UserInput): Either<UserInputError, UserInput> {
   const errors = {} as UserInputError;
 
   (['name', 'password', 'recoveryPhrase'] as (keyof UserInput)[])
-    .filter(key => !values[key])
-    .forEach(key => {
+    .filter((key) => !values[key])
+    .forEach((key) => {
       errors[key] = `Field "${key}" cannot be empty`;
     });
 
@@ -53,7 +53,7 @@ function validate(values: UserInput): Either<UserInputError, UserInput> {
 }
 
 function renderError(error: Option<string>): React.ReactElement | null {
-  return error.fold(null, err => <ErrorText>{err}</ErrorText>);
+  return error.fold(null, (err) => <ErrorText>{err}</ErrorText>);
 }
 
 export function ImportWithPhrase(props: Props): React.ReactElement {
@@ -102,11 +102,11 @@ export function ImportWithPhrase(props: Props): React.ReactElement {
             );
             history.push('/');
           },
-          err => ({ createAccount: (err as Error).message })
+          (err) => ({ createAccount: (err as Error).message })
         )
       )
       .fold(
-        err => setError(some(Object.values(err)[0])), // If there are errors, only show the 1st one
+        (err) => setError(some(Object.values(err)[0])), // If there are errors, only show the 1st one
         () => history.push('/')
       );
   };
