@@ -9,7 +9,7 @@ import {
 } from 'semantic-ui-react';
 import styled from 'styled-components';
 
-interface DropdownProps extends SUIDropdownProps {
+export interface DropdownProps extends SUIDropdownProps {
   theme?: string;
 }
 
