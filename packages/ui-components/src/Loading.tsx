@@ -32,7 +32,7 @@ export function Loading(props: LoadingProps): React.ReactElement {
       {active && (
         <Inverted {...rest}>
           <Stacked>
-            <Loader active inline />
+            <Loader active inline={inline} />
             <p>{loadingText}</p>
           </Stacked>
         </Inverted>
