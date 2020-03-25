@@ -67,7 +67,7 @@ storiesOf('Input', module)
       wrapClass={text('wrapCLass', 'mb2')}
     />
   ))
-  .add('With Label', () => (
+  .add('Input | With Label', () => (
     <Input
       label='label'
       labelPosition='left'
@@ -76,7 +76,7 @@ storiesOf('Input', module)
       placeholder='placeholder...'
     />
   ))
-  .add('Mnemonic Word', () => {
+  .add('Input | Mnemonic Word', () => {
     return (
       <Input
         wrapClass={text('wrapCLass', 'code red')}
@@ -87,4 +87,4 @@ storiesOf('Input', module)
       />
     );
   })
-  .add('Transfer Funds', () => <InputTransferFundsStory />);
+  .add('Input | Transfer Funds', () => <InputTransferFundsStory />);

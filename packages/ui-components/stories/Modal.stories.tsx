@@ -18,9 +18,12 @@ import {
   Transition,
 } from '../src';
 import { withTheme } from './customDecorators';
-import { NewMnemonicStory } from './MnemonicPhraseList.stories';
+import {
+  NewMnemonicStory,
+  RewriteMnemonicStory,
+} from './MnemonicPhraseList.stories';
 
-export const ModalNewAccountStory = (): JSX.Element => {
+export const ModalNewMnemonicStory = (): JSX.Element => {
   return (
     <Modal
       trigger={
@@ -57,11 +60,35 @@ export const ModalNewAccountStory = (): JSX.Element => {
     </Modal>
   );
 };
+export const ModalRewriteMnemonicStory = (): JSX.Element => {
+  return (
+    <Modal open>
+      <Modal.Header>Account Name</Modal.Header>
+      <Modal.Content>
+        <div className='w-100'>
+          Lorem Ipsum
+          <div className='mt3'>
+            <Menu borderless shadow={false} tabs size='tiny'>
+              <Menu.Item active>Rewrite Mnemonic</Menu.Item>
+            </Menu>
+          </div>
+          {/* TODO framed box with actions */}
+          <div className='ba pa4'>
+            <RewriteMnemonicStory />
+          </div>
+          <NavButton wrapClass='flex mt4 mb3 w-100 justify-around'>
+            Next
+          </NavButton>
+        </div>
+      </Modal.Content>
+    </Modal>
+  );
+};
 
 storiesOf('Modal', module)
   .addDecorator(withKnobs)
   .addDecorator(withTheme)
-  .add('Transition', () => (
+  .add('Modal | Transition', () => (
     <Container>
       <Transition animation='slide up' duration={500} transitionOnMount visible>
         <Modal dimmer open>
@@ -74,4 +101,5 @@ storiesOf('Modal', module)
       </Transition>
     </Container>
   ))
-  .add('New Account', () => <ModalNewAccountStory />);
+  .add('Modal | New Mnemonic', () => <ModalNewMnemonicStory />)
+  .add('Modal | Rewrite Mnemonic', () => <ModalRewriteMnemonicStory />);

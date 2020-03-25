@@ -10,13 +10,16 @@ import { MeasureApp, NavButton } from '../src';
 import { withTheme } from './customDecorators';
 import { InputTransferFundsStory } from './Input.stories';
 import { MenuTabsStory } from './Menu.stories';
-import { ModalNewAccountStory } from './Modal.stories';
+import {
+  ModalNewMnemonicStory,
+  ModalRewriteMnemonicStory,
+} from './Modal.stories';
 import { TableAccountsStory } from './TableAccounts.stories';
 import { TableTxSummaryStory } from './TableTxSummary.stories';
 import { TopBarStory } from './TopBar.stories';
 
 // TODO:
-// signal color
+// app mockup structure
 
 storiesOf('Apps/Lichen', module)
   .addDecorator(withKnobs)
@@ -28,7 +31,20 @@ storiesOf('Apps/Lichen', module)
       <MeasureApp className='flex-column'>
         <div className='flex items-center mb2'>
           <h2 className='inline-flex mr3 mb0'>Your Accounts </h2>
-          <ModalNewAccountStory />
+          <ModalNewMnemonicStory />
+        </div>
+        <TableAccountsStory />
+      </MeasureApp>
+    </>
+  ))
+  .add('Add Account / Create Account / Rewrite Mnemonic', () => (
+    <>
+      <MenuTabsStory />
+      <TopBarStory />
+      <MeasureApp className='flex-column'>
+        <div className='flex items-center mb2'>
+          <h2 className='inline-flex mr3 mb0'>Your Accounts </h2>
+          <ModalRewriteMnemonicStory />
         </div>
         <TableAccountsStory />
       </MeasureApp>

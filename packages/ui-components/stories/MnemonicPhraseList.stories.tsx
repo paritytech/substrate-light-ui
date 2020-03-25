@@ -6,21 +6,34 @@ import { text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 
-import { MnemonicPhraseList } from '../src';
+import { MnemonicPhraseList, MnemonicRewriteParts } from '../src';
 import { withTheme } from './customDecorators';
+
+// TODO: MnemonicRewriteParts Props
 
 const SAMPLE_PHRASE =
   'glass decrease speak taxi pencil spice carpet danger planet will cage park';
 
 export const NewMnemonicStory = (): JSX.Element => {
-  const SAMPLE_PHRASE =
-    'glass decrease speak taxi pencil spice carpet danger planet will cage park';
   return <MnemonicPhraseList phrase={text('mnemonic phrase', SAMPLE_PHRASE)} />;
 };
 
-storiesOf('Mnemonic Phrase List', module)
+export const RewriteMnemonicStory = (): JSX.Element => {
+  return (
+    <MnemonicRewriteParts
+      firstWord=''
+      secondWord=''
+      thirdWord=''
+      fourthWord=''
+      randomFourWords={[['1'], ['12'], ['3'], ['8']]}
+    />
+  );
+};
+
+storiesOf('Mnemonic', module)
   .addDecorator(withKnobs)
   .addDecorator(withTheme)
-  .add('Display', () => (
+  .add('MnemonicPhraseList', () => (
     <MnemonicPhraseList phrase={text('mnemonic phrase', SAMPLE_PHRASE)} />
-  ));
+  ))
+  .add('MnemonicRewriteParts', () => <RewriteMnemonicStory />);
