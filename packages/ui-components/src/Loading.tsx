@@ -10,7 +10,7 @@ import { Stacked } from './Shared.styles';
 
 interface LoadingProps extends React.HTMLAttributes<HTMLDivElement> {
   active: boolean;
-  inline: boolean;
+  inline?: boolean;
   loadingText?: string;
 }
 
