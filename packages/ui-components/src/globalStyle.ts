@@ -65,6 +65,9 @@ export const substrateLightTheme = {
 };
 
 export const polkadotOfficialTheme = {
+  typography: {
+    monospace: "'Roboto Mono' !important",
+  },
   black: '#1E1E1E',
   grey: '#B5AEAE',
   hotPink: '#E6007A',

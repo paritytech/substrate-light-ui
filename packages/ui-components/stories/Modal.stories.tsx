@@ -6,15 +6,17 @@ import { action } from '@storybook/addon-actions';
 import { withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
-import { Button } from 'semantic-ui-react';
+import { Button, Form } from 'semantic-ui-react';
 
 import {
   Container,
+  FramedBlock,
   Icon,
   Input,
   Menu,
   Modal,
   NavButton,
+  TextArea,
   Transition,
 } from '../src';
 import { withTheme } from './customDecorators';
@@ -48,10 +50,9 @@ export const ModalNewMnemonicStory = (): JSX.Element => {
             <Menu.Item active>12 words</Menu.Item>
             <Menu.Item>24 words</Menu.Item>
           </Menu>
-          {/* TODO framed box with actions */}
-          <div className='ba pa4'>
+          <FramedBlock>
             <NewMnemonicStory />
-          </div>
+          </FramedBlock>
           <NavButton wrapClass='flex mt4 mb3 w-100 justify-around'>
             Next
           </NavButton>
@@ -72,10 +73,32 @@ export const ModalRewriteMnemonicStory = (): JSX.Element => {
               <Menu.Item active>Rewrite Mnemonic</Menu.Item>
             </Menu>
           </div>
-          {/* TODO framed box with actions */}
-          <div className='ba pa4'>
+          <FramedBlock>
             <RewriteMnemonicStory />
+          </FramedBlock>
+          <NavButton wrapClass='flex mt4 mb3 w-100 justify-around'>
+            Next
+          </NavButton>
+        </div>
+      </Modal.Content>
+    </Modal>
+  );
+};
+export const ModalEnterMnemonicStory = (): JSX.Element => {
+  return (
+    <Modal open>
+      <Modal.Header>Add Account</Modal.Header>
+      <Modal.Content>
+        <div className='w-100'>
+          Lorem Ipsum
+          <div className='mt3'>
+            <Menu borderless shadow={false} tabs size='tiny'>
+              <Menu.Item active>Mnemonic</Menu.Item>
+            </Menu>
           </div>
+          <FramedBlock>
+            <TextArea signal placeholder='enter mnemonic' />
+          </FramedBlock>
           <NavButton wrapClass='flex mt4 mb3 w-100 justify-around'>
             Next
           </NavButton>
@@ -102,4 +125,5 @@ storiesOf('Modal', module)
     </Container>
   ))
   .add('Modal | New Mnemonic', () => <ModalNewMnemonicStory />)
-  .add('Modal | Rewrite Mnemonic', () => <ModalRewriteMnemonicStory />);
+  .add('Modal | Rewrite Mnemonic', () => <ModalRewriteMnemonicStory />)
+  .add('Modal | Enter Mnemonic', () => <ModalEnterMnemonicStory />);

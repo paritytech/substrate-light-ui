@@ -11,6 +11,7 @@ import { withTheme } from './customDecorators';
 import { InputTransferFundsStory } from './Input.stories';
 import { MenuTabsStory } from './Menu.stories';
 import {
+  ModalEnterMnemonicStory,
   ModalNewMnemonicStory,
   ModalRewriteMnemonicStory,
 } from './Modal.stories';
@@ -46,7 +47,7 @@ storiesOf('Apps/Lichen', module)
   .addDecorator(withKnobs)
   .addDecorator(withTheme)
   .addDecorator(withAppMenuAccounts)
-  .add('1 – Loading', () => <></>)
+  .add('1 – Loading', () => <></>);
 
 storiesOf('Apps/Lichen/2 – Accounts', module)
   .addDecorator(withKnobs)
@@ -85,7 +86,7 @@ storiesOf('Apps/Lichen/3 - Add Account', module)
     </>
   ))
   .add('3.1.2.1 – with JSON', () => <></>)
-  .add('3.1.3.1 – with Mnemonic', () => <></>)
+  .add('3.1.3.1 – with Mnemonic', () => <ModalEnterMnemonicStory />)
   .add('3.1.3.1 – with Signer', () => <></>)
   .add('3.2 – password and tags', () => <></>);
 

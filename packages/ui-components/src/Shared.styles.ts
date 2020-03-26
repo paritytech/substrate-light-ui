@@ -249,6 +249,12 @@ export const WrapperDiv = styled.div<WrapperDivProps>`
   height: ${(props): string => props.height || '100%'};
 `;
 
+/* TODO compomnent with actions */
+export const FramedBlock = styled.div`
+  padding: 2rem;
+  border-style: solid;
+  border-width: 1px;
+`;
 export const BlackBlock = styled.div`
   background-color: ${polkadotOfficialTheme.black};
   color: ${polkadotOfficialTheme.white};
