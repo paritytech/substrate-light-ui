@@ -18,49 +18,86 @@ import { TableAccountsStory } from './TableAccounts.stories';
 import { TableTxSummaryStory } from './TableTxSummary.stories';
 import { TopBarStory } from './TopBar.stories';
 
-// TODO:
-// app mockup structure
-
-storiesOf('Apps/Lichen', module)
-  .addDecorator(withKnobs)
-  .addDecorator(withTheme)
-  .add('Accounts', () => (
+export const withAppMenuAccounts = (
+  storyFn: () => React.ReactElement
+): React.ReactElement => {
+  return (
     <>
       <MenuTabsStory />
       <TopBarStory />
-      <MeasureApp className='flex-column'>
-        <div className='flex items-center mb2'>
-          <h2 className='inline-flex mr3 mb0'>Your Accounts </h2>
-          <ModalNewMnemonicStory />
-        </div>
-        <TableAccountsStory />
-      </MeasureApp>
+      <MeasureApp className='flex-column'>{storyFn()}</MeasureApp>
     </>
-  ))
-  .add('Add Account / Create Account / Rewrite Mnemonic', () => (
-    <>
-      <MenuTabsStory />
-      <TopBarStory />
-      <MeasureApp className='flex-column'>
-        <div className='flex items-center mb2'>
-          <h2 className='inline-flex mr3 mb0'>Your Accounts </h2>
-          <ModalRewriteMnemonicStory />
-        </div>
-        <TableAccountsStory />
-      </MeasureApp>
-    </>
-  ))
-  .add('Send Funds', () => (
+  );
+};
+export const withAppMenuSend = (
+  storyFn: () => React.ReactElement
+): React.ReactElement => {
+  return (
     <>
       <MenuTabsStory activeItem='Send Funds' />
       <TopBarStory />
-      <MeasureApp>
-        <div className='flex items-center mb2'>
-          <h2 className='inline-flex mr3 mb0'>Send Funds</h2>
-        </div>
-      </MeasureApp>
-      <MeasureApp>
-        <div className='flex-column w-100'>
+      <MeasureApp className='flex-column'>{storyFn()}</MeasureApp>
+    </>
+  );
+};
+
+// TODO:
+storiesOf('Apps/Lichen', module)
+  .addDecorator(withKnobs)
+  .addDecorator(withTheme)
+  .addDecorator(withAppMenuAccounts)
+  .add('1 – Loading', () => <></>)
+
+storiesOf('Apps/Lichen/2 – Accounts', module)
+  .addDecorator(withKnobs)
+  .addDecorator(withTheme)
+  .addDecorator(withAppMenuAccounts)
+  .add('2.0 – Accounts (Empty)', () => (
+    <>
+      <div className='flex items-center mb2'>
+        <h2 className='inline-flex mr3 mb0'>Your Accounts </h2>
+        <ModalNewMnemonicStory />
+      </div>
+      {/* TODO: Illustation empty state */}
+    </>
+  ))
+  .add('2.1 – Accounts', () => (
+    <>
+      <div className='flex items-center mb2'>
+        <h2 className='inline-flex mr3 mb0'>Your Accounts </h2>
+        <ModalNewMnemonicStory />
+      </div>
+      <TableAccountsStory />
+    </>
+  ));
+
+storiesOf('Apps/Lichen/3 - Add Account', module)
+  .addDecorator(withKnobs)
+  .addDecorator(withTheme)
+  .addDecorator(withAppMenuAccounts)
+  .add('3.1.1.1 – New Mnemonic', () => <ModalNewMnemonicStory />)
+  .add('3.1.1.2 – Rewrite Mnemonic', () => (
+    <>
+      <div className='flex items-center mb2'>
+        <h2 className='inline-flex mr3 mb0'>Your Accounts </h2>
+        <ModalRewriteMnemonicStory />
+      </div>
+    </>
+  ))
+  .add('3.1.2.1 – with JSON', () => <></>)
+  .add('3.1.3.1 – with Mnemonic', () => <></>)
+  .add('3.1.3.1 – with Signer', () => <></>)
+  .add('3.2 – password and tags', () => <></>);
+
+storiesOf('Apps/Lichen/4 – Send Funds', module)
+  .addDecorator(withKnobs)
+  .addDecorator(withTheme)
+  .addDecorator(withAppMenuSend)
+  .add('4.1 – Form (Empty)', () => (
+    <>
+      <div className='flex'>
+        <div className='w-100'>
+          <h2 className='mb2'>Send Funds</h2>
           <InputTransferFundsStory />
         </div>
         <div className='w-60 pl5'>
@@ -69,6 +106,7 @@ storiesOf('Apps/Lichen', module)
             Submit Transaction
           </NavButton>
         </div>
-      </MeasureApp>
+      </div>
     </>
-  ));
+  ))
+  .add('4.2 – Form (Filled)', () => <></>);
