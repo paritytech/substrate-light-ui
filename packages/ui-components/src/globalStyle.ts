@@ -69,6 +69,7 @@ export const polkadotOfficialTheme = {
     monospace: "'Roboto Mono' !important",
   },
   black: '#1E1E1E',
+  green: '#79F676',
   shadow: 'rgba(210, 210, 210, 0.6)',
   grey: '#B5AEAE',
   hotPink: '#E6007A',

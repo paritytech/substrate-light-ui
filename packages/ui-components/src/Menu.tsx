@@ -62,7 +62,7 @@ const StyledMenu = styled<typeof SUIMenu>(SUIMenu)`
 `;
 
 export function Menu(props: MenuProps): React.ReactElement {
-  const { shadow = true, wrapClass, ...rest } = props;
+  const { shadow = true, wrapClass = 'w-100', ...rest } = props;
   return (
     <div className={wrapClass}>
       <StyledMenu shadow={shadow} {...rest} />

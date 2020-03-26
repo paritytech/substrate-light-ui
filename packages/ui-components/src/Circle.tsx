@@ -5,8 +5,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { polkadotOfficialTheme } from './globalStyle';
-
 interface CircleProps {
   fill: string;
   label?: string;
@@ -21,11 +19,6 @@ export function Circle(props: CircleProps): React.ReactElement {
     height: ${radius}px;
     width: ${radius}px;
     background-color: ${fill};
-    background-image: ${`linear-gradient(
-      107deg,
-      ${polkadotOfficialTheme.lightBlue1},
-      ${polkadotOfficialTheme.neonBlue}
-    )`};
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -33,7 +26,7 @@ export function Circle(props: CircleProps): React.ReactElement {
     text-align: center;
     vertical-align: center;
     box-shadow: ${withShadow &&
-    '0 6px 6px 0 rgba(0, 0, 0, 0.24), 0 0 6px 0 rgba(0, 0, 0, 0.12)'};
+      '0 6px 6px 0 rgba(0, 0, 0, 0.24), 0 0 6px 0 rgba(0, 0, 0, 0.12)'};
   `;
 
   const WhiteText = styled.p`

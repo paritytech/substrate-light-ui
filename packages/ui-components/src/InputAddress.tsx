@@ -182,7 +182,7 @@ export function InputAddress(props: InputAddressProps): React.ReactElement {
 
   return (
     <div className={wrapClass}>
-      {textLabel && <label className='flex fw5 f6'>{textLabel}</label>}
+      {textLabel && <label>{textLabel}</label>}
       <DropdownWrapper>
         <Dropdown
           fluid

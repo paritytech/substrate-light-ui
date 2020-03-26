@@ -14,6 +14,7 @@ import {
   Margin,
   MeasureApp,
   Menu,
+  polkadotOfficialTheme,
 } from '../src';
 import { withTheme } from './customDecorators';
 
@@ -53,7 +54,7 @@ export const TopBarStory = (): React.ReactElement => {
   function NetworkStatus(): React.ReactElement {
     return (
       <div className='flex items-center justify-between truncate ph3 w-100'>
-        <Circle fill={'#79c879'} radius={10} />
+        <Circle fill={polkadotOfficialTheme.green} radius={10} />
         <Margin left='small' />
         <span className='mh1 truncate code'>NETWORK</span>
         <span className='db-l dn f7 silver truncate'>Block #143873821739</span>
