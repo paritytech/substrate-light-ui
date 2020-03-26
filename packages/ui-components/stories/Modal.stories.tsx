@@ -91,13 +91,19 @@ export const ModalEnterMnemonicStory = (): JSX.Element => {
       <Modal.Content>
         <div className='w-100'>
           Lorem Ipsum
+          <Menu borderless shadow={false} text size='large'>
+            <Menu.Item>Create New</Menu.Item>
+            <Menu.Item>JSON</Menu.Item>
+            <Menu.Item>Signer</Menu.Item>
+            <Menu.Item active>Mnemonic</Menu.Item>
+          </Menu>
           <div className='mt3'>
             <Menu borderless shadow={false} tabs size='tiny'>
-              <Menu.Item active>Mnemonic</Menu.Item>
+              <Menu.Item active>Your Mnemonic</Menu.Item>
             </Menu>
           </div>
           <FramedBlock>
-            <TextArea signal placeholder='enter mnemonic' />
+            <TextArea signal />
           </FramedBlock>
           <NavButton wrapClass='flex mt4 mb3 w-100 justify-around'>
             Next

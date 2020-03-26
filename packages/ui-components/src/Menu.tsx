@@ -53,6 +53,9 @@ const StyledMenu = styled<typeof SUIMenu>(SUIMenu)`
     .item {
       ${(props): string => (props.tabs ? StyleTab.item : '')};
     }
+    &.text .item.active {
+      color: ${polkadotOfficialTheme.signal};
+    }
   }
   box-shadow: 0 0 0 ${polkadotOfficialTheme.white};
 `;
