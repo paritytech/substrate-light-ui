@@ -17,6 +17,7 @@ import {
   Menu,
   Modal,
   NavButton,
+  StackedHorizontal,
   TextArea,
   Transition,
 } from '../src';
@@ -29,6 +30,7 @@ import {
 export const ModalNewMnemonicStory = (): JSX.Element => {
   return (
     <Modal
+      open
       trigger={
         <Button basic icon labelPosition='right'>
           <Icon name='plus' />
@@ -38,25 +40,23 @@ export const ModalNewMnemonicStory = (): JSX.Element => {
     >
       <Modal.Header>Add Account</Modal.Header>
       <Modal.Content>
-        <div className='w-100'>
-          <Input fluid textLabel='Name' onChange={action('typed')} />
-          <Menu borderless shadow={false} text size='large'>
-            <Menu.Item active>Create New</Menu.Item>
-            <Menu.Item>JSON</Menu.Item>
-            <Menu.Item>Mnemonic</Menu.Item>
-          </Menu>
+        <Input fluid textLabel='Name' onChange={action('typed')} />
+        <Menu borderless shadow={false} text size='large'>
+          <Menu.Item active>Create New</Menu.Item>
+          <Menu.Item>JSON</Menu.Item>
+          <Menu.Item>Mnemonic</Menu.Item>
+        </Menu>
 
-          <Menu borderless shadow={false} tabs size='tiny'>
-            <Menu.Item active>12 words</Menu.Item>
-            <Menu.Item>24 words</Menu.Item>
-          </Menu>
-          <FramedBlock>
-            <NewMnemonicStory />
-          </FramedBlock>
-          <NavButton wrapClass='flex mt4 mb3 w-100 justify-around'>
-            Next
-          </NavButton>
-        </div>
+        <Menu borderless shadow={false} tabs size='tiny'>
+          <Menu.Item active>12 words</Menu.Item>
+          <Menu.Item>24 words</Menu.Item>
+        </Menu>
+        <FramedBlock>
+          <NewMnemonicStory />
+        </FramedBlock>
+        <NavButton wrapClass='flex mt4 mb3 w-100 justify-around'>
+          Next
+        </NavButton>
       </Modal.Content>
     </Modal>
   );
@@ -66,20 +66,18 @@ export const ModalRewriteMnemonicStory = (): JSX.Element => {
     <Modal open>
       <Modal.Header>Account Name</Modal.Header>
       <Modal.Content>
-        <div className='w-100'>
-          Lorem Ipsum
-          <div className='mt3'>
-            <Menu borderless shadow={false} tabs size='tiny'>
-              <Menu.Item active>Rewrite Mnemonic</Menu.Item>
-            </Menu>
-          </div>
-          <FramedBlock>
-            <RewriteMnemonicStory />
-          </FramedBlock>
-          <NavButton wrapClass='flex mt4 mb3 w-100 justify-around'>
-            Next
-          </NavButton>
-        </div>
+        Lorem Ipsum
+        <Menu wrapClass='mt3' borderless shadow={false} tabs size='tiny'>
+          <Menu.Item active>Rewrite Mnemonic</Menu.Item>
+        </Menu>
+        <FramedBlock>
+          <RewriteMnemonicStory />
+        </FramedBlock>
+        <StackedHorizontal className='mt4 justify-between'>
+          <NavButton negative>Back</NavButton>
+          <NavButton>Next</NavButton>
+          <NavButton wrapClass='o-0'>Back</NavButton>
+        </StackedHorizontal>
       </Modal.Content>
     </Modal>
   );
@@ -89,25 +87,23 @@ export const ModalEnterMnemonicStory = (): JSX.Element => {
     <Modal open>
       <Modal.Header>Add Account</Modal.Header>
       <Modal.Content>
-        <div className='w-100'>
-          Lorem Ipsum
-          <Menu borderless shadow={false} text size='large'>
-            <Menu.Item>Create New</Menu.Item>
-            <Menu.Item>JSON</Menu.Item>
-            <Menu.Item active>Mnemonic</Menu.Item>
+        Lorem Ipsum
+        <Menu borderless shadow={false} text size='large'>
+          <Menu.Item>Create New</Menu.Item>
+          <Menu.Item>JSON</Menu.Item>
+          <Menu.Item active>Mnemonic</Menu.Item>
+        </Menu>
+        <div>
+          <Menu wrapClass='mt3' borderless shadow={false} tabs size='tiny'>
+            <Menu.Item active>Your Mnemonic</Menu.Item>
           </Menu>
-          <div className='mt3'>
-            <Menu borderless shadow={false} tabs size='tiny'>
-              <Menu.Item active>Your Mnemonic</Menu.Item>
-            </Menu>
-          </div>
-          <FramedBlock>
-            <TextArea signal />
-          </FramedBlock>
-          <NavButton wrapClass='flex mt4 mb3 w-100 justify-around'>
-            Next
-          </NavButton>
         </div>
+        <FramedBlock>
+          <TextArea signal />
+        </FramedBlock>
+        <NavButton wrapClass='flex mt4 mb3 w-100 justify-around'>
+          Next
+        </NavButton>
       </Modal.Content>
     </Modal>
   );
@@ -117,25 +113,21 @@ export const ModalEnterJsonStory = (): JSX.Element => {
     <Modal open>
       <Modal.Header>Add Account</Modal.Header>
       <Modal.Content>
-        <div className='w-100'>
-          Lorem Ipsum
-          <Menu borderless shadow={false} text size='large'>
-            <Menu.Item>Create New</Menu.Item>
-            <Menu.Item active>JSON</Menu.Item>
-            <Menu.Item>Mnemonic</Menu.Item>
-          </Menu>
-          <div className='mt3'>
-            <Menu borderless shadow={false} tabs size='tiny'>
-              <Menu.Item active>JSON File</Menu.Item>
-            </Menu>
-          </div>
-          <FramedBlock>
-            <InputFile />
-          </FramedBlock>
-          <NavButton wrapClass='flex mt4 mb3 w-100 justify-around'>
-            Next
-          </NavButton>
-        </div>
+        Lorem Ipsum
+        <Menu borderless shadow={false} text size='large'>
+          <Menu.Item>Create New</Menu.Item>
+          <Menu.Item active>JSON</Menu.Item>
+          <Menu.Item>Mnemonic</Menu.Item>
+        </Menu>
+        <Menu wrapClass='mt3' borderless shadow={false} tabs size='tiny'>
+          <Menu.Item active>JSON File</Menu.Item>
+        </Menu>
+        <FramedBlock>
+          <InputFile />
+        </FramedBlock>
+        <NavButton wrapClass='flex mt4 mb3 w-100 justify-around'>
+          Next
+        </NavButton>
       </Modal.Content>
     </Modal>
   );

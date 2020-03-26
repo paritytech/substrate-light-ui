@@ -199,7 +199,7 @@ export const VoteYayButton = styled.button`
 `;
 
 export const Stacked = styled.div<StackProps>`
-  align-items: ${(props): string => props.alignItems || 'center'};
+  align-items: ${(props): string => props.alignItems || ''};
   display: flex;
   flex-direction: column;
   justify-content: ${(props): string => props.justifyContent || 'center'};
@@ -209,7 +209,7 @@ export const StackedHorizontal = styled.div<StackProps>`
   align-items: ${(props): string => props.alignItems || 'center'};
   display: flex;
   flex-direction: row;
-  justify-content: ${(props): string => props.justifyContent || 'center'};
+  justify-content: ${(props): string => props.justifyContent || ''};
 `;
 
 export const SubHeader = styled.h3<SubHeaderProps>`

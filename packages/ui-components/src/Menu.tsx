@@ -14,6 +14,7 @@ import { polkadotOfficialTheme } from './globalStyle';
 interface MenuProps extends SUIMenuProps {
   tabs?: boolean;
   shadow?: boolean;
+  wrapClass?: string;
 }
 
 const StyleTab = {
@@ -61,8 +62,12 @@ const StyledMenu = styled<typeof SUIMenu>(SUIMenu)`
 `;
 
 export function Menu(props: MenuProps): React.ReactElement {
-  const { shadow = true, ...rest } = props;
-  return <StyledMenu shadow={shadow} {...rest} />;
+  const { shadow = true, wrapClass, ...rest } = props;
+  return (
+    <div className={wrapClass}>
+      <StyledMenu shadow={shadow} {...rest} />
+    </div>
+  );
 }
 
 Menu.Divider = SUIDivider;

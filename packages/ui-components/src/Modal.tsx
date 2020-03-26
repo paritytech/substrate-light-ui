@@ -25,10 +25,6 @@ const StyledModal = styled(SUIModal)`
 
 const StyledContent = styled(SUIModal.Content)`
   &&& {
-    display: flex;
-    align-items: ${(props): string => props.alignItems || 'center'};
-    justify-content: ${(props): string => props.justifyContent || 'center'};
-    min-width: 100%;
     padding-top: 1rem;
   }
 `;
