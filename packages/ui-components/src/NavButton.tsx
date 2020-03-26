@@ -4,17 +4,14 @@
 
 import React from 'react';
 
-import {
-  ButtonShadow,
-  DynamicSizeText,
-  StyledNavButton,
-} from './Shared.styles';
+import { DynamicSizeText, StyledNavButton } from './Shared.styles';
 import { StyledNavButtonProps } from './StyleProps';
 import { FontSize } from './types';
 
 interface NavButtonProps extends StyledNavButtonProps {
   fontSize?: FontSize;
   fontWeight?: string;
+  text?: boolean;
   value?: string;
   wrapClass?: string;
 }
@@ -23,7 +20,7 @@ export function NavButton(props: NavButtonProps): React.ReactElement {
   const {
     children,
     fontSize = 'large',
-    fontWeight = '300',
+    fontWeight = '400',
     value,
     wrapClass,
     ...rest
@@ -35,7 +32,6 @@ export function NavButton(props: NavButtonProps): React.ReactElement {
         <DynamicSizeText fontSize={fontSize} fontWeight={fontWeight}>
           {value || children}
         </DynamicSizeText>
-        <ButtonShadow />
       </StyledNavButton>
     </div>
   );

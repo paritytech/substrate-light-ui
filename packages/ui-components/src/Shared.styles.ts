@@ -136,24 +136,6 @@ export const StyledLinkButton = styled.button`
   }
 `;
 
-export const ButtonShadow = styled.div`
-  position: absolute;
-  z-index: -1;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  transform: translateY(50%);
-  width: calc(100% - 24px);
-  height: 50%;
-  margin: auto;
-  border-radius: 9999px;
-  background-color: ${polkadotOfficialTheme.signal};
-  filter: blur(10px);
-  opacity: 0.4;
-  transform: translateY(0%);
-  transition: filter 0.3s, transform 0.3s;
-`;
-
 export const StyledNavButton = styled.button<StyledNavButtonProps>`
   position: relative;
   background-color: ${polkadotOfficialTheme.signal};
@@ -165,15 +147,16 @@ export const StyledNavButton = styled.button<StyledNavButtonProps>`
   outline: none;
   transition: background-color 0.3s;
 
+  ${(props): string =>
+    props.negative
+      ? `
+      background-color: ${polkadotOfficialTheme.white};
+      color: ${polkadotOfficialTheme.signal}`
+      : ''};
+
   :hover {
     opacity: 0.9;
-
     cursor: ${(props): string => (props.disabled ? 'not-allowed' : 'pointer')};
-
-    ${ButtonShadow} {
-      filter: blur(8px);
-      transform: translateY(40%);
-    }
   }
 `;
 

@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { action } from '@storybook/addon-actions';
-import { select, text, withKnobs } from '@storybook/addon-knobs';
+import { boolean, select, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 
@@ -21,6 +21,7 @@ storiesOf('Button', module)
       fontSize={select('font size', FONT_SIZES, 'large') as FontSize}
       fontWeight={text('font weight', '500')}
       onClick={action('clicked')}
+      negative={boolean('negative', false)}
     >
       {text('children', 'Click Me!')}
     </NavButton>
