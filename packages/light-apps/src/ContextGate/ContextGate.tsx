@@ -13,12 +13,17 @@ import React from 'react';
 
 import { TopBar } from '../TopBar';
 import {
+  AccountContextProvider,
   ExtensionContextProvider,
-  KeyringContextProvider,
   ProviderContext,
   ProviderContextProvider,
 } from './context';
 import { ApiGate, HealthGate, KeyringGate, SystemGate } from './gates';
+
+/**
+ * Unique ID to identify our own extension
+ */
+const EXTENSION_ORIGIN_NAME = 'slui';
 
 export function ContextGate(props: {
   children: React.ReactElement;
@@ -26,7 +31,7 @@ export function ContextGate(props: {
   const { children } = props;
 
   return (
-    <ExtensionContextProvider originName='slui'>
+    <ExtensionContextProvider originName={EXTENSION_ORIGIN_NAME}>
       <ProviderContextProvider>
         <ProviderContext.Consumer>
           {({ provider }): React.ReactElement | null =>
@@ -35,7 +40,7 @@ export function ContextGate(props: {
                 <>
                   <TopBar />
                   <SystemGate>
-                    <KeyringContextProvider>
+                    <AccountContextProvider originName={EXTENSION_ORIGIN_NAME}>
                       <KeyringGate>
                         <HealthContextProvider provider={provider}>
                           <HealthGate>
@@ -51,7 +56,7 @@ export function ContextGate(props: {
                           </HealthGate>
                         </HealthContextProvider>
                       </KeyringGate>
-                    </KeyringContextProvider>
+                    </AccountContextProvider>
                   </SystemGate>
                 </>
               </SystemContextProvider>

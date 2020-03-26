@@ -31,7 +31,7 @@ export function ExtensionContextProvider(
       const extensions = await web3Enable(originName);
 
       if (!extensions.length) {
-        throw new Error('No extension found. Please install SLUI extension.');
+        return;
       }
 
       const providerList = await web3ListRpcProviders(originName);
