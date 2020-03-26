@@ -66,7 +66,7 @@ const StyledTable = styled<typeof SUITable>(SUITable)`
         transition: box-shadow 0.2s;
       }
       tbody tr:not(.rowTotal):hover {
-        box-shadow: 0 -8px 12px rgba(210, 210, 210, 0.6);
+        box-shadow: 0 -8px 12px ${polkadotOfficialTheme.shadow};
       }
       tbody tr td:last-child {
         opacity: 0.4;

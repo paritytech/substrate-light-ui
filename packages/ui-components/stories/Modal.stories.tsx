@@ -30,7 +30,6 @@ import {
 export const ModalNewMnemonicStory = (): JSX.Element => {
   return (
     <Modal
-      open
       trigger={
         <Button basic icon labelPosition='right'>
           <Icon name='plus' />

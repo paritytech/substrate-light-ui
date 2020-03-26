@@ -8,6 +8,7 @@ import React from 'react';
 
 import { MeasureApp, NavButton } from '../src';
 import { withTheme } from './customDecorators';
+import { FabStory } from './Fab.stories';
 import { InputTransferFundsStory } from './Input.stories';
 import { MenuTabsStory } from './Menu.stories';
 import {
@@ -27,6 +28,7 @@ export const withAppMenuAccounts = (
     <>
       <MenuTabsStory />
       <TopBarStory />
+      <FabStory />
       <MeasureApp className='flex-column'>{storyFn()}</MeasureApp>
     </>
   );
