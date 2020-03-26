@@ -6,13 +6,14 @@ import { action } from '@storybook/addon-actions';
 import { withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
-import { Button, Form } from 'semantic-ui-react';
+import { Button } from 'semantic-ui-react';
 
 import {
   Container,
   FramedBlock,
   Icon,
   Input,
+  InputFile,
   Menu,
   Modal,
   NavButton,
@@ -42,7 +43,6 @@ export const ModalNewMnemonicStory = (): JSX.Element => {
           <Menu borderless shadow={false} text size='large'>
             <Menu.Item active>Create New</Menu.Item>
             <Menu.Item>JSON</Menu.Item>
-            <Menu.Item>Signer</Menu.Item>
             <Menu.Item>Mnemonic</Menu.Item>
           </Menu>
 
@@ -94,7 +94,6 @@ export const ModalEnterMnemonicStory = (): JSX.Element => {
           <Menu borderless shadow={false} text size='large'>
             <Menu.Item>Create New</Menu.Item>
             <Menu.Item>JSON</Menu.Item>
-            <Menu.Item>Signer</Menu.Item>
             <Menu.Item active>Mnemonic</Menu.Item>
           </Menu>
           <div className='mt3'>
@@ -104,6 +103,34 @@ export const ModalEnterMnemonicStory = (): JSX.Element => {
           </div>
           <FramedBlock>
             <TextArea signal />
+          </FramedBlock>
+          <NavButton wrapClass='flex mt4 mb3 w-100 justify-around'>
+            Next
+          </NavButton>
+        </div>
+      </Modal.Content>
+    </Modal>
+  );
+};
+export const ModalEnterJsonStory = (): JSX.Element => {
+  return (
+    <Modal open>
+      <Modal.Header>Add Account</Modal.Header>
+      <Modal.Content>
+        <div className='w-100'>
+          Lorem Ipsum
+          <Menu borderless shadow={false} text size='large'>
+            <Menu.Item>Create New</Menu.Item>
+            <Menu.Item active>JSON</Menu.Item>
+            <Menu.Item>Mnemonic</Menu.Item>
+          </Menu>
+          <div className='mt3'>
+            <Menu borderless shadow={false} tabs size='tiny'>
+              <Menu.Item active>JSON File</Menu.Item>
+            </Menu>
+          </div>
+          <FramedBlock>
+            <InputFile />
           </FramedBlock>
           <NavButton wrapClass='flex mt4 mb3 w-100 justify-around'>
             Next
@@ -132,4 +159,5 @@ storiesOf('Modal', module)
   ))
   .add('Modal | New Mnemonic', () => <ModalNewMnemonicStory />)
   .add('Modal | Rewrite Mnemonic', () => <ModalRewriteMnemonicStory />)
-  .add('Modal | Enter Mnemonic', () => <ModalEnterMnemonicStory />);
+  .add('Modal | Enter Mnemonic', () => <ModalEnterMnemonicStory />)
+  .add('Modal | Enter JSON', () => <ModalEnterJsonStory />);

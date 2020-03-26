@@ -11,6 +11,7 @@ import { withTheme } from './customDecorators';
 import { InputTransferFundsStory } from './Input.stories';
 import { MenuTabsStory } from './Menu.stories';
 import {
+  ModalEnterJsonStory,
   ModalEnterMnemonicStory,
   ModalNewMnemonicStory,
   ModalRewriteMnemonicStory,
@@ -77,17 +78,11 @@ storiesOf('Apps/Lichen/3 - Add Account', module)
   .addDecorator(withTheme)
   .addDecorator(withAppMenuAccounts)
   .add('3.1.1.1 – New Mnemonic', () => <ModalNewMnemonicStory />)
-  .add('3.1.1.2 – Rewrite Mnemonic', () => (
-    <>
-      <div className='flex items-center mb2'>
-        <h2 className='inline-flex mr3 mb0'>Your Accounts </h2>
-        <ModalRewriteMnemonicStory />
-      </div>
-    </>
-  ))
-  .add('3.1.2.1 – with JSON', () => <></>)
+  .add('3.1.1.2 – Rewrite Mnemonic', () => <ModalRewriteMnemonicStory />)
+  .add('3.1.2.1 – with JSON', () => <ModalEnterJsonStory />)
   .add('3.1.3.1 – with Mnemonic', () => <ModalEnterMnemonicStory />)
-  .add('3.1.3.1 – with Signer', () => <></>)
+  // TODO
+  //.add('3.1.3.1 – with Signer', () => <></>)
   .add('3.2 – password and tags', () => <></>);
 
 storiesOf('Apps/Lichen/4 – Send Funds', module)
