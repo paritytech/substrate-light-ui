@@ -26,8 +26,7 @@ export function TextArea(props: TextAreaProps): React.ReactElement {
       border: none;
       padding: 0;
       ${signal &&
-        `
-        font-weight: 400;
+        `font-weight: 400;
         font-family: ${polkadotOfficialTheme.typography.monospace};
         color: ${polkadotOfficialTheme.signal} !important;
       `}
