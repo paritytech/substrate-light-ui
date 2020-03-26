@@ -13,7 +13,11 @@ import { withTheme } from './customDecorators';
 
 const SAMPLE_PHRASE =
   'glass decrease speak taxi pencil spice carpet danger planet will cage park';
-
+const SAMPLE_HANDLE_WORD = ({
+  target: { value },
+}: React.ChangeEvent<HTMLInputElement>): void => {
+  console.log(value);
+};
 export const NewMnemonicStory = (): JSX.Element => {
   return <MnemonicPhraseList phrase={text('mnemonic phrase', SAMPLE_PHRASE)} />;
 };
@@ -26,6 +30,10 @@ export const RewriteMnemonicStory = (): JSX.Element => {
       thirdWord=''
       fourthWord=''
       randomFourWords={[['1'], ['12'], ['3'], ['8']]}
+      handleSetFirstWord={SAMPLE_HANDLE_WORD}
+      handleSetSecondWord={SAMPLE_HANDLE_WORD}
+      handleSetThirdWord={SAMPLE_HANDLE_WORD}
+      handleSetFourthWord={SAMPLE_HANDLE_WORD}
     />
   );
 };
