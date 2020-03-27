@@ -10,10 +10,11 @@ interface CircleProps {
   label?: string;
   radius?: number;
   withShadow?: boolean;
+  wrapClass?: string;
 }
 
 export function Circle(props: CircleProps): React.ReactElement {
-  const { fill, label, radius = 20, withShadow = false } = props;
+  const { fill, label, radius = 20, withShadow = false, wrapClass } = props;
 
   const StyledCircle = styled.span`
     height: ${radius}px;
@@ -34,8 +35,10 @@ export function Circle(props: CircleProps): React.ReactElement {
   `;
 
   return (
-    <StyledCircle>
-      <WhiteText>{label}</WhiteText>
-    </StyledCircle>
+    <div className={wrapClass}>
+      <StyledCircle>
+        <WhiteText>{label}</WhiteText>
+      </StyledCircle>
+    </div>
   );
 }

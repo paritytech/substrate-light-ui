@@ -215,7 +215,7 @@ export const StackedHorizontal = styled.div<StackProps>`
   flex-direction: row;
   justify-content: ${(props): string => props.justifyContent || ''};
 
-  @media (max-width: ${(props): number | string => props.wrapAt || '99999'}em) {
+  @media (max-width: ${(props): number | string => props.wrapAt || '0'}em) {
     flex-wrap: wrap;
   }
 `;

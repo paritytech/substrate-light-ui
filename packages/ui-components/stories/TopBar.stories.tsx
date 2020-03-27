@@ -11,10 +11,10 @@ import {
   Circle,
   ConnectedNodes,
   Dropdown,
-  Margin,
   MeasureApp,
   Menu,
   polkadotOfficialTheme,
+  StackedHorizontal,
 } from '../src';
 import { withTheme } from './customDecorators';
 
@@ -53,16 +53,22 @@ export const TopBarStory = (): React.ReactElement => {
   }
   function NetworkStatus(): React.ReactElement {
     return (
-      <div className='flex items-center justify-between truncate ph3 w-100'>
-        <Circle fill={polkadotOfficialTheme.green} radius={10} />
-        <Margin left='small' />
-        <span className='mh1 truncate code'>NETWORK</span>
-        <span className='db-l dn f7 silver truncate'>Block #143873821739</span>
-      </div>
+      <StackedHorizontal className='justify-between ph3 w-100'>
+        <Circle
+          wrapClass='w-20'
+          fill={polkadotOfficialTheme.green}
+          radius={10}
+        />
+        <span className='mh2 code truncate'>NETWORK</span>
+        <span className='dn db-l w-30 truncate f7 silver'>
+          Block #143873821739
+        </span>
+      </StackedHorizontal>
     );
   }
   function RenderLogo(): React.ReactElement {
-    return <div className='w-50'>Lichen</div>;
+    // TODO logo graphics in ConnectedNode / not
+    return <div className='w-50 mr3'>Lichen</div>;
   }
 
   return (
@@ -86,7 +92,7 @@ export const TopBarStory = (): React.ReactElement => {
   );
 };
 
-storiesOf('Compaunds/TopBar', module)
+storiesOf('ConnectedNodes/TopBar', module)
   .addDecorator(withKnobs)
   .addDecorator(withTheme)
   .add('providerHealth', () => <TopBarStory />);

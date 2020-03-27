@@ -34,6 +34,7 @@ export interface StyledNavButtonProps
   negative?: boolean;
 }
 
+// TODO: tachyon class vs props pattern
 export interface StackProps {
   alignItems?: FlexAlign;
   justifyContent?: FlexJustify;
