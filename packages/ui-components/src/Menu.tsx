@@ -48,7 +48,8 @@ const StyledMenu = styled<typeof SUIMenu>(SUIMenu)`
   &&& {
     ${(props): string => (props.tabs ? StyleTab.menu : '')};
     ${(props): string => (props.shadow ? StyleTab.shadow : 'box-shadow: none')};
-    &.medium .item {
+    &.large .item {
+      font-size: 1rem;
       height: 48px;
     }
     .item {
