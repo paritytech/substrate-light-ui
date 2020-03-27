@@ -13,32 +13,7 @@ import {
 } from '../../ContextGate/context';
 
 const TopDropdown = styled(Dropdown)`
-  &&& {
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  &&& > .text {
-    max-width: 30vw;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  &&& .menu {
-    width: calc(100% + 2rem + 4px);
-    left: calc(-1rem - 2px);
-    border: 1px solid #1e1e1e;
-    top: calc(100% + 0.5rem + 1px);
-    background: #1e1e1e;
-    .item {
-      color: white;
-      transition: background-color 0.1s;
-      &:hover {
-        background-color: #333333;
-      }
-    }
-  }
+  z-index: 1000;
 `;
 
 /**
@@ -80,13 +55,11 @@ export function ChooseProvider(): React.ReactElement {
       ): void => {
         setLazyProvider(allProviders[value as string]);
       }}
-      options={Object.values(allProviders).map(lazy => {
-        return {
-          key: lazy.id,
-          text: `${lazy.network} (${lazy.description})`,
-          value: lazy.id,
-        };
-      })}
+      options={Object.values(allProviders).map((lazy) => ({
+        key: lazy.id,
+        text: `${lazy.network} (${lazy.description})`,
+        value: lazy.id,
+      }))}
       placeholder='Select Network'
       value={lazy?.id}
     />
