@@ -37,6 +37,7 @@ export interface StyledNavButtonProps
 export interface StackProps {
   alignItems?: FlexAlign;
   justifyContent?: FlexJustify;
+  wrapAt?: number | string;
 }
 
 export interface StyledNavLinkProps {
@@ -70,3 +71,5 @@ export interface NodeSelectorProps {
   fluid?: boolean;
   className?: string;
 }
+
+// TODO ScreenSizes

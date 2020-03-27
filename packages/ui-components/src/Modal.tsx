@@ -39,6 +39,7 @@ const StyledHeader = styled(SUIModal.Header)`
     padding-top: 2rem;
     padding-bottom: 0;
     border-bottom: none;
+    border-radius: 0 !important;
     font-size: 1.75rem !important;
     font-weight: 200;
   }

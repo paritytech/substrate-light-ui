@@ -6,7 +6,7 @@ import { withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 
-import { MeasureApp, NavButton } from '../src';
+import { MeasureApp, NavButton, StackedHorizontal } from '../src';
 import { withTheme } from './customDecorators';
 import { FabStory } from './Fab.stories';
 import { InputTransferFundsStory } from './Input.stories';
@@ -58,19 +58,19 @@ storiesOf('Apps/Lichen/2 – Accounts', module)
   .addDecorator(withAppMenuAccounts)
   .add('2.0 – Accounts (Empty)', () => (
     <>
-      <div className='flex items-center mb2'>
+      <StackedHorizontal>
         <h2 className='inline-flex mr3 mb0'>Your Accounts </h2>
         <ModalNewMnemonicStory />
-      </div>
+      </StackedHorizontal>
       {/* TODO: Illustation empty state */}
     </>
   ))
   .add('2.1 – Accounts', () => (
     <>
-      <div className='flex items-center mb2'>
+      <StackedHorizontal>
         <h2 className='inline-flex mr3 mb0'>Your Accounts </h2>
         <ModalNewMnemonicStory />
-      </div>
+      </StackedHorizontal>
       <TableAccountsStory />
     </>
   ));
@@ -93,18 +93,30 @@ storiesOf('Apps/Lichen/4 – Send Funds', module)
   .addDecorator(withAppMenuSend)
   .add('4.1 – Form (Empty)', () => (
     <>
-      <div className='flex'>
+      <StackedHorizontal alignItems='flex-start' wrapAt={60}>
         <div className='w-100'>
           <h2 className='mb2'>Send Funds</h2>
           <InputTransferFundsStory />
         </div>
-        <div className='w-60 pl5'>
-          <TableTxSummaryStory />
+        <div className='w-60 pl5'>{/* TODO: Illustation empty state */}</div>
+      </StackedHorizontal>
+    </>
+  ))
+  .add('4.2 – Form (Filled)', () => (
+    <>
+      <StackedHorizontal alignItems='flex-start' wrapAt={60}>
+        <div className='w-100'>
+          <h2 className='mb2'>Send Funds</h2>
+          <InputTransferFundsStory />
+        </div>
+        <div className='w-60-l pl5-l'>
+          <div className='dn-m'>
+            <TableTxSummaryStory />
+          </div>
           <NavButton wrapClass='flex mt4 justify-around'>
             Submit Transaction
           </NavButton>
         </div>
-      </div>
+      </StackedHorizontal>
     </>
-  ))
-  .add('4.2 – Form (Filled)', () => <></>);
+  ));

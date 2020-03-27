@@ -25,6 +25,10 @@ export const MeasureApp = styled.div`
   display: flex;
   width: 100%;
   padding: 0 calc(50vw - 600px);
+
+  @media (max-width: 1280px) {
+    padding: 0 40px;
+  }
 `;
 export const Container = styled(SUIContainer)`
   padding: ${MARGIN_SIZES.large};
@@ -210,6 +214,10 @@ export const StackedHorizontal = styled.div<StackProps>`
   display: flex;
   flex-direction: row;
   justify-content: ${(props): string => props.justifyContent || ''};
+
+  @media (max-width: ${(props): number | string => props.wrapAt || '99999'}em) {
+    flex-wrap: wrap;
+  }
 `;
 
 export const SubHeader = styled.h3<SubHeaderProps>`
