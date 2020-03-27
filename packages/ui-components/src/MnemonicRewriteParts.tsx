@@ -4,14 +4,7 @@
 
 import React from 'react';
 
-import {
-  Input,
-  Labelled,
-  Margin,
-  Stacked,
-  StackedHorizontal,
-  WrapperDiv,
-} from './index';
+import { Input } from './index';
 
 interface Props {
   firstWord: string;
@@ -39,28 +32,35 @@ export function MnemonicRewriteParts(props: Props): React.ReactElement {
   } = props;
 
   return (
-    <WrapperDiv margin='0' padding='0'>
-      <StackedHorizontal>
-        <Stacked>
-          <Labelled label={randomFourWords[0][0]} withLabel>
-            <Input onChange={handleSetFirstWord} value={firstWord} />
-          </Labelled>
-          <Margin top />
-          <Labelled label={randomFourWords[1][0]} withLabel>
-            <Input onChange={handleSetSecondWord} value={secondWord} />
-          </Labelled>
-        </Stacked>
-
-        <Stacked>
-          <Labelled label={randomFourWords[2][0]} withLabel>
-            <Input onChange={handleSetThirdWord} value={thirdWord} />
-          </Labelled>
-          <Margin top />
-          <Labelled label={randomFourWords[3][0]} withLabel>
-            <Input onChange={handleSetFourthWord} value={fourthWord} />
-          </Labelled>
-        </Stacked>
-      </StackedHorizontal>
-    </WrapperDiv>
+    <>
+      <Input
+        textLabel={randomFourWords[0][0]}
+        borderless
+        onChange={handleSetFirstWord}
+        value={firstWord}
+        wrapClass='code red items-center mr3 mb3'
+      />
+      <Input
+        textLabel={randomFourWords[1][0]}
+        borderless
+        onChange={handleSetSecondWord}
+        value={secondWord}
+        wrapClass='code red items-center mr3 mb3'
+      />
+      <Input
+        textLabel={randomFourWords[2][0]}
+        borderless
+        onChange={handleSetThirdWord}
+        value={thirdWord}
+        wrapClass='code red items-center mr3 mb3'
+      />
+      <Input
+        textLabel={randomFourWords[3][0]}
+        borderless
+        onChange={handleSetFourthWord}
+        value={fourthWord}
+        wrapClass='code red items-center mr3 mb3'
+      />
+    </>
   );
 }

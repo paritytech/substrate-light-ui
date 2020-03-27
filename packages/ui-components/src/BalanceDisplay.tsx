@@ -15,7 +15,6 @@ import { Icon, WrapperDiv } from './index';
 import {
   DynamicSizeText,
   FadedText,
-  Stacked,
   StackedHorizontal,
   StyledLinkButton,
 } from './Shared.styles';
@@ -48,7 +47,6 @@ export function BalanceDisplay(
     fontSize,
     fontWeight,
     handleRedeem,
-    orientation,
   } = props;
 
   const renderRedeemButton = (): React.ReactElement | null => {
@@ -128,29 +126,15 @@ export function BalanceDisplay(
   return (
     <>
       {allBalances ? (
-        orientation === 'horizontal' ? (
-          <StackedHorizontal justifyContent='space-around' alignItems='stretch'>
-            <DynamicSizeText fontSize={fontSize} fontWeight={fontWeight}>
-              <strong>Total Balance:</strong>{' '}
-              {allBalances.freeBalance &&
-                formatBalance(allBalances.freeBalance)}
-            </DynamicSizeText>
-            <FadedText>
-              Transactions: {formatNumber(allBalances.accountNonce)}{' '}
-            </FadedText>
-          </StackedHorizontal>
-        ) : (
-          <Stacked justifyContent='space-around'>
-            <DynamicSizeText fontSize={fontSize} fontWeight={fontWeight}>
-              <strong>Total Balance:</strong>{' '}
-              {allBalances.freeBalance &&
-                formatBalance(allBalances.freeBalance)}
-            </DynamicSizeText>
-            <FadedText>
-              Transactions: {formatNumber(allBalances.accountNonce)}{' '}
-            </FadedText>
-          </Stacked>
-        )
+        <StackedHorizontal justifyContent='space-around' alignItems='stretch'>
+          <DynamicSizeText fontSize={fontSize} fontWeight={fontWeight}>
+            <strong>Total Balance:</strong>{' '}
+            {allBalances.freeBalance && formatBalance(allBalances.freeBalance)}
+          </DynamicSizeText>
+          <FadedText>
+            Transactions: {formatNumber(allBalances.accountNonce)}{' '}
+          </FadedText>
+        </StackedHorizontal>
       ) : (
         <Loader active inline />
       )}

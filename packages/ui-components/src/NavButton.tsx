@@ -11,23 +11,28 @@ import { FontSize } from './types';
 interface NavButtonProps extends StyledNavButtonProps {
   fontSize?: FontSize;
   fontWeight?: string;
+  text?: boolean;
   value?: string;
+  wrapClass?: string;
 }
 
 export function NavButton(props: NavButtonProps): React.ReactElement {
   const {
     children,
-    fontSize = 'medium',
-    fontWeight = '300',
+    fontSize = 'large',
+    fontWeight = '400',
     value,
+    wrapClass,
     ...rest
   } = props;
 
   return (
-    <StyledNavButton {...rest}>
-      <DynamicSizeText fontSize={fontSize} fontWeight={fontWeight}>
-        {value || children}
-      </DynamicSizeText>
-    </StyledNavButton>
+    <div className={wrapClass}>
+      <StyledNavButton {...rest}>
+        <DynamicSizeText fontSize={fontSize} fontWeight={fontWeight}>
+          {value || children}
+        </DynamicSizeText>
+      </StyledNavButton>
+    </div>
   );
 }

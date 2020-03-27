@@ -45,25 +45,35 @@ const EXTENSION_ACCOUNTS = [
   },
 ];
 
-storiesOf('InputAddress', module)
+export const InputAddressStory = (): React.ReactElement => {
+  return (
+    <>
+      <InputAddress
+        textLabel='From'
+        accounts={EXTENSION_ACCOUNTS}
+        fromKeyring={false}
+        value={SAMPLE_ACCOUNT_1}
+      />
+      <InputAddress
+        textLabel='To'
+        accounts={EXTENSION_ACCOUNTS}
+        fromKeyring={false}
+        value={SAMPLE_ACCOUNT_1}
+      />
+    </>
+  );
+};
+
+storiesOf('Input/InputAddress', module)
   .addDecorator(withKnobs)
   .addDecorator(withTheme)
-  .add('input address from keyring', () => (
+  .add('InputAddress | Keyring', () => (
     <InputAddress
       accounts={KEYRING_ACCOUNTS}
       onChangeAddress={action('onChange clicked')}
-      height={text('height', '15px')}
-      width={text('width', '15px')}
+      textLabel={text('textLabel', 'Choose Account')}
       value={text('address', SAMPLE_ACCOUNT_1)}
+      wrapClass={text('wrapClass', 'Choose Account')}
     />
   ))
-  .add('input address from extension', () => (
-    <InputAddress
-      accounts={EXTENSION_ACCOUNTS}
-      fromKeyring={false}
-      onChangeAddress={action('onChange clicked')}
-      height={text('height', '15px')}
-      width={text('width', '15px')}
-      value={text('address', SAMPLE_ACCOUNT_1)}
-    />
-  ));
+  .add('InputAddress | Extension', () => <InputAddressStory />);
