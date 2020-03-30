@@ -19,12 +19,11 @@
     "test": "jest --coverage"
   },
   "dependencies": {
-    "@polkadot/api": "^1.8.1",
-    "@polkadot/extension-dapp": "^0.23.0-beta.9",
+    "@polkadot/extension-dapp": "^0.24.0-beta.0",
     "@polkadot/ui-assets": "^0.51.1",
     "@substrate/context": "^0.3.22",
     "@substrate/ui-components": "^0.3.27",
-    "@types/chrome": "^0.0.101",
+    "@types/chrome": "^0.0.103",
     "@types/file-saver": "^2.0.0",
     "@types/filesystem": "^0.0.29",
     "@types/react-dom": "^16.0.11",
@@ -41,6 +40,7 @@
     "semantic-ui-css": "^2.4.1",
     "store": "^2.0.12",
     "symbol-observable": "^1.2.0",
+    "tachyons": "^4.11.1",
     "web-ext-types": "^3.2.1"
   }
 }

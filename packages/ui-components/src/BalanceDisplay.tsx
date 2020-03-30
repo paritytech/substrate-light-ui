@@ -3,9 +3,9 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import {
-  DerivedBalancesAll,
-  DerivedStakingAccount,
-  DerivedUnlocking,
+  DeriveBalancesAll,
+  DeriveStakingAccount,
+  DeriveUnlocking,
 } from '@polkadot/api-derive/types';
 import { formatBalance, formatNumber } from '@polkadot/util';
 import React from 'react';
@@ -15,15 +15,14 @@ import { Icon, WrapperDiv } from './index';
 import {
   DynamicSizeText,
   FadedText,
-  Stacked,
   StackedHorizontal,
   StyledLinkButton,
 } from './Shared.styles';
 import { FontSize, FontWeight, OrientationType } from './types';
 
 export type BalanceDisplayProps = {
-  allBalances?: DerivedBalancesAll;
-  allStaking?: DerivedStakingAccount;
+  allBalances?: DeriveBalancesAll;
+  allStaking?: DeriveStakingAccount;
   detailed?: boolean;
   fontSize?: FontSize;
   fontWeight?: FontWeight;
@@ -48,7 +47,6 @@ export function BalanceDisplay(
     fontSize,
     fontWeight,
     handleRedeem,
-    orientation,
   } = props;
 
   const renderRedeemButton = (): React.ReactElement | null => {
@@ -71,7 +69,7 @@ export function BalanceDisplay(
     return allStaking && allStaking.unlocking ? (
       <>
         {allStaking.unlocking.map(
-          ({ remainingBlocks, value }: DerivedUnlocking, index: number) => (
+          ({ remainingBlocks, value }: DeriveUnlocking, index: number) => (
             <div key={index}>
               <FadedText>Unbonded Amount: {formatBalance(value)}</FadedText>
               <FadedText>
@@ -128,29 +126,15 @@ export function BalanceDisplay(
   return (
     <>
       {allBalances ? (
-        orientation === 'horizontal' ? (
-          <StackedHorizontal justifyContent='space-around' alignItems='stretch'>
-            <DynamicSizeText fontSize={fontSize} fontWeight={fontWeight}>
-              <strong>Total Balance:</strong>{' '}
-              {allBalances.freeBalance &&
-                formatBalance(allBalances.freeBalance)}
-            </DynamicSizeText>
-            <FadedText>
-              Transactions: {formatNumber(allBalances.accountNonce)}{' '}
-            </FadedText>
-          </StackedHorizontal>
-        ) : (
-          <Stacked justifyContent='space-around'>
-            <DynamicSizeText fontSize={fontSize} fontWeight={fontWeight}>
-              <strong>Total Balance:</strong>{' '}
-              {allBalances.freeBalance &&
-                formatBalance(allBalances.freeBalance)}
-            </DynamicSizeText>
-            <FadedText>
-              Transactions: {formatNumber(allBalances.accountNonce)}{' '}
-            </FadedText>
-          </Stacked>
-        )
+        <StackedHorizontal justifyContent='space-around' alignItems='stretch'>
+          <DynamicSizeText fontSize={fontSize} fontWeight={fontWeight}>
+            <strong>Total Balance:</strong>{' '}
+            {allBalances.freeBalance && formatBalance(allBalances.freeBalance)}
+          </DynamicSizeText>
+          <FadedText>
+            Transactions: {formatNumber(allBalances.accountNonce)}{' '}
+          </FadedText>
+        </StackedHorizontal>
       ) : (
         <Loader active inline />
       )}

@@ -4,8 +4,6 @@
 
 // We export these ones as-is from SUI
 export {
-  Dropdown,
-  DropdownProps,
   Form,
   FormProps,
   Grid,
@@ -37,11 +35,14 @@ export * from './Breadcrumbs';
 export * from './Card';
 export * from './Circle';
 export * from './CopyButton';
+export * from './ConnectedNodes';
 export * from './constants';
+export * from './Dropdown';
 export * from './Fab';
 export * from './FlexSegment';
 export * from './globalStyle';
 export * from './Icon';
+export * from './Input';
 export * from './InputAddress';
 export * from './InputFile';
 export * from './Labelled';
@@ -57,6 +58,10 @@ export * from './NavHeader';
 export * from './Progress';
 export * from './Shared.styles';
 export * from './stateful';
+export * from './TableAccounts';
+export * from './TableTxSummary';
+export * from './TableCellAddress';
+export * from './TableRowAccount';
 export * from './TextArea';
 export * from './TxDetails';
 export * from './TxSummary';

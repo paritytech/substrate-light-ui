@@ -5,35 +5,30 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { polkadotOfficialTheme } from './globalStyle';
-
 interface CircleProps {
   fill: string;
   label?: string;
   radius?: number;
   withShadow?: boolean;
+  wrapClass?: string;
 }
 
 export function Circle(props: CircleProps): React.ReactElement {
-  const { fill, label, radius = 20, withShadow = false } = props;
+  const { fill, label, radius = 20, withShadow = false, wrapClass } = props;
 
   const StyledCircle = styled.span`
     height: ${radius}px;
     width: ${radius}px;
     background-color: ${fill};
-    background-image: ${`linear-gradient(
-      107deg,
-      ${polkadotOfficialTheme.lightBlue1},
-      ${polkadotOfficialTheme.neonBlue}
-    )`};
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     vertical-align: center;
-    box-shadow: ${withShadow &&
-    '0 6px 6px 0 rgba(0, 0, 0, 0.24), 0 0 6px 0 rgba(0, 0, 0, 0.12)'};
+    box-shadow: ${withShadow
+      ? '0 6px 6px 0 rgba(0, 0, 0, 0.24), 0 0 6px 0 rgba(0, 0, 0, 0.12)'
+      : ''};
   `;
 
   const WhiteText = styled.p`
@@ -41,8 +36,10 @@ export function Circle(props: CircleProps): React.ReactElement {
   `;
 
   return (
-    <StyledCircle>
-      <WhiteText>{label}</WhiteText>
-    </StyledCircle>
+    <div className={wrapClass}>
+      <StyledCircle>
+        <WhiteText>{label}</WhiteText>
+      </StyledCircle>
+    </div>
   );
 }

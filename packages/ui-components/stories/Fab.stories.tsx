@@ -10,12 +10,16 @@ import React from 'react';
 import { Fab } from '../src';
 import { withTheme } from './customDecorators';
 
-storiesOf('Fab', module)
-  .addDecorator(withKnobs)
-  .addDecorator(withTheme)
-  .add('Fab', () => (
+export const FabStory = (): JSX.Element => {
+  return (
     <Fab
       onClick={action('clicked')}
       type={select('fab type', ['add', 'send'], 'send')}
     />
-  ));
+  );
+};
+
+storiesOf('Fab', module)
+  .addDecorator(withKnobs)
+  .addDecorator(withTheme)
+  .add('Fab', () => <FabStory />);

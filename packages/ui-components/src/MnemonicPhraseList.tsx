@@ -4,13 +4,7 @@
 
 import React from 'react';
 
-import {
-  DynamicSizeText,
-  FadedText,
-  StackedHorizontal,
-  WithSpace,
-} from './index';
-import { WrapperDiv } from './Shared.styles';
+import { Input } from './Input';
 
 interface Props {
   phrase: string;
@@ -18,39 +12,21 @@ interface Props {
 
 export function MnemonicPhraseList(props: Props): React.ReactElement {
   const phrase = props.phrase.split(' ');
-  const firstHalf = phrase.slice(0, phrase.length / 2);
-  const secondHalf = phrase.slice(phrase.length / 2, phrase.length);
 
   return (
-    <WrapperDiv margin='0' padding='0'>
-      <StackedHorizontal justifyContent='space-around'>
-        <ol>
-          {firstHalf.map((word: string) => {
-            return (
-              <li key={word}>
-                <WithSpace>
-                  <DynamicSizeText>
-                    <FadedText>{word}</FadedText>
-                  </DynamicSizeText>
-                </WithSpace>
-              </li>
-            );
-          })}
-        </ol>
-        <ol start={phrase.length / 2 + 1}>
-          {secondHalf.map((word: string) => {
-            return (
-              <li key={word}>
-                <WithSpace>
-                  <DynamicSizeText>
-                    <FadedText>{word}</FadedText>
-                  </DynamicSizeText>
-                </WithSpace>
-              </li>
-            );
-          })}
-        </ol>
-      </StackedHorizontal>
-    </WrapperDiv>
+    <>
+      {phrase.map((word: string, i) => {
+        return (
+          <Input
+            borderless={true}
+            fake={true}
+            key={word}
+            textLabel={i + 1}
+            value={word}
+            wrapClass='code red inline-flex items-center mr3 mb3'
+          />
+        );
+      })}
+    </>
   );
 }

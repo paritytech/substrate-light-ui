@@ -34,9 +34,11 @@ export interface StyledNavButtonProps
   negative?: boolean;
 }
 
+// TODO: tachyon class vs props pattern
 export interface StackProps {
   alignItems?: FlexAlign;
   justifyContent?: FlexJustify;
+  wrapAt?: number | string;
 }
 
 export interface StyledNavLinkProps {
@@ -65,3 +67,10 @@ export interface WrapperDivProps {
   width?: string;
   height?: string;
 }
+
+export interface NodeSelectorProps {
+  fluid?: boolean;
+  className?: string;
+}
+
+// TODO ScreenSizes

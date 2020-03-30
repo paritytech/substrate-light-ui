@@ -3,15 +3,15 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import {
-  DerivedBalancesAll,
-  DerivedFees,
-  DerivedStakingAccount,
+  DeriveBalancesAll,
+  DeriveFees,
+  DeriveStakingAccount,
 } from '@polkadot/api-derive/types';
 import { SubmittableExtrinsic } from '@polkadot/api/submittable/types';
 import { AccountInfo, Balance } from '@polkadot/types/interfaces';
 import BN from 'bn.js';
 
-export type AccountDerivedStakingMap = Record<string, DerivedStakingAccount>;
+export type AccountDerivedStakingMap = Record<string, DeriveStakingAccount>;
 
 /**
  * Form fields inputted by the user
@@ -27,9 +27,9 @@ export interface UserInputs {
  */
 export interface SubResults {
   accountNonce: AccountInfo;
-  currentBalance: DerivedBalancesAll;
-  fees: DerivedFees;
-  recipientBalance?: DerivedBalancesAll;
+  currentBalance: DeriveBalancesAll;
+  fees: DeriveFees;
+  recipientBalance?: DeriveBalancesAll;
 }
 
 export interface WithExtrinsic {

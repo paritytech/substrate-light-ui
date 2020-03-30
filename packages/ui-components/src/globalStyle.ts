@@ -2,6 +2,10 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import 'tachyons/css/tachyons.min.css';
+import '../src/assets/fonts/Inter/inter.css';
+import '../src/assets/fonts/Roboto_Mono/roboto_mono.css';
+
 import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyle = createGlobalStyle`
@@ -13,12 +17,31 @@ export const GlobalStyle = createGlobalStyle`
     height: 100%;
     margin: 0;
     padding: 0;
-    font-family: 'Montseratt', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   }
 
   #root {
     height: 100%;
   }
+
+  body, h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6, {
+    font-family: 'Inter', 'Montseratt', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  }
+  code, .code, th, button, .menu .item, label, [type="number"] {
+    font-family: 'Roboto Mono' !Important;
+  }
+  h2 {
+    font-weight: 600;
+  }
+
+  //TODO: dimmer component
+  .dimmer {
+    background-color: rgba(255,255,255,0.6) !important;
+    height: calc(100vh - 100px) !important;
+    transform: translateY(100px);
+    justify-content: flex-start !important;
+    padding-top: 0 !important;
+  }
+
 `;
 
 // ordered darkest to lightest
@@ -42,9 +65,15 @@ export const substrateLightTheme = {
 };
 
 export const polkadotOfficialTheme = {
+  typography: {
+    monospace: "'Roboto Mono' !important",
+  },
   black: '#1E1E1E',
+  green: '#79F676',
+  shadow: 'rgba(210, 210, 210, 0.6)',
   grey: '#B5AEAE',
   hotPink: '#E6007A',
+  signal: 'red',
   lightBlue2: '#51a0ec',
   lightBlue1: '#53a0fd',
   neonBlue: '#0ed2f7',
