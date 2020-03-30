@@ -3,9 +3,9 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import {
-  DerivedBalancesAll,
-  DerivedStakingAccount,
-  DerivedUnlocking,
+  DeriveBalancesAll,
+  DeriveStakingAccount,
+  DeriveUnlocking,
 } from '@polkadot/api-derive/types';
 import { formatBalance, formatNumber } from '@polkadot/util';
 import React from 'react';
@@ -21,8 +21,8 @@ import {
 import { FontSize, FontWeight, OrientationType } from './types';
 
 export type BalanceDisplayProps = {
-  allBalances?: DerivedBalancesAll;
-  allStaking?: DerivedStakingAccount;
+  allBalances?: DeriveBalancesAll;
+  allStaking?: DeriveStakingAccount;
   detailed?: boolean;
   fontSize?: FontSize;
   fontWeight?: FontWeight;
@@ -69,7 +69,7 @@ export function BalanceDisplay(
     return allStaking && allStaking.unlocking ? (
       <>
         {allStaking.unlocking.map(
-          ({ remainingBlocks, value }: DerivedUnlocking, index: number) => (
+          ({ remainingBlocks, value }: DeriveUnlocking, index: number) => (
             <div key={index}>
               <FadedText>Unbonded Amount: {formatBalance(value)}</FadedText>
               <FadedText>
