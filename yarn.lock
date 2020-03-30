@@ -2635,17 +2635,17 @@
     extensionizer "^1.0.1"
 
 "@polkadot/extension-dapp@^0.23.0-beta.9":
-  version "0.23.0-beta.9"
-  resolved "https://registry.yarnpkg.com/@polkadot/extension-dapp/-/extension-dapp-0.23.0-beta.9.tgz#e527bcf2dbfd142573ff3def4697c617442104ba"
-  integrity sha512-AaOKKThGNPO7Nn2brOjGqTi4+Ud1UthG4sJpr/wOMCJ6RKrcEDINzgWD1dhUYZA6n8GJ8x7mlUXSn4Y9CYAGEA==
+  version "0.23.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/extension-dapp/-/extension-dapp-0.23.1.tgz#4e54c8d02cc46362e931ce47b14040a925ad0c36"
+  integrity sha512-pPhG5hF4sxI9SLBo1kKq2eMfSqcv3qxHItJydmsq8RreDkk6vHbQGq53+2APbGn6hQ5af2sXSv8OehQdFqqxiQ==
   dependencies:
     "@babel/runtime" "^7.9.2"
-    "@polkadot/extension-inject" "0.23.0-beta.9"
+    "@polkadot/extension-inject" "0.23.1"
 
-"@polkadot/extension-inject@0.23.0-beta.9":
-  version "0.23.0-beta.9"
-  resolved "https://registry.yarnpkg.com/@polkadot/extension-inject/-/extension-inject-0.23.0-beta.9.tgz#03a3d893200239c2c52fe5a2e2c8c449f1e608cd"
-  integrity sha512-SMWzS0ZZvpioPVavcWrG6hmf6VtgTfJyxz/SJ5f2ukVa1BgcwwcEsuHrVmqj3GjCTuLz1H5eRPICY6+WbAEL+Q==
+"@polkadot/extension-inject@0.23.1":
+  version "0.23.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/extension-inject/-/extension-inject-0.23.1.tgz#6d222cda8f142986d7a3d456c78ba1cea711a8e0"
+  integrity sha512-1qDdSCMyL8V672OEq1uKLtHuJ2FHuWVYA3wknJLuYJ+vEn7KiBMR/E9tTYNLPOsO6N/x5Ak0ixt7en4fyFWSxg==
   dependencies:
     "@babel/runtime" "^7.9.2"
 
