@@ -3,8 +3,8 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import {
-  DerivedBalancesAll,
-  DerivedStakingAccount,
+  DeriveBalancesAll,
+  DeriveStakingAccount,
 } from '@polkadot/api-derive/types';
 import ApiRx from '@polkadot/api/rx';
 import { ApiContext } from '@substrate/context';
@@ -32,8 +32,8 @@ export function Balance(props: BalanceProps): React.ReactElement {
     ...rest
   } = props;
   const { api, isApiReady } = useContext(ApiContext);
-  const [allBalances, setAllBalances] = useState<DerivedBalancesAll>();
-  const [allStaking, setAllStaking] = useState<DerivedStakingAccount>();
+  const [allBalances, setAllBalances] = useState<DeriveBalancesAll>();
+  const [allStaking, setAllStaking] = useState<DeriveStakingAccount>();
 
   useEffect(() => {
     if (isApiReady) {
