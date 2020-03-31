@@ -8,30 +8,30 @@ import SUIButton, {
 } from 'semantic-ui-react/dist/commonjs/elements/Button';
 import styled from 'styled-components';
 
-import { substrateLightTheme } from './globalStyle';
+import { polkadotOfficialTheme } from './globalStyle';
 import { Icon } from './Icon';
 
 const SUIFab = styled(SUIButton)`
   &&& {
-    background-image: ${`linear-gradient(
-      107deg,
-      ${substrateLightTheme.lightBlue1},
-      ${substrateLightTheme.neonBlue}
-    )`};
+    background-color: ${polkadotOfficialTheme.signal}
     display: flex;
-    align-items: center;
     justify-content: center;
-    text-align: center;
-    vertical-align: center;
+    padding: 0;
+
     color: white;
     height: ${(props): string => props.height || '4rem'};
     width: ${(props): string => props.width || '4rem'};
-    box-shadow: '0 6px 6px 0 rgba(0, 0, 0, 0.24), 0 0 6px 0 rgba(0, 0, 0, 0.12)';
-    border-radius: 50%;
+    border-radius: 16px;
+    box-shadow: 0 8px 12px ${polkadotOfficialTheme.shadow};
+    
     position: fixed;
     bottom: 2rem;
     right: 2rem;
-    z-index: 1000000;
+
+    .icon {
+      opacity: 1;
+      margin: 0 !important;
+    }
   }
 `;
 
@@ -45,9 +45,9 @@ export function Fab(props: Props): React.ReactElement {
   return (
     <SUIFab {...props}>
       {props.type === 'add' ? (
-        <Icon name='add' size='large' style={{ marginLeft: '8px' }} />
+        <Icon name='add' size='large' />
       ) : (
-        <Icon name='send' size='large' style={{ marginLeft: '3.9px' }} />
+        <Icon name='send' size='large' />
       )}
     </SUIFab>
   );

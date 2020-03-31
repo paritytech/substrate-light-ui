@@ -1,4 +1,4 @@
-// Copyright 2018-2020 @paritytech/lichen authors & contributors
+// Copyright 2018-2024 @paritytech/lichen authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
@@ -10,15 +10,15 @@ import {
 } from '@polkadot/ui-keyring/observable/types';
 import { decodeAddress } from '@polkadot/util-crypto';
 import React from 'react';
-import Dropdown, {
+import SUIDropdown, {
   DropdownProps,
 } from 'semantic-ui-react/dist/commonjs/modules/Dropdown';
 import { DropdownItemProps } from 'semantic-ui-react/dist/commonjs/modules/Dropdown/DropdownItem';
 import styled from 'styled-components';
 
 import { MARGIN_SIZES } from './constants';
+import { polkadotOfficialTheme } from './globalStyle';
 import { Margin } from './Margin';
-import { WrapperDiv } from './Shared.styles';
 import { isInstanceOfInjectedExtension } from './util/checkInstanceOf';
 
 export type AddressType = 'accounts' | 'addresses';
@@ -28,11 +28,11 @@ export interface InputAddressProps extends DropdownProps {
   addresses?: SubjectInfo;
   onChangeAddress?: (address: string) => void;
   types?: AddressType[];
+  textLabel?: string;
   margin?: string;
   padding?: string;
-  height?: string;
-  width?: string;
   value: string;
+  wrapClass?: string;
 }
 
 /**
@@ -72,6 +72,28 @@ function getExtensionAddressFromString(
   );
 }
 
+const Dropdown = styled<typeof SUIDropdown>(SUIDropdown)`
+  &&& {
+    border: none;
+    border-bottom: 1px solid black;
+    border-radius: 0;
+    background: ${polkadotOfficialTheme.eggShell};
+    > .text,
+    .item {
+      display: flex;
+      align-items: center;
+    }
+    &.active.dropdown {
+      border-color: ${polkadotOfficialTheme.black};
+      border-radius: 0 !important;
+      .menu {
+        border-color: ${polkadotOfficialTheme.eggShell};
+        margin-top: 1px;
+      }
+    }
+  }
+`;
+
 const DropdownItemText = styled.span`
   margin-left: ${MARGIN_SIZES.small};
 `;
@@ -110,7 +132,9 @@ export function InputAddress(props: InputAddressProps): React.ReactElement {
     fromKeyring = true, // default to using keyring
     onChangeAddress,
     types = ['accounts'],
+    textLabel,
     value,
+    wrapClass = 'mb3',
     ...rest
   } = props;
 
@@ -136,7 +160,7 @@ export function InputAddress(props: InputAddressProps): React.ReactElement {
     if (isInstanceOfInjectedExtension(account)) {
       return (
         <Dropdown.Item
-          image={<IdentityIcon value={account.address} size={20} />}
+          image={<IdentityIcon value={account.address} size={24} />}
           key={account.address}
           onClick={handleChange}
           value={account.address}
@@ -146,7 +170,7 @@ export function InputAddress(props: InputAddressProps): React.ReactElement {
     } else {
       return (
         <Dropdown.Item
-          image={<IdentityIcon value={account.json.address} size={20} />}
+          image={<IdentityIcon value={account.json.address} size={24} />}
           key={account.json.address}
           onClick={handleChange}
           value={account.json.address}
@@ -157,23 +181,22 @@ export function InputAddress(props: InputAddressProps): React.ReactElement {
   }
 
   return (
-    <WrapperDiv
-      margin={props.margin}
-      padding={props.padding}
-      width={props.width}
-      height={props.height}
-    >
+    <div className={wrapClass}>
+      {textLabel && <label>{textLabel}</label>}
       <DropdownWrapper>
-        <IdentityIcon value={value} size={20} />
-        <Margin right='small' />
         <Dropdown
+          fluid
+          selection
           labeled
           text={
-            currentAddress
-              ? isInstanceOfInjectedExtension(currentAddress)
-                ? currentAddress.meta.name
-                : currentAddress.json.meta.name
-              : 'Loading...'
+            currentAddress ? (
+              <>
+                <IdentityIcon value={value} size={24} />
+                {renderDropdownItemText(currentAddress)}
+              </>
+            ) : (
+              'Loading...'
+            )
           }
           value={value}
           {...rest}
@@ -193,6 +216,6 @@ export function InputAddress(props: InputAddressProps): React.ReactElement {
           </Dropdown.Menu>
         </Dropdown>
       </DropdownWrapper>
-    </WrapperDiv>
+    </div>
   );
 }

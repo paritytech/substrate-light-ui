@@ -5,55 +5,27 @@
 import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
-import Dropdown from 'semantic-ui-react/dist/commonjs/modules/Dropdown';
 
+import { MeasureApp } from '../src';
 import { Menu } from '../src';
 import { withTheme } from './customDecorators';
 
-const dropdownValues = [
-  {
-    key: 'Edit',
-    text: 'Edit',
-    value: 'Edit',
-  },
-  {
-    key: 'Create',
-    text: 'Create',
-    value: 'Create',
-  },
-  {
-    key: 'Restore',
-    text: 'Restore',
-    value: 'Restore',
-  },
-];
+export const MenuTabsStory = (props: {
+  activeItem?: string;
+}): React.ReactElement => {
+  const { activeItem = 'Accounts' } = props;
+  const tabs = boolean('tabs', true);
+  return (
+    <Menu borderless tabs={tabs} size='large'>
+      <MeasureApp className='items-center'>
+        <Menu.Item active={activeItem === 'Accounts'}>Accounts</Menu.Item>
+        <Menu.Item active={activeItem === 'Send Funds'}>Send Funds</Menu.Item>
+      </MeasureApp>
+    </Menu>
+  );
+};
 
 storiesOf('Menu', module)
   .addDecorator(withKnobs)
   .addDecorator(withTheme)
-  .add('with dropdown', () => (
-    <Menu>
-      <Dropdown
-        options={dropdownValues}
-        placeholder='click me!'
-        selection={boolean('selection', true)}
-        vertical={boolean('vertical', true)}
-      />
-    </Menu>
-  ))
-  .add('with multiple dropdowns', () => (
-    <Menu>
-      <Dropdown
-        options={dropdownValues}
-        placeholder='im first!'
-        selection={boolean('selection', true)}
-        vertical={boolean('vertical', true)}
-      />
-      <Dropdown
-        options={dropdownValues}
-        placeholder='me second!'
-        selection={boolean('selection', true)}
-        vertical={boolean('vertical', true)}
-      />
-    </Menu>
-  ));
+  .add('Menu Tabs', () => <MenuTabsStory />);

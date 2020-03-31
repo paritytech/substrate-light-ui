@@ -6,15 +6,42 @@ import { text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 
-import { MnemonicPhraseList } from '../src';
+import { MnemonicPhraseList, MnemonicRewriteParts } from '../src';
 import { withTheme } from './customDecorators';
+
+// TODO: MnemonicRewriteParts Props
 
 const SAMPLE_PHRASE =
   'glass decrease speak taxi pencil spice carpet danger planet will cage park';
+const SAMPLE_HANDLE_WORD = ({
+  target: { value },
+}: React.ChangeEvent<HTMLInputElement>): void => {
+  console.log(value);
+};
+export const NewMnemonicStory = (): JSX.Element => {
+  return <MnemonicPhraseList phrase={text('mnemonic phrase', SAMPLE_PHRASE)} />;
+};
 
-storiesOf('Mnemonic Phrase List', module)
+export const RewriteMnemonicStory = (): JSX.Element => {
+  return (
+    <MnemonicRewriteParts
+      firstWord=''
+      secondWord=''
+      thirdWord=''
+      fourthWord=''
+      randomFourWords={[['1'], ['12'], ['3'], ['8']]}
+      handleSetFirstWord={SAMPLE_HANDLE_WORD}
+      handleSetSecondWord={SAMPLE_HANDLE_WORD}
+      handleSetThirdWord={SAMPLE_HANDLE_WORD}
+      handleSetFourthWord={SAMPLE_HANDLE_WORD}
+    />
+  );
+};
+
+storiesOf('Mnemonic', module)
   .addDecorator(withKnobs)
   .addDecorator(withTheme)
-  .add('with mnemonic', () => (
+  .add('MnemonicPhraseList', () => (
     <MnemonicPhraseList phrase={text('mnemonic phrase', SAMPLE_PHRASE)} />
-  ));
+  ))
+  .add('MnemonicRewriteParts', () => <RewriteMnemonicStory />);

@@ -3,7 +3,6 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import SUIContainer from 'semantic-ui-react/dist/commonjs/elements/Container';
-import SUIInput from 'semantic-ui-react/dist/commonjs/elements/Input';
 import styled from 'styled-components';
 
 import { FONT_SIZES, MARGIN_SIZES } from './constants';
@@ -12,6 +11,7 @@ import {
   DynamicSizeTextProps,
   FlexItemProps,
   HeaderProps,
+  NodeSelectorProps,
   StackProps,
   StyledNavButtonProps,
   StyledNavLinkProps,
@@ -21,10 +21,15 @@ import {
   WrapperDivProps,
 } from './StyleProps';
 
-export const Input = styled(SUIInput)`
-  width: ${(props): string => props.width || '100%'};
-`;
+export const MeasureApp = styled.div`
+  display: flex;
+  width: 100%;
+  padding: 0 calc(50vw - 600px);
 
+  @media (max-width: 1280px) {
+    padding: 0 40px;
+  }
+`;
 export const Container = styled(SUIContainer)`
   padding: ${MARGIN_SIZES.large};
 `;
@@ -136,30 +141,25 @@ export const StyledLinkButton = styled.button`
 `;
 
 export const StyledNavButton = styled.button<StyledNavButtonProps>`
-  background-image: linear-gradient(
-    107deg,
-    ${(props): string =>
-      props.disabled
-        ? polkadotOfficialTheme.grey
-        : props.negative
-        ? polkadotOfficialTheme.grey
-        : polkadotOfficialTheme.neonBlue},
-    ${(props): string =>
-      props.disabled
-        ? polkadotOfficialTheme.grey
-        : props.negative
-        ? polkadotOfficialTheme.lightBlue2
-        : polkadotOfficialTheme.lightBlue1}
-  );
+  position: relative;
+  background-color: ${polkadotOfficialTheme.signal};
   border: none;
-  border-radius: 15px;
-  box-shadow: 0 4px 6px 0 rgba(${polkadotOfficialTheme.black}, 0.3);
+  border-radius: 9999px;
   color: ${polkadotOfficialTheme.white};
   fontsize: ${FONT_SIZES.large};
-  height: 42px;
-  width: 134px;
+  padding: 1em 3em;
+  outline: none;
+  transition: background-color 0.3s;
+
+  ${(props): string =>
+    props.negative
+      ? `
+      background-color: ${polkadotOfficialTheme.white};
+      color: ${polkadotOfficialTheme.signal}`
+      : ''};
 
   :hover {
+    opacity: 0.9;
     cursor: ${(props): string => (props.disabled ? 'not-allowed' : 'pointer')};
   }
 `;
@@ -203,7 +203,7 @@ export const VoteYayButton = styled.button`
 `;
 
 export const Stacked = styled.div<StackProps>`
-  align-items: ${(props): string => props.alignItems || 'center'};
+  align-items: ${(props): string => props.alignItems || ''};
   display: flex;
   flex-direction: column;
   justify-content: ${(props): string => props.justifyContent || 'center'};
@@ -213,7 +213,11 @@ export const StackedHorizontal = styled.div<StackProps>`
   align-items: ${(props): string => props.alignItems || 'center'};
   display: flex;
   flex-direction: row;
-  justify-content: ${(props): string => props.justifyContent || 'center'};
+  justify-content: ${(props): string => props.justifyContent || ''};
+
+  @media (max-width: ${(props): number | string => props.wrapAt || '0'}em) {
+    flex-wrap: wrap;
+  }
 `;
 
 export const SubHeader = styled.h3<SubHeaderProps>`
@@ -234,4 +238,28 @@ export const WrapperDiv = styled.div<WrapperDivProps>`
   padding: ${(props): string => props.padding || '1rem'};
   width: ${(props): string => props.width || '30rem'};
   height: ${(props): string => props.height || '100%'};
+`;
+
+/* TODO compomnent with actions */
+export const FramedBlock = styled.div`
+  padding: 2rem;
+  border-style: solid;
+  border-width: 1px;
+`;
+export const BlackBlock = styled.div`
+  background-color: ${polkadotOfficialTheme.black};
+  color: ${polkadotOfficialTheme.white};
+`;
+export const NodesBlock = styled.span<NodeSelectorProps>`
+  width: ${(props): string => (props.fluid ? '100%' : '')};
+  position: relative;
+  color: inherit important!;
+`;
+export const NodeSelector = styled.div<NodeSelectorProps>`
+  width: ${(props): string => (props.fluid ? '100%' : '')};
+`;
+export const NodesConnector = styled.div<NodeSelectorProps>`
+  width: ${(props): string => (props.fluid ? '50%' : '100px')};
+  transform: translateY(-50%);
+  min-width: 2rem;
 `;

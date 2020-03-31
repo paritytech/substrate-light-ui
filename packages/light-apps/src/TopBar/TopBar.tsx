@@ -4,13 +4,13 @@
 
 import { Text } from '@polkadot/types';
 import { Header, Health } from '@polkadot/types/interfaces';
-import substrateLogo from '@polkadot/ui-assets/polkadot-circle.svg';
 import { SystemContext } from '@substrate/context';
 import {
+  BlackBlock,
   Circle,
+  ConnectedNodes,
   Container,
   Margin,
-  StackedHorizontal,
 } from '@substrate/ui-components';
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
@@ -25,34 +25,37 @@ const RED = '#ff0000';
  *
  * @todo FIXME we can render different logos for differenct chains.
  */
-function renderLogo(chain?: Text): React.ReactElement {
+function renderLogo(): React.ReactElement {
   return (
-    <StackedHorizontal>
-      <Link to='/'>
-        <img alt='Polkadot Logo' src={substrateLogo} width={50} />
-      </Link>
-      <p>Lichen{chain ? ` on ${chain.toString()}` : ''}</p>
-    </StackedHorizontal>
+    <Link className='w-60' to='/'>
+      Lichen
+    </Link>
   );
 }
 
-function renderHealth(header?: Header, health?: Health): React.ReactElement {
+function renderHealth(
+  chain?: Text,
+  header?: Header,
+  health?: Health
+): React.ReactElement {
   if (!header || !health) {
     return <div />;
   }
 
   return (
-    <div>
-      <StackedHorizontal>
-        {health.isSyncing.isTrue ? (
-          <Circle fill={GREEN} radius={10} />
-        ) : (
-          <Circle fill={RED} radius={10} />
-        )}
-        <Margin left='small' />
-        <p>Status: {health.isSyncing.isTrue ? 'Syncing' : 'Synced'}</p>
-      </StackedHorizontal>
-      <p>Block #{header.number.toString()}</p>
+    <div className='flex items-center justify-between truncate'>
+      {health.isSyncing.isTrue ? (
+        <Circle fill={GREEN} radius={10} />
+      ) : (
+        <Circle fill={RED} radius={10} />
+      )}
+      <Margin left='small' />
+      <span className='mh1 truncate'>
+        {chain ? `${chain.toString().toUpperCase()}` : ''}
+      </span>
+      <span className='db-l dn f7 silver truncate'>
+        Block #{header.number.toString()}
+      </span>
     </div>
   );
 }
@@ -61,12 +64,16 @@ export function TopBar(): React.ReactElement {
   const { chain, header, health } = useContext(SystemContext);
 
   return (
-    <Container as='header'>
-      <StackedHorizontal justifyContent='space-between' alignItems='center'>
-        {renderLogo(chain)}
-        {renderHealth(header, health)}
-        <ChooseProvider />
-      </StackedHorizontal>
-    </Container>
+    <BlackBlock>
+      <Container as='header'>
+        <div className='flex items-center'>
+          {renderLogo()}
+          <ConnectedNodes fluid>
+            {renderHealth(chain, header, health)}
+            <ChooseProvider />
+          </ConnectedNodes>
+        </div>
+      </Container>
+    </BlackBlock>
   );
 }

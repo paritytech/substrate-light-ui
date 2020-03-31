@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { DerivedBalancesAll, DerivedFees } from '@polkadot/api-derive/types';
+import { DeriveBalancesAll, DeriveFees } from '@polkadot/api-derive/types';
 import ApiRx from '@polkadot/api/rx';
 import { SubmittableExtrinsic } from '@polkadot/api/submittable/types';
 import { AccountInfo } from '@polkadot/types/interfaces';
@@ -56,15 +56,13 @@ export function SendBalance(): React.ReactElement {
 
   const [amountAsString, setAmountAsString] = useState('');
   const [accountNonce, setAccountNonce] = useState<AccountInfo>();
-  const [currentBalance, setCurrentBalance] = useState<DerivedBalancesAll>();
+  const [currentBalance, setCurrentBalance] = useState<DeriveBalancesAll>();
   const [extrinsic, setExtrinsic] = useState<SubmittableExtrinsic<'rxjs'>>();
-  const [fees, setFees] = useState<DerivedFees>();
+  const [fees, setFees] = useState<DeriveFees>();
   const [receiver, setReceiver] = useState<string>(
     (Object.keys(addresses) || Object.keys(accounts))[0]
   );
-  const [recipientBalance, setRecipientBalance] = useState<
-    DerivedBalancesAll
-  >();
+  const [recipientBalance, setRecipientBalance] = useState<DeriveBalancesAll>();
   const [validationResult, setValidationResult] = useState<
     Either<Errors, AllExtrinsicData>
   >(left({ fees: 'fetching fees...' }));
