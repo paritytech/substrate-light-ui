@@ -6,7 +6,7 @@ import { DeriveBalancesAll, DeriveFees } from '@polkadot/api-derive/types';
 import ApiRx from '@polkadot/api/rx';
 import { SubmittableExtrinsic } from '@polkadot/api/submittable/types';
 import { AccountInfo } from '@polkadot/types/interfaces';
-import { ApiContext, handler, TxQueueContext } from '@substrate/context';
+import { ApiContext, handler } from '@substrate/context';
 import {
   Balance,
   Form,
@@ -22,7 +22,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { zip } from 'rxjs';
 import { take } from 'rxjs/operators';
 
-import { KeyringContext } from '../../ContextGate/context';
+import { AccountContext } from '../../ContextGate/context';
 import { InputAddress } from '../Transfer.styles';
 import { AllExtrinsicData, Errors } from './types';
 import { validate } from './validate';
@@ -43,45 +43,35 @@ function isAddressValid(api: ApiRx, address: string): boolean {
 
 export function SendBalance(): React.ReactElement {
   const { api } = useContext(ApiContext);
-  const { enqueue } = useContext(TxQueueContext);
-  const {
-    accounts,
-    addresses,
-    currentAccount,
-    keyring,
-    setCurrentAccount,
-  } = useContext(KeyringContext);
-
-  const senderAddress = currentAccount || Object.keys(accounts)[0];
+  const { accounts } = useContext(AccountContext);
 
   const [amountAsString, setAmountAsString] = useState('');
   const [accountNonce, setAccountNonce] = useState<AccountInfo>();
   const [currentBalance, setCurrentBalance] = useState<DeriveBalancesAll>();
   const [extrinsic, setExtrinsic] = useState<SubmittableExtrinsic<'rxjs'>>();
   const [fees, setFees] = useState<DeriveFees>();
-  const [receiver, setReceiver] = useState<string>(
-    (Object.keys(addresses) || Object.keys(accounts))[0]
-  );
+  const [recipient, setRecipient] = useState('');
   const [recipientBalance, setRecipientBalance] = useState<DeriveBalancesAll>();
+  const [sender, setSender] = useState('');
   const [validationResult, setValidationResult] = useState<
     Either<Errors, AllExtrinsicData>
   >(left({ fees: 'fetching fees...' }));
 
-  const isReceiverValid = isAddressValid(api, receiver);
+  const isRecipientValid = isAddressValid(api, recipient);
 
-  // Subscribe to sender's & receivers's balances, nonce and some fees
+  // Subscribe to sender's & recipients's balances, nonce and some fees
   useEffect(() => {
-    if (!isReceiverValid) {
+    if (!isRecipientValid) {
       return;
     }
 
-    setExtrinsic(api.tx.balances.transfer(receiver, amountAsString));
+    setExtrinsic(api.tx.balances.transfer(recipient, amountAsString));
 
     const subscription = zip(
       api.derive.balances.fees(),
-      api.derive.balances.votingBalance(senderAddress),
-      api.derive.balances.votingBalance(receiver),
-      api.query.system.account(senderAddress)
+      api.derive.balances.votingBalance(sender),
+      api.derive.balances.votingBalance(recipient),
+      api.query.system.account(sender)
     )
       .pipe(take(1))
       .subscribe(([fees, currentBalance, recipientBalance, account]) => {
@@ -92,14 +82,7 @@ export function SendBalance(): React.ReactElement {
       });
 
     return (): void => subscription.unsubscribe();
-  }, [
-    amountAsString,
-    api,
-    currentAccount,
-    isReceiverValid,
-    receiver,
-    senderAddress,
-  ]);
+  }, [amountAsString, api, isRecipientValid, recipient, sender]);
 
   useEffect(() => {
     const values = validate({
@@ -109,8 +92,8 @@ export function SendBalance(): React.ReactElement {
       extrinsic,
       fees,
       recipientBalance,
-      currentAccount,
-      recipientAddress: receiver,
+      recipientAddress: recipient,
+      senderAddress: sender,
     });
 
     setValidationResult(values);
@@ -121,8 +104,8 @@ export function SendBalance(): React.ReactElement {
     fees,
     recipientBalance,
     extrinsic,
-    currentAccount,
-    receiver,
+    recipient,
+    sender,
   ]);
 
   const handleSubmit = (): void => {
@@ -130,24 +113,9 @@ export function SendBalance(): React.ReactElement {
       (error) => {
         console.error(error);
       },
-      (allExtrinsicData: AllExtrinsicData) => {
+      () => {
         // If everything is correct, then submit the extrinsic
-        const {
-          extrinsic,
-          amount,
-          allFees,
-          allTotal,
-          recipientAddress: rcptAddress,
-        } = allExtrinsicData;
-
-        enqueue(extrinsic, {
-          amount,
-          allFees,
-          allTotal,
-          methodCall: extrinsic.meta.name.toString(),
-          senderPair: keyring.getPair(senderAddress),
-          recipientAddress: rcptAddress,
-        });
+        window.alert('FIXME handleSubmit');
       }
     );
   };
@@ -160,12 +128,11 @@ export function SendBalance(): React.ReactElement {
             <SubHeader textAlign='left'>Sender Account:</SubHeader>
             <InputAddress
               accounts={accounts}
-              addresses={addresses}
-              onChangeAddress={setCurrentAccount}
+              onChangeAddress={setSender}
               type='accounts'
-              value={senderAddress}
+              value={sender}
             />
-            <Balance address={senderAddress} api={api} orientation='vertical' />
+            <Balance address={sender} api={api} orientation='vertical' />
           </Stacked>
         </WrapperDiv>
 
@@ -188,9 +155,9 @@ export function SendBalance(): React.ReactElement {
         <WrapperDiv>
           <Stacked alignItems='flex-start' justifyContent='flex-start'>
             <SubHeader textAlign='left'>Recipient Address:</SubHeader>
-            <Input fluid onChange={handler(setReceiver)} value={receiver} />
-            {isReceiverValid && (
-              <Balance address={receiver} api={api} orientation='vertical' />
+            <Input fluid onChange={handler(setRecipient)} value={recipient} />
+            {isRecipientValid && (
+              <Balance address={recipient} api={api} orientation='vertical' />
             )}
           </Stacked>
         </WrapperDiv>

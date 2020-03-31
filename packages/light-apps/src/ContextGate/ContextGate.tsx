@@ -18,7 +18,7 @@ import {
   ProviderContext,
   ProviderContextProvider,
 } from './context';
-import { ApiGate, HealthGate, KeyringGate, SystemGate } from './gates';
+import { ApiGate, HealthGate, SystemGate } from './gates';
 
 /**
  * Unique ID to identify our own extension
@@ -41,21 +41,19 @@ export function ContextGate(props: {
                   <TopBar />
                   <SystemGate>
                     <AccountContextProvider originName={EXTENSION_ORIGIN_NAME}>
-                      <KeyringGate>
-                        <HealthContextProvider provider={provider}>
-                          <HealthGate>
-                            <ApiContextProvider provider={provider}>
-                              <ApiGate>
-                                <AlertsContextProvider>
-                                  <TxQueueContextProvider>
-                                    {children}
-                                  </TxQueueContextProvider>
-                                </AlertsContextProvider>
-                              </ApiGate>
-                            </ApiContextProvider>
-                          </HealthGate>
-                        </HealthContextProvider>
-                      </KeyringGate>
+                      <HealthContextProvider provider={provider}>
+                        <HealthGate>
+                          <ApiContextProvider provider={provider}>
+                            <ApiGate>
+                              <AlertsContextProvider>
+                                <TxQueueContextProvider>
+                                  {children}
+                                </TxQueueContextProvider>
+                              </AlertsContextProvider>
+                            </ApiGate>
+                          </ApiContextProvider>
+                        </HealthGate>
+                      </HealthContextProvider>
                     </AccountContextProvider>
                   </SystemGate>
                 </>

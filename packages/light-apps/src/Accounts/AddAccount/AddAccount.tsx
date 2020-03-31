@@ -7,8 +7,8 @@ import React from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 
 import { Create } from './Create/CreateAccount';
-import { ImportWithJson } from './ImportWithJson';
-import { ImportWithPhrase } from './ImportWithPhrase';
+import { ImportWithJson } from './Restore/ImportWithJson';
+import { ImportWithPhrase } from './Restore/ImportWithPhrase';
 
 type Props = RouteComponentProps;
 

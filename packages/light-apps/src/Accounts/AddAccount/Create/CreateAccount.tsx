@@ -6,30 +6,17 @@ import { mnemonicGenerate } from '@polkadot/util-crypto';
 import { ApiContext } from '@substrate/context';
 import {
   AddressSummary,
-  DropdownProps,
   Margin,
   SizeType,
   Stacked,
 } from '@substrate/ui-components';
-import FileSaver from 'file-saver';
 import { none, Option, some } from 'fp-ts/lib/Option';
 import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { KeyringContext } from '../../../ContextGate/context';
-import {
-  PhrasePartialRewriteError,
-  Steps,
-  TagOptions,
-  Tags,
-  UserInputError,
-} from '../types';
-import {
-  generateAddressFromMnemonic,
-  getRandomInts,
-  validateMeta,
-  validateRewrite,
-} from '../util';
+import { createAccountSuri } from '../../../messaging';
+import { PhrasePartialRewriteError, Steps, UserInputError } from '../types';
+import { getRandomInts, validateMeta, validateRewrite } from '../util';
 import {
   renderCopyStep,
   renderErrors,
@@ -61,7 +48,6 @@ export function Create(props: Props): React.ReactElement {
   const { location, history } = props;
 
   const { api } = useContext(ApiContext);
-  const { keyring, isKeyringReady } = useContext(KeyringContext);
 
   const [address, setAddress] = useState<string>();
   const [errors, setErrors] = useState<Option<Array<string>>>(none);
@@ -70,40 +56,21 @@ export function Create(props: Props): React.ReactElement {
   const [password, setPassword] = useState('');
   const [step, setStep] = useState<Steps>('copy');
 
-  const [tagOptions, setTagOptions] = useState<TagOptions>([
-    { key: '0', text: 'stash', value: 'Stash' },
-    { key: '1', text: 'controller', value: 'Controller' },
-  ]);
-  const [tags, setTags] = useState<Tags>([]);
-
   const [firstWord, setFirstWord] = useState('');
   const [secondWord, setSecondWord] = useState('');
   const [thirdWord, setThirdWord] = useState('');
   const [fourthWord, setFourthWord] = useState('');
 
   const [randomFourWords, setRandomFourWords] = useState<string[][]>([]);
-  const [whichAccount, setWhichAccount] = useState<'stash' | 'controller'>();
-
-  useEffect(() => {
-    if (isKeyringReady) {
-      const _address = generateAddressFromMnemonic(keyring, mnemonic);
-      setAddress(_address);
-    }
-  }, [isKeyringReady, keyring, mnemonic]);
 
   useEffect(() => {
     // pick random four from the mnemonic to make sure user copied it right
     const randomFour = randomlyPickFour(mnemonic);
-    const whichAccount = location.pathname.split('/')[2];
-
-    if (whichAccount === 'stash' || whichAccount === 'controller') {
-      setWhichAccount(whichAccount);
-    }
 
     setRandomFourWords(randomFour);
   }, [location, mnemonic]);
 
-  const validation = validateMeta({ name, password, tags }, step, whichAccount);
+  const validation = validateMeta({ name, password }, step);
 
   const handleSetFirstWord = ({
     target: { value },
@@ -138,19 +105,9 @@ export function Create(props: Props): React.ReactElement {
         onError(err);
       },
       (values) => {
-        const result = keyring.addUri(mnemonic.trim(), values.password, {
-          name: values.name,
-          tags: values.tags,
-        });
-
-        const json = result.json;
-        const blob = new Blob([JSON.stringify(json)], {
-          type: 'application/json; charset=utf-8',
-        });
-
-        FileSaver.saveAs(blob, `${values.name}-${result.pair.address}.json`);
-
-        history.push('/');
+        createAccountSuri(values.name, values.password, mnemonic)
+          .then(() => history.push('/'))
+          .catch(console.error);
       }
     );
   };
@@ -159,7 +116,7 @@ export function Create(props: Props): React.ReactElement {
     setErrors(none);
 
     if (step === 'copy') {
-      validateMeta({ name, password, tags }, step, whichAccount).fold(
+      validateMeta({ name, password }, step).fold(
         (err) => onError(err),
         () => setStep('rewrite')
       );
@@ -188,35 +145,15 @@ export function Create(props: Props): React.ReactElement {
     }
   };
 
-  const handleOnChange = (
-    _event: React.SyntheticEvent,
-    { value }: DropdownProps
-  ): void => {
-    setTags(value as Tags);
-  };
-
-  const handleAddTag = (
-    _event: React.SyntheticEvent,
-    { value }: DropdownProps
-  ): void => {
-    const valueStr = value as string;
-    setTagOptions([
-      ...tagOptions,
-      { key: valueStr, text: valueStr, value: valueStr },
-    ]);
-  };
-
   return (
     <Stacked>
-      {isKeyringReady && (
-        <AddressSummary
-          address={address}
-          api={api}
-          name={name}
-          size='small'
-          orientation='vertical'
-        />
-      )}
+      <AddressSummary
+        address={address}
+        api={api}
+        name={name}
+        size='small'
+        orientation='vertical'
+      />
       <Margin top />
       {step === 'copy'
         ? renderCopyStep({ mnemonic }, { goToNextStep })
@@ -233,12 +170,10 @@ export function Create(props: Props): React.ReactElement {
             }
           )
         : renderMetaStep(
-            { name, password, tags, tagOptions, whichAccount },
+            { name, password },
             {
               setName,
               setPassword,
-              handleAddTag,
-              handleOnChange,
               createNewAccount,
               goToPreviousStep,
             }

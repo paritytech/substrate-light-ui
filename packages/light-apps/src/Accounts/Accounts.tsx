@@ -5,7 +5,7 @@
 import React, { useContext } from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 
-import { KeyringContext } from '../ContextGate/context';
+import { AccountContext } from '../ContextGate/context';
 import { AddAccount } from './AddAccount';
 import { AccountsOverview } from './Overview';
 
@@ -13,7 +13,7 @@ type Props = RouteComponentProps;
 
 export function Accounts(props: Props): React.ReactElement {
   const { location } = props;
-  const { accounts } = useContext(KeyringContext);
+  const { accounts } = useContext(AccountContext);
 
   // Redirect to Add Account page if we have no accounts
   if (

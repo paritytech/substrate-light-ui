@@ -198,15 +198,15 @@ function validateUserInputs(
 ): Either<Errors, Partial<SubResults> & UserInputs> {
   const {
     amountAsString,
-    currentAccount,
+    senderAddress,
     recipientAddress,
     extrinsic,
     ...rest
   } = values;
   const errors = {} as Errors;
 
-  if (!currentAccount) {
-    errors.currentAccount = 'Please enter a sender account.';
+  if (!senderAddress) {
+    errors.senderAddress = 'Please enter a sender account.';
   }
 
   if (
@@ -217,8 +217,8 @@ function validateUserInputs(
     errors.recipientAddress = 'Please enter a recipient address.';
   }
 
-  if (currentAccount === recipientAddress) {
-    errors.currentAccount = 'You cannot send balance to yourself.';
+  if (senderAddress === recipientAddress) {
+    errors.senderAddress = 'You cannot send balance to yourself.';
   }
 
   if (!amountAsString) {
@@ -229,7 +229,7 @@ function validateUserInputs(
     ? left(errors)
     : right({
         amountAsString,
-        currentAccount,
+        senderAddress,
         recipientAddress,
         extrinsic,
         ...rest,

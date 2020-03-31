@@ -2,8 +2,6 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Keyring } from '@polkadot/ui-keyring';
-import { mnemonicToSeed, naclKeypairFromSeed } from '@polkadot/util-crypto';
 import { Either, left, right } from 'fp-ts/lib/Either';
 
 import {
@@ -39,34 +37,13 @@ export function getRandomInts(max: number): number[] {
 }
 
 /**
- * Derive public address from mnemonic key
- */
-export function generateAddressFromMnemonic(
-  keyring: Keyring,
-  mnemonic: string
-): string {
-  const keypair = naclKeypairFromSeed(mnemonicToSeed(mnemonic));
-
-  return keyring.encodeAddress(keypair.publicKey);
-}
-
-/**
  * Validate user inputs
  */
 export function validateMeta(
   values: UserInput,
-  step: string,
-  whichAccount?: string
+  step: string
 ): Either<UserInputError, UserInput> {
   const errors = {} as UserInputError;
-
-  if (whichAccount) {
-    values.tags = [whichAccount];
-  }
-
-  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-  // @ts-ignore
-  values.tags = values.tags.map((tag) => tag.toLowerCase());
 
   if (step === 'meta') {
     (['name', 'password'] as Exclude<keyof UserInput, 'tags'>[])
@@ -74,11 +51,6 @@ export function validateMeta(
       .forEach((key) => {
         errors[key] = `Field "${key}" cannot be empty`;
       });
-  }
-  // Should not tag an account as both a stash and controller
-  if (values.tags.includes('stash') && values.tags.includes('controller')) {
-    errors.tags =
-      'Each account should be either a Stash or a Controller, not both.';
   }
 
   return Object.keys(errors).length ? left(errors) : right(values);

@@ -4,16 +4,6 @@
 
 export type Steps = 'copy' | 'rewrite' | 'meta';
 
-export type TagOption = {
-  key: string;
-  text: string;
-  value: string;
-};
-
-export type Tags = Array<string>;
-
-export type TagOptions = Array<TagOption>;
-
 export interface PhrasePartialRewrite {
   firstWord: string; // from rewrite
   secondWord: string; // from rewrite
@@ -24,7 +14,6 @@ export interface PhrasePartialRewrite {
 export interface UserInput {
   name: string;
   password: string;
-  tags: Tags | string;
 }
 
 export type UserInputError = Partial<UserInput>;

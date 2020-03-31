@@ -1,7 +1,5 @@
 import { handler } from '@substrate/context';
 import {
-  Dropdown,
-  DropdownProps,
   ErrorText,
   FadedText,
   Input,
@@ -19,8 +17,6 @@ import {
 } from '@substrate/ui-components';
 import { Option } from 'fp-ts/lib/Option';
 import React from 'react';
-
-import { TagOptions, Tags } from '../types';
 
 export function renderSetName(
   name: string,
@@ -137,67 +133,22 @@ export function renderMetaStep(
   values: {
     name: string;
     password: string;
-    tags: Tags;
-    tagOptions: TagOptions;
-    whichAccount?: string;
   },
   setters: {
     setName: React.Dispatch<React.SetStateAction<string>>;
     setPassword: React.Dispatch<React.SetStateAction<string>>;
-    handleAddTag: (
-      event: React.SyntheticEvent<HTMLElement, Event>,
-      data: DropdownProps
-    ) => void;
-    handleOnChange: (
-      event: React.SyntheticEvent<HTMLElement, Event>,
-      data: DropdownProps
-    ) => void;
     createNewAccount: () => void;
     goToPreviousStep: () => void;
   }
 ): React.ReactElement {
-  const { name, password, tags, tagOptions, whichAccount } = values;
-  const { handleAddTag, handleOnChange, setName, setPassword } = setters;
-  const { createNewAccount, goToPreviousStep } = setters;
-
-  const renderSetTags = (): React.ReactElement => {
-    return (
-      <Stacked>
-        <SubHeader noMargin>Add Tags:</SubHeader>
-
-        {whichAccount ? (
-          <Input disabled fluid value={whichAccount} />
-        ) : (
-          <Dropdown
-            allowAdditions
-            closeOnChange
-            fluid
-            multiple
-            onAddItem={handleAddTag}
-            onChange={handleOnChange}
-            options={tagOptions}
-            search
-            selection
-            value={tags}
-          />
-        )}
-        <WithSpaceAround>
-          <StackedHorizontal justifyContent='space-between'>
-            <StyledLinkButton onClick={goToPreviousStep}>Back</StyledLinkButton>
-            <StyledNavButton onClick={createNewAccount}>Save</StyledNavButton>
-          </StackedHorizontal>
-        </WithSpaceAround>
-      </Stacked>
-    );
-  };
+  const { name, password } = values;
+  const { setName, setPassword } = setters;
 
   return (
     <WrapperDiv margin='0'>
       {renderSetName(name, setName)}
       <Margin top='small' />
       {renderSetPassword(password, setPassword)}
-      <Margin top='small' />
-      {renderSetTags()}
     </WrapperDiv>
   );
 }

@@ -6,14 +6,13 @@ import { Stacked, StyledLinkButton } from '@substrate/ui-components';
 import React, { useContext } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 
-import { KeyringContext } from '../ContextGate/context';
+import { AccountContext } from '../ContextGate/context';
 import { AccountsOverviewCard } from './OverviewCard';
 
 type Props = RouteComponentProps;
 
-export function AccountsOverview(props: Props): React.ReactElement {
-  const { history } = props;
-  const { accounts } = useContext(KeyringContext);
+export function AccountsOverview(): React.ReactElement {
+  const { accounts } = useContext(AccountContext);
 
   return (
     <Stacked>
@@ -22,7 +21,6 @@ export function AccountsOverview(props: Props): React.ReactElement {
           <AccountsOverviewCard
             address={account.json.address}
             name={account.json.meta.name}
-            history={history}
             key={account.json.address}
           />
         );

@@ -4,8 +4,6 @@
 
 import { handler } from '@substrate/context';
 import {
-  Dropdown,
-  DropdownProps,
   ErrorText,
   Input,
   Margin,
@@ -14,13 +12,12 @@ import {
   SubHeader,
   WrapperDiv,
 } from '@substrate/ui-components';
-import { Either, left, right, tryCatch2v } from 'fp-ts/lib/Either';
+import { Either, left, right } from 'fp-ts/lib/Either';
 import { none, Option, some } from 'fp-ts/lib/Option';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { KeyringContext } from '../../ContextGate/context';
-import { TagOptions, Tags } from './types';
+import { createAccountSuri } from '../../../messaging';
 
 type Props = RouteComponentProps;
 
@@ -58,76 +55,20 @@ function renderError(error: Option<string>): React.ReactElement | null {
 
 export function ImportWithPhrase(props: Props): React.ReactElement {
   const { history } = props;
-  const { keyring } = useContext(KeyringContext);
 
   const [error, setError] = useState<Option<string>>(none);
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [recoveryPhrase, setRecoveryPhrase] = useState('');
-  const [tags, setTags] = useState<Tags>([]);
-  const [tagOptions, setTagOptions] = useState<TagOptions>([
-    { key: '0', text: 'stash', value: 'Stash' },
-    { key: '1', text: 'controller', value: 'Controller' },
-  ]);
-
-  const handleAddTag = (
-    _event: React.SyntheticEvent,
-    { value }: DropdownProps
-  ): void => {
-    const valueStr = value as string;
-    setTagOptions([
-      ...tagOptions,
-      { key: valueStr, text: valueStr, value: valueStr },
-    ]);
-  };
-
-  const handleOnChange = (
-    _event: React.SyntheticEvent,
-    { value }: DropdownProps
-  ): void => {
-    setTags(value as Tags);
-  };
 
   const handleUnlockWithPhrase = (): void => {
-    validate({ name, password, recoveryPhrase })
-      .chain(({ recoveryPhrase }) =>
-        tryCatch2v(
-          () => {
-            // This is inside tryCatch, because it might fail
-            keyring.addUri(
-              recoveryPhrase.trim(),
-              password,
-              { name, ...tags },
-              'sr25519'
-            );
-            history.push('/');
-          },
-          (err) => ({ createAccount: (err as Error).message })
-        )
-      )
-      .fold(
-        (err) => setError(some(Object.values(err)[0])), // If there are errors, only show the 1st one
-        () => history.push('/')
-      );
-  };
-
-  const renderSetTags = (): React.ReactElement => {
-    return (
-      <Stacked>
-        <SubHeader noMargin>Add Tags:</SubHeader>
-        <Dropdown
-          allowAdditions
-          closeOnChange
-          fluid
-          multiple
-          onAddItem={handleAddTag}
-          onChange={handleOnChange}
-          options={tagOptions}
-          search
-          selection
-          value={tags}
-        />
-      </Stacked>
+    validate({ name, password, recoveryPhrase }).fold(
+      (err) => setError(some(Object.values(err)[0])), // If there are errors, only show the 1st one
+      ({ name, password, recoveryPhrase }) => {
+        createAccountSuri(name, password, recoveryPhrase)
+          .then(() => history.push('/'))
+          .catch(console.error);
+      }
     );
   };
 
@@ -154,7 +95,6 @@ export function ImportWithPhrase(props: Props): React.ReactElement {
           type='password'
           value={password}
         />
-        {renderSetTags()}
       </WrapperDiv>
       <Margin top />
       <NavButton onClick={handleUnlockWithPhrase} value='Restore' />
