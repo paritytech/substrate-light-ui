@@ -6,7 +6,7 @@ import { Stacked, StyledLinkButton } from '@substrate/ui-components';
 import React, { useContext } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 
-import { AccountContext } from '../ContextGate/context';
+import { AccountContext } from '../../ContextGate/context';
 import { AccountsOverviewCard } from './OverviewCard';
 
 type Props = RouteComponentProps;
@@ -16,12 +16,13 @@ export function AccountsOverview(): React.ReactElement {
 
   return (
     <Stacked>
-      {Object.values(accounts).map((account) => {
+      <Link to='/accounts/add'>Add Account</Link>
+      {[...accounts.values()].map((account) => {
         return (
           <AccountsOverviewCard
-            address={account.json.address}
-            name={account.json.meta.name}
-            key={account.json.address}
+            address={account.address}
+            name={account.meta.name}
+            key={account.address}
           />
         );
       })}
