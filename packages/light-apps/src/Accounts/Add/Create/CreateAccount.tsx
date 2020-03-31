@@ -2,148 +2,127 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { mnemonicGenerate } from '@polkadot/util-crypto';
+import {
+  encodeAddress,
+  mnemonicGenerate,
+  mnemonicToSeed,
+  naclKeypairFromSeed,
+} from '@polkadot/util-crypto';
 import { ApiContext } from '@substrate/context';
 import {
   AddressSummary,
+  ErrorText,
   Margin,
+  MnemonicRandomWord,
   SizeType,
   Stacked,
 } from '@substrate/ui-components';
-import { none, Option, some } from 'fp-ts/lib/Option';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
 import { createAccountSuri } from '../../../messaging';
-import { PhrasePartialRewriteError, Steps, UserInputError } from '../types';
-import { getRandomInts, validateMeta, validateRewrite } from '../util';
-import {
-  renderCopyStep,
-  renderErrors,
-  renderMetaStep,
-  renderRewriteStep,
-} from './subComponents';
+import { AddAccountStepMeta } from '../shared/StepMeta';
+import { AddAccountStepMnemonic } from './StepMnemonic';
+import { AddAccountStepRewrite, randomlyPickFour } from './StepRewrite';
 
 interface Props extends RouteComponentProps {
   identiconSize?: SizeType;
 }
 
-function randomlyPickFour(phrase: string): Array<Array<string>> {
-  const phraseArray = phrase.split(' ');
-  const ceil = phraseArray.length;
+/**
+ * Derive public address from mnemonic key.
+ */
+function generateAddressFromMnemonic(mnemonic: string): string {
+  const keypair = naclKeypairFromSeed(mnemonicToSeed(mnemonic));
 
-  const [first, second, third, fourth] = getRandomInts(ceil);
-
-  const randomFour = [
-    [first.toString(), phraseArray[first - 1]],
-    [second.toString(), phraseArray[second - 1]],
-    [third.toString(), phraseArray[third - 1]],
-    [fourth.toString(), phraseArray[fourth - 1]],
-  ];
-
-  return randomFour;
+  return encodeAddress(keypair.publicKey);
 }
 
 export function Create(props: Props): React.ReactElement {
-  const { location, history } = props;
+  const { history } = props;
 
   const { api } = useContext(ApiContext);
 
-  const [address, setAddress] = useState<string>();
-  const [errors, setErrors] = useState<Option<Array<string>>>(none);
-  const [mnemonic] = useState(mnemonicGenerate());
+  // User inputs
+  const [mnemonic, setMnemonic] = useState(mnemonicGenerate());
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
-  const [step, setStep] = useState<Steps>('copy');
+  const [step, setStep] = useState(0);
 
-  const [firstWord, setFirstWord] = useState('');
-  const [secondWord, setSecondWord] = useState('');
-  const [thirdWord, setThirdWord] = useState('');
-  const [fourthWord, setFourthWord] = useState('');
+  const [error, setError] = useState('');
 
-  const [randomFourWords, setRandomFourWords] = useState<string[][]>([]);
+  // Derived state
+  const [address, setAddress] = useState('');
+  const [randomFourWords, setRandomFourWords] = useState<MnemonicRandomWord[]>(
+    []
+  );
 
   useEffect(() => {
+    const address = generateAddressFromMnemonic(mnemonic);
     // pick random four from the mnemonic to make sure user copied it right
     const randomFour = randomlyPickFour(mnemonic);
 
+    setAddress(address);
     setRandomFourWords(randomFour);
-  }, [location, mnemonic]);
-
-  const validation = validateMeta({ name, password }, step);
-
-  const handleSetFirstWord = ({
-    target: { value },
-  }: React.ChangeEvent<HTMLInputElement>): void => {
-    setFirstWord(value);
-  };
-
-  const handleSetSecondWord = ({
-    target: { value },
-  }: React.ChangeEvent<HTMLInputElement>): void => {
-    setSecondWord(value);
-  };
-  const handleSetThirdWord = ({
-    target: { value },
-  }: React.ChangeEvent<HTMLInputElement>): void => {
-    setThirdWord(value);
-  };
-
-  const handleSetFourthWord = ({
-    target: { value },
-  }: React.ChangeEvent<HTMLInputElement>): void => {
-    setFourthWord(value);
-  };
-
-  const onError = (err: UserInputError | PhrasePartialRewriteError): void => {
-    setErrors(some(Object.values(err)));
-  };
-
-  const createNewAccount = (): void => {
-    validation.fold(
-      (err) => {
-        onError(err);
-      },
-      (values) => {
-        createAccountSuri(values.name, values.password, mnemonic)
-          .then(() => history.push('/'))
-          .catch(console.error);
-      }
-    );
-  };
+  }, [mnemonic]);
 
   const goToNextStep = (): void => {
-    setErrors(none);
+    setError('');
 
-    if (step === 'copy') {
-      validateMeta({ name, password }, step).fold(
-        (err) => onError(err),
-        () => setStep('rewrite')
-      );
-    }
-
-    if (step === 'rewrite') {
-      validateRewrite(
-        { firstWord, secondWord, thirdWord, fourthWord },
-        randomFourWords
-      ).fold(
-        (err) => onError(err),
-        () => setStep('meta')
-      );
+    if (step < 2) {
+      setStep(step + 1);
+    } else {
+      createAccountSuri(name, password, mnemonic)
+        .then(() => history.push('/'))
+        .catch((error) => setError(error.message));
     }
   };
 
   const goToPreviousStep = (): void => {
-    setErrors(none);
+    setError('');
 
-    if (step === 'rewrite') {
-      setStep('copy');
-    }
-
-    if (step === 'meta') {
-      setStep('rewrite');
+    if (step > 0) {
+      setStep(step - 1);
     }
   };
+
+  const setNewMnemonic = useCallback(() => setMnemonic(mnemonicGenerate()), []);
+
+  function renderStep(step: number): React.ReactElement {
+    switch (step) {
+      case 0:
+        return (
+          <AddAccountStepMnemonic
+            mnemonic={mnemonic}
+            goToNextStep={goToNextStep}
+            setNewMnemonic={setNewMnemonic}
+          />
+        );
+      case 1:
+        return (
+          <AddAccountStepRewrite
+            goToNextStep={goToNextStep}
+            goToPreviousStep={goToPreviousStep}
+            randomFourWords={randomFourWords}
+            setError={setError}
+          />
+        );
+      case 2:
+        return (
+          <AddAccountStepMeta
+            goToNextStep={goToNextStep}
+            goToPreviousStep={goToPreviousStep}
+            name={name}
+            password={password}
+            setName={setName}
+            setPassword={setPassword}
+            setError={setError}
+          />
+        );
+      default:
+        throw new Error(`CreateAccount: Cannot get to step ${step}. qed.`);
+    }
+  }
 
   return (
     <Stacked>
@@ -155,30 +134,8 @@ export function Create(props: Props): React.ReactElement {
         orientation='vertical'
       />
       <Margin top />
-      {step === 'copy'
-        ? renderCopyStep({ mnemonic }, { goToNextStep })
-        : step === 'rewrite'
-        ? renderRewriteStep(
-            { randomFourWords, firstWord, secondWord, thirdWord, fourthWord },
-            {
-              handleSetFirstWord,
-              handleSetSecondWord,
-              handleSetThirdWord,
-              handleSetFourthWord,
-              goToPreviousStep,
-              goToNextStep,
-            }
-          )
-        : renderMetaStep(
-            { name, password },
-            {
-              setName,
-              setPassword,
-              createNewAccount,
-              goToPreviousStep,
-            }
-          )}
-      {renderErrors(errors)}
+      {error && <ErrorText>{error}</ErrorText>}
+      {renderStep(step)}
     </Stacked>
   );
 }

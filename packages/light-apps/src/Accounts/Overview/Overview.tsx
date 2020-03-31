@@ -16,7 +16,6 @@ export function AccountsOverview(): React.ReactElement {
 
   return (
     <Stacked>
-      <Link to='/accounts/add'>Add Account</Link>
       {[...accounts.values()].map((account) => {
         return (
           <AccountsOverviewCard
