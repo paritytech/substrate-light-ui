@@ -4,81 +4,10 @@
 
 import {
   AccountJson,
-  MessageTypes,
-  MessageTypesWithNoSubscriptions,
-  MessageTypesWithNullRequest,
-  MessageTypesWithSubscriptions,
-  RequestTypes,
-  ResponseTypes,
   SeedLengths,
-  SubscriptionMessageTypes,
 } from '@polkadot/extension-base/background/types';
+import { sendMessage } from '@polkadot/extension-base/page';
 import { KeypairType } from '@polkadot/util-crypto/types';
-
-interface Handler {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  resolve: (data: any) => void;
-  reject: (error: Error) => void;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  subscriber?: (data: any) => void;
-}
-
-type Handlers = Record<string, Handler>;
-
-const handlers: Handlers = {};
-let idCounter = 0;
-
-// setup a listener for messages, any incoming resolves the promise
-window.addEventListener('message', ({ data }): void => {
-  const handler = handlers[data.id];
-
-  if (!handler) {
-    console.error(`Unknown response: ${JSON.stringify(data)}`);
-    return;
-  }
-
-  if (!handler.subscriber) {
-    delete handlers[data.id];
-  }
-
-  if (data.subscription) {
-    (handler.subscriber as Function)(data.subscription);
-  } else if (data.error) {
-    handler.reject(new Error(data.error));
-  } else {
-    handler.resolve(data.response);
-  }
-});
-
-function sendMessage<TMessageType extends MessageTypesWithNullRequest>(
-  message: TMessageType
-): Promise<ResponseTypes[TMessageType]>;
-function sendMessage<TMessageType extends MessageTypesWithNoSubscriptions>(
-  message: TMessageType,
-  request: RequestTypes[TMessageType]
-): Promise<ResponseTypes[TMessageType]>;
-function sendMessage<TMessageType extends MessageTypesWithSubscriptions>(
-  message: TMessageType,
-  request: RequestTypes[TMessageType],
-  subscriber: (data: SubscriptionMessageTypes[TMessageType]) => void
-): Promise<ResponseTypes[TMessageType]>;
-function sendMessage<TMessageType extends MessageTypes>(
-  message: TMessageType,
-  request?: RequestTypes[TMessageType],
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  subscriber?: (data: any) => void
-): Promise<ResponseTypes[TMessageType]> {
-  return new Promise((resolve, reject): void => {
-    const id = `${Date.now()}.${++idCounter}`;
-
-    handlers[id] = { resolve, reject, subscriber };
-
-    window.postMessage(
-      { id, message, origin: 'page', request: request || {} },
-      '*'
-    );
-  });
-}
 
 export async function editAccount(
   address: string,

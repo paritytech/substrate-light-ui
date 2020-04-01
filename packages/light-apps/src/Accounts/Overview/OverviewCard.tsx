@@ -13,6 +13,8 @@ import {
 } from '@substrate/ui-components';
 import React, { useContext, useState } from 'react';
 
+import { exportAccount, forgetAccount } from '../../messaging';
+
 interface Props {
   address: string;
   name?: string;
@@ -24,11 +26,25 @@ export function AccountsOverviewCard(props: Props): React.ReactElement {
   const [showDetails, setShowDetails] = useState(false);
 
   const handleBackup = (): void => {
-    window.alert('FIXME handleBackup');
+    const password = window.prompt('Type the password for this account:');
+    if (password) {
+      exportAccount(address, password)
+        .then(({ exportedJson }) => {
+          const element = document.createElement('a');
+          element.href = `data:text/plain;charset=utf-8,${exportedJson}`;
+          element.download = `${
+            JSON.parse(exportedJson).meta.name
+          }_exported_account_${Date.now()}.json`;
+          element.click();
+        })
+        .catch(console.error);
+    }
   };
 
   function handleForget(): void {
-    window.alert('FIXME handleForget');
+    if (window.confirm(`Forget account ${address}?`)) {
+      forgetAccount(address).catch(console.error);
+    }
   }
 
   function handleShowDetails(): void {

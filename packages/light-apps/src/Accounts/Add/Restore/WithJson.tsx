@@ -21,7 +21,9 @@ type Props = RouteComponentProps;
 export function RestoreWithJson(_props: Props): React.ReactElement {
   const [error, setError] = useState('');
   const [step, setStep] = useState(0);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [inputPassword, setInputPassword] = useState('');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [jsonString, setJsonString] = useState('');
 
   const handleFileUploaded = (file: string | null): void => {
