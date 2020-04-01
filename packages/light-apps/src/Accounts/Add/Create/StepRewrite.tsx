@@ -78,9 +78,7 @@ export function AddAccountStepRewrite(props: Props): React.ReactElement {
 
   const handleGoToNextStep = useCallback(() => {
     if (!firstWord || !secondWord || !thirdWord || !fourthWord) {
-      return setError(
-        'All fields must be set to be sure you copied the phrase correctly.'
-      );
+      return setError('Please fill in all fields.');
     }
 
     if (

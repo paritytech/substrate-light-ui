@@ -17,8 +17,8 @@ import {
 import React, { useCallback } from 'react';
 
 interface Props {
-  goToNextStep: () => void;
-  goToPreviousStep: () => void;
+  goToNextStep?: () => void;
+  goToPreviousStep?: () => void;
   name: string;
   password: string;
   setName: React.Dispatch<React.SetStateAction<string>>;
@@ -39,10 +39,10 @@ export function AddAccountStepMeta(props: Props): React.ReactElement {
 
   const handleGoToNextStep = useCallback(() => {
     if (!name || !password) {
-      return setError('All fields must be set.');
+      return setError('Please fill in all fields.');
     }
 
-    goToNextStep();
+    goToNextStep && goToNextStep();
   }, [goToNextStep, name, password, setError]);
 
   return (
@@ -72,8 +72,12 @@ export function AddAccountStepMeta(props: Props): React.ReactElement {
 
       <WithSpaceAround>
         <StackedHorizontal>
-          <StyledLinkButton onClick={goToPreviousStep}>Back</StyledLinkButton>
-          <StyledNavButton onClick={handleGoToNextStep}>Next</StyledNavButton>
+          {goToPreviousStep && (
+            <StyledLinkButton onClick={goToPreviousStep}>Back</StyledLinkButton>
+          )}
+          {goToNextStep && (
+            <StyledNavButton onClick={handleGoToNextStep}>Next</StyledNavButton>
+          )}
         </StackedHorizontal>
       </WithSpaceAround>
     </WrapperDiv>

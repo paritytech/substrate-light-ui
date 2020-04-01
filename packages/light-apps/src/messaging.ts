@@ -29,6 +29,7 @@ const handlers: Handlers = {};
 let idCounter = 0;
 
 // setup a listener for messages, any incoming resolves the promise
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 window.addEventListener('message', (data: any): void => {
   const handler = handlers[data.id];
 
@@ -62,10 +63,10 @@ function sendMessage<TMessageType extends MessageTypesWithSubscriptions>(
   request: RequestTypes[TMessageType],
   subscriber: (data: SubscriptionMessageTypes[TMessageType]) => void
 ): Promise<ResponseTypes[TMessageType]>;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function sendMessage<TMessageType extends MessageTypes>(
   message: TMessageType,
   request?: RequestTypes[TMessageType],
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   subscriber?: (data: any) => void
 ): Promise<ResponseTypes[TMessageType]> {
   return new Promise((resolve, reject): void => {
