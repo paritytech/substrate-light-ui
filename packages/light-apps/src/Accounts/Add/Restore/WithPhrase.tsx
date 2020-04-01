@@ -15,7 +15,7 @@ import {
 import React, { useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { createAccountSuri } from '../../../messaging';
+import { createAccountSuri } from '../../../util/messaging';
 import { AddAccountStepMeta } from '../shared/StepMeta';
 
 type Props = RouteComponentProps;

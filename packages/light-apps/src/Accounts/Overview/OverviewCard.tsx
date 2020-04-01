@@ -13,7 +13,7 @@ import {
 } from '@substrate/ui-components';
 import React, { useContext, useState } from 'react';
 
-import { exportAccount, forgetAccount } from '../../messaging';
+import { exportAccount, forgetAccount } from '../../util/messaging';
 
 interface Props {
   address: string;
