@@ -29,8 +29,7 @@ const handlers: Handlers = {};
 let idCounter = 0;
 
 // setup a listener for messages, any incoming resolves the promise
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-window.addEventListener('message', (data: any): void => {
+window.addEventListener('message', ({ data }): void => {
   const handler = handlers[data.id];
 
   if (!handler) {
@@ -74,7 +73,10 @@ function sendMessage<TMessageType extends MessageTypes>(
 
     handlers[id] = { resolve, reject, subscriber };
 
-    window.postMessage({ id, message, request: request || {} }, '*');
+    window.postMessage(
+      { id, message, origin: 'page', request: request || {} },
+      '*'
+    );
   });
 }
 
