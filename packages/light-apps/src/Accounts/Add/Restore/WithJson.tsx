@@ -50,21 +50,21 @@ export function RestoreWithJson(_props: Props): React.ReactElement {
       {step === 0 ? (
         <InputFile onChange={handleFileUploaded} />
       ) : (
-          <>
-            <WrapperDiv>
-              <Input
-                fluid
-                label='Password'
-                onChange={handler(setInputPassword)}
-                type='password'
-              />
-              <Margin top />
-            </WrapperDiv>
+        <>
+          <WrapperDiv>
+            <Input
+              fluid
+              label='Password'
+              onChange={handler(setInputPassword)}
+              type='password'
+            />
             <Margin top />
-            <ErrorText>{error}</ErrorText>
-            <NavButton onClick={handleRestoreWithJson} value='Restore' />
-          </>
-        )}
+          </WrapperDiv>
+          <Margin top />
+          <ErrorText>{error}</ErrorText>
+          <NavButton onClick={handleRestoreWithJson} value='Restore' />
+        </>
+      )}
     </Stacked>
   );
 }
