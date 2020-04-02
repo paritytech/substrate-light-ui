@@ -20,6 +20,7 @@ import {
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
+import { InjectedContext } from '../../../ContextGate/context';
 import { createAccountSuri } from '../../../util/messaging';
 import { AddAccountStepMeta } from '../shared/StepMeta';
 import { AddAccountStepMnemonic } from './StepMnemonic';
@@ -42,6 +43,7 @@ export function Create(props: Props): React.ReactElement {
   const { history } = props;
 
   const { api } = useContext(ApiContext);
+  const { sendMessage } = useContext(InjectedContext);
 
   // User inputs
   const [mnemonic, setMnemonic] = useState(mnemonicGenerate());
@@ -72,7 +74,7 @@ export function Create(props: Props): React.ReactElement {
     if (step < 2) {
       setStep(step + 1);
     } else {
-      createAccountSuri(name, password, mnemonic)
+      createAccountSuri(sendMessage, name, password, mnemonic)
         .then(() => history.push('/'))
         .catch((error) => setError(error.message));
     }

@@ -14,8 +14,8 @@ import React from 'react';
 import { TopBar } from '../TopBar';
 import {
   AccountContextProvider,
-  ExtensionContext,
-  ExtensionContextProvider,
+  InjectedContext,
+  InjectedContextProvider,
   ProviderContext,
   ProviderContextProvider,
 } from './context';
@@ -32,8 +32,8 @@ export function ContextGate(props: {
   const { children } = props;
 
   return (
-    <ExtensionContextProvider originName={EXTENSION_ORIGIN_NAME}>
-      <ExtensionContext.Consumer>
+    <InjectedContextProvider originName={EXTENSION_ORIGIN_NAME}>
+      <InjectedContext.Consumer>
         {({ injected }): React.ReactElement => (
           <ProviderContextProvider>
             <ProviderContext.Consumer>
@@ -69,7 +69,7 @@ export function ContextGate(props: {
             </ProviderContext.Consumer>
           </ProviderContextProvider>
         )}
-      </ExtensionContext.Consumer>
-    </ExtensionContextProvider>
+      </InjectedContext.Consumer>
+    </InjectedContextProvider>
   );
 }

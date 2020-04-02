@@ -3,26 +3,34 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { SeedLengths } from '@polkadot/extension-base/background/types';
+import { SendRequest } from '@polkadot/extension-base/page/types';
 import { KeypairType } from '@polkadot/util-crypto/types';
 
-import { sendMessage } from './sendMessage';
-
-export function editAccount(address: string, name: string): Promise<boolean> {
+export function editAccount(
+  sendMessage: SendRequest,
+  address: string,
+  name: string
+): Promise<boolean> {
   return sendMessage('pri(accounts.edit)', { address, name });
 }
 
 export function exportAccount(
+  sendMessage: SendRequest,
   address: string,
   password: string
 ): Promise<{ exportedJson: string }> {
   return sendMessage('pri(accounts.export)', { address, password });
 }
 
-export function forgetAccount(address: string): Promise<boolean> {
+export function forgetAccount(
+  sendMessage: SendRequest,
+  address: string
+): Promise<boolean> {
   return sendMessage('pri(accounts.forget)', { address });
 }
 
 export function createAccountExternal(
+  sendMessage: SendRequest,
   name: string,
   address: string,
   genesisHash: string
@@ -35,6 +43,7 @@ export function createAccountExternal(
 }
 
 export function createAccountSuri(
+  sendMessage: SendRequest,
   name: string,
   password: string,
   suri: string,
@@ -49,6 +58,7 @@ export function createAccountSuri(
 }
 
 export function createSeed(
+  sendMessage: SendRequest,
   length?: SeedLengths,
   type?: KeypairType
 ): Promise<{ address: string; seed: string }> {

@@ -2,7 +2,6 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import Injected from '@polkadot/extension-base/page/Injected';
 import { ProviderMeta } from '@polkadot/extension-inject/types';
 import { ProviderInterface } from '@polkadot/rpc-provider/types';
 import { logger } from '@polkadot/util';
@@ -12,7 +11,8 @@ import styled from 'styled-components';
 
 import {
   DEFAULT_PROVIDER,
-  ExtensionContext,
+  Injected,
+  InjectedContext,
   LazyProvider,
   ProviderContext,
 } from '../../ContextGate/context';
@@ -46,7 +46,7 @@ function toLazyProvider(
 
 export function ChooseProvider(): React.ReactElement {
   const { lazy, setLazyProvider } = useContext(ProviderContext);
-  const { injected } = useContext(ExtensionContext);
+  const { injected } = useContext(InjectedContext);
 
   const [allProviders, setAllProviders] = useState<
     Record<string, LazyProvider>

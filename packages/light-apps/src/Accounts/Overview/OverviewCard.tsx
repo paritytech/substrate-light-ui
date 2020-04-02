@@ -13,6 +13,7 @@ import {
 } from '@substrate/ui-components';
 import React, { useContext, useState } from 'react';
 
+import { InjectedContext } from '../../ContextGate/context';
 import { exportAccount, forgetAccount } from '../../util/messaging';
 
 interface Props {
@@ -22,19 +23,22 @@ interface Props {
 
 export function AccountsOverviewCard(props: Props): React.ReactElement {
   const { address, name } = props;
+
   const { api } = useContext(ApiContext);
+  const { sendMessage } = useContext(InjectedContext);
+
   const [showDetails, setShowDetails] = useState(false);
 
   const handleBackup = (): void => {
     const password = window.prompt('Type the password for this account:');
     if (password) {
-      exportAccount(address, password)
+      exportAccount(sendMessage, address, password)
         .then(({ exportedJson }) => {
           const element = document.createElement('a');
           element.href = `data:text/plain;charset=utf-8,${exportedJson}`;
           element.download = `${
             JSON.parse(exportedJson).meta.name
-          }_exported_account_${Date.now()}.json`;
+            }_exported_account_${Date.now()}.json`;
           element.click();
         })
         .catch(console.error);
@@ -43,7 +47,7 @@ export function AccountsOverviewCard(props: Props): React.ReactElement {
 
   function handleForget(): void {
     if (window.confirm(`Forget account ${address}?`)) {
-      forgetAccount(address).catch(console.error);
+      forgetAccount(sendMessage, address).catch(console.error);
     }
   }
 

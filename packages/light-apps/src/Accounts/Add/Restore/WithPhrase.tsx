@@ -12,9 +12,10 @@ import {
   SubHeader,
   WrapperDiv,
 } from '@substrate/ui-components';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
+import { InjectedContext } from '../../../ContextGate/context';
 import { createAccountSuri } from '../../../util/messaging';
 import { AddAccountStepMeta } from '../shared/StepMeta';
 
@@ -22,6 +23,8 @@ type Props = RouteComponentProps;
 
 export function RestoreWithPhrase(props: Props): React.ReactElement {
   const { history } = props;
+
+  const { sendMessage } = useContext(InjectedContext);
 
   const [error, setError] = useState('');
   const [name, setName] = useState('');
@@ -33,7 +36,7 @@ export function RestoreWithPhrase(props: Props): React.ReactElement {
       return setError('Please fill in all fields.');
     }
 
-    createAccountSuri(name, password, recoveryPhrase)
+    createAccountSuri(sendMessage, name, password, recoveryPhrase)
       .then(() => history.push('/'))
       .catch(console.error);
   };

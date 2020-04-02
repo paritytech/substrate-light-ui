@@ -2,9 +2,10 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import Injected from '@polkadot/extension-base/page/Injected';
 import { InjectedAccount } from '@polkadot/extension-inject/types';
 import React, { useEffect, useState } from 'react';
+
+import { Injected } from '../InjectedContext/Injected';
 
 interface AccountContext {
   accounts: Map<string, InjectedAccount>;
