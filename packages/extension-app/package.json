@@ -12,7 +12,7 @@
     "start": "webpack --watch"
   },
   "dependencies": {
-    "@polkadot/extension-base": "^0.24.0-beta.0",
+    "@polkadot/extension-base": "^0.24.0-beta.7",
     "@polkadot/extension-chains": "^0.22.0-beta.10",
     "@substrate/light": "^0.3.27",
     "extensionizer": "^1.0.1",

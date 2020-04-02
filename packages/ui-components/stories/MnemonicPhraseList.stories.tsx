@@ -29,7 +29,12 @@ export const RewriteMnemonicStory = (): JSX.Element => {
       secondWord=''
       thirdWord=''
       fourthWord=''
-      randomFourWords={[['1'], ['12'], ['3'], ['8']]}
+      randomFourWords={[
+        { position: 1, word: '' },
+        { position: 12, word: '' },
+        { position: 3, word: '' },
+        { position: 8, word: '' },
+      ]}
       handleSetFirstWord={SAMPLE_HANDLE_WORD}
       handleSetSecondWord={SAMPLE_HANDLE_WORD}
       handleSetThirdWord={SAMPLE_HANDLE_WORD}

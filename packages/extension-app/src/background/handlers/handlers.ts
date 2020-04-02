@@ -34,9 +34,18 @@ export function handlers<TMessageType extends MessageTypes>(
 
   console.log(` [in] ${source}`); // :: ${JSON.stringify(request)}`);
 
-  const promise = isExtension
-    ? popup.handle(id, message, request, port)
-    : tabs.handle(id, message, request, from, port);
+  // Here is a bit of a hack. SLUI has a different handling logic then polkadot
+  // extension. So we decide which one to use here: first use Tab, then
+  // Extension.
+  const promise = tabs
+    .handle(id, message, request, from, port)
+    .catch((error) => {
+      if (error.message.startsWith('Unable to handle message of type')) {
+        return popup.handle(id, message, request, port);
+      }
+
+      throw error;
+    });
 
   promise
     .then((response): void => {

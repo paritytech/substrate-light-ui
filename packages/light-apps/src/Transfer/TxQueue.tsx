@@ -14,14 +14,9 @@ import {
 } from '@substrate/ui-components';
 import React, { useContext } from 'react';
 
-import { KeyringContext } from '../ContextGate/context';
-
-function renderDetails(
-  currentAccount: string,
-  txQueue: PendingExtrinsic[]
-): React.ReactElement {
+function renderDetails(txQueue: PendingExtrinsic[]): React.ReactElement {
   const {
-    details: { allFees, allTotal, amount, recipientAddress },
+    details: { allFees, allTotal, amount, recipientAddress, senderPair },
   } = txQueue[0];
 
   return (
@@ -30,17 +25,14 @@ function renderDetails(
       allTotal={allTotal}
       amount={amount}
       recipientAddress={recipientAddress}
-      senderAddress={currentAccount}
+      senderAddress={senderPair.address}
     />
   );
 }
 
-function renderSummary(
-  currentAccount: string,
-  txQueue: PendingExtrinsic[]
-): React.ReactElement {
+function renderSummary(txQueue: PendingExtrinsic[]): React.ReactElement {
   const {
-    details: { amount, recipientAddress },
+    details: { amount, recipientAddress, senderPair },
     extrinsic: {
       meta: { name },
     },
@@ -51,7 +43,7 @@ function renderSummary(
       amount={amount}
       methodCall={name.toString()}
       recipientAddress={recipientAddress}
-      senderAddress={currentAccount}
+      senderAddress={senderPair.address}
     />
   );
 }
@@ -78,7 +70,6 @@ function renderTxStatus(txQueue: PendingExtrinsic[]): React.ReactElement {
 }
 
 export function TxQueue(): React.ReactElement | null {
-  const { currentAccount } = useContext(KeyringContext);
   const { clear, txQueue } = useContext(TxQueueContext);
 
   // The parent component will redirect to SendBalance if empty txQueue
@@ -88,24 +79,17 @@ export function TxQueue(): React.ReactElement | null {
     );
   }
 
-  // The parent component will redirect to SendBalance if empty txQueue
-  if (!currentAccount) {
-    throw new Error(
-      'Unreachable code, parent will redirect away from transfer if no currentAccount. qed.'
-    );
-  }
-
   return (
     <Stacked>
       {renderTxStatus(txQueue)}
 
       <FlexItem>
         <SubHeader>Summary:</SubHeader>
-        {renderSummary(currentAccount, txQueue)}
+        {renderSummary(txQueue)}
       </FlexItem>
 
       <FlexItem>
-        {renderDetails(currentAccount, txQueue)}
+        {renderDetails(txQueue)}
         {txQueue[0].status.isFinalized ? (
           <NavButton onClick={clear}>New Transfer</NavButton>
         ) : (

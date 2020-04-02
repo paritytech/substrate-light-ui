@@ -4,5 +4,4 @@
 
 export * from './ApiGate';
 export * from './HealthGate';
-export * from './KeyringGate';
 export * from './SystemGate';

@@ -18,8 +18,8 @@ export type AccountDerivedStakingMap = Record<string, DeriveStakingAccount>;
  */
 export interface UserInputs {
   amountAsString: string;
-  currentAccount: string;
   recipientAddress: string;
+  senderAddress: string;
 }
 
 /**

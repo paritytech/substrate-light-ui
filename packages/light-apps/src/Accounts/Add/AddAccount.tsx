@@ -7,8 +7,8 @@ import React from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 
 import { Create } from './Create/CreateAccount';
-import { ImportWithJson } from './ImportWithJson';
-import { ImportWithPhrase } from './ImportWithPhrase';
+import { RestoreWithJson } from './Restore/WithJson';
+import { RestoreWithPhrase } from './Restore/WithPhrase';
 
 type Props = RouteComponentProps;
 
@@ -45,8 +45,8 @@ export function AddAccount(props: Props): React.ReactElement {
       </Menu>
       <Switch>
         <Route path='/accounts/add/generate' component={Create} />
-        <Route path='/accounts/add/json' component={ImportWithJson} />
-        <Route path='/accounts/add/phrase' component={ImportWithPhrase} />
+        <Route path='/accounts/add/json' component={RestoreWithJson} />
+        <Route path='/accounts/add/phrase' component={RestoreWithPhrase} />
         <Redirect to='/accounts/add/generate' />
       </Switch>
     </WrapperDiv>
