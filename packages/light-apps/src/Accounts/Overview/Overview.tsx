@@ -20,7 +20,7 @@ export function AccountsOverview(): React.ReactElement {
         return (
           <AccountsOverviewCard
             address={account.address}
-            name={account.meta.name}
+            name={account.name}
             key={account.address}
           />
         );

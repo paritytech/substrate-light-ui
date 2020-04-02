@@ -2,13 +2,14 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { web3Enable, web3ListRpcProviders } from '@polkadot/extension-dapp';
-import { ProviderMeta } from '@polkadot/extension-inject/types';
+import Injected from '@polkadot/extension-base/page/Injected';
 import { logger } from '@polkadot/util';
 import React, { useEffect, useState } from 'react';
 
+import { sendMessage } from '../../../util/sendMessage';
+
 interface ExtensionContext {
-  providers: Record<string, ProviderMeta>;
+  injected?: Injected;
 }
 
 interface ExtensionContextProps {
@@ -24,26 +25,21 @@ export function ExtensionContextProvider(
   props: ExtensionContextProps
 ): React.ReactElement {
   const { children, originName } = props;
-  const [providers, setProviders] = useState({});
+  const [injected, setInjected] = useState<Injected>();
 
   useEffect(() => {
-    async function getProviders(): Promise<void> {
-      const extensions = await web3Enable(originName);
+    async function authorize(): Promise<void> {
+      await sendMessage('pub(authorize.tab)', { origin });
 
-      if (!extensions.length) {
-        return;
-      }
-
-      const providerList = await web3ListRpcProviders(originName);
-
-      providerList && setProviders(providerList);
+      const newInjected = new Injected(sendMessage);
+      setInjected(newInjected);
     }
 
-    getProviders().catch(l.error);
+    authorize().catch(l.error);
   }, [originName]);
 
   return (
-    <ExtensionContext.Provider value={{ providers }}>
+    <ExtensionContext.Provider value={{ injected }}>
       {children}
     </ExtensionContext.Provider>
   );

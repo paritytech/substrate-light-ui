@@ -1,8 +1,13 @@
-import { web3UseRpcProvider } from '@polkadot/extension-dapp';
+// Copyright 2018-2020 @paritytech/substrate-light-ui authors & contributors
+// This software may be modified and distributed under the terms
+// of the Apache-2.0 license. See the LICENSE file for details.
+
+import Injected from '@polkadot/extension-base/page/Injected';
 import { ProviderMeta } from '@polkadot/extension-inject/types';
 import { ProviderInterface } from '@polkadot/rpc-provider/types';
+import { logger } from '@polkadot/util';
 import { Dropdown, DropdownProps } from '@substrate/ui-components';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import {
@@ -12,6 +17,8 @@ import {
   ProviderContext,
 } from '../../ContextGate/context';
 
+const l = logger('choose-provider');
+
 const TopDropdown = styled(Dropdown)`
   z-index: 1000;
 `;
@@ -20,32 +27,52 @@ const TopDropdown = styled(Dropdown)`
  * Convert a ProviderMeta from the extension to a LazyProvider used by our
  * ProviderContext.
  */
-function toLazyProvider(meta: ProviderMeta, key: string): LazyProvider {
+function toLazyProvider(
+  injected: Injected,
+  meta: ProviderMeta,
+  key: string
+): LazyProvider {
   return {
     ...meta,
     description: `${meta.node} node from from ${meta.source} extension`,
     id: `${meta.network}-PostMessageProvider`,
     async start(): Promise<ProviderInterface> {
-      const { provider } = await web3UseRpcProvider('slui', key);
+      await injected.provider.startProvider(key);
 
-      return provider;
+      return injected.provider;
     },
   };
 }
 
 export function ChooseProvider(): React.ReactElement {
   const { lazy, setLazyProvider } = useContext(ProviderContext);
-  const { providers } = useContext(ExtensionContext);
+  const { injected } = useContext(ExtensionContext);
 
-  const allProviders: Record<string, LazyProvider> = {
-    [DEFAULT_PROVIDER.id]: DEFAULT_PROVIDER,
-    ...Object.entries(providers).reduce((acc, [key, value]) => {
-      const lazyProvider = toLazyProvider(value, key);
-      acc[lazyProvider.id] = lazyProvider;
+  const [allProviders, setAllProviders] = useState<
+    Record<string, LazyProvider>
+  >({ [DEFAULT_PROVIDER.id]: DEFAULT_PROVIDER });
 
-      return acc;
-    }, {} as Record<string, LazyProvider>),
-  };
+  useEffect(() => {
+    if (!injected) {
+      return;
+    }
+
+    injected.provider
+      .listProviders()
+      .then((providers) => {
+        return {
+          [DEFAULT_PROVIDER.id]: DEFAULT_PROVIDER,
+          ...Object.entries(providers).reduce((acc, [key, value]) => {
+            const lazyProvider = toLazyProvider(injected, value, key);
+            acc[lazyProvider.id] = lazyProvider;
+
+            return acc;
+          }, {} as Record<string, LazyProvider>),
+        };
+      })
+      .then(setAllProviders)
+      .catch(l.error);
+  }, [injected]);
 
   return (
     <TopDropdown

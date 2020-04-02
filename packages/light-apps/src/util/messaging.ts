@@ -2,10 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import {
-  AccountJson,
-  SeedLengths,
-} from '@polkadot/extension-base/background/types';
+import { SeedLengths } from '@polkadot/extension-base/background/types';
 import { KeypairType } from '@polkadot/util-crypto/types';
 
 import { sendMessage } from './sendMessage';
@@ -56,10 +53,4 @@ export function createSeed(
   type?: KeypairType
 ): Promise<{ address: string; seed: string }> {
   return sendMessage('pri(seed.create)', { length, type });
-}
-
-export function subscribeAccounts(
-  cb: (accounts: AccountJson[]) => void
-): Promise<boolean> {
-  return sendMessage('pri(accounts.subscribe)', null, cb);
 }

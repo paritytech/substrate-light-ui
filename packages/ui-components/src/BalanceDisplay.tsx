@@ -69,13 +69,10 @@ export function BalanceDisplay(
     return allStaking && allStaking.unlocking ? (
       <>
         {allStaking.unlocking.map(
-          ({ remainingBlocks, value }: DeriveUnlocking, index: number) => (
+          ({ remainingEras, value }: DeriveUnlocking, index: number) => (
             <div key={index}>
               <FadedText>Unbonded Amount: {formatBalance(value)}</FadedText>
-              <FadedText>
-                {' '}
-                Blocks remaining: {remainingBlocks.toNumber()}
-              </FadedText>
+              <FadedText> Eras remaining: {remainingEras.toNumber()}</FadedText>
             </div>
           )
         )}
