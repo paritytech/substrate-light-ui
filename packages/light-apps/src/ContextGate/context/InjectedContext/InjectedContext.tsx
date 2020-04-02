@@ -2,7 +2,6 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { SendRequest } from '@polkadot/extension-base/page/types';
 import { web3Enable } from '@polkadot/extension-dapp';
 import { logger } from '@polkadot/util';
 import React, { useEffect, useState } from 'react';
@@ -13,7 +12,6 @@ import { Injected } from './Injected';
 
 interface InjectedContext {
   injected?: Injected;
-  sendMessage: SendRequest;
 }
 
 interface InjectedContextProps {
@@ -25,24 +23,11 @@ export const InjectedContext = React.createContext({} as InjectedContext);
 
 const l = logger('extension-context');
 
-/**
- * If we can't find any good `sendMessage` (from popup, extension...), we
- * fallback to one that only logs.
- */
-function fallbackSendMessage(message: string): Promise<void> {
-  console.error(`Couldn't initialize sendMessage, ignoring message ${message}`);
-
-  return Promise.resolve();
-}
-
 export function InjectedContextProvider(
   props: InjectedContextProps
 ): React.ReactElement {
   const { children, originName } = props;
   const [injected, setInjected] = useState<Injected>();
-  const [sendMessage, setSendMessage] = useState<SendRequest>(
-    fallbackSendMessage
-  );
 
   useEffect(() => {
     async function getSendMessage(): Promise<void> {
@@ -50,7 +35,6 @@ export function InjectedContextProvider(
         const injected = new Injected(createSendMessageFromPopup());
 
         setInjected(injected);
-        setSendMessage(injected.sendMessage);
       } else {
         const extensions = await web3Enable(originName);
 
@@ -64,7 +48,6 @@ export function InjectedContextProvider(
         const injected: Injected = extensions[0];
 
         setInjected(injected);
-        setSendMessage(injected.sendMessage);
       }
     }
 
@@ -72,7 +55,7 @@ export function InjectedContextProvider(
   }, [originName]);
 
   return (
-    <InjectedContext.Provider value={{ injected, sendMessage }}>
+    <InjectedContext.Provider value={{ injected }}>
       {children}
     </InjectedContext.Provider>
   );

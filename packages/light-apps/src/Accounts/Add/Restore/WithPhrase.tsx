@@ -16,6 +16,7 @@ import React, { useContext, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
 import { InjectedContext } from '../../../ContextGate/context';
+import { assertIsDefined } from '../../../util/assert';
 import { createAccountSuri } from '../../../util/messaging';
 import { AddAccountStepMeta } from '../shared/StepMeta';
 
@@ -24,7 +25,7 @@ type Props = RouteComponentProps;
 export function RestoreWithPhrase(props: Props): React.ReactElement {
   const { history } = props;
 
-  const { sendMessage } = useContext(InjectedContext);
+  const { injected } = useContext(InjectedContext);
 
   const [error, setError] = useState('');
   const [name, setName] = useState('');
@@ -36,7 +37,12 @@ export function RestoreWithPhrase(props: Props): React.ReactElement {
       return setError('Please fill in all fields.');
     }
 
-    createAccountSuri(sendMessage, name, password, recoveryPhrase)
+    assertIsDefined(
+      injected,
+      "We wouldn't be restoring via phrase if there was no injected. qed."
+    );
+
+    createAccountSuri(injected.sendMessage, name, password, recoveryPhrase)
       .then(() => history.push('/'))
       .catch(console.error);
   };
