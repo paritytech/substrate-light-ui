@@ -6,9 +6,9 @@ import { Container } from '@substrate/ui-components';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-import { Accounts } from '../Accounts';
-import { Signer } from '../Signer';
-import { TxQueueNotifier } from '../TxQueueNotifier';
+import { Signer, TxQueueNotifier } from '../components';
+import { Accounts } from './Accounts';
+import { Transfer } from './Transfer';
 
 export function Routes(): React.ReactElement {
   return (
@@ -16,6 +16,7 @@ export function Routes(): React.ReactElement {
       <Switch>
         <Redirect exact from='/' to='/accounts' />
         <Route path='/accounts' component={Accounts} />
+        <Route path='/transfer' component={Transfer} />
         <Redirect to='/' />
       </Switch>
       <TxQueueNotifier />

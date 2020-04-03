@@ -20,9 +20,9 @@ import {
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { InjectedContext } from '../../../ContextGate/context';
-import { assertIsDefined } from '../../../util/assert';
-import { createAccountSuri } from '../../../util/messaging';
+import { InjectedContext } from '../../../../components/ContextGate/context';
+import { assertIsDefined } from '../../../../util/assert';
+import { createAccountSuri } from '../../../../util/messaging';
 import { AddAccountStepMeta } from '../shared/StepMeta';
 import { AddAccountStepMnemonic } from './StepMnemonic';
 import { AddAccountStepRewrite, randomlyPickFour } from './StepRewrite';

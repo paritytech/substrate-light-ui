@@ -13,9 +13,9 @@ import {
 } from '@substrate/ui-components';
 import React, { useContext, useState } from 'react';
 
-import { InjectedContext } from '../../ContextGate/context';
-import { assertIsDefined } from '../../util/assert';
-import { exportAccount, forgetAccount } from '../../util/messaging';
+import { InjectedContext } from '../../../components/ContextGate/context';
+import { assertIsDefined } from '../../../util/assert';
+import { exportAccount, forgetAccount } from '../../../util/messaging';
 
 interface Props {
   address: string;

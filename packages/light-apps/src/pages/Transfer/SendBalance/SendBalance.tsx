@@ -22,7 +22,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { zip } from 'rxjs';
 import { take } from 'rxjs/operators';
 
-import { AccountContext } from '../../ContextGate/context';
+import { AccountContext } from '../../../components/ContextGate/context';
 import { InputAddress } from '../Transfer.styles';
 import { AllExtrinsicData, Errors } from './types';
 import { validate } from './validate';
