@@ -195,7 +195,7 @@ export function InputAddress(props: InputAddressProps): React.ReactElement {
                 {renderDropdownItemText(currentAddress)}
               </>
             ) : (
-              'Loading...'
+              'Please select...'
             )
           }
           value={value}

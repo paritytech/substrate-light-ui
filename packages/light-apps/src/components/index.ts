@@ -6,4 +6,3 @@ export * from './Alerts';
 export * from './ContextGate';
 export * from './Signer';
 export * from './TopBar';
-export * from './TxQueueNotifier';
