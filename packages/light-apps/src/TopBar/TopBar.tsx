@@ -64,16 +64,26 @@ export function TopBar(): React.ReactElement {
   const { chain, header, health } = useContext(SystemContext);
 
   return (
-    <BlackBlock>
-      <Container as='header'>
-        <div className='flex items-center'>
-          {renderLogo()}
-          <ConnectedNodes fluid>
-            {renderHealth(chain, header, health)}
-            <ChooseProvider />
-          </ConnectedNodes>
-        </div>
-      </Container>
-    </BlackBlock>
+    <>
+      <div className='flex'>
+        <BlackBlock className='w-10'>
+          <Link to='/accounts'>Accounts</Link>
+        </BlackBlock>
+        <BlackBlock className='w-10'>
+          <Link to='/transfer'>Transfer</Link>
+        </BlackBlock>
+      </div>
+      <BlackBlock>
+        <Container as='header'>
+          <div className='flex items-center'>
+            {renderLogo()}
+            <ConnectedNodes fluid>
+              {renderHealth(chain, header, health)}
+              <ChooseProvider />
+            </ConnectedNodes>
+          </div>
+        </Container>
+      </BlackBlock>
+    </>
   );
 }
