@@ -21,7 +21,7 @@ export function Accounts(props: Props): React.ReactElement {
       <Route
         path='/accounts/add'
         render={(routeProps): React.ReactElement => (
-          <Modal open onClose={goToAccounts}>
+          <Modal onClose={goToAccounts} open>
             <AddAccount {...routeProps} />
           </Modal>
         )}
