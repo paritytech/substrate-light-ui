@@ -13,7 +13,7 @@
   },
   "repository": "https://github.com/paritytech/substrate-light-ui",
   "scripts": {
-    "build": "rimraf lib && tsc",
+    "build": "rimraf lib && tsc && mkdir lib/assets/ && cp -r ./src/assets/* lib/assets",
     "build-storybook": "build-storybook -c .storybook -o .out",
     "storybook": "start-storybook -p 9001 -c .storybook"
   },
