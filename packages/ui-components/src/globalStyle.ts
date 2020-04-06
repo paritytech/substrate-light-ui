@@ -3,8 +3,8 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import 'tachyons/css/tachyons.min.css';
-import './src/assets/fonts/Inter/inter.css';
-import './src/assets/fonts/Roboto_Mono/roboto_mono.css';
+import './assets/fonts/Inter/inter.css';
+import './assets/fonts/Roboto_Mono/roboto_mono.css';
 
 import { createGlobalStyle } from 'styled-components';
 
