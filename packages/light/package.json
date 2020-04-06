@@ -1,6 +1,6 @@
 {
   "name": "@substrate/light",
-  "version": "0.3.27",
+  "version": "0.3.32",
   "author": "Parity Technologies <admin@parity.io>",
   "description": "WASM light clients from various chains, bundled in a single package.",
   "files": [
