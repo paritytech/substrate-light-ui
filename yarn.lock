@@ -2634,12 +2634,12 @@
     extensionizer "^1.0.1"
 
 "@polkadot/extension-chains@^0.22.0-beta.10":
-  version "0.22.0-beta.10"
-  resolved "https://registry.yarnpkg.com/@polkadot/extension-chains/-/extension-chains-0.22.0-beta.10.tgz#aa56f2aabfb35e1748590ac057269451e56386df"
-  integrity sha512-xuz1kv8eL3a7QreMrurbxEUyScPrE0/vpVGpowslGqbeo8L7TYe8YpTUF/07KejhLcHrvme42O5gLfUTzhdlrQ==
+  version "0.22.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/extension-chains/-/extension-chains-0.22.1.tgz#3e7a59f60d1d9bf5c38ee630543542ce2e8403e1"
+  integrity sha512-pqQtpawSayBWf2JUDJIneP5WPoM5eLGBt8u6BGa4kuQjDeXfApaDs+9E6ijOa319xw0IquOgweiH08C0DnYbFA==
   dependencies:
     "@babel/runtime" "^7.8.4"
-    edgeware-node-types "^1.1.0"
+    edgeware-node-types "^1.2.0"
 
 "@polkadot/extension-dapp@^0.24.0-beta.7":
   version "0.24.0-beta.7"
@@ -7989,7 +7989,7 @@ ecc-jsbn@~0.1.1:
     jsbn "~0.1.0"
     safer-buffer "^2.1.0"
 
-edgeware-node-types@^1.1.0:
+edgeware-node-types@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/edgeware-node-types/-/edgeware-node-types-1.2.0.tgz#d92d19f71195c7dd504b021704a403568129d371"
   integrity sha512-7jsMSWT3DarKQnYcyqnzMK9Pi/DN5M9HPl7ke/rzUPsWvXUckVd2q+KJAQdqob+AvLLDKZ98p1frTrfGXwsJxw==
@@ -15712,9 +15712,9 @@ prettier-linter-helpers@^1.0.0:
     fast-diff "^1.1.2"
 
 prettier@>=2.0.1, prettier@^1.18.2, prettier@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.0.2.tgz#1ba8f3eb92231e769b7fcd7cb73ae1b6b74ade08"
-  integrity sha512-5xJQIPT8BraI7ZnaDwSbu5zLrB6vvi8hVV58yHQ+QK64qrY40dULy0HSRlQ2/2IdzeBpjhDkqdcFBnFeDEMVdg==
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.0.3.tgz#9a06f0e94a51420e78b6925568b5bec72afe41ea"
+  integrity sha512-5qpBDBHO9fpE0zruKiTZm8Gxmz7kknO+WlQR/ivV+RMwgDw/WjOgmxLDn66MPrxq/WZPx/EgEZzh87xJO5E6Fw==
 
 pretty-bytes@^5.1.0:
   version "5.3.0"
