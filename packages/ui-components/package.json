@@ -30,7 +30,6 @@
     "styled-components": "^5.0.1"
   },
   "devDependencies": {
-    "@babel/compat-data": "7.8.0",
     "@storybook/addon-actions": "^5.3.18",
     "@storybook/addon-knobs": "^5.3.18",
     "@storybook/addon-links": "^5.3.18",
@@ -41,8 +40,5 @@
   "peerDependencies": {
     "@polkadot/api": "^1.8.1",
     "react": "^16.9"
-  },
-  "resolutions": {
-    "@babel/preset-env": "^7.8.7"
   }
 }
