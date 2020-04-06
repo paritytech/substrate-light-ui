@@ -1,6 +1,6 @@
 {
   "name": "@substrate/light-apps",
-  "version": "0.3.27",
+  "version": "0.3.32",
   "author": "Parity Technologies <admin@parity.io>",
   "description": "Minimal, WASM-light-client-bundled Substrate wallet for balance transfers",
   "homepage": "./",
@@ -22,7 +22,7 @@
     "@polkadot/extension-dapp": "^0.24.0-beta.7",
     "@polkadot/ui-assets": "^0.51.1",
     "@substrate/context": "^0.3.22",
-    "@substrate/ui-components": "^0.3.27",
+    "@substrate/ui-components": "^0.3.32",
     "@types/chrome": "^0.0.103",
     "@types/filesystem": "^0.0.29",
     "@types/react-dom": "^16.9.6",
