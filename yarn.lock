@@ -2642,17 +2642,17 @@
     edgeware-node-types "^1.1.0"
 
 "@polkadot/extension-dapp@^0.24.0-beta.7":
-  version "0.24.0-beta.7"
-  resolved "https://registry.yarnpkg.com/@polkadot/extension-dapp/-/extension-dapp-0.24.0-beta.7.tgz#95b9c7336570aa408a7fc5e4ee9951d7ad64449a"
-  integrity sha512-iGbYbIPuFt1t+GImwcjt7KAP9hm99R9bqIlqfO6INWZIBa9yAGp39Q4aqyGYLjsORTJBZuiLWlfN3x0ncfzijQ==
+  version "0.24.0-beta.14"
+  resolved "https://registry.yarnpkg.com/@polkadot/extension-dapp/-/extension-dapp-0.24.0-beta.14.tgz#2f3a7dad771e79eff01875008cbc4c65b5d541e4"
+  integrity sha512-L3TKo5RMK1VOeuzlNYAWetuQrksrpTElRLBnP8st7kKCHhG8JrmiXOlwVCN2EChMU3jUh3Zbw0HFRMA9j0NL+Q==
   dependencies:
     "@babel/runtime" "^7.9.2"
-    "@polkadot/extension-inject" "0.24.0-beta.7"
+    "@polkadot/extension-inject" "0.24.0-beta.14"
 
-"@polkadot/extension-inject@0.24.0-beta.7":
-  version "0.24.0-beta.7"
-  resolved "https://registry.yarnpkg.com/@polkadot/extension-inject/-/extension-inject-0.24.0-beta.7.tgz#42af03c02edda866b2ebf72a58e872b1eddff201"
-  integrity sha512-bv+DS3h2TT4XlYH6/0B16X0KtQ8KROLCeCF8sOm+lRSMYbqb+K/6i1Ttbf0b0MJ/29PpusFWQ0YcrMu4RNddYQ==
+"@polkadot/extension-inject@0.24.0-beta.14":
+  version "0.24.0-beta.14"
+  resolved "https://registry.yarnpkg.com/@polkadot/extension-inject/-/extension-inject-0.24.0-beta.14.tgz#ee0683620bd2c82eaee58b5aaa5a970af3528bae"
+  integrity sha512-d1N2jpGDYccEXzOdeplqO+ZMcH+GsPQhc04BA3cntUUasgk/iRVwLXCUAeOWEaBX7UIVhy4+TEL3jdIXh0ot2g==
   dependencies:
     "@babel/runtime" "^7.9.2"
 
@@ -15712,9 +15712,9 @@ prettier-linter-helpers@^1.0.0:
     fast-diff "^1.1.2"
 
 prettier@>=2.0.1, prettier@^1.18.2, prettier@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.0.2.tgz#1ba8f3eb92231e769b7fcd7cb73ae1b6b74ade08"
-  integrity sha512-5xJQIPT8BraI7ZnaDwSbu5zLrB6vvi8hVV58yHQ+QK64qrY40dULy0HSRlQ2/2IdzeBpjhDkqdcFBnFeDEMVdg==
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.0.3.tgz#9a06f0e94a51420e78b6925568b5bec72afe41ea"
+  integrity sha512-5qpBDBHO9fpE0zruKiTZm8Gxmz7kknO+WlQR/ivV+RMwgDw/WjOgmxLDn66MPrxq/WZPx/EgEZzh87xJO5E6Fw==
 
 pretty-bytes@^5.1.0:
   version "5.3.0"
