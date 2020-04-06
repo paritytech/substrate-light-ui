@@ -13,7 +13,7 @@
   },
   "repository": "https://github.com/paritytech/substrate-light-ui",
   "scripts": {
-    "build": "rimraf lib && tsc",
+    "build": "rimraf lib && tsc && mkdir lib/assets/ && cp -r ./src/assets/* lib/assets",
     "build-storybook": "build-storybook -c .storybook -o .out",
     "storybook": "start-storybook -p 9001 -c .storybook"
   },
@@ -30,10 +30,10 @@
     "styled-components": "^4.4.1"
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^5.2.5",
-    "@storybook/addon-knobs": "^5.2.5",
-    "@storybook/addon-links": "^5.2.5",
-    "@storybook/react": "^5.2.5",
+    "@storybook/addon-actions": "^5.3.18",
+    "@storybook/addon-knobs": "^5.3.18",
+    "@storybook/addon-links": "^5.3.18",
+    "@storybook/react": "^5.3.18",
     "@types/react-color": "^3.0.1",
     "@types/webpack-env": "^1.14.0"
   },
