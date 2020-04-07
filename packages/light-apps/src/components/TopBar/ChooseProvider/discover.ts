@@ -40,3 +40,10 @@ export const FALLBACK_PROVIDERS: LazyProvider[] = [
     transport: 'WsProvider',
   },
 ];
+
+export async function discoverChain(
+  chain: string,
+  allProviders: Record<string, LazyProvider>
+): Promise<LazyProvider> {
+  return {};
+}

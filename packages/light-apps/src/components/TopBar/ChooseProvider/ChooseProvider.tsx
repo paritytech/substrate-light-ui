@@ -87,15 +87,9 @@ function toLazyProvider(
 /**
  * From all the providers we have, derive all the networks.
  */
-function getAllNetworks(
-  allProviders: Record<string, LazyProvider>
-): { network: string }[] {
+function getAllNetworks(allProviders: Record<string, LazyProvider>): string[] {
   return [
-    ...new Set(
-      Object.values(allProviders).map(({ network }) => ({
-        network,
-      }))
-    ),
+    ...new Set(Object.values(allProviders).map(({ network }) => network)),
   ];
 }
 
@@ -123,6 +117,7 @@ export function ChooseProvider(): React.ReactElement {
     ? getAllProvidersForNetwork(network, allProviders)
     : [];
 
+  // Update providers when we get some from extension
   useEffect(() => {
     if (!injected) {
       return;
@@ -145,6 +140,9 @@ export function ChooseProvider(): React.ReactElement {
       .catch(l.error);
   }, [injected]);
 
+  // Discover best provider when we switch network
+  useEffect(() => {});
+
   return (
     <ConnectedNodes>
       <TopDropdown
@@ -154,7 +152,7 @@ export function ChooseProvider(): React.ReactElement {
         ): void => {
           setNetwork(value as string);
         }}
-        options={allNetworks.map(({ network }) => ({
+        options={allNetworks.map((network) => ({
           key: network,
           text: network,
           value: network,
@@ -164,6 +162,7 @@ export function ChooseProvider(): React.ReactElement {
       />
 
       <TopDropdown
+        disabled={!network}
         onChange={(
           _event: React.SyntheticEvent,
           { value }: DropdownProps

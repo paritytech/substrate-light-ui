@@ -12,7 +12,7 @@ import { Handlers } from '@polkadot/extension-base/page';
 import { SendRequest } from '@polkadot/extension-base/page/types';
 import extension from 'extensionizer';
 
-import { detectEnvironment } from '../../../../util/env';
+import { detectEnvironment } from '../../../util/env';
 
 /**
  * Based on the environment, use `window.postMessage` or `port.PostMessage` for

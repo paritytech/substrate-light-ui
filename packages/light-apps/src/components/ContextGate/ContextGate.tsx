@@ -46,19 +46,26 @@ export function ContextGate(props: {
                         injected={injected}
                         originName={EXTENSION_ORIGIN_NAME}
                       >
-                        <HealthContextProvider provider={provider}>
-                          <HealthGate>
-                            <ApiContextProvider provider={provider}>
-                              <ApiGate>
-                                <AlertsContextProvider>
-                                  <TxQueueContextProvider>
-                                    {children}
-                                  </TxQueueContextProvider>
-                                </AlertsContextProvider>
-                              </ApiGate>
-                            </ApiContextProvider>
-                          </HealthGate>
-                        </HealthContextProvider>
+                        <>
+                          {/* Since we are inside SystemGate, provider is defined. */}
+                          {/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */}
+                          <HealthContextProvider provider={provider!}>
+                            <HealthGate>
+                              <>
+                                {/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */}
+                                <ApiContextProvider provider={provider!}>
+                                  <ApiGate>
+                                    <AlertsContextProvider>
+                                      <TxQueueContextProvider>
+                                        {children}
+                                      </TxQueueContextProvider>
+                                    </AlertsContextProvider>
+                                  </ApiGate>
+                                </ApiContextProvider>
+                              </>
+                            </HealthGate>
+                          </HealthContextProvider>
+                        </>
                       </AccountContextProvider>
                     </SystemGate>
                   </>
