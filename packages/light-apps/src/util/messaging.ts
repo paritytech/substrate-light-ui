@@ -2,9 +2,14 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { SeedLengths } from '@polkadot/extension-base/background/types';
+import {
+  SeedLengths,
+  SigningRequest,
+} from '@polkadot/extension-base/background/types';
 import { SendRequest } from '@polkadot/extension-base/page/types';
 import { KeypairType } from '@polkadot/util-crypto/types';
+
+// Accounts
 
 export function editAccount(
   sendMessage: SendRequest,
@@ -63,4 +68,21 @@ export function createSeed(
   type?: KeypairType
 ): Promise<{ address: string; seed: string }> {
   return sendMessage('pri(seed.create)', { length, type });
+}
+
+// Signing
+
+export async function subscribeSigningRequests(
+  sendMessage: SendRequest,
+  cb: (accounts: SigningRequest[]) => void
+): Promise<boolean> {
+  return sendMessage('pri(signing.requests)', null, cb);
+}
+
+export async function approveSignPassword(
+  sendMessage: SendRequest,
+  id: string,
+  password: string
+): Promise<boolean> {
+  return sendMessage('pri(signing.approve.password)', { id, password });
 }

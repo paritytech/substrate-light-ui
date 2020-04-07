@@ -11,9 +11,8 @@ import React from 'react';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
 
-import { Alerts } from './Alerts';
-import { ContextGate } from './ContextGate';
-import { Routes } from './Routes';
+import { Alerts, ContextGate } from './components';
+import { Routes } from './pages';
 
 // Use MemoryRouter for production viewing in file:// protocol
 // https://github.com/facebook/create-react-app/issues/3591

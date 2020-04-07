@@ -7,7 +7,7 @@ import { injectExtension } from '@polkadot/extension-inject';
 
 // FIXME Should probably export this in a separate package, because right now
 // it's out of the root of this package.
-import { Injected } from '../../../light-apps/src/ContextGate/context/InjectedContext/Injected';
+import { Injected } from '../../../light-apps/src/components/ContextGate/context/InjectedContext/Injected';
 
 async function enable(origin: string): Promise<Injected> {
   await sendMessage('pub(authorize.tab)', { origin });
