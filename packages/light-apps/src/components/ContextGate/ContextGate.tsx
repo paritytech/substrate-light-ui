@@ -6,19 +6,19 @@ import {
   AlertsContextProvider,
   ApiContextProvider,
   HealthContextProvider,
-  SystemContextProvider,
   TxQueueContextProvider,
 } from '@substrate/context';
 import React from 'react';
 
-import { TopBar } from '../TopBar';
 import {
   AccountContextProvider,
   InjectedContext,
   InjectedContextProvider,
   ProviderContext,
   ProviderContextProvider,
-} from './context';
+  SystemContextProvider,
+} from '../context';
+import { TopBar } from '../TopBar';
 import { ApiGate, HealthGate, SystemGate } from './gates';
 
 /**
@@ -37,35 +37,33 @@ export function ContextGate(props: {
         {({ injected }): React.ReactElement => (
           <ProviderContextProvider>
             <ProviderContext.Consumer>
-              {({ provider }): React.ReactElement | null =>
-                provider ? (
-                  <SystemContextProvider provider={provider}>
-                    <>
-                      <TopBar />
-                      <SystemGate>
-                        <AccountContextProvider
-                          injected={injected}
-                          originName={EXTENSION_ORIGIN_NAME}
-                        >
-                          <HealthContextProvider provider={provider}>
-                            <HealthGate>
-                              <ApiContextProvider provider={provider}>
-                                <ApiGate>
-                                  <AlertsContextProvider>
-                                    <TxQueueContextProvider>
-                                      {children}
-                                    </TxQueueContextProvider>
-                                  </AlertsContextProvider>
-                                </ApiGate>
-                              </ApiContextProvider>
-                            </HealthGate>
-                          </HealthContextProvider>
-                        </AccountContextProvider>
-                      </SystemGate>
-                    </>
-                  </SystemContextProvider>
-                ) : null
-              }
+              {({ provider }): React.ReactElement | null => (
+                <SystemContextProvider provider={provider}>
+                  <>
+                    <TopBar />
+                    <SystemGate>
+                      <AccountContextProvider
+                        injected={injected}
+                        originName={EXTENSION_ORIGIN_NAME}
+                      >
+                        <HealthContextProvider provider={provider}>
+                          <HealthGate>
+                            <ApiContextProvider provider={provider}>
+                              <ApiGate>
+                                <AlertsContextProvider>
+                                  <TxQueueContextProvider>
+                                    {children}
+                                  </TxQueueContextProvider>
+                                </AlertsContextProvider>
+                              </ApiGate>
+                            </ApiContextProvider>
+                          </HealthGate>
+                        </HealthContextProvider>
+                      </AccountContextProvider>
+                    </SystemGate>
+                  </>
+                </SystemContextProvider>
+              )}
             </ProviderContext.Consumer>
           </ProviderContextProvider>
         )}

@@ -6,7 +6,7 @@ import { Stacked, StyledLinkButton } from '@substrate/ui-components';
 import React, { useContext } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 
-import { AccountContext } from '../../../components/ContextGate/context';
+import { AccountContext } from '../../../components/context';
 import { AccountsOverviewCard } from './OverviewCard';
 
 type Props = RouteComponentProps;

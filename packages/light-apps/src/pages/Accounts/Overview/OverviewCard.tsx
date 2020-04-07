@@ -13,7 +13,7 @@ import {
 } from '@substrate/ui-components';
 import React, { useContext, useState } from 'react';
 
-import { InjectedContext } from '../../../components/ContextGate/context';
+import { InjectedContext } from '../../../components/context';
 import { assertIsDefined } from '../../../util/assert';
 
 interface Props {

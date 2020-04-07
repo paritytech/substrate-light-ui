@@ -6,7 +6,6 @@ import { Container } from '@substrate/ui-components';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-import { Signer } from '../components';
 import { Accounts } from './Accounts';
 import { Transfer } from './Transfer';
 
@@ -19,7 +18,6 @@ export function Routes(): React.ReactElement {
         <Route path='/transfer' component={Transfer} />
         <Redirect to='/' />
       </Switch>
-      <Signer />
     </Container>
   );
 }
