@@ -15,7 +15,6 @@ import React, { useContext, useState } from 'react';
 
 import { InjectedContext } from '../../../components/ContextGate/context';
 import { assertIsDefined } from '../../../util/assert';
-import { exportAccount, forgetAccount } from '../../../util/messaging';
 
 interface Props {
   address: string;
@@ -26,19 +25,20 @@ export function AccountsOverviewCard(props: Props): React.ReactElement {
   const { address, name } = props;
 
   const { api } = useContext(ApiContext);
-  const { injected } = useContext(InjectedContext);
+  const { messaging } = useContext(InjectedContext);
 
   const [showDetails, setShowDetails] = useState(false);
 
   const handleBackup = (): void => {
     assertIsDefined(
-      injected,
-      "We wouldn't be showing a backup button if no injected. qed."
+      messaging,
+      "We wouldn't be showing a backup button if no injected messaging. qed."
     );
 
     const password = window.prompt('Type the password for this account:');
     if (password) {
-      exportAccount(injected.sendMessage, address, password)
+      messaging
+        .exportAccount(address, password)
         .then(({ exportedJson }) => {
           const element = document.createElement('a');
           element.href = `data:text/plain;charset=utf-8,${exportedJson}`;
@@ -53,12 +53,12 @@ export function AccountsOverviewCard(props: Props): React.ReactElement {
 
   function handleForget(): void {
     assertIsDefined(
-      injected,
-      "We wouldn't be showing a forget button if no injected. qed."
+      messaging,
+      "We wouldn't be showing a forget button if no injected messaging. qed."
     );
 
     if (window.confirm(`Forget account ${address}?`)) {
-      forgetAccount(injected.sendMessage, address).catch(console.error);
+      messaging.forgetAccount(address).catch(console.error);
     }
   }
 

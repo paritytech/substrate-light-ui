@@ -7,11 +7,13 @@ import { logger } from '@polkadot/util';
 import React, { useEffect, useState } from 'react';
 
 import { detectEnvironment } from '../../../../util/env';
-import { createSendMessageFromPopup } from '../../../../util/sendMessage';
 import { Injected } from './Injected';
+import { messaging } from './messaging';
+import { createSendMessageFromPopup } from './sendMessage';
 
 interface InjectedContext {
   injected?: Injected;
+  messaging?: ReturnType<typeof messaging>;
 }
 
 interface InjectedContextProps {
@@ -55,7 +57,12 @@ export function InjectedContextProvider(
   }, [originName]);
 
   return (
-    <InjectedContext.Provider value={{ injected }}>
+    <InjectedContext.Provider
+      value={{
+        injected,
+        messaging: injected && messaging(injected.sendMessage),
+      }}
+    >
       {children}
     </InjectedContext.Provider>
   );
