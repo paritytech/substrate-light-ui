@@ -62,6 +62,7 @@ export function TxForm(props: Props): React.ReactElement {
           min={0}
           onChange={handler(setAmount)}
           placeholder='e.g. 1.00'
+          step='any'
           type='number'
           value={amount}
         />
@@ -76,6 +77,7 @@ export function TxForm(props: Props): React.ReactElement {
           min={0}
           onChange={handler(setTip)}
           placeholder='e.g. 0.01'
+          step='any'
           type='number'
           value={tip}
         />

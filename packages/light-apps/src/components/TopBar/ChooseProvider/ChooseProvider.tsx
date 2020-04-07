@@ -10,7 +10,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import {
-  DEFAULT_PROVIDER,
+  FALLBACK_PROVIDERS,
   Injected,
   InjectedContext,
   LazyProvider,
@@ -22,6 +22,12 @@ const l = logger('choose-provider');
 const TopDropdown = styled(Dropdown)`
   z-index: 1000;
 `;
+
+const fallbackProviders = FALLBACK_PROVIDERS.reduce((acc, provider) => {
+  acc[provider.id] = provider;
+
+  return acc;
+}, {} as Record<string, LazyProvider>);
 
 /**
  * Convert a ProviderMeta from the extension to a LazyProvider used by our
@@ -48,9 +54,7 @@ export function ChooseProvider(): React.ReactElement {
   const { lazy, setLazyProvider } = useContext(ProviderContext);
   const { injected } = useContext(InjectedContext);
 
-  const [allProviders, setAllProviders] = useState<
-    Record<string, LazyProvider>
-  >({ [DEFAULT_PROVIDER.id]: DEFAULT_PROVIDER });
+  const [allProviders, setAllProviders] = useState(fallbackProviders);
 
   useEffect(() => {
     if (!injected) {
@@ -61,13 +65,13 @@ export function ChooseProvider(): React.ReactElement {
       .listProviders()
       .then((providers) => {
         return {
-          [DEFAULT_PROVIDER.id]: DEFAULT_PROVIDER,
           ...Object.entries(providers).reduce((acc, [key, value]) => {
             const lazyProvider = toLazyProvider(injected, value, key);
             acc[lazyProvider.id] = lazyProvider;
 
             return acc;
           }, {} as Record<string, LazyProvider>),
+          ...fallbackProviders,
         };
       })
       .then(setAllProviders)

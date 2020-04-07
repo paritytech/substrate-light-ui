@@ -6,17 +6,20 @@ import { SystemContext } from '@substrate/context';
 import { StyledNavButton } from '@substrate/ui-components';
 import React, { useContext } from 'react';
 
+import { TxStatus } from './TxStatus';
+
 interface Props {
   amount: string;
   recipient: string;
   sender: string;
   tip: string;
+  txStatus: TxStatus;
 }
 
 export function TxDetails(props: Props): React.ReactElement {
-  const { amount, recipient, sender, tip } = props;
+  const { amount, recipient, sender, tip, txStatus } = props;
 
-  const { chain } = useContext(SystemContext);
+  const { chain, properties } = useContext(SystemContext);
 
   return (
     <>
@@ -25,13 +28,23 @@ export function TxDetails(props: Props): React.ReactElement {
       <div>From: {sender}</div>
       <div>To: {recipient}</div>
 
-      <div>Amount: {amount}</div>
-      <div>Tip: {tip}</div>
-      <div>Fees: {'fees'}</div>
-      <div>Total: {'total'}</div>
+      <div>
+        Amount: {amount} {properties.tokenSymbol.unwrapOr('UNIT').toString()}
+      </div>
+      <div>
+        Tip: {tip || 0} {properties.tokenSymbol.unwrapOr('UNIT').toString()}
+      </div>
+      <div>
+        Fees: {'fees'} {properties.tokenSymbol.unwrapOr('UNIT').toString()}
+      </div>
+      <div>
+        Total: {'total'} {properties.tokenSymbol.unwrapOr('UNIT').toString()}
+      </div>
 
       {/* Submit logic is handled by form in Transfer component */}
-      <StyledNavButton type='submit'>Submit Transaction</StyledNavButton>
+      <StyledNavButton disabled={txStatus !== 'validated'} type='submit'>
+        Submit Transaction
+      </StyledNavButton>
     </>
   );
 }

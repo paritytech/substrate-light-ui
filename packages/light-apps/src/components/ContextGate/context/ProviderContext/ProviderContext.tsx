@@ -42,15 +42,33 @@ export interface ProviderContextProviderProps {
   children?: React.ReactElement;
 }
 
-export const DEFAULT_PROVIDER: LazyProvider = {
-  description: 'Remote node hosted by W3F',
-  id: 'kusama-WsProvider',
-  network: 'kusama',
-  node: 'light',
-  source: 'slui',
-  start: () => Promise.resolve(new WsProvider('wss://kusama-rpc.polkadot.io')),
-  transport: 'WsProvider',
-};
+/**
+ * These fallback providers connect to a centralized remote RPC node.
+ */
+export const FALLBACK_PROVIDERS: LazyProvider[] = [
+  {
+    description: 'Remote node hosted by W3F',
+    id: 'westend-WsProvider',
+    network: 'westend',
+    node: 'light',
+    source: 'slui',
+    start: (): Promise<ProviderInterface> =>
+      Promise.resolve(new WsProvider('wss://westend-rpc.polkadot.io')),
+    transport: 'WsProvider',
+  },
+  {
+    description: 'Remote node hosted by W3F',
+    id: 'kusama-WsProvider',
+    network: 'kusama',
+    node: 'light',
+    source: 'slui',
+    start: (): Promise<ProviderInterface> =>
+      Promise.resolve(new WsProvider('wss://kusama-rpc.polkadot.io')),
+    transport: 'WsProvider',
+  },
+];
+
+export const DEFAULT_PROVIDER = FALLBACK_PROVIDERS[0];
 
 export function ProviderContextProvider(
   props: ProviderContextProviderProps

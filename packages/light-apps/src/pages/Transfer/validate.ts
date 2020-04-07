@@ -29,8 +29,12 @@ export interface UserInput {
 export function validate(input: UserInput, api: ApiRx): Observable<void> {
   return of(input).pipe(
     tap((input) => {
-      if (!(input.amount && input.recipient && input.sender && input.tip)) {
+      if (!(input.amount && input.recipient && input.sender)) {
         throw new Error('Please fill in all the fields.');
+      }
+
+      if (!isAddressValid(api, input.recipient)) {
+        throw new Error('Recipient must be a valid address');
       }
 
       if (!isAddressValid(api, input.sender)) {
