@@ -22,7 +22,6 @@ import { RouteComponentProps } from 'react-router-dom';
 
 import { InjectedContext } from '../../../../components/ContextGate/context';
 import { assertIsDefined } from '../../../../util/assert';
-import { createAccountSuri } from '../../../../util/messaging';
 import { AddAccountStepMeta } from '../shared/StepMeta';
 import { AddAccountStepMnemonic } from './StepMnemonic';
 import { AddAccountStepRewrite, randomlyPickFour } from './StepRewrite';
@@ -44,7 +43,7 @@ export function Create(props: Props): React.ReactElement {
   const { history } = props;
 
   const { api } = useContext(ApiContext);
-  const { injected } = useContext(InjectedContext);
+  const { messaging } = useContext(InjectedContext);
 
   // User inputs
   const [mnemonic, setMnemonic] = useState(mnemonicGenerate());
@@ -76,11 +75,12 @@ export function Create(props: Props): React.ReactElement {
       setStep(step + 1);
     } else {
       assertIsDefined(
-        injected,
-        "We wouldn't be creating an account if there was no injected. qed."
+        messaging,
+        "We wouldn't be creating an account if there was no injected messaging. qed."
       );
 
-      createAccountSuri(injected.sendMessage, name, password, mnemonic)
+      messaging
+        .createAccountSuri(name, password, mnemonic)
         .then(() => history.push('/'))
         .catch((error) => setError(error.message));
     }

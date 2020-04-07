@@ -10,15 +10,14 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 
 import { InjectedContext } from '../../components/ContextGate/context';
 import { assertIsDefined } from '../../util/assert';
-import {
-  approveSignPassword,
-  subscribeSigningRequests,
-} from '../../util/messaging';
 import { TxDetails, TxStatus, TxStatusText } from './TxDetails';
 import { TxForm } from './TxForm';
 import { validate } from './validate';
 
 export function Transfer(): React.ReactElement {
+  const { api } = useContext(ApiContext);
+  const { messaging } = useContext(InjectedContext);
+
   const [amount, setAmount] = useState('');
   const [recipient, setRecipient] = useState('');
   const [sender, setSender] = useState('');
@@ -28,9 +27,6 @@ export function Transfer(): React.ReactElement {
 
   const [txStatus, setTxStatus] = useState<TxStatus>('empty');
   const [error, setError] = useState('');
-
-  const { api } = useContext(ApiContext);
-  const { injected } = useContext(InjectedContext);
 
   // Form validation effect
   useEffect(() => {
@@ -74,13 +70,13 @@ export function Transfer(): React.ReactElement {
           }
         );
       assertIsDefined(
-        injected,
-        "We wouldn't be sending from this account if there was no injected. qed."
+        messaging,
+        "We wouldn't be sending from this account if there was no injected messaging. qed."
       );
       // We just created a signing request with `api.tx.balances.transfer`, it
       // should show up here
       const request: SigningRequest = await new Promise((resolve) => {
-        subscribeSigningRequests(injected.sendMessage, (requests) => {
+        messaging.subscribeSigningRequests((requests) => {
           if (!requests.length) {
             return;
           }
@@ -90,7 +86,7 @@ export function Transfer(): React.ReactElement {
       });
       // Finally, we sign the above request with the password the user inputted
       // FIXME Cater for wrong password
-      await approveSignPassword(injected.sendMessage, request.id, password);
+      await messaging.approveSignPassword(request.id, password);
     }
 
     transfer().catch((error) => {
@@ -98,7 +94,7 @@ export function Transfer(): React.ReactElement {
       setTxStatus('validated');
       setError(error.message);
     });
-  }, [amount, api, injected, password, recipient, sender, tip]);
+  }, [amount, api, messaging, password, recipient, sender, tip]);
 
   return (
     <WrapperDiv>

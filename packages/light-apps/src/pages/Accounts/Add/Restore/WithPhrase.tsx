@@ -17,7 +17,6 @@ import { RouteComponentProps } from 'react-router-dom';
 
 import { InjectedContext } from '../../../../components/ContextGate/context';
 import { assertIsDefined } from '../../../../util/assert';
-import { createAccountSuri } from '../../../../util/messaging';
 import { AddAccountStepMeta } from '../shared/StepMeta';
 
 type Props = RouteComponentProps;
@@ -25,7 +24,7 @@ type Props = RouteComponentProps;
 export function RestoreWithPhrase(props: Props): React.ReactElement {
   const { history } = props;
 
-  const { injected } = useContext(InjectedContext);
+  const { messaging } = useContext(InjectedContext);
 
   const [error, setError] = useState('');
   const [name, setName] = useState('');
@@ -38,11 +37,12 @@ export function RestoreWithPhrase(props: Props): React.ReactElement {
     }
 
     assertIsDefined(
-      injected,
-      "We wouldn't be restoring via phrase if there was no injected. qed."
+      messaging,
+      "We wouldn't be restoring via phrase if there was no injected messaging. qed."
     );
 
-    createAccountSuri(injected.sendMessage, name, password, recoveryPhrase)
+    messaging
+      .createAccountSuri(name, password, recoveryPhrase)
       .then(() => history.push('/'))
       .catch(console.error);
   };
