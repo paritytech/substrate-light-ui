@@ -75,9 +75,7 @@ export function ProviderContextProvider(
 ): React.ReactElement {
   const { children = null } = props;
   const [lazy, setLazyProvider] = useState<LazyProvider>(DEFAULT_PROVIDER);
-  const [provider, setProvider] = useState<ProviderInterface>(
-    new WsProvider('wss://kusama-rpc.polkadot.io')
-  );
+  const [provider, setProvider] = useState<ProviderInterface>();
 
   useEffect(() => {
     lazy.start().then(setProvider).catch(l.error);

@@ -2,11 +2,18 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { SigningRequest } from '@polkadot/extension-base/background/types';
 import { web3FromAddress } from '@polkadot/extension-dapp';
 import { ApiContext } from '@substrate/context';
 import { ErrorText, Form, Header, WrapperDiv } from '@substrate/ui-components';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 
+import { InjectedContext } from '../../components/ContextGate/context';
+import { assertIsDefined } from '../../util/assert';
+import {
+  approveSignPassword,
+  subscribeSigningRequests,
+} from '../../util/messaging';
 import { TxDetails, TxStatus, TxStatusText } from './TxDetails';
 import { TxForm } from './TxForm';
 import { validate } from './validate';
@@ -17,10 +24,13 @@ export function Transfer(): React.ReactElement {
   const [sender, setSender] = useState('');
   const [tip, setTip] = useState('');
 
+  const [password, setPassword] = useState('');
+
   const [txStatus, setTxStatus] = useState<TxStatus>('empty');
   const [error, setError] = useState('');
 
   const { api } = useContext(ApiContext);
+  const { injected } = useContext(InjectedContext);
 
   // Form validation effect
   useEffect(() => {
@@ -48,15 +58,39 @@ export function Transfer(): React.ReactElement {
       const injector = await web3FromAddress(sender);
       api.setSigner(injector.signer);
 
-      api.tx.balances.transfer(recipient, amount).signAndSend(
-        sender,
-        {
+      // Create the extrinsic, ready to be signed
+      api.tx.balances
+        .transfer(recipient, amount)
+        .signAndSend(sender, {
           tip,
-        },
-        ({ status }) => {
-          setTxStatus(status);
-        }
+        })
+        .subscribe(
+          ({ status }) => {
+            setTxStatus(status);
+          },
+          (error) => {
+            // Will be caught be the transfer().catch() block
+            throw error;
+          }
+        );
+      assertIsDefined(
+        injected,
+        "We wouldn't be sending from this account if there was no injected. qed."
       );
+      // We just created a signing request with `api.tx.balances.transfer`, it
+      // should show up here
+      const request: SigningRequest = await new Promise((resolve) => {
+        subscribeSigningRequests(injected.sendMessage, (requests) => {
+          if (!requests.length) {
+            return;
+          }
+
+          resolve(requests[0]);
+        });
+      });
+      // Finally, we sign the above request with the password the user inputted
+      // FIXME Cater for wrong password
+      await approveSignPassword(injected.sendMessage, request.id, password);
     }
 
     transfer().catch((error) => {
@@ -64,7 +98,7 @@ export function Transfer(): React.ReactElement {
       setTxStatus('validated');
       setError(error.message);
     });
-  }, [amount, api, recipient, sender, tip]);
+  }, [amount, api, injected, password, recipient, sender, tip]);
 
   return (
     <WrapperDiv>
@@ -84,8 +118,10 @@ export function Transfer(): React.ReactElement {
         {txStatus !== 'empty' && txStatus !== 'validating' && (
           <TxDetails
             amount={amount}
+            password={password}
             recipient={recipient}
             sender={sender}
+            setPassword={setPassword}
             tip={tip}
             txStatus={txStatus}
           />

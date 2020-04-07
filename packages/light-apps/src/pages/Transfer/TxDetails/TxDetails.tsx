@@ -2,22 +2,32 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { SystemContext } from '@substrate/context';
-import { StyledNavButton } from '@substrate/ui-components';
+import { handler, SystemContext } from '@substrate/context';
+import { Input, StyledNavButton } from '@substrate/ui-components';
 import React, { useContext } from 'react';
 
 import { TxStatus } from './TxStatus';
 
 interface Props {
   amount: string;
+  password: string;
   recipient: string;
   sender: string;
+  setPassword: React.Dispatch<React.SetStateAction<string>>;
   tip: string;
   txStatus: TxStatus;
 }
 
 export function TxDetails(props: Props): React.ReactElement {
-  const { amount, recipient, sender, tip, txStatus } = props;
+  const {
+    amount,
+    password,
+    recipient,
+    sender,
+    setPassword,
+    tip,
+    txStatus,
+  } = props;
 
   const { chain, properties } = useContext(SystemContext);
 
@@ -40,6 +50,14 @@ export function TxDetails(props: Props): React.ReactElement {
       <div>
         Total: {'total'} {properties.tokenSymbol.unwrapOr('UNIT').toString()}
       </div>
+
+      <Input
+        fluid
+        label='Password'
+        onChange={handler(setPassword)}
+        placeholder='Your account password'
+        value={password}
+      />
 
       {/* Submit logic is handled by form in Transfer component */}
       <StyledNavButton disabled={txStatus !== 'validated'} type='submit'>
