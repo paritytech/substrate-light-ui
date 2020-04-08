@@ -12,11 +12,7 @@ import { Handlers } from '@polkadot/extension-base/page';
 import { SendRequest } from '@polkadot/extension-base/page/types';
 import extension from 'extensionizer';
 
-<<<<<<< HEAD:packages/light-apps/src/components/context/InjectedContext/sendMessage.ts
 import { detectEnvironment } from '../../../util/env';
-=======
-import { detectEnvironment } from '../../../../util/env';
->>>>>>> master:packages/light-apps/src/components/ContextGate/context/InjectedContext/sendMessage.ts
 
 /**
  * Based on the environment, use `window.postMessage` or `port.PostMessage` for

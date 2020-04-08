@@ -2,8 +2,6 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { ProviderMeta } from '@polkadot/extension-inject/types';
-import { ProviderInterface } from '@polkadot/rpc-provider/types';
 import { logger } from '@polkadot/util';
 import {
   ConnectedNodes,
@@ -13,8 +11,13 @@ import {
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { Injected, InjectedContext, ProviderContext } from '../../context';
-import { FALLBACK_PROVIDERS, LazyProvider } from './discover';
+import { InjectedContext, ProviderContext } from '../../context';
+import {
+  discoverChain,
+  getAllProviders,
+  getAllProvidersForChain,
+  LazyProvider,
+} from './discover';
 
 const l = logger('choose-provider');
 
@@ -25,37 +28,6 @@ const TopDropdown = styled(Dropdown)`
 
 const GREEN = '#79c879';
 const RED = '#ff0000';
-
-/**
- * The fallback providers are the ones which connect to a centralized remote
- * node.
- */
-const fallbackProviders = FALLBACK_PROVIDERS.reduce((acc, provider) => {
-  acc[provider.id] = provider;
-
-  return acc;
-}, {} as Record<string, LazyProvider>);
-
-/**
- * Convert a ProviderMeta from the extension to a LazyProvider used by our
- * ProviderContext.
- */
-function toLazyProvider(
-  injected: Injected,
-  meta: ProviderMeta,
-  key: string
-): LazyProvider {
-  return {
-    ...meta,
-    description: `${meta.node} node from from ${meta.source} extension`,
-    id: `${meta.network}-PostMessageProvider`,
-    async start(): Promise<ProviderInterface> {
-      await injected.provider.startProvider(key);
-
-      return injected.provider;
-    },
-  };
-}
 
 // function renderHealth(
 //   chain?: Text,
@@ -85,63 +57,67 @@ function toLazyProvider(
 // }
 
 /**
- * From all the providers we have, derive all the networks.
+ * From all the providers we have, derive all the chains.
  */
-function getAllNetworks(allProviders: Record<string, LazyProvider>): string[] {
+function getAllChain(allProviders: Record<string, LazyProvider>): string[] {
   return [
     ...new Set(Object.values(allProviders).map(({ network }) => network)),
   ];
-}
-
-/**
- * Filter out the providers for one particular chain.
- */
-function getAllProvidersForNetwork(
-  forNetwork: string,
-  allProviders: Record<string, LazyProvider>
-): LazyProvider[] {
-  return Object.values(allProviders).filter(
-    ({ network }) => network === forNetwork
-  );
 }
 
 export function ChooseProvider(): React.ReactElement {
   const { lazy, setLazyProvider } = useContext(ProviderContext);
   const { injected } = useContext(InjectedContext);
 
-  const [allProviders, setAllProviders] = useState(fallbackProviders);
-  const [network, setNetwork] = useState<string>();
+  const [allProviders, setAllProviders] = useState<
+    Record<string, LazyProvider>
+  >({});
+  const [chain, setChain] = useState<string>();
 
-  const allNetworks = getAllNetworks(allProviders);
-  const allProvidersForNetwork = network
-    ? getAllProvidersForNetwork(network, allProviders)
+  const allChains = getAllChain(allProviders);
+  const allProvidersForChain = chain
+    ? getAllProvidersForChain(chain, allProviders)
     : [];
 
-  // Update providers when we get some from extension
+  // Get the list of all available providers
   useEffect(() => {
-    if (!injected) {
+    getAllProviders({ injected }).then(setAllProviders).catch(l.error);
+  }, [injected]);
+
+  // Once we get the list of chains, select one
+  useEffect(() => {
+    // If we already chose a chain, skip
+    if (chain || !allChains.length) {
       return;
     }
 
-    injected.provider
-      .listProviders()
-      .then((providers) => {
-        return {
-          ...Object.entries(providers).reduce((acc, [key, value]) => {
-            const lazyProvider = toLazyProvider(injected, value, key);
-            acc[lazyProvider.id] = lazyProvider;
+    // Choose westend by default (it works the best with light client
+    // currently).
+    if (allChains.includes('westend')) {
+      return setChain('westend');
+    }
+    // Or else choose kusama
+    if (allChains.includes('westend')) {
+      return setChain('westend');
+    }
+    // Or else just choose the first one
+    setChain(allChains[0]);
+  }, [chain, allChains]);
 
-            return acc;
-          }, {} as Record<string, LazyProvider>),
-          ...fallbackProviders,
-        };
-      })
-      .then(setAllProviders)
-      .catch(l.error);
-  }, [injected]);
+  // Discover best provider when we switch chain
+  useEffect(() => {
+    if (!chain || !Object.keys(allProviders).length) {
+      return;
+    }
 
-  // Discover best provider when we switch network
-  useEffect(() => {});
+    const bestProvider = discoverChain(chain, allProviders);
+
+    if (!bestProvider) {
+      return l.error(`Cannot find provider for chain ${chain}`);
+    }
+
+    setLazyProvider(bestProvider);
+  }, [allProviders, chain, setLazyProvider]);
 
   return (
     <ConnectedNodes>
@@ -150,31 +126,31 @@ export function ChooseProvider(): React.ReactElement {
           _event: React.SyntheticEvent,
           { value }: DropdownProps
         ): void => {
-          setNetwork(value as string);
+          setChain(value as string);
         }}
-        options={allNetworks.map((network) => ({
-          key: network,
-          text: network,
-          value: network,
+        options={allChains.map((chain) => ({
+          key: chain,
+          text: chain,
+          value: chain,
         }))}
-        placeholder='Select Network'
-        value={network}
+        placeholder='Loading chains...'
+        value={chain}
       />
 
       <TopDropdown
-        disabled={!network}
+        disabled={!chain}
         onChange={(
           _event: React.SyntheticEvent,
           { value }: DropdownProps
         ): void => {
           setLazyProvider(allProviders[value as string]);
         }}
-        options={allProvidersForNetwork.map((lazy) => ({
+        options={allProvidersForChain.map((lazy) => ({
           key: lazy.id,
           text: `${lazy.description}`,
           value: lazy.id,
         }))}
-        placeholder='Select Network'
+        placeholder='Discovering providers...'
         value={lazy?.id}
       />
     </ConnectedNodes>
