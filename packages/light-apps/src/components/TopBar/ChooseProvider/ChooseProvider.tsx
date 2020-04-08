@@ -3,6 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { logger } from '@polkadot/util';
+import { useLocalStorage } from '@rehooks/local-storage';
 import {
   Circle,
   ConnectedNodes,
@@ -37,8 +38,8 @@ const RED = '#ff0000';
 
 function renderHealth(health: HealthContextType): React.ReactElement {
   return (
-    <div className='flex items-center justify-between truncate mr2'>
-      {health.isSyncing && health.hasPeers && health.isNodeConnected ? (
+    <div className='flex items-center justify-between truncate mr4'>
+      {!health.isSyncing && health.hasPeers && health.isNodeConnected ? (
         <Circle fill={GREEN} radius={10} />
       ) : (
         <Circle fill={RED} radius={10} />
@@ -62,26 +63,30 @@ function renderBlockNumber(
 /**
  * From all the providers we have, derive all the chains.
  */
-function getAllChain(allProviders: Record<string, LazyProvider>): string[] {
+function getAllChains(allProviders: Record<string, LazyProvider>): string[] {
   return [
     ...new Set(Object.values(allProviders).map(({ network }) => network)),
   ];
 }
 
 export function ChooseProvider(): React.ReactElement {
+  // We store the last used provider in localStorage
+  const [providerId, setProviderId] = useLocalStorage<string | undefined>(
+    'currentProvider'
+  );
+
   const health = useContext(HealthContext);
   const { injected } = useContext(InjectedContext);
   const { lazy, setLazyProvider } = useContext(ProviderContext);
 
   const [allProviders, setAllProviders] = useState<
     Record<string, LazyProvider>
-  >({});
+  >();
   const [chain, setChain] = useState<string>();
 
-  const allChains = getAllChain(allProviders);
-  const allProvidersForChain = chain
-    ? getAllProvidersForChain(chain, allProviders)
-    : [];
+  const allChains = allProviders ? getAllChains(allProviders) : [];
+  const allProvidersForChain =
+    chain && allProviders ? getAllProvidersForChain(chain, allProviders) : [];
 
   // Get the list of all available providers
   useEffect(() => {
@@ -91,7 +96,17 @@ export function ChooseProvider(): React.ReactElement {
   // Once we get the list of chains, select one
   useEffect(() => {
     // If we already chose a chain, skip
-    if (chain || !allChains.length) {
+    if (chain) {
+      return;
+    }
+
+    // If we already have a provider, set it to the provider's chain
+    if (providerId && allProviders && allProviders[providerId]) {
+      return setChain(allProviders[providerId].network);
+    }
+
+    // If we didn't populate the chains yet, skip
+    if (!allChains.length) {
       return;
     }
 
@@ -106,11 +121,17 @@ export function ChooseProvider(): React.ReactElement {
     }
     // Or else just choose the first one
     setChain(allChains[0]);
-  }, [chain, allChains]);
+  }, [chain, allChains, providerId, allProviders]);
 
   // Discover best provider when we switch chain
   useEffect(() => {
-    if (!chain || !Object.keys(allProviders).length) {
+    // If we already have a provider, skip
+    if (providerId && allProviders && allProviders[providerId]) {
+      return;
+    }
+
+    // If we don't have a chain yet, skip
+    if (!chain || !allProviders) {
       return;
     }
 
@@ -120,8 +141,19 @@ export function ChooseProvider(): React.ReactElement {
       return l.error(`Cannot find provider for chain ${chain}`);
     }
 
-    setLazyProvider(bestProvider);
-  }, [allProviders, chain, setLazyProvider]);
+    setProviderId(bestProvider.id);
+  }, [allProviders, chain, providerId, setLazyProvider, setProviderId]);
+
+  // From providerId, set the actual provider
+  useEffect(() => {
+    const provider = providerId && allProviders && allProviders[providerId];
+
+    if (provider) {
+      setLazyProvider(provider);
+    } else if (providerId) {
+      l.error(`Cannot find provider with id ${providerId}`);
+    }
+  });
 
   return (
     <ConnectedNodes>
@@ -132,6 +164,10 @@ export function ChooseProvider(): React.ReactElement {
             _event: React.SyntheticEvent,
             { value }: DropdownProps
           ): void => {
+            // Set the providerId temporarily to `undefined`. The effect will
+            // discover the best provider to use.
+            setProviderId(undefined);
+
             setChain(value as string);
           }}
           options={allChains.map((chain) => ({
@@ -151,7 +187,7 @@ export function ChooseProvider(): React.ReactElement {
           _event: React.SyntheticEvent,
           { value }: DropdownProps
         ): void => {
-          setLazyProvider(allProviders[value as string]);
+          setProviderId(value as string);
         }}
         options={allProvidersForChain.map((lazy) => ({
           key: lazy.id,

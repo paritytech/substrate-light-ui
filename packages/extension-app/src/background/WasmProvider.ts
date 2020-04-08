@@ -15,9 +15,6 @@ import { assert, logger } from '@polkadot/util';
 import { LightClient, WasmRpcClient } from '@substrate/light';
 import EventEmitter from 'eventemitter3';
 
-// FIXME Update to prettier2.0
-/* eslint-disable prettier/prettier */
-
 // Same as https://github.com/polkadot-js/api/blob/57ca9a9c3204339e1e1f693fcacc33039868dc27/packages/rpc-provider/src/ws/Provider.ts#L17
 interface SubscriptionHandler {
   callback: ProviderInterfaceCallback;
@@ -30,7 +27,7 @@ export class WasmProvider implements ProviderInterface {
   #coder: Coder;
   #eventemitter: EventEmitter;
   #isConnected = false;
-  #rpcClient: WasmRpcClient | undefined = undefined
+  #rpcClient: WasmRpcClient | undefined = undefined;
 
   public readonly light: LightClient;
 
@@ -39,14 +36,14 @@ export class WasmProvider implements ProviderInterface {
     this.#coder = new Coder();
     this.light = light;
 
-    light.startClient()
+    light
+      .startClient()
       .then((rpcClient) => {
-        this.#rpcClient = rpcClient
+        this.#rpcClient = rpcClient;
         this.#isConnected = true;
         this.emit('connected');
       })
-      .catch(error => l.error(error))
-
+      .catch((error) => l.error(error));
   }
 
   /**
@@ -122,7 +119,6 @@ export class WasmProvider implements ProviderInterface {
           const result = this.#coder.decodeResponse(JSON.parse(response));
 
           subscription.callback(null, result);
-
         } catch (error) {
           subscription.callback(error, null);
         }
@@ -136,7 +132,10 @@ export class WasmProvider implements ProviderInterface {
 
         l.debug((): string[] => ['calling', method, json]);
 
-        assert(this.#rpcClient, 'Please call `send` after WasmProvider is ready');
+        assert(
+          this.#rpcClient,
+          'Please call `send` after WasmProvider is ready'
+        );
 
         this.#rpcClient.rpcSend(json).then((response) => {
           try {
