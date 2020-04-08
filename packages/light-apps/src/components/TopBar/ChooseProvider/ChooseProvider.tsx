@@ -4,6 +4,7 @@
 
 import { logger } from '@polkadot/util';
 import {
+  Circle,
   ConnectedNodes,
   Dropdown,
   DropdownProps,
@@ -11,7 +12,12 @@ import {
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { InjectedContext, ProviderContext } from '../../context';
+import {
+  HealthContext,
+  HealthContextType,
+  InjectedContext,
+  ProviderContext,
+} from '../../context';
 import {
   discoverChain,
   getAllProviders,
@@ -29,32 +35,29 @@ const TopDropdown = styled(Dropdown)`
 const GREEN = '#79c879';
 const RED = '#ff0000';
 
-// function renderHealth(
-//   chain?: Text,
-//   header?: Header,
-//   health?: Health
-// ): React.ReactElement {
-//   if (!header || !health) {
-//     return <div />;
-//   }
+function renderHealth(health: HealthContextType): React.ReactElement {
+  return (
+    <div className='flex items-center justify-between truncate mr2'>
+      {health.isSyncing && health.hasPeers && health.isNodeConnected ? (
+        <Circle fill={GREEN} radius={10} />
+      ) : (
+        <Circle fill={RED} radius={10} />
+      )}
+    </div>
+  );
+}
 
-//   return (
-//     <div className='flex items-center justify-between truncate'>
-//       {health.isSyncing.isTrue ? (
-//         <Circle fill={GREEN} radius={10} />
-//       ) : (
-//         <Circle fill={RED} radius={10} />
-//       )}
-//       <Margin left='small' />
-//       <span className='mh1 truncate'>
-//         {chain ? `${chain.toString().toUpperCase()}` : ''}
-//       </span>
-//       <span className='db-l dn f7 silver truncate'>
-//         Block #{header.number.toString()}
-//       </span>
-//     </div>
-//   );
-// }
+function renderBlockNumber(
+  health: HealthContextType
+): React.ReactElement | null {
+  if (!health.best) {
+    return null;
+  }
+
+  return (
+    <span className='ml2 db-l dn f7 silver truncate'>Block #{health.best}</span>
+  );
+}
 
 /**
  * From all the providers we have, derive all the chains.
@@ -66,8 +69,9 @@ function getAllChain(allProviders: Record<string, LazyProvider>): string[] {
 }
 
 export function ChooseProvider(): React.ReactElement {
-  const { lazy, setLazyProvider } = useContext(ProviderContext);
+  const health = useContext(HealthContext);
   const { injected } = useContext(InjectedContext);
+  const { lazy, setLazyProvider } = useContext(ProviderContext);
 
   const [allProviders, setAllProviders] = useState<
     Record<string, LazyProvider>
@@ -121,21 +125,25 @@ export function ChooseProvider(): React.ReactElement {
 
   return (
     <ConnectedNodes>
-      <TopDropdown
-        onChange={(
-          _event: React.SyntheticEvent,
-          { value }: DropdownProps
-        ): void => {
-          setChain(value as string);
-        }}
-        options={allChains.map((chain) => ({
-          key: chain,
-          text: chain,
-          value: chain,
-        }))}
-        placeholder='Loading chains...'
-        value={chain}
-      />
+      <div className='flex flex-row'>
+        {renderHealth(health)}
+        <TopDropdown
+          onChange={(
+            _event: React.SyntheticEvent,
+            { value }: DropdownProps
+          ): void => {
+            setChain(value as string);
+          }}
+          options={allChains.map((chain) => ({
+            key: chain,
+            text: chain,
+            value: chain,
+          }))}
+          placeholder='Loading chains...'
+          value={chain}
+        />
+        {renderBlockNumber(health)}
+      </div>
 
       <TopDropdown
         disabled={!chain}

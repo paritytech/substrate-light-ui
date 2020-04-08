@@ -5,13 +5,13 @@
 import {
   AlertsContextProvider,
   ApiContextProvider,
-  HealthContextProvider,
   TxQueueContextProvider,
 } from '@substrate/context';
 import React from 'react';
 
 import {
   AccountContextProvider,
+  HealthContextProvider,
   InjectedContext,
   InjectedContextProvider,
   ProviderContext,
@@ -39,36 +39,32 @@ export function ContextGate(props: {
             <ProviderContext.Consumer>
               {({ provider }): React.ReactElement | null => (
                 <SystemContextProvider provider={provider}>
-                  <>
-                    <TopBar />
-                    <SystemGate>
-                      <AccountContextProvider
-                        injected={injected}
-                        originName={EXTENSION_ORIGIN_NAME}
-                      >
-                        <>
-                          {/* Since we are inside SystemGate, provider is defined. */}
-                          {/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */}
-                          <HealthContextProvider provider={provider!}>
-                            <HealthGate>
-                              <>
-                                {/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */}
-                                <ApiContextProvider provider={provider!}>
-                                  <ApiGate>
-                                    <AlertsContextProvider>
-                                      <TxQueueContextProvider>
-                                        {children}
-                                      </TxQueueContextProvider>
-                                    </AlertsContextProvider>
-                                  </ApiGate>
-                                </ApiContextProvider>
-                              </>
-                            </HealthGate>
-                          </HealthContextProvider>
-                        </>
-                      </AccountContextProvider>
-                    </SystemGate>
-                  </>
+                  <HealthContextProvider provider={provider}>
+                    <>
+                      <TopBar />
+                      <SystemGate>
+                        <AccountContextProvider
+                          injected={injected}
+                          originName={EXTENSION_ORIGIN_NAME}
+                        >
+                          <HealthGate>
+                            <>
+                              {/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */}
+                              <ApiContextProvider provider={provider!}>
+                                <ApiGate>
+                                  <AlertsContextProvider>
+                                    <TxQueueContextProvider>
+                                      {children}
+                                    </TxQueueContextProvider>
+                                  </AlertsContextProvider>
+                                </ApiGate>
+                              </ApiContextProvider>
+                            </>
+                          </HealthGate>
+                        </AccountContextProvider>
+                      </SystemGate>
+                    </>
+                  </HealthContextProvider>
                 </SystemContextProvider>
               )}
             </ProviderContext.Consumer>
