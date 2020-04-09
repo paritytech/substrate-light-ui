@@ -10,10 +10,10 @@ import {
   Dropdown,
   DropdownProps,
   Menu,
+  polkadotOfficialTheme,
   StackedHorizontal,
 } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';
-import styled from 'styled-components';
 
 import {
   HealthContext,
@@ -30,8 +30,8 @@ import {
 
 const l = logger('choose-provider');
 
-const GREEN = '#79c879';
-const RED = '#ff0000';
+const GREEN = polkadotOfficialTheme.green;
+const RED = polkadotOfficialTheme.signal;
 
 function renderHealth(health: HealthContextType): React.ReactElement {
   return (
