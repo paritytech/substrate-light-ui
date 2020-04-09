@@ -9,6 +9,8 @@ import {
   ConnectedNodes,
   Dropdown,
   DropdownProps,
+  Menu,
+  StackedHorizontal,
 } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -38,7 +40,7 @@ const RED = '#ff0000';
 
 function renderHealth(health: HealthContextType): React.ReactElement {
   return (
-    <div className='flex items-center justify-between truncate mr4'>
+    <div className='flex items-center br b--dark-gray ph3'>
       {!health.isSyncing && health.hasPeers && health.isNodeConnected ? (
         <Circle fill={GREEN} radius={10} />
       ) : (
@@ -55,9 +57,7 @@ function renderBlockNumber(
     return null;
   }
 
-  return (
-    <span className='ml2 db-l dn f7 silver truncate'>Block #{health.best}</span>
-  );
+  return <span className='db-l dn f7 silver'>Block #{health.best}</span>;
 }
 
 /**
@@ -156,47 +156,67 @@ export function ChooseProvider(): React.ReactElement {
   });
 
   return (
-    <ConnectedNodes>
-      <div className='flex flex-row'>
+    <ConnectedNodes
+      fluid
+      className='flex w-100'
+      nodesClassName='flex justify-center b--silver ba br2'
+      connectorClassName='bb b--silver'
+    >
+      <StackedHorizontal className='w-100 relative'>
         {renderHealth(health)}
-        <TopDropdown
+        <div className='absolute right-2'>{renderBlockNumber(health)}</div>
+        <Menu compact inverted fluid>
+          <Dropdown
+            className='code justify-between'
+            closeOnChange
+            fluid
+            item
+            onChange={(
+              _event: React.SyntheticEvent,
+              { value }: DropdownProps
+            ): void => {
+              // Set the providerId temporarily to `undefined`. The effect will
+              // discover the best provider to use.
+              setProviderId(undefined);
+
+              setChain(value as string);
+            }}
+            options={allChains.map((chain) => ({
+              key: chain,
+              text: chain.toUpperCase(),
+              value: chain,
+            }))}
+            placeholder='Loading chains...'
+            simple
+            theme='dark'
+            value={chain}
+          />
+        </Menu>
+      </StackedHorizontal>
+      <Menu compact inverted fluid>
+        <Dropdown
+          className='code justify-between'
+          closeOnChange
+          fluid
+          item
+          disabled={!chain}
           onChange={(
             _event: React.SyntheticEvent,
             { value }: DropdownProps
           ): void => {
-            // Set the providerId temporarily to `undefined`. The effect will
-            // discover the best provider to use.
-            setProviderId(undefined);
-
-            setChain(value as string);
+            setProviderId(value as string);
           }}
-          options={allChains.map((chain) => ({
-            key: chain,
-            text: chain,
-            value: chain,
+          options={allProvidersForChain.map((lazy) => ({
+            key: lazy.id,
+            text: `${lazy.description}`,
+            value: lazy.id,
           }))}
-          placeholder='Loading chains...'
-          value={chain}
+          placeholder='Discovering providers...'
+          simple
+          theme='dark'
+          value={lazy?.id}
         />
-        {renderBlockNumber(health)}
-      </div>
-
-      <TopDropdown
-        disabled={!chain}
-        onChange={(
-          _event: React.SyntheticEvent,
-          { value }: DropdownProps
-        ): void => {
-          setProviderId(value as string);
-        }}
-        options={allProvidersForChain.map((lazy) => ({
-          key: lazy.id,
-          text: `${lazy.description}`,
-          value: lazy.id,
-        }))}
-        placeholder='Discovering providers...'
-        value={lazy?.id}
-      />
+      </Menu>
     </ConnectedNodes>
   );
 }
