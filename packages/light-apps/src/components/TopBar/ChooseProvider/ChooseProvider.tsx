@@ -30,11 +30,6 @@ import {
 
 const l = logger('choose-provider');
 
-// To keep it above the loading dimmer
-const TopDropdown = styled(Dropdown)`
-  z-index: 1000;
-`;
-
 const GREEN = '#79c879';
 const RED = '#ff0000';
 
