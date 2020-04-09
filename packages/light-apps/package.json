@@ -22,7 +22,7 @@
     "@polkadot/extension-dapp": "^0.24.0-beta.7",
     "@polkadot/ui-assets": "^0.51.1",
     "@rehooks/local-storage": "^2.3.0",
-    "@substrate/context": "^0.3.22",
+    "@substrate/context": "^0.3.23",
     "@substrate/ui-components": "^0.3.32",
     "@types/chrome": "^0.0.103",
     "@types/react-dom": "^16.9.6",
