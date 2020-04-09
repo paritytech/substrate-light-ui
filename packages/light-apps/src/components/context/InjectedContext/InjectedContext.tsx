@@ -6,7 +6,7 @@ import { web3Enable } from '@polkadot/extension-dapp';
 import { logger } from '@polkadot/util';
 import React, { useEffect, useState } from 'react';
 
-import { detectEnvironment } from '../../../../util/env';
+import { detectEnvironment } from '../../../util/env';
 import { Injected } from './Injected';
 import { messaging } from './messaging';
 import { createSendMessageFromPopup } from './sendMessage';

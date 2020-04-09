@@ -8,7 +8,7 @@ import { ApiContext } from '@substrate/context';
 import { ErrorText, Form, Header, WrapperDiv } from '@substrate/ui-components';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 
-import { InjectedContext } from '../../components/ContextGate/context';
+import { InjectedContext } from '../../components/context';
 import { assertIsDefined } from '../../util/assert';
 import { TxDetails, TxStatus, TxStatusText } from './TxDetails';
 import { TxForm } from './TxForm';

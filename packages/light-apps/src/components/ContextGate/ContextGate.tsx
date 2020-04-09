@@ -5,20 +5,20 @@
 import {
   AlertsContextProvider,
   ApiContextProvider,
-  HealthContextProvider,
-  SystemContextProvider,
   TxQueueContextProvider,
 } from '@substrate/context';
 import React from 'react';
 
-import { TopBar } from '../TopBar';
 import {
   AccountContextProvider,
+  HealthContextProvider,
   InjectedContext,
   InjectedContextProvider,
   ProviderContext,
   ProviderContextProvider,
-} from './context';
+  SystemContextProvider,
+} from '../context';
+import { TopBar } from '../TopBar';
 import { ApiGate, HealthGate, SystemGate } from './gates';
 
 /**
@@ -37,9 +37,9 @@ export function ContextGate(props: {
         {({ injected }): React.ReactElement => (
           <ProviderContextProvider>
             <ProviderContext.Consumer>
-              {({ provider }): React.ReactElement | null =>
-                provider ? (
-                  <SystemContextProvider provider={provider}>
+              {({ provider }): React.ReactElement | null => (
+                <SystemContextProvider provider={provider}>
+                  <HealthContextProvider provider={provider}>
                     <>
                       <TopBar />
                       <SystemGate>
@@ -47,9 +47,10 @@ export function ContextGate(props: {
                           injected={injected}
                           originName={EXTENSION_ORIGIN_NAME}
                         >
-                          <HealthContextProvider provider={provider}>
-                            <HealthGate>
-                              <ApiContextProvider provider={provider}>
+                          <HealthGate>
+                            <>
+                              {/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */}
+                              <ApiContextProvider provider={provider!}>
                                 <ApiGate>
                                   <AlertsContextProvider>
                                     <TxQueueContextProvider>
@@ -58,14 +59,14 @@ export function ContextGate(props: {
                                   </AlertsContextProvider>
                                 </ApiGate>
                               </ApiContextProvider>
-                            </HealthGate>
-                          </HealthContextProvider>
+                            </>
+                          </HealthGate>
                         </AccountContextProvider>
                       </SystemGate>
                     </>
-                  </SystemContextProvider>
-                ) : null
-              }
+                  </HealthContextProvider>
+                </SystemContextProvider>
+              )}
             </ProviderContext.Consumer>
           </ProviderContextProvider>
         )}

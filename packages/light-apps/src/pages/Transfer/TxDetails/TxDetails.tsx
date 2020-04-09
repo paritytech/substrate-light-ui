@@ -2,10 +2,12 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { handler, SystemContext } from '@substrate/context';
+import { handler } from '@substrate/context';
 import { Input, StyledNavButton } from '@substrate/ui-components';
 import React, { useContext } from 'react';
 
+import { SystemContext } from '../../../components/context';
+import { assertIsDefined } from '../../../util/assert';
 import { TxStatus } from './TxStatus';
 
 interface Props {
@@ -30,6 +32,9 @@ export function TxDetails(props: Props): React.ReactElement {
   } = props;
 
   const { chain, properties } = useContext(SystemContext);
+
+  assertIsDefined(chain, "We're inside SystemGate. qed.");
+  assertIsDefined(properties, "We're inside SystemGate. qed.");
 
   return (
     <>
