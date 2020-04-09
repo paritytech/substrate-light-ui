@@ -6,9 +6,12 @@
 
 import { ProviderMeta } from '@polkadot/extension-inject/types';
 import { ProviderInterface } from '@polkadot/rpc-provider/types';
-import { kusama_cc3, LightClient, westend } from '@substrate/light';
-
-import { WasmProvider } from './WasmProvider';
+import {
+  kusama_cc3,
+  LightClient,
+  WasmProvider,
+  westend,
+} from '@substrate/light';
 
 // We bundled the .wasm file inside the extension, at this relative url. See
 // the structure of the output `build/` folder.

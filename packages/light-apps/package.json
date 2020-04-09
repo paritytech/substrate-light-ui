@@ -23,6 +23,7 @@
     "@polkadot/ui-assets": "^0.51.1",
     "@rehooks/local-storage": "^2.3.0",
     "@substrate/context": "^0.3.22",
+    "@substrate/light": "^0.3.32",
     "@substrate/ui-components": "^0.3.32",
     "@types/chrome": "^0.0.103",
     "@types/react-dom": "^16.9.6",

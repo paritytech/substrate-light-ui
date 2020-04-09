@@ -1,8 +1,6 @@
-// Copyright 2017-2019 @paritytech/substrate-light-ui authors & contributors
+// Copyright 2018-2020 @paritytech/substrate-light-ui authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
-
-/* eslint-disable @typescript-eslint/camelcase */
 
 import Coder from '@polkadot/rpc-provider/coder';
 import {
@@ -12,8 +10,9 @@ import {
   ProviderInterfaceEmitted,
 } from '@polkadot/rpc-provider/types';
 import { assert, logger } from '@polkadot/util';
-import { LightClient, WasmRpcClient } from '@substrate/light';
 import EventEmitter from 'eventemitter3';
+
+import { LightClient, WasmRpcClient } from './types';
 
 // Same as https://github.com/polkadot-js/api/blob/57ca9a9c3204339e1e1f693fcacc33039868dc27/packages/rpc-provider/src/ws/Provider.ts#L17
 interface SubscriptionHandler {
