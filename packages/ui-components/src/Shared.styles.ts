@@ -79,12 +79,12 @@ export const Header = styled.h2<HeaderProps>`
     props.color
       ? polkadotOfficialTheme[props.color]
       : polkadotOfficialTheme.grey};
-  font-weight: 300;
+  font-weight: 700;
   font-size: ${FONT_SIZES.big};
   margin: ${(props): string =>
     props.margin ? MARGIN_SIZES[props.margin] : `${MARGIN_SIZES.big} 0`};
   padding: ${MARGIN_SIZES.small} ${MARGIN_SIZES.medium};
-  text-align: ${(props): string => props.textAlign || 'center'};
+  text-align: ${(props): string => props.textAlign || 'left'};
 `;
 
 export const DynamicSizeText = styled.p<DynamicSizeTextProps>`
@@ -229,9 +229,9 @@ export const InlineSubHeader = styled(SubHeader)`
 `;
 
 export const WrapperDiv = styled.div<WrapperDivProps>`
-  margin: ${(props): string => props.margin || '1rem'};
+  margin: ${(props): string => props.margin || 'auto'};
   padding: ${(props): string => props.padding || '1rem'};
-  width: ${(props): string => props.width || '30rem'};
+  width: ${(props): string => props.width || 'auto'};
   height: ${(props): string => props.height || '100%'};
 `;
 
