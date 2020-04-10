@@ -18,6 +18,7 @@ const StyledModal = styled(SUIModal)`
     bottom: ${(props): string | undefined => props.bottom || undefined};
     right: ${(props): string | undefined => props.right || undefined};
     width: 80%;
+    margin-top: 0 !important;
     max-width: 750px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     margin: 0 auto;

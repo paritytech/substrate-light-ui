@@ -36,8 +36,8 @@ export const GlobalStyle = createGlobalStyle`
   //TODO: dimmer component
   .dimmer {
     background-color: rgba(255,255,255,0.6) !important;
-    height: calc(100vh - 100px) !important;
-    transform: translateY(100px);
+    height: calc(100vh - 104px) !important;
+    transform: translateY(104px);
     justify-content: flex-start !important;
     padding-top: 0 !important;
   }
