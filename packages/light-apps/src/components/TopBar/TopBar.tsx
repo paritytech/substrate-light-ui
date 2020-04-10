@@ -40,7 +40,7 @@ const MenuTabs = (): React.ReactElement => {
  */
 function renderLogo(): React.ReactElement {
   return (
-    <Link to='/' className='w-50 mr3 h3 flex items-center'>
+    <Link className='w-50 mr3 h3 flex items-center' to='/'>
       Lichen
     </Link>
   );
