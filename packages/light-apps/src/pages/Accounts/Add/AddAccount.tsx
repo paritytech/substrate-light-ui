@@ -32,7 +32,7 @@ export function AddAccount(props: Props): React.ReactElement {
   return (
     <WrapperDiv>
       <Header>Add an Account</Header>
-      <Menu>
+      <Menu borderless shadow={false} size='large' text>
         <Menu.Item active={activeTab === 'generate'} onClick={navToCreate}>
           Create New
         </Menu.Item>

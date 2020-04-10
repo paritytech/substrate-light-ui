@@ -44,7 +44,7 @@ const StyledInput = styled<typeof SUIInput>(SUIInput)`
     > input {
       border: none;
       border-radius: 0;
-      &[type='text'] {
+      &[type='text'], &[type='password'] {
         ${(props): string =>
           props.borderless ? '' : 'border-bottom: 1px solid black;'};
         ${styles.inputFieldText}

@@ -4,6 +4,7 @@
 
 import {
   FadedText,
+  FramedBlock,
   MnemonicPhraseList,
   NavButton,
   Stacked,
@@ -32,8 +33,15 @@ export function AddAccountStepMnemonic(props: Props): React.ReactElement {
         to this phrase can have full control your funds so make sure to keep it
         a secure and secret.
       </FadedText>
-      <MnemonicPhraseList phrase={mnemonic} />
-      <NavButton onClick={goToNextStep}>Next</NavButton>
+      <FramedBlock>
+        <MnemonicPhraseList phrase={mnemonic} />
+      </FramedBlock>
+      <NavButton
+        onClick={goToNextStep}
+        wrapClass='flex mt4 mb3 w-100 justify-around'
+      >
+        Next
+      </NavButton>
     </Stacked>
   );
 }

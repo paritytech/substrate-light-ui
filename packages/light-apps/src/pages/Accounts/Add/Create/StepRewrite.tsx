@@ -5,6 +5,7 @@
 import { handler } from '@substrate/context';
 import {
   FadedText,
+  FramedBlock,
   Margin,
   MnemonicRandomWord,
   MnemonicRewriteParts,
@@ -113,22 +114,25 @@ export function AddAccountStepRewrite(props: Props): React.ReactElement {
       </FadedText>
       <Margin top />
       <FadedText>Rewrite Mnemonic Below</FadedText>
-      <MnemonicRewriteParts
-        randomFourWords={randomFourWords}
-        firstWord={firstWord}
-        secondWord={secondWord}
-        thirdWord={thirdWord}
-        fourthWord={fourthWord}
-        handleSetFirstWord={handler(setFirstWord)}
-        handleSetSecondWord={handler(setSecondWord)}
-        handleSetThirdWord={handler(setThirdWord)}
-        handleSetFourthWord={handler(setFourthWord)}
-      />
+      <FramedBlock>
+        <MnemonicRewriteParts
+          randomFourWords={randomFourWords}
+          firstWord={firstWord}
+          secondWord={secondWord}
+          thirdWord={thirdWord}
+          fourthWord={fourthWord}
+          handleSetFirstWord={handler(setFirstWord)}
+          handleSetSecondWord={handler(setSecondWord)}
+          handleSetThirdWord={handler(setThirdWord)}
+          handleSetFourthWord={handler(setFourthWord)}
+        />
+      </FramedBlock>
 
       <WithSpaceAround>
-        <StackedHorizontal>
+        <StackedHorizontal justifyContent='space-between'>
           <StyledLinkButton onClick={goToPreviousStep}>Back</StyledLinkButton>
           <StyledNavButton onClick={handleGoToNextStep}>Next</StyledNavButton>
+          <StyledLinkButton className='o-0'>Back</StyledLinkButton>
         </StackedHorizontal>
       </WithSpaceAround>
     </Stacked>

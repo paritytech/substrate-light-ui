@@ -71,13 +71,14 @@ export function AddAccountStepMeta(props: Props): React.ReactElement {
       </Stacked>
 
       <WithSpaceAround>
-        <StackedHorizontal>
+        <StackedHorizontal justifyContent='space-between'>
           {goToPreviousStep && (
             <StyledLinkButton onClick={goToPreviousStep}>Back</StyledLinkButton>
           )}
           {goToNextStep && (
             <StyledNavButton onClick={handleGoToNextStep}>Next</StyledNavButton>
           )}
+          <StyledLinkButton className='o-0'>Back</StyledLinkButton>
         </StackedHorizontal>
       </WithSpaceAround>
     </WrapperDiv>
