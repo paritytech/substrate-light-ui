@@ -21,17 +21,12 @@ import {
   WrapperDivProps,
 } from './StyleProps';
 
-export const MeasureApp = styled.div`
-  display: flex;
-  width: 100%;
-  padding: 0 calc(50vw - 600px);
-
-  @media (max-width: 1280px) {
-    padding: 0 40px;
-  }
+export const ContainerFlex = styled(SUIContainer)`
+  display: flex !important;
 `;
 export const Container = styled(SUIContainer)`
-  padding: ${MARGIN_SIZES.large};
+  padding-top: ${MARGIN_SIZES.large};
+  padding-bottom: ${MARGIN_SIZES.large};
 `;
 
 export const BoldText = styled.b`
