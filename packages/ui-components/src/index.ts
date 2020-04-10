@@ -32,6 +32,7 @@ export * from './Address';
 export * from './Alert';
 export * from './BalanceDisplay';
 export * from './Breadcrumbs';
+export * from './Button';
 export * from './Card';
 export * from './Circle';
 export * from './CopyButton';

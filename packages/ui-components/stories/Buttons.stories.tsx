@@ -7,6 +7,7 @@ import { boolean, select, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 
+import { Button } from '../src/Button';
 import { FONT_SIZES } from '../src/constants';
 import { NavButton } from '../src/NavButton';
 import { VoteNayButton, VoteYayButton } from '../src/Shared.styles';
@@ -16,6 +17,7 @@ import { withTheme } from './customDecorators';
 storiesOf('Button', module)
   .addDecorator(withKnobs)
   .addDecorator(withTheme)
+  .add('Button', () => <Button> Button</Button>)
   .add('NavButton', () => (
     <NavButton
       fontSize={select('font size', FONT_SIZES, 'large') as FontSize}
