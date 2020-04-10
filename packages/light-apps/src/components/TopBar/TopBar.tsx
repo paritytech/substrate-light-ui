@@ -2,11 +2,36 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { BlackBlock, Container } from '@substrate/ui-components';
+import { BlackBlock, MeasureApp, Menu } from '@substrate/ui-components';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import { ChooseProvider } from './ChooseProvider';
+
+const MenuTabs = (): React.ReactElement => {
+  const { pathname } = useLocation();
+  return (
+    <Menu borderless tabs size='large'>
+      <MeasureApp className='items-center'>
+        <Menu.Item
+          as={Link}
+          to='/accounts'
+          active={pathname.startsWith('/accounts')}
+        >
+          Accounts
+        </Menu.Item>
+        <Menu.Item
+          as={Link}
+          to='/transfer'
+          active={pathname.startsWith('/transfer')}
+        >
+          Send Funds
+        </Menu.Item>
+      </MeasureApp>
+    </Menu>
+  );
+};
 
 /**
  * Render logo based on the chain.
@@ -15,7 +40,7 @@ import { ChooseProvider } from './ChooseProvider';
  */
 function renderLogo(): React.ReactElement {
   return (
-    <Link className='w-60' to='/'>
+    <Link className='w-50 mr3 h3 flex items-center' to='/'>
       Lichen
     </Link>
   );
@@ -24,21 +49,12 @@ function renderLogo(): React.ReactElement {
 export function TopBar(): React.ReactElement {
   return (
     <>
-      <div className='flex'>
-        <BlackBlock className='w-10'>
-          <Link to='/accounts'>Accounts</Link>
-        </BlackBlock>
-        <BlackBlock className='w-10'>
-          <Link to='/transfer'>Transfer</Link>
-        </BlackBlock>
-      </div>
+      <MenuTabs />
       <BlackBlock>
-        <Container as='header'>
-          <div className='flex items-center'>
-            {renderLogo()}
-            <ChooseProvider />
-          </div>
-        </Container>
+        <MeasureApp className='items-center'>
+          {renderLogo()}
+          <ChooseProvider />
+        </MeasureApp>
       </BlackBlock>
     </>
   );
