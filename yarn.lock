@@ -2517,9 +2517,9 @@
     "@types/node" ">= 8"
 
 "@open-wc/webpack-import-meta-loader@^0.4.1":
-  version "0.4.4"
-  resolved "https://registry.yarnpkg.com/@open-wc/webpack-import-meta-loader/-/webpack-import-meta-loader-0.4.4.tgz#1b0a0ab00b6f79576f34ed1d6ec8d866ce314c06"
-  integrity sha512-1+YSlRDvjHMgWgW0wsip3DUvV/Xsc+Z66da4IzF9xbUog+YJi+GML6iNMRKwlGMvs5QT3ubX42GfzJj+GUDHKg==
+  version "0.4.5"
+  resolved "https://registry.yarnpkg.com/@open-wc/webpack-import-meta-loader/-/webpack-import-meta-loader-0.4.5.tgz#2b5f369e1934de4836b80b2d263b3f16b8b7ec0c"
+  integrity sha512-UgrpAS8cUSwOP6RrSUKzy3vUQX1CP6eujbn5gvhUfklG4ig922Hnw+sHjeco2wHUo+GFTmTrRVVmmXNmaWDQQQ==
 
 "@polkadot/api-derive@1.9.1":
   version "1.9.1"
