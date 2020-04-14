@@ -15,13 +15,14 @@ type ModalProps = SUIModalProps;
 const StyledModal = styled(SUIModal)`
   &&& {
     position: ${(props): string => props.position || 'relative'};
+    width: 95%;
     bottom: ${(props): string | undefined => props.bottom || undefined};
     right: ${(props): string | undefined => props.right || undefined};
-    width: 80%;
     margin-top: 0 !important;
     max-width: 750px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     margin: 0 auto;
+    padding: 1rem 3rem 2rem;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   }
 `;
 

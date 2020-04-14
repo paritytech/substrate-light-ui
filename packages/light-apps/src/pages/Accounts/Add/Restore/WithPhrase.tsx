@@ -71,10 +71,7 @@ export function RestoreWithPhrase(props: Props): React.ReactElement {
           />
         </WrapperDiv>
         <Margin top />
-        <NavButton
-          value='Restore'
-          wrapClass='flex mt4 mb3 w-100 justify-around'
-        />
+        <NavButton value='Restore' wrapClass='flex mt4 w-100 justify-around' />
       </Stacked>
     </form>
   );

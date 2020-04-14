@@ -82,8 +82,7 @@ export const Header = styled.h2<HeaderProps>`
   font-weight: 700;
   font-size: ${FONT_SIZES.big};
   margin: ${(props): string =>
-    props.margin ? MARGIN_SIZES[props.margin] : `${MARGIN_SIZES.big} 0`};
-  padding: ${MARGIN_SIZES.small} ${MARGIN_SIZES.medium};
+    props.margin ? MARGIN_SIZES[props.margin] : `0`};
   text-align: ${(props): string => props.textAlign || 'left'};
 `;
 
@@ -198,7 +197,7 @@ export const VoteYayButton = styled.button`
 `;
 
 export const Stacked = styled.div<StackProps>`
-  align-items: ${(props): string => props.alignItems || ''};
+  align-items: ${(props): string => props.alignItems || 'baseline'};
   display: flex;
   flex-direction: column;
   justify-content: ${(props): string => props.justifyContent || 'center'};

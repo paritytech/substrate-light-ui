@@ -11,7 +11,7 @@ export const FONT_SIZES = {
   small: '0.8rem',
   medium: '1rem',
   large: '1.5rem',
-  big: '2rem',
+  big: '1.75rem',
 };
 
 export const FONT_WEIGHTS = {

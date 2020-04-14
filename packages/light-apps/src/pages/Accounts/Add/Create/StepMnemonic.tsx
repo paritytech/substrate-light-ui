@@ -41,7 +41,7 @@ export function AddAccountStepMnemonic(props: Props): React.ReactElement {
       </FramedBlock>
       <NavButton
         onClick={goToNextStep}
-        wrapClass='flex mt4 mb3 w-100 justify-around'
+        wrapClass='flex mt4 w-100 justify-around'
       >
         Next
       </NavButton>
