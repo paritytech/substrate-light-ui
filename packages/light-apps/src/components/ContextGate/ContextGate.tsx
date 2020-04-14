@@ -4,19 +4,18 @@
 
 import {
   AlertsContextProvider,
-  ApiContextProvider,
-  TxQueueContextProvider,
+  HealthContextProvider,
+  SystemContextProvider,
 } from '@substrate/context';
 import React from 'react';
 
 import {
   AccountContextProvider,
-  HealthContextProvider,
+  ApiContextProvider,
   InjectedContext,
   InjectedContextProvider,
   ProviderContext,
   ProviderContextProvider,
-  SystemContextProvider,
 } from '../context';
 import { TopBar } from '../TopBar';
 import { ApiGate, HealthGate, SystemGate } from './gates';
@@ -53,9 +52,7 @@ export function ContextGate(props: {
                               <ApiContextProvider provider={provider!}>
                                 <ApiGate>
                                   <AlertsContextProvider>
-                                    <TxQueueContextProvider>
-                                      {children}
-                                    </TxQueueContextProvider>
+                                    {children}
                                   </AlertsContextProvider>
                                 </ApiGate>
                               </ApiContextProvider>

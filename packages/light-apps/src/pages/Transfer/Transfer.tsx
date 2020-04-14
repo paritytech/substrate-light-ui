@@ -4,11 +4,10 @@
 
 import { SigningRequest } from '@polkadot/extension-base/background/types';
 import { web3FromAddress } from '@polkadot/extension-dapp';
-import { ApiContext } from '@substrate/context';
 import { ErrorText, Form, Header, WrapperDiv } from '@substrate/ui-components';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 
-import { InjectedContext } from '../../components/context';
+import { ApiContext, InjectedContext } from '../../components/context';
 import { assertIsDefined } from '../../util/assert';
 import { TxDetails, TxStatus, TxStatusText } from './TxDetails';
 import { TxForm } from './TxForm';
