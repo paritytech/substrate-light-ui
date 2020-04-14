@@ -3249,9 +3249,9 @@
     util-deprecate "^1.0.2"
 
 "@substrate/context@^0.3.22":
-  version "0.3.22"
-  resolved "https://registry.yarnpkg.com/@substrate/context/-/context-0.3.22.tgz#f23e4fa15741c6a1862d7ca220fbbf23f368cf9c"
-  integrity sha512-/bcSFPc9nKYnVFZ75e4e+6HuB76yiFv+gFs1208RKquoSDT1i5wZpL+Dx4SemPAZBk8BsDDEUdei8Mjv+aAF8g==
+  version "0.3.23"
+  resolved "https://registry.yarnpkg.com/@substrate/context/-/context-0.3.23.tgz#0ab6b42cfd410c3ca784a0cd843fb1f12e81d175"
+  integrity sha512-svy0xZibwE7ZxztMl1/l7DhVGMhnlHDk5wnmUOr1WsTAdOrGINIMB+6fG4osDGPRCKmbBM+un91lwHGFZOIn6w==
 
 "@svgr/babel-plugin-add-jsx-attribute@^4.2.0":
   version "4.2.0"
