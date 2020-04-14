@@ -3,12 +3,13 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import {
+  Button,
   FadedText,
   FramedBlock,
+  Icon,
   MnemonicPhraseList,
   NavButton,
   Stacked,
-  StyledNavButton,
   SubHeader,
 } from '@substrate/ui-components';
 import React from 'react';
@@ -24,9 +25,6 @@ export function AddAccountStepMnemonic(props: Props): React.ReactElement {
 
   return (
     <Stacked>
-      <StyledNavButton onClick={setNewMnemonic}>
-        Generate new mnemonic
-      </StyledNavButton>
       <SubHeader>Copy the following mnemonic phrase</SubHeader>
       <FadedText>
         Your private key will be generated from this phrase. Anyone with access
@@ -35,6 +33,11 @@ export function AddAccountStepMnemonic(props: Props): React.ReactElement {
       </FadedText>
       <FramedBlock>
         <MnemonicPhraseList phrase={mnemonic} />
+        <Button.Group className='absolute bottom-0 right-0'>
+          <Button icon onClick={setNewMnemonic}>
+            <Icon name='redo' />
+          </Button>
+        </Button.Group>
       </FramedBlock>
       <NavButton
         onClick={goToNextStep}

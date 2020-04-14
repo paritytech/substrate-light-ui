@@ -238,6 +238,7 @@ export const WrapperDiv = styled.div<WrapperDivProps>`
 /* TODO compomnent with actions */
 export const FramedBlock = styled.div`
   padding: 2rem;
+  position: relative;
   border-style: solid;
   border-width: 1px;
 `;
