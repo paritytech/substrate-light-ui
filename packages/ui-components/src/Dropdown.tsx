@@ -23,6 +23,7 @@ const DropdownDark = styled(SUIDropdown)`
     background-color: #1e1e1e;
     border-color: black;
     border-top: transparent;
+    margin-top: 1px;
 
     > .item {
       color: white !important;

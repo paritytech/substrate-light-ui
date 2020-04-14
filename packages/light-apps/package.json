@@ -24,7 +24,7 @@
     "@rehooks/local-storage": "^2.3.0",
     "@substrate/context": "^0.3.23",
     "@substrate/ui-components": "^0.3.32",
-    "@types/chrome": "^0.0.103",
+    "@types/chrome": "^0.0.104",
     "@types/react-dom": "^16.9.6",
     "@types/react-router-dom": "^5.1.0",
     "extensionizer": "^1.0.1",
