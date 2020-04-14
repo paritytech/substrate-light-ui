@@ -4,6 +4,7 @@
 
 import { logger } from '@polkadot/util';
 import { useLocalStorage } from '@rehooks/local-storage';
+import { HealthContext, HealthContextType } from '@substrate/context';
 import {
   Circle,
   ConnectedNodes,
@@ -15,12 +16,7 @@ import {
 } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';
 
-import {
-  HealthContext,
-  HealthContextType,
-  InjectedContext,
-  ProviderContext,
-} from '../../context';
+import { InjectedContext, ProviderContext } from '../../context';
 import {
   discoverChain,
   getAllProviders,

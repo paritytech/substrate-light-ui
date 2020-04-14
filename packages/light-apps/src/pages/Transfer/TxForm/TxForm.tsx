@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { SubjectInfo } from '@polkadot/ui-keyring/observable/types';
-import { handler } from '@substrate/context';
+import { handler, SystemContext } from '@substrate/context';
 import {
   Input,
   InputAddress,
@@ -12,7 +12,7 @@ import {
 } from '@substrate/ui-components';
 import React, { useContext } from 'react';
 
-import { AccountContext, SystemContext } from '../../../components/context';
+import { AccountContext } from '../../../components/context';
 import { assertIsDefined } from '../../../util/assert';
 import { UserInput } from '../validate';
 

@@ -2,11 +2,10 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { handler } from '@substrate/context';
+import { handler, SystemContext } from '@substrate/context';
 import { Input, StyledNavButton } from '@substrate/ui-components';
 import React, { useContext } from 'react';
 
-import { SystemContext } from '../../../components/context';
 import { assertIsDefined } from '../../../util/assert';
 import { TxStatus } from './TxStatus';
 
