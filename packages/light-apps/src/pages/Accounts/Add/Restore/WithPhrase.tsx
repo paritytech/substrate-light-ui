@@ -51,7 +51,9 @@ export function RestoreWithPhrase(props: Props): React.ReactElement {
     <form onSubmit={handleSubmit}>
       {error && <ErrorText>{error}</ErrorText>}
       <Stacked justifyContent='space-between'>
-        <SubHeader>Import Account from Mnemonic Recovery Phrase</SubHeader>
+        <SubHeader>
+          Import Account from Mnemonic Recovery Phrase
+        </SubHeader>
         <WrapperDiv>
           <SubHeader>Phrase</SubHeader>
           <Input

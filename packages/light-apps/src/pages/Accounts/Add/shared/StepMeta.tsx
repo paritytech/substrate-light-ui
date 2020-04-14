@@ -48,7 +48,7 @@ export function AddAccountStepMeta(props: Props): React.ReactElement {
   return (
     <WrapperDiv margin='0'>
       <Stacked>
-        <SubHeader noMargin>Give it a name</SubHeader>
+        <SubHeader>Give it a name</SubHeader>
         <Input
           autoFocus
           fluid
@@ -60,7 +60,7 @@ export function AddAccountStepMeta(props: Props): React.ReactElement {
       </Stacked>
       <Margin top='small' />
       <Stacked>
-        <SubHeader noMargin>Encrypt it with a passphrase</SubHeader>
+        <SubHeader>Encrypt it with a passphrase</SubHeader>
         <Input
           fluid
           min={8}

@@ -43,19 +43,19 @@ function panels({
       content: {
         content: (
           <Stacked alignItems='flex-start'>
-            <SubHeader noMargin>Sender Account:</SubHeader>
+            <SubHeader>Sender Account:</SubHeader>
             <p>{senderAddress}</p>
-            <SubHeader noMargin>Recipient Address:</SubHeader>
+            <SubHeader>Recipient Address:</SubHeader>
             <p>{recipientAddress}</p>
-            <SubHeader noMargin>Transfer Amount:</SubHeader>
+            <SubHeader>Transfer Amount:</SubHeader>
             <p>
               {amount.toString()} {symbol}
             </p>
-            <SubHeader noMargin>Fees:</SubHeader>
+            <SubHeader>Fees:</SubHeader>
             <p>
               {allFees.toString()} {symbol}
             </p>
-            <SubHeader noMargin>Total Amount (amount + fees):</SubHeader>
+            <SubHeader>Total Amount (amount + fees):</SubHeader>
             <p>
               {allTotal.toString()} {symbol}
             </p>

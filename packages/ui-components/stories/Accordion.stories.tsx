@@ -22,7 +22,7 @@ storiesOf('Accordion', module)
       <Accordion.Title active={boolean('active', false)}>
         <StackedHorizontal>
           <Icon name='dropdown' onClick={linkTo('Accordion', 'active')} />
-          <SubHeader noMargin> Click Icon </SubHeader>
+          <SubHeader> Click Icon </SubHeader>
         </StackedHorizontal>
       </Accordion.Title>
       <Accordion.Content active={boolean('active', false)}>
@@ -39,7 +39,7 @@ storiesOf('Accordion', module)
       <Accordion.Title active={boolean('active', true)}>
         <StackedHorizontal>
           <Icon name='dropdown' onClick={linkTo('Accordion', 'inactive')} />
-          <SubHeader noMargin> Click Icon </SubHeader>
+          <SubHeader> Click Icon </SubHeader>
         </StackedHorizontal>
       </Accordion.Title>
       <Accordion.Content active={boolean('active', true)}>

@@ -36,7 +36,7 @@ export const BoldText = styled.b`
 export const FadedText = styled.p`
   color: ${polkadotOfficialTheme.black};
   opacity: 0.5;
-  text-align: center;
+  text-align: left;
 `;
 
 export const FlexItem = styled.div<FlexItemProps>`
@@ -220,7 +220,7 @@ export const SubHeader = styled.h3<SubHeaderProps>`
   font-weight: 200;
   font-size: ${FONT_SIZES.medium};
   margin: ${(props): string =>
-    props.noMargin ? '0 0' : '1rem auto 0.3rem auto'};
+    props.margin ? '1rem auto 0.3rem auto' : '0 0'};
   text-align: ${(props): string => props.textAlign || 'left'};
 `;
 
