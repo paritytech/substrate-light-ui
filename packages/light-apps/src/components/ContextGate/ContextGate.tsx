@@ -4,7 +4,6 @@
 
 import {
   AlertsContextProvider,
-  ApiContextProvider,
   HealthContextProvider,
   SystemContextProvider,
 } from '@substrate/context';
@@ -12,6 +11,7 @@ import React from 'react';
 
 import {
   AccountContextProvider,
+  ApiContextProvider,
   InjectedContext,
   InjectedContextProvider,
   ProviderContext,

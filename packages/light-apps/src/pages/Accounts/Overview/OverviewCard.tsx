@@ -2,7 +2,6 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { ApiContext } from '@substrate/context';
 import {
   AddressSummary,
   Card,
@@ -13,7 +12,7 @@ import {
 } from '@substrate/ui-components';
 import React, { useContext, useState } from 'react';
 
-import { InjectedContext } from '../../../components/context';
+import { ApiContext, InjectedContext } from '../../../components/context';
 import { assertIsDefined } from '../../../util/assert';
 
 interface Props {
