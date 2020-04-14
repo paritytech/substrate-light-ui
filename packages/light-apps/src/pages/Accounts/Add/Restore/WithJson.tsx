@@ -64,7 +64,11 @@ export function RestoreWithJson(_props: Props): React.ReactElement {
           </WrapperDiv>
           <Margin top />
           <ErrorText>{error}</ErrorText>
-          <NavButton onClick={handleRestoreWithJson} value='Restore' />
+          <NavButton
+            onClick={handleRestoreWithJson}
+            value='Restore'
+            wrapClass='flex mt4 mb3 w-100 justify-around'
+          />
         </>
       )}
     </Stacked>

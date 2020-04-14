@@ -51,9 +51,7 @@ export function RestoreWithPhrase(props: Props): React.ReactElement {
     <form onSubmit={handleSubmit}>
       {error && <ErrorText>{error}</ErrorText>}
       <Stacked justifyContent='space-between'>
-        <SubHeader>
-          Import Account from Mnemonic Recovery Phrase
-        </SubHeader>
+        <SubHeader>Import Account from Mnemonic Recovery Phrase</SubHeader>
         <WrapperDiv>
           <SubHeader>Phrase</SubHeader>
           <Input
@@ -73,7 +71,10 @@ export function RestoreWithPhrase(props: Props): React.ReactElement {
           />
         </WrapperDiv>
         <Margin top />
-        <NavButton value='Restore' />
+        <NavButton
+          value='Restore'
+          wrapClass='flex mt4 mb3 w-100 justify-around'
+        />
       </Stacked>
     </form>
   );
