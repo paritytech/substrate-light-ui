@@ -6,8 +6,8 @@ import {
   PORT_CONTENT,
   PORT_EXTENSION,
 } from '@polkadot/extension-base/defaults';
+import { AccountsStore } from '@polkadot/extension-base/stores';
 import keyring from '@polkadot/ui-keyring';
-import ExtensionStore from '@polkadot/ui-keyring/stores/Extension';
 import { assert } from '@polkadot/util';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import extension from 'extensionizer';
@@ -39,7 +39,7 @@ cryptoWaitReady()
     console.log('crypto initialized');
 
     // load all the keyring data
-    keyring.loadAll({ store: new ExtensionStore(), type: 'sr25519' });
+    keyring.loadAll({ store: new AccountsStore(), type: 'sr25519' });
 
     console.log('initialization completed');
   })

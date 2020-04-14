@@ -7,8 +7,7 @@ import {
   DeriveStakingAccount,
 } from '@polkadot/api-derive/types';
 import ApiRx from '@polkadot/api/rx';
-import { ApiContext } from '@substrate/context';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { combineLatest, of } from 'rxjs';
 
 import { BalanceDisplay, BalanceDisplayProps } from '../BalanceDisplay';
@@ -27,27 +26,25 @@ interface BalanceProps
 export function Balance(props: BalanceProps): React.ReactElement {
   const {
     address,
+    api,
     detailed = false,
     orientation = 'horizontal',
     ...rest
   } = props;
-  const { api, isApiReady } = useContext(ApiContext);
   const [allBalances, setAllBalances] = useState<DeriveBalancesAll>();
   const [allStaking, setAllStaking] = useState<DeriveStakingAccount>();
 
   useEffect(() => {
-    if (isApiReady) {
-      const balanceSub = combineLatest([
-        api.derive.balances.all(address),
-        api.derive.staking.account(address),
-      ]).subscribe(([allBalances, allStaking]) => {
-        setAllBalances(allBalances);
-        setAllStaking(allStaking);
-      });
+    const balanceSub = combineLatest([
+      api.derive.balances.all(address),
+      api.derive.staking.account(address),
+    ]).subscribe(([allBalances, allStaking]) => {
+      setAllBalances(allBalances);
+      setAllStaking(allStaking);
+    });
 
-      return (): void => balanceSub.unsubscribe();
-    }
-  }, [api, isApiReady, address]);
+    return (): void => balanceSub.unsubscribe();
+  }, [api, address]);
 
   const handleRedeem = (): void => {
     // FIXME We're not unsubscring here, we should
