@@ -19,15 +19,6 @@ export function AccountsOverview(): React.ReactElement {
 
   return (
     <Stacked>
-      {[...accounts.values()].map((account) => {
-        return (
-          <AccountsOverviewCard
-            address={account.address}
-            name={account.name}
-            key={account.address}
-          />
-        );
-      })}
       <StackedHorizontal>
         <h2 className='inline-flex mr3 mb0'>Your Accounts</h2>
         <Link to='/accounts/add'>
@@ -37,6 +28,15 @@ export function AccountsOverview(): React.ReactElement {
           </Button>
         </Link>
       </StackedHorizontal>
+      {[...accounts.values()].map((account) => {
+        return (
+          <AccountsOverviewCard
+            address={account.address}
+            name={account.name}
+            key={account.address}
+          />
+        );
+      })}
     </Stacked>
   );
 }
