@@ -7,6 +7,7 @@ import {
   FadedText,
   FramedBlock,
   Margin,
+  Menu,
   MnemonicRandomWord,
   MnemonicRewriteParts,
   Stacked,
@@ -14,7 +15,6 @@ import {
   StyledLinkButton,
   StyledNavButton,
   SubHeader,
-  WithSpaceAround,
 } from '@substrate/ui-components';
 import React, { useCallback, useState } from 'react';
 
@@ -112,8 +112,9 @@ export function AddAccountStepRewrite(props: Props): React.ReactElement {
       <FadedText>
         If someone gets hold of this mnemonic they could drain your account
       </FadedText>
-      <Margin top />
-      <FadedText>Rewrite Mnemonic Below</FadedText>
+      <Menu borderless shadow={false} tabs size='tiny'>
+        <Menu.Item active>Rewrite Mnemonic Below</Menu.Item>
+      </Menu>
       <FramedBlock>
         <MnemonicRewriteParts
           randomFourWords={randomFourWords}
@@ -127,14 +128,12 @@ export function AddAccountStepRewrite(props: Props): React.ReactElement {
           handleSetFourthWord={handler(setFourthWord)}
         />
       </FramedBlock>
-
-      <WithSpaceAround>
-        <StackedHorizontal justifyContent='space-between'>
-          <StyledLinkButton onClick={goToPreviousStep}>Back</StyledLinkButton>
-          <StyledNavButton onClick={handleGoToNextStep}>Next</StyledNavButton>
-          <StyledLinkButton className='o-0'>Back</StyledLinkButton>
-        </StackedHorizontal>
-      </WithSpaceAround>
+      <Margin top />
+      <StackedHorizontal justifyContent='space-between'>
+        <StyledLinkButton onClick={goToPreviousStep}>Back</StyledLinkButton>
+        <StyledNavButton onClick={handleGoToNextStep}>Next</StyledNavButton>
+        <StyledLinkButton className='o-0'>Back</StyledLinkButton>
+      </StackedHorizontal>
     </Stacked>
   );
 }

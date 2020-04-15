@@ -10,9 +10,6 @@ import {
   StackedHorizontal,
   StyledLinkButton,
   StyledNavButton,
-  SubHeader,
-  WithSpaceAround,
-  WrapperDiv,
 } from '@substrate/ui-components';
 import React, { useCallback } from 'react';
 
@@ -46,41 +43,34 @@ export function AddAccountStepMeta(props: Props): React.ReactElement {
   }, [goToNextStep, name, password, setError]);
 
   return (
-    <WrapperDiv margin='0'>
-      <Stacked>
-        <SubHeader>Give it a name</SubHeader>
-        <Input
-          autoFocus
-          fluid
-          min={1}
-          onChange={handler(setName)}
-          type='text'
-          value={name}
-        />
-      </Stacked>
-      <Margin top='small' />
-      <Stacked>
-        <SubHeader>Encrypt it with a passphrase</SubHeader>
-        <Input
-          fluid
-          min={8}
-          onChange={handler(setPassword)}
-          type='password'
-          value={password}
-        />
-      </Stacked>
-
-      <WithSpaceAround>
-        <StackedHorizontal justifyContent='space-between'>
-          {goToPreviousStep && (
-            <StyledLinkButton onClick={goToPreviousStep}>Back</StyledLinkButton>
-          )}
-          {goToNextStep && (
-            <StyledNavButton onClick={handleGoToNextStep}>Next</StyledNavButton>
-          )}
-          <StyledLinkButton className='o-0'>Back</StyledLinkButton>
-        </StackedHorizontal>
-      </WithSpaceAround>
-    </WrapperDiv>
+    <Stacked>
+      <Input
+        autoFocus
+        fluid
+        min={1}
+        onChange={handler(setName)}
+        textLabel='Give it a name'
+        type='text'
+        value={name}
+      />
+      <Input
+        fluid
+        min={8}
+        onChange={handler(setPassword)}
+        type='password'
+        textLabel='Encrypt it with a passphrase'
+        value={password}
+      />
+      <Margin top />
+      <StackedHorizontal justifyContent='space-between'>
+        {goToPreviousStep && (
+          <StyledLinkButton onClick={goToPreviousStep}>Back</StyledLinkButton>
+        )}
+        {goToNextStep && (
+          <StyledNavButton onClick={handleGoToNextStep}>Next</StyledNavButton>
+        )}
+        <StyledLinkButton className='o-0'>Back</StyledLinkButton>
+      </StackedHorizontal>
+    </Stacked>
   );
 }

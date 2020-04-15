@@ -197,7 +197,7 @@ export const VoteYayButton = styled.button`
 `;
 
 export const Stacked = styled.div<StackProps>`
-  align-items: ${(props): string => props.alignItems || 'baseline'};
+  align-items: ${(props): string => props.alignItems || ''};
   display: flex;
   flex-direction: column;
   justify-content: ${(props): string => props.justifyContent || 'center'};
@@ -216,7 +216,7 @@ export const StackedHorizontal = styled.div<StackProps>`
 
 export const SubHeader = styled.h3<SubHeaderProps>`
   color: ${polkadotOfficialTheme.black};
-  font-weight: 200;
+  font-weight: 500;
   font-size: ${FONT_SIZES.medium};
   margin: ${(props): string =>
     props.margin ? '1rem auto 0.3rem auto' : '0 0'};

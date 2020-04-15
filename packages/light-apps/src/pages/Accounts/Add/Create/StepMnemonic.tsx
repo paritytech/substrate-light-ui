@@ -7,6 +7,8 @@ import {
   FadedText,
   FramedBlock,
   Icon,
+  Margin,
+  Menu,
   MnemonicPhraseList,
   NavButton,
   Stacked,
@@ -25,12 +27,15 @@ export function AddAccountStepMnemonic(props: Props): React.ReactElement {
 
   return (
     <Stacked>
-      <SubHeader>Copy the following mnemonic phrase</SubHeader>
+      <SubHeader>Copy Your Mnemonic Somewhere Safe</SubHeader>
       <FadedText>
         Your private key will be generated from this phrase. Anyone with access
         to this phrase can have full control your funds so make sure to keep it
         a secure and secret.
       </FadedText>
+      <Menu borderless shadow={false} tabs size='tiny'>
+        <Menu.Item active>Copy the following mnemonic phrase</Menu.Item>
+      </Menu>
       <FramedBlock>
         <MnemonicPhraseList phrase={mnemonic} />
         <Button.Group className='absolute bottom-0 right-0'>
@@ -39,10 +44,8 @@ export function AddAccountStepMnemonic(props: Props): React.ReactElement {
           </Button>
         </Button.Group>
       </FramedBlock>
-      <NavButton
-        onClick={goToNextStep}
-        wrapClass='flex mt4 w-100 justify-around'
-      >
+      <Margin top />
+      <NavButton onClick={goToNextStep} wrapClass='flex w-100 justify-around'>
         Next
       </NavButton>
     </Stacked>
