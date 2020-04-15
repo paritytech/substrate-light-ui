@@ -108,7 +108,7 @@ export function AddAccountStepRewrite(props: Props): React.ReactElement {
 
   return (
     <Stacked>
-      <SubHeader>Copy Your Mnemonic Somewhere Safe</SubHeader>
+      <SubHeader>Copy your Mnemonic Somewhere Safe</SubHeader>
       <FadedText>
         If someone gets hold of this mnemonic they could drain your account
       </FadedText>

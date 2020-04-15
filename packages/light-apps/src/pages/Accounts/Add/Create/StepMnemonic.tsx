@@ -27,7 +27,7 @@ export function AddAccountStepMnemonic(props: Props): React.ReactElement {
 
   return (
     <Stacked>
-      <SubHeader>Copy Your Mnemonic Somewhere Safe</SubHeader>
+      <SubHeader>Copy your Mnemonic Somewhere Safe</SubHeader>
       <FadedText>
         Your private key will be generated from this phrase. Anyone with access
         to this phrase can have full control your funds so make sure to keep it
