@@ -49,7 +49,7 @@ export function AddAccountStepMeta(props: Props): React.ReactElement {
         fluid
         min={1}
         onChange={handler(setName)}
-        textLabel='Give it a name'
+        textLabel='Name'
         type='text'
         value={name}
       />
@@ -58,7 +58,7 @@ export function AddAccountStepMeta(props: Props): React.ReactElement {
         min={8}
         onChange={handler(setPassword)}
         type='password'
-        textLabel='Encrypt it with a passphrase'
+        textLabel='Passphrase'
         value={password}
       />
       <Margin top />

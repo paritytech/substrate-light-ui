@@ -5,7 +5,7 @@
 import SUIContainer from 'semantic-ui-react/dist/commonjs/elements/Container';
 import styled from 'styled-components';
 
-import { FONT_SIZES, MARGIN_SIZES } from './constants';
+import { FONT_SIZES, FONT_WEIGHTS, MARGIN_SIZES } from './constants';
 import { polkadotOfficialTheme } from './globalStyle';
 import {
   DynamicSizeTextProps,
@@ -35,6 +35,7 @@ export const BoldText = styled.b`
 
 export const FadedText = styled.p`
   color: ${polkadotOfficialTheme.black};
+  font-weight: ${FONT_WEIGHTS.light};
   opacity: 0.5;
   text-align: left;
 `;
@@ -74,12 +75,9 @@ export const WithPadding = styled.div`
   padding: ${MARGIN_SIZES.medium} auto;
 `;
 
+// TODO: props from figma 
 export const Header = styled.h2<HeaderProps>`
-  color: ${(props): string =>
-    props.color
-      ? polkadotOfficialTheme[props.color]
-      : polkadotOfficialTheme.grey};
-  font-weight: 700;
+  font-weight: ${FONT_WEIGHTS.extraBold};
   font-size: ${FONT_SIZES.big};
   margin: ${(props): string =>
     props.margin ? MARGIN_SIZES[props.margin] : `0`};
@@ -136,12 +134,12 @@ export const StyledLinkButton = styled.button`
 
 export const StyledNavButton = styled.button<StyledNavButtonProps>`
   position: relative;
-  background-color: ${polkadotOfficialTheme.signal};
+  background-color: ${polkadotOfficialTheme.black};
   border: none;
   border-radius: 9999px;
   color: ${polkadotOfficialTheme.white};
-  fontsize: ${FONT_SIZES.large};
-  padding: 1em 3em;
+  font-size: ${FONT_SIZES.large};
+  padding: 1rem 5rem;
   outline: none;
   transition: background-color 0.3s;
 

@@ -7,9 +7,11 @@ export const DEFAULT_TOKEN_SYMBOL = 'UNIT';
 /**
  * Mapping between font sizes and their CSS values.
  */
+// TODO better naming & from figma
 export const FONT_SIZES = {
-  small: '0.8rem',
+  small: '0.9rem',
   medium: '1rem',
+  button: '1.3rem',
   large: '1.5rem',
   big: '1.75rem',
 };

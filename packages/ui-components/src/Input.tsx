@@ -9,6 +9,7 @@ import SUIInput, {
 import styled from 'styled-components';
 
 import { polkadotOfficialTheme } from './globalStyle';
+import { FONT_SIZES } from './constants';
 
 interface InputProps extends SUIInputProps {
   borderless?: boolean;
@@ -63,7 +64,9 @@ const StyledInput = styled<typeof SUIInput>(SUIInput)`
 `;
 
 const StyledLabel = styled.label`
+  font-size: ${FONT_SIZES.small};
   margin-right: 0.5em;
+  line-height: 1.5em;
 `;
 
 export function Input(props: InputProps): React.ReactElement {

@@ -10,6 +10,7 @@ import {
   Menu,
   MnemonicRandomWord,
   MnemonicRewriteParts,
+  NavButton,
   Stacked,
   StackedHorizontal,
   StyledLinkButton,
@@ -108,10 +109,6 @@ export function AddAccountStepRewrite(props: Props): React.ReactElement {
 
   return (
     <Stacked>
-      <SubHeader>Copy your Mnemonic Somewhere Safe</SubHeader>
-      <FadedText>
-        If someone gets hold of this mnemonic they could drain your account
-      </FadedText>
       <Menu borderless shadow={false} tabs size='tiny'>
         <Menu.Item active>Rewrite Mnemonic Below</Menu.Item>
       </Menu>
@@ -129,10 +126,19 @@ export function AddAccountStepRewrite(props: Props): React.ReactElement {
         />
       </FramedBlock>
       <Margin top />
+      <SubHeader>Copy your Mnemonic Somewhere Safe</SubHeader>
+      <FadedText>
+        If someone gets hold of this mnemonic they could drain your account
+      </FadedText>
+      <Margin top='large' />
       <StackedHorizontal justifyContent='space-between'>
-        <StyledLinkButton onClick={goToPreviousStep}>Back</StyledLinkButton>
-        <StyledNavButton onClick={handleGoToNextStep}>Next</StyledNavButton>
-        <StyledLinkButton className='o-0'>Back</StyledLinkButton>
+        <NavButton onClick={goToPreviousStep} negative>
+          Back
+        </NavButton>
+        <NavButton onClick={handleGoToNextStep}>Next</NavButton>
+        <NavButton className='o-0' negative>
+          Back
+        </NavButton>
       </StackedHorizontal>
     </Stacked>
   );
