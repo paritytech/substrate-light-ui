@@ -15,7 +15,7 @@ type Props = RouteComponentProps;
 export function AddAccount(props: Props): React.ReactElement {
   const { history, location } = props;
 
-  const activeTab = location.pathname.split('/')[4];
+  const activeTab = location.pathname.split('/')[3];
 
   const navToCreate = (): void => {
     history.push(`/accounts/add/generate`);
