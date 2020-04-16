@@ -9,14 +9,12 @@ import { FONT_SIZES, FONT_WEIGHTS, MARGIN_SIZES } from './constants';
 import { polkadotOfficialTheme } from './globalStyle';
 import {
   DynamicSizeTextProps,
-  FlexItemProps,
   HeaderProps,
   NodeSelectorProps,
   StackProps,
   StyledNavButtonProps,
   StyledNavLinkProps,
   SubHeaderProps,
-  WithSpaceAroundProps,
   WithSpaceBetweenProps,
 } from './StyleProps';
 
@@ -24,10 +22,6 @@ export const ContainerFlex = styled(SUIContainer).attrs({
   className: 'flex items-center',
 })`
   display: flex !important;
-`;
-export const Container = styled(SUIContainer)`
-  padding-top: ${MARGIN_SIZES.large};
-  padding-bottom: ${MARGIN_SIZES.large};
 `;
 
 export const BoldText = styled.b`
@@ -41,10 +35,6 @@ export const FadedText = styled.p`
   text-align: left;
 `;
 
-export const FlexItem = styled.div<FlexItemProps>`
-  flex: ${(props): number => props.flex || 1};
-`;
-
 export const ErrorText = styled.p`
   color: red;
   text-align: center;
@@ -55,15 +45,6 @@ export const SuccessText = styled.p`
   color: green;
   text-align: center;
   font-weight: 500;
-`;
-
-export const WithSpace = styled.div`
-  margin: ${MARGIN_SIZES.medium} auto;
-`;
-
-export const WithSpaceAround = styled.div<WithSpaceAroundProps>`
-  margin: ${(props): string => MARGIN_SIZES[props.margin || 'medium']};
-  padding: ${(props): string => MARGIN_SIZES[props.padding || 'medium']};
 `;
 
 export const WithSpaceBetween = styled.div<WithSpaceBetweenProps>`

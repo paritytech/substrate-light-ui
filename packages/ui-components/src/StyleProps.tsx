@@ -23,12 +23,6 @@ export interface DynamicSizeTextProps {
   fontSize?: FontSize;
 }
 
-export interface FlexItemProps {
-  flex?: number;
-  margin?: MarginSize;
-  padding?: MarginSize;
-}
-
 export interface StyledNavButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   negative?: boolean;
@@ -50,11 +44,6 @@ export interface SubHeaderProps {
   margin?: MarginSize;
   noMargin?: boolean;
   textAlign?: string;
-}
-
-export interface WithSpaceAroundProps {
-  margin?: MarginSize;
-  padding?: MarginSize;
 }
 
 export interface WithSpaceBetweenProps {
