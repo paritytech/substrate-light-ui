@@ -139,7 +139,6 @@ export const StyledNavButton = styled.button<StyledNavButtonProps>`
   border-radius: 9999px;
   color: ${polkadotOfficialTheme.white};
   font-size: ${FONT_SIZES.large};
-  padding: 1rem 5rem;
   outline: none;
   transition: background-color 0.3s;
 
@@ -153,6 +152,9 @@ export const StyledNavButton = styled.button<StyledNavButtonProps>`
   :hover {
     opacity: 0.9;
     cursor: ${(props): string => (props.disabled ? 'not-allowed' : 'pointer')};
+  }
+  & p {
+    padding: 0.5em 2.5em;
   }
 `;
 

@@ -8,26 +8,30 @@ import { storiesOf } from '@storybook/react';
 import React from 'react';
 
 import { Button } from '../src/Button';
-import { FONT_SIZES } from '../src/constants';
 import { NavButton } from '../src/NavButton';
 import { VoteNayButton, VoteYayButton } from '../src/Shared.styles';
-import { FontSize } from '../src/types';
 import { withTheme } from './customDecorators';
 
 storiesOf('Button', module)
   .addDecorator(withKnobs)
   .addDecorator(withTheme)
   .add('Button', () => <Button> Button</Button>)
-  .add('NavButton', () => (
-    <NavButton
-      fontSize={select('font size', FONT_SIZES, 'large') as FontSize}
-      fontWeight={text('font weight', '500')}
-      onClick={action('clicked')}
-      negative={boolean('negative', false)}
-    >
-      {text('children', 'Click Me!')}
-    </NavButton>
-  ))
+  .add('NavButton', () => {
+    return (
+      <NavButton
+        fontSize={select(
+          'font size',
+          ['small', 'medium', 'button', 'large', 'big'],
+          'large'
+        )}
+        fontWeight={text('font weight', '500')}
+        onClick={action('clicked')}
+        negative={boolean('negative', false)}
+      >
+        {text('children', 'Click Me!')}
+      </NavButton>
+    );
+  })
   .add('VoteButtons', () => (
     <React.Fragment>
       <VoteYayButton onClick={action('Yay')}> Yay </VoteYayButton>
