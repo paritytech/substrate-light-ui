@@ -2,7 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Header, Menu, WrapperDiv } from '@substrate/ui-components';
+import { Header, Menu } from '@substrate/ui-components';
+import { Stacked } from '@substrate/ui-components';
 import React from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 
@@ -30,7 +31,7 @@ export function AddAccount(props: Props): React.ReactElement {
   };
 
   return (
-    <WrapperDiv>
+    <Stacked>
       <Header>Add an Account</Header>
       <Menu borderless shadow={false} size='large' text>
         <Menu.Item active={activeTab === 'generate'} onClick={navToCreate}>
@@ -49,6 +50,6 @@ export function AddAccount(props: Props): React.ReactElement {
         <Route path='/accounts/add/phrase' component={RestoreWithPhrase} />
         <Redirect to='/accounts/add/generate' />
       </Switch>
-    </WrapperDiv>
+    </Stacked>
   );
 }

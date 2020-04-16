@@ -18,7 +18,6 @@ import {
   SubHeaderProps,
   WithSpaceAroundProps,
   WithSpaceBetweenProps,
-  WrapperDivProps,
 } from './StyleProps';
 
 export const ContainerFlex = styled(SUIContainer).attrs({
@@ -227,13 +226,6 @@ export const SubHeader = styled.h3<SubHeaderProps>`
 
 export const InlineSubHeader = styled(SubHeader)`
   display: inline;
-`;
-
-export const WrapperDiv = styled.div<WrapperDivProps>`
-  margin: ${(props): string => props.margin || 'auto'};
-  padding: ${(props): string => props.padding || '1rem'};
-  width: ${(props): string => props.width || 'auto'};
-  height: ${(props): string => props.height || '100%'};
 `;
 
 /* TODO compomnent with actions */

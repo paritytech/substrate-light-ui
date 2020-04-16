@@ -7,7 +7,7 @@ import { select, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 
-import { Breadcrumbs, WrapperDiv } from '../src';
+import { Breadcrumbs, StackedHorizontal } from '../src';
 import { withTheme } from './customDecorators';
 
 const sectionLabels = [
@@ -23,11 +23,11 @@ storiesOf('Breadcrumbs', module)
   .addDecorator(withKnobs)
   .addDecorator(withTheme)
   .add('3 sections', () => (
-    <WrapperDiv width='100%'>
+    <StackedHorizontal>
       <Breadcrumbs
         activeLabel={select('activeLabel', sectionLabels, 'Welcome')}
         onClick={action('clicked')}
         sectionLabels={sectionLabels}
       />
-    </WrapperDiv>
+    </StackedHorizontal>
   ));

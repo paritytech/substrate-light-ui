@@ -61,13 +61,6 @@ export interface WithSpaceBetweenProps {
   flexDirection?: FlexDirection;
 }
 
-export interface WrapperDivProps {
-  margin?: string;
-  padding?: string;
-  width?: string;
-  height?: string;
-}
-
 export interface NodeSelectorProps {
   fluid?: boolean;
   className?: string;

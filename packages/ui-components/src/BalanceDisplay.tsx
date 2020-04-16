@@ -11,10 +11,11 @@ import { formatBalance, formatNumber } from '@polkadot/util';
 import React from 'react';
 import Loader from 'semantic-ui-react/dist/commonjs/elements/Loader';
 
-import { Icon, WrapperDiv } from './index';
+import { Icon } from './index';
 import {
   DynamicSizeText,
   FadedText,
+  Stacked,
   StackedHorizontal,
   StyledLinkButton,
 } from './Shared.styles';
@@ -90,7 +91,7 @@ export function BalanceDisplay(
     return (
       <>
         <hr />
-        <WrapperDiv width='90%' margin='0' padding='0'>
+        <Stacked>
           <StackedHorizontal justifyContent='space-between'>
             <b>Available:</b>
             {formatBalance(availableBalance)}
@@ -115,7 +116,7 @@ export function BalanceDisplay(
             {lockedBalance && formatBalance(lockedBalance)}
           </StackedHorizontal>
           {renderUnlocking()}
-        </WrapperDiv>
+        </Stacked>
       </>
     );
   };

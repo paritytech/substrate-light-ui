@@ -4,7 +4,8 @@
 
 import { SigningRequest } from '@polkadot/extension-base/background/types';
 import { web3FromAddress } from '@polkadot/extension-dapp';
-import { ErrorText, Form, Header, WrapperDiv } from '@substrate/ui-components';
+import { ErrorText, Form, Header } from '@substrate/ui-components';
+import { Stacked } from '@substrate/ui-components';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 
 import { ApiContext, InjectedContext } from '../../components/context';
@@ -96,7 +97,7 @@ export function Transfer(): React.ReactElement {
   }, [amount, api, messaging, password, recipient, sender, tip]);
 
   return (
-    <WrapperDiv>
+    <Stacked>
       <Header>Send Funds</Header>
       <Form onSubmit={handleSubmit}>
         <ErrorText>{error}</ErrorText>
@@ -123,6 +124,6 @@ export function Transfer(): React.ReactElement {
         )}
         <TxStatusText txStatus={txStatus} />
       </Form>
-    </WrapperDiv>
+    </Stacked>
   );
 }
