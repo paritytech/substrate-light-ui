@@ -56,13 +56,9 @@ export function RestoreWithPhrase(props: Props): React.ReactElement {
           <Menu.Item active>Mnemonic Recovery Phrase</Menu.Item>
         </Menu>
         <FramedBlock>
-          {/* TODO input textarea */}
-          <TextArea signal />
-          <Input
-            fluid
+          <TextArea
             onChange={handler(setRecoveryPhrase)}
-            size='huge'
-            type='text'
+            signal
             value={recoveryPhrase}
           />
         </FramedBlock>
