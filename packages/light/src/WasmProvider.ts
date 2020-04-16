@@ -35,14 +35,7 @@ export class WasmProvider implements ProviderInterface {
     this.#coder = new Coder();
     this.light = light;
 
-    light
-      .startClient()
-      .then((rpcClient) => {
-        this.#rpcClient = rpcClient;
-        this.#isConnected = true;
-        this.emit('connected');
-      })
-      .catch((error) => l.error(error));
+    this.connect();
   }
 
   /**
@@ -60,14 +53,24 @@ export class WasmProvider implements ProviderInterface {
   }
 
   public connect(): void {
-    console.error('connect is noop');
+    this.light
+      .startClient()
+      .then((rpcClient) => {
+        this.#rpcClient = rpcClient;
+        this.#isConnected = true;
+        this.emit('connected');
+      })
+      .catch(l.error);
   }
 
   /**
-   * @description Manually disconnect from the connection, clearing autoconnect logic
+   * @description Manually disconnect from the connection.
    */
   public disconnect(): void {
-    console.error('disconnect is noop');
+    if (this.#rpcClient) {
+      l.log('Destroying WASM light client');
+      this.#rpcClient.free();
+    }
   }
 
   /**
@@ -167,9 +170,9 @@ export class WasmProvider implements ProviderInterface {
    * const rpc = new Rpc(provider);
    *
    * rpc.state.subscribeStorage([[storage.balances.freeBalance, <Address>]], (_, values) => {
-   *   console.log(values)
+   *   l.log(values)
    * }).then((subscriptionId) => {
-   *   console.log('balance changes subscription id: ', subscriptionId)
+   *   l.log('balance changes subscription id: ', subscriptionId)
    * })
    * ```
    */
