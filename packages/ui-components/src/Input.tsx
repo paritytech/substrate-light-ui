@@ -8,8 +8,8 @@ import SUIInput, {
 } from 'semantic-ui-react/dist/commonjs/elements/Input';
 import styled from 'styled-components';
 
-import { polkadotOfficialTheme } from './globalStyle';
 import { FONT_SIZES } from './constants';
+import { polkadotOfficialTheme } from './globalStyle';
 
 interface InputProps extends SUIInputProps {
   borderless?: boolean;

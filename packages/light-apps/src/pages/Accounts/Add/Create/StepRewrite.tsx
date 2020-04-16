@@ -13,8 +13,6 @@ import {
   NavButton,
   Stacked,
   StackedHorizontal,
-  StyledLinkButton,
-  StyledNavButton,
   SubHeader,
 } from '@substrate/ui-components';
 import React, { useCallback, useState } from 'react';

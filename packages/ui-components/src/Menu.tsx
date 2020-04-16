@@ -9,8 +9,8 @@ import SUIMenu, {
 import SUIDivider from 'semantic-ui-react/dist/commonjs/elements/Divider/Divider';
 import styled from 'styled-components';
 
-import { polkadotOfficialTheme } from './globalStyle';
 import { FONT_WEIGHTS } from './constants';
+import { polkadotOfficialTheme } from './globalStyle';
 
 interface MenuProps extends SUIMenuProps {
   tabs?: boolean;

@@ -75,7 +75,7 @@ export const WithPadding = styled.div`
   padding: ${MARGIN_SIZES.medium} auto;
 `;
 
-// TODO: props from figma 
+// TODO: props from figma
 export const Header = styled.h2<HeaderProps>`
   font-weight: ${FONT_WEIGHTS.extraBold};
   font-size: ${FONT_SIZES.big};
