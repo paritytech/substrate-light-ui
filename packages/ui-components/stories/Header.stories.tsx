@@ -6,19 +6,11 @@ import { text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 
-import { Container, NavHeader } from '../src';
+import { NavHeader } from '../src';
 import { withTheme } from './customDecorators';
 
 storiesOf('Header', module)
   .addDecorator(withKnobs)
   .addDecorator(withTheme)
-  .add('empty', () => (
-    <Container>
-      <NavHeader />
-    </Container>
-  ))
-  .add('with header', () => (
-    <Container>
-      <NavHeader siteTitle={text('title', 'Nomidot')} />
-    </Container>
-  ));
+  .add('empty', () => <NavHeader />)
+  .add('with header', () => <NavHeader siteTitle={text('title', 'Nomidot')} />);

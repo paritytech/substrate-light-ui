@@ -9,7 +9,6 @@ import React from 'react';
 import { Button } from 'semantic-ui-react';
 
 import {
-  Container,
   FramedBlock,
   Icon,
   Input,
@@ -130,17 +129,15 @@ storiesOf('Modal', module)
   .addDecorator(withKnobs)
   .addDecorator(withTheme)
   .add('Modal | Transition', () => (
-    <Container>
-      <Transition animation='slide up' duration={500} transitionOnMount visible>
-        <Modal dimmer open>
-          <Modal.Header>This is a header</Modal.Header>
-          <Modal.SubHeader>This is a subheader</Modal.SubHeader>
-          <Modal.Content>
-            This is my content: <Icon name='blind' />
-          </Modal.Content>
-        </Modal>
-      </Transition>
-    </Container>
+    <Transition animation='slide up' duration={500} transitionOnMount visible>
+      <Modal dimmer open>
+        <Modal.Header>This is a header</Modal.Header>
+        <Modal.SubHeader>This is a subheader</Modal.SubHeader>
+        <Modal.Content>
+          This is my content: <Icon name='blind' />
+        </Modal.Content>
+      </Modal>
+    </Transition>
   ))
   .add('Modal | New Mnemonic', () => <ModalNewMnemonicStory />)
   .add('Modal | Rewrite Mnemonic', () => <ModalRewriteMnemonicStory />)

@@ -9,7 +9,7 @@ import List from 'semantic-ui-react/dist/commonjs/elements/List/List';
 import { CardProps } from 'semantic-ui-react/dist/commonjs/views/Card';
 
 import { Card } from '../Card';
-import { Container, FadedText } from '../Shared.styles';
+import { FadedText } from '../Shared.styles';
 import { AddressSummary } from './AddressSummary';
 
 type Props = {
@@ -61,7 +61,5 @@ export function AccountsList(props: Props): React.ReactElement {
     );
   };
 
-  return (
-    <Container>{accounts ? renderAccountsListItem() : renderEmpty()}</Container>
-  );
+  return <>{accounts ? renderAccountsListItem() : renderEmpty()}</>;
 }

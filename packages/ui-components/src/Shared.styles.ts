@@ -21,7 +21,9 @@ import {
   WrapperDivProps,
 } from './StyleProps';
 
-export const ContainerFlex = styled(SUIContainer)`
+export const ContainerFlex = styled(SUIContainer).attrs({
+  className: 'flex items-center',
+})`
   display: flex !important;
 `;
 export const Container = styled(SUIContainer)`

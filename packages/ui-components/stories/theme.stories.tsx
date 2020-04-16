@@ -8,7 +8,6 @@ import React from 'react';
 
 import {
   Card,
-  Container,
   DynamicSizeText,
   ErrorText,
   FadedText,
@@ -41,14 +40,14 @@ const colorPaletteCard = (color: string, hex: string): React.ReactElement => (
 storiesOf('Theme', module)
   .addDecorator(withKnobs)
   .add('colors', () => (
-    <Container style={{ display: 'flex', flexFlow: 'row wrap', width: '90%' }}>
+    <>
       {Object.entries(substrateLightTheme).map(([color, hex]) => {
         return colorPaletteCard(color, hex);
       })}
-    </Container>
+    </>
   ))
   .add('typescale', () => (
-    <Container>
+    <>
       <Header> Header </Header>
       <SubHeader> SubHeader </SubHeader>
       <SuccessText> Success </SuccessText>
@@ -60,41 +59,39 @@ storiesOf('Theme', module)
       >
         Dynamic
       </DynamicSizeText>
-    </Container>
+    </>
   ))
   .add('typography', () => (
-    <Container>
-      <div style={{ display: 'flex' }}>
-        <div style={{ flex: 1 }}>
-          <h2 style={{ fontFamily: 'Segoe UI' }}> Segoe UI </h2>
-          <h2 style={{ fontFamily: 'Roboto' }}> Roboto </h2>
-          <h2 style={{ fontFamily: 'Oxygen' }}> Oxygen </h2>
-          <h2 style={{ fontFamily: 'Ubuntu' }}> Ubuntu </h2>
-          <h2 style={{ fontFamily: 'Cantarell' }}> Cantarell </h2>
-          <h2 style={{ fontFamily: 'Fira Sans' }}> Fira Sans </h2>
-          <h2 style={{ fontFamily: 'Droid Sans' }}> Droid Sans </h2>
-          <h2 style={{ fontFamily: 'Helvetica Neue' }}> Helvetica Neue </h2>
-        </div>
-        <div style={{ flex: 1 }}>
-          <h5 style={{ fontFamily: 'Segoe UI' }}> Segoe UI </h5>
-          <h5 style={{ fontFamily: 'Roboto' }}> Roboto </h5>
-          <h5 style={{ fontFamily: 'Oxygen' }}> Oxygen </h5>
-          <h5 style={{ fontFamily: 'Ubuntu' }}> Ubuntu </h5>
-          <h5 style={{ fontFamily: 'Cantarell' }}> Cantarell </h5>
-          <h5 style={{ fontFamily: 'Fira Sans' }}> Fira Sans </h5>
-          <h5 style={{ fontFamily: 'Droid Sans' }}> Droid Sans </h5>
-          <h5 style={{ fontFamily: 'Helvetica Neue' }}> Helvetica Neue </h5>
-        </div>
-        <div style={{ flex: 1 }}>
-          <p style={{ fontFamily: 'Segoe UI' }}> Segoe UI </p>
-          <p style={{ fontFamily: 'Roboto' }}> Roboto </p>
-          <p style={{ fontFamily: 'Oxygen' }}> Oxygen </p>
-          <p style={{ fontFamily: 'Ubuntu' }}> Ubuntu </p>
-          <p style={{ fontFamily: 'Cantarell' }}> Cantarell </p>
-          <p style={{ fontFamily: 'Fira Sans' }}> Fira Sans </p>
-          <p style={{ fontFamily: 'Droid Sans' }}> Droid Sans </p>
-          <p style={{ fontFamily: 'Helvetica Neue' }}> Helvetica Neue </p>
-        </div>
+    <div style={{ display: 'flex' }}>
+      <div style={{ flex: 1 }}>
+        <h2 style={{ fontFamily: 'Segoe UI' }}> Segoe UI </h2>
+        <h2 style={{ fontFamily: 'Roboto' }}> Roboto </h2>
+        <h2 style={{ fontFamily: 'Oxygen' }}> Oxygen </h2>
+        <h2 style={{ fontFamily: 'Ubuntu' }}> Ubuntu </h2>
+        <h2 style={{ fontFamily: 'Cantarell' }}> Cantarell </h2>
+        <h2 style={{ fontFamily: 'Fira Sans' }}> Fira Sans </h2>
+        <h2 style={{ fontFamily: 'Droid Sans' }}> Droid Sans </h2>
+        <h2 style={{ fontFamily: 'Helvetica Neue' }}> Helvetica Neue </h2>
       </div>
-    </Container>
+      <div style={{ flex: 1 }}>
+        <h5 style={{ fontFamily: 'Segoe UI' }}> Segoe UI </h5>
+        <h5 style={{ fontFamily: 'Roboto' }}> Roboto </h5>
+        <h5 style={{ fontFamily: 'Oxygen' }}> Oxygen </h5>
+        <h5 style={{ fontFamily: 'Ubuntu' }}> Ubuntu </h5>
+        <h5 style={{ fontFamily: 'Cantarell' }}> Cantarell </h5>
+        <h5 style={{ fontFamily: 'Fira Sans' }}> Fira Sans </h5>
+        <h5 style={{ fontFamily: 'Droid Sans' }}> Droid Sans </h5>
+        <h5 style={{ fontFamily: 'Helvetica Neue' }}> Helvetica Neue </h5>
+      </div>
+      <div style={{ flex: 1 }}>
+        <p style={{ fontFamily: 'Segoe UI' }}> Segoe UI </p>
+        <p style={{ fontFamily: 'Roboto' }}> Roboto </p>
+        <p style={{ fontFamily: 'Oxygen' }}> Oxygen </p>
+        <p style={{ fontFamily: 'Ubuntu' }}> Ubuntu </p>
+        <p style={{ fontFamily: 'Cantarell' }}> Cantarell </p>
+        <p style={{ fontFamily: 'Fira Sans' }}> Fira Sans </p>
+        <p style={{ fontFamily: 'Droid Sans' }}> Droid Sans </p>
+        <p style={{ fontFamily: 'Helvetica Neue' }}> Helvetica Neue </p>
+      </div>
+    </div>
   ));
