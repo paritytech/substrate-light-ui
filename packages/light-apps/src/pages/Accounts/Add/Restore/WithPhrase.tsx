@@ -6,7 +6,6 @@ import { handler } from '@substrate/context';
 import {
   ErrorText,
   FramedBlock,
-  Input,
   Margin,
   Menu,
   NavButton,
