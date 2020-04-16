@@ -3,7 +3,6 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import { Form } from 'semantic-ui-react';
 import SUITextArea from 'semantic-ui-react/dist/commonjs/addons/TextArea';
 import styled from 'styled-components';
 
@@ -25,6 +24,9 @@ export function TextArea(props: TextAreaProps): React.ReactElement {
     &&& {
       border: none;
       padding: 0;
+      outline: none;
+      min-height: 4rem;
+      width: 100%;
       ${signal
         ? `font-weight: 400;
         font-family: ${polkadotOfficialTheme.typography.monospace};
@@ -35,14 +37,11 @@ export function TextArea(props: TextAreaProps): React.ReactElement {
   `;
 
   return (
-    <Form>
-      <StyledTextArea
-        placeholder={placeholder}
-        rows={rows}
-        style={{ minHeight: '100px' }}
-        value={value}
-        {...rest}
-      />
-    </Form>
+    <StyledTextArea
+      placeholder={placeholder}
+      rows={rows}
+      value={value}
+      {...rest}
+    />
   );
 }

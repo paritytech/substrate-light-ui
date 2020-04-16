@@ -8,6 +8,7 @@ import SUIInput, {
 } from 'semantic-ui-react/dist/commonjs/elements/Input';
 import styled from 'styled-components';
 
+import { FONT_SIZES } from './constants';
 import { polkadotOfficialTheme } from './globalStyle';
 
 interface InputProps extends SUIInputProps {
@@ -44,7 +45,8 @@ const StyledInput = styled<typeof SUIInput>(SUIInput)`
     > input {
       border: none;
       border-radius: 0;
-      &[type='text'] {
+      &[type='text'],
+      &[type='password'] {
         ${(props): string =>
           props.borderless ? '' : 'border-bottom: 1px solid black;'};
         ${styles.inputFieldText}
@@ -62,7 +64,9 @@ const StyledInput = styled<typeof SUIInput>(SUIInput)`
 `;
 
 const StyledLabel = styled.label`
+  font-size: ${FONT_SIZES.small};
   margin-right: 0.5em;
+  line-height: 1.5em;
 `;
 
 export function Input(props: InputProps): React.ReactElement {

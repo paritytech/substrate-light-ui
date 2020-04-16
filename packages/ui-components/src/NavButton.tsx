@@ -19,7 +19,7 @@ interface NavButtonProps extends StyledNavButtonProps {
 export function NavButton(props: NavButtonProps): React.ReactElement {
   const {
     children,
-    fontSize = 'large',
+    fontSize = 'button',
     fontWeight = '400',
     value,
     wrapClass,

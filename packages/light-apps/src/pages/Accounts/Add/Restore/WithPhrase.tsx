@@ -5,12 +5,12 @@
 import { handler } from '@substrate/context';
 import {
   ErrorText,
-  Input,
+  FramedBlock,
   Margin,
+  Menu,
   NavButton,
   Stacked,
-  SubHeader,
-  WrapperDiv,
+  TextArea,
 } from '@substrate/ui-components';
 import React, { useContext, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -50,28 +50,27 @@ export function RestoreWithPhrase(props: Props): React.ReactElement {
   return (
     <form onSubmit={handleSubmit}>
       {error && <ErrorText>{error}</ErrorText>}
-      <Stacked justifyContent='space-between'>
-        <SubHeader>Import Account from Mnemonic Recovery Phrase</SubHeader>
-        <WrapperDiv>
-          <SubHeader>Phrase</SubHeader>
-          <Input
-            fluid
+      <Stacked>
+        <Menu borderless shadow={false} tabs size='tiny'>
+          <Menu.Item active>Mnemonic Recovery Phrase</Menu.Item>
+        </Menu>
+        <FramedBlock>
+          <TextArea
             onChange={handler(setRecoveryPhrase)}
-            size='huge'
-            type='text'
+            signal
             value={recoveryPhrase}
           />
-          <Margin top />
-          <AddAccountStepMeta
-            name={name}
-            password={password}
-            setError={setError}
-            setName={setName}
-            setPassword={setPassword}
-          />
-        </WrapperDiv>
+        </FramedBlock>
         <Margin top />
-        <NavButton value='Restore' />
+        <AddAccountStepMeta
+          name={name}
+          password={password}
+          setError={setError}
+          setName={setName}
+          setPassword={setPassword}
+        />
+        <Margin top />
+        <NavButton value='Restore' wrapClass='flex w-100 justify-around' />
       </Stacked>
     </form>
   );

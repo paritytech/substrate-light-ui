@@ -9,6 +9,7 @@ import SUIMenu, {
 import SUIDivider from 'semantic-ui-react/dist/commonjs/elements/Divider/Divider';
 import styled from 'styled-components';
 
+import { FONT_WEIGHTS } from './constants';
 import { polkadotOfficialTheme } from './globalStyle';
 
 interface MenuProps extends SUIMenuProps {
@@ -55,8 +56,12 @@ const StyledMenu = styled<typeof SUIMenu>(SUIMenu)`
     .item {
       ${(props): string => (props.tabs ? StyleTab.item : '')};
     }
-    &.text .item.active {
-      color: ${polkadotOfficialTheme.signal};
+    &.text .item {
+      color: ${polkadotOfficialTheme.black};
+      &.active {
+        color: ${polkadotOfficialTheme.signal};
+        font-weight: ${FONT_WEIGHTS.bold};
+      }
     }
   }
   box-shadow: 0 0 0 ${polkadotOfficialTheme.white};

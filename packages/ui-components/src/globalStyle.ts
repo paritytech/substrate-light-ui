@@ -23,21 +23,22 @@ export const GlobalStyle = createGlobalStyle`
     height: 100%;
   }
 
-  body, h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6, {
-    font-family: 'Inter', 'Montseratt', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  html, body, h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6, p, [type="text"] {
+    font-family: 'Inter', 'Montseratt', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif !important;
   }
-  code, .code, th, button, .menu .item, label, [type="number"] {
+  code, .code, th, button, button p, .menu .item, label, [type="number"] {
     font-family: 'Roboto Mono' !Important;
   }
   h2 {
-    font-weight: 600;
+    font-weight: 500;
+    font-size: 1.4rem;
   }
 
   //TODO: dimmer component
   .dimmer {
     background-color: rgba(255,255,255,0.6) !important;
-    height: calc(100vh - 100px) !important;
-    transform: translateY(100px);
+    height: calc(100vh - 104px) !important;
+    transform: translateY(104px);
     justify-content: flex-start !important;
     padding-top: 0 !important;
   }

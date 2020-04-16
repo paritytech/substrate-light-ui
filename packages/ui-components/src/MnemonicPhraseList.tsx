@@ -5,6 +5,7 @@
 import React from 'react';
 
 import { Input } from './Input';
+import { WrapperDiv } from './Shared.styles';
 
 interface Props {
   phrase: string;
@@ -14,7 +15,7 @@ export function MnemonicPhraseList(props: Props): React.ReactElement {
   const phrase = props.phrase.split(' ');
 
   return (
-    <>
+    <WrapperDiv padding='0'>
       {phrase.map((word: string, i) => {
         return (
           <Input
@@ -27,6 +28,6 @@ export function MnemonicPhraseList(props: Props): React.ReactElement {
           />
         );
       })}
-    </>
+    </WrapperDiv>
   );
 }

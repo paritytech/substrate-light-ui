@@ -53,9 +53,7 @@ export const ModalNewMnemonicStory = (): JSX.Element => {
         <FramedBlock>
           <NewMnemonicStory />
         </FramedBlock>
-        <NavButton wrapClass='flex mt4 mb3 w-100 justify-around'>
-          Next
-        </NavButton>
+        <NavButton wrapClass='flex w-100 justify-around'>Next</NavButton>
       </Modal.Content>
     </Modal>
   );
@@ -100,9 +98,7 @@ export const ModalEnterMnemonicStory = (): JSX.Element => {
         <FramedBlock>
           <TextArea signal />
         </FramedBlock>
-        <NavButton wrapClass='flex mt4 mb3 w-100 justify-around'>
-          Next
-        </NavButton>
+        <NavButton wrapClass='flex w-100 justify-around'>Next</NavButton>
       </Modal.Content>
     </Modal>
   );
@@ -124,9 +120,7 @@ export const ModalEnterJsonStory = (): JSX.Element => {
         <FramedBlock>
           <InputFile />
         </FramedBlock>
-        <NavButton wrapClass='flex mt4 mb3 w-100 justify-around'>
-          Next
-        </NavButton>
+        <NavButton wrapClass='flex w-100 justify-around'>Next</NavButton>
       </Modal.Content>
     </Modal>
   );

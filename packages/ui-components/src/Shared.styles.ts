@@ -5,7 +5,7 @@
 import SUIContainer from 'semantic-ui-react/dist/commonjs/elements/Container';
 import styled from 'styled-components';
 
-import { FONT_SIZES, MARGIN_SIZES } from './constants';
+import { FONT_SIZES, FONT_WEIGHTS, MARGIN_SIZES } from './constants';
 import { polkadotOfficialTheme } from './globalStyle';
 import {
   DynamicSizeTextProps,
@@ -21,17 +21,12 @@ import {
   WrapperDivProps,
 } from './StyleProps';
 
-export const MeasureApp = styled.div`
-  display: flex;
-  width: 100%;
-  padding: 0 calc(50vw - 600px);
-
-  @media (max-width: 1280px) {
-    padding: 0 40px;
-  }
+export const ContainerFlex = styled(SUIContainer)`
+  display: flex !important;
 `;
 export const Container = styled(SUIContainer)`
-  padding: ${MARGIN_SIZES.large};
+  padding-top: ${MARGIN_SIZES.large};
+  padding-bottom: ${MARGIN_SIZES.large};
 `;
 
 export const BoldText = styled.b`
@@ -40,8 +35,9 @@ export const BoldText = styled.b`
 
 export const FadedText = styled.p`
   color: ${polkadotOfficialTheme.black};
+  font-weight: ${FONT_WEIGHTS.light};
   opacity: 0.5;
-  text-align: center;
+  text-align: left;
 `;
 
 export const FlexItem = styled.div<FlexItemProps>`
@@ -79,17 +75,13 @@ export const WithPadding = styled.div`
   padding: ${MARGIN_SIZES.medium} auto;
 `;
 
+// TODO: props from figma
 export const Header = styled.h2<HeaderProps>`
-  color: ${(props): string =>
-    props.color
-      ? polkadotOfficialTheme[props.color]
-      : polkadotOfficialTheme.grey};
-  font-weight: 300;
+  font-weight: ${FONT_WEIGHTS.extraBold};
   font-size: ${FONT_SIZES.big};
   margin: ${(props): string =>
-    props.margin ? MARGIN_SIZES[props.margin] : `${MARGIN_SIZES.big} 0`};
-  padding: ${MARGIN_SIZES.small} ${MARGIN_SIZES.medium};
-  text-align: ${(props): string => props.textAlign || 'center'};
+    props.margin ? MARGIN_SIZES[props.margin] : `0`};
+  text-align: ${(props): string => props.textAlign || 'left'};
 `;
 
 export const DynamicSizeText = styled.p<DynamicSizeTextProps>`
@@ -142,12 +134,11 @@ export const StyledLinkButton = styled.button`
 
 export const StyledNavButton = styled.button<StyledNavButtonProps>`
   position: relative;
-  background-color: ${polkadotOfficialTheme.signal};
+  background-color: ${polkadotOfficialTheme.black};
   border: none;
   border-radius: 9999px;
   color: ${polkadotOfficialTheme.white};
-  fontsize: ${FONT_SIZES.large};
-  padding: 1em 3em;
+  font-size: ${FONT_SIZES.large};
   outline: none;
   transition: background-color 0.3s;
 
@@ -161,6 +152,9 @@ export const StyledNavButton = styled.button<StyledNavButtonProps>`
   :hover {
     opacity: 0.9;
     cursor: ${(props): string => (props.disabled ? 'not-allowed' : 'pointer')};
+  }
+  & p {
+    padding: 0.5em 2.5em;
   }
 `;
 
@@ -222,10 +216,10 @@ export const StackedHorizontal = styled.div<StackProps>`
 
 export const SubHeader = styled.h3<SubHeaderProps>`
   color: ${polkadotOfficialTheme.black};
-  font-weight: 200;
+  font-weight: 500;
   font-size: ${FONT_SIZES.medium};
   margin: ${(props): string =>
-    props.noMargin ? '0 0' : '1rem auto 0.3rem auto'};
+    props.margin ? '1rem auto 0.3rem auto' : '0 0'};
   text-align: ${(props): string => props.textAlign || 'left'};
 `;
 
@@ -234,15 +228,16 @@ export const InlineSubHeader = styled(SubHeader)`
 `;
 
 export const WrapperDiv = styled.div<WrapperDivProps>`
-  margin: ${(props): string => props.margin || '1rem'};
+  margin: ${(props): string => props.margin || 'auto'};
   padding: ${(props): string => props.padding || '1rem'};
-  width: ${(props): string => props.width || '30rem'};
+  width: ${(props): string => props.width || 'auto'};
   height: ${(props): string => props.height || '100%'};
 `;
 
 /* TODO compomnent with actions */
 export const FramedBlock = styled.div`
   padding: 2rem;
+  position: relative;
   border-style: solid;
   border-width: 1px;
 `;
