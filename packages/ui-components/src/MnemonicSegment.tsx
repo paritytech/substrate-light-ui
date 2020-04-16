@@ -4,7 +4,7 @@
 
 import React from 'react';
 
-import { FadedText, FlexSegment, Icon, RefreshButton } from './';
+import { Button, FadedText, FlexSegment, Icon } from './';
 
 type MnemonicSegmentProps = {
   mnemonic?: string;
@@ -19,9 +19,9 @@ export function MnemonicSegment(
   return (
     <FlexSegment>
       <FadedText style={{ margin: '0 auto' }}> {mnemonic} </FadedText>
-      <RefreshButton>
-        <Icon onClick={onClick} name='refresh' />
-      </RefreshButton>
+      <Button icon onClick={onClick}>
+        <Icon name='redo' />
+      </Button>
     </FlexSegment>
   );
 }

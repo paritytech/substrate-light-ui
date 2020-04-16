@@ -15,7 +15,6 @@ import {
   StyledNavButtonProps,
   StyledNavLinkProps,
   SubHeaderProps,
-  WithSpaceBetweenProps,
 } from './StyleProps';
 
 export const ContainerFlex = styled(SUIContainer).attrs({
@@ -47,16 +46,6 @@ export const SuccessText = styled.p`
   font-weight: 500;
 `;
 
-export const WithSpaceBetween = styled.div<WithSpaceBetweenProps>`
-  display: flex ${(props): string => props.flexDirection || 'row'};
-  justify-content: space-between;
-  align-items: space-between;
-`;
-
-export const WithPadding = styled.div`
-  padding: ${MARGIN_SIZES.medium} auto;
-`;
-
 // TODO: props from figma
 export const Header = styled.h2<HeaderProps>`
   font-weight: ${FONT_WEIGHTS.extraBold};
@@ -71,17 +60,6 @@ export const DynamicSizeText = styled.p<DynamicSizeTextProps>`
   font-weight: ${(props): string => props.fontWeight || 'light'};
   margin: 0 0;
   text-align: center;
-`;
-
-export const RefreshButton = styled.button`
-  border: none;
-  background-color: inherit;
-  color: ${polkadotOfficialTheme.hotPink};
-
-  :hover {
-    cursor: pointer;
-    color: ${polkadotOfficialTheme.maroon};
-  }
 `;
 
 export const StyledNavLink = styled.span<StyledNavLinkProps>`

@@ -3,13 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { Color } from './globalStyle';
-import {
-  FlexAlign,
-  FlexDirection,
-  FlexJustify,
-  FontSize,
-  MarginSize,
-} from './types';
+import { FlexAlign, FlexJustify, FontSize, MarginSize } from './types';
 
 export interface HeaderProps {
   color?: Color;
@@ -44,10 +38,6 @@ export interface SubHeaderProps {
   margin?: MarginSize;
   noMargin?: boolean;
   textAlign?: string;
-}
-
-export interface WithSpaceBetweenProps {
-  flexDirection?: FlexDirection;
 }
 
 export interface NodeSelectorProps {
