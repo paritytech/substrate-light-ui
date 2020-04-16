@@ -14,7 +14,7 @@
     "not op_mini all"
   ],
   "scripts": {
-    "build": "copy:wasm && SKIP_PREFLIGHT_CHECK=true craco build",
+    "build": "yarn copy:wasm && SKIP_PREFLIGHT_CHECK=true craco build",
     "copy:wasm": "copyfiles -Eu5 \"../light/src/generated/kusama_cc3/kusama_cc3.wasm\" public",
     "start": "yarn copy:wasm && BROWSER=none SKIP_PREFLIGHT_CHECK=true craco start",
     "test": "jest --coverage"
