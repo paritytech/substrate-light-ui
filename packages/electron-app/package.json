@@ -7,8 +7,8 @@
   "private": true,
   "repository": "https://github.com/paritytech/substrate-light-ui.git",
   "scripts": {
-    "prebuild": "copyfiles -u 2 \"../light-apps/build/**/*\" static/",
-    "build": "electron-webpack",
+    "copy:static": "copyfiles -u 2 \"../light-apps/build/**/*\" static/",
+    "build": "yarn copy:static && electron-webpack",
     "electron": "electron dist/main/main.js",
     "package": "electron-builder",
     "start": "electron-webpack dev",

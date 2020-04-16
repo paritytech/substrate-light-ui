@@ -2,10 +2,14 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+/* eslint-disable @typescript-eslint/camelcase */
+
 import { WsProvider } from '@polkadot/api';
 import { ProviderMeta } from '@polkadot/extension-inject/types';
 import { ProviderInterface } from '@polkadot/rpc-provider/types';
+import { kusama_cc3, WasmProvider, westend } from '@substrate/light';
 
+import { detectEnvironment } from '../../../util/env';
 import { Injected } from '../../context';
 
 /**
@@ -18,19 +22,43 @@ export interface LazyProvider extends ProviderMeta {
 }
 
 /**
+ * The URL to the WASM blob of the light client. In this project, we put it in
+ * the `public` folder so that it's statically available.
+ */
+const WASM_BLOB_URL = '/kusama_cc3.wasm';
+
+/**
+ * These are the WASM providers that the user can run directly inside the
+ * browser tab. They are only available in `TAB_ENV`. Note that we made sure to
+ * copy the WASM blob inside
+ */
+export const TAB_WASM_PROVIDERS: Record<string, LazyProvider> = {
+  'kusama-WasmProvider': {
+    description: 'In-tab WASM light client',
+    id: 'kusama-WasmProvider',
+    network: 'kusama',
+    node: 'light',
+    source: 'tab',
+    start: (): Promise<ProviderInterface> =>
+      Promise.resolve(new WasmProvider(kusama_cc3.fromUrl(WASM_BLOB_URL))),
+    transport: 'WasmProvider',
+  },
+  'westend-WasmProvider': {
+    description: 'In-tab WASM light client',
+    id: 'westend-WasmProvider',
+    network: 'westend',
+    node: 'light',
+    source: 'tab',
+    start: (): Promise<ProviderInterface> =>
+      Promise.resolve(new WasmProvider(westend.fromUrl(WASM_BLOB_URL))),
+    transport: 'WasmProvider',
+  },
+};
+
+/**
  * These fallback providers connect to a centralized remote RPC node.
  */
 export const FALLBACK_PROVIDERS: Record<string, LazyProvider> = {
-  'westend-WsProvider': {
-    description: 'Remote node hosted by W3F',
-    id: 'westend-WsProvider',
-    network: 'westend',
-    node: 'light',
-    source: 'fallback',
-    start: (): Promise<ProviderInterface> =>
-      Promise.resolve(new WsProvider('wss://westend-rpc.polkadot.io')),
-    transport: 'WsProvider',
-  },
   'kusama-WsProvider': {
     description: 'Remote node hosted by W3F',
     id: 'kusama-WsProvider',
@@ -39,6 +67,16 @@ export const FALLBACK_PROVIDERS: Record<string, LazyProvider> = {
     source: 'fallback',
     start: (): Promise<ProviderInterface> =>
       Promise.resolve(new WsProvider('wss://kusama-rpc.polkadot.io')),
+    transport: 'WsProvider',
+  },
+  'westend-WsProvider': {
+    description: 'Remote node hosted by W3F',
+    id: 'westend-WsProvider',
+    network: 'westend',
+    node: 'light',
+    source: 'fallback',
+    start: (): Promise<ProviderInterface> =>
+      Promise.resolve(new WsProvider('wss://westend-rpc.polkadot.io')),
     transport: 'WsProvider',
   },
 };
@@ -101,13 +139,16 @@ async function getProvidersFromInjected(
 export async function getAllProviders(
   additionalSources: ProviderSources = {}
 ): Promise<Record<string, LazyProvider>> {
-  const [extensionProviders, fallbackProviders] = await Promise.all([
-    getProvidersFromInjected(additionalSources.injected),
-    Promise.resolve(FALLBACK_PROVIDERS),
-  ]);
+  const extensionProviders = await getProvidersFromInjected(
+    additionalSources.injected
+  );
+
+  const isTabEnv = detectEnvironment() === 'TAB_ENV';
 
   return {
-    ...fallbackProviders,
+    // Only add tab WASM providers if we're in a browser tab
+    ...(isTabEnv ? TAB_WASM_PROVIDERS : {}),
+    ...FALLBACK_PROVIDERS,
     ...extensionProviders,
   };
 }

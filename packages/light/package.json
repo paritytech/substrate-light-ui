@@ -13,6 +13,6 @@
   },
   "repository": "https://github.com/paritytech/substrate-light-ui.git",
   "scripts": {
-    "build": "rimraf lib && mkdir lib && cp -r src/generated lib/generated && tsc"
+    "build": "rimraf lib && copyfiles -Eu2 \"src/generated/**/*\" lib/generated && tsc"
   }
 }
