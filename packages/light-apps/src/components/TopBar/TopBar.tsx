@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { BlackBlock, MeasureApp, Menu } from '@substrate/ui-components';
+import { BlackBlock, ContainerFlex, Menu } from '@substrate/ui-components';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
@@ -13,7 +13,7 @@ const MenuTabs = (): React.ReactElement => {
   const { pathname } = useLocation();
   return (
     <Menu borderless tabs size='large'>
-      <MeasureApp className='items-center'>
+      <ContainerFlex className='items-center'>
         <Menu.Item
           as={Link}
           to='/accounts'
@@ -28,7 +28,7 @@ const MenuTabs = (): React.ReactElement => {
         >
           Send Funds
         </Menu.Item>
-      </MeasureApp>
+      </ContainerFlex>
     </Menu>
   );
 };
@@ -51,10 +51,10 @@ export function TopBar(): React.ReactElement {
     <>
       <MenuTabs />
       <BlackBlock>
-        <MeasureApp className='items-center'>
+        <ContainerFlex className='items-center'>
           {renderLogo()}
           <ChooseProvider />
-        </MeasureApp>
+        </ContainerFlex>
       </BlackBlock>
     </>
   );

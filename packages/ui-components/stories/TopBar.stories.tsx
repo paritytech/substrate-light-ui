@@ -10,8 +10,8 @@ import {
   BlackBlock,
   Circle,
   ConnectedNodes,
+  ContainerFlex,
   Dropdown,
-  MeasureApp,
   Menu,
   polkadotOfficialTheme,
   StackedHorizontal,
@@ -73,7 +73,7 @@ export const TopBarStory = (): React.ReactElement => {
 
   return (
     <BlackBlock className='flex justify-center pv2 mb4'>
-      <MeasureApp className='items-center'>
+      <ContainerFlex className='items-center'>
         <RenderLogo />
         <ConnectedNodes
           fluid={boolean('fluid', true)}
@@ -87,7 +87,7 @@ export const TopBarStory = (): React.ReactElement => {
           <NetworkStatus />
           <ChooseProvider />
         </ConnectedNodes>
-      </MeasureApp>
+      </ContainerFlex>
     </BlackBlock>
   );
 };

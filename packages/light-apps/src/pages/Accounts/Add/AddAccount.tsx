@@ -15,7 +15,7 @@ type Props = RouteComponentProps;
 export function AddAccount(props: Props): React.ReactElement {
   const { history, location } = props;
 
-  const activeTab = location.pathname.split('/')[4];
+  const activeTab = location.pathname.split('/')[3];
 
   const navToCreate = (): void => {
     history.push(`/accounts/add/generate`);
@@ -32,7 +32,7 @@ export function AddAccount(props: Props): React.ReactElement {
   return (
     <WrapperDiv>
       <Header>Add an Account</Header>
-      <Menu>
+      <Menu borderless shadow={false} size='large' text>
         <Menu.Item active={activeTab === 'generate'} onClick={navToCreate}>
           Create New
         </Menu.Item>

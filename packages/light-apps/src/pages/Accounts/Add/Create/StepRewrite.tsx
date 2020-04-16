@@ -5,15 +5,16 @@
 import { handler } from '@substrate/context';
 import {
   FadedText,
+  FramedBlock,
   Margin,
+  Menu,
   MnemonicRandomWord,
   MnemonicRewriteParts,
+  NavButton,
   Stacked,
   StackedHorizontal,
   StyledLinkButton,
-  StyledNavButton,
   SubHeader,
-  WithSpaceAround,
 } from '@substrate/ui-components';
 import React, { useCallback, useState } from 'react';
 
@@ -107,30 +108,37 @@ export function AddAccountStepRewrite(props: Props): React.ReactElement {
 
   return (
     <Stacked>
-      <SubHeader>Copy Your Mnemonic Somewhere Safe</SubHeader>
+      <Menu borderless shadow={false} tabs size='tiny'>
+        <Menu.Item active>Rewrite Mnemonic Below</Menu.Item>
+      </Menu>
+      <FramedBlock>
+        <MnemonicRewriteParts
+          randomFourWords={randomFourWords}
+          firstWord={firstWord}
+          secondWord={secondWord}
+          thirdWord={thirdWord}
+          fourthWord={fourthWord}
+          handleSetFirstWord={handler(setFirstWord)}
+          handleSetSecondWord={handler(setSecondWord)}
+          handleSetThirdWord={handler(setThirdWord)}
+          handleSetFourthWord={handler(setFourthWord)}
+        />
+      </FramedBlock>
+      <Margin top />
+      <SubHeader>Copy your Mnemonic Somewhere Safe</SubHeader>
       <FadedText>
         If someone gets hold of this mnemonic they could drain your account
       </FadedText>
-      <Margin top />
-      <FadedText>Rewrite Mnemonic Below</FadedText>
-      <MnemonicRewriteParts
-        randomFourWords={randomFourWords}
-        firstWord={firstWord}
-        secondWord={secondWord}
-        thirdWord={thirdWord}
-        fourthWord={fourthWord}
-        handleSetFirstWord={handler(setFirstWord)}
-        handleSetSecondWord={handler(setSecondWord)}
-        handleSetThirdWord={handler(setThirdWord)}
-        handleSetFourthWord={handler(setFourthWord)}
-      />
-
-      <WithSpaceAround>
-        <StackedHorizontal>
-          <StyledLinkButton onClick={goToPreviousStep}>Back</StyledLinkButton>
-          <StyledNavButton onClick={handleGoToNextStep}>Next</StyledNavButton>
-        </StackedHorizontal>
-      </WithSpaceAround>
+      <Margin top='large' />
+      <StackedHorizontal justifyContent='space-between'>
+        <StyledLinkButton color='gray' onClick={goToPreviousStep}>
+          Back
+        </StyledLinkButton>
+        <NavButton onClick={handleGoToNextStep}>Next</NavButton>
+        <StyledLinkButton className='o-0' onClick={goToPreviousStep}>
+          Back
+        </StyledLinkButton>
+      </StackedHorizontal>
     </Stacked>
   );
 }

@@ -11,7 +11,6 @@ import {
 import {
   AddressSummary,
   ErrorText,
-  Margin,
   MnemonicRandomWord,
   SizeType,
   Stacked,
@@ -133,14 +132,17 @@ export function Create(props: Props): React.ReactElement {
 
   return (
     <Stacked>
-      <AddressSummary
-        address={address}
-        api={api}
-        name={name}
-        size='small'
-        orientation='vertical'
-      />
-      <Margin top />
+      <div className='absolute left-1 top-2'>
+        <AddressSummary
+          address={address}
+          api={api}
+          name={name}
+          noBalance
+          noPlaceholderName
+          orientation='vertical'
+          size='small'
+        />
+      </div>
       {error && <ErrorText>{error}</ErrorText>}
       {renderStep(step)}
     </Stacked>
