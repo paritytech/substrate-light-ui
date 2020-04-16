@@ -6,11 +6,11 @@ import { handler } from '@substrate/context';
 import {
   ErrorText,
   FramedBlock,
+  Input,
   Margin,
   Menu,
   NavButton,
   Stacked,
-  TextArea,
 } from '@substrate/ui-components';
 import React, { useContext, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -55,9 +55,10 @@ export function RestoreWithPhrase(props: Props): React.ReactElement {
           <Menu.Item active>Mnemonic Recovery Phrase</Menu.Item>
         </Menu>
         <FramedBlock>
-          <TextArea
+          <Input
+            fluid
             onChange={handler(setRecoveryPhrase)}
-            signal
+            type='text'
             value={recoveryPhrase}
           />
         </FramedBlock>
