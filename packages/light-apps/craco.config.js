@@ -4,10 +4,7 @@
 
 module.exports = {
   babel: {
-    plugins: [
-      '@babel/plugin-syntax-dynamic-import',
-      '@babel/plugin-syntax-import-meta',
-    ],
+    plugins: ['@babel/plugin-syntax-import-meta'],
   },
   webpack: {
     alias: {},
