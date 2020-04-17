@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/substrate-light-ui/static/css/main.52eaa89c.chunk.css",
-    "main.js": "/substrate-light-ui/static/js/main.89753514.chunk.js",
-    "main.js.map": "/substrate-light-ui/static/js/main.89753514.chunk.js.map",
+    "main.js": "/substrate-light-ui/static/js/main.a1e4a338.chunk.js",
+    "main.js.map": "/substrate-light-ui/static/js/main.a1e4a338.chunk.js.map",
     "runtime-main.js": "/substrate-light-ui/static/js/runtime-main.e48cf872.js",
     "runtime-main.js.map": "/substrate-light-ui/static/js/runtime-main.e48cf872.js.map",
     "static/css/2.1f680941.chunk.css": "/substrate-light-ui/static/css/2.1f680941.chunk.css",
     "static/js/2.94015449.chunk.js": "/substrate-light-ui/static/js/2.94015449.chunk.js",
     "static/js/2.94015449.chunk.js.map": "/substrate-light-ui/static/js/2.94015449.chunk.js.map",
     "index.html": "/substrate-light-ui/index.html",
-    "precache-manifest.c99767d8f490ff7572c6ee58c4a0508c.js": "/substrate-light-ui/precache-manifest.c99767d8f490ff7572c6ee58c4a0508c.js",
+    "precache-manifest.11c8cb94a485e2006f5c7fee73624edb.js": "/substrate-light-ui/precache-manifest.11c8cb94a485e2006f5c7fee73624edb.js",
     "service-worker.js": "/substrate-light-ui/service-worker.js",
     "static/css/2.1f680941.chunk.css.map": "/substrate-light-ui/static/css/2.1f680941.chunk.css.map",
     "static/css/main.52eaa89c.chunk.css.map": "/substrate-light-ui/static/css/main.52eaa89c.chunk.css.map",
@@ -22,6 +22,6 @@
     "static/css/2.1f680941.chunk.css",
     "static/js/2.94015449.chunk.js",
     "static/css/main.52eaa89c.chunk.css",
-    "static/js/main.89753514.chunk.js"
+    "static/js/main.a1e4a338.chunk.js"
   ]
 }
