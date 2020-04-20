@@ -2,15 +2,12 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { select, text, withKnobs } from '@storybook/addon-knobs';
+import { text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 
 import {
   Card,
-  DynamicSizeText,
-  FONT_SIZES,
-  FontSize,
   Header,
   Paragraph,
   SubHeader,
@@ -28,8 +25,7 @@ const colorPaletteCard = (color: string, hex: string): React.ReactElement => (
     <Card.Content style={{ display: 'flex column', textAlign: 'center' }}>
       <Card.Header> {color} </Card.Header>
       <Card.Description>
-        {' '}
-        <b>Hex:</b> {hex}{' '}
+        <b>Hex:</b>{hex}
       </Card.Description>
     </Card.Content>
   </Card>
@@ -48,15 +44,15 @@ storiesOf('Theme', module)
     <>
       <Header> Header </Header>
       <SubHeader> SubHeader </SubHeader>
-      <Paragraph status='success'> Success </Paragraph>
-      <Paragraph status='error'> Error </Paragraph>
-      <Paragraph faded> Faded </Paragraph>
-      <DynamicSizeText
-        fontSize={select('font size', FONT_SIZES, 'medium') as FontSize}
-        fontWeight={text('fontWeight', '500')}
-      >
-        Dynamic
-      </DynamicSizeText>
+      <Paragraph className={text('className', '')} status='success'>
+        Success
+      </Paragraph>
+      <Paragraph className={text('className', '')} status='error'>
+        Error
+      </Paragraph>
+      <Paragraph className={text('className', '')} faded>
+        Faded
+      </Paragraph>
     </>
   ))
   .add('typography', () => (

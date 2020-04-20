@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { action } from '@storybook/addon-actions';
-import { boolean, select, text, withKnobs } from '@storybook/addon-knobs';
+import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 
@@ -17,17 +17,12 @@ storiesOf('Button', module)
   .addDecorator(withTheme)
   .add('Button', () => <Button> Button</Button>)
   .add('NavButton', () => {
+    const className = text('className', '');
+    const negative = boolean('negative', false);
+    const onClick = action('clicked');
+
     return (
-      <NavButton
-        fontSize={select(
-          'font size',
-          ['small', 'medium', 'button', 'large', 'big'],
-          'large'
-        )}
-        fontWeight={text('font weight', '500')}
-        onClick={action('clicked')}
-        negative={boolean('negative', false)}
-      >
+      <NavButton onClick={onClick} negative={negative} className={className}>
         {text('children', 'Click Me!')}
       </NavButton>
     );

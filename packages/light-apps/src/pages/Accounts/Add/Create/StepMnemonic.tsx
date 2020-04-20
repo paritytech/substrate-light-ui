@@ -46,9 +46,7 @@ export function AddAccountStepMnemonic(props: Props): React.ReactElement {
         a secure and secret.
       </Paragraph>
       <Margin top='large' />
-      <NavButton onClick={goToNextStep} wrapClass='flex w-100 justify-around'>
-        Next
-      </NavButton>
+      <NavButton onClick={goToNextStep}>Next</NavButton>
     </Stacked>
   );
 }

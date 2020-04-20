@@ -71,7 +71,7 @@ export function RestoreWithPhrase(props: Props): React.ReactElement {
           setPassword={setPassword}
         />
         <Margin top />
-        <NavButton value='Restore' wrapClass='flex w-100 justify-around' />
+        <NavButton value='Restore' />
       </Stacked>
     </form>
   );

@@ -113,9 +113,7 @@ storiesOf('Apps/Lichen/4 – Send Funds', module)
           <div className='dn-m'>
             <TableTxSummaryStory />
           </div>
-          <NavButton wrapClass='flex mt4 justify-around'>
-            Submit Transaction
-          </NavButton>
+          <NavButton>Submit Transaction</NavButton>
         </div>
       </StackedHorizontal>
     </>

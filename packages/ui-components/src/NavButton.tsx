@@ -4,35 +4,42 @@
 
 import React from 'react';
 
-import { DynamicSizeText, StyledNavButton } from './Shared.styles';
+import { StyledNavButton } from './Shared.styles';
 import { StyledNavButtonProps } from './StyleProps';
 import { FontSize } from './types';
 
 interface NavButtonProps extends StyledNavButtonProps {
+  className?: string;
   fontSize?: FontSize;
   fontWeight?: string;
   text?: boolean;
   value?: string;
+  negative?: boolean;
   wrapClass?: string;
 }
 
+// TEMPORARY, to be moved to shared/constants
+const tachyons = {
+  default: 'bg-black white f4',
+  negative: 'bg-white black f4',
+};
+
 export function NavButton(props: NavButtonProps): React.ReactElement {
-  const {
-    children,
-    fontSize = 'button',
-    fontWeight = '400',
-    value,
-    wrapClass,
-    ...rest
-  } = props;
+  const { children, className, negative, value, ...rest } = props;
+
+  const tachyonsClass = `
+    ${
+      className
+        ? className
+        : negative
+        ? tachyons['negative']
+        : tachyons['default']
+    }
+  `;
 
   return (
-    <div className={wrapClass}>
-      <StyledNavButton {...rest}>
-        <DynamicSizeText fontSize={fontSize} fontWeight={fontWeight}>
-          {value || children}
-        </DynamicSizeText>
-      </StyledNavButton>
-    </div>
+    <StyledNavButton className={tachyonsClass} {...rest}>
+      {value || children}
+    </StyledNavButton>
   );
 }

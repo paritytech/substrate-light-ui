@@ -5,7 +5,7 @@
 import SUIContainer from 'semantic-ui-react/dist/commonjs/elements/Container';
 import styled from 'styled-components';
 
-import { FONT_SIZES, FONT_WEIGHTS } from './constants';
+import { FONT_SIZES } from './constants';
 import { polkadotOfficialTheme } from './globalStyle';
 import {
   DynamicSizeTextProps,
@@ -35,6 +35,7 @@ export const Header = styled.h2.attrs((props) => {
   }
 })``;
 
+// TODO: still used in stateful components
 export const DynamicSizeText = styled.p<DynamicSizeTextProps>`
   font-size: ${(props): string => FONT_SIZES[props.fontSize || 'medium']};
   font-weight: ${(props): string => props.fontWeight || 'light'};
@@ -74,27 +75,16 @@ export const StyledLinkButton = styled.button`
 
 export const StyledNavButton = styled.button<StyledNavButtonProps>`
   position: relative;
-  background-color: ${polkadotOfficialTheme.black};
   border: none;
   border-radius: 9999px;
-  color: ${polkadotOfficialTheme.white};
-  font-size: ${FONT_SIZES.large};
   outline: none;
+  overflow: hidden;
   transition: background-color 0.3s;
-
-  ${(props): string =>
-    props.negative
-      ? `
-      background-color: ${polkadotOfficialTheme.white};
-      color: ${polkadotOfficialTheme.signal}`
-      : ''};
+  padding: 0.5em 2.5em;
 
   :hover {
     opacity: 0.9;
     cursor: ${(props): string => (props.disabled ? 'not-allowed' : 'pointer')};
-  }
-  & p {
-    padding: 0.5em 2.5em;
   }
 `;
 
