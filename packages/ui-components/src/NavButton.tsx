@@ -20,25 +20,53 @@ interface NavButtonProps extends StyledNavButtonProps {
 
 // TEMPORARY, to be moved to shared/constants
 const tachyons = {
-  default: 'bg-black white f4',
-  negative: 'bg-white black f4',
+  default: 'bg-black white f4 fw4',
+  negative: 'bg-white black f4 fw4',
+};
+const mergeClasses = (defaultClass: string, inClassName: string): string => {
+  let outClass = defaultClass;
+
+  const rFontSize = /(f)+([0-9])/g;
+  const rFontWeight = /(fw)+([0-9])/g;
+  const rBg = /(bg-)+([^\s]+)/g;
+
+  const inFontSize = inClassName.match(rFontSize);
+  if (inFontSize !== null) {
+    outClass = outClass.replace(rFontSize, inFontSize[0]);
+    inClassName.replace(inFontSize[0], '');
+  }
+
+  const inFontWeight = inClassName.match(rFontWeight);
+  if (inFontWeight !== null) {
+    outClass = outClass.replace(rFontWeight, inFontWeight[0]);
+    inClassName.replace(inFontWeight[0], '');
+  }
+
+  const inBg = inClassName.match(rBg);
+  if (inBg !== null) {
+    outClass = outClass.replace(rBg, inBg[0]);
+    inClassName.replace(inBg[0], '');
+  }
+
+  return outClass + inClassName;
 };
 
 export function NavButton(props: NavButtonProps): React.ReactElement {
   const { children, className, negative, value, ...rest } = props;
 
   const tachyonsClass = `
-    ${
-      className
-        ? className
-        : negative
-        ? tachyons['negative']
-        : tachyons['default']
-    }
+    ${negative ? tachyons['negative'] : tachyons['default']}
   `;
 
   return (
-    <StyledNavButton className={tachyonsClass} {...rest}>
+    <StyledNavButton
+      className={
+        className == undefined
+          ? tachyonsClass
+          : mergeClasses(tachyonsClass, className)
+      }
+      {...rest}
+    >
       {value || children}
     </StyledNavButton>
   );
