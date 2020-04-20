@@ -7,9 +7,9 @@ import IdentityIcon from '@polkadot/react-identicon';
 import React from 'react';
 
 import { Margin } from '../../Margin';
+import { Paragraph } from '../../Paragraph';
 import {
   DynamicSizeText,
-  FadedText,
   Stacked,
   StackedHorizontal,
   SubHeader,
@@ -63,7 +63,7 @@ const FONT_SIZES: FontSizeType = {
 };
 
 function renderAccountType(type: string): React.ReactElement {
-  return <FadedText> Account Type: {type} </FadedText>;
+  return <Paragraph faded> Account Type: {type} </Paragraph>;
 }
 
 function renderBadge(type: string): React.ReactElement {
@@ -78,7 +78,8 @@ function renderBadge(type: string): React.ReactElement {
 function renderBondingPair(bondingPair: string): React.ReactElement {
   return (
     <StackedHorizontal>
-      <FadedText> Bonding Pair: </FadedText> {renderIcon(bondingPair, 'tiny')}{' '}
+      <Paragraph faded> Bonding Pair: </Paragraph>
+      {renderIcon(bondingPair, 'tiny')}
     </StackedHorizontal>
   );
 }

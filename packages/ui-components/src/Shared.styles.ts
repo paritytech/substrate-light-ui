@@ -5,11 +5,10 @@
 import SUIContainer from 'semantic-ui-react/dist/commonjs/elements/Container';
 import styled from 'styled-components';
 
-import { FONT_SIZES, FONT_WEIGHTS, MARGIN_SIZES } from './constants';
+import { FONT_SIZES, FONT_WEIGHTS } from './constants';
 import { polkadotOfficialTheme } from './globalStyle';
 import {
   DynamicSizeTextProps,
-  HeaderProps,
   NodeSelectorProps,
   StackProps,
   StyledNavButtonProps,
@@ -27,33 +26,14 @@ export const BoldText = styled.b`
   color: ${polkadotOfficialTheme.black};
 `;
 
-export const FadedText = styled.p`
-  color: ${polkadotOfficialTheme.black};
-  font-weight: ${FONT_WEIGHTS.light};
-  opacity: 0.5;
-  text-align: left;
-`;
-
-export const ErrorText = styled.p`
-  color: red;
-  text-align: center;
-  font-weight: 500;
-`;
-
-export const SuccessText = styled.p`
-  color: green;
-  text-align: center;
-  font-weight: 500;
-`;
-
-// TODO: props from figma
-export const Header = styled.h2<HeaderProps>`
-  font-weight: ${FONT_WEIGHTS.extraBold};
-  font-size: ${FONT_SIZES.big};
-  margin: ${(props): string =>
-    props.margin ? MARGIN_SIZES[props.margin] : `0`};
-  text-align: ${(props): string => props.textAlign || 'left'};
-`;
+export const Header = styled.h2.attrs((props) => {
+  if (!props.className) {
+    // then default tachyon clasees
+    return {
+      className: 'f3 fw6 ma0 tl',
+    };
+  }
+})``;
 
 export const DynamicSizeText = styled.p<DynamicSizeTextProps>`
   font-size: ${(props): string => FONT_SIZES[props.fontSize || 'medium']};

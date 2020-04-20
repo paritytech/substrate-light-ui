@@ -4,13 +4,13 @@
 
 import { handler } from '@substrate/context';
 import {
-  FadedText,
   FramedBlock,
   Margin,
   Menu,
   MnemonicRandomWord,
   MnemonicRewriteParts,
   NavButton,
+  Paragraph,
   Stacked,
   StackedHorizontal,
   StyledLinkButton,
@@ -126,9 +126,9 @@ export function AddAccountStepRewrite(props: Props): React.ReactElement {
       </FramedBlock>
       <Margin top />
       <SubHeader>Copy your Mnemonic Somewhere Safe</SubHeader>
-      <FadedText>
+      <Paragraph faded>
         If someone gets hold of this mnemonic they could drain your account
-      </FadedText>
+      </Paragraph>
       <Margin top='large' />
       <StackedHorizontal justifyContent='space-between'>
         <StyledLinkButton color='gray' onClick={goToPreviousStep}>

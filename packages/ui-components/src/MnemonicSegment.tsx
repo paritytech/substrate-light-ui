@@ -4,7 +4,7 @@
 
 import React from 'react';
 
-import { Button, FadedText, FlexSegment, Icon } from './';
+import { Button, FlexSegment, Icon, Paragraph } from './';
 
 type MnemonicSegmentProps = {
   mnemonic?: string;
@@ -18,7 +18,7 @@ export function MnemonicSegment(
 
   return (
     <FlexSegment>
-      <FadedText style={{ margin: '0 auto' }}> {mnemonic} </FadedText>
+      <Paragraph faded> {mnemonic} </Paragraph>
       <Button icon onClick={onClick}>
         <Icon name='redo' />
       </Button>

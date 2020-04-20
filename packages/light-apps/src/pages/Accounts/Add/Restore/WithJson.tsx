@@ -4,13 +4,13 @@
 
 import { handler } from '@substrate/context';
 import {
-  ErrorText,
   FramedBlock,
   Input,
   InputFile,
   Margin,
   Menu,
   NavButton,
+  Paragraph,
   Stacked,
 } from '@substrate/ui-components';
 import React, { useState } from 'react';
@@ -63,7 +63,7 @@ export function RestoreWithJson(_props: Props): React.ReactElement {
             type='password'
             textLabel='Password'
           />
-          <ErrorText>{error}</ErrorText>
+          <Paragraph status='error'>{error}</Paragraph>
           <Margin top />
           <NavButton
             onClick={handleRestoreWithJson}

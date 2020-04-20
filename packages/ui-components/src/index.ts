@@ -56,6 +56,7 @@ export * from './MnemonicRewriteParts';
 export * from './Modal';
 export * from './NavButton';
 export * from './NavHeader';
+export * from './Paragraph';
 export * from './Progress';
 export * from './Shared.styles';
 export * from './stateful';

@@ -8,7 +8,7 @@ import SUIBreadcrumb, {
 } from 'semantic-ui-react/dist/commonjs/collections/Breadcrumb/Breadcrumb';
 
 import { substrateLightTheme } from './globalStyle';
-import { Circle, FadedText, Margin, Stacked, StackedHorizontal } from './index';
+import { Circle, Paragraph, Margin, Stacked, StackedHorizontal } from './index';
 import { SUIBreadcrumbSize } from './types';
 
 interface Props {
@@ -40,7 +40,7 @@ export function Breadcrumbs(props: BreadcrumbProps): React.ReactElement {
                     withShadow={active}
                   />
                   <Margin top />
-                  <FadedText>{label}</FadedText>
+                  <Paragraph faded>{label}</Paragraph>
                 </Stacked>
               </SUIBreadcrumb.Section>
             </Margin>

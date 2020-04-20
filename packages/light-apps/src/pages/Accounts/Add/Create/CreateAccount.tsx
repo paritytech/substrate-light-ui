@@ -10,8 +10,8 @@ import {
 } from '@polkadot/util-crypto';
 import {
   AddressSummary,
-  ErrorText,
   MnemonicRandomWord,
+  Paragraph,
   SizeType,
   Stacked,
 } from '@substrate/ui-components';
@@ -143,7 +143,7 @@ export function Create(props: Props): React.ReactElement {
           size='small'
         />
       </div>
-      {error && <ErrorText>{error}</ErrorText>}
+      {error && <Paragraph status='error'>{error}</Paragraph>}
       {renderStep(step)}
     </Stacked>
   );

@@ -4,7 +4,7 @@
 
 import { handler } from '@substrate/context';
 import {
-  ErrorText,
+  Paragraph,
   FramedBlock,
   Input,
   Margin,
@@ -49,7 +49,7 @@ export function RestoreWithPhrase(props: Props): React.ReactElement {
 
   return (
     <form onSubmit={handleSubmit}>
-      {error && <ErrorText>{error}</ErrorText>}
+      {error && <Paragraph status='error'>{error}</Paragraph>}
       <Stacked>
         <Menu borderless shadow={false} tabs size='tiny'>
           <Menu.Item active>Mnemonic Recovery Phrase</Menu.Item>

@@ -11,10 +11,9 @@ import { formatBalance, formatNumber } from '@polkadot/util';
 import React from 'react';
 import Loader from 'semantic-ui-react/dist/commonjs/elements/Loader';
 
-import { Icon } from './index';
+import { Icon, Paragraph } from './index';
 import {
   DynamicSizeText,
-  FadedText,
   Stacked,
   StackedHorizontal,
   StyledLinkButton,
@@ -72,8 +71,12 @@ export function BalanceDisplay(
         {allStaking.unlocking.map(
           ({ remainingEras, value }: DeriveUnlocking, index: number) => (
             <div key={index}>
-              <FadedText>Unbonded Amount: {formatBalance(value)}</FadedText>
-              <FadedText> Eras remaining: {remainingEras.toNumber()}</FadedText>
+              <Paragraph faded>
+                Unbonded Amount: {formatBalance(value)}
+              </Paragraph>
+              <Paragraph faded>
+                Eras remaining: {remainingEras.toNumber()}
+              </Paragraph>
             </div>
           )
         )}
@@ -108,7 +111,7 @@ export function BalanceDisplay(
           <StackedHorizontal justifyContent='space-between'>
             <b>Reserved:</b>
             {reservedBalance && (
-              <FadedText>{formatBalance(reservedBalance)}</FadedText>
+              <Paragraph faded>{formatBalance(reservedBalance)}</Paragraph>
             )}
           </StackedHorizontal>
           <StackedHorizontal justifyContent='space-between'>
@@ -129,9 +132,9 @@ export function BalanceDisplay(
             <strong>Total Balance:</strong>{' '}
             {allBalances.freeBalance && formatBalance(allBalances.freeBalance)}
           </DynamicSizeText>
-          <FadedText>
+          <Paragraph faded>
             Transactions: {formatNumber(allBalances.accountNonce)}{' '}
-          </FadedText>
+          </Paragraph>
         </StackedHorizontal>
       ) : (
         <Loader active inline />

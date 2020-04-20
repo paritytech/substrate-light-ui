@@ -9,14 +9,12 @@ import React from 'react';
 import {
   Card,
   DynamicSizeText,
-  ErrorText,
-  FadedText,
   FONT_SIZES,
   FontSize,
   Header,
+  Paragraph,
   SubHeader,
   substrateLightTheme,
-  SuccessText,
 } from '../src';
 
 const colorPaletteCard = (color: string, hex: string): React.ReactElement => (
@@ -50,9 +48,9 @@ storiesOf('Theme', module)
     <>
       <Header> Header </Header>
       <SubHeader> SubHeader </SubHeader>
-      <SuccessText> Success </SuccessText>
-      <ErrorText> Error </ErrorText>
-      <FadedText> Faded </FadedText>
+      <Paragraph status='success'> Success </Paragraph>
+      <Paragraph status='error'> Error </Paragraph>
+      <Paragraph faded> Faded </Paragraph>
       <DynamicSizeText
         fontSize={select('font size', FONT_SIZES, 'medium') as FontSize}
         fontWeight={text('fontWeight', '500')}

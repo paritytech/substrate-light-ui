@@ -4,7 +4,7 @@
 
 import { SigningRequest } from '@polkadot/extension-base/background/types';
 import { web3FromAddress } from '@polkadot/extension-dapp';
-import { ErrorText, Form, Header } from '@substrate/ui-components';
+import { Paragraph, Form, Header } from '@substrate/ui-components';
 import { Stacked } from '@substrate/ui-components';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 
@@ -100,7 +100,7 @@ export function Transfer(): React.ReactElement {
     <Stacked>
       <Header>Send Funds</Header>
       <Form onSubmit={handleSubmit}>
-        <ErrorText>{error}</ErrorText>
+        <Paragraph status='error'>{error}</Paragraph>
         <TxForm
           amount={amount}
           recipient={recipient}

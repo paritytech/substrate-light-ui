@@ -8,7 +8,7 @@ import SUIModal, {
 } from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
 import styled from 'styled-components';
 
-import { FadedText, SubHeader } from './Shared.styles';
+import { SubHeader } from './Shared.styles';
 
 type ModalProps = SUIModalProps;
 
@@ -62,5 +62,4 @@ Modal.Actions = StyledActions;
 Modal.Content = StyledContent;
 Modal.Header = StyledHeader;
 Modal.SubHeader = StyledSubHeader;
-Modal.FadedText = FadedText;
 Modal.Description = SUIModal.Description;
