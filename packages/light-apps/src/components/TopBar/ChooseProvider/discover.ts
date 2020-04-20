@@ -25,7 +25,7 @@ export interface LazyProvider extends ProviderMeta {
  * The URL to the WASM blob of the light client. In this project, we put it in
  * the `public` folder so that it's statically available.
  */
-const WASM_BLOB_URL = '/kusama_cc3.wasm';
+const WASM_BLOB_URL = './kusama_cc3.wasm';
 
 /**
  * These are the WASM providers that the user can run directly inside the
