@@ -27,7 +27,7 @@ export function fromUrl(url: string): LightClient {
       console.log('Successfully loaded WASM, starting client...');
 
       // Dynamic import, because the JSON is quite big.
-      const chainSpec = await import('./kusama.json');
+      const { default: chainSpec } = await import('./kusama.json');
 
       client = await start_client(JSON.stringify(chainSpec), 'INFO');
 
