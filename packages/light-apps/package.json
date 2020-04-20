@@ -20,10 +20,10 @@
     "test": "jest --coverage"
   },
   "dependencies": {
-    "@polkadot/extension-dapp": "^0.24.0-beta.17",
-    "@polkadot/ui-assets": "^0.51.1",
+    "@polkadot/extension-dapp": "^0.24.1",
+    "@polkadot/ui-assets": "^0.52.1",
     "@rehooks/local-storage": "^2.3.0",
-    "@substrate/context": "^0.3.24",
+    "@substrate/context": "^0.4.0",
     "@substrate/light": "^0.3.32",
     "@substrate/ui-components": "^0.3.32",
     "@types/chrome": "^0.0.104",

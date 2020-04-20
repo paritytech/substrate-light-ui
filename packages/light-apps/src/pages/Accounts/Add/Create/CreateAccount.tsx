@@ -8,6 +8,7 @@ import {
   mnemonicToSeed,
   naclKeypairFromSeed,
 } from '@polkadot/util-crypto';
+import { ApiRxContext } from '@substrate/context';
 import {
   AddressSummary,
   ErrorText,
@@ -18,7 +19,7 @@ import {
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { ApiContext, InjectedContext } from '../../../../components/context';
+import { InjectedContext } from '../../../../components/context';
 import { assertIsDefined } from '../../../../util/assert';
 import { AddAccountStepMeta } from '../shared/StepMeta';
 import { AddAccountStepMnemonic } from './StepMnemonic';
@@ -40,7 +41,7 @@ function generateAddressFromMnemonic(mnemonic: string): string {
 export function Create(props: Props): React.ReactElement {
   const { history } = props;
 
-  const { api } = useContext(ApiContext);
+  const { api } = useContext(ApiRxContext);
   const { messaging } = useContext(InjectedContext);
 
   // User inputs
