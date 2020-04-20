@@ -4,4 +4,5 @@
 
 export * from './kusama_cc3';
 export * from './types';
+export * from './WasmProvider';
 export * from './westend';
