@@ -48,6 +48,7 @@ export function ContextGate(props: {
                         >
                           <HealthGate>
                             <>
+                              {/* The HealthGate asserts that `provider` is defined. */}
                               {/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */}
                               <ApiRxContextProvider provider={provider!}>
                                 <ApiGate>

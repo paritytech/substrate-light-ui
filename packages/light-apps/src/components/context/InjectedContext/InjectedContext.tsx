@@ -41,7 +41,9 @@ export function InjectedContextProvider(
         const extensions = await web3Enable(originName);
 
         if (!extensions.length) {
-          throw new Error('No extension found. Please install SLUI extension.');
+          throw new Error(
+            'Please install SLUI extension for a better experience.'
+          );
         }
 
         // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
@@ -53,7 +55,7 @@ export function InjectedContextProvider(
       }
     }
 
-    getSendMessage().catch(l.error);
+    getSendMessage().catch((error) => l.warn(error.message));
   }, [originName]);
 
   return (

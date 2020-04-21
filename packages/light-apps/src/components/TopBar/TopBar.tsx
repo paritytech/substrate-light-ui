@@ -17,7 +17,7 @@ const MenuTabs = (): React.ReactElement => {
         <Menu.Item
           as={Link}
           to='/accounts'
-          active={pathname.startsWith('/accounts')}
+          active={pathname === '/' || pathname.startsWith('/accounts')}
         >
           Accounts
         </Menu.Item>

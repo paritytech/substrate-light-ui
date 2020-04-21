@@ -32,7 +32,9 @@ export function AccountContextProvider(
       return;
     }
 
-    injected.accounts.subscribe(setExtensionAccounts);
+    const unsub = injected.accounts.subscribe(setExtensionAccounts);
+
+    return unsub;
   }, [injected, originName]);
 
   const accounts = extensionAccounts.reduce(
