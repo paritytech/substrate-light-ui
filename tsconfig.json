@@ -6,6 +6,7 @@
     "downlevelIteration": true,
     "esModuleInterop": true,
     "jsx": "react",
+    "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "skipLibCheck": true,
