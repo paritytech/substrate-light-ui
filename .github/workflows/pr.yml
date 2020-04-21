@@ -1,4 +1,4 @@
-name: pr
+name: CI
 
 on:
   push:
@@ -9,6 +9,7 @@ on:
       - master
 
 jobs:
+# Lint the code
   lint:
     runs-on: ubuntu-latest
     steps:
@@ -17,6 +18,7 @@ jobs:
       - run: ./scripts/prestart.sh
       - run: yarn lint
 
+  # Test the code
   test:
     runs-on: ubuntu-latest
     steps:
@@ -24,6 +26,7 @@ jobs:
       - run: yarn install
       - run: yarn test
 
+  # Create a .zip containing the browser extension
   package-extension:
     runs-on: ubuntu-latest
     steps:
@@ -34,3 +37,14 @@ jobs:
         with:
           name: slui-pr-${{ github.event.number }}-${{ github.sha }}
           path: ./packages/extension-app/master-build.zip
+
+  # Upload the webapp to AWS S3
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: chrislennon/action-aws-cli@v1.1
+      - run: yarn build:ui
+      - run: aws s3 sync packages/light-apps/build/ s3://slui --acl public-read
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
