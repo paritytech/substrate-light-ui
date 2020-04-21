@@ -4,12 +4,12 @@
 
 import { handler } from '@substrate/context';
 import {
-  Paragraph,
   FramedBlock,
   Input,
   Margin,
   Menu,
   NavButton,
+  Paragraph,
   Stacked,
 } from '@substrate/ui-components';
 import React, { useContext, useState } from 'react';

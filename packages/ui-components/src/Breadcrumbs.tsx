@@ -8,7 +8,7 @@ import SUIBreadcrumb, {
 } from 'semantic-ui-react/dist/commonjs/collections/Breadcrumb/Breadcrumb';
 
 import { substrateLightTheme } from './globalStyle';
-import { Circle, Paragraph, Margin, Stacked, StackedHorizontal } from './index';
+import { Circle, Margin, Paragraph, Stacked, StackedHorizontal } from './index';
 import { SUIBreadcrumbSize } from './types';
 
 interface Props {

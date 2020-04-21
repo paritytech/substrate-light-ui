@@ -9,7 +9,7 @@ interface ParagraphProps {
   children: React.ReactNode;
   className?: string;
   faded?: boolean;
-  status?: 'success' | 'error' | undefined;
+  status?: 'success' | 'error' | 'none';
 }
 
 // TEMPORARY, to be moved to shared/constants
@@ -17,16 +17,17 @@ const tachyons = {
   default: 'f5 fw4',
   error: 'dark-red fw5',
   faded: 'o-50',
+  none: '',
   success: 'green fw5',
 };
 
 export function Paragraph(props: ParagraphProps): React.ReactElement {
-  const { children, className, faded, status = undefined, ...rest } = props;
+  const { children, className, faded, status = 'none', ...rest } = props;
 
   const tachyonsClass = `
     ${className ? className : tachyons['default']}
-    ${faded ? tachyons['faded'] : ''}
-    ${status !== undefined ? tachyons[status] : ''} 
+    ${faded && tachyons['faded']}
+    ${status !== 'none' && tachyons[status]} 
   `;
 
   const StyledParagraph = styled.p.attrs({

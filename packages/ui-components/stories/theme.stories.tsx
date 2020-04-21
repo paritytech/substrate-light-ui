@@ -25,7 +25,8 @@ const colorPaletteCard = (color: string, hex: string): React.ReactElement => (
     <Card.Content style={{ display: 'flex column', textAlign: 'center' }}>
       <Card.Header> {color} </Card.Header>
       <Card.Description>
-        <b>Hex:</b>{hex}
+        <b>Hex:</b>
+        {hex}
       </Card.Description>
     </Card.Content>
   </Card>

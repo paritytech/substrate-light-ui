@@ -15,7 +15,7 @@ storiesOf('Paragraph', module)
   .add('Paragraph', () => {
     const children = text('children', 'Paragraph children node');
     const className = text('className', '');
-    const status = select('status', ['success', 'error', undefined], undefined);
+    const status = select('status', ['success', 'error', 'none'], 'none');
     const faded = boolean('faded', false);
 
     return (

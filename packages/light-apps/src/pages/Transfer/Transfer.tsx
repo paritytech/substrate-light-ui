@@ -4,7 +4,7 @@
 
 import { SigningRequest } from '@polkadot/extension-base/background/types';
 import { web3FromAddress } from '@polkadot/extension-dapp';
-import { Paragraph, Form, Header } from '@substrate/ui-components';
+import { Form, Header, Paragraph } from '@substrate/ui-components';
 import { Stacked } from '@substrate/ui-components';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 
