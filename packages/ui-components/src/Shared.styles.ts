@@ -21,10 +21,6 @@ export const ContainerFlex = styled(SUIContainer).attrs({
   display: flex !important;
 `;
 
-export const BoldText = styled.b`
-  color: ${polkadotOfficialTheme.black};
-`;
-
 export const Header = styled.h2.attrs((props) => {
   if (!props.className) {
     // then default tachyon clasees
