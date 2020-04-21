@@ -41,9 +41,26 @@ export function ProviderContextProvider(
   const [provider, setProvider] = useState<ProviderInterface>();
 
   useEffect(() => {
+    // Stop the currently running provider
+    if (provider) {
+      l.log(`Disconnecting from provider ${lazy?.id}`);
+      provider.disconnect();
+    }
+
     if (lazy) {
+      l.log(`Starting provider ${lazy.id}`);
       lazy.start().then(setProvider).catch(l.error);
     }
+
+    // If we unmount, disconnect our potential provider.
+    return (): void => {
+      if (provider?.isConnected()) {
+        provider.disconnect();
+      }
+    };
+
+    // We don't want `provider` in the deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lazy]);
 
   return (

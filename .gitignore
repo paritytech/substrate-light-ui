@@ -2,9 +2,10 @@
 build/
 dist/
 lib/
-packages/electron-app/static/substrate
 coverage/
 master-build.zip
+packages/electron-app/static/substrate
+packages/light-apps/public/*.wasm
 
 # node_modules
 node_modules/

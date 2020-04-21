@@ -4,6 +4,7 @@
 
 import {
   AlertsContextProvider,
+  ApiRxContextProvider,
   HealthContextProvider,
   SystemContextProvider,
 } from '@substrate/context';
@@ -11,7 +12,6 @@ import React from 'react';
 
 import {
   AccountContextProvider,
-  ApiContextProvider,
   InjectedContext,
   InjectedContextProvider,
   ProviderContext,
@@ -48,14 +48,15 @@ export function ContextGate(props: {
                         >
                           <HealthGate>
                             <>
+                              {/* The HealthGate asserts that `provider` is defined. */}
                               {/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */}
-                              <ApiContextProvider provider={provider!}>
+                              <ApiRxContextProvider provider={provider!}>
                                 <ApiGate>
                                   <AlertsContextProvider>
                                     {children}
                                   </AlertsContextProvider>
                                 </ApiGate>
-                              </ApiContextProvider>
+                              </ApiRxContextProvider>
                             </>
                           </HealthGate>
                         </AccountContextProvider>

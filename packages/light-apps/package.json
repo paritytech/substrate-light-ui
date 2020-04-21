@@ -14,15 +14,17 @@
     "not op_mini all"
   ],
   "scripts": {
-    "start": "BROWSER=none SKIP_PREFLIGHT_CHECK=true react-scripts start",
-    "build": "SKIP_PREFLIGHT_CHECK=true react-scripts build",
+    "build": "yarn copy:wasm && SKIP_PREFLIGHT_CHECK=true craco build",
+    "copy:wasm": "copyfiles -Eu5 \"../light/src/generated/kusama_cc3/kusama_cc3.wasm\" public",
+    "start": "yarn copy:wasm && BROWSER=none SKIP_PREFLIGHT_CHECK=true craco start",
     "test": "jest --coverage"
   },
   "dependencies": {
-    "@polkadot/extension-dapp": "^0.24.0-beta.17",
-    "@polkadot/ui-assets": "^0.51.1",
+    "@polkadot/extension-dapp": "^0.24.1",
+    "@polkadot/ui-assets": "^0.52.1",
     "@rehooks/local-storage": "^2.3.0",
-    "@substrate/context": "^0.3.24",
+    "@substrate/context": "^0.4.1",
+    "@substrate/light": "^0.3.32",
     "@substrate/ui-components": "^0.3.32",
     "@types/chrome": "^0.0.104",
     "@types/react-dom": "^16.9.6",
@@ -33,8 +35,10 @@
     "react-router-dom": "^5.0.0",
     "react-scripts": "^3.4.1",
     "semantic-ui-css": "^2.4.1",
-    "store": "^2.0.12",
     "tachyons": "^4.11.1",
     "web-ext-types": "^3.2.1"
+  },
+  "devDependencies": {
+    "@craco/craco": "^5.6.4"
   }
 }

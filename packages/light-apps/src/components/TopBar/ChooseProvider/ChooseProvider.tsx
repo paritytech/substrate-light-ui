@@ -141,7 +141,7 @@ export function ChooseProvider(): React.ReactElement {
 
     if (provider) {
       setLazyProvider(provider);
-    } else if (providerId) {
+    } else if (providerId && allProviders && !allProviders[providerId]) {
       l.error(`Cannot find provider with id ${providerId}`);
     }
   });

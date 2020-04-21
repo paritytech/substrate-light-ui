@@ -19,7 +19,7 @@
   "scripts": {
     "build:ui": "yarn clean && lerna exec yarn build --stream --scope=@substrate/ui-components --scope=@substrate/light --scope=@substrate/light-apps",
     "build:electron": "yarn build:ui && lerna run build --scope=@substrate/electron-app",
-    "build:extension": "INLINE_RUNTIME_CHUNK=false yarn build:ui && lerna run build --scope=@substrate/extension-app",
+    "build:extension": "CI=false INLINE_RUNTIME_CHUNK=false yarn build:ui && lerna run build --scope=@substrate/extension-app",
     "clean": "rimraf packages/**/build packages/**/lib packages/**/dist",
     "lint": "tsc --noEmit && eslint --ext js,ts,tsx .",
     "package:electron": "yarn build:electron && lerna run package --scope=@substrate/electron-app",
@@ -31,7 +31,7 @@
     "test": "CI=true lerna run test --parallel"
   },
   "devDependencies": {
-    "@polkadot/dev": "^0.52.9",
+    "@polkadot/dev": "^0.52.11",
     "eslint-config-prettier": "^6.10.1",
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-simple-import-sort": "^5.0.0",

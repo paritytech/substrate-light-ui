@@ -4,18 +4,19 @@
 
 import { SigningRequest } from '@polkadot/extension-base/background/types';
 import { web3FromAddress } from '@polkadot/extension-dapp';
-import { Form, Header, Paragraph } from '@substrate/ui-components';
+import { ApiRxContext } from '@substrate/context';
 import { Stacked } from '@substrate/ui-components';
+import { Form, Header, Paragraph } from '@substrate/ui-components';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 
-import { ApiContext, InjectedContext } from '../../components/context';
+import { InjectedContext } from '../../components/context';
 import { assertIsDefined } from '../../util/assert';
 import { TxDetails, TxStatus, TxStatusText } from './TxDetails';
 import { TxForm } from './TxForm';
 import { validate } from './validate';
 
 export function Transfer(): React.ReactElement {
-  const { api } = useContext(ApiContext);
+  const { api } = useContext(ApiRxContext);
   const { messaging } = useContext(InjectedContext);
 
   const [amount, setAmount] = useState('');
