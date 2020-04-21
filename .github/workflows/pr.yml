@@ -52,6 +52,7 @@ jobs:
         with:
           draft: true
           files: slui-${{ github.sha }}/master-build.zip
+          tag_name: draft
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
