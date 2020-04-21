@@ -4,6 +4,7 @@
 
 import {
   Button,
+  Header,
   Icon,
   Stacked,
   StackedHorizontal,
@@ -20,7 +21,7 @@ export function AccountsOverview(): React.ReactElement {
   return (
     <Stacked>
       <StackedHorizontal>
-        <h2 className='inline-flex mr3 mb0'>Your Accounts</h2>
+        <Header className='inline-flex mr3'>Your Accounts</Header>
         <Link to='/accounts/add'>
           <Button basic icon labelPosition='right'>
             <Icon name='plus' />

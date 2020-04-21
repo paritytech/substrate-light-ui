@@ -21,15 +21,6 @@ export const ContainerFlex = styled(SUIContainer).attrs({
   display: flex !important;
 `;
 
-export const Header = styled.h2.attrs((props) => {
-  if (!props.className) {
-    // then default tachyon clasees
-    return {
-      className: 'f3 fw6 ma0 tl',
-    };
-  }
-})``;
-
 // TODO: still used in stateful components
 export const DynamicSizeText = styled.p<DynamicSizeTextProps>`
   font-size: ${(props): string => FONT_SIZES[props.fontSize || 'medium']};

@@ -42,6 +42,7 @@ export * from './Dropdown';
 export * from './Fab';
 export * from './FlexSegment';
 export * from './globalStyle';
+export * from './Header';
 export * from './Icon';
 export * from './Input';
 export * from './InputAddress';
