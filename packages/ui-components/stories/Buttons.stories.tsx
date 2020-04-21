@@ -19,10 +19,16 @@ storiesOf('Button', module)
   .add('NavButton', () => {
     const className = text('className', '');
     const negative = boolean('negative', false);
+    const disabled = boolean('disabled', false);
     const onClick = action('clicked');
 
     return (
-      <NavButton onClick={onClick} negative={negative} className={className}>
+      <NavButton
+        onClick={onClick}
+        negative={negative}
+        className={className}
+        disabled={disabled}
+      >
         {text('children', 'Click Me!')}
       </NavButton>
     );

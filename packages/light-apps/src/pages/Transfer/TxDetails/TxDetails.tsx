@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { handler, SystemContext } from '@substrate/context';
-import { Input, StyledNavButton } from '@substrate/ui-components';
+import { Input, NavButton } from '@substrate/ui-components';
 import React, { useContext } from 'react';
 
 import { assertIsDefined } from '../../../util/assert';
@@ -64,9 +64,9 @@ export function TxDetails(props: Props): React.ReactElement {
       />
 
       {/* Submit logic is handled by form in Transfer component */}
-      <StyledNavButton disabled={txStatus !== 'validated'} type='submit'>
+      <NavButton disabled={txStatus !== 'validated'} type='submit'>
         Submit Transaction
-      </StyledNavButton>
+      </NavButton>
     </>
   );
 }

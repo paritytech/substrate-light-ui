@@ -17,11 +17,6 @@ export interface DynamicSizeTextProps {
   fontSize?: FontSize;
 }
 
-export interface StyledNavButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  negative?: boolean;
-}
-
 // TODO: tachyon class vs props pattern
 export interface StackProps {
   alignItems?: FlexAlign;

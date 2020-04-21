@@ -11,7 +11,6 @@ import {
   DynamicSizeTextProps,
   NodeSelectorProps,
   StackProps,
-  StyledNavButtonProps,
   StyledNavLinkProps,
   SubHeaderProps,
 } from './StyleProps';
@@ -70,21 +69,6 @@ export const StyledLinkButton = styled.button`
 
   :hover {
     cursor: pointer;
-  }
-`;
-
-export const StyledNavButton = styled.button<StyledNavButtonProps>`
-  position: relative;
-  border: none;
-  border-radius: 9999px;
-  outline: none;
-  overflow: hidden;
-  transition: background-color 0.3s;
-  padding: 0.5em 2.5em;
-
-  :hover {
-    opacity: 0.9;
-    cursor: ${(props): string => (props.disabled ? 'not-allowed' : 'pointer')};
   }
 `;
 

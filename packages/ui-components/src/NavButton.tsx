@@ -3,20 +3,29 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
+import styled from 'styled-components';
 
-import { StyledNavButton } from './Shared.styles';
-import { StyledNavButtonProps } from './StyleProps';
-import { FontSize } from './types';
-
-interface NavButtonProps extends StyledNavButtonProps {
+interface NavButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
-  fontSize?: FontSize;
-  fontWeight?: string;
-  text?: boolean;
   value?: string;
   negative?: boolean;
   wrapClass?: string;
 }
+
+const StyledNavButton = styled.button<NavButtonProps>`
+  position: relative;
+  border: none;
+  border-radius: 9999px;
+  outline: none;
+  overflow: hidden;
+  transition: background-color 0.3s;
+  padding: 0.5em 2.5em;
+
+  :hover {
+    opacity: 0.9;
+    cursor: ${(props): string => (props.disabled ? 'not-allowed' : 'pointer')};
+  }
+`;
 
 // TEMPORARY, to be moved to shared/constants
 const tachyons = {
@@ -52,22 +61,24 @@ const mergeClasses = (defaultClass: string, inClassName: string): string => {
 };
 
 export function NavButton(props: NavButtonProps): React.ReactElement {
-  const { children, className, negative, value, ...rest } = props;
+  const { children, className, negative, value, wrapClass, ...rest } = props;
 
   const tachyonsClass = `
     ${negative ? tachyons['negative'] : tachyons['default']}
   `;
 
   return (
-    <StyledNavButton
-      className={
-        className == undefined
-          ? tachyonsClass
-          : mergeClasses(tachyonsClass, className)
-      }
-      {...rest}
-    >
-      {value || children}
-    </StyledNavButton>
+    <div className={wrapClass}>
+      <StyledNavButton
+        className={
+          className == undefined
+            ? tachyonsClass
+            : mergeClasses(tachyonsClass, className)
+        }
+        {...rest}
+      >
+        {value || children}
+      </StyledNavButton>
+    </div>
   );
 }
