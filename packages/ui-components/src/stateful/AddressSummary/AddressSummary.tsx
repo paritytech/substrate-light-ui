@@ -6,13 +6,13 @@ import ApiRx from '@polkadot/api/rx';
 import IdentityIcon from '@polkadot/react-identicon';
 import React from 'react';
 
+import { Header } from '../../Header';
 import { Margin } from '../../Margin';
 import { Paragraph } from '../../Paragraph';
 import {
   DynamicSizeText,
   Stacked,
   StackedHorizontal,
-  SubHeader,
 } from '../../Shared.styles';
 import { FlexAlign, FlexJustify, FontSize } from '../../types';
 import { Balance } from '../Balance';
@@ -69,9 +69,9 @@ function renderAccountType(type: string): React.ReactElement {
 function renderBadge(type: string): React.ReactElement {
   // FIXME make it an actual badge
   return type === 'nominator' ? (
-    <SubHeader>nominator</SubHeader>
+    <Header as='h4'>nominator</Header>
   ) : (
-    <SubHeader>validator</SubHeader>
+    <Header as='h4'>validator</Header>
   );
 }
 

@@ -6,13 +6,7 @@ import { text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 
-import {
-  Card,
-  Header,
-  Paragraph,
-  SubHeader,
-  substrateLightTheme,
-} from '../src';
+import { Card, Header, Paragraph, substrateLightTheme } from '../src';
 
 const colorPaletteCard = (color: string, hex: string): React.ReactElement => (
   <Card
@@ -43,8 +37,13 @@ storiesOf('Theme', module)
   ))
   .add('typescale', () => (
     <>
-      <Header> Header </Header>
-      <SubHeader> SubHeader </SubHeader>
+      <Header as='h1'> h1 </Header>
+      <Header> h2 (default) </Header>
+      <Header as='h3'> h3 </Header>
+      <Header as='h4'> h4 </Header>
+      <Header as='h5'> h5 </Header>
+      <Header as='h6'> h6 </Header>
+
       <Paragraph className={text('className', '')} status='success'>
         Success
       </Paragraph>

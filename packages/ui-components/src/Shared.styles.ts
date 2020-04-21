@@ -12,7 +12,6 @@ import {
   NodeSelectorProps,
   StackProps,
   StyledNavLinkProps,
-  SubHeaderProps,
 } from './StyleProps';
 
 export const ContainerFlex = styled(SUIContainer).attrs({
@@ -113,19 +112,6 @@ export const StackedHorizontal = styled.div<StackProps>`
   @media (max-width: ${(props): number | string => props.wrapAt || '0'}em) {
     flex-wrap: wrap;
   }
-`;
-
-export const SubHeader = styled.h3<SubHeaderProps>`
-  color: ${polkadotOfficialTheme.black};
-  font-weight: 500;
-  font-size: ${FONT_SIZES.medium};
-  margin: ${(props): string =>
-    props.margin ? '1rem auto 0.3rem auto' : '0 0'};
-  text-align: ${(props): string => props.textAlign || 'left'};
-`;
-
-export const InlineSubHeader = styled(SubHeader)`
-  display: inline;
 `;
 
 /* TODO compomnent with actions */

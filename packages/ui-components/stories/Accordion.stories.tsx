@@ -6,7 +6,7 @@ import { linkTo } from '@storybook/addon-links';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 
-import { Accordion, Icon, StackedHorizontal, SubHeader } from '../src';
+import { Accordion, Header, Icon, StackedHorizontal } from '../src';
 import { withTheme } from './customDecorators';
 
 storiesOf('Accordion', module)
@@ -22,7 +22,7 @@ storiesOf('Accordion', module)
       <Accordion.Title active={boolean('active', false)}>
         <StackedHorizontal>
           <Icon name='dropdown' onClick={linkTo('Accordion', 'active')} />
-          <SubHeader> Click Icon </SubHeader>
+          <Header as='h4'> Click Icon </Header>
         </StackedHorizontal>
       </Accordion.Title>
       <Accordion.Content active={boolean('active', false)}>
@@ -39,7 +39,7 @@ storiesOf('Accordion', module)
       <Accordion.Title active={boolean('active', true)}>
         <StackedHorizontal>
           <Icon name='dropdown' onClick={linkTo('Accordion', 'inactive')} />
-          <SubHeader> Click Icon </SubHeader>
+          <Header as='h4'> Click Icon </Header>
         </StackedHorizontal>
       </Accordion.Title>
       <Accordion.Content active={boolean('active', true)}>

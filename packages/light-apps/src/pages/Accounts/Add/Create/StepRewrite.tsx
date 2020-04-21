@@ -5,6 +5,7 @@
 import { handler } from '@substrate/context';
 import {
   FramedBlock,
+  Header,
   Margin,
   Menu,
   MnemonicRandomWord,
@@ -14,7 +15,6 @@ import {
   Stacked,
   StackedHorizontal,
   StyledLinkButton,
-  SubHeader,
 } from '@substrate/ui-components';
 import React, { useCallback, useState } from 'react';
 
@@ -125,7 +125,7 @@ export function AddAccountStepRewrite(props: Props): React.ReactElement {
         />
       </FramedBlock>
       <Margin top />
-      <SubHeader>Copy your Mnemonic Somewhere Safe</SubHeader>
+      <Header as='h3'>Copy your Mnemonic Somewhere Safe</Header>
       <Paragraph faded>
         If someone gets hold of this mnemonic they could drain your account
       </Paragraph>

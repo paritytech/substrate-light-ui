@@ -28,13 +28,6 @@ export interface StyledNavLinkProps {
   inverted?: boolean;
 }
 
-export interface SubHeaderProps {
-  color?: Color;
-  margin?: MarginSize;
-  noMargin?: boolean;
-  textAlign?: string;
-}
-
 export interface NodeSelectorProps {
   fluid?: boolean;
   className?: string;

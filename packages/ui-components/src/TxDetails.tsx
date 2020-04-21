@@ -11,8 +11,8 @@ import {
   Accordion,
   AccordionProps,
   DEFAULT_TOKEN_SYMBOL,
+  Header,
   Stacked,
-  SubHeader,
 } from './';
 
 interface TxDetailsProps extends AccordionProps {
@@ -43,19 +43,19 @@ function panels({
       content: {
         content: (
           <Stacked alignItems='flex-start'>
-            <SubHeader>Sender Account:</SubHeader>
+            <Header as='h4'>Sender Account:</Header>
             <p>{senderAddress}</p>
-            <SubHeader>Recipient Address:</SubHeader>
+            <Header as='h4'>Recipient Address:</Header>
             <p>{recipientAddress}</p>
-            <SubHeader>Transfer Amount:</SubHeader>
+            <Header as='h4'>Transfer Amount:</Header>
             <p>
               {amount.toString()} {symbol}
             </p>
-            <SubHeader>Fees:</SubHeader>
+            <Header as='h4'>Fees:</Header>
             <p>
               {allFees.toString()} {symbol}
             </p>
-            <SubHeader>Total Amount (amount + fees):</SubHeader>
+            <Header as='h4'>Total Amount (amount + fees):</Header>
             <p>
               {allTotal.toString()} {symbol}
             </p>

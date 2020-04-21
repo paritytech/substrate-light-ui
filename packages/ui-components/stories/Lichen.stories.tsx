@@ -6,7 +6,7 @@ import { withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 
-import { ContainerFlex, NavButton, StackedHorizontal, Header } from '../src';
+import { ContainerFlex, Header, NavButton, StackedHorizontal } from '../src';
 import { withTheme } from './customDecorators';
 import { FabStory } from './Fab.stories';
 import { InputTransferFundsStory } from './Input.stories';

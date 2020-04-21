@@ -6,6 +6,7 @@ import { select, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 
+import { Paragraph } from '../lib';
 import { Header, NavHeader } from '../src';
 import { withTheme } from './customDecorators';
 
@@ -17,9 +18,12 @@ storiesOf('Header', module)
     const children = text('children', 'Header children node');
     const className = text('className', '');
     return (
-      <Header as={as} className={className}>
-        {children}
-      </Header>
+      <>
+        <Header as={as} className={className}>
+          {children}
+        </Header>
+        <Paragraph>Paragraph after Header</Paragraph>
+      </>
     );
   })
   .add('empty', () => <NavHeader />)

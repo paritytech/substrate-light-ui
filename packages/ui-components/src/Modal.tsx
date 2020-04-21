@@ -8,8 +8,6 @@ import SUIModal, {
 } from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
 import styled from 'styled-components';
 
-import { SubHeader } from './Shared.styles';
-
 type ModalProps = SUIModalProps;
 
 const StyledModal = styled(SUIModal)`
@@ -48,12 +46,6 @@ const StyledHeader = styled(SUIModal.Header)`
   }
 `;
 
-const StyledSubHeader = styled(SubHeader)`
-  &&& {
-    padding: 0 3rem 0 3rem;
-  }
-`;
-
 export function Modal(props: ModalProps): React.ReactElement {
   return <StyledModal {...props} />;
 }
@@ -61,5 +53,4 @@ export function Modal(props: ModalProps): React.ReactElement {
 Modal.Actions = StyledActions;
 Modal.Content = StyledContent;
 Modal.Header = StyledHeader;
-Modal.SubHeader = StyledSubHeader;
 Modal.Description = SUIModal.Description;

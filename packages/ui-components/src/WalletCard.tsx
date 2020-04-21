@@ -4,7 +4,7 @@
 
 import React from 'react';
 
-import { Card, Header, Stacked, SubHeader } from './index';
+import { Card, Header, Stacked } from './index';
 
 type WalletCardProps = {
   children: React.ReactNode;
@@ -21,7 +21,9 @@ export function WalletCard(props: WalletCardProps): React.ReactElement {
     <Card height={height} raised overflow={overflow}>
       <Stacked>
         <Header margin='large'> {header} </Header>
-        <SubHeader margin='large'> {subheader} </SubHeader>
+        <Header as='h3' margin='large'>
+          {subheader}
+        </Header>
         <Stacked>{children}</Stacked>
       </Stacked>
     </Card>

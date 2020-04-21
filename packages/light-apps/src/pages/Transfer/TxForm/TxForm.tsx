@@ -4,12 +4,7 @@
 
 import { SubjectInfo } from '@polkadot/ui-keyring/observable/types';
 import { handler, SystemContext } from '@substrate/context';
-import {
-  Input,
-  InputAddress,
-  Stacked,
-  SubHeader,
-} from '@substrate/ui-components';
+import { Header, Input, InputAddress, Stacked } from '@substrate/ui-components';
 import React, { useContext } from 'react';
 
 import { AccountContext } from '../../../components/context';
@@ -57,7 +52,9 @@ export function TxForm(props: Props): React.ReactElement {
   return (
     <Stacked>
       <div className='items-start justify-start'>
-        <SubHeader textAlign='left'>Amount:</SubHeader>
+        <Header as='h3' textAlign='left'>
+          Amount:
+        </Header>
         <Input
           fluid
           label={properties.tokenSymbol.unwrapOr('UNIT').toString()}
@@ -72,7 +69,7 @@ export function TxForm(props: Props): React.ReactElement {
       </div>
 
       <div className='items-start justify-start'>
-        <SubHeader textAlign='left'>Tip:</SubHeader>
+        <Header as='h3'>Tip:</Header>
         <Input
           fluid
           label={properties.tokenSymbol.unwrapOr('UNIT').toString()}
@@ -87,7 +84,7 @@ export function TxForm(props: Props): React.ReactElement {
       </div>
 
       <div className='items-start justify-start'>
-        <SubHeader textAlign='left'>Sender Account:</SubHeader>
+        <Header as='h3'>Sender Account:</Header>
         <InputAddress
           accounts={accountsObj}
           onChangeAddress={setSender}
@@ -97,7 +94,7 @@ export function TxForm(props: Props): React.ReactElement {
       </div>
 
       <div className='items-start justify-start'>
-        <SubHeader textAlign='left'>Recipient Address:</SubHeader>
+        <Header as='h3'>Recipient Address:</Header>
         <Input fluid onChange={handler(setRecipient)} value={recipient} />
       </div>
     </Stacked>

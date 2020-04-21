@@ -5,6 +5,7 @@
 import {
   Button,
   FramedBlock,
+  Header,
   Icon,
   Margin,
   Menu,
@@ -12,7 +13,6 @@ import {
   NavButton,
   Paragraph,
   Stacked,
-  SubHeader,
 } from '@substrate/ui-components';
 import React from 'react';
 
@@ -39,7 +39,7 @@ export function AddAccountStepMnemonic(props: Props): React.ReactElement {
         </Button.Group>
       </FramedBlock>
       <Margin top />
-      <SubHeader>Copy your Mnemonic Somewhere Safe</SubHeader>
+      <Header as='h3'>Copy your Mnemonic Somewhere Safe</Header>
       <Paragraph faded>
         Your private key will be generated from this phrase. Anyone with access
         to this phrase can have full control your funds so make sure to keep it
