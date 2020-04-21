@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { web3Enable } from '@polkadot/extension-dapp';
+import { InjectedWindowProvider } from '@polkadot/extension-inject/types';
 import { logger } from '@polkadot/util';
 import React, { useEffect, useState } from 'react';
 
@@ -38,24 +38,21 @@ export function InjectedContextProvider(
 
         setInjected(injected);
       } else {
-        const extensions = await web3Enable(originName);
+        const injectedWeb3: Record<string, InjectedWindowProvider> =
+          window.injectedWeb3 || {};
 
-        if (!extensions.length) {
-          throw new Error(
-            'Please install SLUI extension for a better experience.'
-          );
+        // Connect to SLUI if it exists
+        if (injectedWeb3.slui) {
+          const injected = await injectedWeb3.slui.enable(originName);
+
+          setInjected(injected as Injected);
+        } else {
+          l.warn('Please install SLUI extension for a better experience.');
         }
-
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        // @ts-ignore We overwrote the Injected class, the typings are actually
-        // correct.
-        const injected: Injected = extensions[0];
-
-        setInjected(injected);
       }
     }
 
-    getSendMessage().catch((error) => l.warn(error.message));
+    getSendMessage().catch(l.error);
   }, [originName]);
 
   return (
