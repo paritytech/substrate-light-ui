@@ -29,9 +29,9 @@ As of v0.3.0, the main functions are as follows:
 And here is a rough roadmap of what's coming next (see the [`v0.4.0-MVP` milestone](https://github.com/paritytech/substrate-light-ui/milestone/3) for details):
 
 - [ ] Handle changing:
-  - [ ] provider,
-  - [ ] chain spec,
-  - [ ] light client WASM blob.
+  - [x] provider,
+  - [x] chain spec,
+  - [ ] user uploaded light client WASM blob or chain spec.
 - [ ] Provider injection inside dapps.
 - [ ] Improve overall beginner-friendliness (e.g. [#67](https://github.com/paritytech/substrate-light-ui/issues/67)).
 
