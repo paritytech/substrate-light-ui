@@ -36,12 +36,16 @@ export function AccountContextProvider(
   );
 
   useEffect(() => {
+    // Get all accounts from all injected extensions.
     const unsubs = Object.values(injected).map((injected) => {
       return injected.accounts.subscribe(mergeAccounts);
     });
 
     return (): void => unsubs.forEach((unsub) => unsub());
-  }, [injected, mergeAccounts]);
+
+    // We only want to update this effect on `injected` change.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [injected]);
 
   // From an array of accounts, get a map of address->account.
   const accounts = extensionAccounts.reduce(

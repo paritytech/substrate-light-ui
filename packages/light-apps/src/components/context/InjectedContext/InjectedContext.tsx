@@ -4,7 +4,7 @@
 
 import { InjectedWindowProvider } from '@polkadot/extension-inject/types';
 import { logger } from '@polkadot/util';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { detectEnvironment } from '../../../util/env';
 import { Injected } from './Injected';
@@ -90,6 +90,10 @@ export function InjectedContextProvider(
     },
     [injected]
   );
+
+  // Connect to own extension only once, on startup.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => enable(OWN_EXTENSION_NAME), []);
 
   return (
     <InjectedContext.Provider
