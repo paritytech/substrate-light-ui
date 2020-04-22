@@ -41,6 +41,7 @@ jobs:
   # Create a draft release on each master with the extension zip
   draft-release:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
     needs: package-extension
     steps:
       - name: Download extension zip
@@ -49,7 +50,7 @@ jobs:
           name: slui-${{ github.sha }}
       - name: Get current date # https://stackoverflow.com/questions/60942067/get-current-date-and-time-in-github-workflows
         id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m-%d %H:%M')"
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d-%H%M')"
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
         env:
@@ -57,5 +58,5 @@ jobs:
         with:
           upload_url: https://uploads.github.com/repos/paritytech/substrate-light-ui/releases/25758195/assets{?name,label} # Hardcoding the release url
           asset_path: slui-${{ github.sha }}/master-build.zip
-          asset_name: slui-${{ steps.date.outputs.date }}.zip
+          asset_name: slui-master-${{ steps.date.outputs.date }}.zip
           asset_content_type: application/zip
