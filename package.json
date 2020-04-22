@@ -17,9 +17,9 @@
     ]
   },
   "scripts": {
-    "build:ui": "yarn clean && lerna exec yarn build --stream --scope=@substrate/ui-components --scope=@substrate/light --scope=@substrate/light-apps",
+    "build:ui": "yarn clean && lerna exec CI=false yarn build --stream --scope=@substrate/ui-components --scope=@substrate/light --scope=@substrate/light-apps",
     "build:electron": "yarn build:ui && lerna run build --scope=@substrate/electron-app",
-    "build:extension": "CI=false INLINE_RUNTIME_CHUNK=false yarn build:ui && lerna run build --scope=@substrate/extension-app",
+    "build:extension": "INLINE_RUNTIME_CHUNK=false yarn build:ui && lerna run build --scope=@substrate/extension-app",
     "clean": "rimraf packages/**/build packages/**/lib packages/**/dist",
     "lint": "tsc --noEmit && eslint --ext js,ts,tsx .",
     "package:electron": "yarn build:electron && lerna run package --scope=@substrate/electron-app",

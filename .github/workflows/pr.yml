@@ -1,4 +1,4 @@
-name: pr
+name: CI
 
 on:
   push:
@@ -9,28 +9,54 @@ on:
       - master
 
 jobs:
+  # Lint the code
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - run: yarn install
       - run: ./scripts/prestart.sh
       - run: yarn lint
 
+  # Test the code
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - run: yarn install
       - run: yarn test
 
+  # Create a .zip containing the browser extension
   package-extension:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - run: yarn install
       - run: yarn package:extension
       - uses: actions/upload-artifact@v1
         with:
-          name: slui-pr-${{ github.event.number }}-${{ github.sha }}
+          name: slui-${{ github.sha }}
           path: ./packages/extension-app/master-build.zip
+
+  # Create a draft release on each master with the extension zip
+  draft-release:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    needs: package-extension
+    steps:
+      - name: Download extension zip
+        uses: actions/download-artifact@v1
+        with:
+          name: slui-${{ github.sha }}
+      - name: Get current date # https://stackoverflow.com/questions/60942067/get-current-date-and-time-in-github-workflows
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d-%H%M')"
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: https://uploads.github.com/repos/paritytech/substrate-light-ui/releases/25758195/assets{?name,label} # Hardcoding the release url
+          asset_path: slui-${{ github.sha }}/master-build.zip
+          asset_name: slui-master-${{ steps.date.outputs.date }}.zip
+          asset_content_type: application/zip
