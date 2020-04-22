@@ -58,7 +58,7 @@ jobs:
         with:
           body: This draft release holds a zip file of the extension built with latest master. As a draft release, it is meant for internal testing by `paritytech` members. Last build on ${{ steps.date.outputs.date }}.
           draft: true
-          name: Latest master draft release
+          release_name: Latest master draft release
           tag_name: draft
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
