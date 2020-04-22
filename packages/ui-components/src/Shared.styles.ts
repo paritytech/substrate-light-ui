@@ -5,7 +5,6 @@
 import SUIContainer from 'semantic-ui-react/dist/commonjs/elements/Container';
 import styled from 'styled-components';
 
-import { FONT_SIZES } from './constants';
 import { polkadotOfficialTheme } from './globalStyle';
 import { NodeSelectorProps, StackProps } from './StyleProps';
 
@@ -13,44 +12,6 @@ export const ContainerFlex = styled(SUIContainer).attrs({
   className: 'flex items-center',
 })`
   display: flex !important;
-`;
-
-export const VoteNayButton = styled.button`
-  background-image: linear-gradient(
-    107deg,
-    ${polkadotOfficialTheme.hotPink},
-    ${polkadotOfficialTheme.hotPink}
-  );
-  border: none;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px 0 rgba(${polkadotOfficialTheme.black}, 0.3);
-  color: ${polkadotOfficialTheme.white};
-  fontsize: ${FONT_SIZES.large};
-  height: 21px;
-  width: 51px;
-
-  :hover {
-    cursor: pointer;
-  }
-`;
-
-export const VoteYayButton = styled.button`
-  background-image: linear-gradient(
-    107deg,
-    ${polkadotOfficialTheme.lightBlue1},
-    ${polkadotOfficialTheme.lightBlue2}
-  );
-  border: none;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px 0 rgba(${polkadotOfficialTheme.black}, 0.3);
-  color: ${polkadotOfficialTheme.white};
-  fontsize: ${FONT_SIZES.large};
-  height: 21px;
-  width: 51px;
-
-  :hover {
-    cursor: pointer;
-  }
 `;
 
 export const Stacked = styled.div<StackProps>`

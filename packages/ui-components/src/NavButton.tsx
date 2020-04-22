@@ -32,7 +32,10 @@ const tachyons = {
   default: 'bg-black white f4 fw4',
   negative: 'bg-white black f4 fw4',
 };
-const mergeClasses = (defaultClass: string, inClassName: string): string => {
+export const mergeClasses = (
+  defaultClass: string,
+  inClassName: string
+): string => {
   let outClass = defaultClass;
 
   const rFontSize = /(f)+([0-9])/g;

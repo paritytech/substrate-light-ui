@@ -3,13 +3,13 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { action } from '@storybook/addon-actions';
-import { boolean, text, withKnobs } from '@storybook/addon-knobs';
+import { boolean, select, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 
 import { Button } from '../src/Button';
 import { NavButton } from '../src/NavButton';
-import { VoteNayButton, VoteYayButton } from '../src/Shared.styles';
+import { VoteButton } from '../src/VoteButton';
 import { withTheme } from './customDecorators';
 
 storiesOf('Button', module)
@@ -21,6 +21,7 @@ storiesOf('Button', module)
     const negative = boolean('negative', false);
     const disabled = boolean('disabled', false);
     const onClick = action('clicked');
+    const vote = select('vote', ['yay', 'nay', ''], '');
 
     return (
       <NavButton
@@ -28,14 +29,20 @@ storiesOf('Button', module)
         negative={negative}
         className={className}
         disabled={disabled}
+        vote={vote}
       >
         {text('children', 'Click Me!')}
       </NavButton>
     );
   })
-  .add('VoteButtons', () => (
-    <React.Fragment>
-      <VoteYayButton onClick={action('Yay')}> Yay </VoteYayButton>
-      <VoteNayButton onClick={action('Nay')}> Nay </VoteNayButton>
-    </React.Fragment>
-  ));
+  .add('VoteButton', () => {
+    const className = text('className', '');
+    const vote = select('vote', ['yay', 'nay'], 'yay');
+    const onClick = action('Vote');
+
+    return (
+      <VoteButton onClick={onClick} className={className} vote={vote}>
+        {text('children', 'Click Me!')}
+      </VoteButton>
+    );
+  });

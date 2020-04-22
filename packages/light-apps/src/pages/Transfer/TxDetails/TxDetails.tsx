@@ -43,7 +43,8 @@ export function TxDetails(props: Props): React.ReactElement {
       <div>To: {recipient}</div>
 
       <div>
-        <label>Amount:</label> {amount} {properties.tokenSymbol.unwrapOr('UNIT').toString()}
+        <label>Amount:</label> {amount}{' '}
+        {properties.tokenSymbol.unwrapOr('UNIT').toString()}
       </div>
       <div>
         Tip: {tip || 0} {properties.tokenSymbol.unwrapOr('UNIT').toString()}
