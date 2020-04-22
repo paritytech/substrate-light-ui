@@ -38,8 +38,8 @@ jobs:
           name: slui-${{ github.sha }}
           path: ./packages/extension-app/master-build.zip
 
-  # Create a draft release on each master with the extension
-  release:
+  # Create a draft release on each master with the extension zip
+  draft-release:
     runs-on: ubuntu-latest
     needs: package-extension
     steps:
@@ -50,13 +50,22 @@ jobs:
       - name: Get current date # https://stackoverflow.com/questions/60942067/get-current-date-and-time-in-github-workflows
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d %H-%M-%s')"
-      - name: Create release
-        uses: softprops/action-gh-release@v1
-        with:
-          body: This draft release holds a zip file of the extension built on latest master. As a draft release, it is meant of internal testing by `paritytech` members. Last build on ${{ steps.date.outputs.date }}.
-          draft: true
-          files: slui-${{ github.sha }}/master-build.zip
-          name: Latest master draft release
-          tag_name: draft
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          body: This draft release holds a zip file of the extension built with latest master. As a draft release, it is meant for internal testing by `paritytech` members. Last build on ${{ steps.date.outputs.date }}.
+          draft: true
+          name: Latest master draft release
+          tag_name: draft
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: slui-${{ github.sha }}/master-build.zip
+          asset_name: slui-${{ steps.date.outputs.date }}.zip
+          asset_content_type: application/zip
