@@ -5,5 +5,5 @@ declare module 'tachyons-components';
 
 // Extensions inject `injectedWeb3`
 interface Window {
-  injectedWeb3: Record<string, InjectedWindowProvider>;
+  injectedWeb3?: Record<string, InjectedWindowProvider>;
 }

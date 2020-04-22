@@ -16,7 +16,11 @@ import {
 } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';
 
-import { InjectedContext, ProviderContext } from '../../context';
+import {
+  InjectedContext,
+  OWN_EXTENSION_NAME,
+  ProviderContext,
+} from '../../context';
 import {
   discoverChain,
   getAllProviders,
@@ -81,7 +85,9 @@ export function ChooseProvider(): React.ReactElement {
 
   // Get the list of all available providers
   useEffect(() => {
-    getAllProviders({ injected }).then(setAllProviders).catch(l.error);
+    getAllProviders({ injected: injected[OWN_EXTENSION_NAME] })
+      .then(setAllProviders)
+      .catch(l.error);
   }, [injected]);
 
   // Once we get the list of chains, select one

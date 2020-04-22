@@ -13,6 +13,7 @@ import { Link } from 'react-router-dom';
 
 import { AccountContext } from '../../../components/context';
 import { AccountsOverviewCard } from './OverviewCard';
+import { PjsButton } from './PjsButton';
 
 export function AccountsOverview(): React.ReactElement {
   const { accounts } = useContext(AccountContext);
@@ -27,6 +28,7 @@ export function AccountsOverview(): React.ReactElement {
             Add New
           </Button>
         </Link>
+        <PjsButton />
       </StackedHorizontal>
       {[...accounts.values()].map((account) => {
         return (
