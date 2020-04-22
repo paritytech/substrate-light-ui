@@ -50,22 +50,12 @@ jobs:
       - name: Get current date # https://stackoverflow.com/questions/60942067/get-current-date-and-time-in-github-workflows
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d %H:%M')"
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          body: This draft release holds a zip file of the extension built with latest master. As a draft release, it is meant for internal testing by `paritytech` members. Last build on ${{ steps.date.outputs.date }}.
-          draft: true
-          release_name: Latest master draft release
-          tag_name: draft
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          upload_url: https://uploads.github.com/repos/paritytech/substrate-light-ui/releases/25758195/assets{?name,label} # Hardcoding the release url
           asset_path: slui-${{ github.sha }}/master-build.zip
           asset_name: slui-${{ steps.date.outputs.date }}.zip
           asset_content_type: application/zip
