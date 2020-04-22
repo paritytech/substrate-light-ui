@@ -6,30 +6,12 @@ import SUIContainer from 'semantic-ui-react/dist/commonjs/elements/Container';
 import styled from 'styled-components';
 
 import { polkadotOfficialTheme } from './globalStyle';
-import { NodeSelectorProps, StackProps } from './StyleProps';
+import { NodeSelectorProps } from './StyleProps';
 
 export const ContainerFlex = styled(SUIContainer).attrs({
   className: 'flex items-center',
 })`
   display: flex !important;
-`;
-
-export const Stacked = styled.div<StackProps>`
-  align-items: ${(props): string => props.alignItems || ''};
-  display: flex;
-  flex-direction: column;
-  justify-content: ${(props): string => props.justifyContent || 'center'};
-`;
-
-export const StackedHorizontal = styled.div<StackProps>`
-  align-items: ${(props): string => props.alignItems || 'center'};
-  display: flex;
-  flex-direction: row;
-  justify-content: ${(props): string => props.justifyContent || ''};
-
-  @media (max-width: ${(props): number | string => props.wrapAt || '0'}em) {
-    flex-wrap: wrap;
-  }
 `;
 
 /* TODO compomnent with actions */

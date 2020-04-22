@@ -6,23 +6,17 @@ import ApiRx from '@polkadot/api/rx';
 import IdentityIcon from '@polkadot/react-identicon';
 import React from 'react';
 
-import { Header } from '../../Header';
-import { Margin } from '../../Margin';
-import { Paragraph } from '../../Paragraph';
-import { Stacked, StackedHorizontal } from '../../Shared.styles';
-import { FlexAlign, FlexJustify } from '../../types';
+import { Header, Layout, Margin, Paragraph } from '../../index';
 import { Balance } from '../Balance';
 import { OrientationType, SizeType } from './types';
 
 type AddressSummaryProps = {
   address?: string; // TODO support AccountId
-  alignItems?: FlexAlign;
   api: ApiRx;
   bondingPair?: string; // TODO support AccountId
   detailed?: boolean;
   isNominator?: boolean;
   isValidator?: boolean;
-  justifyContent?: FlexJustify;
   name?: string;
   noPlaceholderName?: boolean;
   noBalance?: boolean;
@@ -62,10 +56,10 @@ function renderBadge(type: string): React.ReactElement {
 
 function renderBondingPair(bondingPair: string): React.ReactElement {
   return (
-    <StackedHorizontal>
+    <Layout>
       <Paragraph faded> Bonding Pair: </Paragraph>
       {renderIcon(bondingPair, 'tiny')}
-    </StackedHorizontal>
+    </Layout>
   );
 }
 
@@ -96,12 +90,12 @@ function renderDetails(
 
   return (
     <>
-      <Stacked alignItems='flex-start'>
+      <Layout className='flex-column items-start'>
         <Paragraph>{noPlaceholderName ? null : name} </Paragraph>
         {withShortAddress && renderShortAddress(address)}
         {type && renderAccountType(type)}
-      </Stacked>
-      <Stacked alignItems='flex-start'>
+      </Layout>
+      <Layout className='flex-column items-start'>
         {bondingPair && renderBondingPair(bondingPair)}
         {isNominator && renderBadge('nominator')}
         {isValidator && renderBadge('validator')}
@@ -113,36 +107,26 @@ function renderDetails(
             orientation={orientation}
           />
         )}
-      </Stacked>
+      </Layout>
     </>
   );
 }
 
 export function AddressSummary(props: AddressSummaryProps): React.ReactElement {
-  const {
-    address,
-    api,
-    alignItems = 'center',
-    justifyContent = 'flex-start',
-    orientation = 'vertical',
-    size = 'medium',
-  } = props;
+  const { address, api, orientation = 'vertical', size = 'medium' } = props;
 
   return address ? (
     orientation === 'vertical' ? (
-      <Stacked justifyContent={justifyContent}>
+      <Layout className='flex-column'>
         {renderIcon(address, size)}
         {renderDetails(address, api, props)}
-      </Stacked>
+      </Layout>
     ) : (
-      <StackedHorizontal
-        alignItems={alignItems}
-        justifyContent={justifyContent}
-      >
+      <Layout className='justify-between'>
         {renderIcon(address, size)}
         <Margin left />
         {renderDetails(address, api, props)}
-      </StackedHorizontal>
+      </Layout>
     )
   ) : (
     <div>No Address Provided</div>

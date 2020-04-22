@@ -6,14 +6,13 @@ import { handler } from '@substrate/context';
 import {
   FramedBlock,
   Header,
+  Layout,
   Margin,
   Menu,
   MnemonicRandomWord,
   MnemonicRewriteParts,
   NavButton,
   Paragraph,
-  Stacked,
-  StackedHorizontal,
 } from '@substrate/ui-components';
 import React, { useCallback, useState } from 'react';
 
@@ -106,7 +105,7 @@ export function AddAccountStepRewrite(props: Props): React.ReactElement {
   ]);
 
   return (
-    <Stacked>
+    <>
       <Menu borderless shadow={false} tabs size='tiny'>
         <Menu.Item active>Rewrite Mnemonic Below</Menu.Item>
       </Menu>
@@ -129,13 +128,13 @@ export function AddAccountStepRewrite(props: Props): React.ReactElement {
         If someone gets hold of this mnemonic they could drain your account
       </Paragraph>
       <Margin top='large' />
-      <StackedHorizontal justifyContent='space-between'>
+      <Layout className='justify-between'>
         <NavButton negative onClick={goToPreviousStep}>
           Back
         </NavButton>
         <NavButton onClick={handleGoToNextStep}>Next</NavButton>
         <NavButton className='o-0'>Back</NavButton>
-      </StackedHorizontal>
-    </Stacked>
+      </Layout>
+    </>
   );
 }

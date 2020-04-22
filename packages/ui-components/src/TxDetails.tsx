@@ -7,13 +7,8 @@ import React from 'react';
 import { SemanticShorthandItem } from 'semantic-ui-react';
 import { AccordionPanelProps } from 'semantic-ui-react/dist/commonjs/modules/Accordion/AccordionPanel';
 
-import {
-  Accordion,
-  AccordionProps,
-  DEFAULT_TOKEN_SYMBOL,
-  Header,
-  Stacked,
-} from './';
+import { Accordion, AccordionProps, DEFAULT_TOKEN_SYMBOL, Header } from './';
+import { Layout } from './Layout';
 
 interface TxDetailsProps extends AccordionProps {
   allFees: BN;
@@ -42,7 +37,7 @@ function panels({
       },
       content: {
         content: (
-          <Stacked alignItems='flex-start'>
+          <Layout className='flex-column'>
             <Header as='h4'>Sender Account:</Header>
             <p>{senderAddress}</p>
             <Header as='h4'>Recipient Address:</Header>
@@ -59,7 +54,7 @@ function panels({
             <p>
               {allTotal.toString()} {symbol}
             </p>
-          </Stacked>
+          </Layout>
         ),
       },
     },

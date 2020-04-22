@@ -16,7 +16,7 @@ interface VoteButtonProps
   vote: 'yay' | 'nay';
 }
 
-const StyledVoteButton = styled.button<VoteButtonProps>`
+const StyledVoteButton = styled.button`
   border-radius: 9999px;
   outline: none;
   overflow: hidden;

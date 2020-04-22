@@ -21,7 +21,6 @@ storiesOf('Button', module)
     const negative = boolean('negative', false);
     const disabled = boolean('disabled', false);
     const onClick = action('clicked');
-    const vote = select('vote', ['yay', 'nay', ''], '');
 
     return (
       <NavButton
@@ -29,7 +28,6 @@ storiesOf('Button', module)
         negative={negative}
         className={className}
         disabled={disabled}
-        vote={vote}
       >
         {text('children', 'Click Me!')}
       </NavButton>

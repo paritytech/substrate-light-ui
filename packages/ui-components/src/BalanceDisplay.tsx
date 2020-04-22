@@ -11,8 +11,7 @@ import { formatBalance, formatNumber } from '@polkadot/util';
 import React from 'react';
 import Loader from 'semantic-ui-react/dist/commonjs/elements/Loader';
 
-import { Icon, NavButton, Paragraph } from './index';
-import { Stacked, StackedHorizontal } from './Shared.styles';
+import { Icon, Layout, NavButton, Paragraph } from './index';
 import { OrientationType } from './types';
 
 export type BalanceDisplayProps = {
@@ -80,12 +79,12 @@ export function BalanceDisplay(
     return (
       <>
         <hr />
-        <Stacked>
-          <StackedHorizontal justifyContent='space-between'>
+        <Layout className='flex-column'>
+          <Layout className='justify-between'>
             <b>Available:</b>
             {formatBalance(availableBalance)}
-          </StackedHorizontal>
-          <StackedHorizontal justifyContent='space-between'>
+          </Layout>
+          <Layout className='justify-between'>
             {allStaking && allStaking.redeemable && (
               <>
                 <b>Redeemable:</b>
@@ -93,19 +92,19 @@ export function BalanceDisplay(
                 {allStaking.redeemable.gtn(0) && renderRedeemButton()}
               </>
             )}
-          </StackedHorizontal>
-          <StackedHorizontal justifyContent='space-between'>
+          </Layout>
+          <Layout className='justify-between'>
             <b>Reserved:</b>
             {reservedBalance && (
               <Paragraph faded>{formatBalance(reservedBalance)}</Paragraph>
             )}
-          </StackedHorizontal>
-          <StackedHorizontal justifyContent='space-between'>
+          </Layout>
+          <Layout className='justify-between'>
             <b>Locked:</b>
             {lockedBalance && formatBalance(lockedBalance)}
-          </StackedHorizontal>
+          </Layout>
           {renderUnlocking()}
-        </Stacked>
+        </Layout>
       </>
     );
   };
@@ -113,7 +112,7 @@ export function BalanceDisplay(
   return (
     <>
       {allBalances ? (
-        <StackedHorizontal justifyContent='space-around' alignItems='stretch'>
+        <Layout className='justify-around items-stretch'>
           <Paragraph>
             <strong>Total Balance:</strong>{' '}
             {allBalances.freeBalance && formatBalance(allBalances.freeBalance)}
@@ -121,7 +120,7 @@ export function BalanceDisplay(
           <Paragraph faded>
             Transactions: {formatNumber(allBalances.accountNonce)}{' '}
           </Paragraph>
-        </StackedHorizontal>
+        </Layout>
       ) : (
         <Loader active inline />
       )}

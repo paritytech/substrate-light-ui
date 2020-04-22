@@ -6,8 +6,7 @@ import { select, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 
-import { Paragraph } from '../lib';
-import { Header, NavHeader } from '../src';
+import { Header, NavHeader, Paragraph } from '../src';
 import { withTheme } from './customDecorators';
 
 storiesOf('Header', module)

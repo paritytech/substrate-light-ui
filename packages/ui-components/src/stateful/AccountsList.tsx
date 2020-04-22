@@ -44,9 +44,7 @@ export function AccountsList(props: Props): React.ReactElement {
                   <Card.Content>
                     <AddressSummary
                       address={address}
-                      alignItems='center'
                       api={api}
-                      justifyContent='center'
                       orientation='horizontal'
                       size='small'
                       name={name}

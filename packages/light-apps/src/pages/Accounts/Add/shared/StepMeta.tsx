@@ -3,13 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { handler } from '@substrate/context';
-import {
-  Input,
-  Margin,
-  NavButton,
-  Stacked,
-  StackedHorizontal,
-} from '@substrate/ui-components';
+import { Input, Layout, Margin, NavButton } from '@substrate/ui-components';
 import React, { useCallback } from 'react';
 
 interface Props {
@@ -42,7 +36,7 @@ export function AddAccountStepMeta(props: Props): React.ReactElement {
   }, [goToNextStep, name, password, setError]);
 
   return (
-    <Stacked>
+    <>
       <Input
         autoFocus
         fluid
@@ -61,7 +55,7 @@ export function AddAccountStepMeta(props: Props): React.ReactElement {
         value={password}
       />
       <Margin top />
-      <StackedHorizontal justifyContent='space-between'>
+      <Layout className='justify-between'>
         {goToPreviousStep && (
           <NavButton negative onClick={goToPreviousStep}>
             Back
@@ -71,7 +65,7 @@ export function AddAccountStepMeta(props: Props): React.ReactElement {
           <NavButton onClick={handleGoToNextStep}>Next</NavButton>
         )}
         <NavButton className='o-0'>Back</NavButton>
-      </StackedHorizontal>
-    </Stacked>
+      </Layout>
+    </>
   );
 }

@@ -12,9 +12,9 @@ import {
   ConnectedNodes,
   ContainerFlex,
   Dropdown,
+  Layout,
   Menu,
   polkadotOfficialTheme,
-  StackedHorizontal,
 } from '../src';
 import { withTheme } from './customDecorators';
 
@@ -53,7 +53,7 @@ export const TopBarStory = (): React.ReactElement => {
   }
   function NetworkStatus(): React.ReactElement {
     return (
-      <StackedHorizontal className='justify-between ph3 w-100'>
+      <Layout className='justify-between ph3 w-100'>
         <Circle
           wrapClass='w-20'
           fill={polkadotOfficialTheme.green}
@@ -63,7 +63,7 @@ export const TopBarStory = (): React.ReactElement => {
         <span className='dn db-l w-30 truncate f7 silver'>
           Block #143873821739
         </span>
-      </StackedHorizontal>
+      </Layout>
     );
   }
   function RenderLogo(): React.ReactElement {

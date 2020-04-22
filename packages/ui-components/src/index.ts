@@ -48,6 +48,7 @@ export * from './Input';
 export * from './InputAddress';
 export * from './InputFile';
 export * from './Labelled';
+export * from './Layout';
 export * from './Loading';
 export * from './Margin';
 export * from './Menu';

@@ -6,7 +6,7 @@ import { withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 
-import { ContainerFlex, Header, NavButton, StackedHorizontal } from '../src';
+import { ContainerFlex, Header, Layout, NavButton } from '../src';
 import { withTheme } from './customDecorators';
 import { FabStory } from './Fab.stories';
 import { InputTransferFundsStory } from './Input.stories';
@@ -29,7 +29,9 @@ export const withAppMenuAccounts = (
       <MenuTabsStory />
       <TopBarStory />
       <FabStory />
-      <ContainerFlex className='flex-column'>{storyFn()}</ContainerFlex>
+      <ContainerFlex className='flex-column items-start'>
+        {storyFn()}
+      </ContainerFlex>
     </>
   );
 };
@@ -40,7 +42,9 @@ export const withAppMenuSend = (
     <>
       <MenuTabsStory activeItem='Send Funds' />
       <TopBarStory />
-      <ContainerFlex className='flex-column'>{storyFn()}</ContainerFlex>
+      <ContainerFlex className='flex-column items-start'>
+        {storyFn()}
+      </ContainerFlex>
     </>
   );
 };
@@ -58,19 +62,19 @@ storiesOf('Apps/Lichen/2 – Accounts', module)
   .addDecorator(withAppMenuAccounts)
   .add('2.0 – Accounts (Empty)', () => (
     <>
-      <StackedHorizontal>
+      <Layout>
         <Header className='inline-flex mr3 mb0'>Your Accounts </Header>
         <ModalNewMnemonicStory />
-      </StackedHorizontal>
+      </Layout>
       {/* TODO: Illustation empty state */}
     </>
   ))
   .add('2.1 – Accounts', () => (
     <>
-      <StackedHorizontal>
+      <Layout>
         <Header className='inline-flex mr3 mb0'>Your Accounts </Header>
         <ModalNewMnemonicStory />
-      </StackedHorizontal>
+      </Layout>
       <TableAccountsStory />
     </>
   ));
@@ -93,18 +97,18 @@ storiesOf('Apps/Lichen/4 – Send Funds', module)
   .addDecorator(withAppMenuSend)
   .add('4.1 – Form (Empty)', () => (
     <>
-      <StackedHorizontal alignItems='flex-start' wrapAt={60}>
+      <Layout className='items-start'>
         <div className='w-100'>
           <Header className='mb2'>Send Funds</Header>
           <InputTransferFundsStory />
         </div>
         <div className='w-60 pl5'>{/* TODO: Illustation empty state */}</div>
-      </StackedHorizontal>
+      </Layout>
     </>
   ))
   .add('4.2 – Form (Filled)', () => (
     <>
-      <StackedHorizontal alignItems='flex-start' wrapAt={60}>
+      <Layout className='items-start'>
         <div className='w-100'>
           <Header className='mb2'>Send Funds</Header>
           <InputTransferFundsStory />
@@ -115,6 +119,6 @@ storiesOf('Apps/Lichen/4 – Send Funds', module)
           </div>
           <NavButton>Submit Transaction</NavButton>
         </div>
-      </StackedHorizontal>
+      </Layout>
     </>
   ));

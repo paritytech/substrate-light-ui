@@ -8,7 +8,8 @@ import SUIBreadcrumb, {
 } from 'semantic-ui-react/dist/commonjs/collections/Breadcrumb/Breadcrumb';
 
 import { substrateLightTheme } from './globalStyle';
-import { Circle, Margin, Paragraph, Stacked, StackedHorizontal } from './index';
+import { Circle, Margin, Paragraph } from './index';
+import { Layout } from './Layout';
 import { SUIBreadcrumbSize } from './types';
 
 interface Props {
@@ -26,13 +27,13 @@ export function Breadcrumbs(props: BreadcrumbProps): React.ReactElement {
 
   return (
     <SUIBreadcrumb size={size}>
-      <StackedHorizontal>
+      <Layout>
         {sectionLabels.map((label: string, idx: string) => {
           const active = activeLabel === label;
           return (
             <Margin key={label} left='big'>
               <SUIBreadcrumb.Section active={active} onClick={onClick}>
-                <Stacked>
+                <Layout className='flex-column w3 mh3'>
                   <Circle
                     fill={substrateLightTheme.lightBlue1}
                     label={idx.toString()}
@@ -41,12 +42,12 @@ export function Breadcrumbs(props: BreadcrumbProps): React.ReactElement {
                   />
                   <Margin top />
                   <Paragraph faded>{label}</Paragraph>
-                </Stacked>
+                </Layout>
               </SUIBreadcrumb.Section>
             </Margin>
           );
         })}
-      </StackedHorizontal>
+      </Layout>
     </SUIBreadcrumb>
   );
 }

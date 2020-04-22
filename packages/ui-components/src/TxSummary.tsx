@@ -6,7 +6,8 @@ import IdentityIcon from '@polkadot/react-identicon';
 import BN from 'bn.js';
 import React from 'react';
 
-import { DEFAULT_TOKEN_SYMBOL, Margin, StackedHorizontal } from './';
+import { DEFAULT_TOKEN_SYMBOL, Margin } from './';
+import { Layout } from './Layout';
 
 type TxSummaryProps = {
   amount: BN;
@@ -32,12 +33,12 @@ export function TxSummary({
   tokenSymbol = DEFAULT_TOKEN_SYMBOL,
 }: TxSummaryProps): React.ReactElement {
   return (
-    <StackedHorizontal>
+    <Layout>
       {methodCall} {amount.toString()} {tokenSymbol} from
       {smallIcon(senderAddress)}
       {recipientAddress && (
         <React.Fragment>to {smallIcon(recipientAddress)}</React.Fragment>
       )}
-    </StackedHorizontal>
+    </Layout>
   );
 }

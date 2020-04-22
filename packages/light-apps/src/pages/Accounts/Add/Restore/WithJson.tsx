@@ -11,7 +11,6 @@ import {
   Menu,
   NavButton,
   Paragraph,
-  Stacked,
 } from '@substrate/ui-components';
 import React, { useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -47,7 +46,7 @@ export function RestoreWithJson(_props: Props): React.ReactElement {
   };
 
   return (
-    <Stacked>
+    <>
       <Menu borderless shadow={false} tabs size='tiny'>
         <Menu.Item active>Restore Account from JSON Backup File</Menu.Item>
       </Menu>
@@ -72,6 +71,6 @@ export function RestoreWithJson(_props: Props): React.ReactElement {
           />
         </>
       )}
-    </Stacked>
+    </>
   );
 }

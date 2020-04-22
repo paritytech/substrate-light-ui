@@ -13,10 +13,10 @@ import {
   Icon,
   Input,
   InputFile,
+  Layout,
   Menu,
   Modal,
   NavButton,
-  StackedHorizontal,
   TextArea,
   Transition,
 } from '../src';
@@ -69,11 +69,11 @@ export const ModalRewriteMnemonicStory = (): JSX.Element => {
         <FramedBlock>
           <RewriteMnemonicStory />
         </FramedBlock>
-        <StackedHorizontal className='mt4 justify-between'>
+        <Layout className='mt4 justify-between'>
           <NavButton negative>Back</NavButton>
           <NavButton>Next</NavButton>
           <NavButton wrapClass='o-0'>Back</NavButton>
-        </StackedHorizontal>
+        </Layout>
       </Modal.Content>
     </Modal>
   );

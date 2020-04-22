@@ -2,13 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import {
-  Button,
-  Header,
-  Icon,
-  Stacked,
-  StackedHorizontal,
-} from '@substrate/ui-components';
+import { Button, Header, Icon, Layout } from '@substrate/ui-components';
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -19,8 +13,8 @@ export function AccountsOverview(): React.ReactElement {
   const { accounts } = useContext(AccountContext);
 
   return (
-    <Stacked>
-      <StackedHorizontal>
+    <>
+      <Layout>
         <Header className='inline-flex mr3'>Your Accounts</Header>
         <Link to='/accounts/add'>
           <Button basic icon labelPosition='right'>
@@ -28,7 +22,7 @@ export function AccountsOverview(): React.ReactElement {
             Add New
           </Button>
         </Link>
-      </StackedHorizontal>
+      </Layout>
       {[...accounts.values()].map((account) => {
         return (
           <AccountsOverviewCard
@@ -38,6 +32,6 @@ export function AccountsOverview(): React.ReactElement {
           />
         );
       })}
-    </Stacked>
+    </>
   );
 }

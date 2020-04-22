@@ -7,12 +7,12 @@ import {
   FramedBlock,
   Header,
   Icon,
+  Layout,
   Margin,
   Menu,
   MnemonicPhraseList,
   NavButton,
   Paragraph,
-  Stacked,
 } from '@substrate/ui-components';
 import React from 'react';
 
@@ -26,7 +26,7 @@ export function AddAccountStepMnemonic(props: Props): React.ReactElement {
   const { mnemonic, goToNextStep, setNewMnemonic } = props;
 
   return (
-    <Stacked>
+    <>
       <Menu borderless shadow={false} tabs size='tiny'>
         <Menu.Item active>Copy the following mnemonic phrase</Menu.Item>
       </Menu>
@@ -46,7 +46,9 @@ export function AddAccountStepMnemonic(props: Props): React.ReactElement {
         a secure and secret.
       </Paragraph>
       <Margin top='large' />
-      <NavButton onClick={goToNextStep}>Next</NavButton>
-    </Stacked>
+      <Layout className='justify-around'>
+        <NavButton onClick={goToNextStep}>Next</NavButton>
+      </Layout>
+    </>
   );
 }

@@ -60,7 +60,7 @@ export const mergeClasses = (
     inClassName.replace(inBg[0], '');
   }
 
-  return outClass + inClassName;
+  return outClass + ' ' + inClassName;
 };
 
 export function NavButton(props: NavButtonProps): React.ReactElement {

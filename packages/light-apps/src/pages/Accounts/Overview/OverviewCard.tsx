@@ -7,9 +7,9 @@ import {
   AddressSummary,
   Card,
   Icon,
+  Layout,
   Margin,
   NavButton,
-  StackedHorizontal,
 } from '@substrate/ui-components';
 import React, { useContext, useState } from 'react';
 
@@ -72,17 +72,15 @@ export function AccountsOverviewCard(props: Props): React.ReactElement {
         <Card.Content textAlign='right'>
           <AddressSummary
             address={address}
-            alignItems='center'
             api={api}
             detailed={showDetails}
-            justifyContent='center'
             name={name}
             orientation='horizontal'
             size='small'
           />
           <Margin bottom />
 
-          <StackedHorizontal>
+          <Layout>
             <NavButton negative onClick={handleShowDetails}>
               <Icon name={showDetails ? 'up arrow' : 'down arrow'} />
               {showDetails ? 'Hide Details' : 'Show Details'}
@@ -99,7 +97,7 @@ export function AccountsOverviewCard(props: Props): React.ReactElement {
                 </NavButton>
               </>
             )}
-          </StackedHorizontal>
+          </Layout>
         </Card.Content>
       </Card>
     </>
