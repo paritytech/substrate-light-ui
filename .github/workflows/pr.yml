@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-# Lint the code
+  # Lint the code
   lint:
     runs-on: ubuntu-latest
     steps:
