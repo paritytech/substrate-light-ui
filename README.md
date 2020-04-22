@@ -1,7 +1,7 @@
 ![license](https://img.shields.io/badge/License-Apache%202.0-blue.svg)
 [![Actions Status](https://github.com/paritytech/substrate-light-ui/workflows/pr/badge.svg)](https://github.com/paritytech/substrate-light-ui/actions)
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=paritytech/substrate-light-ui)](https://dependabot.com)
-<a href="https://codeclimate.com/github/paritytech/substrate-light-ui/maintainability"><img src="https://api.codeclimate.com/v1/badges/bdff9a9d1f154523d3b9/maintainability" /></a>
+[![CodeClimate](https://api.codeclimate.com/v1/badges/bdff9a9d1f154523d3b9/maintainability)](https://codeclimate.com/github/paritytech/substrate-light-ui/maintainability)
 
 # Lichen (working title, previously "Substrate Light UI")
 
@@ -14,7 +14,7 @@ The Light UI is meant to be **an intuitive interface for beginner users** to eas
 
 Both provide the same functionalities and use the same UI, feel free to choose the medium that suits you best.
 
-A _very alpha_ version of the browser extension can be found in the releases page: https://github.com/paritytech/substrate-light-ui/releases/tag/v0.3.0.
+A _very alpha_ version of the browser extension can be found in the [Github Releases](https://github.com/paritytech/substrate-light-ui/releases) page.
 
 You can also check out the `master` branch and [build from source](#build-from-sources).
 
@@ -26,9 +26,12 @@ As of v0.3.0, the main functions are as follows:
 - [x] Transfer balance - send and receive funds in the currency of the relevant substrate chain.
 - [x] Embed a light client in a browser extension, and let Light UI be the user interface of this extension.
 
-And here is a rough roadmap of what's coming next (see the [`v1-MVP` milestone](https://github.com/paritytech/substrate-light-ui/milestone/3) for details):
+And here is a rough roadmap of what's coming next (see the [`v0.4.0-MVP` milestone](https://github.com/paritytech/substrate-light-ui/milestone/3) for details):
 
-- [ ] Handle changing provider, chain spec and light client WASM blob.
+- [ ] Handle changing:
+  - [ ] provider,
+  - [ ] chain spec,
+  - [ ] light client WASM blob.
 - [ ] Provider injection inside dapps.
 - [ ] Improve overall beginner-friendliness (e.g. [#67](https://github.com/paritytech/substrate-light-ui/issues/67)).
 
