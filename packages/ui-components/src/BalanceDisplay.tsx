@@ -11,8 +11,8 @@ import { formatBalance, formatNumber } from '@polkadot/util';
 import React from 'react';
 import Loader from 'semantic-ui-react/dist/commonjs/elements/Loader';
 
-import { Icon, Paragraph } from './index';
-import { Stacked, StackedHorizontal, StyledLinkButton } from './Shared.styles';
+import { Icon, NavButton, Paragraph } from './index';
+import { Stacked, StackedHorizontal } from './Shared.styles';
 import { OrientationType } from './types';
 
 export type BalanceDisplayProps = {
@@ -36,7 +36,8 @@ export function BalanceDisplay(
 
   const renderRedeemButton = (): React.ReactElement | null => {
     return allStaking && allStaking.controllerId ? (
-      <StyledLinkButton
+      <NavButton
+        negative
         onClick={(): void =>
           allStaking &&
           allStaking.controllerId &&
@@ -46,7 +47,7 @@ export function BalanceDisplay(
       >
         <Icon name='lock' />
         Redeem Funds
-      </StyledLinkButton>
+      </NavButton>
     ) : null;
   };
 

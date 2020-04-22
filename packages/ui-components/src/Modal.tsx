@@ -37,7 +37,6 @@ const StyledHeader = styled(SUIModal.Header)`
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    padding-top: 2rem;
     padding-bottom: 0;
     border-bottom: none;
     border-radius: 0 !important;

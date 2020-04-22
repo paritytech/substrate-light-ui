@@ -29,10 +29,6 @@ export const GlobalStyle = createGlobalStyle`
   code, .code, th, button, button p, .menu .item, label, [type="number"] {
     font-family: 'Roboto Mono' !Important;
   }
-  h2 {
-    font-weight: 500;
-    font-size: 1.4rem;
-  }
 
   //TODO: dimmer component
   .dimmer {

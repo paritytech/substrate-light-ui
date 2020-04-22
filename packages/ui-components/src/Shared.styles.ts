@@ -15,21 +15,6 @@ export const ContainerFlex = styled(SUIContainer).attrs({
   display: flex !important;
 `;
 
-export const StyledLinkButton = styled.button`
-  align-items: space-between;
-  background: none;
-  border: none;
-  color: ${(props): string => props.color || polkadotOfficialTheme.lightBlue1};
-  display: flex;
-  font-size: ${FONT_SIZES.medium};
-  font-weight: 300;
-  justify-content: space-between;
-
-  :hover {
-    cursor: pointer;
-  }
-`;
-
 export const VoteNayButton = styled.button`
   background-image: linear-gradient(
     107deg,

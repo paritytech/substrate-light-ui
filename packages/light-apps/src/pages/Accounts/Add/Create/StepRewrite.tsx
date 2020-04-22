@@ -14,7 +14,6 @@ import {
   Paragraph,
   Stacked,
   StackedHorizontal,
-  StyledLinkButton,
 } from '@substrate/ui-components';
 import React, { useCallback, useState } from 'react';
 
@@ -131,13 +130,11 @@ export function AddAccountStepRewrite(props: Props): React.ReactElement {
       </Paragraph>
       <Margin top='large' />
       <StackedHorizontal justifyContent='space-between'>
-        <StyledLinkButton color='gray' onClick={goToPreviousStep}>
+        <NavButton negative onClick={goToPreviousStep}>
           Back
-        </StyledLinkButton>
+        </NavButton>
         <NavButton onClick={handleGoToNextStep}>Next</NavButton>
-        <StyledLinkButton className='o-0' onClick={goToPreviousStep}>
-          Back
-        </StyledLinkButton>
+        <NavButton className='o-0'>Back</NavButton>
       </StackedHorizontal>
     </Stacked>
   );

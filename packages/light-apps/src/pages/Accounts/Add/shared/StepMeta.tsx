@@ -9,7 +9,6 @@ import {
   NavButton,
   Stacked,
   StackedHorizontal,
-  StyledLinkButton,
 } from '@substrate/ui-components';
 import React, { useCallback } from 'react';
 
@@ -64,14 +63,14 @@ export function AddAccountStepMeta(props: Props): React.ReactElement {
       <Margin top />
       <StackedHorizontal justifyContent='space-between'>
         {goToPreviousStep && (
-          <StyledLinkButton color='gray' onClick={goToPreviousStep}>
+          <NavButton negative onClick={goToPreviousStep}>
             Back
-          </StyledLinkButton>
+          </NavButton>
         )}
         {goToNextStep && (
           <NavButton onClick={handleGoToNextStep}>Next</NavButton>
         )}
-        <StyledLinkButton className='o-0'>Back</StyledLinkButton>
+        <NavButton className='o-0'>Back</NavButton>
       </StackedHorizontal>
     </Stacked>
   );
