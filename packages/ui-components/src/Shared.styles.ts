@@ -7,31 +7,12 @@ import styled from 'styled-components';
 
 import { FONT_SIZES } from './constants';
 import { polkadotOfficialTheme } from './globalStyle';
-import {
-  NodeSelectorProps,
-  StackProps,
-  StyledNavLinkProps,
-} from './StyleProps';
+import { NodeSelectorProps, StackProps } from './StyleProps';
 
 export const ContainerFlex = styled(SUIContainer).attrs({
   className: 'flex items-center',
 })`
   display: flex !important;
-`;
-
-export const StyledNavLink = styled.span<StyledNavLinkProps>`
-  background: none;
-  border: none;
-  color: ${(props): string =>
-    props.inverted
-      ? polkadotOfficialTheme.white
-      : polkadotOfficialTheme.hotPink};
-  font-size: ${FONT_SIZES.medium};
-  font-weight: 300;
-
-  :hover {
-    cursor: pointer;
-  }
 `;
 
 export const StyledLinkButton = styled.button`

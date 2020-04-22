@@ -19,10 +19,6 @@ export interface StackProps {
   wrapAt?: number | string;
 }
 
-export interface StyledNavLinkProps {
-  inverted?: boolean;
-}
-
 export interface NodeSelectorProps {
   fluid?: boolean;
   className?: string;
