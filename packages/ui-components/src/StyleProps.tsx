@@ -3,18 +3,13 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { Color } from './globalStyle';
-import { FlexAlign, FlexJustify, FontSize, MarginSize } from './types';
+import { FlexAlign, FlexJustify, MarginSize } from './types';
 
 export interface HeaderProps {
   color?: Color;
   margin?: MarginSize;
   noMargin?: boolean;
   textAlign?: string;
-}
-
-export interface DynamicSizeTextProps {
-  fontWeight?: string;
-  fontSize?: FontSize;
 }
 
 // TODO: tachyon class vs props pattern

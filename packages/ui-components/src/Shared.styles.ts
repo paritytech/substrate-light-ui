@@ -8,7 +8,6 @@ import styled from 'styled-components';
 import { FONT_SIZES } from './constants';
 import { polkadotOfficialTheme } from './globalStyle';
 import {
-  DynamicSizeTextProps,
   NodeSelectorProps,
   StackProps,
   StyledNavLinkProps,
@@ -18,14 +17,6 @@ export const ContainerFlex = styled(SUIContainer).attrs({
   className: 'flex items-center',
 })`
   display: flex !important;
-`;
-
-// TODO: still used in stateful components
-export const DynamicSizeText = styled.p<DynamicSizeTextProps>`
-  font-size: ${(props): string => FONT_SIZES[props.fontSize || 'medium']};
-  font-weight: ${(props): string => props.fontWeight || 'light'};
-  margin: 0 0;
-  text-align: center;
 `;
 
 export const StyledNavLink = styled.span<StyledNavLinkProps>`

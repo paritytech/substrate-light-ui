@@ -12,27 +12,19 @@ import React from 'react';
 import Loader from 'semantic-ui-react/dist/commonjs/elements/Loader';
 
 import { Icon, Paragraph } from './index';
-import {
-  DynamicSizeText,
-  Stacked,
-  StackedHorizontal,
-  StyledLinkButton,
-} from './Shared.styles';
-import { FontSize, FontWeight, OrientationType } from './types';
+import { Stacked, StackedHorizontal, StyledLinkButton } from './Shared.styles';
+import { OrientationType } from './types';
 
 export type BalanceDisplayProps = {
   allBalances?: DeriveBalancesAll;
   allStaking?: DeriveStakingAccount;
   detailed?: boolean;
-  fontSize?: FontSize;
-  fontWeight?: FontWeight;
   handleRedeem?: (address: string) => void;
   orientation?: 'horizontal' | 'vertical';
 };
 
 const defaultProps = {
   detailed: false,
-  fontSize: 'large' as FontSize,
   orientation: 'vertical' as OrientationType,
 };
 
@@ -40,14 +32,7 @@ const defaultProps = {
 export function BalanceDisplay(
   props: BalanceDisplayProps = defaultProps
 ): React.ReactElement {
-  const {
-    allBalances,
-    allStaking,
-    detailed,
-    fontSize,
-    fontWeight,
-    handleRedeem,
-  } = props;
+  const { allBalances, allStaking, detailed, handleRedeem } = props;
 
   const renderRedeemButton = (): React.ReactElement | null => {
     return allStaking && allStaking.controllerId ? (
@@ -128,10 +113,10 @@ export function BalanceDisplay(
     <>
       {allBalances ? (
         <StackedHorizontal justifyContent='space-around' alignItems='stretch'>
-          <DynamicSizeText fontSize={fontSize} fontWeight={fontWeight}>
+          <Paragraph>
             <strong>Total Balance:</strong>{' '}
             {allBalances.freeBalance && formatBalance(allBalances.freeBalance)}
-          </DynamicSizeText>
+          </Paragraph>
           <Paragraph faded>
             Transactions: {formatNumber(allBalances.accountNonce)}{' '}
           </Paragraph>

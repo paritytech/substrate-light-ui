@@ -9,12 +9,8 @@ import React from 'react';
 import { Header } from '../../Header';
 import { Margin } from '../../Margin';
 import { Paragraph } from '../../Paragraph';
-import {
-  DynamicSizeText,
-  Stacked,
-  StackedHorizontal,
-} from '../../Shared.styles';
-import { FlexAlign, FlexJustify, FontSize } from '../../types';
+import { Stacked, StackedHorizontal } from '../../Shared.styles';
+import { FlexAlign, FlexJustify } from '../../types';
 import { Balance } from '../Balance';
 import { OrientationType, SizeType } from './types';
 
@@ -50,17 +46,6 @@ function renderIcon(address: string, size: SizeType): React.ReactElement {
     <IdentityIcon value={address} theme={'substrate'} size={ICON_SIZES[size]} />
   );
 }
-
-type FontSizeType = {
-  [x: string]: string;
-};
-
-const FONT_SIZES: FontSizeType = {
-  tiny: 'small',
-  small: 'medium',
-  medium: 'large',
-  large: 'big',
-};
 
 function renderAccountType(type: string): React.ReactElement {
   return <Paragraph faded> Account Type: {type} </Paragraph>;
@@ -105,7 +90,6 @@ function renderDetails(
     noBalance,
     noPlaceholderName,
     orientation,
-    size = 'medium',
     type,
     withShortAddress,
   } = summaryProps;
@@ -113,10 +97,7 @@ function renderDetails(
   return (
     <>
       <Stacked alignItems='flex-start'>
-        <DynamicSizeText fontSize={FONT_SIZES[size] as FontSize}>
-          {' '}
-          {noPlaceholderName ? null : name}{' '}
-        </DynamicSizeText>
+        <Paragraph>{noPlaceholderName ? null : name} </Paragraph>
         {withShortAddress && renderShortAddress(address)}
         {type && renderAccountType(type)}
       </Stacked>
@@ -130,7 +111,6 @@ function renderDetails(
             api={api}
             detailed={detailed}
             orientation={orientation}
-            fontSize={FONT_SIZES[size] as FontSize}
           />
         )}
       </Stacked>
