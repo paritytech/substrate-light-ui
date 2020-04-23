@@ -79,8 +79,8 @@ export function BalanceDisplay(
     return (
       <>
         <hr />
-        <Layout className='flex-column'>
-          <Layout className='justify-between'>
+        <Layout className='flex-column items-stretch'>
+          <Layout>
             <b>Available:</b>
             {formatBalance(availableBalance)}
           </Layout>
@@ -112,7 +112,7 @@ export function BalanceDisplay(
   return (
     <>
       {allBalances ? (
-        <Layout className='justify-around items-stretch'>
+        <>
           <Paragraph>
             <strong>Total Balance:</strong>{' '}
             {allBalances.freeBalance && formatBalance(allBalances.freeBalance)}
@@ -120,7 +120,7 @@ export function BalanceDisplay(
           <Paragraph faded>
             Transactions: {formatNumber(allBalances.accountNonce)}{' '}
           </Paragraph>
-        </Layout>
+        </>
       ) : (
         <Loader active inline />
       )}

@@ -12,6 +12,8 @@ export const ContainerFlex = styled(SUIContainer).attrs({
   className: 'flex items-center',
 })`
   display: flex !important;
+  flex-wrap: wrap;
+}
 `;
 
 /* TODO compomnent with actions */

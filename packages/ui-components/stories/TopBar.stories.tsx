@@ -73,20 +73,22 @@ export const TopBarStory = (): React.ReactElement => {
 
   return (
     <BlackBlock className='flex justify-center pv2 mb4'>
-      <ContainerFlex className='items-center'>
-        <RenderLogo />
-        <ConnectedNodes
-          fluid={boolean('fluid', true)}
-          className={text('className', 'flex items-stretch w-100')}
-          nodesClassName={text(
-            'nodeClassName',
-            'b--silver ba br2 flex w-100 justify-center'
-          )}
-          connectorClassName={text('connectorClassName', 'bb b--silver')}
-        >
-          <NetworkStatus />
-          <ChooseProvider />
-        </ConnectedNodes>
+      <ContainerFlex>
+        <Layout className='w-100 justify-between'>
+          <RenderLogo />
+          <ConnectedNodes
+            fluid={boolean('fluid', true)}
+            className={text('className', 'flex items-stretch w-100')}
+            nodesClassName={text(
+              'nodeClassName',
+              'b--silver ba br2 flex w-100 justify-center'
+            )}
+            connectorClassName={text('connectorClassName', 'bb b--silver')}
+          >
+            <NetworkStatus />
+            <ChooseProvider />
+          </ConnectedNodes>
+        </Layout>
       </ContainerFlex>
     </BlackBlock>
   );

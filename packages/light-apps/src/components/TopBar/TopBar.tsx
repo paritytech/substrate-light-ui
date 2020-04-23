@@ -2,7 +2,12 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { BlackBlock, ContainerFlex, Menu } from '@substrate/ui-components';
+import {
+  BlackBlock,
+  ContainerFlex,
+  Layout,
+  Menu,
+} from '@substrate/ui-components';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
@@ -51,9 +56,11 @@ export function TopBar(): React.ReactElement {
     <>
       <MenuTabs />
       <BlackBlock>
-        <ContainerFlex className='items-center'>
-          {renderLogo()}
-          <ChooseProvider />
+        <ContainerFlex>
+          <Layout className='w-100 justify-between'>
+            {renderLogo()}
+            <ChooseProvider />
+          </Layout>
         </ContainerFlex>
       </BlackBlock>
     </>

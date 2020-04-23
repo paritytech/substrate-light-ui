@@ -122,7 +122,7 @@ export function AddressSummary(props: AddressSummaryProps): React.ReactElement {
         {renderDetails(address, api, props)}
       </Layout>
     ) : (
-      <Layout className='justify-between'>
+      <Layout>
         {renderIcon(address, size)}
         <Margin left />
         {renderDetails(address, api, props)}
