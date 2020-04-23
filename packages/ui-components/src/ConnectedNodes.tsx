@@ -5,7 +5,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { mergeClasses } from './NavButton';
+import { mergeClasses } from './util/tachyons';
 
 interface NodeSelectorProps {
   className?: string;
@@ -48,34 +48,25 @@ export function ConnectedNodes(
   return (
     <NodesBlock
       fluid={fluid}
-      className={
-        className == undefined
-          ? defaultProps.blockClassName
-          : mergeClasses(defaultProps.blockClassName, className)
-      }
+      className={mergeClasses(defaultProps.blockClassName, className)}
     >
       {React.Children.map(children, (child, i) => {
         return (
           <>
             {i !== 0 && (
               <NodesConnector
-                className={
-                  connectorClassName == undefined
-                    ? defaultProps.connectorClassName
-                    : mergeClasses(
-                        defaultProps.connectorClassName,
-                        connectorClassName
-                      )
-                }
+                className={mergeClasses(
+                  defaultProps.connectorClassName,
+                  connectorClassName
+                )}
                 fluid={fluid}
               />
             )}
             <NodeSelector
-              className={
-                nodesClassName == undefined
-                  ? defaultProps.nodesClassName
-                  : mergeClasses(defaultProps.nodesClassName, nodesClassName)
-              }
+              className={mergeClasses(
+                defaultProps.nodesClassName,
+                nodesClassName
+              )}
               fluid={fluid}
             >
               {child}

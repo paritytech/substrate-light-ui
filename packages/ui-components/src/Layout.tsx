@@ -5,7 +5,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { mergeClasses } from './NavButton';
+import { mergeClasses } from './util/tachyons';
 
 interface LayoutProps {
   children?: React.ReactNode;
@@ -30,14 +30,7 @@ export function Layout(props: LayoutProps): React.ReactElement {
   `;
 
   return (
-    <StyledLayout
-      className={
-        className == undefined
-          ? tachyonsClass
-          : mergeClasses(tachyonsClass, className)
-      }
-      {...rest}
-    >
+    <StyledLayout className={mergeClasses(tachyonsClass, className)} {...rest}>
       {children}
     </StyledLayout>
   );

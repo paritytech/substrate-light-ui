@@ -5,7 +5,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { mergeClasses } from './NavButton';
+import { mergeClasses } from './util/tachyons';
 
 interface VoteButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -43,11 +43,7 @@ export function VoteButton(props: VoteButtonProps): React.ReactElement {
   return (
     <div className={wrapClass}>
       <StyledVoteButton
-        className={
-          className == undefined
-            ? tachyonsClass
-            : mergeClasses(tachyonsClass, className)
-        }
+        className={mergeClasses(tachyonsClass, className)}
         {...rest}
       >
         {value || children}
