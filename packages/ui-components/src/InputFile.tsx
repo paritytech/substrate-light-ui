@@ -71,7 +71,7 @@ export function InputFile(props: Props): React.ReactElement {
   });
 
   return (
-    <div className='container'>
+    <div className='w-100'>
       <StyledDropzone
         {...getRootProps({ isDragActive, isDragAccept, isDragReject })}
       >

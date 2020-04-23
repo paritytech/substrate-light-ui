@@ -6,7 +6,7 @@ import { withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 
-import { ContainerFlex, Header, Layout, NavButton } from '../src';
+import { Container, Header, Layout, NavButton } from '../src';
 import { withTheme } from './customDecorators';
 import { FabStory } from './Fab.stories';
 import { InputTransferFundsStory } from './Input.stories';
@@ -29,9 +29,7 @@ export const withAppMenuAccounts = (
       <MenuTabsStory />
       <TopBarStory />
       <FabStory />
-      <ContainerFlex className='flex-column items-start'>
-        {storyFn()}
-      </ContainerFlex>
+      <Container className='flex-column items-start'>{storyFn()}</Container>
     </>
   );
 };
@@ -42,9 +40,7 @@ export const withAppMenuSend = (
     <>
       <MenuTabsStory activeItem='Send Funds' />
       <TopBarStory />
-      <ContainerFlex className='flex-column items-start'>
-        {storyFn()}
-      </ContainerFlex>
+      <Container className='flex-column items-start'>{storyFn()}</Container>
     </>
   );
 };

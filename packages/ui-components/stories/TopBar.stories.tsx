@@ -9,7 +9,7 @@ import React from 'react';
 import {
   Circle,
   ConnectedNodes,
-  ContainerFlex,
+  Container,
   Dropdown,
   Layout,
   Menu,
@@ -72,7 +72,7 @@ export const TopBarStory = (): React.ReactElement => {
 
   return (
     <Layout className='bg-black-90 white pv2 mb4'>
-      <ContainerFlex>
+      <Container>
         <Layout className='w-100 justify-between'>
           <RenderLogo />
           <ConnectedNodes
@@ -88,7 +88,7 @@ export const TopBarStory = (): React.ReactElement => {
             <ChooseProvider />
           </ConnectedNodes>
         </Layout>
-      </ContainerFlex>
+      </Container>
     </Layout>
   );
 };

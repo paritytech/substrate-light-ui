@@ -52,7 +52,7 @@ export function RestoreWithPhrase(props: Props): React.ReactElement {
       <Menu borderless shadow={false} tabs size='tiny'>
         <Menu.Item active>Mnemonic Recovery Phrase</Menu.Item>
       </Menu>
-      <Layout framed>
+      <Layout className='flex-column items-stretch' framed>
         <Input
           fluid
           onChange={handler(setRecoveryPhrase)}

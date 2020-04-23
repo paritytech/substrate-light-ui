@@ -17,7 +17,7 @@ const StyledLayout = styled.div``;
 
 // TEMPORARY, to be moved to shared/constants
 const tachyons = {
-  default: 'flex items-center',
+  default: 'relative flex items-center',
   framed: 'ba flex-wrap ph3 pv4',
 };
 

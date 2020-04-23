@@ -25,6 +25,7 @@ export {
   TableProps,
   Transition,
   TransitionGroup,
+  Container,
 } from 'semantic-ui-react';
 
 export * from './Accordion';
@@ -60,7 +61,6 @@ export * from './NavButton';
 export * from './NavHeader';
 export * from './Paragraph';
 export * from './Progress';
-export * from './Shared.styles';
 export * from './stateful';
 export * from './TableAccounts';
 export * from './TableTxSummary';

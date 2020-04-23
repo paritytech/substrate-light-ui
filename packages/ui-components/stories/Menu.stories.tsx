@@ -6,7 +6,7 @@ import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 
-import { ContainerFlex } from '../src';
+import { Container } from '../src';
 import { Menu } from '../src';
 import { withTheme } from './customDecorators';
 
@@ -17,10 +17,10 @@ export const MenuTabsStory = (props: {
   const tabs = boolean('tabs', true);
   return (
     <Menu borderless tabs={tabs} size='large'>
-      <ContainerFlex className='items-center'>
+      <Container className='items-center'>
         <Menu.Item active={activeItem === 'Accounts'}>Accounts</Menu.Item>
         <Menu.Item active={activeItem === 'Send Funds'}>Send Funds</Menu.Item>
-      </ContainerFlex>
+      </Container>
     </Menu>
   );
 };
