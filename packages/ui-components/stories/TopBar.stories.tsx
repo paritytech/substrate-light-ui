@@ -7,7 +7,6 @@ import { storiesOf } from '@storybook/react';
 import React from 'react';
 
 import {
-  BlackBlock,
   Circle,
   ConnectedNodes,
   ContainerFlex,
@@ -72,7 +71,7 @@ export const TopBarStory = (): React.ReactElement => {
   }
 
   return (
-    <BlackBlock className='flex justify-center pv2 mb4'>
+    <Layout className='bg-black-90 white pv2 mb4'>
       <ContainerFlex>
         <Layout className='w-100 justify-between'>
           <RenderLogo />
@@ -90,7 +89,7 @@ export const TopBarStory = (): React.ReactElement => {
           </ConnectedNodes>
         </Layout>
       </ContainerFlex>
-    </BlackBlock>
+    </Layout>
   );
 };
 

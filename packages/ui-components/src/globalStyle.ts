@@ -65,7 +65,7 @@ export const polkadotOfficialTheme = {
   typography: {
     monospace: "'Roboto Mono' !important",
   },
-  black: '#1E1E1E',
+  black: '#191919',
   green: '#79F676',
   shadow: 'rgba(210, 210, 210, 0.6)',
   grey: '#B5AEAE',

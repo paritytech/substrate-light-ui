@@ -5,8 +5,6 @@
 import SUIContainer from 'semantic-ui-react/dist/commonjs/elements/Container';
 import styled from 'styled-components';
 
-import { polkadotOfficialTheme } from './globalStyle';
-
 export const ContainerFlex = styled(SUIContainer).attrs({
   className: 'flex items-center',
 })`
@@ -21,8 +19,4 @@ export const FramedBlock = styled.div`
   position: relative;
   border-style: solid;
   border-width: 1px;
-`;
-export const BlackBlock = styled.div`
-  background-color: ${polkadotOfficialTheme.black};
-  color: ${polkadotOfficialTheme.white};
 `;
