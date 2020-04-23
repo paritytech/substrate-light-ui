@@ -8,13 +8,14 @@ import { Link } from 'react-router-dom';
 
 import { AccountContext } from '../../../components/context';
 import { AccountsOverviewCard } from './OverviewCard';
+import { PjsButton } from './PjsButton';
 
 export function AccountsOverview(): React.ReactElement {
   const { accounts } = useContext(AccountContext);
 
   return (
     <>
-      <Layout>
+      <Layout className='YOOO'>
         <Header className='inline-flex mr3'>Your Accounts</Header>
         <Link to='/accounts/add'>
           <Button basic icon labelPosition='right'>
@@ -22,6 +23,7 @@ export function AccountsOverview(): React.ReactElement {
             Add New
           </Button>
         </Link>
+        <PjsButton />
       </Layout>
       {[...accounts.values()].map((account) => {
         return (
