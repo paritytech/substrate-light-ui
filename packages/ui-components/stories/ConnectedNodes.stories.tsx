@@ -14,10 +14,10 @@ storiesOf('ConnectedNodes', module)
   .addDecorator(withTheme)
   .add('connected nodes', () => (
     <ConnectedNodes
-      fluid={boolean('fluid', false)}
-      className={text('className', 'flex items-center')}
-      nodesClassName={text('nodeClassName', 'ba br2 pv2 ph3 b--silver')}
-      connectorClassName={text('connectorClassName', 'bb b--silver')}
+      fluid={boolean('fluid', true)}
+      className={text('className', '')}
+      nodesClassName={text('nodeClassName', 'justify-around pv2 ph3')}
+      connectorClassName={text('connectorClassName', '')}
     >
       <span>Node A</span>
       <span>Node B</span>

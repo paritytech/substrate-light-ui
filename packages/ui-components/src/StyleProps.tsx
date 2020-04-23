@@ -11,10 +11,3 @@ export interface HeaderProps {
   noMargin?: boolean;
   textAlign?: string;
 }
-
-export interface NodeSelectorProps {
-  fluid?: boolean;
-  className?: string;
-}
-
-// TODO ScreenSizes

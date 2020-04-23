@@ -41,6 +41,7 @@ export const mergeClasses = (
   const rFontSize = /(f)+([0-9])/g;
   const rFontWeight = /(fw)+([0-9])/g;
   const rBg = /(bg-)+([^\s]+)/g;
+  const rBorderColor = /(b--)+([^\s]+)/g;
 
   const inFontSize = inClassName.match(rFontSize);
   if (inFontSize !== null) {
@@ -58,6 +59,12 @@ export const mergeClasses = (
   if (inBg !== null) {
     outClass = outClass.replace(rBg, inBg[0]);
     inClassName.replace(inBg[0], '');
+  }
+
+  const inBorderColor = inClassName.match(rBorderColor);
+  if (inBorderColor !== null) {
+    outClass = outClass.replace(rBorderColor, inBorderColor[0]);
+    inClassName.replace(inBorderColor[0], '');
   }
 
   return outClass + ' ' + inClassName;

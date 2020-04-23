@@ -6,7 +6,6 @@ import SUIContainer from 'semantic-ui-react/dist/commonjs/elements/Container';
 import styled from 'styled-components';
 
 import { polkadotOfficialTheme } from './globalStyle';
-import { NodeSelectorProps } from './StyleProps';
 
 export const ContainerFlex = styled(SUIContainer).attrs({
   className: 'flex items-center',
@@ -26,17 +25,4 @@ export const FramedBlock = styled.div`
 export const BlackBlock = styled.div`
   background-color: ${polkadotOfficialTheme.black};
   color: ${polkadotOfficialTheme.white};
-`;
-export const NodesBlock = styled.span<NodeSelectorProps>`
-  width: ${(props): string => (props.fluid ? '100%' : '')};
-  position: relative;
-  color: inherit important!;
-`;
-export const NodeSelector = styled.div<NodeSelectorProps>`
-  width: ${(props): string => (props.fluid ? '100%' : '')};
-`;
-export const NodesConnector = styled.div<NodeSelectorProps>`
-  width: ${(props): string => (props.fluid ? '50%' : '100px')};
-  transform: translateY(-50%);
-  min-width: 2rem;
 `;

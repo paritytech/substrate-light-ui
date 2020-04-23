@@ -153,12 +153,7 @@ export function ChooseProvider(): React.ReactElement {
   });
 
   return (
-    <ConnectedNodes
-      fluid
-      className='flex w-100'
-      nodesClassName='flex justify-center b--silver ba br2'
-      connectorClassName='bb b--silver'
-    >
+    <ConnectedNodes nodesClassName='justify-center'>
       <Layout className='w-100 relative'>
         {renderHealth(health)}
         <div className='absolute right-2'>{renderBlockNumber(health)}</div>

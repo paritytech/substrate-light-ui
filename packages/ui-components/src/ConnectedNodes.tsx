@@ -3,48 +3,78 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
+import styled from 'styled-components';
 
-import { NodesBlock, NodesConnector, NodeSelector } from './Shared.styles';
-import { NodeSelectorProps } from './StyleProps';
+import { mergeClasses } from './NavButton';
 
+interface NodeSelectorProps {
+  className?: string;
+  fluid?: boolean;
+}
 interface ConnectedNodesProps extends NodeSelectorProps {
   children?: React.ReactNode;
   nodesClassName?: string;
   connectorClassName?: string;
 }
 const defaultProps = {
-  nodesClassName: 'flex ba br2 pv2 ph3 b--silver',
+  blockClassName: 'flex items-center relative',
   connectorClassName: 'bb b--silver',
+  nodesClassName: 'flex ba br2 b--silver',
 };
+const NodesBlock = styled.span<NodeSelectorProps>`
+  width: ${(props): string => (props.fluid ? '100%' : '')};
+  color: inherit important!;
+`;
+const NodeSelector = styled.div<NodeSelectorProps>`
+  width: ${(props): string => (props.fluid ? '100%' : '')};
+`;
+const NodesConnector = styled.div<NodeSelectorProps>`
+  width: ${(props): string => (props.fluid ? '50%' : '100px')};
+  transform: translateY(-50%);
+  min-width: 2rem;
+`;
 
 export function ConnectedNodes(
   props: ConnectedNodesProps = defaultProps
 ): React.ReactElement {
   const {
     children,
-    fluid,
+    fluid = true,
     nodesClassName,
     connectorClassName,
-    className = 'flex items-center',
+    className,
   } = props;
+
   return (
-    <NodesBlock fluid={fluid} className={className}>
+    <NodesBlock
+      fluid={fluid}
+      className={
+        className == undefined
+          ? defaultProps.blockClassName
+          : mergeClasses(defaultProps.blockClassName, className)
+      }
+    >
       {React.Children.map(children, (child, i) => {
         return (
           <>
             {i !== 0 && (
               <NodesConnector
                 className={
-                  connectorClassName
-                    ? connectorClassName
-                    : defaultProps.connectorClassName
+                  connectorClassName == undefined
+                    ? defaultProps.connectorClassName
+                    : mergeClasses(
+                        defaultProps.connectorClassName,
+                        connectorClassName
+                      )
                 }
                 fluid={fluid}
               />
             )}
             <NodeSelector
               className={
-                nodesClassName ? nodesClassName : defaultProps.nodesClassName
+                nodesClassName == undefined
+                  ? defaultProps.nodesClassName
+                  : mergeClasses(defaultProps.nodesClassName, nodesClassName)
               }
               fluid={fluid}
             >
