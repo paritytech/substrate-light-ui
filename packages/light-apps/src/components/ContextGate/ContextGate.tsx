@@ -20,18 +20,13 @@ import {
 import { TopBar } from '../TopBar';
 import { ApiGate, HealthGate, SystemGate } from './gates';
 
-/**
- * Unique ID to identify our own extension
- */
-const EXTENSION_ORIGIN_NAME = 'slui';
-
 export function ContextGate(props: {
   children: React.ReactElement;
 }): React.ReactElement {
   const { children } = props;
 
   return (
-    <InjectedContextProvider originName={EXTENSION_ORIGIN_NAME}>
+    <InjectedContextProvider>
       <InjectedContext.Consumer>
         {({ injected }): React.ReactElement => (
           <ProviderContextProvider>
@@ -42,10 +37,7 @@ export function ContextGate(props: {
                     <>
                       <TopBar />
                       <SystemGate>
-                        <AccountContextProvider
-                          injected={injected}
-                          originName={EXTENSION_ORIGIN_NAME}
-                        >
+                        <AccountContextProvider injected={injected}>
                           <HealthGate>
                             <>
                               {/* The HealthGate asserts that `provider` is defined. */}

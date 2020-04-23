@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { InjectedAccount } from '@polkadot/extension-inject/types';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { Injected } from '../InjectedContext/Injected';
 
@@ -13,8 +13,7 @@ interface AccountContext {
 
 interface AccountContextProps {
   children: React.ReactElement;
-  injected?: Injected;
-  originName: string;
+  injected: Record<string, Injected>;
 }
 
 export const AccountContext = React.createContext({} as AccountContext);
@@ -22,21 +21,33 @@ export const AccountContext = React.createContext({} as AccountContext);
 export function AccountContextProvider(
   props: AccountContextProps
 ): React.ReactElement {
-  const { children, injected, originName } = props;
+  const { children, injected } = props;
   const [extensionAccounts, setExtensionAccounts] = useState<InjectedAccount[]>(
     []
   );
 
+  /**
+   * Merge new accounts with existing accounts.
+   */
+  const mergeAccounts = useCallback(
+    (newAccounts) =>
+      setExtensionAccounts([...extensionAccounts, ...newAccounts]),
+    [extensionAccounts]
+  );
+
   useEffect(() => {
-    if (!injected) {
-      return;
-    }
+    // Get all accounts from all injected extensions.
+    const unsubs = Object.values(injected).map((injected) => {
+      return injected.accounts.subscribe(mergeAccounts);
+    });
 
-    const unsub = injected.accounts.subscribe(setExtensionAccounts);
+    return (): void => unsubs.forEach((unsub) => unsub());
 
-    return unsub;
-  }, [injected, originName]);
+    // We only want to update this effect on `injected` change.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [injected]);
 
+  // From an array of accounts, get a map of address->account.
   const accounts = extensionAccounts.reduce(
     (accumulator, account) => accumulator.set(account.address, account),
     new Map<string, InjectedAccount>()
