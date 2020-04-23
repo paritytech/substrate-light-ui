@@ -3,7 +3,6 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import styled from 'styled-components';
 
 import { mergeClasses } from './util/tachyons';
 
@@ -12,8 +11,6 @@ interface LayoutProps {
   className?: string;
   framed?: boolean;
 }
-
-const StyledLayout = styled.div``;
 
 // TEMPORARY, to be moved to shared/constants
 const tachyons = {
@@ -30,8 +27,8 @@ export function Layout(props: LayoutProps): React.ReactElement {
   `;
 
   return (
-    <StyledLayout className={mergeClasses(tachyonsClass, className)} {...rest}>
+    <div className={mergeClasses(tachyonsClass, className)} {...rest}>
       {children}
-    </StyledLayout>
+    </div>
   );
 }
