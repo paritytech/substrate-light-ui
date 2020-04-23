@@ -4,7 +4,6 @@
 
 import {
   Button,
-  FramedBlock,
   Header,
   Icon,
   Layout,
@@ -30,14 +29,14 @@ export function AddAccountStepMnemonic(props: Props): React.ReactElement {
       <Menu borderless shadow={false} tabs size='tiny'>
         <Menu.Item active>Copy the following mnemonic phrase</Menu.Item>
       </Menu>
-      <FramedBlock>
+      <Layout framed>
         <MnemonicPhraseList phrase={mnemonic} />
         <Button.Group className='absolute bottom-0 right-0'>
           <Button icon onClick={setNewMnemonic}>
             <Icon name='redo' />
           </Button>
         </Button.Group>
-      </FramedBlock>
+      </Layout>
       <Margin top />
       <Header as='h3'>Copy your Mnemonic Somewhere Safe</Header>
       <Paragraph faded>
@@ -46,9 +45,7 @@ export function AddAccountStepMnemonic(props: Props): React.ReactElement {
         a secure and secret.
       </Paragraph>
       <Margin top='large' />
-      <Layout className='justify-around'>
-        <NavButton onClick={goToNextStep}>Next</NavButton>
-      </Layout>
+      <NavButton onClick={goToNextStep}>Next</NavButton>
     </>
   );
 }

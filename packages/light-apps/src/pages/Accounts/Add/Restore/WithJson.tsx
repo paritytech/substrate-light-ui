@@ -4,9 +4,9 @@
 
 import { handler } from '@substrate/context';
 import {
-  FramedBlock,
   Input,
   InputFile,
+  Layout,
   Margin,
   Menu,
   NavButton,
@@ -51,9 +51,9 @@ export function RestoreWithJson(_props: Props): React.ReactElement {
         <Menu.Item active>Restore Account from JSON Backup File</Menu.Item>
       </Menu>
       {step === 0 ? (
-        <FramedBlock>
+        <Layout framed>
           <InputFile onChange={handleFileUploaded} />
-        </FramedBlock>
+        </Layout>
       ) : (
         <>
           <Input

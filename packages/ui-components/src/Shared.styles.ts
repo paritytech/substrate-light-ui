@@ -12,11 +12,3 @@ export const ContainerFlex = styled(SUIContainer).attrs({
   flex-wrap: wrap;
 }
 `;
-
-/* TODO compomnent with actions */
-export const FramedBlock = styled.div`
-  padding: 2rem;
-  position: relative;
-  border-style: solid;
-  border-width: 1px;
-`;

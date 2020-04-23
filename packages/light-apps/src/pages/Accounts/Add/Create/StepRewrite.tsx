@@ -4,7 +4,6 @@
 
 import { handler } from '@substrate/context';
 import {
-  FramedBlock,
   Header,
   Layout,
   Margin,
@@ -109,7 +108,7 @@ export function AddAccountStepRewrite(props: Props): React.ReactElement {
       <Menu borderless shadow={false} tabs size='tiny'>
         <Menu.Item active>Rewrite Mnemonic Below</Menu.Item>
       </Menu>
-      <FramedBlock>
+      <Layout framed>
         <MnemonicRewriteParts
           randomFourWords={randomFourWords}
           firstWord={firstWord}
@@ -121,7 +120,7 @@ export function AddAccountStepRewrite(props: Props): React.ReactElement {
           handleSetThirdWord={handler(setThirdWord)}
           handleSetFourthWord={handler(setFourthWord)}
         />
-      </FramedBlock>
+      </Layout>
       <Margin top />
       <Header as='h3'>Copy your Mnemonic Somewhere Safe</Header>
       <Paragraph faded>

@@ -4,7 +4,6 @@
 
 import { handler } from '@substrate/context';
 import {
-  FramedBlock,
   Input,
   Layout,
   Margin,
@@ -53,14 +52,14 @@ export function RestoreWithPhrase(props: Props): React.ReactElement {
       <Menu borderless shadow={false} tabs size='tiny'>
         <Menu.Item active>Mnemonic Recovery Phrase</Menu.Item>
       </Menu>
-      <FramedBlock>
+      <Layout framed>
         <Input
           fluid
           onChange={handler(setRecoveryPhrase)}
           type='text'
           value={recoveryPhrase}
         />
-      </FramedBlock>
+      </Layout>
       <Margin top />
       <AddAccountStepMeta
         name={name}

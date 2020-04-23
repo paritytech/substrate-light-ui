@@ -9,7 +9,6 @@ import React from 'react';
 import { Button } from 'semantic-ui-react';
 
 import {
-  FramedBlock,
   Icon,
   Input,
   InputFile,
@@ -49,9 +48,9 @@ export const ModalNewMnemonicStory = (): JSX.Element => {
           <Menu.Item active>12 words</Menu.Item>
           <Menu.Item>24 words</Menu.Item>
         </Menu>
-        <FramedBlock>
+        <Layout framed>
           <NewMnemonicStory />
-        </FramedBlock>
+        </Layout>
         <NavButton>Next</NavButton>
       </Modal.Content>
     </Modal>
@@ -66,9 +65,9 @@ export const ModalRewriteMnemonicStory = (): JSX.Element => {
         <Menu wrapClass='mt3' borderless shadow={false} tabs size='tiny'>
           <Menu.Item active>Rewrite Mnemonic</Menu.Item>
         </Menu>
-        <FramedBlock>
+        <Layout framed>
           <RewriteMnemonicStory />
-        </FramedBlock>
+        </Layout>
         <Layout className='mt4 justify-between'>
           <NavButton negative>Back</NavButton>
           <NavButton>Next</NavButton>
@@ -94,9 +93,9 @@ export const ModalEnterMnemonicStory = (): JSX.Element => {
             <Menu.Item active>Your Mnemonic</Menu.Item>
           </Menu>
         </div>
-        <FramedBlock>
+        <Layout framed>
           <TextArea signal />
-        </FramedBlock>
+        </Layout>
         <NavButton>Next</NavButton>
       </Modal.Content>
     </Modal>
@@ -116,9 +115,9 @@ export const ModalEnterJsonStory = (): JSX.Element => {
         <Menu wrapClass='mt3' borderless shadow={false} tabs size='tiny'>
           <Menu.Item active>JSON File</Menu.Item>
         </Menu>
-        <FramedBlock>
+        <Layout framed>
           <InputFile />
-        </FramedBlock>
+        </Layout>
         <NavButton>Next</NavButton>
       </Modal.Content>
     </Modal>
