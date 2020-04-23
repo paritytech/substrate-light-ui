@@ -45,7 +45,10 @@ const StyleTab = {
   `,
 };
 
-const StyledMenu = styled<typeof SUIMenu>(SUIMenu)`
+// Don't pass `shadow` and `tabs` props to SUIMenu
+const StyledMenu = styled(({ shadow: _shadow, tabs: _tabs, ...rest }) => (
+  <SUIMenu {...rest} />
+))`
   &&& {
     ${(props): string => (props.tabs ? StyleTab.menu : '')};
     ${(props): string => (props.shadow ? StyleTab.shadow : 'box-shadow: none')};
@@ -69,6 +72,7 @@ const StyledMenu = styled<typeof SUIMenu>(SUIMenu)`
 
 export function Menu(props: MenuProps): React.ReactElement {
   const { shadow = true, wrapClass = 'w-100', ...rest } = props;
+
   return (
     <div className={wrapClass}>
       <StyledMenu shadow={shadow} {...rest} />

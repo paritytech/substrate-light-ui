@@ -13,31 +13,38 @@ interface CircleProps {
   wrapClass?: string;
 }
 
+const WhiteText = styled.p`
+  color: #ffffff;
+`;
+
+interface StyledCircleProps {
+  fill: string;
+  radius: number;
+  withShadow: boolean;
+}
+
+const StyledCircle = styled.span<StyledCircleProps>`
+  height: ${(props): number => props.radius}px;
+  width: ${(props): number => props.radius}px;
+  background-color: ${(props): string => props.fill};
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  vertical-align: center;
+  box-shadow: ${(props): string =>
+    props.withShadow
+      ? '0 6px 6px 0 rgba(0, 0, 0, 0.24), 0 0 6px 0 rgba(0, 0, 0, 0.12)'
+      : ''};
+`;
+
 export function Circle(props: CircleProps): React.ReactElement {
   const { fill, label, radius = 20, withShadow = false, wrapClass } = props;
 
-  const StyledCircle = styled.span`
-    height: ${radius}px;
-    width: ${radius}px;
-    background-color: ${fill};
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    vertical-align: center;
-    box-shadow: ${withShadow
-      ? '0 6px 6px 0 rgba(0, 0, 0, 0.24), 0 0 6px 0 rgba(0, 0, 0, 0.12)'
-      : ''};
-  `;
-
-  const WhiteText = styled.p`
-    color: #ffffff;
-  `;
-
   return (
     <div className={wrapClass}>
-      <StyledCircle>
+      <StyledCircle fill={fill} radius={radius} withShadow={withShadow}>
         <WhiteText>{label}</WhiteText>
       </StyledCircle>
     </div>
