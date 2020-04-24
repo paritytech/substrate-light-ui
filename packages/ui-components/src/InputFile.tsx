@@ -25,7 +25,7 @@ const getColor = (props: Partial<DropzoneState>): string => {
   return '#eeeeee';
 };
 
-const Container = styled.div`
+const StyledDropzone = styled.div`
   align-items: center;
   border-width: 2px;
   border-radius: 2px;
@@ -71,13 +71,13 @@ export function InputFile(props: Props): React.ReactElement {
   });
 
   return (
-    <div className='container'>
-      <Container
+    <div className='w-100'>
+      <StyledDropzone
         {...getRootProps({ isDragActive, isDragAccept, isDragReject })}
       >
         <input {...getInputProps()} />
         <p>Drag &apos;n&apos; drop some files here, or click to select files</p>
-      </Container>
+      </StyledDropzone>
     </div>
   );
 }

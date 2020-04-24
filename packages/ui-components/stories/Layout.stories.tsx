@@ -6,20 +6,20 @@ import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 
-import { ConnectedNodes } from '../src';
+import { Layout } from '../src/Layout';
 import { withTheme } from './customDecorators';
 
-storiesOf('ConnectedNodes', module)
+storiesOf('Layout', module)
   .addDecorator(withKnobs)
   .addDecorator(withTheme)
-  .add('connected nodes', () => (
-    <ConnectedNodes
-      fluid={boolean('fluid', true)}
-      className={text('className', '')}
-      nodesClassName={text('nodeClassName', 'justify-around pv2 ph3')}
-      connectorClassName={text('connectorClassName', '')}
-    >
-      <span>Node A</span>
-      <span>Node B</span>
-    </ConnectedNodes>
-  ));
+  .add('Layout', () => {
+    const className = text('className', '');
+    const framed = boolean('framed', false);
+
+    return (
+      <Layout framed={framed} className={className}>
+        <div className='bg-red h3 w3' />
+        <div className='bg-black h4 w4' />
+      </Layout>
+    );
+  });

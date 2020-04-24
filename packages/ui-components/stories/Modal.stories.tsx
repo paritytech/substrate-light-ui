@@ -9,15 +9,13 @@ import React from 'react';
 import { Button } from 'semantic-ui-react';
 
 import {
-  Container,
-  FramedBlock,
   Icon,
   Input,
   InputFile,
+  Layout,
   Menu,
   Modal,
   NavButton,
-  StackedHorizontal,
   TextArea,
   Transition,
 } from '../src';
@@ -50,10 +48,10 @@ export const ModalNewMnemonicStory = (): JSX.Element => {
           <Menu.Item active>12 words</Menu.Item>
           <Menu.Item>24 words</Menu.Item>
         </Menu>
-        <FramedBlock>
+        <Layout framed>
           <NewMnemonicStory />
-        </FramedBlock>
-        <NavButton wrapClass='flex w-100 justify-around'>Next</NavButton>
+        </Layout>
+        <NavButton>Next</NavButton>
       </Modal.Content>
     </Modal>
   );
@@ -67,14 +65,14 @@ export const ModalRewriteMnemonicStory = (): JSX.Element => {
         <Menu wrapClass='mt3' borderless shadow={false} tabs size='tiny'>
           <Menu.Item active>Rewrite Mnemonic</Menu.Item>
         </Menu>
-        <FramedBlock>
+        <Layout framed>
           <RewriteMnemonicStory />
-        </FramedBlock>
-        <StackedHorizontal className='mt4 justify-between'>
+        </Layout>
+        <Layout className='mt4 justify-between'>
           <NavButton negative>Back</NavButton>
           <NavButton>Next</NavButton>
           <NavButton wrapClass='o-0'>Back</NavButton>
-        </StackedHorizontal>
+        </Layout>
       </Modal.Content>
     </Modal>
   );
@@ -95,10 +93,10 @@ export const ModalEnterMnemonicStory = (): JSX.Element => {
             <Menu.Item active>Your Mnemonic</Menu.Item>
           </Menu>
         </div>
-        <FramedBlock>
+        <Layout framed>
           <TextArea signal />
-        </FramedBlock>
-        <NavButton wrapClass='flex w-100 justify-around'>Next</NavButton>
+        </Layout>
+        <NavButton>Next</NavButton>
       </Modal.Content>
     </Modal>
   );
@@ -117,10 +115,10 @@ export const ModalEnterJsonStory = (): JSX.Element => {
         <Menu wrapClass='mt3' borderless shadow={false} tabs size='tiny'>
           <Menu.Item active>JSON File</Menu.Item>
         </Menu>
-        <FramedBlock>
+        <Layout framed>
           <InputFile />
-        </FramedBlock>
-        <NavButton wrapClass='flex w-100 justify-around'>Next</NavButton>
+        </Layout>
+        <NavButton>Next</NavButton>
       </Modal.Content>
     </Modal>
   );
@@ -130,17 +128,14 @@ storiesOf('Modal', module)
   .addDecorator(withKnobs)
   .addDecorator(withTheme)
   .add('Modal | Transition', () => (
-    <Container>
-      <Transition animation='slide up' duration={500} transitionOnMount visible>
-        <Modal dimmer open>
-          <Modal.Header>This is a header</Modal.Header>
-          <Modal.SubHeader>This is a subheader</Modal.SubHeader>
-          <Modal.Content>
-            This is my content: <Icon name='blind' />
-          </Modal.Content>
-        </Modal>
-      </Transition>
-    </Container>
+    <Transition animation='slide up' duration={500} transitionOnMount visible>
+      <Modal dimmer open>
+        <Modal.Header>This is a header</Modal.Header>
+        <Modal.Content>
+          This is my content: <Icon name='blind' />
+        </Modal.Content>
+      </Modal>
+    </Transition>
   ))
   .add('Modal | New Mnemonic', () => <ModalNewMnemonicStory />)
   .add('Modal | Rewrite Mnemonic', () => <ModalRewriteMnemonicStory />)

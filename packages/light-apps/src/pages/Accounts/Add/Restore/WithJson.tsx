@@ -4,14 +4,13 @@
 
 import { handler } from '@substrate/context';
 import {
-  ErrorText,
-  FramedBlock,
   Input,
   InputFile,
+  Layout,
   Margin,
   Menu,
   NavButton,
-  Stacked,
+  Paragraph,
 } from '@substrate/ui-components';
 import React, { useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -47,14 +46,14 @@ export function RestoreWithJson(_props: Props): React.ReactElement {
   };
 
   return (
-    <Stacked>
+    <>
       <Menu borderless shadow={false} tabs size='tiny'>
         <Menu.Item active>Restore Account from JSON Backup File</Menu.Item>
       </Menu>
       {step === 0 ? (
-        <FramedBlock>
+        <Layout framed>
           <InputFile onChange={handleFileUploaded} />
-        </FramedBlock>
+        </Layout>
       ) : (
         <>
           <Input
@@ -63,7 +62,7 @@ export function RestoreWithJson(_props: Props): React.ReactElement {
             type='password'
             textLabel='Password'
           />
-          <ErrorText>{error}</ErrorText>
+          <Paragraph status='error'>{error}</Paragraph>
           <Margin top />
           <NavButton
             onClick={handleRestoreWithJson}
@@ -72,6 +71,6 @@ export function RestoreWithJson(_props: Props): React.ReactElement {
           />
         </>
       )}
-    </Stacked>
+    </>
   );
 }

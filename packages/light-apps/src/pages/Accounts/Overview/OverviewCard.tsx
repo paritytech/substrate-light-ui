@@ -7,9 +7,9 @@ import {
   AddressSummary,
   Card,
   Icon,
+  Layout,
   Margin,
-  StackedHorizontal,
-  StyledLinkButton,
+  NavButton,
 } from '@substrate/ui-components';
 import React, { useContext, useState } from 'react';
 
@@ -72,34 +72,32 @@ export function AccountsOverviewCard(props: Props): React.ReactElement {
         <Card.Content textAlign='right'>
           <AddressSummary
             address={address}
-            alignItems='center'
             api={api}
             detailed={showDetails}
-            justifyContent='center'
             name={name}
             orientation='horizontal'
             size='small'
           />
           <Margin bottom />
 
-          <StackedHorizontal>
-            <StyledLinkButton onClick={handleShowDetails}>
+          <Layout>
+            <NavButton negative onClick={handleShowDetails}>
               <Icon name={showDetails ? 'up arrow' : 'down arrow'} />
               {showDetails ? 'Hide Details' : 'Show Details'}
-            </StyledLinkButton>
+            </NavButton>
             {showDetails && (
               <>
-                <StyledLinkButton onClick={handleForget}>
+                <NavButton negative onClick={handleForget}>
                   <Icon name='remove' />
                   Forget
-                </StyledLinkButton>
-                <StyledLinkButton onClick={handleBackup}>
+                </NavButton>
+                <NavButton negative onClick={handleBackup}>
                   <Icon name='arrow alternate circle down' />
                   Backup
-                </StyledLinkButton>
+                </NavButton>
               </>
             )}
-          </StackedHorizontal>
+          </Layout>
         </Card.Content>
       </Card>
     </>

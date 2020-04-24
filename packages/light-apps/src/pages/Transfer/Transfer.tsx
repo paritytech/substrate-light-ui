@@ -5,7 +5,7 @@
 import { SigningRequest } from '@polkadot/extension-base/background/types';
 import { web3FromAddress } from '@polkadot/extension-dapp';
 import { ApiRxContext } from '@substrate/context';
-import { ErrorText, Form, Header, WrapperDiv } from '@substrate/ui-components';
+import { Form, Header, Layout, Paragraph } from '@substrate/ui-components';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 
 import { InjectedContext } from '../../components/context';
@@ -97,10 +97,10 @@ export function Transfer(): React.ReactElement {
   }, [amount, api, messaging, password, recipient, sender, tip]);
 
   return (
-    <WrapperDiv>
+    <Layout className='flex-column items-baseline'>
       <Header>Send Funds</Header>
       <Form onSubmit={handleSubmit}>
-        <ErrorText>{error}</ErrorText>
+        <Paragraph status='error'>{error}</Paragraph>
         <TxForm
           amount={amount}
           recipient={recipient}
@@ -124,6 +124,6 @@ export function Transfer(): React.ReactElement {
         )}
         <TxStatusText txStatus={txStatus} />
       </Form>
-    </WrapperDiv>
+    </Layout>
   );
 }

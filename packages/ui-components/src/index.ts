@@ -25,6 +25,7 @@ export {
   TableProps,
   Transition,
   TransitionGroup,
+  Container,
 } from 'semantic-ui-react';
 
 export * from './Accordion';
@@ -42,11 +43,13 @@ export * from './Dropdown';
 export * from './Fab';
 export * from './FlexSegment';
 export * from './globalStyle';
+export * from './Header';
 export * from './Icon';
 export * from './Input';
 export * from './InputAddress';
 export * from './InputFile';
 export * from './Labelled';
+export * from './Layout';
 export * from './Loading';
 export * from './Margin';
 export * from './Menu';
@@ -56,8 +59,8 @@ export * from './MnemonicRewriteParts';
 export * from './Modal';
 export * from './NavButton';
 export * from './NavHeader';
+export * from './Paragraph';
 export * from './Progress';
-export * from './Shared.styles';
 export * from './stateful';
 export * from './TableAccounts';
 export * from './TableTxSummary';
@@ -67,5 +70,6 @@ export * from './TextArea';
 export * from './TxDetails';
 export * from './TxSummary';
 export * from './types';
+export * from './VoteButton';
 export * from './WalletCard';
 export * from './YayNay';

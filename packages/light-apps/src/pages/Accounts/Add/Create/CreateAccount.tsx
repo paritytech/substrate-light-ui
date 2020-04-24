@@ -11,10 +11,9 @@ import {
 import { ApiRxContext } from '@substrate/context';
 import {
   AddressSummary,
-  ErrorText,
   MnemonicRandomWord,
+  Paragraph,
   SizeType,
-  Stacked,
 } from '@substrate/ui-components';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -132,7 +131,7 @@ export function Create(props: Props): React.ReactElement {
   }
 
   return (
-    <Stacked>
+    <>
       <div className='absolute left-1 top-2'>
         <AddressSummary
           address={address}
@@ -144,8 +143,8 @@ export function Create(props: Props): React.ReactElement {
           size='small'
         />
       </div>
-      {error && <ErrorText>{error}</ErrorText>}
+      {error && <Paragraph status='error'>{error}</Paragraph>}
       {renderStep(step)}
-    </Stacked>
+    </>
   );
 }

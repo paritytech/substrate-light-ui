@@ -7,14 +7,13 @@ import { storiesOf } from '@storybook/react';
 import React from 'react';
 
 import {
-  BlackBlock,
   Circle,
   ConnectedNodes,
-  ContainerFlex,
+  Container,
   Dropdown,
+  Layout,
   Menu,
   polkadotOfficialTheme,
-  StackedHorizontal,
 } from '../src';
 import { withTheme } from './customDecorators';
 
@@ -53,7 +52,7 @@ export const TopBarStory = (): React.ReactElement => {
   }
   function NetworkStatus(): React.ReactElement {
     return (
-      <StackedHorizontal className='justify-between ph3 w-100'>
+      <Layout className='justify-between ph3 w-100'>
         <Circle
           wrapClass='w-20'
           fill={polkadotOfficialTheme.green}
@@ -63,7 +62,7 @@ export const TopBarStory = (): React.ReactElement => {
         <span className='dn db-l w-30 truncate f7 silver'>
           Block #143873821739
         </span>
-      </StackedHorizontal>
+      </Layout>
     );
   }
   function RenderLogo(): React.ReactElement {
@@ -72,23 +71,25 @@ export const TopBarStory = (): React.ReactElement => {
   }
 
   return (
-    <BlackBlock className='flex justify-center pv2 mb4'>
-      <ContainerFlex className='items-center'>
-        <RenderLogo />
-        <ConnectedNodes
-          fluid={boolean('fluid', true)}
-          className={text('className', 'flex items-stretch w-100')}
-          nodesClassName={text(
-            'nodeClassName',
-            'b--silver ba br2 flex w-100 justify-center'
-          )}
-          connectorClassName={text('connectorClassName', 'bb b--silver')}
-        >
-          <NetworkStatus />
-          <ChooseProvider />
-        </ConnectedNodes>
-      </ContainerFlex>
-    </BlackBlock>
+    <Layout className='bg-black-90 white pv2 mb4'>
+      <Container>
+        <Layout className='w-100 justify-between'>
+          <RenderLogo />
+          <ConnectedNodes
+            fluid={boolean('fluid', true)}
+            className={text('className', 'flex items-stretch w-100')}
+            nodesClassName={text(
+              'nodeClassName',
+              'b--silver ba br2 flex w-100 justify-center'
+            )}
+            connectorClassName={text('connectorClassName', 'bb b--silver')}
+          >
+            <NetworkStatus />
+            <ChooseProvider />
+          </ConnectedNodes>
+        </Layout>
+      </Container>
+    </Layout>
   );
 };
 

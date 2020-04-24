@@ -8,8 +8,6 @@ import SUIModal, {
 } from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
 import styled from 'styled-components';
 
-import { FadedText, SubHeader } from './Shared.styles';
-
 type ModalProps = SUIModalProps;
 
 const StyledModal = styled(SUIModal)`
@@ -39,18 +37,11 @@ const StyledHeader = styled(SUIModal.Header)`
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    padding-top: 2rem;
     padding-bottom: 0;
     border-bottom: none;
     border-radius: 0 !important;
     font-size: 1.75rem !important;
     font-weight: 200;
-  }
-`;
-
-const StyledSubHeader = styled(SubHeader)`
-  &&& {
-    padding: 0 3rem 0 3rem;
   }
 `;
 
@@ -61,6 +52,4 @@ export function Modal(props: ModalProps): React.ReactElement {
 Modal.Actions = StyledActions;
 Modal.Content = StyledContent;
 Modal.Header = StyledHeader;
-Modal.SubHeader = StyledSubHeader;
-Modal.FadedText = FadedText;
 Modal.Description = SUIModal.Description;

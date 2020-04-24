@@ -4,17 +4,14 @@
 
 import { handler } from '@substrate/context';
 import {
-  FadedText,
-  FramedBlock,
+  Header,
+  Layout,
   Margin,
   Menu,
   MnemonicRandomWord,
   MnemonicRewriteParts,
   NavButton,
-  Stacked,
-  StackedHorizontal,
-  StyledLinkButton,
-  SubHeader,
+  Paragraph,
 } from '@substrate/ui-components';
 import React, { useCallback, useState } from 'react';
 
@@ -107,11 +104,11 @@ export function AddAccountStepRewrite(props: Props): React.ReactElement {
   ]);
 
   return (
-    <Stacked>
+    <>
       <Menu borderless shadow={false} tabs size='tiny'>
         <Menu.Item active>Rewrite Mnemonic Below</Menu.Item>
       </Menu>
-      <FramedBlock>
+      <Layout framed>
         <MnemonicRewriteParts
           randomFourWords={randomFourWords}
           firstWord={firstWord}
@@ -123,22 +120,20 @@ export function AddAccountStepRewrite(props: Props): React.ReactElement {
           handleSetThirdWord={handler(setThirdWord)}
           handleSetFourthWord={handler(setFourthWord)}
         />
-      </FramedBlock>
+      </Layout>
       <Margin top />
-      <SubHeader>Copy your Mnemonic Somewhere Safe</SubHeader>
-      <FadedText>
+      <Header as='h3'>Copy your Mnemonic Somewhere Safe</Header>
+      <Paragraph faded>
         If someone gets hold of this mnemonic they could drain your account
-      </FadedText>
+      </Paragraph>
       <Margin top='large' />
-      <StackedHorizontal justifyContent='space-between'>
-        <StyledLinkButton color='gray' onClick={goToPreviousStep}>
+      <Layout className='justify-between'>
+        <NavButton negative onClick={goToPreviousStep}>
           Back
-        </StyledLinkButton>
+        </NavButton>
         <NavButton onClick={handleGoToNextStep}>Next</NavButton>
-        <StyledLinkButton className='o-0' onClick={goToPreviousStep}>
-          Back
-        </StyledLinkButton>
-      </StackedHorizontal>
-    </Stacked>
+        <NavButton className='o-0'>Back</NavButton>
+      </Layout>
+    </>
   );
 }

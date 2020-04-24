@@ -6,27 +6,17 @@ import ApiRx from '@polkadot/api/rx';
 import IdentityIcon from '@polkadot/react-identicon';
 import React from 'react';
 
-import { Margin } from '../../Margin';
-import {
-  DynamicSizeText,
-  FadedText,
-  Stacked,
-  StackedHorizontal,
-  SubHeader,
-} from '../../Shared.styles';
-import { FlexAlign, FlexJustify, FontSize } from '../../types';
+import { Header, Layout, Margin, Paragraph } from '../../index';
 import { Balance } from '../Balance';
 import { OrientationType, SizeType } from './types';
 
 type AddressSummaryProps = {
   address?: string; // TODO support AccountId
-  alignItems?: FlexAlign;
   api: ApiRx;
   bondingPair?: string; // TODO support AccountId
   detailed?: boolean;
   isNominator?: boolean;
   isValidator?: boolean;
-  justifyContent?: FlexJustify;
   name?: string;
   noPlaceholderName?: boolean;
   noBalance?: boolean;
@@ -51,35 +41,25 @@ function renderIcon(address: string, size: SizeType): React.ReactElement {
   );
 }
 
-type FontSizeType = {
-  [x: string]: string;
-};
-
-const FONT_SIZES: FontSizeType = {
-  tiny: 'small',
-  small: 'medium',
-  medium: 'large',
-  large: 'big',
-};
-
 function renderAccountType(type: string): React.ReactElement {
-  return <FadedText> Account Type: {type} </FadedText>;
+  return <Paragraph faded> Account Type: {type} </Paragraph>;
 }
 
 function renderBadge(type: string): React.ReactElement {
   // FIXME make it an actual badge
   return type === 'nominator' ? (
-    <SubHeader>nominator</SubHeader>
+    <Header as='h4'>nominator</Header>
   ) : (
-    <SubHeader>validator</SubHeader>
+    <Header as='h4'>validator</Header>
   );
 }
 
 function renderBondingPair(bondingPair: string): React.ReactElement {
   return (
-    <StackedHorizontal>
-      <FadedText> Bonding Pair: </FadedText> {renderIcon(bondingPair, 'tiny')}{' '}
-    </StackedHorizontal>
+    <Layout>
+      <Paragraph faded> Bonding Pair: </Paragraph>
+      {renderIcon(bondingPair, 'tiny')}
+    </Layout>
   );
 }
 
@@ -104,22 +84,18 @@ function renderDetails(
     noBalance,
     noPlaceholderName,
     orientation,
-    size = 'medium',
     type,
     withShortAddress,
   } = summaryProps;
 
   return (
     <>
-      <Stacked alignItems='flex-start'>
-        <DynamicSizeText fontSize={FONT_SIZES[size] as FontSize}>
-          {' '}
-          {noPlaceholderName ? null : name}{' '}
-        </DynamicSizeText>
+      <Layout className='flex-column items-start'>
+        <Paragraph>{noPlaceholderName ? null : name} </Paragraph>
         {withShortAddress && renderShortAddress(address)}
         {type && renderAccountType(type)}
-      </Stacked>
-      <Stacked alignItems='flex-start'>
+      </Layout>
+      <Layout className='flex-column items-start'>
         {bondingPair && renderBondingPair(bondingPair)}
         {isNominator && renderBadge('nominator')}
         {isValidator && renderBadge('validator')}
@@ -129,39 +105,28 @@ function renderDetails(
             api={api}
             detailed={detailed}
             orientation={orientation}
-            fontSize={FONT_SIZES[size] as FontSize}
           />
         )}
-      </Stacked>
+      </Layout>
     </>
   );
 }
 
 export function AddressSummary(props: AddressSummaryProps): React.ReactElement {
-  const {
-    address,
-    api,
-    alignItems = 'center',
-    justifyContent = 'flex-start',
-    orientation = 'vertical',
-    size = 'medium',
-  } = props;
+  const { address, api, orientation = 'vertical', size = 'medium' } = props;
 
   return address ? (
     orientation === 'vertical' ? (
-      <Stacked justifyContent={justifyContent}>
+      <Layout className='flex-column'>
         {renderIcon(address, size)}
         {renderDetails(address, api, props)}
-      </Stacked>
+      </Layout>
     ) : (
-      <StackedHorizontal
-        alignItems={alignItems}
-        justifyContent={justifyContent}
-      >
+      <Layout>
         {renderIcon(address, size)}
         <Margin left />
         {renderDetails(address, api, props)}
-      </StackedHorizontal>
+      </Layout>
     )
   ) : (
     <div>No Address Provided</div>

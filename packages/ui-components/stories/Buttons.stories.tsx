@@ -9,7 +9,7 @@ import React from 'react';
 
 import { Button } from '../src/Button';
 import { NavButton } from '../src/NavButton';
-import { VoteNayButton, VoteYayButton } from '../src/Shared.styles';
+import { VoteButton } from '../src/VoteButton';
 import { withTheme } from './customDecorators';
 
 storiesOf('Button', module)
@@ -17,24 +17,30 @@ storiesOf('Button', module)
   .addDecorator(withTheme)
   .add('Button', () => <Button> Button</Button>)
   .add('NavButton', () => {
+    const className = text('className', '');
+    const negative = boolean('negative', false);
+    const disabled = boolean('disabled', false);
+    const onClick = action('clicked');
+
     return (
       <NavButton
-        fontSize={select(
-          'font size',
-          ['small', 'medium', 'button', 'large', 'big'],
-          'large'
-        )}
-        fontWeight={text('font weight', '500')}
-        onClick={action('clicked')}
-        negative={boolean('negative', false)}
+        onClick={onClick}
+        negative={negative}
+        className={className}
+        disabled={disabled}
       >
         {text('children', 'Click Me!')}
       </NavButton>
     );
   })
-  .add('VoteButtons', () => (
-    <React.Fragment>
-      <VoteYayButton onClick={action('Yay')}> Yay </VoteYayButton>
-      <VoteNayButton onClick={action('Nay')}> Nay </VoteNayButton>
-    </React.Fragment>
-  ));
+  .add('VoteButton', () => {
+    const className = text('className', '');
+    const vote = select('vote', ['yay', 'nay'], 'yay');
+    const onClick = action('Vote');
+
+    return (
+      <VoteButton onClick={onClick} className={className} vote={vote}>
+        {text('children', 'Click Me!')}
+      </VoteButton>
+    );
+  });

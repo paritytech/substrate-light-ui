@@ -4,13 +4,12 @@
 
 import { handler } from '@substrate/context';
 import {
-  ErrorText,
-  FramedBlock,
   Input,
+  Layout,
   Margin,
   Menu,
   NavButton,
-  Stacked,
+  Paragraph,
 } from '@substrate/ui-components';
 import React, { useContext, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -49,30 +48,30 @@ export function RestoreWithPhrase(props: Props): React.ReactElement {
 
   return (
     <form onSubmit={handleSubmit}>
-      {error && <ErrorText>{error}</ErrorText>}
-      <Stacked>
-        <Menu borderless shadow={false} tabs size='tiny'>
-          <Menu.Item active>Mnemonic Recovery Phrase</Menu.Item>
-        </Menu>
-        <FramedBlock>
-          <Input
-            fluid
-            onChange={handler(setRecoveryPhrase)}
-            type='text'
-            value={recoveryPhrase}
-          />
-        </FramedBlock>
-        <Margin top />
-        <AddAccountStepMeta
-          name={name}
-          password={password}
-          setError={setError}
-          setName={setName}
-          setPassword={setPassword}
+      {error && <Paragraph status='error'>{error}</Paragraph>}
+      <Menu borderless shadow={false} tabs size='tiny'>
+        <Menu.Item active>Mnemonic Recovery Phrase</Menu.Item>
+      </Menu>
+      <Layout className='flex-column items-stretch' framed>
+        <Input
+          fluid
+          onChange={handler(setRecoveryPhrase)}
+          type='text'
+          value={recoveryPhrase}
         />
-        <Margin top />
-        <NavButton value='Restore' wrapClass='flex w-100 justify-around' />
-      </Stacked>
+      </Layout>
+      <Margin top />
+      <AddAccountStepMeta
+        name={name}
+        password={password}
+        setError={setError}
+        setName={setName}
+        setPassword={setPassword}
+      />
+      <Margin top />
+      <Layout className='justify-around'>
+        <NavButton value='Restore' />
+      </Layout>
     </form>
   );
 }

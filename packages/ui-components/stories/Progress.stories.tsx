@@ -7,17 +7,14 @@ import { storiesOf } from '@storybook/react';
 import React from 'react';
 
 import { Progress } from '../src/Progress';
-import { WrapperDiv } from '../src/Shared.styles';
 import { withTheme } from './customDecorators';
 
 storiesOf('Progress Bar', module)
   .addDecorator(withKnobs)
   .addDecorator(withTheme)
   .add('Primary', () => (
-    <WrapperDiv>
-      <Progress
-        disabled={boolean('disable', false)}
-        percent={number('percent complete', 50)}
-      />
-    </WrapperDiv>
+    <Progress
+      disabled={boolean('disable', false)}
+      percent={number('percent complete', 50)}
+    />
   ));

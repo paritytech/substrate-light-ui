@@ -6,7 +6,7 @@ import React from 'react';
 import { Loader } from 'semantic-ui-react';
 import styled from 'styled-components';
 
-import { Stacked } from './Shared.styles';
+import { Layout } from './Layout';
 
 interface LoadingProps extends React.HTMLAttributes<HTMLDivElement> {
   active: boolean;
@@ -31,10 +31,10 @@ export function Loading(props: LoadingProps): React.ReactElement {
     <>
       {active && (
         <Inverted {...rest}>
-          <Stacked>
+          <Layout className='content-center'>
             <Loader active inline={inline} />
             <p>{loadingText}</p>
-          </Stacked>
+          </Layout>
         </Inverted>
       )}
       {children}

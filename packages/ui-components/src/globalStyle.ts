@@ -29,10 +29,6 @@ export const GlobalStyle = createGlobalStyle`
   code, .code, th, button, button p, .menu .item, label, [type="number"] {
     font-family: 'Roboto Mono' !Important;
   }
-  h2 {
-    font-weight: 500;
-    font-size: 1.4rem;
-  }
 
   //TODO: dimmer component
   .dimmer {
@@ -69,7 +65,7 @@ export const polkadotOfficialTheme = {
   typography: {
     monospace: "'Roboto Mono' !important",
   },
-  black: '#1E1E1E',
+  black: '#191919',
   green: '#79F676',
   shadow: 'rgba(210, 210, 210, 0.6)',
   grey: '#B5AEAE',

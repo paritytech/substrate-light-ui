@@ -10,9 +10,9 @@ import {
   ConnectedNodes,
   Dropdown,
   DropdownProps,
+  Layout,
   Menu,
   polkadotOfficialTheme,
-  StackedHorizontal,
 } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';
 
@@ -153,13 +153,8 @@ export function ChooseProvider(): React.ReactElement {
   });
 
   return (
-    <ConnectedNodes
-      fluid
-      className='flex w-100'
-      nodesClassName='flex justify-center b--silver ba br2'
-      connectorClassName='bb b--silver'
-    >
-      <StackedHorizontal className='w-100 relative'>
+    <ConnectedNodes nodesClassName='justify-center'>
+      <Layout className='w-100 relative'>
         {renderHealth(health)}
         <div className='absolute right-2'>{renderBlockNumber(health)}</div>
         <Menu compact inverted fluid>
@@ -189,7 +184,7 @@ export function ChooseProvider(): React.ReactElement {
             value={chain}
           />
         </Menu>
-      </StackedHorizontal>
+      </Layout>
       <Menu compact inverted fluid>
         <Dropdown
           className='code justify-between'

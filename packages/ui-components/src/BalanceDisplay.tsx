@@ -11,28 +11,19 @@ import { formatBalance, formatNumber } from '@polkadot/util';
 import React from 'react';
 import Loader from 'semantic-ui-react/dist/commonjs/elements/Loader';
 
-import { Icon, WrapperDiv } from './index';
-import {
-  DynamicSizeText,
-  FadedText,
-  StackedHorizontal,
-  StyledLinkButton,
-} from './Shared.styles';
-import { FontSize, FontWeight, OrientationType } from './types';
+import { Icon, Layout, NavButton, Paragraph } from './index';
+import { OrientationType } from './types';
 
 export type BalanceDisplayProps = {
   allBalances?: DeriveBalancesAll;
   allStaking?: DeriveStakingAccount;
   detailed?: boolean;
-  fontSize?: FontSize;
-  fontWeight?: FontWeight;
   handleRedeem?: (address: string) => void;
   orientation?: 'horizontal' | 'vertical';
 };
 
 const defaultProps = {
   detailed: false,
-  fontSize: 'large' as FontSize,
   orientation: 'vertical' as OrientationType,
 };
 
@@ -40,18 +31,12 @@ const defaultProps = {
 export function BalanceDisplay(
   props: BalanceDisplayProps = defaultProps
 ): React.ReactElement {
-  const {
-    allBalances,
-    allStaking,
-    detailed,
-    fontSize,
-    fontWeight,
-    handleRedeem,
-  } = props;
+  const { allBalances, allStaking, detailed, handleRedeem } = props;
 
   const renderRedeemButton = (): React.ReactElement | null => {
     return allStaking && allStaking.controllerId ? (
-      <StyledLinkButton
+      <NavButton
+        negative
         onClick={(): void =>
           allStaking &&
           allStaking.controllerId &&
@@ -61,7 +46,7 @@ export function BalanceDisplay(
       >
         <Icon name='lock' />
         Redeem Funds
-      </StyledLinkButton>
+      </NavButton>
     ) : null;
   };
 
@@ -71,8 +56,12 @@ export function BalanceDisplay(
         {allStaking.unlocking.map(
           ({ remainingEras, value }: DeriveUnlocking, index: number) => (
             <div key={index}>
-              <FadedText>Unbonded Amount: {formatBalance(value)}</FadedText>
-              <FadedText> Eras remaining: {remainingEras.toNumber()}</FadedText>
+              <Paragraph faded>
+                Unbonded Amount: {formatBalance(value)}
+              </Paragraph>
+              <Paragraph faded>
+                Eras remaining: {remainingEras.toNumber()}
+              </Paragraph>
             </div>
           )
         )}
@@ -90,12 +79,12 @@ export function BalanceDisplay(
     return (
       <>
         <hr />
-        <WrapperDiv width='90%' margin='0' padding='0'>
-          <StackedHorizontal justifyContent='space-between'>
+        <Layout className='flex-column items-stretch'>
+          <Layout>
             <b>Available:</b>
             {formatBalance(availableBalance)}
-          </StackedHorizontal>
-          <StackedHorizontal justifyContent='space-between'>
+          </Layout>
+          <Layout className='justify-between'>
             {allStaking && allStaking.redeemable && (
               <>
                 <b>Redeemable:</b>
@@ -103,19 +92,19 @@ export function BalanceDisplay(
                 {allStaking.redeemable.gtn(0) && renderRedeemButton()}
               </>
             )}
-          </StackedHorizontal>
-          <StackedHorizontal justifyContent='space-between'>
+          </Layout>
+          <Layout className='justify-between'>
             <b>Reserved:</b>
             {reservedBalance && (
-              <FadedText>{formatBalance(reservedBalance)}</FadedText>
+              <Paragraph faded>{formatBalance(reservedBalance)}</Paragraph>
             )}
-          </StackedHorizontal>
-          <StackedHorizontal justifyContent='space-between'>
+          </Layout>
+          <Layout className='justify-between'>
             <b>Locked:</b>
             {lockedBalance && formatBalance(lockedBalance)}
-          </StackedHorizontal>
+          </Layout>
           {renderUnlocking()}
-        </WrapperDiv>
+        </Layout>
       </>
     );
   };
@@ -123,15 +112,15 @@ export function BalanceDisplay(
   return (
     <>
       {allBalances ? (
-        <StackedHorizontal justifyContent='space-around' alignItems='stretch'>
-          <DynamicSizeText fontSize={fontSize} fontWeight={fontWeight}>
+        <>
+          <Paragraph>
             <strong>Total Balance:</strong>{' '}
             {allBalances.freeBalance && formatBalance(allBalances.freeBalance)}
-          </DynamicSizeText>
-          <FadedText>
+          </Paragraph>
+          <Paragraph faded>
             Transactions: {formatNumber(allBalances.accountNonce)}{' '}
-          </FadedText>
-        </StackedHorizontal>
+          </Paragraph>
+        </>
       ) : (
         <Loader active inline />
       )}

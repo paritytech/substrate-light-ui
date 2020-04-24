@@ -7,20 +7,21 @@ import styled from 'styled-components';
 
 import { mergeClasses } from './util/tachyons';
 
-interface NavButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface VoteButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
   value?: string;
   negative?: boolean;
   wrapClass?: string;
+  vote: 'yay' | 'nay';
 }
 
-const StyledNavButton = styled.button<NavButtonProps>`
-  border: none;
+const StyledVoteButton = styled.button`
   border-radius: 9999px;
   outline: none;
   overflow: hidden;
   transition: background-color 0.3s;
-  padding: 0.5em 2.5em;
+  padding: 0.3em 1em;
 
   :hover {
     opacity: 0.9;
@@ -30,25 +31,23 @@ const StyledNavButton = styled.button<NavButtonProps>`
 
 // TEMPORARY, to be moved to shared/constants
 const tachyons = {
-  default: 'bg-black white f4 fw4',
-  negative: 'bg-white black f4 fw4',
+  yay: 'bg-washed-red dark-red b--dark-red f7',
+  nay: 'bg-lightest-blue dark-blue b--dark-blue f7',
 };
 
-export function NavButton(props: NavButtonProps): React.ReactElement {
-  const { children, className, negative, value, wrapClass, ...rest } = props;
+export function VoteButton(props: VoteButtonProps): React.ReactElement {
+  const { children, className, value, wrapClass, vote, ...rest } = props;
 
-  const tachyonsClass = `
-    ${negative ? tachyons['negative'] : tachyons['default']}
-  `;
+  const tachyonsClass = tachyons[vote];
 
   return (
     <div className={wrapClass}>
-      <StyledNavButton
+      <StyledVoteButton
         className={mergeClasses(tachyonsClass, className)}
         {...rest}
       >
         {value || children}
-      </StyledNavButton>
+      </StyledVoteButton>
     </div>
   );
 }

@@ -4,7 +4,7 @@
 
 import React from 'react';
 
-import { Card, Header, Stacked, SubHeader, WithSpaceAround } from './index';
+import { Card, Header } from './index';
 
 type WalletCardProps = {
   children: React.ReactNode;
@@ -19,13 +19,11 @@ export function WalletCard(props: WalletCardProps): React.ReactElement {
 
   return (
     <Card height={height} raised overflow={overflow}>
-      <WithSpaceAround>
-        <Stacked>
-          <Header margin='large'> {header} </Header>
-          <SubHeader margin='large'> {subheader} </SubHeader>
-          <Stacked>{children}</Stacked>
-        </Stacked>
-      </WithSpaceAround>
+      <Header margin='large'> {header} </Header>
+      <Header as='h3' margin='large'>
+        {subheader}
+      </Header>
+      {children}
     </Card>
   );
 }
