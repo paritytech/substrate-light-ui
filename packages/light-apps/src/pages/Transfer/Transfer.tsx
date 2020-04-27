@@ -97,7 +97,7 @@ export function Transfer(): React.ReactElement {
   }, [amount, api, messaging, password, recipient, sender, tip]);
 
   return (
-    <Layout className='flex-column items-baseline pt4'>
+    <Layout className='flex-column items-stretch w-100 mw7 pt4'>
       <Header>Send Funds</Header>
       <Form onSubmit={handleSubmit}>
         <Paragraph status='error'>{error}</Paragraph>
