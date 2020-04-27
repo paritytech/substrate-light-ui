@@ -68,8 +68,7 @@ export function RestoreWithPhrase(props: Props): React.ReactElement {
         setName={setName}
         setPassword={setPassword}
       />
-      <Margin top />
-      <Layout className='justify-around'>
+      <Layout className='justify-around mt4'>
         <NavButton value='Restore' />
       </Layout>
     </form>
