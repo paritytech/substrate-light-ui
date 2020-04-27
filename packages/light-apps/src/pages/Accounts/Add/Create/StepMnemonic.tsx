@@ -7,7 +7,6 @@ import {
   Header,
   Icon,
   Layout,
-  Margin,
   Menu,
   MnemonicPhraseList,
   NavButton,
@@ -37,15 +36,17 @@ export function AddAccountStepMnemonic(props: Props): React.ReactElement {
           </Button>
         </Button.Group>
       </Layout>
-      <Margin top />
-      <Header as='h3'>Copy your Mnemonic Somewhere Safe</Header>
+      <Header as='h4' wrapClass='mt3'>
+        Copy your Mnemonic Somewhere Safe
+      </Header>
       <Paragraph faded>
         Your private key will be generated from this phrase. Anyone with access
         to this phrase can have full control your funds so make sure to keep it
         a secure and secret.
       </Paragraph>
-      <Margin top='large' />
-      <NavButton onClick={goToNextStep}>Next</NavButton>
+      <Layout className='justify-around mt4'>
+        <NavButton onClick={goToNextStep}>Next</NavButton>
+      </Layout>
     </>
   );
 }

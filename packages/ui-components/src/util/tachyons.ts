@@ -11,6 +11,14 @@ const tachyonsClasses = [
   /(bg-)+([^\s]+)/g,
   // border color
   /(b--)+([^\s]+)/g,
+  // margin
+  /(ma)+([0-9])/g,
+  /(mh)+([0-9])/g,
+  /(mv)+([0-9])/g,
+  /(mb)+([0-9])/g,
+  /(mt)+([0-9])/g,
+  /(ml)+([0-9])/g,
+  /(mr)+([0-9])/g,
 ];
 
 export const mergeClasses = (

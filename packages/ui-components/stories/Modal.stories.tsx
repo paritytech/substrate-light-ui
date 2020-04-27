@@ -9,6 +9,7 @@ import React from 'react';
 import { Button } from 'semantic-ui-react';
 
 import {
+  Header,
   Icon,
   Input,
   InputFile,
@@ -16,6 +17,7 @@ import {
   Menu,
   Modal,
   NavButton,
+  Paragraph,
   TextArea,
   Transition,
 } from '../src';
@@ -28,6 +30,7 @@ import {
 export const ModalNewMnemonicStory = (): JSX.Element => {
   return (
     <Modal
+      defaultOpen
       trigger={
         <Button basic icon labelPosition='right'>
           <Icon name='plus' />
@@ -51,6 +54,14 @@ export const ModalNewMnemonicStory = (): JSX.Element => {
         <Layout framed>
           <NewMnemonicStory />
         </Layout>
+        <Header as='h4' wrapClass='mt3'>
+          Copy your Mnemonic Somewhere Safe
+        </Header>
+        <Paragraph faded>
+          Your private key will be generated from this phrase. Anyone with
+          access to this phrase can have full control your funds so make sure to
+          keep it a secure and secret.
+        </Paragraph>
         <NavButton>Next</NavButton>
       </Modal.Content>
     </Modal>

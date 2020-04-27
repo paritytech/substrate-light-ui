@@ -16,9 +16,10 @@ storiesOf('Header', module)
     const as = select('as', ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'], 'h2');
     const children = text('children', 'Header children node');
     const className = text('className', '');
+    const wrapClass = text('wrapClass', '');
     return (
       <>
-        <Header as={as} className={className}>
+        <Header as={as} wrapClass={wrapClass} className={className}>
           {children}
         </Header>
         <Paragraph>Paragraph after Header</Paragraph>

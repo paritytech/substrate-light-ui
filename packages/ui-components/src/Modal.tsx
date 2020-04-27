@@ -8,6 +8,8 @@ import SUIModal, {
 } from 'semantic-ui-react/dist/commonjs/modules/Modal/Modal';
 import styled from 'styled-components';
 
+import { mergeClasses } from './util/tachyons';
+
 type ModalProps = SUIModalProps;
 
 const StyledModal = styled(SUIModal)`
@@ -19,18 +21,9 @@ const StyledModal = styled(SUIModal)`
     margin-top: 0 !important;
     max-width: 750px;
     margin: 0 auto;
-    padding: 1rem 3rem 2rem;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   }
 `;
-
-const StyledContent = styled(SUIModal.Content)`
-  &&& {
-    padding-top: 1rem;
-  }
-`;
-
-const StyledActions = styled(StyledContent)``;
 
 const StyledHeader = styled(SUIModal.Header)`
   &&& {
@@ -45,11 +38,21 @@ const StyledHeader = styled(SUIModal.Header)`
   }
 `;
 
+const tachyons = {
+  default: 'pv4 ph5',
+};
+
 export function Modal(props: ModalProps): React.ReactElement {
-  return <StyledModal {...props} />;
+  const { className, ...rest } = props;
+  return (
+    <StyledModal
+      className={mergeClasses(tachyons['default'], className)}
+      {...rest}
+    />
+  );
 }
 
-Modal.Actions = StyledActions;
-Modal.Content = StyledContent;
+Modal.Actions = SUIModal.Content;
+Modal.Content = SUIModal.Content;
 Modal.Header = StyledHeader;
 Modal.Description = SUIModal.Description;

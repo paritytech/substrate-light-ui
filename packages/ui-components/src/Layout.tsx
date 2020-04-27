@@ -15,7 +15,7 @@ interface LayoutProps {
 // TEMPORARY, to be moved to shared/constants
 const tachyons = {
   default: 'relative flex items-center',
-  framed: 'ba flex-wrap ph3 pv4',
+  framed: 'ba flex-wrap pa3',
 };
 
 export function Layout(props: LayoutProps): React.ReactElement {

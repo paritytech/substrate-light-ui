@@ -4,7 +4,7 @@
 
 import { SubjectInfo } from '@polkadot/ui-keyring/observable/types';
 import { handler, SystemContext } from '@substrate/context';
-import { Header, Input, InputAddress } from '@substrate/ui-components';
+import { Input, InputAddress } from '@substrate/ui-components';
 import React, { useContext } from 'react';
 
 import { AccountContext } from '../../../components/context';
@@ -52,9 +52,6 @@ export function TxForm(props: Props): React.ReactElement {
   return (
     <>
       <div className='items-start justify-start'>
-        <Header as='h3' textAlign='left'>
-          Amount:
-        </Header>
         <Input
           fluid
           label={properties.tokenSymbol.unwrapOr('UNIT').toString()}
@@ -63,13 +60,13 @@ export function TxForm(props: Props): React.ReactElement {
           onChange={handler(setAmount)}
           placeholder='e.g. 1.00'
           step='any'
+          textLabel='Amount'
           type='number'
           value={amount}
         />
       </div>
 
       <div className='items-start justify-start'>
-        <Header as='h3'>Tip:</Header>
         <Input
           fluid
           label={properties.tokenSymbol.unwrapOr('UNIT').toString()}
@@ -78,24 +75,29 @@ export function TxForm(props: Props): React.ReactElement {
           onChange={handler(setTip)}
           placeholder='e.g. 0.01'
           step='any'
+          textLabel='Tip'
           type='number'
           value={tip}
         />
       </div>
 
       <div className='items-start justify-start'>
-        <Header as='h3'>Sender Account:</Header>
         <InputAddress
           accounts={accountsObj}
           onChangeAddress={setSender}
           type='accounts'
+          textLabel='Sender Account'
           value={sender}
         />
       </div>
 
       <div className='items-start justify-start'>
-        <Header as='h3'>Recipient Address:</Header>
-        <Input fluid onChange={handler(setRecipient)} value={recipient} />
+        <Input
+          fluid
+          onChange={handler(setRecipient)}
+          textLabel='Recipient Address'
+          value={recipient}
+        />
       </div>
     </>
   );

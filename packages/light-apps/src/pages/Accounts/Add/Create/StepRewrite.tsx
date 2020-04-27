@@ -122,12 +122,14 @@ export function AddAccountStepRewrite(props: Props): React.ReactElement {
         />
       </Layout>
       <Margin top />
-      <Header as='h3'>Copy your Mnemonic Somewhere Safe</Header>
+      <Header as='h4' wrapClass='mt3'>
+        Copy your Mnemonic Somewhere Safe
+      </Header>
       <Paragraph faded>
         If someone gets hold of this mnemonic they could drain your account
       </Paragraph>
       <Margin top='large' />
-      <Layout className='justify-between'>
+      <Layout className='justify-between mt4'>
         <NavButton negative onClick={goToPreviousStep}>
           Back
         </NavButton>

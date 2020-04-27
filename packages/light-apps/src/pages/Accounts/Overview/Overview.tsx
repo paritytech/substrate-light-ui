@@ -15,7 +15,7 @@ export function AccountsOverview(): React.ReactElement {
 
   return (
     <>
-      <Layout>
+      <Layout className='pt4'>
         <Header className='inline-flex mr3'>Your Accounts</Header>
         <Link to='/accounts/add'>
           <Button basic icon labelPosition='right'>
