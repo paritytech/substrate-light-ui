@@ -26,7 +26,7 @@
     "@substrate/context": "^0.4.1",
     "@substrate/light": "^0.3.32",
     "@substrate/ui-components": "^0.3.32",
-    "@types/chrome": "^0.0.104",
+    "@types/chrome": "^0.0.106",
     "@types/react-dom": "^16.9.6",
     "@types/react-router-dom": "^5.1.0",
     "extensionizer": "^1.0.1",
