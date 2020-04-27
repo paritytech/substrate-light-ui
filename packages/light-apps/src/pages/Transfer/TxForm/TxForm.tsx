@@ -4,7 +4,7 @@
 
 import { SubjectInfo } from '@polkadot/ui-keyring/observable/types';
 import { handler, SystemContext } from '@substrate/context';
-import { Header, Input, InputAddress } from '@substrate/ui-components';
+import { Input, InputAddress } from '@substrate/ui-components';
 import React, { useContext } from 'react';
 
 import { AccountContext } from '../../../components/context';

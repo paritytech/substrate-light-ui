@@ -14,7 +14,6 @@ import {
   Input,
   InputFile,
   Layout,
-  Margin,
   Menu,
   Modal,
   NavButton,
@@ -55,7 +54,9 @@ export const ModalNewMnemonicStory = (): JSX.Element => {
         <Layout framed>
           <NewMnemonicStory />
         </Layout>
-        <Header as='h4' wrapClass='mt3'>Copy your Mnemonic Somewhere Safe</Header>
+        <Header as='h4' wrapClass='mt3'>
+          Copy your Mnemonic Somewhere Safe
+        </Header>
         <Paragraph faded>
           Your private key will be generated from this phrase. Anyone with
           access to this phrase can have full control your funds so make sure to
