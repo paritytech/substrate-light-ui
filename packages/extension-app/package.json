@@ -14,9 +14,7 @@
   "dependencies": {
     "@polkadot/extension-base": "^0.24.1",
     "@polkadot/extension-chains": "^0.24.1",
-    "@substrate/light": "^0.3.32",
-    "extensionizer": "^1.0.1",
-    "web-ext-types": "^3.2.1"
+    "@substrate/light": "^0.3.32"
   },
   "devDependencies": {
     "@open-wc/webpack-import-meta-loader": "^0.4.1",

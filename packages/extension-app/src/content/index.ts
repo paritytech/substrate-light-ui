@@ -3,10 +3,10 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { PORT_CONTENT } from '@polkadot/extension-base/defaults';
-import extension from 'extensionizer';
+import chrome from '@polkadot/extension-inject/chrome';
 
 // connect to the extension
-const port = extension.runtime.connect({ name: PORT_CONTENT });
+const port = chrome.runtime.connect({ name: PORT_CONTENT });
 
 // send any messages from the extension back to the page
 port.onMessage.addListener((data): void => {
@@ -26,7 +26,7 @@ window.addEventListener('message', ({ data, source }): void => {
 // inject our data injector
 const script = document.createElement('script');
 
-script.src = extension.extension.getURL('page/index.js');
+script.src = chrome.extension.getURL('page/index.js');
 script.onload = (): void => {
   // remove the injecting tag when loaded
   if (script.parentNode) {

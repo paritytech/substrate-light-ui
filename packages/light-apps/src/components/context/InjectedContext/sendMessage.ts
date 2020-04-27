@@ -10,7 +10,7 @@ import {
 import { PORT_EXTENSION } from '@polkadot/extension-base/defaults';
 import { Handlers } from '@polkadot/extension-base/page';
 import { SendRequest } from '@polkadot/extension-base/page/types';
-import extension from 'extensionizer';
+import chrome from '@polkadot/extension-inject/chrome';
 
 import { detectEnvironment } from '../../../util/env';
 
@@ -26,7 +26,8 @@ export function createSendMessageFromPopup(): SendRequest {
       'createSendMessageFromPopup can only be called from POPUP_ENV'
     );
   }
-  const port = extension.runtime.connect({ name: PORT_EXTENSION });
+
+  const port = chrome.runtime.connect({ name: PORT_EXTENSION });
   const handlers: Handlers = {};
   let idCounter = 0;
 

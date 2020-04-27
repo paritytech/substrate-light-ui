@@ -2,6 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import extension from '@polkadot/extension-inject/chrome';
+
 const ELECTRON_ENV = 'ELECTRON_ENV';
 const POPUP_ENV = 'POPUP_ENV';
 const TAB_ENV = 'TAB_ENV';
@@ -25,12 +27,9 @@ export function detectEnvironment(): Env {
 
   // Detect POPUP_ENV
   // Chrome extensions have the global `chrome` object, Firefox have the
-  // `browser` one (WebExtension).
-  if (
-    // https://stackoverflow.com/questions/7507277/detecting-if-code-is-being-run-as-a-chrome-extension
-    (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.id) ||
-    typeof browser !== 'undefined'
-  ) {
+  // `browser` one (WebExtension). These are all detected in
+  // `@polkadot/extension-inject`.
+  if (extension) {
     return POPUP_ENV;
   }
 
