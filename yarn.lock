@@ -2616,9 +2616,9 @@
     "@types/node" ">= 8"
 
 "@open-wc/webpack-import-meta-loader@^0.4.1":
-  version "0.4.5"
-  resolved "https://registry.yarnpkg.com/@open-wc/webpack-import-meta-loader/-/webpack-import-meta-loader-0.4.5.tgz#2b5f369e1934de4836b80b2d263b3f16b8b7ec0c"
-  integrity sha512-UgrpAS8cUSwOP6RrSUKzy3vUQX1CP6eujbn5gvhUfklG4ig922Hnw+sHjeco2wHUo+GFTmTrRVVmmXNmaWDQQQ==
+  version "0.4.6"
+  resolved "https://registry.yarnpkg.com/@open-wc/webpack-import-meta-loader/-/webpack-import-meta-loader-0.4.6.tgz#63340313848a2b0868dabef92424758576511a22"
+  integrity sha512-rxALdSaqqWc5m6QUxXaeLCYkDO3X1m2bG5nad7oT41DPBycw4ZHn7fApjYht0sAdelHPCgscqxv4bR2HRn6vWg==
 
 "@polkadot/api-derive@1.11.0-beta.33":
   version "1.11.0-beta.33"
@@ -15911,9 +15911,9 @@ prettier-linter-helpers@^1.0.0:
     fast-diff "^1.1.2"
 
 prettier@>=2.0.1, prettier@^1.18.2, prettier@^2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.0.4.tgz#2d1bae173e355996ee355ec9830a7a1ee05457ef"
-  integrity sha512-SVJIQ51spzFDvh4fIbCLvciiDMCrRhlN3mbZvv/+ycjvmF5E73bKdGfU8QDLNmjYJf+lsGnDBC4UUnvTe5OO0w==
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.0.5.tgz#d6d56282455243f2f92cc1716692c08aa31522d4"
+  integrity sha512-7PtVymN48hGcO4fGjybyBSIWDsLU4H4XlvOHfq91pz9kkGlonzwTfYkaIEwiRg/dAJF9YlbsduBAgtYLi+8cFg==
 
 pretty-bytes@^5.1.0:
   version "5.3.0"
