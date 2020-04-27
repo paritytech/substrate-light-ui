@@ -3763,9 +3763,9 @@
   integrity sha512-HR/PrCcxYb2YHviTqH7CMdL1TUhUZLTUKzfrkMhxm1HTa5mg/QtP8XMiuSPz6dZ6wecazAOu8aYZ5DqkNlgHHQ==
 
 "@types/recharts@^1.1.16":
-  version "1.8.9"
-  resolved "https://registry.yarnpkg.com/@types/recharts/-/recharts-1.8.9.tgz#2439f1138253500a1fadc1ae3534ce895a0dd0a3"
-  integrity sha512-J4sZYDfdbFf1aLzenOksdd2s8D/GWh8tftgaE3oMDkvgfOwba0d8DxP0hnE2+WzsSy4fSvHWqrKZv5r2hVH47A==
+  version "1.8.10"
+  resolved "https://registry.yarnpkg.com/@types/recharts/-/recharts-1.8.10.tgz#46bfc0450b1d38e84642b8b22a290359e454f7f6"
+  integrity sha512-XHVagR/eJFTTeYGygNuZIiMhNpwGjjf5+8clc6ST27sReecEZN7YTRWlZVvMyN0sJRIhABTLnhoIU+5Gts9+yQ==
   dependencies:
     "@types/d3-shape" "*"
     "@types/react" "*"
@@ -15911,9 +15911,9 @@ prettier-linter-helpers@^1.0.0:
     fast-diff "^1.1.2"
 
 prettier@>=2.0.1, prettier@^1.18.2, prettier@^2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.0.4.tgz#2d1bae173e355996ee355ec9830a7a1ee05457ef"
-  integrity sha512-SVJIQ51spzFDvh4fIbCLvciiDMCrRhlN3mbZvv/+ycjvmF5E73bKdGfU8QDLNmjYJf+lsGnDBC4UUnvTe5OO0w==
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.0.5.tgz#d6d56282455243f2f92cc1716692c08aa31522d4"
+  integrity sha512-7PtVymN48hGcO4fGjybyBSIWDsLU4H4XlvOHfq91pz9kkGlonzwTfYkaIEwiRg/dAJF9YlbsduBAgtYLi+8cFg==
 
 pretty-bytes@^5.1.0:
   version "5.3.0"
