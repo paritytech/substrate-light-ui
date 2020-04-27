@@ -3346,10 +3346,10 @@
     telejson "^3.2.0"
     util-deprecate "^1.0.2"
 
-"@substrate/context@^0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@substrate/context/-/context-0.4.1.tgz#682414d448eabb66fe64ae565ae94a3d20fa37b2"
-  integrity sha512-XDXcdccaWb2sZ/bBPkASrQ3NSCqF/A0dKNpd116USq98uIf58MXReg9YtzHw7qYdlU/o43OgiXDRzxMyQim78A==
+"@substrate/context@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@substrate/context/-/context-0.5.0.tgz#e6737aabbde033993e6ea00b6d5d2c06c02f752e"
+  integrity sha512-sHrhT46N9wrWfvVsZu9vE2Sn18x5x+cFEIV7zT49WKXnJXdPS46wAgB4Vh1jSn+mKQCDbiwRCKYWoPnC8YQ/Kg==
   dependencies:
     "@substrate/local-storage" "^2.2.9"
 
@@ -15911,9 +15911,9 @@ prettier-linter-helpers@^1.0.0:
     fast-diff "^1.1.2"
 
 prettier@>=2.0.1, prettier@^1.18.2, prettier@^2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.0.4.tgz#2d1bae173e355996ee355ec9830a7a1ee05457ef"
-  integrity sha512-SVJIQ51spzFDvh4fIbCLvciiDMCrRhlN3mbZvv/+ycjvmF5E73bKdGfU8QDLNmjYJf+lsGnDBC4UUnvTe5OO0w==
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.0.5.tgz#d6d56282455243f2f92cc1716692c08aa31522d4"
+  integrity sha512-7PtVymN48hGcO4fGjybyBSIWDsLU4H4XlvOHfq91pz9kkGlonzwTfYkaIEwiRg/dAJF9YlbsduBAgtYLi+8cFg==
 
 pretty-bytes@^5.1.0:
   version "5.3.0"
