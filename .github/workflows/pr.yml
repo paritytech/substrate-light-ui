@@ -44,6 +44,7 @@ jobs:
     # if: github.ref == 'refs/heads/master'
     needs: package-extension
     steps:
+      - uses: actions/checkout@v2
       - name: Download extension zip
         uses: actions/download-artifact@v1
         with:
