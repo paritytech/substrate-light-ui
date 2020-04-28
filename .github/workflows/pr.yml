@@ -55,10 +55,9 @@ jobs:
       - name: Delete previous draft releases
         # Our draft release has tag_name `draft`, see tag_name below.
         run: |
-          pwd
-          ls
-          git fetch
           hub release delete draft
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Create Draft Release
         uses: softprops/action-gh-release@v1
         # if: startsWith(github.ref, 'refs/tags/')
