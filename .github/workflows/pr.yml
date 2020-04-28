@@ -54,6 +54,8 @@ jobs:
       - name: Delete previous draft releases
         # Our draft release has tag_name `draft`, see tag_name below.
         run: |
+          pwd
+          ls
           git fetch
           hub release delete draft
       - name: Create Draft Release
