@@ -59,6 +59,7 @@ jobs:
         # if: startsWith(github.ref, 'refs/tags/')
         with:
           body: This draft release holds past zip files of the extension built with latest master. As a draft release, it is meant for internal testing by `paritytech` members. Last build on ${{ steps.date.outputs.date }}.
+          draft: true
           files: slui-${{ github.sha }}/master-build.zip
           name: Latest master draft release
           tag_name: draft
