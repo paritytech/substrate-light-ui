@@ -54,15 +54,16 @@ jobs:
         run: echo "::set-output name=date::$(date +'%Y-%m-%d %H:%M')"
       - name: Delete previous draft releases
         # Our draft release has tag_name `draft`, see tag_name below.
-        run: |
-          hub release delete draft
+        run: hub release delete draft
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Create Draft Release
         uses: softprops/action-gh-release@v1
-        # if: startsWith(github.ref, 'refs/tags/')
         with:
-          body: This draft release holds a zip file of the Lichen browser extension, built with latest master. As a draft release, it is meant for internal testing by `paritytech` members. Last build on ${{ steps.date.outputs.date }}.
+          body: |
+            This draft release holds a zip file of the Lichen browser extension, built with latest master. As a draft release, it is meant for internal testing by `paritytech` members.
+            
+            Last build on ${{ steps.date.outputs.date }}.
           draft: true
           files: slui-${{ github.sha }}/master-build.zip
           name: Latest master draft release
