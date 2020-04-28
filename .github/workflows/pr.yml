@@ -41,7 +41,7 @@ jobs:
   # Create a draft release on each master with the extension zip
   draft-release:
     runs-on: ubuntu-latest
-    # if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/master'
     needs: package-extension
     steps:
       - uses: actions/checkout@v2
