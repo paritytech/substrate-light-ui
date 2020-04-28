@@ -44,19 +44,29 @@ jobs:
     if: github.ref == 'refs/heads/master'
     needs: package-extension
     steps:
+      - uses: actions/checkout@v2
       - name: Download extension zip
         uses: actions/download-artifact@v1
         with:
           name: slui-${{ github.sha }}
       - name: Get current date # https://stackoverflow.com/questions/60942067/get-current-date-and-time-in-github-workflows
         id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m-%d-%H%M')"
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d %H:%M')"
+      - name: Delete previous draft releases
+        # Our draft release has tag_name `draft`, see tag_name below.
+        run: hub release delete draft
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Draft Release
+        uses: softprops/action-gh-release@v1
         with:
-          upload_url: https://uploads.github.com/repos/paritytech/substrate-light-ui/releases/25758195/assets{?name,label} # Hardcoding the release url
-          asset_path: slui-${{ github.sha }}/master-build.zip
-          asset_name: slui-master-${{ steps.date.outputs.date }}.zip
-          asset_content_type: application/zip
+          body: |
+            This draft release holds a zip file of the Lichen browser extension, built with latest master. As a draft release, it is meant for internal testing by `paritytech` members.
+            
+            Last build on ${{ steps.date.outputs.date }}.
+          draft: true
+          files: slui-${{ github.sha }}/master-build.zip
+          name: Latest master draft release
+          tag_name: draft
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
