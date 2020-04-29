@@ -4,10 +4,10 @@
 
 import BN from 'bn.js';
 import React from 'react';
-import { SemanticShorthandItem } from 'semantic-ui-react';
+import { AccordionProps, SemanticShorthandItem } from 'semantic-ui-react';
 import { AccordionPanelProps } from 'semantic-ui-react/dist/commonjs/modules/Accordion/AccordionPanel';
 
-import { Accordion, AccordionProps, DEFAULT_TOKEN_SYMBOL, Header } from './';
+import { Accordion, DEFAULT_TOKEN_SYMBOL, Header } from './';
 import { Layout } from './Layout';
 
 interface TxDetailsProps extends AccordionProps {

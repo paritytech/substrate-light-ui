@@ -2,33 +2,37 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { withKnobs } from '@storybook/addon-knobs';
+import { select, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 
 import { Alert } from '../src/Alert';
+import { Layout } from '../src/Layout';
 import { withTheme } from './customDecorators';
 
 storiesOf('Alerts', module)
   .addDecorator(withKnobs)
   .addDecorator(withTheme)
-  .add('Error', () => (
-    <Alert error={true} info={false} success={false} warning={false}>
-      This is an error!
-    </Alert>
-  ))
-  .add('Info', () => (
-    <Alert error={false} info={true} success={false} warning={false}>
-      For your information: this is an information
-    </Alert>
-  ))
-  .add('Success', () => (
-    <Alert error={false} info={false} success={true} warning={false}>
-      Such success!
-    </Alert>
-  ))
-  .add('Warning', () => (
-    <Alert error={true} info={false} success={false} warning={true}>
-      I&apos;m warning you, don&apos;t do it.
-    </Alert>
-  ));
+  .add('Alert', () => {
+    const AlertProps = {
+      alertType: select(
+        'alertType',
+        ['error', 'success', 'info', 'warning'],
+        'info'
+      ),
+      className: text('className', ''),
+    };
+    return (
+      <Layout alert>
+        <Alert {...AlertProps}>Your alert here</Alert>
+        <Alert>For your information: this is an information</Alert>
+        <Alert alertType='error'>This is an error!</Alert>
+        <Alert alertType='success'>
+          Congratulations! This is a success message
+        </Alert>
+        <Alert alertType='warning'>
+          I&apos;m warning you, don&apos;t do it.
+        </Alert>
+      </Layout>
+    );
+  });

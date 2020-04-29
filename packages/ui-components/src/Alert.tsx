@@ -3,73 +3,45 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import {
-  Message as SUIMessage,
-  MessageProps as AlertProps,
-} from 'semantic-ui-react';
+import { Message as SUIMessage, MessageProps } from 'semantic-ui-react';
 import styled from 'styled-components';
 
-import { StyledProps } from './globalStyle';
+import { mergeClasses } from './util/tachyons';
 
 const colors = {
-  error: (props: StyledProps): [string, string] => [
-    props.theme.redOrange,
-    props.theme.coral,
-  ],
-  info: (props: StyledProps): [string, string] => [
-    props.theme.robinEggBlue,
-    props.theme.neonBlue,
-  ],
-  success: (props: StyledProps): [string, string] => [
-    props.theme.lightBlue1,
-    props.theme.purple,
-  ],
-  warning: (props: StyledProps): [string, string] => [
-    props.theme.orangeYellow,
-    props.theme.tangerine,
-  ],
+  error: 'bg-red',
+  info: 'bg-black',
+  success: 'bg-green',
+  warning: 'bg-yellow',
+};
+const tachyons = {
+  default: 'white br3 mb1',
 };
 
-type AlertType = keyof typeof colors;
-
-/**
- * Alert Bar CSS Gradients have 2 colors, get the color at index `index`.
- * @param index - The index of the gradient color.
- */
-function gradientColor(index: 0 | 1) {
-  return function (props: AlertProps & StyledProps): string {
-    // Check if props.{error, info, warning} is set.
-    const alertType = ['error', 'info', 'warning'].find(
-      (type) => props[type]
-    ) as AlertType | undefined;
-    if (alertType) {
-      return colors[alertType](props)[index];
-    }
-
-    // By default we return the success gradient
-    return colors.success(props)[index];
-  };
+interface AlertProps extends MessageProps {
+  alertType?: keyof typeof colors;
 }
 
-const StyledAlert = styled(SUIMessage)`
+const StyledMessage = styled(SUIMessage)`
   &&& {
-    background-image: linear-gradient(
-      107deg,
-      ${gradientColor(0)},
-      ${gradientColor(1)} 71%
-    );
-    bottom: 0;
-    left: 0;
+    background: transparent;
     box-shadow: none;
-    color: ${(props): string => props.theme.white};
-    padding-bottom: 2rem;
-    padding-left: 4rem;
-    padding-right: 6rem;
-    position: fixed;
-    width: 100%;
+    margin: 0;
+    display: inline-flex;
+    color: inherit;
   }
 `;
 
 export function Alert(props: AlertProps): React.ReactElement {
-  return <StyledAlert {...props} />;
+  const { className, alertType = 'info', ...rest } = props;
+
+  const tachyonsClass = `
+    ${tachyons['default']} 
+    ${alertType ? colors[alertType] : ''}`;
+
+  return (
+    <div className={mergeClasses(tachyonsClass, className)}>
+      <StyledMessage {...rest} />
+    </div>
+  );
 }

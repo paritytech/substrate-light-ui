@@ -10,20 +10,21 @@ interface LayoutProps {
   children?: React.ReactNode;
   className?: string;
   framed?: boolean;
+  alert?: boolean;
 }
 
-// TEMPORARY, to be moved to shared/constants
 const tachyons = {
   default: 'relative flex items-center',
   framed: 'ba flex-wrap pa3',
+  alert: 'fixed flex flex-column items-end right-0 top-0 ma1',
 };
 
 export function Layout(props: LayoutProps): React.ReactElement {
-  const { children, className, framed = false, ...rest } = props;
+  const { children, className, alert, framed = false, ...rest } = props;
 
   const tachyonsClass = `
-      ${tachyons['default']}
-      ${framed && tachyons['framed']}
+      ${alert ? tachyons['alert'] : tachyons['default']}
+      ${framed ? tachyons['framed'] : ''}
   `;
 
   return (

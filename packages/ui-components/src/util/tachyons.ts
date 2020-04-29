@@ -3,6 +3,8 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 const tachyonsClasses = [
+  // border radius
+  /(br)+([0-9])/g,
   // font size
   /(f)+([0-9])/g,
   // font weight
@@ -19,6 +21,8 @@ const tachyonsClasses = [
   /(mt)+([0-9])/g,
   /(ml)+([0-9])/g,
   /(mr)+([0-9])/g,
+  // align-items
+  /(items-)+([^\s]+)/g,
 ];
 
 export const mergeClasses = (

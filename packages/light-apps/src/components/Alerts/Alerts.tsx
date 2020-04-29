@@ -3,26 +3,23 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { Alert as AlertType, AlertsContext } from '@substrate/context';
-import { Alert } from '@substrate/ui-components';
+import { Alert, Layout } from '@substrate/ui-components';
 import React, { useContext } from 'react';
 
 export function Alerts(): React.ReactElement {
   const { alerts, remove } = useContext(AlertsContext);
 
   return (
-    <>
+    <Layout alert>
       {alerts.map((alert: AlertType) => (
         <Alert
-          error={alert.type === 'error'}
-          info={alert.type === 'info'}
+          alertType={alert.type}
           key={alert.id}
           onDismiss={(): void => remove(alert.id)}
-          success={alert.type === 'success'}
-          warning={alert.type === 'warning'}
         >
           {alert.content}
         </Alert>
       ))}
-    </>
+    </Layout>
   );
 }

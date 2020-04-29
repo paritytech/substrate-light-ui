@@ -13,11 +13,13 @@ storiesOf('Layout', module)
   .addDecorator(withKnobs)
   .addDecorator(withTheme)
   .add('Layout', () => {
-    const className = text('className', '');
-    const framed = boolean('framed', false);
-
+    const layoutProps = {
+      className: text('className', ''),
+      framed: boolean('framed', false),
+      alert: boolean('alert', false),
+    };
     return (
-      <Layout framed={framed} className={className}>
+      <Layout {...layoutProps}>
         <div className='bg-red h3 w3' />
         <div className='bg-black h4 w4' />
       </Layout>
