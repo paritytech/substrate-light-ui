@@ -13,7 +13,6 @@ import {
   Dropdown,
   Layout,
   Menu,
-  polkadotOfficialTheme,
 } from '../src';
 import { withTheme } from './customDecorators';
 
@@ -53,11 +52,7 @@ export const TopBarStory = (): React.ReactElement => {
   function NetworkStatus(): React.ReactElement {
     return (
       <Layout className='justify-between ph3 w-100'>
-        <Circle
-          wrapClass='w-20'
-          fill={polkadotOfficialTheme.green}
-          radius={10}
-        />
+        <Circle className='w-20 bg-green' radius={10} />
         <span className='mh2 code truncate'>NETWORK</span>
         <span className='dn db-l w-30 truncate f7 silver'>
           Block #143873821739

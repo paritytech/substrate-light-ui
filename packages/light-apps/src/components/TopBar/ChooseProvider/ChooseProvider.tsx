@@ -12,7 +12,6 @@ import {
   DropdownProps,
   Layout,
   Menu,
-  polkadotOfficialTheme,
 } from '@substrate/ui-components';
 import React, { useContext, useEffect, useState } from 'react';
 
@@ -30,19 +29,13 @@ import {
 
 const l = logger('choose-provider');
 
-const GREEN = polkadotOfficialTheme.green;
-const RED = polkadotOfficialTheme.signal;
-
 function renderHealth(health: HealthContextType): React.ReactElement {
-  return (
-    <div className='flex items-center br b--dark-gray ph3'>
-      {!health.isSyncing && health.hasPeers && health.isNodeConnected ? (
-        <Circle fill={GREEN} radius={10} />
-      ) : (
-        <Circle fill={RED} radius={10} />
-      )}
-    </div>
-  );
+  const healtIndicator =
+    !health.isSyncing && health.hasPeers && health.isNodeConnected
+      ? 'bg-green'
+      : 'bg-red';
+
+  return <Circle className={'mr3 ' + healtIndicator} radius={10} />;
 }
 
 function renderBlockNumber(
@@ -155,8 +148,8 @@ export function ChooseProvider(): React.ReactElement {
   return (
     <ConnectedNodes nodesClassName='justify-center'>
       <Layout className='w-100 relative'>
-        {renderHealth(health)}
         <div className='absolute right-2'>{renderBlockNumber(health)}</div>
+        <div className='absolute mh3'>{renderHealth(health)}</div>
         <Menu compact inverted fluid>
           <Dropdown
             className='code justify-between'
@@ -175,7 +168,7 @@ export function ChooseProvider(): React.ReactElement {
             }}
             options={allChains.map((chain) => ({
               key: chain,
-              text: chain.toUpperCase(),
+              text: <div className='pl4'>{chain.toUpperCase()}</div>,
               value: chain,
             }))}
             placeholder='Loading chains...'

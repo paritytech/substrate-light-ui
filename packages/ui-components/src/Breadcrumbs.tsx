@@ -6,48 +6,71 @@ import React from 'react';
 import SUIBreadcrumb, {
   BreadcrumbProps,
 } from 'semantic-ui-react/dist/commonjs/collections/Breadcrumb/Breadcrumb';
+import styled from 'styled-components';
 
-import { substrateLightTheme } from './globalStyle';
-import { Circle, Margin, Paragraph } from './index';
+import { Circle, Paragraph } from './index';
 import { Layout } from './Layout';
-import { SUIBreadcrumbSize } from './types';
+import { extractClasses, mergeClasses } from './util/tachyons';
 
-interface Props {
-  activeLabel: string;
-  onClick?: (
-    event: React.MouseEvent<HTMLElement>,
-    data: BreadcrumbProps
-  ) => void;
-  sectionLabels: Array<string>;
-  size?: SUIBreadcrumbSize;
-}
+const StyledBreadcrumb = styled(SUIBreadcrumb)`
+  a {
+    color: inherit !important;
+  }
+  a p {
+    font-family: inherit !important;
+  }
+`;
+
+// TEMPORARY, to be moved to shared/constants
+const tachyons = {
+  always: 'bg-transparent',
+  default: 'w-100 code black',
+  circle: {
+    default: 'bg-black white',
+  },
+};
 
 export function Breadcrumbs(props: BreadcrumbProps): React.ReactElement {
-  const { activeLabel, onClick, sectionLabels, size } = props;
+  const { activeLabel, className, onClick, sectionLabels } = props;
+
+  const tachyonsClass = `${mergeClasses(
+    mergeClasses(tachyons['default'], className),
+    tachyons['always']
+  )}`;
+  const tachyonsClassParagraph = `${extractClasses(className, 'f0')} pt2`;
+  const tachyonsClassCircle = `${mergeClasses(
+    tachyons.circle['default'],
+    extractClasses(className, 'bg-red')
+  )}`;
 
   return (
-    <SUIBreadcrumb size={size}>
+    <StyledBreadcrumb className={tachyonsClass}>
       <Layout>
         {sectionLabels.map((label: string, idx: string) => {
           const active = activeLabel === label;
           return (
-            <Margin key={label} left='big'>
-              <SUIBreadcrumb.Section active={active} onClick={onClick}>
-                <Layout className='flex-column w3 mh3'>
+            <>
+              <StyledBreadcrumb.Section
+                active={active}
+                onClick={onClick}
+                className='flex w-100'
+              >
+                <Layout className='flex-column'>
                   <Circle
-                    fill={substrateLightTheme.lightBlue1}
                     label={idx.toString()}
                     radius={32}
                     withShadow={active}
+                    className={tachyonsClassCircle}
                   />
-                  <Margin top />
-                  <Paragraph faded>{label}</Paragraph>
+                  <Paragraph faded={!active} className={tachyonsClassParagraph}>
+                    {label}
+                  </Paragraph>
                 </Layout>
-              </SUIBreadcrumb.Section>
-            </Margin>
+              </StyledBreadcrumb.Section>
+            </>
           );
         })}
       </Layout>
-    </SUIBreadcrumb>
+    </StyledBreadcrumb>
   );
 }

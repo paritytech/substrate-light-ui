@@ -6,8 +6,7 @@ import { select, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 
-import { Alert } from '../src/Alert';
-import { Layout } from '../src/Layout';
+import { Alert, Layout } from '../src';
 import { withTheme } from './customDecorators';
 
 storiesOf('Alerts', module)

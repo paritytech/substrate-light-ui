@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { action } from '@storybook/addon-actions';
-import { select, withKnobs } from '@storybook/addon-knobs';
+import { select, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 
@@ -22,12 +22,16 @@ const sectionLabels = [
 storiesOf('Breadcrumbs', module)
   .addDecorator(withKnobs)
   .addDecorator(withTheme)
-  .add('3 sections', () => (
-    <Layout>
-      <Breadcrumbs
-        activeLabel={select('activeLabel', sectionLabels, 'Welcome')}
-        onClick={action('clicked')}
-        sectionLabels={sectionLabels}
-      />
-    </Layout>
-  ));
+  .add('3 sections', () => {
+    const BreadcrumbsProps = {
+      activeLabel: select('activeLabel', sectionLabels, 'Welcome'),
+      onClick: action('clicked'),
+      sectionLabels: sectionLabels,
+      className: text('className', ''),
+    };
+    return (
+      <Layout>
+        <Breadcrumbs {...BreadcrumbsProps} />
+      </Layout>
+    );
+  });

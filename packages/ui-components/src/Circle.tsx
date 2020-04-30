@@ -6,19 +6,13 @@ import React from 'react';
 import styled from 'styled-components';
 
 interface CircleProps {
-  fill: string;
   label?: string;
   radius?: number;
   withShadow?: boolean;
-  wrapClass?: string;
+  className?: string;
 }
 
-const WhiteText = styled.p`
-  color: #ffffff;
-`;
-
 interface StyledCircleProps {
-  fill: string;
   radius: number;
   withShadow: boolean;
 }
@@ -26,7 +20,6 @@ interface StyledCircleProps {
 const StyledCircle = styled.span<StyledCircleProps>`
   height: ${(props): number => props.radius}px;
   width: ${(props): number => props.radius}px;
-  background-color: ${(props): string => props.fill};
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -40,13 +33,11 @@ const StyledCircle = styled.span<StyledCircleProps>`
 `;
 
 export function Circle(props: CircleProps): React.ReactElement {
-  const { fill, label, radius = 20, withShadow = false, wrapClass } = props;
+  const { className, label, radius = 20, withShadow = false } = props;
 
   return (
-    <div className={wrapClass}>
-      <StyledCircle fill={fill} radius={radius} withShadow={withShadow}>
-        <WhiteText>{label}</WhiteText>
-      </StyledCircle>
-    </div>
+    <StyledCircle className={className} radius={radius} withShadow={withShadow}>
+      {label}
+    </StyledCircle>
   );
 }

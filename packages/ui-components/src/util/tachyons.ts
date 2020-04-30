@@ -4,25 +4,27 @@
 
 const tachyonsClasses = [
   // border radius
-  /(br)+([0-9])/g,
+  /(br)+([0-9])/,
   // font size
-  /(f)+([0-9])/g,
+  /(f)+([0-9])/,
   // font weight
-  /(fw)+([0-9])/g,
+  /(fw)+([0-9])/,
   // background color
-  /(bg-)+([^\s]+)/g,
+  /(bg-)+([^\s]+)/,
   // border color
-  /(b--)+([^\s]+)/g,
+  /(b--)+([^\s]+)/,
   // margin
-  /(ma)+([0-9])/g,
-  /(mh)+([0-9])/g,
-  /(mv)+([0-9])/g,
-  /(mb)+([0-9])/g,
-  /(mt)+([0-9])/g,
-  /(ml)+([0-9])/g,
-  /(mr)+([0-9])/g,
+  /(ma)+([0-9])/,
+  /(mh)+([0-9])/,
+  /(mv)+([0-9])/,
+  /(mb)+([0-9])/,
+  /(mt)+([0-9])/,
+  /(ml)+([0-9])/,
+  /(mr)+([0-9])/,
   // align-items
-  /(items-)+([^\s]+)/g,
+  /(items-)+([^\s]+)/,
+  // width
+  /(w-)+([0-9])+/,
 ];
 
 export const mergeClasses = (
@@ -44,4 +46,28 @@ export const mergeClasses = (
   });
 
   return `${outClass} ${inClass}`;
+};
+
+export const extractClasses = (
+  inClass: string | undefined,
+  xClass: string
+): string => {
+  let outClass = '';
+
+  if (!inClass) return outClass;
+
+  const xClasses = xClass.split(' ');
+
+  xClasses.forEach((x: string) => {
+    tachyonsClasses.forEach((tachyonsClass: RegExp) => {
+      if (tachyonsClass.exec(x)) {
+        const match = tachyonsClass.exec(inClass);
+        if (match) {
+          outClass = `${outClass} ${match[0]}`;
+        }
+      }
+    });
+  });
+
+  return `${outClass}`;
 };
