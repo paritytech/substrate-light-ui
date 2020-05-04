@@ -2926,9 +2926,9 @@
     react-lifecycles-compat "^3.0.4"
 
 "@rehooks/local-storage@^2.3.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@rehooks/local-storage/-/local-storage-2.3.0.tgz#e2b90a93d3be70e7b7d69a5748abbcfa94261713"
-  integrity sha512-Lt7uVEse+Rxc1OBTy/dxSJoNtik2CAP+9w+2G2EzY04S+HPkNaUvnIHtWMCniqzZ6ctthvRPs1Pcriuexmr56A==
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@rehooks/local-storage/-/local-storage-2.4.0.tgz#fb884b2b657cad5f77aa6ab60bb3532f0e0725d2"
+  integrity sha512-LoXDbEHsuIckVgBsFAv8SuU/M7memjyfWut9Zf36TQXqqCHBRFv8bweg9PymQCa1aWIMjNrZQflFdo55FDlXYg==
 
 "@semantic-ui-react/event-stack@^3.1.0":
   version "3.1.1"
