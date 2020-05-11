@@ -1,3 +1,4 @@
+.eslintrc.js 
 **/build/*
 **/coverage/*
 **/dist/*
