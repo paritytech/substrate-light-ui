@@ -128,20 +128,59 @@ async function getProvidersFromInjected(
 }
 
 /**
+ * Local nodes expose this WS endpoint.
+ */
+const LOCAL_WS_ENDPOINT = 'ws://127.0.0.1:9944';
+
+/**
+ * Check if a local node is running; if yes, return a provider to this node. If
+ * no, then return an empty object.
+ */
+async function getLocalProvider(): Promise<Record<string, LazyProvider>> {
+  try {
+    const provider = new WsProvider(LOCAL_WS_ENDPOINT);
+
+    const chain = await Promise.race([
+      provider.send('system_chain', []),
+      new Promise((_resolve, reject) => setTimeout(reject, 2000)),
+    ]);
+    console.log('chain', chain);
+
+    provider.disconnect();
+
+    return {
+      [`${chain}-LocalWsProvider`]: {
+        id: `${chain}-LocalWsProvider`,
+        description: 'Local node on 127.0.0.1:9944',
+        network: chain,
+        node: 'light',
+        source: 'local',
+        start: (): Promise<WsProvider> =>
+          Promise.resolve(new WsProvider(LOCAL_WS_ENDPOINT)),
+        transport: 'WsProvider',
+      },
+    };
+  } catch {
+    return {};
+  }
+}
+
+/**
  * Try and find all available providers:
- * - Try and ping localhost:9933 for a local node
- * - Try to find providers from browser extension
- * - Add fallback remote node providers
+ * - Try and ping localhost:9933 for a local node (getLocalProvider).
+ * - Try to find providers from browser extension (getProvidersFromInjected).
+ * - Add fallback remote node providers.
  *
- * @param additionalSources - Manually put additional sources from where
- * providers can come (e.g. browser extension).
+ * @param injectedSources - Sources from where providers can come (e.g. browser
+ * extension).
  */
 export async function getAllProviders(
-  additionalSources: ProviderSources = {}
+  injectedSources: ProviderSources = {}
 ): Promise<Record<string, LazyProvider>> {
-  const extensionProviders = await getProvidersFromInjected(
-    additionalSources.injected
-  );
+  const [extensionProviders, localProviders] = await Promise.all([
+    getProvidersFromInjected(injectedSources.injected),
+    getLocalProvider(),
+  ]);
 
   const isTabEnv = detectEnvironment() === 'TAB_ENV';
 
@@ -150,6 +189,7 @@ export async function getAllProviders(
     ...(isTabEnv ? TAB_WASM_PROVIDERS : {}),
     ...FALLBACK_PROVIDERS,
     ...extensionProviders,
+    ...localProviders,
   };
 }
 
