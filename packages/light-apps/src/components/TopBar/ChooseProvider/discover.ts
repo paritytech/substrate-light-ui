@@ -36,7 +36,7 @@ export const TAB_WASM_PROVIDERS: Record<string, LazyProvider> = {
   'kusama-WasmProvider': {
     description: 'In-tab WASM light client',
     id: 'kusama-WasmProvider',
-    network: 'kusama',
+    network: 'Kusama',
     node: 'light',
     source: 'tab',
     start: (): Promise<ProviderInterface> =>
@@ -46,7 +46,7 @@ export const TAB_WASM_PROVIDERS: Record<string, LazyProvider> = {
   'westend-WasmProvider': {
     description: 'In-tab WASM light client',
     id: 'westend-WasmProvider',
-    network: 'westend',
+    network: 'Westend',
     node: 'light',
     source: 'tab',
     start: (): Promise<ProviderInterface> =>
@@ -62,9 +62,9 @@ export const FALLBACK_PROVIDERS: Record<string, LazyProvider> = {
   'kusama-WsProvider': {
     description: 'Remote node hosted by W3F',
     id: 'kusama-WsProvider',
-    network: 'kusama',
+    network: 'Kusama',
     node: 'light',
-    source: 'fallback',
+    source: 'remote',
     start: (): Promise<ProviderInterface> =>
       Promise.resolve(new WsProvider('wss://kusama-rpc.polkadot.io')),
     transport: 'WsProvider',
@@ -72,9 +72,9 @@ export const FALLBACK_PROVIDERS: Record<string, LazyProvider> = {
   'westend-WsProvider': {
     description: 'Remote node hosted by W3F',
     id: 'westend-WsProvider',
-    network: 'westend',
+    network: 'Westend',
     node: 'light',
-    source: 'fallback',
+    source: 'remote',
     start: (): Promise<ProviderInterface> =>
       Promise.resolve(new WsProvider('wss://westend-rpc.polkadot.io')),
     transport: 'WsProvider',
@@ -142,16 +142,16 @@ async function getLocalProvider(): Promise<Record<string, LazyProvider>> {
 
     const chain = await Promise.race([
       provider.send('system_chain', []),
+      // Timeout the `.send` after 2s.
       new Promise((_resolve, reject) => setTimeout(reject, 2000)),
     ]);
-    console.log('chain', chain);
 
     provider.disconnect();
 
     return {
       [`${chain}-LocalWsProvider`]: {
         id: `${chain}-LocalWsProvider`,
-        description: 'Local node on 127.0.0.1:9944',
+        description: 'Local node at 127.0.0.1:9944',
         network: chain,
         node: 'light',
         source: 'local',
@@ -219,10 +219,19 @@ export function discoverChain(
 ): LazyProvider | undefined {
   const providersForChain = getAllProvidersForChain(chain, allProviders);
 
-  // For now, we choose the WsProvider to the remote node
+  // For now, the algorithm is:
+  // - If there's a local node, use it.
+  // - If not, use the remote node hosted by W3F.
+  //
+  // We don't use WASM nodes by default for now, because they are still
+  // slightly cumbersome to use. Users need to manually choose a WASM node from
+  // the UI to use it.
+  const localProvider = providersForChain.find(
+    ({ source }) => source === 'local'
+  );
   const wsProvider = providersForChain.find(
-    ({ transport }) => transport === 'WsProvider'
+    ({ source, transport }) => source === 'remote' && transport === 'WsProvider'
   );
 
-  return wsProvider;
+  return localProvider || wsProvider;
 }

@@ -44,7 +44,7 @@ export const providerList: Providers = Object.entries(lightClients).reduce(
       meta: {
         network: value.network,
         node: 'light',
-        source: 'SLUI',
+        source: 'slui',
         transport: 'WasmProvider',
       },
       start(): ProviderInterface {
