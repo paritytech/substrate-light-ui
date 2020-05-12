@@ -33,9 +33,9 @@ const WASM_BLOB_URL = './kusama_cc3.wasm';
  * copy the WASM blob inside
  */
 export const TAB_WASM_PROVIDERS: Record<string, LazyProvider> = {
-  'kusama-WasmProvider': {
+  'Kusama-tab-WasmProvider': {
     description: 'In-tab WASM light client',
-    id: 'kusama-WasmProvider',
+    id: 'Kusama-tab-WasmProvider',
     network: 'Kusama',
     node: 'light',
     source: 'tab',
@@ -43,9 +43,9 @@ export const TAB_WASM_PROVIDERS: Record<string, LazyProvider> = {
       Promise.resolve(new WasmProvider(kusama_cc3.fromUrl(WASM_BLOB_URL))),
     transport: 'WasmProvider',
   },
-  'westend-WasmProvider': {
+  'Westend-tab-WasmProvider': {
     description: 'In-tab WASM light client',
-    id: 'westend-WasmProvider',
+    id: 'Westend-tab-WasmProvider',
     network: 'Westend',
     node: 'light',
     source: 'tab',
@@ -59,9 +59,9 @@ export const TAB_WASM_PROVIDERS: Record<string, LazyProvider> = {
  * These fallback providers connect to a centralized remote RPC node.
  */
 export const FALLBACK_PROVIDERS: Record<string, LazyProvider> = {
-  'kusama-WsProvider': {
+  'Kusama-remote-WsProvider': {
     description: 'Remote node hosted by W3F',
-    id: 'kusama-WsProvider',
+    id: 'Kusama-remote-WsProvider',
     network: 'Kusama',
     node: 'light',
     source: 'remote',
@@ -69,9 +69,9 @@ export const FALLBACK_PROVIDERS: Record<string, LazyProvider> = {
       Promise.resolve(new WsProvider('wss://kusama-rpc.polkadot.io')),
     transport: 'WsProvider',
   },
-  'westend-WsProvider': {
+  'Westend-remote-WsProvider': {
     description: 'Remote node hosted by W3F',
-    id: 'westend-WsProvider',
+    id: 'Westend-remote-WsProvider',
     network: 'Westend',
     node: 'light',
     source: 'remote',
@@ -97,7 +97,7 @@ function toLazyProvider(
   return {
     ...meta,
     description: `${meta.node} node from from ${meta.source} extension`,
-    id: `${meta.network}-PostMessageProvider`,
+    id: `${meta.network}-${meta.source}-PostMessageProvider`,
     async start(): Promise<ProviderInterface> {
       await injected.provider.startProvider(key);
 
@@ -149,8 +149,8 @@ async function getLocalProvider(): Promise<Record<string, LazyProvider>> {
     provider.disconnect();
 
     return {
-      [`${chain}-LocalWsProvider`]: {
-        id: `${chain}-LocalWsProvider`,
+      [`${chain}-local-WsProvider`]: {
+        id: `${chain}-local-WsProvider`,
         description: 'Local node at 127.0.0.1:9944',
         network: chain,
         node: 'light',

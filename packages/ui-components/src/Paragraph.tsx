@@ -3,7 +3,6 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import styled from 'styled-components';
 
 interface ParagraphProps {
   children: React.ReactNode;
@@ -30,9 +29,9 @@ export function Paragraph(props: ParagraphProps): React.ReactElement {
     ${status !== 'none' && tachyons[status]} 
   `;
 
-  const StyledParagraph = styled.p.attrs({
-    className: tachyonsClass,
-  })``;
-
-  return <StyledParagraph {...rest}>{children}</StyledParagraph>;
+  return (
+    <p className={tachyonsClass} {...rest}>
+      {children}
+    </p>
+  );
 }

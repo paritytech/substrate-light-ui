@@ -43,7 +43,6 @@ export function ProviderContextProvider(
   useEffect(() => {
     // Stop the currently running provider
     if (provider) {
-      l.log(`Disconnecting from provider ${lazy?.id}`);
       provider.disconnect();
     }
 
