@@ -12,8 +12,8 @@
     "start": "webpack --watch"
   },
   "dependencies": {
-    "@polkadot/extension-base": "^0.24.1",
-    "@polkadot/extension-chains": "^0.24.1",
+    "@polkadot/extension-base": "^0.25.0-beta.6",
+    "@polkadot/extension-chains": "^0.25.0-beta.6",
     "@substrate/light": "^0.3.32"
   },
   "devDependencies": {

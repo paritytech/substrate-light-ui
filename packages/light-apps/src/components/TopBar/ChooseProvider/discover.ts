@@ -33,20 +33,20 @@ const WASM_BLOB_URL = './kusama_cc3.wasm';
  * copy the WASM blob inside
  */
 export const TAB_WASM_PROVIDERS: Record<string, LazyProvider> = {
-  'kusama-WasmProvider': {
+  'Kusama-tab-WasmProvider': {
     description: 'In-tab WASM light client',
-    id: 'kusama-WasmProvider',
-    network: 'kusama',
+    id: 'Kusama-tab-WasmProvider',
+    network: 'Kusama',
     node: 'light',
     source: 'tab',
     start: (): Promise<ProviderInterface> =>
       Promise.resolve(new WasmProvider(kusama_cc3.fromUrl(WASM_BLOB_URL))),
     transport: 'WasmProvider',
   },
-  'westend-WasmProvider': {
+  'Westend-tab-WasmProvider': {
     description: 'In-tab WASM light client',
-    id: 'westend-WasmProvider',
-    network: 'westend',
+    id: 'Westend-tab-WasmProvider',
+    network: 'Westend',
     node: 'light',
     source: 'tab',
     start: (): Promise<ProviderInterface> =>
@@ -59,22 +59,22 @@ export const TAB_WASM_PROVIDERS: Record<string, LazyProvider> = {
  * These fallback providers connect to a centralized remote RPC node.
  */
 export const FALLBACK_PROVIDERS: Record<string, LazyProvider> = {
-  'kusama-WsProvider': {
+  'Kusama-remote-WsProvider': {
     description: 'Remote node hosted by W3F',
-    id: 'kusama-WsProvider',
-    network: 'kusama',
+    id: 'Kusama-remote-WsProvider',
+    network: 'Kusama',
     node: 'light',
-    source: 'fallback',
+    source: 'remote',
     start: (): Promise<ProviderInterface> =>
       Promise.resolve(new WsProvider('wss://kusama-rpc.polkadot.io')),
     transport: 'WsProvider',
   },
-  'westend-WsProvider': {
+  'Westend-remote-WsProvider': {
     description: 'Remote node hosted by W3F',
-    id: 'westend-WsProvider',
-    network: 'westend',
+    id: 'Westend-remote-WsProvider',
+    network: 'Westend',
     node: 'light',
-    source: 'fallback',
+    source: 'remote',
     start: (): Promise<ProviderInterface> =>
       Promise.resolve(new WsProvider('wss://westend-rpc.polkadot.io')),
     transport: 'WsProvider',
@@ -97,7 +97,7 @@ function toLazyProvider(
   return {
     ...meta,
     description: `${meta.node} node from from ${meta.source} extension`,
-    id: `${meta.network}-PostMessageProvider`,
+    id: `${meta.network}-${meta.source}-PostMessageProvider`,
     async start(): Promise<ProviderInterface> {
       await injected.provider.startProvider(key);
 
@@ -128,20 +128,59 @@ async function getProvidersFromInjected(
 }
 
 /**
+ * Local nodes expose this WS endpoint.
+ */
+const LOCAL_WS_ENDPOINT = 'ws://127.0.0.1:9944';
+
+/**
+ * Check if a local node is running; if yes, return a provider to this node. If
+ * no, then return an empty object.
+ */
+async function getLocalProvider(): Promise<Record<string, LazyProvider>> {
+  try {
+    const provider = new WsProvider(LOCAL_WS_ENDPOINT);
+
+    const chain = await Promise.race([
+      provider.send('system_chain', []),
+      // Timeout the `.send` after 2s.
+      new Promise((_resolve, reject) => setTimeout(reject, 2000)),
+    ]);
+
+    provider.disconnect();
+
+    return {
+      [`${chain}-local-WsProvider`]: {
+        id: `${chain}-local-WsProvider`,
+        description: 'Local node at 127.0.0.1:9944',
+        network: chain,
+        node: 'light',
+        source: 'local',
+        start: (): Promise<WsProvider> =>
+          Promise.resolve(new WsProvider(LOCAL_WS_ENDPOINT)),
+        transport: 'WsProvider',
+      },
+    };
+  } catch {
+    return {};
+  }
+}
+
+/**
  * Try and find all available providers:
- * - Try and ping localhost:9933 for a local node
- * - Try to find providers from browser extension
- * - Add fallback remote node providers
+ * - Try and ping localhost:9933 for a local node (getLocalProvider).
+ * - Try to find providers from browser extension (getProvidersFromInjected).
+ * - Add fallback remote node providers.
  *
- * @param additionalSources - Manually put additional sources from where
- * providers can come (e.g. browser extension).
+ * @param injectedSources - Sources from where providers can come (e.g. browser
+ * extension).
  */
 export async function getAllProviders(
-  additionalSources: ProviderSources = {}
+  injectedSources: ProviderSources = {}
 ): Promise<Record<string, LazyProvider>> {
-  const extensionProviders = await getProvidersFromInjected(
-    additionalSources.injected
-  );
+  const [extensionProviders, localProviders] = await Promise.all([
+    getProvidersFromInjected(injectedSources.injected),
+    getLocalProvider(),
+  ]);
 
   const isTabEnv = detectEnvironment() === 'TAB_ENV';
 
@@ -150,6 +189,7 @@ export async function getAllProviders(
     ...(isTabEnv ? TAB_WASM_PROVIDERS : {}),
     ...FALLBACK_PROVIDERS,
     ...extensionProviders,
+    ...localProviders,
   };
 }
 
@@ -179,10 +219,19 @@ export function discoverChain(
 ): LazyProvider | undefined {
   const providersForChain = getAllProvidersForChain(chain, allProviders);
 
-  // For now, we choose the WsProvider to the remote node
+  // For now, the algorithm is:
+  // - If there's a local node, use it.
+  // - If not, use the remote node hosted by W3F.
+  //
+  // We don't use WASM nodes by default for now, because they are still
+  // slightly cumbersome to use. Users need to manually choose a WASM node from
+  // the UI to use it.
+  const localProvider = providersForChain.find(
+    ({ source }) => source === 'local'
+  );
   const wsProvider = providersForChain.find(
-    ({ transport }) => transport === 'WsProvider'
+    ({ source, transport }) => source === 'remote' && transport === 'WsProvider'
   );
 
-  return wsProvider;
+  return localProvider || wsProvider;
 }

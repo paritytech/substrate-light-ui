@@ -23,19 +23,15 @@ chrome.runtime.onConnect.addListener((port): void => {
   );
 
   // message and disconnect handlers
-  port.onMessage.addListener((data): void =>
-    // FIXME this is due to incompatibility between @types/chrome and web-ext-types
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    handlers(data, port as any)
-  );
-  port.onDisconnect.addListener((): void =>
+  port.onMessage.addListener((data) => handlers(data, port));
+  port.onDisconnect.addListener(() =>
     console.log(`Disconnected from ${port.name}`)
   );
 });
 
 // initial setup
 cryptoWaitReady()
-  .then((): void => {
+  .then(() => {
     console.log('crypto initialized');
 
     // load all the keyring data
@@ -43,6 +39,6 @@ cryptoWaitReady()
 
     console.log('initialization completed');
   })
-  .catch((error): void => {
+  .catch((error) => {
     console.error('initialization failed', error);
   });

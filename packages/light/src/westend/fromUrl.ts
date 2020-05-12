@@ -16,7 +16,7 @@ let client: WasmRpcClient;
 export function fromUrl(url: string): LightClient {
   return {
     name,
-    network: 'westend',
+    network: 'Westend', // Result from RPC system_chain
     async startClient(): Promise<WasmRpcClient> {
       if (client) {
         return client;

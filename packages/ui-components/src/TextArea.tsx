@@ -17,24 +17,25 @@ type TextAreaProps = {
   signal?: boolean;
 };
 
-export function TextArea(props: TextAreaProps): React.ReactElement {
-  const { placeholder, rows, value, signal, ...rest } = props;
-
-  const StyledTextArea = styled<typeof SUITextArea>(SUITextArea)`
-    &&& {
-      border: none;
-      padding: 0;
-      outline: none;
-      min-height: 4rem;
-      width: 100%;
-      ${signal
+const StyledTextArea = styled<typeof SUITextArea>(SUITextArea)`
+  &&& {
+    border: none;
+    padding: 0;
+    outline: none;
+    min-height: 4rem;
+    width: 100%;
+    ${(props): string =>
+      props.signal
         ? `font-weight: 400;
-        font-family: ${polkadotOfficialTheme.typography.monospace};
-        color: ${polkadotOfficialTheme.signal} !important;
-      `
+    font-family: ${polkadotOfficialTheme.typography.monospace};
+    color: ${polkadotOfficialTheme.signal} !important;
+  `
         : ''}
-    }
-  `;
+  }
+`;
+
+export function TextArea(props: TextAreaProps): React.ReactElement {
+  const { placeholder, rows, value, ...rest } = props;
 
   return (
     <StyledTextArea
