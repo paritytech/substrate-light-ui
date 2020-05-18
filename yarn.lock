@@ -3482,9 +3482,9 @@
     util-deprecate "^1.0.2"
 
 "@substrate/context@^0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@substrate/context/-/context-0.5.0.tgz#e6737aabbde033993e6ea00b6d5d2c06c02f752e"
-  integrity sha512-sHrhT46N9wrWfvVsZu9vE2Sn18x5x+cFEIV7zT49WKXnJXdPS46wAgB4Vh1jSn+mKQCDbiwRCKYWoPnC8YQ/Kg==
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/@substrate/context/-/context-0.5.1.tgz#9cd72f269484304d81f297e3aa3762af51eb560f"
+  integrity sha512-IZT8Pm7ziZeL6igqTtW7J6YUbeoomB+LY2kxwo+7DIw1V85Ugn2qmrvLu8G8agS5+kiCRVbsXH3RAZ9VOxJJFA==
   dependencies:
     "@substrate/local-storage" "^2.2.9"
 
