@@ -104,7 +104,7 @@ function createWebpack({ alias = {}, context }) {
           PKG_VERSION: JSON.stringify(pkgJson.version),
         },
       }),
-      new CopyPlugin(copyPlugin),
+      new CopyPlugin({ patterns: copyPlugin }),
     ],
     watch: !isProd,
   };
