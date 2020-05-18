@@ -2969,12 +2969,12 @@
     memoizee "^0.4.14"
     rxjs "^6.5.5"
 
-"@polkadot/ui-assets@^0.52.1":
-  version "0.52.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-assets/-/ui-assets-0.52.1.tgz#b59a23460baa1673b03e65e87d5404327bb9782b"
-  integrity sha512-ifYnUCZtcXa4KQiUkVJUWwyzSnOl+UPL3RA7CwOMMTD2YQ+SzWoNjwhiLG1bLp5BkpTUk/cAQCGaMe7bI8ug/Q==
+"@polkadot/ui-assets@^0.53.1":
+  version "0.53.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-assets/-/ui-assets-0.53.1.tgz#1aabfe60c36c363cb756d685036bb68beb0e9455"
+  integrity sha512-es6jTKgdDHSkAKsRotJ5eiIWSUk8juby6lAYrDkPTmF84y3oI8/kzcUO1Vv7K2KwFfAuwZziY7n+3g3I1orAVA==
   dependencies:
-    "@babel/runtime" "^7.9.2"
+    "@babel/runtime" "^7.9.6"
 
 "@polkadot/ui-keyring@^0.53.0-beta.2":
   version "0.53.0-beta.3"
