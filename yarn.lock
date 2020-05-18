@@ -2862,9 +2862,9 @@
     "@polkadot/ui-keyring" "^0.53.0-beta.2"
 
 "@polkadot/extension-chains@^0.25.0-beta.6":
-  version "0.25.0-beta.6"
-  resolved "https://registry.yarnpkg.com/@polkadot/extension-chains/-/extension-chains-0.25.0-beta.6.tgz#dca6a942209df9f32ac4847888bac532eee0a446"
-  integrity sha512-CBtrViEdVsqRCQ66LDq9FnwR/2+HLvQ+u3qXrpkhl4NZzYSlnUj+C2sqeByab8EcBJBa6/9vyDP1eEAPUT36Pg==
+  version "0.25.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/extension-chains/-/extension-chains-0.25.1.tgz#9f30c0ccf09f067b305ee98dbc6c998f12760e6f"
+  integrity sha512-DB8CCTFripJ1sSSoej1Z3cYiMTvLsjnlzDKSj/esld9VC579fCHIP/i9lkxE6WC36vlHWdO9l9bh0pHutPEoJw==
   dependencies:
     "@babel/runtime" "^7.9.6"
 
