@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@polkadot/extension-dapp": "^0.25.1",
-    "@polkadot/ui-assets": "^0.53.1",
+    "@polkadot/ui-assets": "^0.54.1",
     "@rehooks/local-storage": "^2.3.0",
     "@substrate/context": "^0.5.0",
     "@substrate/light": "^0.3.32",
