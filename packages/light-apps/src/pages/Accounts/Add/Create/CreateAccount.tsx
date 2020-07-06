@@ -5,7 +5,7 @@
 import {
   encodeAddress,
   mnemonicGenerate,
-  mnemonicToSeed,
+  mnemonicToMiniSecret,
   naclKeypairFromSeed,
 } from '@polkadot/util-crypto';
 import { ApiRxContext } from '@substrate/context';
@@ -32,7 +32,7 @@ interface Props extends RouteComponentProps {
  * Derive public address from mnemonic key.
  */
 function generateAddressFromMnemonic(mnemonic: string): string {
-  const keypair = naclKeypairFromSeed(mnemonicToSeed(mnemonic));
+  const keypair = naclKeypairFromSeed(mnemonicToMiniSecret(mnemonic));
 
   return encodeAddress(keypair.publicKey);
 }
