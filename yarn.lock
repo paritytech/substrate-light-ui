@@ -3527,7 +3527,7 @@
     telejson "^3.2.0"
     util-deprecate "^1.0.2"
 
-"@substrate/context@^0.5.0", "@substrate/context@^0.5.1":
+"@substrate/context@^0.5.1":
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/@substrate/context/-/context-0.5.1.tgz#9cd72f269484304d81f297e3aa3762af51eb560f"
   integrity sha512-IZT8Pm7ziZeL6igqTtW7J6YUbeoomB+LY2kxwo+7DIw1V85Ugn2qmrvLu8G8agS5+kiCRVbsXH3RAZ9VOxJJFA==
