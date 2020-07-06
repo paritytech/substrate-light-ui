@@ -48,7 +48,8 @@ export function Balance(props: BalanceProps): React.ReactElement {
 
   const handleRedeem = (): void => {
     // FIXME We're not unsubscring here, we should
-    of(api.tx.staking.withdrawUnbonded()).subscribe();
+    // FIXME: Get number of numSlashingSpans from API https://github.com/paritytech/substrate-api-sidecar/blob/master/src/ApiHandler.ts#L477L499
+    of(api.tx.staking.withdrawUnbonded(4)).subscribe();
   };
 
   return (
