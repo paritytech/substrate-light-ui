@@ -1182,7 +1182,7 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.2", "@babel/runtime@^7.3.1", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.4", "@babel/runtime@^7.4.5", "@babel/runtime@^7.5.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.3", "@babel/runtime@^7.7.2", "@babel/runtime@^7.7.6", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7", "@babel/runtime@^7.9.2", "@babel/runtime@^7.9.6":
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.3", "@babel/runtime@^7.3.1", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.4", "@babel/runtime@^7.4.5", "@babel/runtime@^7.5.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.3", "@babel/runtime@^7.7.2", "@babel/runtime@^7.7.6", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7", "@babel/runtime@^7.9.2", "@babel/runtime@^7.9.6":
   version "7.10.3"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.10.3.tgz#670d002655a7c366540c67f6fd3342cd09500364"
   integrity sha512-RzGO0RLSdokm9Ipe/YD+7ww8X2Ro79qiXZF3HU9ljrM+qnJmH1Vqth+hbiQZy761LnMJTMitHDuKVYTk3k4dLw==
@@ -2876,12 +2876,12 @@
     "@polkadot/keyring" "^2.10.1"
     "@polkadot/ui-keyring" "^0.53.1"
 
-"@polkadot/extension-chains@^0.25.1":
-  version "0.25.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/extension-chains/-/extension-chains-0.25.1.tgz#9f30c0ccf09f067b305ee98dbc6c998f12760e6f"
-  integrity sha512-DB8CCTFripJ1sSSoej1Z3cYiMTvLsjnlzDKSj/esld9VC579fCHIP/i9lkxE6WC36vlHWdO9l9bh0pHutPEoJw==
+"@polkadot/extension-chains@^0.31.1":
+  version "0.31.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/extension-chains/-/extension-chains-0.31.1.tgz#989af532e48984e94fa5ddbe3d896a550bc26632"
+  integrity sha512-0y/GjCYzyEuy20kSTzJ5GN3h7kATayHM2UgrA2nMZaePw3ZcwVqulg2jrTO0NogXOiJZNtkwg+to7xetScpk8A==
   dependencies:
-    "@babel/runtime" "^7.9.6"
+    "@babel/runtime" "^7.10.3"
 
 "@polkadot/extension-dapp@^0.25.1":
   version "0.25.1"
