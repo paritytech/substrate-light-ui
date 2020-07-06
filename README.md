@@ -77,7 +77,7 @@ cp /path/to/polkadot ./packages/electron-app/static/substrate
 Then run:
 
 ```bash
-yarn prod:electron
+yarn build:electron
 ```
 
 The building might take some time, but you should see an Electron application after a while.
