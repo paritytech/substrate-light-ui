@@ -2907,13 +2907,15 @@
   dependencies:
     "@babel/runtime" "^7.10.3"
 
-"@polkadot/extension-dapp@^0.25.1":
-  version "0.25.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/extension-dapp/-/extension-dapp-0.25.1.tgz#aa61177a42e5e4a4d0b7e3b0469ee267c7e09ded"
-  integrity sha512-8ooJ/ez2yBMF+J5X33fIIR0kSZX7DQWrLjFrxm4Ih7lyDvfOgiU4VxxoSClBoQiysIq3ZCsZ45Fbzegmqie9uA==
+"@polkadot/extension-dapp@^0.31.1":
+  version "0.31.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/extension-dapp/-/extension-dapp-0.31.1.tgz#10c0090551916e9b737e27708284394a66a737d2"
+  integrity sha512-K6FaehrJJWls0WH8eX8CPmPhzrv8VAnS/P/HWelKEHIBzLKFQoXEA9Ifbb6MtOX52cLwFoFH1dIo/WtyONrDeg==
   dependencies:
-    "@babel/runtime" "^7.9.6"
-    "@polkadot/extension-inject" "0.25.1"
+    "@babel/runtime" "^7.10.3"
+    "@polkadot/extension-inject" "0.31.1"
+    "@polkadot/util" "^2.15.1"
+    "@polkadot/util-crypto" "^2.15.1"
 
 "@polkadot/extension-inject@0.25.1":
   version "0.25.1"
@@ -3076,6 +3078,18 @@
   version "2.16.1"
   resolved "https://registry.yarnpkg.com/@polkadot/util/-/util-2.16.1.tgz#6575ab777ccea0cfc89649e3339e310c93e1b267"
   integrity sha512-QxLTBqb9oIg1cgEKz92B+yWkuqro8a68PifuT6xBaYAIJCE0NFkO3uzWjt7fqrd4mRyRWy4iXR2BHeAr+U7iFg==
+  dependencies:
+    "@babel/runtime" "^7.10.3"
+    "@types/bn.js" "^4.11.6"
+    bn.js "^5.1.2"
+    camelcase "^5.3.1"
+    chalk "^4.1.0"
+    ip-regex "^4.1.0"
+
+"@polkadot/util@2.15.1", "@polkadot/util@^2.10.1", "@polkadot/util@^2.15.1":
+  version "2.15.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/util/-/util-2.15.1.tgz#77348345a38e19938b937106ebd8e8a6ac8be5a6"
+  integrity sha512-sFN/29rV5KqcJ+61U1WuctDb6vLCiTU9U7SK6KLo+6nwvqufp0NQmqyQZl2CrAuffk1xmzCSwpUUylP0xtv1DA==
   dependencies:
     "@babel/runtime" "^7.10.3"
     "@types/bn.js" "^4.11.6"
@@ -5972,6 +5986,11 @@ bn.js@^5.1.1, bn.js@^5.1.2:
   resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-5.1.2.tgz#c9686902d3c9a27729f43ab10f9d79c2004da7b0"
   integrity sha512-40rZaf3bUNKTVYu9sIeeEGOg7g14Yvnj9kH7b50EiwX0Q7A6umbvfI5tvHaOERH0XigqKkfLkFQxzb4e6CIXnA==
 
+bn.js@^5.1.2:
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-5.1.2.tgz#c9686902d3c9a27729f43ab10f9d79c2004da7b0"
+  integrity sha512-40rZaf3bUNKTVYu9sIeeEGOg7g14Yvnj9kH7b50EiwX0Q7A6umbvfI5tvHaOERH0XigqKkfLkFQxzb4e6CIXnA==
+
 body-parser@1.19.0:
   version "1.19.0"
   resolved "https://registry.yarnpkg.com/body-parser/-/body-parser-1.19.0.tgz#96b2709e57c9c4e09a6fd66a8fd979844f69f08a"
@@ -6575,6 +6594,14 @@ chalk@^3.0.0:
     supports-color "^7.1.0"
 
 chalk@^4.0.0, chalk@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/chalk/-/chalk-4.1.0.tgz#4e14870a618d9e2edd97dd8345fd9d9dc315646a"
+  integrity sha512-qwx12AxXe2Q5xQ43Ac//I6v5aXTipYrSESdOgzrN+9XjgEpyjpKuvSGaN4qE93f7TQTlerQQ8S+EQ0EyDoVL1A==
+  dependencies:
+    ansi-styles "^4.1.0"
+    supports-color "^7.1.0"
+
+chalk@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-4.1.0.tgz#4e14870a618d9e2edd97dd8345fd9d9dc315646a"
   integrity sha512-qwx12AxXe2Q5xQ43Ac//I6v5aXTipYrSESdOgzrN+9XjgEpyjpKuvSGaN4qE93f7TQTlerQQ8S+EQ0EyDoVL1A==
@@ -8737,6 +8764,19 @@ element-resize-detector@^1.2.1:
     batch-processor "1.0.0"
 
 elliptic@^6.0.0, elliptic@^6.5.2, elliptic@^6.5.3:
+  version "6.5.3"
+  resolved "https://registry.yarnpkg.com/elliptic/-/elliptic-6.5.3.tgz#cb59eb2efdaf73a0bd78ccd7015a62ad6e0f93d6"
+  integrity sha512-IMqzv5wNQf+E6aHeIqATs0tOLeOTwj1QKbRcS3jBbYkl5oLAserA8yJTT7/VyHUYG91PRmPyeQDObKLPpeS4dw==
+  dependencies:
+    bn.js "^4.4.0"
+    brorand "^1.0.1"
+    hash.js "^1.0.0"
+    hmac-drbg "^1.0.0"
+    inherits "^2.0.1"
+    minimalistic-assert "^1.0.0"
+    minimalistic-crypto-utils "^1.0.0"
+
+elliptic@^6.5.3:
   version "6.5.3"
   resolved "https://registry.yarnpkg.com/elliptic/-/elliptic-6.5.3.tgz#cb59eb2efdaf73a0bd78ccd7015a62ad6e0f93d6"
   integrity sha512-IMqzv5wNQf+E6aHeIqATs0tOLeOTwj1QKbRcS3jBbYkl5oLAserA8yJTT7/VyHUYG91PRmPyeQDObKLPpeS4dw==
@@ -15607,6 +15647,17 @@ path-type@^4.0.0:
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
 pbkdf2@^3.0.3, pbkdf2@^3.0.9, pbkdf2@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/pbkdf2/-/pbkdf2-3.1.1.tgz#cb8724b0fada984596856d1a6ebafd3584654b94"
+  integrity sha512-4Ejy1OPxi9f2tt1rRV7Go7zmfDQ+ZectEQz3VGUQhgq62HtIRPDyG/JtnwIxs6x3uNMwo2V7q1fMvKjb+Tnpqg==
+  dependencies:
+    create-hash "^1.1.2"
+    create-hmac "^1.1.4"
+    ripemd160 "^2.0.1"
+    safe-buffer "^5.0.1"
+    sha.js "^2.4.8"
+
+pbkdf2@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/pbkdf2/-/pbkdf2-3.1.1.tgz#cb8724b0fada984596856d1a6ebafd3584654b94"
   integrity sha512-4Ejy1OPxi9f2tt1rRV7Go7zmfDQ+ZectEQz3VGUQhgq62HtIRPDyG/JtnwIxs6x3uNMwo2V7q1fMvKjb+Tnpqg==
