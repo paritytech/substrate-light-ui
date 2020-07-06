@@ -20,13 +20,15 @@
     "test": "jest --coverage"
   },
   "dependencies": {
-    "@polkadot/extension-dapp": "^0.25.1",
+    "@polkadot/api": "^1.22.1",
+    "@polkadot/extension-dapp": "^0.31.1",
+    "@polkadot/extension-inject": "^0.31.1",
     "@polkadot/ui-assets": "^0.53.1",
     "@rehooks/local-storage": "^2.3.0",
-    "@substrate/context": "^0.5.0",
+    "@substrate/context": "^0.5.1",
     "@substrate/light": "^0.3.32",
     "@substrate/ui-components": "^0.3.32",
-    "@types/chrome": "^0.0.114",
+    "@types/chrome": "^0.0.117",
     "@types/react-dom": "^16.9.6",
     "@types/react-router-dom": "^5.1.0",
     "react": "^16.12.0",
