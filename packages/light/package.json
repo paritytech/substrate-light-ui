@@ -11,7 +11,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "repository": "https://github.com/paritytech/substrate-light-ui.git",
+  "repository": "https://github.com/paritytech/substrate-connect.git",
   "scripts": {
     "build": "rimraf lib && copyfiles -Eu2 \"src/generated/**/*\" lib/generated && tsc"
   }

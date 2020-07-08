@@ -1,7 +1,7 @@
 {
   "author": "Parity Technologies <admin@parity.io>",
-  "description": "Substrate Light UI Browser Extension",
-  "homepage_url": "https://github.com/paritytech/substrate-light-ui",
+  "description": "Substrate Connect Browser Extension",
+  "homepage_url": "https://github.com/paritytech/substrate-connect",
   "name": "slui",
   "short_name": "slui",
   "version": "0.3.0",
@@ -15,13 +15,11 @@
     "default_title": "slui",
     "default_popup": "popup/index.html"
   },
-  "content_scripts": [
-    {
-      "js": ["content/index.js"],
-      "matches": ["http://*/*", "http://*/*"],
-      "run_at": "document_start"
-    }
-  ],
+  "content_scripts": [{
+    "js": ["content/index.js"],
+    "matches": ["http://*/*", "http://*/*"],
+    "run_at": "document_start"
+  }],
   "icons": {
     "16": "images/icon-16.png",
     "32": "images/icon-32.png",

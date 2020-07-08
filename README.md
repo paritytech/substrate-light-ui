@@ -1,7 +1,7 @@
 ![license](https://img.shields.io/badge/License-Apache%202.0-blue.svg)
-[![Actions Status](https://github.com/paritytech/substrate-light-ui/workflows/pr/badge.svg)](https://github.com/paritytech/substrate-light-ui/actions)
-[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=paritytech/substrate-light-ui)](https://dependabot.com)
-[![CodeClimate](https://api.codeclimate.com/v1/badges/bdff9a9d1f154523d3b9/maintainability)](https://codeclimate.com/github/paritytech/substrate-light-ui/maintainability)
+[![Actions Status](https://github.com/paritytech/substrate-connect/workflows/pr/badge.svg)](https://github.com/paritytech/substrate-connect/actions)
+[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=paritytech/substrate-connect)](https://dependabot.com)
+[![CodeClimate](https://api.codeclimate.com/v1/badges/bdff9a9d1f154523d3b9/maintainability)](https://codeclimate.com/github/paritytech/substrate-connect/maintainability)
 
 # Substrate Connect
 
@@ -22,7 +22,7 @@ The Light UI is meant to be **an intuitive interface for beginner users** to eas
 
 Both provide the same functionalities and use the same UI, feel free to choose the medium that suits you best.
 
-A _very alpha_ version of the browser extension can be found in the [Github Releases](https://github.com/paritytech/substrate-light-ui/releases) page.
+A _very alpha_ version of the browser extension can be found in the [Github Releases](https://github.com/paritytech/substrate-connect/releases) page.
 
 You can also check out the `master` branch and [build from source](#build-from-sources).
 
@@ -34,14 +34,14 @@ As of v0.3.0, the main functions are as follows:
 - [x] Transfer balance - send and receive funds in the currency of the relevant substrate chain.
 - [x] Embed a light client in a browser extension, and let Light UI be the user interface of this extension.
 
-And here is a rough roadmap of what's coming next (see the [`v0.4.0-MVP` milestone](https://github.com/paritytech/substrate-light-ui/milestone/3) for details):
+And here is a rough roadmap of what's coming next (see the [`v0.4.0-MVP` milestone](https://github.com/paritytech/substrate-connect/milestone/3) for details):
 
 - [ ] Handle changing:
   - [x] provider,
   - [x] chain spec,
   - [ ] user uploaded light client WASM blob or chain spec.
 - [ ] Provider injection inside dapps.
-- [ ] Improve overall beginner-friendliness (e.g. [#67](https://github.com/paritytech/substrate-light-ui/issues/67)).
+- [ ] Improve overall beginner-friendliness (e.g. [#67](https://github.com/paritytech/substrate-connect/issues/67)).
 
 ## Build from sources
 
@@ -50,8 +50,8 @@ And here is a rough roadmap of what's coming next (see the [`v0.4.0-MVP` milesto
 Make sure you have [yarn >= 1.13.0](http://yarnpkg.com/) and [nodejs >= 10.10.0](https://nodejs.org/en/). Then run
 
 ```bash
-git clone https://github.com/paritytech/substrate-light-ui
-cd ./substrate-light-ui
+git clone https://github.com/paritytech/substrate-connect
+cd ./substrate-connect
 yarn install
 ```
 

@@ -1,10 +1,10 @@
 {
-  "name": "@substrate/light-ui",
+  "name": "@substrate/connect",
   "author": "Parity Technologies <admin@parity.io>",
   "description": "Minimal, WASM-light-client-bundled Substrate wallet for balance transfers",
   "license": "Apache-2.0",
   "private": true,
-  "repository": "https://github.com/paritytech/substrate-light-ui.git",
+  "repository": "https://github.com/stefie/substrate-connect.git",
   "workspaces": {
     "packages": [
       "packages/*"

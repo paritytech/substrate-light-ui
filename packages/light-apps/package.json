@@ -6,7 +6,7 @@
   "homepage": "./",
   "license": "Apache-2.0",
   "private": true,
-  "repository": "https://github.com/paritytech/substrate-light-ui.git",
+  "repository": "https://github.com/paritytech/substrate-connect.git",
   "browserslist": [
     ">0.2%",
     "not dead",
