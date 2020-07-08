@@ -7,9 +7,9 @@
 
 ## NPM Module `@substrate/light`
 
-A npm module that adds Substrate light-client functionality to any Javascript environment, from in-browser applications over Extensions or Electron Apps up to IOT devices.
+A npm module that adds Substrate light-client functionality to any JavaScript environment, from in-browser applications to browser extensions and electron apps up to IOT devices.
 
-It contains Wasm light clients from various chains, bundled in a single package and it makes running a light-client as easy as installing a npm module.
+It contains Wasm light clients from various chains, bundled in a single package. `@substrate/light` makes running a light-client as easy as installing a npm module.
 
 ## Applications: Lichen / "Substrate Light UI"
 
