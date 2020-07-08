@@ -3,12 +3,19 @@
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=paritytech/substrate-light-ui)](https://dependabot.com)
 [![CodeClimate](https://api.codeclimate.com/v1/badges/bdff9a9d1f154523d3b9/maintainability)](https://codeclimate.com/github/paritytech/substrate-light-ui/maintainability)
 
-# Lichen (working title, previously "Substrate Light UI")
+# Substrate Connect
+
+## NPM Module `@substrate/light`
+
+Bundles a set of Light Clients.
+
+## Applications: Lichen / "Substrate Light UI"
 
 Lichen is a light-client-based, in-browser wallet for Substrate.
 
-The Light UI is meant to be **an intuitive interface for beginner users** to easily interact with various Substrate chains. It is provided in two forms:
+The Light UI is meant to be **an intuitive interface for beginner users** to easily interact with various Substrate chains. It is provided in three forms:
 
+- A browser one-page application
 - A Chrome/Firefox browser extension
 - A desktop application, built with Electron
 
