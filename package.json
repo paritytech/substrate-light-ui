@@ -8,25 +8,16 @@
   "workspaces": {
     "packages": [
       "packages/*"
-    ],
-    "nohoist": [
-      "**/electron-builder",
-      "**/electron-builder/**",
-      "**/electron-webpack",
-      "**/electron-webpack/**"
     ]
   },
   "scripts": {
     "build:ui": "yarn clean && lerna exec CI=false yarn build --stream --scope=@substrate/ui-components --scope=@substrate/light --scope=@substrate/light-apps",
-    "build:electron": "yarn build:ui && lerna run build --scope=@substrate/electron-app",
     "build:extension": "INLINE_RUNTIME_CHUNK=false yarn build:ui && lerna run build --scope=@substrate/extension-app",
     "clean": "rimraf packages/**/build packages/**/lib packages/**/dist",
     "lint": "tsc --noEmit && eslint --ext js,ts,tsx .",
-    "package:electron": "yarn build:electron && lerna run package --scope=@substrate/electron-app",
+    "start": "yarn start:ui",
     "package:extension": "yarn build:extension && lerna run package --scope=@substrate/extension-app",
-    "run:electron": "yarn build:electron && lerna run electron --scope=@substrate/electron-app",
     "start:ui": "./scripts/prestart.sh && cd packages/light-apps && yarn start",
-    "start:electron": "lerna run start --scope=@substrate/electron-app",
     "start:extension": "lerna run start --scope=@substrate/extension-app",
     "test": "CI=true lerna run test --parallel"
   },

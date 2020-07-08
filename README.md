@@ -7,17 +7,18 @@
 
 ## NPM Module `@substrate/light`
 
-Bundles a set of Light Clients.
+A npm module that adds Substrate light-client functionality to any Javascript environment, from in-browser applications over Extensions or Electron Apps up to IOT devices.
+
+It contains Wasm light clients from various chains, bundled in a single package and it makes running a light-client as easy as installing a npm module.
 
 ## Applications: Lichen / "Substrate Light UI"
 
 Lichen is a light-client-based, in-browser wallet for Substrate.
 
-The Light UI is meant to be **an intuitive interface for beginner users** to easily interact with various Substrate chains. It is provided in three forms:
+The Light UI is meant to be **an intuitive interface for beginner users** to easily interact with various Substrate chains. It is provided in two forms:
 
 - A browser one-page application
 - A Chrome/Firefox browser extension
-- A desktop application, built with Electron
 
 Both provide the same functionalities and use the same UI, feel free to choose the medium that suits you best.
 
@@ -73,24 +74,6 @@ Then install the extension:
   - click on "Load Temporary Add-on" and point to `packages/extension-app/build/manifest.json`
   - if developing, after making changes - reload the extension
 
-### Run the Electron App
-
-For now, you need to bundle a Substrate node manually into the Electron app. To do so, first build a Substrate node for your platform (note: it can of course be a Polkadot/Kusama node, or any other Substrate node), and copy it as `./packages/electron-app/static/substrate`:
-
-```bash
-cp /path/to/polkadot ./packages/electron-app/static/substrate
-```
-
-Then run:
-
-```bash
-yarn build:electron
-```
-
-The building might take some time, but you should see an Electron application after a while.
-
-> Troubleshooting: If it hangs on a white screen in Electron even though it has compiled and has been syncing for a long time, then simply choose 'View > Reload' (CMD + R on macOS) from the Electron menu.
-
 ## Contributing
 
 We welcome any and all contributions whether it is in the form of raising an issue, filing a PR, or participating in the discussions. Please read the [Contributing Docs](CONTRIBUTING.md) first.
@@ -100,4 +83,3 @@ We welcome any and all contributions whether it is in the form of raising an iss
 If you would like to run this project with hot-reloading, use the following commands:
 
 - `yarn start:ui`: If you would only like to modify the UI, run this command and visit http://localhost:3000
-- `yarn start:electron`: Run the Electron app with hot reloading
