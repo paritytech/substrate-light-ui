@@ -23,8 +23,10 @@
     "@types/recharts": "^1.1.16",
     "@types/styled-components": "^5.0.0",
     "babel-loader": "^8.0.6",
+    "copyfiles": "^2.3.0",
     "react-dropzone": "11.0.1",
     "recharts": "^1.6.0",
+    "rimraf": "^3.0.2",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.88.1",
     "styled-components": "^5.1.0"
