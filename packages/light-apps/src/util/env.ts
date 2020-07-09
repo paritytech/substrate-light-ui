@@ -15,8 +15,6 @@ export type Env = typeof POPUP_ENV | typeof TAB_ENV;
  * as a regular browser webpage tab.
  */
 export function detectEnvironment(): Env {
-  const userAgent = navigator.userAgent.toLowerCase();
-
   // Detect POPUP_ENV
   // Chrome extensions have the global `chrome` object, Firefox have the
   // `browser` one (WebExtension).
