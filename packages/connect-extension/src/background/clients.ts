@@ -11,7 +11,7 @@ import {
   LightClient,
   WasmProvider,
   westend,
-} from '@substrate/connect';
+} from '@substrate/light';
 
 // We bundled the .wasm file inside the extension, at this relative url. See
 // the structure of the output `build/` folder.
