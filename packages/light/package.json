@@ -14,9 +14,5 @@
   "repository": "https://github.com/paritytech/substrate-connect.git",
   "scripts": {
     "build": "rimraf lib && copyfiles -Eu2 \"src/generated/**/*\" lib/generated && tsc"
-  },
-  "dependencies": {
-    "copyfiles": "^2.3.0",
-    "rimraf": "^3.0.2"
   }
 }

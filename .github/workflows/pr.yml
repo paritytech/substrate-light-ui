@@ -36,7 +36,7 @@ jobs:
       - uses: actions/upload-artifact@v1
         with:
           name: slui-${{ github.sha }}
-          path: ./packages/extension-app/master-build.zip
+          path: ./packages/light-extension/master-build.zip
 
   # Create a draft release on each master with the extension zip
   draft-release:
@@ -62,7 +62,7 @@ jobs:
         with:
           body: |
             This draft release holds a zip file of the Lichen browser extension, built with latest master. As a draft release, it is meant for internal testing by `paritytech` members.
-            
+
             Last build on ${{ steps.date.outputs.date }}.
           draft: true
           files: slui-${{ github.sha }}/master-build.zip

@@ -27,7 +27,7 @@ const defaultProps = {
   orientation: 'vertical' as OrientationType,
 };
 
-// FIXME: https://github.com/paritytech/substrate-light-ui/issues/471
+// FIXME: https://github.com/paritytech/substrate-connect/issues/471
 export function BalanceDisplay(
   props: BalanceDisplayProps = defaultProps
 ): React.ReactElement {

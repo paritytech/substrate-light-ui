@@ -1,33 +1,36 @@
 {
   "name": "@substrate/connect",
   "author": "Parity Technologies <admin@parity.io>",
-  "description": "Minimal, WASM-light-client-bundled Substrate wallet for balance transfers",
+  "description": "Substrate WASM-light-client librariess",
   "license": "Apache-2.0",
   "private": true,
-  "repository": "https://github.com/stefie/substrate-connect.git",
+  "repository": "https://github.com/paritytech/substrate-connect.git",
   "workspaces": {
     "packages": [
       "packages/*"
     ]
   },
   "scripts": {
-    "build:ui": "yarn clean && lerna exec CI=false yarn build --stream --scope=@substrate/ui-components --scope=@substrate/light --scope=@substrate/light-apps",
-    "build:extension": "INLINE_RUNTIME_CHUNK=false yarn build:ui && lerna run build --scope=@substrate/extension-app",
     "clean": "rimraf packages/**/build packages/**/lib packages/**/dist",
     "lint": "tsc --noEmit && eslint --ext js,ts,tsx .",
-    "start": "yarn start:ui",
-    "package:extension": "yarn build:extension && lerna run package --scope=@substrate/extension-app",
-    "start:ui": "./scripts/prestart.sh && cd packages/light-apps && yarn start",
-    "start:extension": "lerna run start --scope=@substrate/extension-app",
-    "test": "CI=true lerna run test --parallel"
+    "test": "CI=true lerna run test --parallel",
+    "build:module": "lerna exec CI=false yarn build --stream --scope=@substrate/light",
+    "build:wallet": "yarn clean && lerna exec CI=false yarn build --stream --scope=@substrate/ui-components --scope=@substrate/light --scope=@substrate/burner-wallet",
+    "build:extension": "INLINE_RUNTIME_CHUNK=false yarn build:wallet && lerna run build --scope=@substrate/connect-extension",
+    "build:light-apps": "yarn clean && lerna exec CI=false yarn build --stream --scope=@substrate/ui-components --scope=@substrate/light-old --scope=@substrate/light-apps",
+    "build:light-extension": "INLINE_RUNTIME_CHUNK=false yarn build:light-apps && lerna run build --scope=@substrate/light-extension",
+    "package:light-extension": "yarn build:extension && lerna run package --scope=@substrate/light-extension",
+    "start:wallet": "./scripts/prestart.sh && cd packages/burner-wallet && yarn start",
+    "start:extension": "lerna run start --scope=@substrate/connect-extension",
+    "start:light-apps": "./scripts/prestart-light.sh && cd packages/light-apps && yarn start",
+    "start:light-extension": "lerna run start --scope=@substrate/light-extension"
   },
   "devDependencies": {
     "@polkadot/dev": "^0.55.20",
     "eslint-config-prettier": "^6.10.1",
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-simple-import-sort": "^5.0.0",
-    "prettier": "^2.0.4",
-    "rimraf": "^3.0.2"
+    "prettier": "^2.0.4"
   },
   "resolutions": {
     "kind-of": ">=6.0.3",
