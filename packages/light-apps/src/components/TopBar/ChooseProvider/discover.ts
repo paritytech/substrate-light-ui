@@ -7,7 +7,7 @@
 import { WsProvider } from '@polkadot/api';
 import { ProviderMeta } from '@polkadot/extension-inject/types';
 import { ProviderInterface } from '@polkadot/rpc-provider/types';
-import { kusama_cc3, WasmProvider, westend } from '@substrate/light';
+import { kusama_cc3, WasmProvider, westend } from '@substrate/light-old';
 
 import { detectEnvironment } from '../../../util/env';
 import { Injected } from '../../context';

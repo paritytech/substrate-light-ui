@@ -15,7 +15,7 @@
   ],
   "scripts": {
     "build": "yarn copy:wasm && SKIP_PREFLIGHT_CHECK=true craco build",
-    "copy:wasm": "copyfiles -Eu5 \"../light/src/generated/kusama_cc3/kusama_cc3.wasm\" public",
+    "copy:wasm": "copyfiles -Eu5 \"../light-old/src/generated/kusama_cc3/kusama_cc3.wasm\" public",
     "start": "yarn copy:wasm && TSC_WATCHFILE=UseFsEventsWithFallbackDynamicPolling BROWSER=none SKIP_PREFLIGHT_CHECK=true craco start",
     "test": "jest --coverage"
   },
@@ -26,17 +26,15 @@
     "@polkadot/ui-assets": "^0.55.1",
     "@rehooks/local-storage": "^2.3.0",
     "@substrate/context": "^0.5.1",
-    "@substrate/light": "^0.3.32",
+    "@substrate/light-old": "^0.3.32",
     "@substrate/ui-components": "^0.3.32",
     "@types/chrome": "^0.0.117",
     "@types/react-dom": "^16.9.6",
     "@types/react-router-dom": "^5.1.0",
-    "copyfiles": "^2.3.0",
     "react": "^16.12.0",
     "react-dom": "^16.6.3",
     "react-router-dom": "^5.0.0",
     "react-scripts": "^3.4.1",
-    "rimraf": "^3.0.2",
     "semantic-ui-css": "^2.4.1",
     "tachyons": "^4.11.1"
   },
