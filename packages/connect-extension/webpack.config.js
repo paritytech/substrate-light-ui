@@ -26,7 +26,7 @@ function createWebpack({ alias = {}, context }) {
   // If building in prod mode,also copy the output of create-react-app's
   // build in light-apps. That will be the popup UI.
   if (ENV === 'production') {
-    copyPlugin.push({ force: true, from: '../burner-waalet/build', to: 'popup' });
+    copyPlugin.push({ force: true, from: '../burner-wallet/build', to: 'popup' });
   }
 
   return {
