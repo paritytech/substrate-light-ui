@@ -3965,9 +3965,9 @@
     "@types/react" "*"
 
 "@types/recharts@^1.1.16":
-  version "1.8.13"
-  resolved "https://registry.yarnpkg.com/@types/recharts/-/recharts-1.8.13.tgz#9a024836e0b8be8882a48facd773552ba24c3184"
-  integrity sha512-m6R7ts9WEhyudxb739QA9B9nL82h/VEYlp3SKQRZxcAEzPU479ZvLjB+VOoeQGJ383XuysdJVjgftpeLtqs4Dg==
+  version "1.8.14"
+  resolved "https://registry.yarnpkg.com/@types/recharts/-/recharts-1.8.14.tgz#7fcbf9346db415d417910f5ce17af4e3e8e42c57"
+  integrity sha512-Q4NR9vgmugOELYY/8lXzs99nf9E1/fDWx6ZTVEjAtOhAbqXYFrepyQKa4+bR4mHl1F2WcYgf96fvWIu7It6rmA==
   dependencies:
     "@types/d3-shape" "*"
     "@types/react" "*"
