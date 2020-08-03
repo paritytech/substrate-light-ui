@@ -1200,10 +1200,10 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.2", "@babel/runtime@^7.10.3", "@babel/runtime@^7.10.4", "@babel/runtime@^7.3.1", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.4", "@babel/runtime@^7.4.5", "@babel/runtime@^7.5.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.3", "@babel/runtime@^7.7.2", "@babel/runtime@^7.7.6", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7", "@babel/runtime@^7.9.2", "@babel/runtime@^7.9.6":
-  version "7.10.4"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.10.4.tgz#a6724f1a6b8d2f6ea5236dbfe58c7d7ea9c5eb99"
-  integrity sha512-UpTN5yUJr9b4EX2CnGNWIvER7Ab83ibv0pcvvHc4UOdrBI5jb8bj+32cCwPX6xu0mt2daFNjYhoi+X7beH0RSw==
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.2", "@babel/runtime@^7.10.3", "@babel/runtime@^7.10.4", "@babel/runtime@^7.10.5", "@babel/runtime@^7.3.1", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.4", "@babel/runtime@^7.4.5", "@babel/runtime@^7.5.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.3", "@babel/runtime@^7.7.2", "@babel/runtime@^7.7.6", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7", "@babel/runtime@^7.9.2", "@babel/runtime@^7.9.6":
+  version "7.11.0"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.11.0.tgz#f10245877042a815e07f7e693faff0ae9d3a2aac"
+  integrity sha512-qArkXsjJq7H+T86WrIFV0Fnu/tNOkZ4cgXmjkzAu3b/58D5mFIO8JH/y77t7C9q0OdDRdh9s7Ue5GasYssxtXw==
   dependencies:
     regenerator-runtime "^0.13.4"
 
@@ -3018,12 +3018,12 @@
     memoizee "^0.4.14"
     rxjs "^6.6.0"
 
-"@polkadot/ui-assets@^0.55.1":
-  version "0.55.1"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-assets/-/ui-assets-0.55.1.tgz#245c7842c21c470a0c64e5db38189db6e32d5862"
-  integrity sha512-omwrzQOunflakMs+YYpXNuglJjTiaPAegiZb0+7lfVt7z+SXljfXLYGmPLUkamWLuMxb4Y8fGfAx6V0RmXT2tQ==
+"@polkadot/ui-assets@^0.57.3":
+  version "0.57.3"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-assets/-/ui-assets-0.57.3.tgz#1718a649f790c556f944d41771950c87a76a50b4"
+  integrity sha512-Ijqs6jHVcdg2vX5pYeL51CRcuePrUBi1/l55LReqKtDiyoc5cbKVPyYNRu0pdE0WIBwGlo86weksBxSHT3rSMA==
   dependencies:
-    "@babel/runtime" "^7.10.4"
+    "@babel/runtime" "^7.10.5"
 
 "@polkadot/ui-keyring@^0.53.1":
   version "0.53.1"
