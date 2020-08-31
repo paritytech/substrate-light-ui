@@ -22,7 +22,7 @@
   "devDependencies": {
     "@substrate/light-apps": "^0.3.32",
     "copyfiles": "^2.2.0",
-    "electron": "^9.0.0",
+    "electron": "^10.1.0",
     "electron-builder": "^22.2.0",
     "electron-webpack": "^2.6.2",
     "electron-webpack-ts": "^4.0.0",
