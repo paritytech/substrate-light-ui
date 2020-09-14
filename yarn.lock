@@ -1200,10 +1200,10 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.2", "@babel/runtime@^7.10.3", "@babel/runtime@^7.10.4", "@babel/runtime@^7.3.1", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.4", "@babel/runtime@^7.4.5", "@babel/runtime@^7.5.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.3", "@babel/runtime@^7.7.2", "@babel/runtime@^7.7.6", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7", "@babel/runtime@^7.9.2", "@babel/runtime@^7.9.6":
-  version "7.10.4"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.10.4.tgz#a6724f1a6b8d2f6ea5236dbfe58c7d7ea9c5eb99"
-  integrity sha512-UpTN5yUJr9b4EX2CnGNWIvER7Ab83ibv0pcvvHc4UOdrBI5jb8bj+32cCwPX6xu0mt2daFNjYhoi+X7beH0RSw==
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.2", "@babel/runtime@^7.10.3", "@babel/runtime@^7.10.4", "@babel/runtime@^7.11.2", "@babel/runtime@^7.3.1", "@babel/runtime@^7.3.4", "@babel/runtime@^7.4.4", "@babel/runtime@^7.4.5", "@babel/runtime@^7.5.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.3", "@babel/runtime@^7.7.2", "@babel/runtime@^7.7.6", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7", "@babel/runtime@^7.9.2", "@babel/runtime@^7.9.6":
+  version "7.11.2"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.11.2.tgz#f549c13c754cc40b87644b9fa9f09a6a95fe0736"
+  integrity sha512-TeWkU52so0mPtDcaCTxNBI/IHiz0pZgr8VEFqXFtZWpYD08ZB6FaSwVAS8MKRQAP3bYKiVjwysOJgMFY28o6Tw==
   dependencies:
     regenerator-runtime "^0.13.4"
 
@@ -2925,12 +2925,19 @@
   dependencies:
     "@babel/runtime" "^7.9.6"
 
-"@polkadot/extension-inject@0.31.1", "@polkadot/extension-inject@^0.31.1":
+"@polkadot/extension-inject@0.31.1":
   version "0.31.1"
   resolved "https://registry.yarnpkg.com/@polkadot/extension-inject/-/extension-inject-0.31.1.tgz#1ae8cebabc783196f29fc6529e755c55abba4e3f"
   integrity sha512-5wkZOku9HLZlps7G8X+hG9m3X0GX5Bn/8HlcTxhhkdhtKR9OEwaO06S9KLw/wyMJ2zl7lmYj/E95s7JljAqkgw==
   dependencies:
     "@babel/runtime" "^7.10.3"
+
+"@polkadot/extension-inject@^0.33.4":
+  version "0.33.4"
+  resolved "https://registry.yarnpkg.com/@polkadot/extension-inject/-/extension-inject-0.33.4.tgz#8bde5f3a9d0f5bdf15ceb7d45f84f2e9d51216a5"
+  integrity sha512-rpVNuWH1jd3oG+VhBqtoTGFadcFj58YNnww+fsptUU/TiB2HJ/n7350HGik0Nxg+q8Xcf0uk/FBi1BEt7S3kqQ==
+  dependencies:
+    "@babel/runtime" "^7.11.2"
 
 "@polkadot/keyring@^2.10.1", "@polkadot/keyring@^2.17.1":
   version "2.17.1"
@@ -16797,9 +16804,9 @@ prettier-linter-helpers@^1.0.0:
     fast-diff "^1.1.2"
 
 prettier@>=2.0.1, prettier@^1.18.2, prettier@^2.0.4:
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.0.5.tgz#d6d56282455243f2f92cc1716692c08aa31522d4"
-  integrity sha512-7PtVymN48hGcO4fGjybyBSIWDsLU4H4XlvOHfq91pz9kkGlonzwTfYkaIEwiRg/dAJF9YlbsduBAgtYLi+8cFg==
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.1.1.tgz#d9485dd5e499daa6cb547023b87a6cf51bee37d6"
+  integrity sha512-9bY+5ZWCfqj3ghYBLxApy2zf6m+NJo5GzmLTpr9FsApsfjriNnS2dahWReHMi7qNPhhHl9SYHJs2cHZLgexNIw==
 
 pretty-bytes@^5.1.0:
   version "5.3.0"
