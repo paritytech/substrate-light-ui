@@ -3699,10 +3699,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/chrome@^0.0.117":
-  version "0.0.117"
-  resolved "https://registry.yarnpkg.com/@types/chrome/-/chrome-0.0.117.tgz#c535c00580faa307dd24cb81bd76d42b4e62aca9"
-  integrity sha512-MMr1PHywhr3oFF0aTpezv4hUNr959CkJNtTeeI1a97eBKimx0WR6qIIo/28JcmKJWwKnurF/hF/cE0Q0WV8rLw==
+"@types/chrome@^0.0.123":
+  version "0.0.123"
+  resolved "https://registry.yarnpkg.com/@types/chrome/-/chrome-0.0.123.tgz#3bd094ae3b3920e8210ca63e6b5927358fafc1a5"
+  integrity sha512-fG6GPreuSY+Z+0e3dtBz5MJ5qyZ2feOZISG8udxBiuwUYqykK1q4NxkjfzL2F5I05LqK2ojP7ZR08Gcfo3ubHQ==
   dependencies:
     "@types/filesystem" "*"
     "@types/har-format" "*"
@@ -16797,9 +16797,9 @@ prettier-linter-helpers@^1.0.0:
     fast-diff "^1.1.2"
 
 prettier@>=2.0.1, prettier@^1.18.2, prettier@^2.0.4:
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.0.5.tgz#d6d56282455243f2f92cc1716692c08aa31522d4"
-  integrity sha512-7PtVymN48hGcO4fGjybyBSIWDsLU4H4XlvOHfq91pz9kkGlonzwTfYkaIEwiRg/dAJF9YlbsduBAgtYLi+8cFg==
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.1.1.tgz#d9485dd5e499daa6cb547023b87a6cf51bee37d6"
+  integrity sha512-9bY+5ZWCfqj3ghYBLxApy2zf6m+NJo5GzmLTpr9FsApsfjriNnS2dahWReHMi7qNPhhHl9SYHJs2cHZLgexNIw==
 
 pretty-bytes@^5.1.0:
   version "5.3.0"
