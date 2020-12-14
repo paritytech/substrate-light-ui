@@ -39,6 +39,6 @@
     "tachyons": "^4.11.1"
   },
   "devDependencies": {
-    "@craco/craco": "^5.6.4"
+    "@craco/craco": "^6.0.0"
   }
 }
