@@ -20,7 +20,7 @@
   "dependencies": {
     "@polkadot/react-identicon": "^0.54.1",
     "@types/react-copy-to-clipboard": "^4.3.0",
-    "@types/recharts": "^1.1.16",
+    "@types/recharts": "^2.0.0",
     "@types/styled-components": "^5.0.0",
     "babel-loader": "^8.0.6",
     "react-dropzone": "11.0.1",
