@@ -94,3 +94,4 @@ If you would like to run this project with hot-reloading, use the following comm
 
 - `yarn start:ui`: If you would only like to modify the UI, run this command and visit http://localhost:3000
 - `yarn start:electron`: Run the Electron app with hot reloading
+
