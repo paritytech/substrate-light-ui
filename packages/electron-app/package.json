@@ -15,7 +15,7 @@
     "test": "echo Skipped."
   },
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.21.2",
     "source-map-support": "^0.5.10",
     "winston": "^3.2.1"
   },
